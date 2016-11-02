@@ -64,7 +64,7 @@ class UserMenu extends Component {
     }
     onItemClick(key) {
         switch (key) {
-            case "SendPasswordResetLink":
+            case "ResetPassword":
                 this.onSendPasswordLink();
                 this.props.onClose();
                 break;
@@ -79,7 +79,7 @@ class UserMenu extends Component {
                 this.deleteUser();
                 this.props.onClose();
                 break;
-            case "EraseUser":
+            case "RemoveUser":
                 this.hardDeleteUser();
                 this.props.onClose();
                 break;
@@ -87,17 +87,23 @@ class UserMenu extends Component {
                 this.restoreUser();
                 this.props.onClose();
                 break;
-            case "DeAuthorizeUser":
+            case "cmdUnAuthorize":
                 this.updateAuthorizeStatus(false);
                 this.props.onClose();
                 break;
-            case "AuthorizeUser":
+            case "cmdAuthorize":
                 this.updateAuthorizeStatus(true);
                 this.props.onClose();
                 break;
-            case "MakeSuperUser":
-                this.makeSuperUser();
+            case "PromoteToSuperUser":
+                this.PromoteToSuperUser();
                 this.props.onClose();
+                break;
+            case "ViewAssets":
+                this.onViewAssets();
+                break;
+            case "ViewProfile":
+                this.onViewProfile();
                 break;
             default:
                 if (typeof this.props.userMenuAction === "function")
@@ -106,10 +112,21 @@ class UserMenu extends Component {
                 break;
         }
     }
+    onViewAssets(){
+        let  folderId =   this.state.userDetails.userFolder && parseInt(this.state.userDetails.userFolder.substring(this.state.userDetails.userFolder.lastIndexOf('/') - 1));
+        if (folderId > 0) {
+            utilities.loadPanel("assets", { folderId: folderId });
+        } 
+    }
+    onViewProfile(){
+        utilities.closePersonaBar(() => {
+            window.top.location = this.state.userDetails.profileUrl;
+        });
+    }
     onSendPasswordLink() {
-        this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.ResetPassword({ userId: this.props.userId }, (data) => {
             if (data.Success)
-                utilities.notify("Password reset link sent successfully");
+                utilities.notify(Localization.get("PasswordSent"));
             else {
                 utilities.notify(data.Message);
             }
@@ -119,7 +136,7 @@ class UserMenu extends Component {
         utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
             this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, (data) => {
                 if (data.Success) {
-                    utilities.notify("User deleted successfully");
+                    utilities.notify(Localization.get("UserDeleted"));
                     this.reload();
                 }
                 else {
@@ -129,13 +146,10 @@ class UserMenu extends Component {
         });
     }
     hardDeleteUser() {
-        utilities.confirm(Localization.get("HardDeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }, (data) => {
-                if (data.Success)
-                    utilities.notify("User deleted successfully");
-                else {
+        utilities.confirm(Localization.get("RemoveUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+            this.props.dispatch(CommonUsersActions.RemoveUser({ userId: this.props.userId }, (data) => {
+                if (!data.Success)
                     utilities.notify(data.Message);
-                }
             }));
         });
     }
@@ -143,7 +157,7 @@ class UserMenu extends Component {
         utilities.confirm(Localization.get("RestoreUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
             this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
                 if (data.Success) {
-                    utilities.notify("User restored successfully");
+                    utilities.notify(Localization.get("UserRestored"));
                     this.reload();
                 }
                 else {
@@ -153,9 +167,9 @@ class UserMenu extends Component {
         });
     }
     forcePasswordChange() {
-        this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.ForceChangePassword({ userId: this.props.userId }, (data) => {
             if (data.Success) {
-                utilities.notify("User must update Password on next login.");
+                utilities.notify(Localization.get("UserPasswordUpdateChanged"));
                 this.reload();
             }
             else {
@@ -166,7 +180,7 @@ class UserMenu extends Component {
     updateAuthorizeStatus(authorized) {
         this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
             if (data.Success) {
-                utilities.notify(authorized ? "User authorized successfully" : "User un-authorized successfully");
+                utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"));
                 this.reload();
             }
             else {
@@ -174,13 +188,10 @@ class UserMenu extends Component {
             }
         }));
     }
-    makeSuperUser() {
+    PromoteToSuperUser() {
         this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: true }, (data) => {
-            if (data.Success)
-                utilities.notify("User made super user");
-            else {
+            if (!data.Success)
                 utilities.notify(data.Message);
-            }
         }));
     }
 
@@ -190,28 +201,28 @@ class UserMenu extends Component {
     }
     render() {
 
-        let visibleMenus = [{ title: "ViewProfile", index: 10 },
-            { title: "ViewAssets", index: 20 },
-            { title: "ChangePassword", index: 30 },
-            { title: "SendPasswordResetLink", index: 40 }
+        let visibleMenus = [{ key:"ViewProfile", title: "ViewProfile", index: 10 },
+            { key:"ViewAssets", title: "ViewAssets", index: 20 },
+            { key:"ChangePassword", title: "ChangePassword", index: 30 },
+            { key:"ResetPassword", title: "ResetPassword", index: 40 }
         ];
 
         //if (1 === 1) {
-        visibleMenus = [{ title: "MakeSuperUser", index: 80 }].concat(visibleMenus);
+        visibleMenus = [{ key:"PromoteToSuperUser", title: "PromoteToSuperUser", index: 80 }].concat(visibleMenus);
         //}
         if (!this.state.userDetails.needUpdatePassword) {
-            visibleMenus = [{ title: "ForceChangePassword", index: 40 }].concat(visibleMenus);
+            visibleMenus = [{ key:"ForceChangePassword", title: "ForceChangePassword", index: 40 }].concat(visibleMenus);
         }
         if (this.state.userDetails.isDeleted) {
-            visibleMenus = [{ title: "RestoreUser", index: 70 }].concat(visibleMenus);
-            visibleMenus = [{ title: "EraseUser", index: 60 }].concat(visibleMenus);
+            visibleMenus = [{ key:"RestoreUser", title: "RestoreUser", index: 70 }].concat(visibleMenus);
+            visibleMenus = [{ key:"RemoveUser", title: "RemoveUser", index: 60 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ title: "DeleteUser", index: 60 }].concat(visibleMenus);
+            visibleMenus = [{ key:"DeleteUser", title: "DeleteUser", index: 60 }].concat(visibleMenus);
         }
         if (this.state.userDetails.authorized) {
-            visibleMenus = [{ title: "DeAuthorizeUser", index: 50 }].concat(visibleMenus);
+            visibleMenus = [{ key:"cmdUnAuthorize", title: "cmdUnAuthorize", index: 50 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ title: "AuthorizeUser", index: 50 }].concat(visibleMenus);
+            visibleMenus = [{ key:"cmdAuthorize", title: "cmdAuthorize", index: 50 }].concat(visibleMenus);
         }
         visibleMenus = visibleMenus.concat((this.props.getUserMenu && this.props.getUserMenu(this.state.userDetails)) || []);
 
@@ -223,7 +234,7 @@ class UserMenu extends Component {
                     <Menu>
                         {
                             visibleMenus.map(menu => {
-                                return <MenuItem onMenuAction={this.onItemClick.bind(this, menu.title) }>{Localization.get(menu.title) }</MenuItem>;
+                                return <MenuItem onMenuAction={this.onItemClick.bind(this, menu.key) }>{menu.title}</MenuItem>;
                             })
                         }
                     </Menu>

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
 import Localization from "localization";
 import "./style.less";
 

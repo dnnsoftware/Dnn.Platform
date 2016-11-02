@@ -9,11 +9,12 @@ import UserSettings from "./UserSettings";
 import EditProfile from "./EditProfile";
 import UsersRoles from "./UsersRoles";
 import styles from "./style.less";
+import {sort} from "../../helpers";
 const headers = [
-    "Name",
-    "Email",
-    "Created",
-    "Authorized",
+    "Name.Header",
+    "Email.Header",
+    "Created.Header",
+    "Authorized.Header",
     ""
 ];
 class UserTable extends Component {
@@ -65,20 +66,9 @@ class UserTable extends Component {
                 content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) }/>
             }
         ].concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
-        return this.sort(children, "index").map((child) => {
+        return sort(children, "index").map((child) => {
             return child.content;
         });
-    }
-    sort(items, column, order) {
-        order = order === undefined ? "asc" : order;
-        items = items.sort(function (a, b) {
-            if (a[column] > b[column]) //sort string descending
-                return order === "asc" ? 1 : -1;
-            if (a[column] < b[column])
-                return order === "asc" ? -1 : 1;
-            return 0;//default return value (no sorting)
-        });
-        return items;
     }
     render() {
         const {props} = this;

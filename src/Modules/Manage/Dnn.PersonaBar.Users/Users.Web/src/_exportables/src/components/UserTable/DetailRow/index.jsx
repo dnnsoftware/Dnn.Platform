@@ -1,11 +1,11 @@
 import React, {Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import GridCell from "dnn-grid-cell";
-import GridSystem from "dnn-grid-system";
 import styles from "./style.less";
 import {formatDate, sort} from "../../../helpers";
 import Collapse from "react-collapse";
 import UserMenu from "../UserMenu";
+import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
 
 class DetailsRow extends Component {
@@ -60,20 +60,23 @@ class DetailsRow extends Component {
         let actionIcons = [
             {
                 index: 5,
-                icon: ShieldIcon
+                icon: ShieldIcon,
+                title: Localization.get("ManageRoles.title")
             },
             {
                 index: 10,
-                icon: UserIcon
+                icon: UserIcon,
+                title: Localization.get("ManageProfile.title")
             },
             {
                 index: 15,
-                icon: SettingsIcon
+                icon: SettingsIcon,
+                title: Localization.get("ManageSettings.title")
             }
         ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons()) || []);
         let i = 0;
         let userActions = sort(actionIcons, "index").map((actionIcon) => {
-            let element = <div className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
+            let element = <div title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
             i++;
             return element;
         });
@@ -112,7 +115,7 @@ class DetailsRow extends Component {
             {
                 index: 20,
                 content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
-                    {user.authorized !== "-" && <p>{user.authorized ? "Authorized" : "Un-authorized"}</p>}
+                    {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
                     {user.authorized === "-" && user.authorized}
                 </GridCell>
             },

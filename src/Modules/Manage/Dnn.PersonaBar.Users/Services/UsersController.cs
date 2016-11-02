@@ -430,37 +430,6 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
-        public HttpResponseMessage LoginAsUser([FromUri]int userId)
-        {
-            try
-            {
-                var user = UserController.Instance.GetUserById(PortalId, userId);
-                if (user == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
-                }
-
-                EventLogController.Instance.AddLog("Username", user.Username, PortalSettings, user.UserID, EventLogController.EventLogType.USER_IMPERSONATED);
-
-                //Remove user from cache
-                DataCache.ClearUserCache(PortalId, UserInfo.Username);
-
-                new PortalSecurity().SignOut();
-
-                UserController.UserLogin(user.PortalID, user, PortalSettings.PortalName, HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"], false);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         [RequireHost]
         public HttpResponseMessage UpdateSuperUserStatus([FromUri]int userId, [FromUri]bool setSuperUser)
         {

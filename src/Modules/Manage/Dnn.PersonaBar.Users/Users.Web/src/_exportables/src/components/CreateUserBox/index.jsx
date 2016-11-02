@@ -8,6 +8,7 @@ import Button from "dnn-button";
 import Switch from "dnn-switch";
 import CheckBox from "dnn-checkbox";
 import { CommonUsersActions } from "../../actions";
+import {validateEmail} from "../../helpers";
 import utilities from "utils";
 import styles from "./style.less";
 
@@ -63,7 +64,7 @@ class CreateUserBox extends Component {
             this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, (data) => {
                 if (data.Success) {
                     this.cancel();
-                    utilities.notify("User created successfully.");
+                    utilities.notify(Localization.get("UserCreated"));
                 }
                 else {
                     utilities.notify(data.Message);
@@ -71,10 +72,7 @@ class CreateUserBox extends Component {
             }));
         }
     }
-    validateEmail(value) {
-        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(value);
-    }
+    
     clearForm(callback) {
         let {UserDetails} = this.state;
         UserDetails = Object.assign({}, newUserRegistrationDetails);
@@ -126,7 +124,7 @@ class CreateUserBox extends Component {
                 errors.userName = true;
                 valid = false;
             }
-            if (UserDetails.email === "" || !this.validateEmail(UserDetails.email)) {
+            if (UserDetails.email === "" || !validateEmail(UserDetails.email)) {
                 errors.email = true;
                 valid = false;
             }
@@ -156,58 +154,58 @@ class CreateUserBox extends Component {
                             <SingleLineInputWithError value={state.UserDetails.firstName}
                                 error={state.errors.firstName}
                                 onChange={this.onChange.bind(this, "firstName") }
-                                label={Localization.get("label_FirstName") }
-                                tooltipMessage="Please enter first name."
+                                label={Localization.get("FirstName") }
+                                tooltipMessage={Localization.get("FirstName.Help") }
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 25 }} />
                             <SingleLineInputWithError value={state.UserDetails.userName}
                                 error={state.errors.userName}
                                 onChange={this.onChange.bind(this, "userName") }
-                                label={Localization.get("label_UserName") }
-                                tooltipMessage="Please enter username."
+                                label={Localization.get("UserName") }
+                                tooltipMessage={Localization.get("UserName.Help") }
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 25 }}/>
                             <Switch value={state.UserDetails.authorize}
-                                label={Localization.get("label_Authorize") + ":"}
+                                label={Localization.get("Approved")} title={Localization.get("Approved.Help")}
                                 onChange={this.onChange.bind(this, "authorize") }/>
                         </div>
                         <div>
                             <SingleLineInputWithError value={state.UserDetails.lastName}
                                 error={state.errors.lastName}
                                 onChange={this.onChange.bind(this, "lastName") }
-                                label={Localization.get("label_LastName") }
-                                tooltipMessage="Please enter last name."
+                                label={Localization.get("LastName") }
+                                tooltipMessage={Localization.get("LastName") }
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 25 }}/>
                             <SingleLineInputWithError value={state.UserDetails.email}
                                 error={state.errors.email}
                                 onChange={this.onChange.bind(this, "email") }
-                                label={Localization.get("label_EmailAddress") }
-                                tooltipMessage="Please enter email."
+                                label={Localization.get("Email") }
+                                tooltipMessage={Localization.get("Email.Text") }
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 25 }}/>
-                            <Switch value={state.UserDetails.randomPassword}
-                                label={Localization.get("label_RandomPassword") + ":" }
+                            <Switch value={state.UserDetails.randomPassword} title={Localization.get("Random.Help")}
+                                label={Localization.get("Random") + ":" }
                                 onChange={this.onChange.bind(this, "randomPassword") }/>
                         </div>
                     </GridSystem>
                     {!state.UserDetails.randomPassword && <GridCell><hr/></GridCell>}
                     {!state.UserDetails.randomPassword && <GridSystem>
                         <div>
-                            <SingleLineInputWithError label={Localization.get("label_Password") }
+                            <SingleLineInputWithError label={Localization.get("Password") }
                                 error={state.errors.password}
                                 onChange={this.onChange.bind(this, "password") }
-                                tooltipMessage="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"
+                                tooltipMessage={Localization.get("Password.Help")}
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 15 }}
                                 type="password"
                                 value={state.UserDetails.password}/>
                         </div>
                         <div>
-                            <SingleLineInputWithError label={Localization.get("label_ConfirmPassword") }
+                            <SingleLineInputWithError label={Localization.get("Confirm") }
                                 error={state.errors.confirmPassword || state.errors.passwordsMatch}
                                 onChange={this.onChange.bind(this, "confirmPassword") }
-                                tooltipMessage="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"
+                                tooltipMessage={state.errors.confirmPassword ? Localization.get("Confirm.Help") : Localization.get("ConfirmMismatch.Help") }
                                 style={inputStyle}
                                 type="password"
                                 inputStyle={{ marginBottom: 15 }}
@@ -216,12 +214,12 @@ class CreateUserBox extends Component {
                     }
                     <GridCell columnSize={100} className="email-notification-line">
                         <CheckBox value={state.UserDetails.notify}
-                            label="Send an Email Notification to New User"
+                            label={Localization.get("Notify")}
                             onChange={this.onChange.bind(this, "notify") }/>
                     </GridCell>
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btn_Cancel") }</Button>
-                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btn_Save") }</Button>
+                        <Button id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btnCancel") }</Button>
+                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
                     </GridCell>
                 </GridCell>
             </GridCell>

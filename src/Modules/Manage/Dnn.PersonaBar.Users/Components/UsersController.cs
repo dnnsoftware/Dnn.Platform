@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Users.Components
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                errorMessage = "ChangePasswordNotAvailable";
+                errorMessage = Localization.GetString("CannotChangePassword", LocalResourcesFile);
                 return false;
             }
 
@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (membershipPasswordController.FoundBannedPassword(newPassword) || user.Username == newPassword)
                 {
-                    errorMessage = "BannedPasswordUsed";
+                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                     return false;
                 }
 
@@ -133,7 +133,7 @@ namespace Dnn.PersonaBar.Users.Components
             //check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
-                errorMessage = "PasswordResetFailed";
+                errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory", LocalResourcesFile);
                 return false;
             }
 
@@ -142,7 +142,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
-                    errorMessage = "PasswordResetFailed";
+                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                 }
 
                 return passwordChanged;
@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Password Answer missing
                 Logger.Error(exc);
-                errorMessage = "InvalidPasswordAnswer";
+                errorMessage = Localization.GetString("PasswordInvalid", LocalResourcesFile);
                 return false;
             }
             catch (ThreadAbortException)
@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Fail
                 Logger.Error(exc);
-                errorMessage = "PasswordResetFailed";
+                errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                 return false;
             }
         }

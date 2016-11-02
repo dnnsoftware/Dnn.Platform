@@ -164,6 +164,9 @@ class UserRoles extends Component {
                 showStartEndButtons={false}
                 showPageSizeOptions={false}
                 numericCounters={0}
+                summaryText={Localization.get("rolesSummaryText")}
+                pageInfoText={Localization.get("rolesPageInfoText")}
+                showPageInfo={true}
                 pageSize={this.state.pageSize}
                 totalRecords={this.props.totalRecords}
                 onPageChanged={this.onPageChanged.bind(this) }
@@ -174,14 +177,14 @@ class UserRoles extends Component {
         /* eslint-disable react/no-danger */
         return <div className="userroles-form-form">
             <div className="header">
-                <div className="header-title">{Localization.get("Roles") }</div>
+                <div className="header-title">{Localization.get("Roles.Title") }</div>
                 <div className="add-box">
                     <GridCell columnSize={50}>
                         <div className="send-email-box">
                             <CheckBox value={this.state.sendEmail} onChange={this.onSendEmailClick.bind(this) }
                                 label={  Localization.get("SendEmail") } labelPlace="right"    />
                             {this.state.allowOwner && <CheckBox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
-                                label={  Localization.get("isOwner") } labelPlace="right"   />}
+                                label={  Localization.get("IsOwner") } labelPlace="right"   />}
                         </div>
                     </GridCell>
                     <GridCell columnSize={50}>
@@ -197,7 +200,7 @@ class UserRoles extends Component {
                                 valueField="roleId"
                                 textField="roleName"/>
                             <div className="add-role-button" onClick={this.onAddRole.bind(this) }>
-                                <div className={"extension-action"} dangerouslySetInnerHTML={{ __html: AddIcon }}></div>
+                                <div className={"extension-action"} title={Localization.get("Add")} dangerouslySetInnerHTML={{ __html: AddIcon }}></div>
                                 {Localization.get("Add") }
                             </div>
                         </span>

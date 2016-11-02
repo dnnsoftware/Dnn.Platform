@@ -5,7 +5,7 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import { CommonUsersActions } from "../../../actions";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import {formatDate} from "../../../helpers";
+import {formatDate, validateEmail} from "../../../helpers";
 import utilities from "utils";
 import Button from "dnn-button";
 import styles from "./style.less";
@@ -71,8 +71,7 @@ class UserSettings extends Component {
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.updateUserBasicInfo(this.state.accountSettings, (data) => {
                 if (data.Success) {
-                    console.log('ss');
-                    utilities.notify("User updated successfully.");
+                    utilities.notify(Localization.get("UserUpdated"));
                     let {reload} = this.state;
                     reload = true;
                     this.setState({ reload });
@@ -84,10 +83,7 @@ class UserSettings extends Component {
             }));
         }
     }
-    validateEmail(value) {
-        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(value);
-    }
+  
     validateForm() {
         let valid = true;
         let {errors} = this.state;
@@ -103,7 +99,7 @@ class UserSettings extends Component {
             errors.userName = true;
             valid = false;
         }
-        if (accountSettings.email === "" || !this.validateEmail(accountSettings.email)) {
+        if (accountSettings.email === "" || !validateEmail(accountSettings.email)) {
             errors.email = true;
             valid = false;
         }
@@ -123,9 +119,8 @@ class UserSettings extends Component {
     }
     onForcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
-
             if (data.Success) {
-                utilities.notify("User must update Password on next login.");
+                utilities.notify(Localization.get("UserPasswordUpdateChanged"));
                 let {userDetails} = this.state;
                 userDetails.needUpdatePassword = true;
                 this.setState({ userDetails });
@@ -138,7 +133,7 @@ class UserSettings extends Component {
     onSendPasswordLink() {
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
             if (data.Success)
-                utilities.notify("Password reset link sent successfully");
+                utilities.notify(Localization.get("PasswordSent"));
             else {
                 utilities.notify(data.Message);
             }
@@ -151,44 +146,47 @@ class UserSettings extends Component {
                 <GridCell className="outer-box" columnSize={50}>
                     <ChangePassword visible={this.state.ChangePasswordVisible} onCancel={this.onCancelPassword.bind(this) } userId={this.props.userId} />
                     <div className="title">
-                        Account Settings
+                        {Localization.get("AccountSettings")}
                     </div>
                     <div>
                         <SingleLineInputWithError value={state.accountSettings.userName}
                             error={state.errors.userName}
                             onChange={this.onChange.bind(this, "userName") }
-                            label={Localization.get("label_UserName") }
-                            tooltipMessage="Please enter username."
+                            label={Localization.get("UserName") }
+                            tooltipMessage={Localization.get("UserName.Help")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 25 }}/>
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
                             onChange={this.onChange.bind(this, "displayName") }
-                            label={Localization.get("label_DisplayName") }
-                            tooltipMessage="Please enter display name."
+                            label={Localization.get("DisplayName") }
+                            tooltipMessage={Localization.get("DisplayName.Help")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 25 }} />
                         <SingleLineInputWithError value={state.accountSettings.email}
                             error={state.errors.email}
                             onChange={this.onChange.bind(this, "email") }
-                            label={Localization.get("label_EmailAddress") }
-                            tooltipMessage="Please enter email."
+                            label={Localization.get("Email") }
+                            tooltipMessage={Localization.get("Email.Help")}
                             style={inputStyle}
                             inputStyle={{ marginBottom: 25 }}/>
                     </div>
                     <GridCell>
                         <div className="title">
-                            Password Management
+                            {Localization.get("PasswordManagement")}
                         </div>
                         <GridCell className="link">
-                            <div onClick={this.onChangePassword.bind(this) }>[Change Password]
-                            </div></GridCell>
+                            <div onClick={this.onChangePassword.bind(this) }>[{Localization.get("ChangePassword")}]
+                            </div>
+                            </GridCell>
                         {!state.userDetails.needUpdatePassword && <GridCell className="link">
-                            <div onClick={this.onForcePasswordChange.bind(this) }>[Force Change Password]
-                            </div></GridCell>}
+                            <div onClick={this.onForcePasswordChange.bind(this) }>[{Localization.get("ForceChangePassword")}]
+                            </div>
+                            </GridCell>}
                         <GridCell className="link">
-                            <div onClick={this.onSendPasswordLink.bind(this) }>[Send Password Reset Link]
-                            </div></GridCell>
+                            <div onClick={this.onSendPasswordLink.bind(this) }>[{Localization.get("ResetPassword")}]
+                            </div>
+                            </GridCell>
                     </GridCell>
                 </GridCell>
                 <GridCell className="outer-box right" columnSize={50}>
@@ -196,88 +194,88 @@ class UserSettings extends Component {
                         Account Data
                     </div>
                     <GridSystem className="first">
-                        <GridCell>
-                            Created Date:
+                        <GridCell  title={Localization.get("CreatedDate.Help")}>
+                            {Localization.get("CreatedDate")}:
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.createdOnDate, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Last Login Date:
+                        <GridCell title={Localization.get("LastLoginDate.Help")}>
+                            {Localization.get("LastLoginDate")}:
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastLogin, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Last Activity Date:
+                        <GridCell title={Localization.get("LastActivityDate.Help")}>
+                            {Localization.get("LastActivityDate")}:
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastActivity, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Last Password Change:
+                        <GridCell title={Localization.get("LastPasswordChangeDate.Help")}>
+                            {Localization.get("LastPasswordChangeDate")}:
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastPasswordChange, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Last Lockout Date:
+                        <GridCell title={Localization.get("LastLockoutDate.Help")}>
+                            {Localization.get("LastLockoutDate")}:
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastLockout, true) === "-" ? "Never" : formatDate(state.userDetails.lastLockout, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            User Is Online:
+                        <GridCell title={Localization.get("IsOnLine.Help")}>
+                            {Localization.get("IsOnLine")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isOnline ? "True" : "False"}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Locked Out:
+                        <GridCell title={Localization.get("LockedOut.Help")}>
+                            {Localization.get("LockedOut")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isLocked ? "True" : "False"}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Authorized:
+                        <GridCell title={Localization.get("Approved.Help")}>
+                            {Localization.get("Approved")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.authorized ? "True" : "False"}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Update Password:
+                        <GridCell title={Localization.get("UpdatePassword.Help")}>
+                            {Localization.get("UpdatePassword")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.needUpdatePassword ? "True" : "False"}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            Deleted:
+                        <GridCell title={Localization.get("IsDeleted.Help")}>
+                            {Localization.get("IsDeleted")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isDeleted ? "True" : "False"}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
-                        <GridCell>
-                            User Folder:
+                        <GridCell title={Localization.get("UserFolder.Help")}>
+                            {Localization.get("UserFolder")}:
                         </GridCell>
                         <GridCell>
                             {state.userDetails.userFolder}
@@ -287,10 +285,10 @@ class UserSettings extends Component {
             </GridCell>
             <GridCell className="buttons">
                 <GridCell columnSize={50} className="leftBtn">
-                    <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btn_Cancel") }</Button>
+                    <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
                 </GridCell>
                 <GridCell columnSize={50} className="rightBtn">
-                    <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btn_Save") }</Button>
+                    <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
                 </GridCell>
             </GridCell>
         </GridCell>;

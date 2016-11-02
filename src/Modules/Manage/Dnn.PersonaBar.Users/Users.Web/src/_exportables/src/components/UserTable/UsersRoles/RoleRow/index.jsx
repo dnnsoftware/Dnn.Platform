@@ -7,7 +7,7 @@ import Localization from "localization";
 import DatePicker from "dnn-date-picker";
 import { CommonUsersActions } from "../../../../actions";
 import { XIcon } from "dnn-svg-icons";
-import {formatDate} from "../../../../helpers";
+import {formatDate,formatString} from "../../../../helpers";
 
 class RoleRow extends Component {
     constructor() {
@@ -28,7 +28,7 @@ class RoleRow extends Component {
 
     onDeleteClick(userRole) {
         const {props} = this;
-        utilities.confirm(Localization.get("deleteRoleRole.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+        utilities.confirm(formatString(Localization.get("DeleteRoleRole.Confirm"), userRole.roleName, userRole.displayName), Localization.get("Delete"), Localization.get("Cancel"), () => {
             props.dispatch(CommonUsersActions.removeUserRole(userRole, (data) => {
                 //props.deleteRole(data.RoleId);
             }));
@@ -86,13 +86,13 @@ class RoleRow extends Component {
 
         let startTimeAction = props.roleDetails.allowExpired ? <span>
             <DatePicker  date={this.getDate(props.roleDetails, "startTime") } maxDate={this.getBoundDate(props.roleDetails, "startTime") }
-                updateDate={this.onChange.bind(this, props.roleDetails, "startTime") } mode={"start"} applyButtonText={Localization.get("Apply") }
+                updateDate={this.onChange.bind(this, props.roleDetails, "startTime") } mode={"start"} applyButtonText={Localization.get("btnApply") }
                 showIcon={true} showInput={false}
                 onIconClick={this.onStartTimeClick.bind(this, props.roleDetails, props.index) }             />
         </span> : null;
         let expiresTimeAction = props.roleDetails.allowExpired ? <span>
             <DatePicker  date={this.getDate(props.roleDetails, "expiresTime") } minDate={this.getBoundDate(props.roleDetails, "expiresTime") }
-                updateDate={this.onChange.bind(this, props.roleDetails, "expiresTime") } mode={"end"} applyButtonText={Localization.get("Apply") }
+                updateDate={this.onChange.bind(this, props.roleDetails, "expiresTime") } mode={"end"} applyButtonText={Localization.get("btnApply") }
                 showIcon={true} showInput={false}
                 onIconClick={this.onExpiresTimeClick.bind(this, props.roleDetails, props.index) }             />
         </span> : null;
@@ -111,9 +111,9 @@ class RoleRow extends Component {
             <div className="user-role-row">
                 <GridCell title={props.roleDetails.roleName} columnSize={25} >
                     {props.roleDetails.roleName}</GridCell>
-                <GridCell  columnSize={20} >
+                <GridCell  columnSize={20} title={formatDate(props.roleDetails.startTime) } >
                     {formatDate(props.roleDetails.startTime) }</GridCell>
-                <GridCell  columnSize={20} >
+                <GridCell  columnSize={20} title={formatDate(props.roleDetails.expiresTime) } >
                     {formatDate(props.roleDetails.expiresTime) }</GridCell>
                 <GridCell  columnSize={35} >
                     <div className="actions">

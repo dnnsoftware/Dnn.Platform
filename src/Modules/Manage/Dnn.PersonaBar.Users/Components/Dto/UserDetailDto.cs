@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Common;
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
@@ -37,6 +38,10 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "userFolder")]
         public string UserFolder { get; set; }
+
+        [DataMember(Name = "profileUrl")]
+        public string ProfileUrl => UserId > 0 ? Globals.UserProfileURL(UserId) : null;
+
 
         public UserDetailDto()
         {

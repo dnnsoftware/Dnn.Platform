@@ -66,7 +66,7 @@ class ChangePassword extends Component {
             this.props.dispatch(CommonUsersActions.changePassword(this.state.changePassword, (data) => {
                 if (data.Success) {
                     this.cancel();
-                    utilities.notify("Password changed successfully.");
+                    utilities.notify(Localization.get("ChangeSuccessful"));
                 }
                 else {
                     utilities.notify(data.Message);
@@ -123,28 +123,28 @@ class ChangePassword extends Component {
             <GridCell className="do-not-close">
                 <GridCell>
                     <div className="title">
-                        Change Password
+                        {Localization.get("ChangePassword")}
                     </div>
-                    <SingleLineInputWithError label={Localization.get("label_Password") }
+                    <SingleLineInputWithError label={Localization.get("NewPassword") }
                         error={state.errors.password}
                         onChange={this.onChange.bind(this, "password") }
-                        tooltipMessage="Enter new password."
+                        tooltipMessage={Localization.get("NewPassword.Help") }
                         style={inputStyle}
                         type="password"
                         inputStyle={{ marginBottom: 15 }}
                         value={state.changePassword.password}/>
-                    <SingleLineInputWithError label={Localization.get("label_ConfirmPassword") }
+                    <SingleLineInputWithError label={Localization.get("NewConfirm") }
                         error={state.errors.confirmPassword || state.errors.passwordsMatch}
                         onChange={this.onChange.bind(this, "confirmPassword") }
-                        tooltipMessage="Enter confirm password."
+                        tooltipMessage={state.errors.confirmPassword ? Localization.get("NewConfirm.Help") : Localization.get("NewConfirmMismatch.Help") }
                         style={inputStyle}
                         type="password"
                         inputStyle={{ marginBottom: 15 }}
                         value={state.confirmPassword}/>
                 </GridCell>
                 <GridSystem>
-                    <Button className="right do-not-close" id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btn_Cancel") }</Button>
-                    <Button id="confirmbtn do-not-close" type="primary" onClick={this.save.bind(this) }>{Localization.get("btn_Apply") }</Button>
+                    <Button className="right do-not-close" id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btnCancel") }</Button>
+                    <Button id="confirmbtn do-not-close" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnApply") }</Button>
                 </GridSystem>
             </GridCell>
         </div >;

@@ -22,10 +22,6 @@ class Body extends Component {
     constructor() {
         super();
         this.state = {
-            selectedRadioButton: 0,
-            value: "Test Me!",
-            textAreaValue: "Multi line!",
-            singleLineValue: "Single line!",
             userFilters: [],
             searchParameters
         };
@@ -37,15 +33,6 @@ class Body extends Component {
                 userFilters
             });
         }));
-    }
-
-    onRadioButtonChange(value) {
-        alert(value);
-    }
-
-    onEnter(key) {
-        const { state } = this;
-        alert("You pressed enter! My value is: " + state[key]);
     }
 
     onChange(key, event) {
@@ -92,14 +79,19 @@ class Body extends Component {
         return (
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
-                    <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) }>{Localization.get("btn_CreateUser") }</Button>
+                    <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
+                        {Localization.get("btn_CreateUser") }
+                    </Button>
                 </SocialPanelHeader>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable"/>
                     {
                         state.searchParameters.filter === 0 && <div className="users-paging">
-                            <Pager pageSizeDropDownWithoutBorder={true} showSummary={true} showPageInfo={false}
-                                pageSizeOptionText={"{0} users per page"}
+                            <Pager pageSizeDropDownWithoutBorder={true} 
+                                showSummary={true} 
+                                showPageInfo={false}
+                                pageSizeOptionText={Localization.get("usersPageSizeOptionText")}
+                                summaryText={Localization.get("usersSummaryText")}
                                 pageSize={this.state.searchParameters.pageSize}
                                 totalRecords={props.totalUsers}
                                 onPageChanged={this.onPageChanged.bind(this) }
