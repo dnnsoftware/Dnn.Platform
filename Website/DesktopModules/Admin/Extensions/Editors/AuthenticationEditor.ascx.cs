@@ -22,6 +22,7 @@
 
 using System;
 using System.IO;
+using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
@@ -45,10 +46,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
+        
+        #endregion
 
-		#endregion
-
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         protected AuthenticationInfo AuthSystem
         {
@@ -170,13 +171,18 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             base.OnLoad(e);
             cmdUpdate.Click += cmdUpdate_Click;
+            var displayMode = DisplayMode;
+            if (displayMode == "editor" || displayMode == "settings")
+            {
+                AuthEditorHead.Visible = AuthEditorHead.EnableViewState = false;
+            }
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
             SettingsControl?.UpdateSettings();
 
-            var displayMode = (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+            var displayMode = DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
                 Response.Redirect(Globals.NavigateURL(), true);
         }

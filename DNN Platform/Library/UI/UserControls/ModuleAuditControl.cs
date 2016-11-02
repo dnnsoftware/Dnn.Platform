@@ -45,6 +45,8 @@ namespace DotNetNuke.UI.UserControls
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
 
+        private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+
         [Serializable]
 		private class EntityInfo
 		{
@@ -115,8 +117,12 @@ namespace DotNetNuke.UI.UserControls
                     Globals.NumberMatchRegex.IsMatch(CreatedByUser) && Globals.NumberMatchRegex.IsMatch(LastModifiedByUser);
 
                 _systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
-                ShowCreatedString();
-                ShowUpdatedString(isCreatorAndUpdater);
+                var displayMode = DisplayMode;
+                if (displayMode != "editor" && displayMode != "settings")
+                {
+                    ShowCreatedString();
+                    ShowUpdatedString(isCreatorAndUpdater);
+                }
             }
             catch (Exception exc) //Module failed to load
             {
