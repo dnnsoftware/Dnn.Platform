@@ -24,6 +24,7 @@ define(['jquery',
                 window.dnn.initSeo = function initializeSeo() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'Seo'
                     };
                 };

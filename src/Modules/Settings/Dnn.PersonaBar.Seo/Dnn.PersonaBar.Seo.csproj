@@ -101,6 +101,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\ExtensionMenuController.cs" />
     <Compile Include="Components\SeoController.cs" />
     <Compile Include="Components\UrlRewritingResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
