@@ -99,10 +99,6 @@ class UserMenu extends Component {
                 this.PromoteToSuperUser();
                 this.props.onClose();
                 break;
-            case "ViewAssets":
-                this.onViewAssets();
-                this.props.onClose();
-                break;
             case "ViewProfile":
                 this.onViewProfile();
                 this.props.onClose();
@@ -114,12 +110,7 @@ class UserMenu extends Component {
                 break;
         }
     }
-    onViewAssets(){
-        let  folderId =   this.state.userDetails.userFolder && parseInt(this.state.userDetails.userFolder.substring(this.state.userDetails.userFolder.lastIndexOf('/') - 1));
-        if (folderId > 0) {
-            utilities.loadPanel("assets", { folderId: folderId });
-        } 
-    }
+    
     onViewProfile(){
         utilities.closePersonaBar(() => {
             window.top.location = this.state.userDetails.profileUrl;
@@ -204,7 +195,6 @@ class UserMenu extends Component {
     render() {
 
         let visibleMenus = [{ key:"ViewProfile", title:  Localization.get("ViewProfile"), index: 10 },
-            { key:"ViewAssets", title: Localization.get("ViewAssets"), index: 20 },
             { key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 },
             { key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }
         ];

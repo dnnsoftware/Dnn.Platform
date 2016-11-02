@@ -420,9 +420,6 @@
   <data name="UserUpdated.Text" xml:space="preserve">
     <value>User updated successfully.</value>
   </data>
-  <data name="ViewAssets.Text" xml:space="preserve">
-    <value>View Assets</value>
-  </data>
   <data name="ViewProfile.Text" xml:space="preserve">
     <value>View Profile</value>
   </data>
