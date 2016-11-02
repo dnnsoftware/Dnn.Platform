@@ -124,7 +124,7 @@ class UserTable extends Component {
                     }) 
                 }
                 {
-                    props.users && props.users.length === 0 && <GridCell className="no-users">No users found.</GridCell>
+                    props.users && props.users.length === 0 && <GridCell className="no-users">{Localization.get("noUsers")}</GridCell>
                 }
             </GridCell>
         );

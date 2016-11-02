@@ -80,7 +80,7 @@ class Body extends Component {
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
                     <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
-                        {Localization.get("btn_CreateUser") }
+                        {Localization.get("btnCreateUser") }
                     </Button>
                 </SocialPanelHeader>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>

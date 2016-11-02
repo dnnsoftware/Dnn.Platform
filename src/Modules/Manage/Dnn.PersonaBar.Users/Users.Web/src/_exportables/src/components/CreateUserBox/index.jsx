@@ -136,7 +136,7 @@ class CreateUserBox extends Component {
                 errors.confirmPassword = true;
                 valid = false;
             }
-            if (UserDetails.randomPassword === false && this.state.confirmPassword !== UserDetails.password) {
+            else if (UserDetails.randomPassword === false && this.state.confirmPassword !== UserDetails.password) {
                 errors.passwordsMatch = true;
                 valid = false;
             }
@@ -158,7 +158,7 @@ class CreateUserBox extends Component {
                                 tooltipMessage={Localization.get("FirstName.Help") }
                                 errorMessage={Localization.get("FirstName.Required") }
                                 style={inputStyle}
-                                autocomplete="off"
+                                autoComplete="off"
                                 inputStyle={{ marginBottom: 25 }} tabIndex={1}/>
                             <SingleLineInputWithError value={state.UserDetails.userName}
                                 error={state.errors.userName}
@@ -167,7 +167,7 @@ class CreateUserBox extends Component {
                                 tooltipMessage={Localization.get("Username.Help") }
                                 errorMessage={Localization.get("Username.Required") }
                                 style={inputStyle}
-                                autocomplete="off"
+                                autoComplete="off"
                                 inputStyle={{ marginBottom: 25 }}  tabIndex={3}/>
                             <Switch value={state.UserDetails.authorize}
                                 label={Localization.get("Approved")} title={Localization.get("Approved.Help")}
@@ -181,7 +181,7 @@ class CreateUserBox extends Component {
                                 tooltipMessage={Localization.get("LastName.Help") }
                                 errorMessage={Localization.get("LastName.Required") }
                                 style={inputStyle}
-                                autocomplete="off"
+                                autoComplete="off"
                                 inputStyle={{ marginBottom: 25 }}  tabIndex={2}/>
                             <SingleLineInputWithError value={state.UserDetails.email}
                                 error={state.errors.email}
@@ -190,7 +190,7 @@ class CreateUserBox extends Component {
                                 tooltipMessage={Localization.get("Email.Help") }
                                 errorMessage={Localization.get("Email.Required") }
                                 style={inputStyle}
-                                autocomplete="off"
+                                autoComplete="off"
                                 inputStyle={{ marginBottom: 25 }}  tabIndex={4}/>
                             <Switch value={state.UserDetails.randomPassword} title={Localization.get("Random.Help")}
                                 label={Localization.get("Random") + ":" }
@@ -208,7 +208,7 @@ class CreateUserBox extends Component {
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 15 }}
                                 type="password"
-                                autocomplete="off"
+                                autoComplete="off"
                                 value={state.UserDetails.password}  tabIndex={7}/>
                         </div>
                         <div>
@@ -219,7 +219,7 @@ class CreateUserBox extends Component {
                                 errorMessage={state.errors.confirmPassword ? Localization.get("Confirm.Required") : Localization.get("ConfirmMismatch.ErrorMessage") }
                                 style={inputStyle}
                                 type="password"
-                                autocomplete="off"
+                                autoComplete="off"
                                 inputStyle={{ marginBottom: 15 }}
                                 value={state.confirmPassword}  tabIndex={8}/></div>
                     </GridSystem>

@@ -412,7 +412,7 @@
     <value>{0} users per page</value>
   </data>
   <data name="usersSummaryText.Text" xml:space="preserve">
-    <value>Showing {0}-{1} of {2} entries</value>
+    <value>Showing {0}-{1} of {2}</value>
   </data>
   <data name="UserUnAuthorized.Text" xml:space="preserve">
     <value>User successfully un-authorized.</value>
@@ -503,5 +503,8 @@
   </data>
   <data name="Username.Required" xml:space="preserve">
     <value>User name is required.</value>
+  </data>
+  <data name="noUsers.text" xml:space="preserve">
+    <value>No users found.</value>
   </data>
 </root>

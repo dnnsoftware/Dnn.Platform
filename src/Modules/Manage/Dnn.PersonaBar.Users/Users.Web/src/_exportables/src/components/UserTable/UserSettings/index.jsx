@@ -184,7 +184,7 @@ class UserSettings extends Component {
                             tooltipMessage={Localization.get("Username.Help")}
                             errorMessage={Localization.get("Username.Required") }
                             style={inputStyle}
-                            autocomplete="off"
+                            autoComplete="off"
                             inputStyle={{ marginBottom: 25 }}/>
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
@@ -193,7 +193,7 @@ class UserSettings extends Component {
                             tooltipMessage={Localization.get("DisplayName.Help")}
                             errorMessage={Localization.get("DisplayName.Required") }
                             style={inputStyle}
-                            autocomplete="off"
+                            autoComplete="off"
                             inputStyle={{ marginBottom: 25 }} />
                         <SingleLineInputWithError value={state.accountSettings.email}
                             error={state.errors.email}
@@ -202,7 +202,7 @@ class UserSettings extends Component {
                             tooltipMessage={Localization.get("Email.Help")}
                             errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}
-                            autocomplete="off"
+                            autoComplete="off"
                             inputStyle={{ marginBottom: 25 }}/>
                     </div>
                     <GridCell className="no-padding">

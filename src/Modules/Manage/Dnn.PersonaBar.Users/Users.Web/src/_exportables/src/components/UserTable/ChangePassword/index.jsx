@@ -90,7 +90,7 @@ class ChangePassword extends Component {
             errors.confirmPassword = true;
             valid = false;
         }
-        if (confirmPassword !== changePassword.password) {
+        else if (confirmPassword !== changePassword.password) {
             errors.passwordsMatch = true;
             valid = false;
         }
@@ -133,7 +133,7 @@ class ChangePassword extends Component {
                         errorMessage={Localization.get("NewPassword.Required") }
                         style={inputStyle}
                         type="password"
-                        autocomplete="off"
+                        autoComplete="off"
                         inputStyle={{ marginBottom: 15 }}
                         value={state.changePassword.password}/>
                     <SingleLineInputWithError label={Localization.get("NewConfirm") }
@@ -144,7 +144,7 @@ class ChangePassword extends Component {
                         style={inputStyle}
                         type="password"
                         inputStyle={{ marginBottom: 15 }}
-                        autocomplete="off"
+                        autoComplete="off"
                         value={state.confirmPassword}/>
                 </GridCell>
                 <GridSystem>
