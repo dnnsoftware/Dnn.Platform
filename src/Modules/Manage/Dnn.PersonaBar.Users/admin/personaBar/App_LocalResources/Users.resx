@@ -507,4 +507,7 @@
   <data name="noUsers.Text" xml:space="preserve">
     <value>No users found.</value>
   </data>
+  <data name="ShowLabel.Text" xml:space="preserve">
+    <value>Show: </value>
+  </data>
 </root>

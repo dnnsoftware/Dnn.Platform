@@ -59,6 +59,7 @@ class FiltersBar extends Component {
                             label={this.state.selectedUserFilter.label }
                             onSelect={this.onSelect.bind(this) }
                             ref="userFiltersDropdown"
+                            prependWith={Localization.get("ShowLabel")}
                             />
                         <div className="clear">
                         </div>
