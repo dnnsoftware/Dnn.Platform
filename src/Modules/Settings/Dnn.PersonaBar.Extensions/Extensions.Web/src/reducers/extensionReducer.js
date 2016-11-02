@@ -116,6 +116,7 @@ export default function extension(state = {
             return { ...state,
                 availablePackageTypes: action.payload.Results
             };
+        case ActionTypes.ADDED_NEW_EXTENSION:
         case ActionTypes.INSTALLED_EXTENSION:
         case ActionTypes.CREATED_NEW_MODULE:
             return { ...state,

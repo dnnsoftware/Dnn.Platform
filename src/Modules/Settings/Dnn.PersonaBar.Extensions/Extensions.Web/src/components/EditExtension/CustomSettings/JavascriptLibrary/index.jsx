@@ -110,6 +110,7 @@ class JavascriptLibrary extends Component {
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
                         <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
+                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
                         <Button type="primary">{props.primaryButtonText}</Button>
                     </GridCell>
                 }

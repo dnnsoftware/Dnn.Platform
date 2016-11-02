@@ -3,7 +3,15 @@ import { ExtensionService } from "services";
 import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
 import utilities from "utils";
 
-function errorCallback(message) {
+function errorCallback(error) {
+    let message = utilities.utilities.getResx("SharedResources", "GenericErrorMessage.Error");
+    if (error.Error) {
+        message = error.Error;
+    } else if (error.Message) {
+        message = error.Message;
+    } else if (typeof error === "string") {
+        message = error;
+    }
     utilities.utilities.notifyError(message);
 }
 function valueMapExtensionBeingEdited(extensionBeingEdited) {
@@ -187,13 +195,16 @@ const extensionActions = {
             }
         };
     },
-    createNewExtension(updatedExtension, editorActions, index, callback) {
+    createNewExtension(extensionBeingAdded, editorActions, index, callback) {
         return (dispatch) => {
-            ExtensionService.createNewExtension(updatedExtension, editorActions, (data) => {
+            ExtensionService.createNewExtension(extensionBeingAdded, editorActions, (data) => {
+                let _extensionBeingAdded = JSON.parse(JSON.stringify(extensionBeingAdded));
+                _extensionBeingAdded.packageId = {};
+                _extensionBeingAdded.packageId.value = data.PackageId;
                 dispatch({
-                    type: ActionTypes.ADDED_NEW_EXTENSION || "ADDED_NEW_EXTENSION",
+                    type: ActionTypes.ADDED_NEW_EXTENSION,
                     payload: {
-                        extensionBeingEdited: validationMapExtensionBeingEdited(data.PackageDetail)
+                        PackageInfo: valueMapExtensionBeingEdited(_extensionBeingAdded)
                     }
                 });
                 if (callback) {

@@ -25,6 +25,7 @@ class Module extends Component {
     moveItemsLeft() {
         const { props } = this;
         let assignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.assignedPortals.value));
+        let unassignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.unassignedPortals.value));
         let itemsToStay = [], itemsToMove = [];
         let selectedCount = 0;
         assignedPortals.forEach((portal) => {
@@ -38,7 +39,7 @@ class Module extends Component {
             }
         });
         if (selectedCount > 0) {
-            props.onAssignedPortalsChange("unassignedPortals", itemsToMove, () => {
+            props.onAssignedPortalsChange("unassignedPortals", unassignedPortals.concat(itemsToMove), () => {
                 props.onAssignedPortalsChange("assignedPortals", itemsToStay);
             });
         }
@@ -46,6 +47,7 @@ class Module extends Component {
     moveItemsRight() {
         const { props } = this;
         let unassignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.unassignedPortals.value));
+        let assignedPortals = JSON.parse(JSON.stringify(props.extensionBeingEdited.assignedPortals.value));
         let itemsToStay = [], itemsToMove = [];
         let selectedCount = 0;
         unassignedPortals.forEach((portal) => {
@@ -58,8 +60,9 @@ class Module extends Component {
                 itemsToStay.push(portal);
             }
         });
+        console.log(itemsToStay, itemsToMove);
         if (selectedCount > 0) {
-            props.onAssignedPortalsChange("assignedPortals", itemsToMove, () => {
+            props.onAssignedPortalsChange("assignedPortals", assignedPortals.concat(itemsToMove), () => {
                 props.onAssignedPortalsChange("unassignedPortals", itemsToStay);
             });
         }
@@ -229,7 +232,7 @@ class Module extends Component {
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
                         <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
+                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this, true)}>Save & Close</Button>
                         <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
                     </GridCell>
                 }

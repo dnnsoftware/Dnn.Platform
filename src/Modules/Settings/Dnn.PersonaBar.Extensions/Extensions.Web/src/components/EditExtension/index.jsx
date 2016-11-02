@@ -128,7 +128,7 @@ class EditExtension extends Component {
             case "extensionlanguagepack":
                 return {
                     languageId: extension.languageId.value,
-                    languagePackageId: extension.packageId.value
+                    dependentPackageId: extension.dependentPackageId.value
                 };
             default:
                 return {};

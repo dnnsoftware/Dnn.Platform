@@ -9,7 +9,7 @@ import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
 import Dropdown from "dnn-dropdown";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import { ExtensionActions, VisiblePanelActions } from "actions";
+import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
 import Button from "dnn-button";
 import CustomSettings from "../EditExtension/CustomSettings";
 import BasicPackageInformation from "../common/BasicPackageInformation";
@@ -102,6 +102,15 @@ class NewExtensionModal extends Component {
                     folderName: extension.folderName.value,
                     businessController: extension.businessController.value
                 };
+            case "corelanguagepack":
+                return {
+                    languageId: extension.languageId.value
+                };
+            case "extensionlanguagepack":
+                return {
+                    languageId: extension.languageId.value,
+                    dependentPackageId: extension.dependentPackageId.value
+                };
             default:
                 return {};
         }
@@ -111,8 +120,16 @@ class NewExtensionModal extends Component {
         const {props} = this;
 
         let editorActions = this.parseEditorActions(props.extensionBeingEdited);
-        props.dispatch(ExtensionActions.createNewExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex));
-        this.selectPanel(0);
+        props.dispatch(ExtensionActions.createNewExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex, () => {
+
+            if (props.tabIndex !== 0) {
+                props.dispatch(PaginationActions.loadTab(0));
+            }
+            if (props.selectedInstalledPackageType !== props.extensionBeingEdited.packageType.value) {
+                props.dispatch(ExtensionActions.getInstalledPackages(props.extensionBeingEdited.packageType.value));
+            }
+            this.selectPanel(0);
+        }));
     }
     toggleTriedToSave() {
         const {props} = this;
@@ -238,9 +255,11 @@ function mapStateToProps(state) {
         extensionBeingEdited: state.extension.extensionBeingEdited,
         triedToSave: state.extension.triedToSave,
         installedPackageTypes: state.extension.installedPackageTypes,
+        selectedInstalledPackageType: state.extension.selectedInstalledPackageType,
         moduleCategories: state.extension.moduleCategories,
         locales: state.extension.locales,
-        localePackages: state.extension.localePackages
+        localePackages: state.extension.localePackages,
+        tabIndex: state.pagination.tabIndex
     };
 }
 

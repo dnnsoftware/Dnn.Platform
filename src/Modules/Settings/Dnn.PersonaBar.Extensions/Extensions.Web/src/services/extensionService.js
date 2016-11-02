@@ -16,6 +16,7 @@ function mapPackageInformation(extensionBeingUpdated, addMode) {
     if (addMode) {
         delete _extensionBeingUpdated.License;
         delete _extensionBeingUpdated.ReleaseNotes;
+        _extensionBeingUpdated.PackageType = extensionBeingUpdated.packageType.value;
     }
     return _extensionBeingUpdated;
 }
@@ -64,15 +65,15 @@ class ExtensionService {
         };
         sf.post("SavePackageSettings", payload, callback);
     }
-    createNewExtension(extensionBeingUpdated, editorActions, callback) {
+    createNewExtension(extensionBeingUpdated, editorActions, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
         const payload = {
             packageId: -1,
-            portalId: utilities.settings.portalId,
+            portalId: -1,
             settings: mapPackageInformation(extensionBeingUpdated, true),
             editorActions: editorActions
         };
-        sf.post("CreateExtension", payload, callback);
+        sf.post("CreateExtension", payload, callback, errorCallback);
     }
     downloadPackage(PackageType, FileName, callback) {
         const sf = this.getServiceFramework("Extensions");
@@ -146,7 +147,7 @@ class ExtensionService {
     }
     getLocalePackagesList(callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
-        sf.get("GetAllPackagesList", {}, callback, errorCallback);
+        sf.get("GetAllPackagesListExceptLangPacks", {}, callback, errorCallback);
     }
 }
 const extensionService = new ExtensionService();

@@ -18,5 +18,5 @@ export const CoreLanguagePack = {
 };
 
 export const ExtensionLanguagePack = {
-    languagePackageId: 1
+    dependentPackageId: 1
 };
