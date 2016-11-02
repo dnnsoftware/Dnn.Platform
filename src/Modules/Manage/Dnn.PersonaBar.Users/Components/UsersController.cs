@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 return null;
             }
-
+            user.PortalID = portalId;
             return new UserDetailDto(user);
         }
 
