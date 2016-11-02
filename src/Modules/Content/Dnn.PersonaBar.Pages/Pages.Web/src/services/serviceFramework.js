@@ -12,7 +12,7 @@ function getServiceFramework() {
     const sf = window.dnn.initPages().utility.sf;
 
     sf.moduleRoot = "PersonaBar/Admin";
-    sf.controller = window.dnn.pages.apiController || "Pages";
+    sf.controller = window.dnn.pages.apiController;
 
     return sf;
 }

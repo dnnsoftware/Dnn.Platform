@@ -10,6 +10,8 @@ let store = configureStore();
 application.dispatch = store.dispatch;
 
 window.dnn.pages = window.dnn.pages || {};
+window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
+window.dnn.pages.setItemTemplate = application.setItemTemplate;
 
 const appContainer = document.getElementById("pages-container");
 application.init(appContainer.dataset.initCallback);

@@ -129,7 +129,10 @@
         },
 
         setItemTemplate: function (template) {
-            this._getViewModel().itemTemplate(template);
+            var viewModel = this._getViewModel();
+            ko.cleanNode(this.panel[0]);
+            viewModel.itemTemplate(template);
+            ko.applyBindings(viewModel, this.panel[0]);
         },
 
         setSearchKeyword: function (searchKeyword) {
@@ -1148,7 +1151,7 @@
 
         _getService: function () {
             this.utility.sf.moduleRoot = "PersonaBar/Admin";
-            this.utility.sf.controller = window.dnn.pages.apiController || "Pages";
+            this.utility.sf.controller = window.dnn.pages.apiController;
 
             return this.utility.sf;
         },
