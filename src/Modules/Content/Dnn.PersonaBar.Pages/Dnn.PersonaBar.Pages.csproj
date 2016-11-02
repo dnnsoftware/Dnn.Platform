@@ -101,6 +101,9 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\IPagesController.cs" />
+    <Compile Include="Components\Exceptions\PageException.cs" />
+    <Compile Include="Components\Converters.cs" />
+    <Compile Include="Components\Exceptions\PageNotFoundException.cs" />
     <Compile Include="Components\PagesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />

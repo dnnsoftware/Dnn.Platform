@@ -1148,7 +1148,7 @@
 
         _getService: function () {
             this.utility.sf.moduleRoot = "PersonaBar/Admin";
-            this.utility.sf.controller = "Pages";
+            this.utility.sf.controller = window.dnn.pages.apiController || "Pages";
 
             return this.utility.sf;
         },

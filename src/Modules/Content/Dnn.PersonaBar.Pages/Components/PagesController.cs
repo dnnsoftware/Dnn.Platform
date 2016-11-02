@@ -23,8 +23,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -38,6 +40,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Personalization;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -93,10 +96,181 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return valid;
         }
+        
+        public List<int> GetPageHierarchy(int pageId)
+        {
+            var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
+            if (tab == null)
+            {
+                throw new PageNotFoundException();
+            }
+
+            var paths = new List<int> { tab.TabID };
+            while (tab.ParentId != Null.NullInteger)
+            {
+                tab = TabController.Instance.GetTab(tab.ParentId, PortalSettings.PortalId);
+                if (tab != null)
+                {
+                    paths.Insert(0, tab.TabID);
+                }
+            }
+
+            return paths;
+        }
+
+
+        public TabInfo MovePage(PageMoveRequest request)
+        {
+            var tab = TabController.Instance.GetTab(request.PageId, PortalSettings.PortalId);
+            if (tab == null)
+            {                
+                throw new PageNotFoundException();
+            }
+
+            if (tab.ParentId != request.ParentId)
+            {
+                string errorMessage;
+
+                if (!IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), out errorMessage))
+                {
+                    throw new PageException(errorMessage);
+                }
+            }
+
+            switch (request.Action)
+            {
+                case "before":
+                    TabController.Instance.MoveTabBefore(tab, request.RelatedPageId);
+                    break;
+                case "after":
+                    TabController.Instance.MoveTabAfter(tab, request.RelatedPageId);
+                    break;
+                case "parent":
+                    //avoid move tab into its child page
+                    if (IsChild(PortalSettings.PortalId, tab.TabID, request.ParentId))
+                    {
+                        throw new PageException("DragInvalid");
+                    }
+
+                    TabController.Instance.MoveTabToParent(tab, request.ParentId);
+                    break;
+            }
+
+            //as tab's parent may changed, url need refresh.
+            return TabController.Instance.GetTab(request.PageId, PortalSettings.PortalId);            
+        }
+
+        public void DeletePage(PageItem page)
+        {
+            var tab = TabController.Instance.GetTab(page.Id, PortalSettings.PortalId);
+            if (tab == null)
+            {
+                throw new PageNotFoundException();
+            }
+
+            if (TabPermissionController.CanDeletePage(tab))
+            {
+                TabController.Instance.SoftDeleteTab(tab.TabID, PortalSettings);
+            }
+
+        }
+
+        public void EditModeForPage(int pageId, int userId)
+        {
+            var newCookie = new HttpCookie("LastPageId", $"{PortalSettings.PortalId}:{pageId}")
+            {
+                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+            };
+            HttpContext.Current.Response.Cookies.Add(newCookie);
+
+            if (PortalSettings.UserMode != PortalSettings.Mode.Edit)
+            {
+                var personalizationController = new PersonalizationController();
+                var personalization = personalizationController.LoadProfile(userId, PortalSettings.PortalId);
+                personalization.Profile["Usability:UserMode" + PortalSettings.PortalId] = "EDIT";
+                personalization.IsModified = true;
+                personalizationController.SaveProfile(personalization);
+            }
+        }
+
+        public TabInfo SavePageDetails(PageSettings pageSettings)
+        {
+            TabInfo tab = null;
+            if (pageSettings.TabId > 0)
+            {
+                tab = TabController.Instance.GetTab(pageSettings.TabId, PortalSettings.PortalId);
+                if (tab == null)
+                {
+                    throw new PageNotFoundException();
+                }
+            }
+
+            string errorMessage;
+            string field;
+            if (!ValidatePageSettingsData(pageSettings, tab, out field, out errorMessage))
+            {
+                throw new PageValidationException(field, errorMessage);
+            }
+
+            var tabId = pageSettings.TabId <= 0
+                ? AddTab(pageSettings)
+                : UpdateTab(tab, pageSettings);
+
+            return TabController.Instance.GetTab(tabId, PortalSettings.PortalId);
+        }
+
+        private bool IsChild(int portalId, int tabId, int parentId)
+        {
+            if (parentId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            if (tabId == parentId)
+            {
+                return true;
+            }
+
+            var tab = TabController.Instance.GetTab(parentId, portalId);
+            while (tab != null && tab.ParentId != Null.NullInteger)
+            {
+                if (tab.ParentId == tabId)
+                {
+                    return true;
+                }
+
+                tab = TabController.Instance.GetTab(tab.ParentId, portalId);
+            }
+
+            return false;
+        }
+
+        public IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "")
+        {
+            var adminTabId = PortalSettings.AdminTabId;
+
+            var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
+            var pages = from t in tabs
+                        where (t.ParentId != adminTabId) &&
+                                !t.IsSystem &&
+                                    ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
+                                        || (!string.IsNullOrEmpty(searchKey) &&
+                                                (t.TabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger
+                                                    || t.LocalizedTabName.IndexOf(searchKey, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger)))
+                        select t;
+
+            return pages;
+        }
 
         public TabInfo GetPageDetails(int pageId)
         {
-            return TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
+            var tab = TabController.Instance.GetTab(pageId, PortalSettings.PortalId);
+            if (tab == null)
+            {
+                throw new PageNotFoundException();
+            }
+
+            return tab;
         }
 
         public IEnumerable<ModuleInfo> GetModules(int pageId)
@@ -615,7 +789,15 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             return () => new PagesController();
         }
+    }
 
+    public class PageValidationException : Exception
+    {
+        public string Field { get; set; }
 
+        public PageValidationException(string field, string message) : base(message)
+        {
+            Field = field;
+        }
     }
 }

@@ -9,13 +9,22 @@ namespace Dnn.PersonaBar.Pages.Components
     public interface IPagesController
     {
         bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage);
+        
+        IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "");
 
         TabInfo GetPageDetails(int pageId);
-        
+
+        List<int> GetPageHierarchy(int pageId);
+
+        TabInfo MovePage(PageMoveRequest request);
+
+        void DeletePage(PageItem page);
+
+        void EditModeForPage(int pageId, int userId);
+
+        TabInfo SavePageDetails(PageSettings pageSettings);
+
         IEnumerable<ModuleInfo> GetModules(int pageId);
-        PagePermissions GetPermissionsData(int pageId);
-        bool ValidatePageSettingsData(PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage);
-        int AddTab(PageSettings pageSettings);
-        int UpdateTab(TabInfo tab, PageSettings pageSettings);
+        PagePermissions GetPermissionsData(int pageId);        
     }
 }
