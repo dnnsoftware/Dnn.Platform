@@ -86,7 +86,7 @@ SingleLineInputWithError.propTypes = {
     style: PropTypes.object,
     labelStyle: PropTypes.object,
     extraToolTips: PropTypes.node,
-    autoComplete: PropTypes.onOf(["off", "on"])
+    autoComplete: PropTypes.oneOf(["off", "on"])
 };
 SingleLineInputWithError.defaultProps = {
     error: false,

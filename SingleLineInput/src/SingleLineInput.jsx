@@ -58,7 +58,7 @@ SingleLineInput.propTypes = {
     type: PropTypes.string,
     size: PropTypes.oneOf(["large", "small"]),
     className: PropTypes.string,
-    autoComplete: PropTypes.onOf(["off", "on"])
+    autoComplete: PropTypes.oneOf(["off", "on"])
 };
 
 SingleLineInput.defaultProps = {
