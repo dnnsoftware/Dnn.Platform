@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;
@@ -9,6 +10,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.Installer.Packages;
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
@@ -27,12 +29,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 AuthenticationType = authSystem.AuthenticationType,
             };
 
-            var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
-            if (hasCustomSettings)
-            {
-                detail.SettingUrl = GetSettingUrl(portalId, package.PackageID);
-            }
-
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
             if (isHostUser)
             {
@@ -43,6 +39,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 detail.Enabled = authSystem.IsEnabled;
             }
 
+            LoadCustomSettings(portalId, package, authSystem, detail);
             return detail;
         }
 
@@ -81,6 +78,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     }
 
                     AuthenticationController.UpdateAuthentication(authSystem);
+                    SaveCustomSettings(packageSettings);
                 }
 
                 return true;
@@ -111,12 +109,83 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 return string.Empty;
             }
-            //ctl/Edit/mid/345/packageid/52
-            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit", 
-                                            "mid=" + module.ModuleID, 
-                                            "packageid=" + authSystemPackageId,
-                                            "popUp=true",
-                                            "mode=settings");
+
+            // Ex.: /Admin/Extensions/ctl/Edit/mid/##/packageid/##/mode/settings?popUp=true
+            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit",
+                "mid=" + module.ModuleID,
+                "packageid=" + authSystemPackageId,
+                "popUp=true",
+                "mode=settings");
+        }
+
+        private static void LoadCustomSettings(int portalId, PackageInfo package, AuthenticationInfo authSystem, AuthSystemPackageDetailDto detail)
+        {
+            // special case for DNN provided external authentication systems
+            switch (detail.AuthenticationType.ToLowerInvariant())
+            {
+                case "dnnpro_activedirectory":
+                    var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
+                    if (hasCustomSettings)
+                    {
+                        detail.SettingUrl = GetSettingUrl(portalId, package.PackageID);
+                    }
+                    break;
+                case "facebook":
+                case "google":
+                case "live":
+                case "twitter":
+                    var config = OAuthConfigBase.GetConfig(detail.AuthenticationType, portalId);
+                    if (config != null)
+                    {
+                        detail.AppId = config.APIKey;
+                        detail.AppSecret = config.APISecret;
+                        detail.AppEnabled = config.Enabled;
+                    }
+                    break;
+            }
+        }
+
+        private static void SaveCustomSettings(PackageSettingsDto packageSettings)
+        {
+            // special case for specific DNN provided external authentication systems
+            string authType;
+            if (packageSettings.EditorActions.TryGetValue("authenticationType", out authType))
+            {
+                switch (authType.ToLowerInvariant())
+                {
+                    case "facebook":
+                    case "google":
+                    case "live":
+                    case "twitter":
+                        var dirty = false;
+                        string value;
+                        var config = OAuthConfigBase.GetConfig(authType, packageSettings.PortalId);
+
+                        if (packageSettings.EditorActions.TryGetValue("appId", out value)
+                            && config.APIKey != value)
+                        {
+                            config.APIKey = value;
+                            dirty = true;
+                        }
+
+                        if (packageSettings.EditorActions.TryGetValue("appSecret", out value)
+                            && config.APISecret != value)
+                        {
+                            config.APISecret = value;
+                            dirty = true;
+                        }
+
+                        if (packageSettings.EditorActions.TryGetValue("appEnabled", out value)
+                            && config.Enabled.ToString().ToUpperInvariant() != value.ToUpperInvariant())
+                        {
+                            config.Enabled = "TRUE".Equals(value, StringComparison.InvariantCultureIgnoreCase);
+                            dirty = true;
+                        }
+
+                        if (dirty) OAuthConfigBase.UpdateConfig(config);
+                        break;
+                }
+            }
         }
 
         #endregion

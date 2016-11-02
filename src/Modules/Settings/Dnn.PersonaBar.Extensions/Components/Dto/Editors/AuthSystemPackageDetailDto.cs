@@ -24,6 +24,16 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         [JsonProperty("enabled")]
         public bool Enabled { get; set; }
 
+        // special extension roperties
+        [JsonProperty("appId")]
+        public string AppId { get; set; }
+
+        [JsonProperty("appSecret")]
+        public string AppSecret { get; set; }
+
+        [JsonProperty("appEnabled")]
+        public bool AppEnabled { get; set; }
+
         public AuthSystemPackageDetailDto()
         {
         }
