@@ -44,6 +44,7 @@ class SingleLineInputWithError extends Component {
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         size={props.inputSize}
+                        autoComplete={props.autoComplete}
                         />
                     <Tooltip
                         messages={errorMessages}
@@ -84,7 +85,8 @@ SingleLineInputWithError.propTypes = {
     type: PropTypes.string,
     style: PropTypes.object,
     labelStyle: PropTypes.object,
-    extraToolTips: PropTypes.node
+    extraToolTips: PropTypes.node,
+    autoComplete: PropTypes.bool
 };
 SingleLineInputWithError.defaultProps = {
     error: false,
@@ -93,6 +95,7 @@ SingleLineInputWithError.defaultProps = {
     placement: "inside",
     inputSize: "small",
     labelType: "block",
-    errorMessage: ["This field has an error."]
+    errorMessage: ["This field has an error."],
+    autoComplete: true
 };
 export default SingleLineInputWithError;

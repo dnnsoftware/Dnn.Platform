@@ -149,7 +149,7 @@ class Pager extends Component {
                 }
             }
         }
-        else if (this.props.numericCounters === 0) {
+        else if (this.props.numericCounters === 1) {
             pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close"> {currentPage + 1}</li>);
         }
         return pagingBoxes;

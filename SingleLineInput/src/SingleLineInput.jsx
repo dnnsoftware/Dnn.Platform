@@ -36,6 +36,7 @@ class SingleLineInput extends Component {
                    tabIndex={props.tabIndex}
                    style={props.style} 
                    placeholder={props.placeholder}
+                   autoComplete={props.autoComplete}
                    {...getOptions(props.enabled)} />
         );
     } 
@@ -56,13 +57,15 @@ SingleLineInput.propTypes = {
     placeholder: PropTypes.string,
     type: PropTypes.string,
     size: PropTypes.oneOf(["large", "small"]),
-    className: PropTypes.string
+    className: PropTypes.string,
+    autoComplete:PropTypes.bool
 };
 
 SingleLineInput.defaultProps = {
     className: "", //prevents undefined
     enabled: true,
-    size: "small"
+    size: "small",
+    autoComplete: true
 };
 
 export default SingleLineInput;
