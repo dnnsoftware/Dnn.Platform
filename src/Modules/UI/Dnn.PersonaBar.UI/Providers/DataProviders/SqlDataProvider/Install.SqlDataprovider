@@ -480,7 +480,7 @@ BEGIN
             [LastModifiedOnDate]
         )
         SELECT Item, Item, '', 'nav_' + Item, '', 1, NULL, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) * 5, 1, 1, -1, GETDATE(), -1, GETDATE() 
-            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Home,Content,Manage,Settings,Logout', ',')
+            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Home,Content,Manage,Settings,Logout,Edit', ',')
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
         SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI',
@@ -492,8 +492,8 @@ BEGIN
         WHERE Identifier = 'Logout'
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET CssClass = 'two-columns'
-        WHERE Identifier = 'Settings'
+        SET [Order] = 1000
+        WHERE Identifier = 'Edit'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
@@ -519,6 +519,10 @@ BEGIN
         SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier = 'Logout'
+    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
+        SELECT MenuId, 'Administrators,Content Managers,Content Editors' 
+            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
+            WHERE Identifier = 'Edit'
 END
 GO
 
