@@ -86,7 +86,7 @@ SingleLineInputWithError.propTypes = {
     style: PropTypes.object,
     labelStyle: PropTypes.object,
     extraToolTips: PropTypes.node,
-    autoComplete: PropTypes.bool
+    autoComplete: PropTypes.onOf(["off", "on"])
 };
 SingleLineInputWithError.defaultProps = {
     error: false,
@@ -96,6 +96,6 @@ SingleLineInputWithError.defaultProps = {
     inputSize: "small",
     labelType: "block",
     errorMessage: ["This field has an error."],
-    autoComplete: true
+    autoComplete: "on"
 };
 export default SingleLineInputWithError;

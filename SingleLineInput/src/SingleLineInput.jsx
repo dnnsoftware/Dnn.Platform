@@ -58,14 +58,14 @@ SingleLineInput.propTypes = {
     type: PropTypes.string,
     size: PropTypes.oneOf(["large", "small"]),
     className: PropTypes.string,
-    autoComplete:PropTypes.bool
+    autoComplete: PropTypes.onOf(["off", "on"])
 };
 
 SingleLineInput.defaultProps = {
     className: "", //prevents undefined
     enabled: true,
     size: "small",
-    autoComplete: true
+    autoComplete: "on"
 };
 
 export default SingleLineInput;
