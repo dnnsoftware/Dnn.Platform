@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return locales.Select(l => new ListItemDto {Id = l.LanguageId, Name = l.EnglishName});
         }
 
-        public static IEnumerable<ListItemDto> GetAllPackagesList()
+        public static IEnumerable<ListItemDto> GetAllPackagesListExceptLangPacks()
         {
             var packages = new List<ListItemDto>();
             foreach (var p in PackageController.Instance.GetExtensionPackages(Null.NullInteger))

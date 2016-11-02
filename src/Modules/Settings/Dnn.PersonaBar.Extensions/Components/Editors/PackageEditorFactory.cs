@@ -7,7 +7,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public static IPackageEditor GetPackageEditor(string packageType)
         {
             PackageTypes pkgType;
-            Enum.TryParse<PackageTypes>(packageType, true, out pkgType);
+            Enum.TryParse(packageType, true, out pkgType);
 
             switch (pkgType)
             {
@@ -18,8 +18,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 case PackageTypes.JavascriptLibrary:
                     return new JsLibraryPackageEditor();
                 case PackageTypes.CoreLanguagePack:
+                    return new CoreLanguagePackageEditor();
                 case PackageTypes.ExtensionLanguagePack:
-                    return new LanguagePackageEditor();
+                    return new ExtensionLanguagePackageEditor();
                 case PackageTypes.Container:
                 case PackageTypes.Skin:
                     return new SkinPackageEditor();

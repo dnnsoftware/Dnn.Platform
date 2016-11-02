@@ -91,17 +91,17 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// GET: api/Extensions/GetAllPackagesList
+        /// GET: api/Extensions/GetAllPackagesListExceptLangPacks
         /// <summary>
-        /// Get installed packages list.
+        /// Get installed packages list except language packs.
         /// </summary>
         /// <returns>List of [Id,Name] pairs of all system packages</returns>
         [HttpGet]
-        public HttpResponseMessage GetAllPackagesList()
+        public HttpResponseMessage GetAllPackagesListExceptLangPacks()
         {
             try
             {
-                var packages = Utility.GetAllPackagesList();
+                var packages = Utility.GetAllPackagesListExceptLangPacks();
                 return Request.CreateResponse(HttpStatusCode.OK, packages);
             }
             catch (Exception ex)
@@ -232,7 +232,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage GetSourceFolders( /*int moduleControlId*/)
+        public HttpResponseMessage GetSourceFolders(/*int moduleControlId*/)
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "DesktopModules");
             var controlfolders = (
@@ -413,16 +413,16 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var needUpdate = false;
                     foreach (var kvp in packageSettings.Settings)
                     {
-                        var name = kvp.Key;
-                        var value = kvp.Value;
-
-                        var property = type.GetProperty(name,
-                            BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
-                        if (property != null)
+                        var property = type.GetProperty(kvp.Key, BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+                        if (property != null && property.CanWrite)
                         {
-                            if (property.GetValue(package).ToString() != value)
+                            var value = kvp.Value;
+                            var propValue = property.GetValue(package);
+                            if (propValue == null || propValue.ToString() != value)
                             {
-                                property.SetValue(package, value);
+                                var nativeValue = property.PropertyType == typeof(Version)
+                                    ? new Version(value) : Convert.ChangeType(value, property.PropertyType);
+                                property.SetValue(package, nativeValue);
                                 needUpdate = true;
                             }
                         }
@@ -444,7 +444,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         return Request.CreateResponse(HttpStatusCode.BadRequest, new {Success = false, Error = error});
                     }
-
                 }
 
                 var packageDetail = packageEditor?.GetPackageDetail(packageSettings.PortalId, package) ?? new PackageInfoDto(packageSettings.PortalId, package);
@@ -559,7 +558,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                     return Request.CreateResponse(HttpStatusCode.NotFound);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, ParsePackageFile(packagePath));
+                var result = ParsePackageFile(packagePath);
+                return Request.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, result);
             }
             catch (Exception ex)
             {
@@ -577,7 +577,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 DotNetNuke.Services.Upgrade.Internals.InstallController.Instance.IsAvailableLanguagePack(cultureCode);
                 const string packageFileName = "installlanguage.resources";
                 var packagePath = Path.Combine(Globals.ApplicationMapPath, "Install/Language/" + packageFileName);
-                return Request.CreateResponse(HttpStatusCode.OK, ParsePackageFile(packagePath));
+                var result = ParsePackageFile(packagePath);
+                return Request.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, result);
             }
             catch (Exception ex)
             {
@@ -609,7 +610,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
 
                 var installResult = InstallPackageFile(packagePath);
-                return Request.CreateResponse(HttpStatusCode.OK, installResult);
+                return Request.CreateResponse(installResult.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, installResult);
             }
             catch (Exception ex)
             {
@@ -689,22 +690,41 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-        public HttpResponseMessage CreateExtension(PackageInfoDto packageInfoDto)
+        public HttpResponseMessage CreateExtension(PackageSettingsDto packageSettings)
         {
             try
             {
-                var newPackage = packageInfoDto.ToPackageInfo();
-                var tmpPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == newPackage.Name);
-                if (tmpPackage != null)
+                var package = new PackageInfo {PortalID = packageSettings.PortalId};
+                var type = package.GetType();
+                foreach (var kvp in packageSettings.Settings.Where(kpv => kpv.Value != null))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = false, Error = "DuplicateName"});
+                    var property = type.GetProperty(kvp.Key, BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public);
+                    if (property != null && property.CanWrite)
+                    {
+                        var value = kvp.Value;
+                        var propValue = property.GetValue(package);
+                        if (propValue == null || propValue.ToString() != value)
+                        {
+                            var nativeValue = property.PropertyType == typeof(Version)
+                                ? new Version(value) : Convert.ChangeType(value, property.PropertyType);
+                            property.SetValue(package, nativeValue);
+                        }
+                    }
                 }
 
-                PackageController.Instance.SaveExtensionPackage(newPackage);
+                var tmpPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == package.Name);
+                if (tmpPackage != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Error = "DuplicateName" });
+                }
+
+                PackageController.Instance.SaveExtensionPackage(package);
+                packageSettings.PackageId = package.PackageID;
+
                 Locale locale;
                 LanguagePackInfo languagePack;
                 PackageTypes pkgType;
-                Enum.TryParse<PackageTypes>(newPackage.PackageType, true, out pkgType);
+                Enum.TryParse(package.PackageType, true, out pkgType);
 
                 switch (pkgType)
                 {
@@ -712,9 +732,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                         //Create a new Auth System
                         var authSystem = new AuthenticationInfo
                         {
-                            AuthenticationType = newPackage.Name,
+                            AuthenticationType = package.Name,
                             IsEnabled = Null.NullBoolean,
-                            PackageID = newPackage.PackageID
+                            PackageID = package.PackageID
                         };
                         AuthenticationController.AddAuthentication(authSystem);
                         break;
@@ -722,9 +742,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                     case PackageTypes.Skin:
                         var skinPackage = new SkinPackageInfo
                         {
-                            SkinName = newPackage.Name,
-                            PackageID = newPackage.PackageID,
-                            SkinType = newPackage.PackageType
+                            SkinName = package.Name,
+                            PackageID = package.PackageID,
+                            SkinType = package.PackageType
                         };
                         SkinController.AddSkinPackage(skinPackage);
                         break;
@@ -732,7 +752,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
-                            PackageID = newPackage.PackageID,
+                            PackageID = package.PackageID,
                             LanguageID = locale.LanguageId,
                             DependentPackageID = -2
                         };
@@ -742,7 +762,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
-                            PackageID = newPackage.PackageID,
+                            PackageID = package.PackageID,
                             LanguageID = locale.LanguageId,
                             DependentPackageID = Null.NullInteger
                         };
@@ -752,12 +772,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                         //Create a new DesktopModule
                         var desktopModule = new DesktopModuleInfo
                         {
-                            PackageID = newPackage.PackageID,
-                            ModuleName = newPackage.Name,
-                            FriendlyName = newPackage.FriendlyName,
-                            FolderName = newPackage.Name,
-                            Description = newPackage.Description,
-                            Version = newPackage.Version.ToString(3),
+                            PackageID = package.PackageID,
+                            ModuleName = package.Name,
+                            FriendlyName = package.FriendlyName,
+                            FolderName = package.Name,
+                            Description = package.Description,
+                            Version = package.Version.ToString(3),
                             SupportedFeatures = 0
                         };
                         var desktopModuleId = DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
@@ -767,12 +787,24 @@ namespace Dnn.PersonaBar.Extensions.Services
                         }
                         break;
                     case PackageTypes.SkinObject:
-                        var skinControl = new SkinControlInfo {PackageID = newPackage.PackageID, ControlKey = newPackage.Name};
+                        var skinControl = new SkinControlInfo {PackageID = package.PackageID, ControlKey = package.Name};
                         SkinControlController.SaveSkinControl(skinControl);
                         break;
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageId = newPackage.PackageID});
+                var packageEditor = PackageEditorFactory.GetPackageEditor(package.PackageType);
+                if (packageEditor != null)
+                {
+                    string error;
+                    packageEditor.SavePackageSettings(packageSettings, out error);
+
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Error = error });
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageId = package.PackageID});
             }
             catch (Exception ex)
             {
@@ -1313,10 +1345,9 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var mediaTypeFormatter = new JsonMediaTypeFormatter();
                     mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
-                    /* Response Content Type cannot be application/json 
-                     * because IE9 with iframe-transport manages the response 
-                     * as a file download 
-                     */
+                    // Response Content Type cannot be application/json
+                    // because IE9 with iframe-transport manages the response
+                    // as a file download
                     return Request.CreateResponse(
                         HttpStatusCode.OK,
                         result,

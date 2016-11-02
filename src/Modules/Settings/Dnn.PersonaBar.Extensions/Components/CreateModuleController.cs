@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             errorMessage = string.Empty;
             newPageUrl = string.Empty;
-            int packageId = Null.NullInteger;
+            var packageId = Null.NullInteger;
             switch (createModuleDto.Type)
             {
                 case CreateModuleType.New:
@@ -131,17 +131,16 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                string folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
-                string friendlyName = createModuleDto.ModuleName;
-                string name = createModuleDto.ModuleName;
-                string moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
+                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+                var friendlyName = createModuleDto.ModuleName;
+                var name = createModuleDto.ModuleName;
+                var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
 
                 var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
                                     p.Name.Equals(createModuleDto.ModuleName, StringComparison.InvariantCultureIgnoreCase)
                                      || p.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.InvariantCultureIgnoreCase));
                 if (packageInfo != null)
                 {
-
                     errorMessage = "NonuniqueName";
                     return Null.NullInteger;
                 }

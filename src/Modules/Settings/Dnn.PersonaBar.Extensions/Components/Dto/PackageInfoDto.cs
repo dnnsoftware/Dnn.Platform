@@ -138,6 +138,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageInfo ToPackageInfo()
         {
+            System.Version ver;
+            System.Version.TryParse(Version, out ver);
+
             return new PackageInfo
             {
                 PackageType = PackageType,
@@ -145,7 +148,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
                 Name = Name,
                 PackageID = PackageId,
                 Description = Description,
-                Version = new Version(Version),
+                Version = ver,
                 License = License,
                 ReleaseNotes = ReleaseNotes,
                 Owner = Owner,
