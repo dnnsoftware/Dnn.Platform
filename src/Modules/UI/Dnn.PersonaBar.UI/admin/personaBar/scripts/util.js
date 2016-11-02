@@ -345,7 +345,7 @@ define(['jquery'], function ($) {
                             firstColumn = topMenuItem.menuItems.splice(0, 7);
                             secondColumn = topMenuItem.menuItems.splice(0, 7);
                             topMenuItem.menuItems = [firstColumn, secondColumn, topMenuItem.menuItems];
-                            topMenuItem.css += " threee-columns";
+                            topMenuItem.css += " three-columns";
                         }
 
                         menu.menuItems.push(topMenuItem);
