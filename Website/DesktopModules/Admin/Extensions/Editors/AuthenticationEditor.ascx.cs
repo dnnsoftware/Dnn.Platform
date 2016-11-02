@@ -174,12 +174,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
-            if (SettingsControl != null)
-            {
-                SettingsControl.UpdateSettings();
-            }
+            SettingsControl?.UpdateSettings();
 
-            Response.Redirect(Globals.NavigateURL(), true);
+            var displayMode = (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+            if (displayMode != "editor" && displayMode != "settings")
+                Response.Redirect(Globals.NavigateURL(), true);
         }
 		
 		#endregion
