@@ -504,7 +504,7 @@
   <data name="Username.Required" xml:space="preserve">
     <value>User name is required.</value>
   </data>
-  <data name="noUsers.text" xml:space="preserve">
+  <data name="noUsers.Text" xml:space="preserve">
     <value>No users found.</value>
   </data>
 </root>
