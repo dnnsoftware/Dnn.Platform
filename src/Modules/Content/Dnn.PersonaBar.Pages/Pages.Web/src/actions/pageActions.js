@@ -64,6 +64,16 @@ const pageActions = {
         };
     },
 
+    changePageType(value) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_FIELD_VALUE,
+                field: "pageType",
+                value
+            });  
+        };
+    },
+
     changePermissions(permissions) {
         return {
             type: ActionTypes.CHANGE_PERMISSIONS,

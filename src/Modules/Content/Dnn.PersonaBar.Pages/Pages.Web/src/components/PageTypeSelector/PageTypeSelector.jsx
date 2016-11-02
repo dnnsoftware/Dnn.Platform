@@ -45,8 +45,8 @@ class PageTypeSelector extends Component {
                         </div>
                         <div className="page-info-item-value">
                             <RadioButtons 
-                                options={[{value: "standard", label: localization.get("Standard")}, 
-                                          {value: "existing", label: localization.get("Existing")},
+                                options={[{value: "normal", label: localization.get("Standard")}, 
+                                          {value: "tab", label: localization.get("Existing")},
                                           {value: "url", label: localization.get("URL")},
                                           {value: "file", label: localization.get("File")}]} 
                                 onChange={onChangePageType}

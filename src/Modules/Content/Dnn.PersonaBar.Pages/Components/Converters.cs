@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -55,12 +56,18 @@ namespace Dnn.PersonaBar.Pages.Components
                 Tags = string.Join(",", from t in tab.Terms select t.Name),
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
                 Url = tab.Url,
+                PageType = GetPageType(tab.Url),
                 CreatedOnDate = tab.CreatedOnDate,
                 IncludeInMenu = tab.IsVisible,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
                 StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?) null,
                 EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null
             };
+        }
+
+        private static string GetPageType(string tabUrl)
+        {
+            return Globals.GetURLType(tabUrl).ToString().ToLower();
         }
 
         // TODO: Refactor to use enum

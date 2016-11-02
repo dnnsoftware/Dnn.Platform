@@ -7,7 +7,7 @@ import utils from "../../utils";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
-import PageTypeSelector from "../PageTypeSelector/PageTypeSelector"
+import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
 
 class PageSettings extends Component {
@@ -32,7 +32,7 @@ class PageSettings extends Component {
     }
 
     render() {
-        const {selectedPage, onChangeField} = this.props;
+        const {selectedPage, onChangeField, onChangePageType} = this.props;
         const buttons = this.getButtons();
 
         return (
@@ -44,7 +44,7 @@ class PageSettings extends Component {
                 <div className="dnn-simple-tab-item">
                     <PageTypeSelector
                         page={selectedPage}
-                        onChangePageType={()=>{}} />
+                        onChangePageType={onChangePageType} />
                     <PageDetails 
                         page={selectedPage} 
                         onChangeField={onChangeField} />
@@ -83,7 +83,8 @@ PageSettings.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
-    onPermissionsChanged: PropTypes.func.isRequired
+    onPermissionsChanged: PropTypes.func.isRequired,
+    onChangePageType: PropTypes.func.isRequired
 };
 
 export default PageSettings;

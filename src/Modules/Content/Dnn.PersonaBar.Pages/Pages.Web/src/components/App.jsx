@@ -67,7 +67,8 @@ class App extends Component {
                                             onCancel={() => props.onNavigate(0)} 
                                             onSave={this.onSavePage.bind(this)}
                                             onChangeField={props.onChangePageField}
-                                            onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
+                                            onPermissionsChanged={this.onPermissionsChanged.bind(this)}
+                                            onChangePageType={props.onChangePageType} />
                         </SocialPanelBody>
                     </PersonaBarPage>
                 }
@@ -85,7 +86,8 @@ App.propTypes = {
     onSavePage: PropTypes.func,
     onLoadPage: PropTypes.func,
     onAddPage: PropTypes.func,
-    onChangePageField: PropTypes.func
+    onChangePageField: PropTypes.func,
+    onChangePageType: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -102,7 +104,8 @@ function mapDispatchToProps(dispatch) {
         onSavePage: PageActions.savePage,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
-        onChangePageField: PageActions.changePageField
+        onChangePageField: PageActions.changePageField,
+        onChangePageType: PageActions.changePageType
     }, dispatch);
 }
 
