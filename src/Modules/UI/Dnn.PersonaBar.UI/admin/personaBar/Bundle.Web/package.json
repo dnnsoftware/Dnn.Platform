@@ -25,7 +25,7 @@
     "dnn-date-picker": "^0.1.4",
     "dnn-dropdown": "^1.0.2",
     "dnn-dropdown-with-error": "0.0.4",
-    "dnn-editable-field": "0.0.5",
+    "dnn-editable-field": "0.0.7",
     "dnn-file-upload": "0.0.8",
     "dnn-grid-cell": "0.0.3",
     "dnn-grid-system": "0.0.4",
