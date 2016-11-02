@@ -492,7 +492,7 @@ namespace Dnn.PersonaBar.Security.Services
                 portalInfo.UserRegistration = Convert.ToInt32(request.UserRegistration);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
-                PortalController.UpdatePortalSetting(PortalId, "EnableRegisterNotification", request.UserRegistration, false);
+                PortalController.UpdatePortalSetting(PortalId, "EnableRegisterNotification", request.EnableRegisterNotification.ToString(), false);
                 PortalController.UpdatePortalSetting(PortalId, "Registration_UseAuthProviders", request.UseAuthenticationProviders.ToString(), false);
                 PortalController.UpdatePortalSetting(PortalId, "Registration_ExcludeTerms", request.ExcludedTerms, false);
                 PortalController.UpdatePortalSetting(PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);
