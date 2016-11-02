@@ -125,7 +125,7 @@ class EditableField extends Component {
                 {editableValue}
                 <div className="editable-input">
                     {input}
-                    {this.state.editMode && <span className="help-text">{(props.helpText || "Press ENTER when done, or ESC to cancel") }</span>}
+                    <span className="help-text">{(props.helpText || "Press ENTER when done, or ESC to cancel") }</span>
                 </div>
             </div>
         );
