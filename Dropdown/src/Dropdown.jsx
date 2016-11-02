@@ -1,8 +1,8 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
-import {ArrowDownIcon} from "dnn-svg-icons";
+import { ArrowDownIcon } from "dnn-svg-icons";
 import "./style.less";
 
 class Dropdown extends Component {
@@ -120,22 +120,22 @@ class Dropdown extends Component {
                 label = selectedValue.label;
             }
         }
-        return label;
+        return (props.prependWith ? props.prependWith + " " + label : label);
     }
 
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
         const options = props.options && props.options.map((option, index) => {
-            return <li onClick={this.onSelect.bind(this, option) } key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""} >{option.label}</li>;
+            return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""} >{option.label}</li>;
         });
         return (
-            <div className={this.getClassName() } style={props.style} onClick={this.toggleDropdown.bind(this) }>
+            <div className={this.getClassName()} style={props.style} onClick={this.toggleDropdown.bind(this)}>
                 <div className="collapsible-label">
-                    {this.getDropdownLabel() }
+                    {this.getDropdownLabel()}
                 </div>
                 {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>}
-                <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") }>
+                <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
                         fixedHeight={state.fixedHeight}
                         keepCollapsedContent={true}
@@ -174,7 +174,8 @@ Dropdown.PropTypes = {
     withIcon: PropTypes.bool,
     enabled: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    closeOnClick: PropTypes.bool
+    closeOnClick: PropTypes.bool,
+    prependWith: PropTypes.string
 };
 
 Dropdown.defaultProps = {
