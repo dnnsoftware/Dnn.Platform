@@ -52,6 +52,11 @@
     };
 })();
 
+// Enable React Dev Tools inside the iframe, this should be loaded before React has been loaded
+if (window.parent['personaBarSettings'].debugMode === true) {
+    window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+}
+
 require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
         '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/dist/export-bundle'],
     function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, Gateway) {

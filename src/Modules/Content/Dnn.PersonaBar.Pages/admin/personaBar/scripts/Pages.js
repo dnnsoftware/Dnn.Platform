@@ -26,11 +26,8 @@
                 moduleName: "Pages"
             };
         };
-        loadScript();
 
-        if (config.debugMode === true) {
-            window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-        }
+        loadScript();
     };
 
     var initMobile = function (wrapper, util, params, callback) {
