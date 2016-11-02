@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
-import Localization from "localization";
 import "./style.less";
 
 class ExtensionHeader extends Component {
@@ -11,7 +10,7 @@ class ExtensionHeader extends Component {
                 {
                     this.props.headers.map((header) => {
                         return <GridCell columnSize={columnSize}>
-                            <h6>{Localization.get(header) }</h6>
+                            <h6>{header.header }</h6>
                         </GridCell>;
                     })
                 }

@@ -1,7 +1,7 @@
 import utilities from "utils";
 const resx = {
     get(key) {
-        let moduleName = "Sites";
+        let moduleName = "Users";
         return utilities.getResx(moduleName, key);
     }
 };

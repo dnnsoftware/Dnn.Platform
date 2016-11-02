@@ -39,10 +39,38 @@ class UserSettings extends Component {
         if (props.userDetails === undefined || props.userDetails.userId !== props.userId) {
             this.getUserDetails(props);
         }
+        else
+        {
+            let userDetails = Object.assign({}, props.userDetails);
+            let {accountSettings} = this.state;
+            accountSettings.displayName = userDetails.displayName;
+            accountSettings.userName = userDetails.userName;
+            accountSettings.email = userDetails.email;
+            accountSettings.userId = userDetails.userId;
+            this.setState({
+                accountSettings,
+                userDetails,
+                reload: false
+            });
+        }
     }
     componentWillReceiveProps(newProps) {
         if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId || this.state.reload) {
             this.getUserDetails(newProps);
+        }
+        else
+        {
+            let userDetails = Object.assign({}, newProps.userDetails);
+            let {accountSettings} = this.state;
+            accountSettings.displayName = userDetails.displayName;
+            accountSettings.userName = userDetails.userName;
+            accountSettings.email = userDetails.email;
+            accountSettings.userId = userDetails.userId;
+            this.setState({
+                accountSettings,
+                userDetails,
+                reload: false
+            });
         }
     }
     getUserDetails(props) {
@@ -152,39 +180,45 @@ class UserSettings extends Component {
                         <SingleLineInputWithError value={state.accountSettings.userName}
                             error={state.errors.userName}
                             onChange={this.onChange.bind(this, "userName") }
-                            label={Localization.get("UserName") }
-                            tooltipMessage={Localization.get("UserName.Help")}
+                            label={Localization.get("Username") }
+                            tooltipMessage={Localization.get("Username.Help")}
+                            errorMessage={Localization.get("Username.Required") }
                             style={inputStyle}
+                            autocomplete="off"
                             inputStyle={{ marginBottom: 25 }}/>
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
                             onChange={this.onChange.bind(this, "displayName") }
                             label={Localization.get("DisplayName") }
                             tooltipMessage={Localization.get("DisplayName.Help")}
+                            errorMessage={Localization.get("DisplayName.Required") }
                             style={inputStyle}
+                            autocomplete="off"
                             inputStyle={{ marginBottom: 25 }} />
                         <SingleLineInputWithError value={state.accountSettings.email}
                             error={state.errors.email}
                             onChange={this.onChange.bind(this, "email") }
                             label={Localization.get("Email") }
                             tooltipMessage={Localization.get("Email.Help")}
+                            errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}
+                            autocomplete="off"
                             inputStyle={{ marginBottom: 25 }}/>
                     </div>
-                    <GridCell>
+                    <GridCell className="no-padding">
                         <div className="title">
                             {Localization.get("PasswordManagement")}
                         </div>
                         <GridCell className="link">
-                            <div onClick={this.onChangePassword.bind(this) }>[{Localization.get("ChangePassword")}]
+                            <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
                             </div>
                             </GridCell>
                         {!state.userDetails.needUpdatePassword && <GridCell className="link">
-                            <div onClick={this.onForcePasswordChange.bind(this) }>[{Localization.get("ForceChangePassword")}]
+                            <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
                             </div>
                             </GridCell>}
                         <GridCell className="link">
-                            <div onClick={this.onSendPasswordLink.bind(this) }>[{Localization.get("ResetPassword")}]
+                            <div onClick={this.onSendPasswordLink.bind(this) }>[ {Localization.get("ResetPassword")} ]
                             </div>
                             </GridCell>
                     </GridCell>
@@ -195,7 +229,7 @@ class UserSettings extends Component {
                     </div>
                     <GridSystem className="first">
                         <GridCell  title={Localization.get("CreatedDate.Help")}>
-                            {Localization.get("CreatedDate")}:
+                            {Localization.get("CreatedDate")}
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.createdOnDate, true) }
@@ -203,7 +237,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("LastLoginDate.Help")}>
-                            {Localization.get("LastLoginDate")}:
+                            {Localization.get("LastLoginDate")}
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastLogin, true) }
@@ -211,7 +245,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("LastActivityDate.Help")}>
-                            {Localization.get("LastActivityDate")}:
+                            {Localization.get("LastActivityDate")}
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastActivity, true) }
@@ -219,7 +253,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("LastPasswordChangeDate.Help")}>
-                            {Localization.get("LastPasswordChangeDate")}:
+                            {Localization.get("LastPasswordChangeDate")}
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastPasswordChange, true) }
@@ -227,7 +261,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("LastLockoutDate.Help")}>
-                            {Localization.get("LastLockoutDate")}:
+                            {Localization.get("LastLockoutDate")}
                         </GridCell>
                         <GridCell>
                             {formatDate(state.userDetails.lastLockout, true) === "-" ? "Never" : formatDate(state.userDetails.lastLockout, true) }
@@ -235,7 +269,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("IsOnLine.Help")}>
-                            {Localization.get("IsOnLine")}:
+                            {Localization.get("IsOnLine")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isOnline ? "True" : "False"}
@@ -243,7 +277,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("LockedOut.Help")}>
-                            {Localization.get("LockedOut")}:
+                            {Localization.get("LockedOut")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isLocked ? "True" : "False"}
@@ -251,7 +285,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("Approved.Help")}>
-                            {Localization.get("Approved")}:
+                            {Localization.get("Approved")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.authorized ? "True" : "False"}
@@ -259,7 +293,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("UpdatePassword.Help")}>
-                            {Localization.get("UpdatePassword")}:
+                            {Localization.get("UpdatePassword")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.needUpdatePassword ? "True" : "False"}
@@ -267,7 +301,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("IsDeleted.Help")}>
-                            {Localization.get("IsDeleted")}:
+                            {Localization.get("IsDeleted")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.isDeleted ? "True" : "False"}
@@ -275,7 +309,7 @@ class UserSettings extends Component {
                     </GridSystem>
                     <GridSystem>
                         <GridCell title={Localization.get("UserFolder.Help")}>
-                            {Localization.get("UserFolder")}:
+                            {Localization.get("UserFolder")}
                         </GridCell>
                         <GridCell>
                             {state.userDetails.userFolder}

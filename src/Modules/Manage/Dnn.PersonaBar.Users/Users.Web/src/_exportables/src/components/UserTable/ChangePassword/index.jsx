@@ -115,7 +115,8 @@ class ChangePassword extends Component {
     }
     cancel() {
         this.clear();
-        this.props.onCancel();
+        if (typeof this.props.onCancel === "function")
+            this.props.onCancel();
     }
     render() {
         let {state} = this;
@@ -129,17 +130,21 @@ class ChangePassword extends Component {
                         error={state.errors.password}
                         onChange={this.onChange.bind(this, "password") }
                         tooltipMessage={Localization.get("NewPassword.Help") }
+                        errorMessage={Localization.get("NewPassword.Required") }
                         style={inputStyle}
                         type="password"
+                        autocomplete="off"
                         inputStyle={{ marginBottom: 15 }}
                         value={state.changePassword.password}/>
                     <SingleLineInputWithError label={Localization.get("NewConfirm") }
                         error={state.errors.confirmPassword || state.errors.passwordsMatch}
                         onChange={this.onChange.bind(this, "confirmPassword") }
-                        tooltipMessage={state.errors.confirmPassword ? Localization.get("NewConfirm.Help") : Localization.get("NewConfirmMismatch.Help") }
+                        tooltipMessage={Localization.get("NewConfirm.Help") }
+                        errorMessage={state.errors.confirmPassword ? Localization.get("NewConfirm.Required") : Localization.get("NewConfirmMismatch.ErrorMessage") }
                         style={inputStyle}
                         type="password"
                         inputStyle={{ marginBottom: 15 }}
+                        autocomplete="off"
                         value={state.confirmPassword}/>
                 </GridCell>
                 <GridSystem>
@@ -154,7 +159,7 @@ ChangePassword.propTypes = {
     dispatch: PropTypes.func.isRequired,
     userId: PropTypes.array.isRequired,
     visible: PropTypes.bool,
-    onCancel: PropTypes.bool
+    onCancel: PropTypes.func
 };
 ChangePassword.defaultProps = {
     visible: true

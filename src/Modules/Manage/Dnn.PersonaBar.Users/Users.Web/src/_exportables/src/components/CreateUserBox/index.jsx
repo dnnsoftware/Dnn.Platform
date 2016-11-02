@@ -156,37 +156,45 @@ class CreateUserBox extends Component {
                                 onChange={this.onChange.bind(this, "firstName") }
                                 label={Localization.get("FirstName") }
                                 tooltipMessage={Localization.get("FirstName.Help") }
+                                errorMessage={Localization.get("FirstName.Required") }
                                 style={inputStyle}
-                                inputStyle={{ marginBottom: 25 }} />
+                                autocomplete="off"
+                                inputStyle={{ marginBottom: 25 }} tabIndex={1}/>
                             <SingleLineInputWithError value={state.UserDetails.userName}
                                 error={state.errors.userName}
                                 onChange={this.onChange.bind(this, "userName") }
-                                label={Localization.get("UserName") }
-                                tooltipMessage={Localization.get("UserName.Help") }
+                                label={Localization.get("Username") }
+                                tooltipMessage={Localization.get("Username.Help") }
+                                errorMessage={Localization.get("Username.Required") }
                                 style={inputStyle}
-                                inputStyle={{ marginBottom: 25 }}/>
+                                autocomplete="off"
+                                inputStyle={{ marginBottom: 25 }}  tabIndex={3}/>
                             <Switch value={state.UserDetails.authorize}
                                 label={Localization.get("Approved")} title={Localization.get("Approved.Help")}
-                                onChange={this.onChange.bind(this, "authorize") }/>
+                                onChange={this.onChange.bind(this, "authorize") }  tabIndex={5}/>
                         </div>
                         <div>
                             <SingleLineInputWithError value={state.UserDetails.lastName}
                                 error={state.errors.lastName}
                                 onChange={this.onChange.bind(this, "lastName") }
                                 label={Localization.get("LastName") }
-                                tooltipMessage={Localization.get("LastName") }
+                                tooltipMessage={Localization.get("LastName.Help") }
+                                errorMessage={Localization.get("LastName.Required") }
                                 style={inputStyle}
-                                inputStyle={{ marginBottom: 25 }}/>
+                                autocomplete="off"
+                                inputStyle={{ marginBottom: 25 }}  tabIndex={2}/>
                             <SingleLineInputWithError value={state.UserDetails.email}
                                 error={state.errors.email}
                                 onChange={this.onChange.bind(this, "email") }
                                 label={Localization.get("Email") }
-                                tooltipMessage={Localization.get("Email.Text") }
+                                tooltipMessage={Localization.get("Email.Help") }
+                                errorMessage={Localization.get("Email.Required") }
                                 style={inputStyle}
-                                inputStyle={{ marginBottom: 25 }}/>
+                                autocomplete="off"
+                                inputStyle={{ marginBottom: 25 }}  tabIndex={4}/>
                             <Switch value={state.UserDetails.randomPassword} title={Localization.get("Random.Help")}
                                 label={Localization.get("Random") + ":" }
-                                onChange={this.onChange.bind(this, "randomPassword") }/>
+                                onChange={this.onChange.bind(this, "randomPassword") }  tabIndex={6}/>
                         </div>
                     </GridSystem>
                     {!state.UserDetails.randomPassword && <GridCell><hr/></GridCell>}
@@ -196,30 +204,34 @@ class CreateUserBox extends Component {
                                 error={state.errors.password}
                                 onChange={this.onChange.bind(this, "password") }
                                 tooltipMessage={Localization.get("Password.Help")}
+                                errorMessage={Localization.get("Password.Required") }
                                 style={inputStyle}
                                 inputStyle={{ marginBottom: 15 }}
                                 type="password"
-                                value={state.UserDetails.password}/>
+                                autocomplete="off"
+                                value={state.UserDetails.password}  tabIndex={7}/>
                         </div>
                         <div>
                             <SingleLineInputWithError label={Localization.get("Confirm") }
                                 error={state.errors.confirmPassword || state.errors.passwordsMatch}
                                 onChange={this.onChange.bind(this, "confirmPassword") }
-                                tooltipMessage={state.errors.confirmPassword ? Localization.get("Confirm.Help") : Localization.get("ConfirmMismatch.Help") }
+                                tooltipMessage={Localization.get("Confirm.Help")}
+                                errorMessage={state.errors.confirmPassword ? Localization.get("Confirm.Required") : Localization.get("ConfirmMismatch.ErrorMessage") }
                                 style={inputStyle}
                                 type="password"
+                                autocomplete="off"
                                 inputStyle={{ marginBottom: 15 }}
-                                value={state.confirmPassword}/></div>
+                                value={state.confirmPassword}  tabIndex={8}/></div>
                     </GridSystem>
                     }
                     <GridCell columnSize={100} className="email-notification-line">
                         <CheckBox value={state.UserDetails.notify}
                             label={Localization.get("Notify")}
-                            onChange={this.onChange.bind(this, "notify") }/>
+                            onChange={this.onChange.bind(this, "notify") }  tabIndex={9}/>
                     </GridCell>
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btnCancel") }</Button>
-                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
+                        <Button id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }  tabIndex={10}>{Localization.get("btnCancel") }</Button>
+                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) } tabIndex={11}>{Localization.get("btnSave") }</Button>
                     </GridCell>
                 </GridCell>
             </GridCell>

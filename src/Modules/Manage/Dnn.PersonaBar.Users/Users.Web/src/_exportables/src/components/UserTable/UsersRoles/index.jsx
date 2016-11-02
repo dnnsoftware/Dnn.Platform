@@ -18,7 +18,7 @@ class UserRoles extends Component {
         this.state = {
             roleSelectState: { userId: -1, keyword: "" },
             currentPage: 0,
-            pageSize: 2,
+            pageSize: 10,
             roleKeyword: "",
             sendEmail: true,
             isOwner: false,

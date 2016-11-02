@@ -193,7 +193,7 @@
     <value>Force Password Change</value>
   </data>
   <data name="cmdUnAuthorize.Text" xml:space="preserve">
-    <value>UnAuthorize User</value>
+    <value>Un-Authorize User</value>
   </data>
   <data name="cmdUnLock.Text" xml:space="preserve">
     <value>Unlock Account</value>
@@ -330,8 +330,8 @@
   <data name="PasswordSent.Text" xml:space="preserve">
     <value>If the user name entered was correct, you should receive a new email shortly with a link to reset your password.</value>
   </data>
-  <data name="NewConfirmMismatch.Help" xml:space="preserve">
-    <value>New password and confirm password must be same.</value>
+  <data name="NewConfirmMismatch.ErrorMessage" xml:space="preserve">
+    <value>The New Password and Confirmation Password must match.</value>
   </data>
   <data name="NewConfirm.Help" xml:space="preserve">
     <value>Re-enter your new password to confirm.</value>
@@ -352,7 +352,7 @@
     <value>Are you sure you want to permanently remove this user?</value>
   </data>
   <data name="RemoveUser.Text" xml:space="preserve">
-    <value>Remove User Permanently.</value>
+    <value>Remove User Permanently</value>
   </data>
   <data name="ResetPassword.Text" xml:space="preserve">
     <value>Send Password Reset Link</value>
@@ -435,8 +435,8 @@
   <data name="Confirm.Text" xml:space="preserve">
     <value>Confirm Password:</value>
   </data>
-  <data name="ConfirmMismatch.Help" xml:space="preserve">
-    <value>Confirm password must be same as password.</value>
+  <data name="ConfirmMismatch.ErrorMessage" xml:space="preserve">
+    <value>The Password and Confirmation Password must match.</value>
   </data>
   <data name="LastName.Help" xml:space="preserve">
     <value>Enter a last name.</value>
@@ -461,5 +461,47 @@
   </data>
   <data name="UserCreated.Text" xml:space="preserve">
     <value>User created successfully.</value>
+  </data>
+  <data name="Confirm.Required" xml:space="preserve">
+    <value>You must provide a password confirmation.</value>
+  </data>
+  <data name="DisplayName.RegExError" xml:space="preserve">
+    <value>The display name is invalid.</value>
+  </data>
+  <data name="DisplayName.Required" xml:space="preserve">
+    <value>Display name is required.</value>
+  </data>
+  <data name="Email.RegExError" xml:space="preserve">
+    <value>You must enter a valid email address.</value>
+  </data>
+  <data name="Email.Required" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="FirstName.RegExError" xml:space="preserve">
+    <value>First name is invalid.</value>
+  </data>
+  <data name="FirstName.Required" xml:space="preserve">
+    <value>First name is required.</value>
+  </data>
+  <data name="LastName.RegExError" xml:space="preserve">
+    <value>Last name is invalid.</value>
+  </data>
+  <data name="LastName.Required" xml:space="preserve">
+    <value>Last name is required.</value>
+  </data>
+  <data name="NewConfirm.Required" xml:space="preserve">
+    <value>You must provide a password confirmation.</value>
+  </data>
+  <data name="NewPassword.Required" xml:space="preserve">
+    <value>You must provide a password.</value>
+  </data>
+  <data name="Password.Required" xml:space="preserve">
+    <value>You must provide a password.</value>
+  </data>
+  <data name="Username.RegExError" xml:space="preserve">
+    <value>The user name entered is invalid.</value>
+  </data>
+  <data name="Username.Required" xml:space="preserve">
+    <value>User name is required.</value>
   </data>
 </root>

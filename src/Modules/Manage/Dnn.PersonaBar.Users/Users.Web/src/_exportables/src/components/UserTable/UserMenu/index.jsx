@@ -101,9 +101,11 @@ class UserMenu extends Component {
                 break;
             case "ViewAssets":
                 this.onViewAssets();
+                this.props.onClose();
                 break;
             case "ViewProfile":
                 this.onViewProfile();
+                this.props.onClose();
                 break;
             default:
                 if (typeof this.props.userMenuAction === "function")
@@ -124,7 +126,7 @@ class UserMenu extends Component {
         });
     }
     onSendPasswordLink() {
-        this.props.dispatch(CommonUsersActions.ResetPassword({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
             if (data.Success)
                 utilities.notify(Localization.get("PasswordSent"));
             else {
@@ -154,20 +156,18 @@ class UserMenu extends Component {
         });
     }
     restoreUser() {
-        utilities.confirm(Localization.get("RestoreUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
-                if (data.Success) {
-                    utilities.notify(Localization.get("UserRestored"));
-                    this.reload();
-                }
-                else {
-                    utilities.notify(data.Message);
-                }
-            }));
-        });
+        this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
+            if (data.Success) {
+                utilities.notify(Localization.get("UserRestored"));
+                this.reload();
+            }
+            else {
+                utilities.notify(data.Message);
+            }
+        }));
     }
     forcePasswordChange() {
-        this.props.dispatch(CommonUsersActions.ForceChangePassword({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
             if (data.Success) {
                 utilities.notify(Localization.get("UserPasswordUpdateChanged"));
                 this.reload();
@@ -195,34 +195,36 @@ class UserMenu extends Component {
         }));
     }
 
-    toggleChangePassword() {
+    toggleChangePassword(close) {
         const show = !this.state.ChangePasswordVisible;
         this.setState({ ChangePasswordVisible: show });
+        if (close)
+            this.props.onClose();
     }
     render() {
 
-        let visibleMenus = [{ key:"ViewProfile", title: "ViewProfile", index: 10 },
-            { key:"ViewAssets", title: "ViewAssets", index: 20 },
-            { key:"ChangePassword", title: "ChangePassword", index: 30 },
-            { key:"ResetPassword", title: "ResetPassword", index: 40 }
+        let visibleMenus = [{ key:"ViewProfile", title:  Localization.get("ViewProfile"), index: 10 },
+            { key:"ViewAssets", title: Localization.get("ViewAssets"), index: 20 },
+            { key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 },
+            { key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }
         ];
 
         //if (1 === 1) {
-        visibleMenus = [{ key:"PromoteToSuperUser", title: "PromoteToSuperUser", index: 80 }].concat(visibleMenus);
+        visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
         //}
         if (!this.state.userDetails.needUpdatePassword) {
-            visibleMenus = [{ key:"ForceChangePassword", title: "ForceChangePassword", index: 40 }].concat(visibleMenus);
+            visibleMenus = [{ key:"ForceChangePassword", title:  Localization.get("ForceChangePassword"), index: 40 }].concat(visibleMenus);
         }
         if (this.state.userDetails.isDeleted) {
-            visibleMenus = [{ key:"RestoreUser", title: "RestoreUser", index: 70 }].concat(visibleMenus);
-            visibleMenus = [{ key:"RemoveUser", title: "RemoveUser", index: 60 }].concat(visibleMenus);
+            visibleMenus = [{ key:"RestoreUser", title:  Localization.get("RestoreUser"), index: 70 }].concat(visibleMenus);
+            visibleMenus = [{ key:"RemoveUser", title:  Localization.get("RemoveUser"), index: 60 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ key:"DeleteUser", title: "DeleteUser", index: 60 }].concat(visibleMenus);
+            visibleMenus = [{ key:"DeleteUser", title:  Localization.get("DeleteUser"), index: 60 }].concat(visibleMenus);
         }
         if (this.state.userDetails.authorized) {
-            visibleMenus = [{ key:"cmdUnAuthorize", title: "cmdUnAuthorize", index: 50 }].concat(visibleMenus);
+            visibleMenus = [{ key:"cmdUnAuthorize", title:  Localization.get("cmdUnAuthorize"), index: 50 }].concat(visibleMenus);
         } else {
-            visibleMenus = [{ key:"cmdAuthorize", title: "cmdAuthorize", index: 50 }].concat(visibleMenus);
+            visibleMenus = [{ key:"cmdAuthorize", title:  Localization.get("cmdAuthorize"), index: 50 }].concat(visibleMenus);
         }
         visibleMenus = visibleMenus.concat((this.props.getUserMenu && this.props.getUserMenu(this.state.userDetails)) || []);
 
@@ -240,7 +242,7 @@ class UserMenu extends Component {
                     </Menu>
                 }
                 {this.state.ChangePasswordVisible &&
-                    <ChangePassword onCancel={this.toggleChangePassword.bind(this) } userId={this.props.userId} />
+                    <ChangePassword onCancel={this.toggleChangePassword.bind(this, true) } userId={this.props.userId} />
                 }
             </GridCell>
         );

@@ -10,13 +10,8 @@ import EditProfile from "./EditProfile";
 import UsersRoles from "./UsersRoles";
 import styles from "./style.less";
 import {sort} from "../../helpers";
-const headers = [
-    "Name.Header",
-    "Email.Header",
-    "Created.Header",
-    "Authorized.Header",
-    ""
-];
+import Localization from "localization";
+
 class UserTable extends Component {
     constructor() {
         super();
@@ -70,12 +65,34 @@ class UserTable extends Component {
             return child.content;
         });
     }
+    getHeaders()
+    {
+        let headers = [{index: 5, header: Localization.get("Name.Header")},
+                    {index: 10,header: Localization.get("Email.Header")},
+                    {index: 15,header: Localization.get("Created.Header")},
+                    {index: 20,header: Localization.get("Authorized.Header")},
+                    {index: 25,header:""}];
+        if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function"){
+            let extraColumns = this.props.getUserColumns();
+            if (extraColumns!==undefined && extraColumns.length>0)
+            {
+                headers = sort(extraColumns.map(column=>{
+                    return {
+                        index:column.index,
+                        header:column.header
+                    };
+                }).concat(headers), "index");
+            }
+        }
+        return headers;
+    }
     render() {
         const {props} = this;
         let i = 0;
         let opened = (this.state.openId === "add");
+        const headers = this.getHeaders();
         return (
-            <GridCell style={styles.usersList}>
+            <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>
                 {opened && <DetailRow
                     Collapse={this.collapse.bind(this) }
@@ -88,7 +105,7 @@ class UserTable extends Component {
                 </DetailRow>
                 }
                 {
-                    props.users && props.users.map((user, index) => {
+                    props.users && props.users.length>0 && props.users.map((user, index) => {
                         let id = "row-" + i++;
                         return <DetailRow
                             user={user}
@@ -104,7 +121,10 @@ class UserTable extends Component {
                             id={id}>
                             <CollapsibleSwitcher children={this.getChildren(user) } renderIndex={this.state.renderIndex} />
                         </DetailRow>;
-                    })
+                    }) 
+                }
+                {
+                    props.users && props.users.length === 0 && <GridCell className="no-users">No users found.</GridCell>
                 }
             </GridCell>
         );
