@@ -1,5 +1,3 @@
-const controller = "Pages";
-
 function serializeQueryStringParameters(obj) {
     const s = [];
     for (let p in obj) {
@@ -14,7 +12,7 @@ function getServiceFramework() {
     const sf = window.dnn.initPages().utility.sf;
 
     sf.moduleRoot = "PersonaBar/Admin";
-    sf.controller = controller;
+    sf.controller = window.dnn.pages.apiController || "Pages";
 
     return sf;
 }

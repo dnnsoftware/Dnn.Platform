@@ -34,9 +34,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "thumbnail")]
-        public string Thumbnail { get; set; }
-
         [DataMember(Name = "includeInMenu")]
         public bool IncludeInMenu { get; set; }
 
@@ -60,18 +57,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "pageType")]
         public string PageType { get; set; }
-
-        [DataMember(Name = "workflowId")]
-        public int WorkflowId { get; set; }
-
-        [DataMember(Name = "isWorkflowCompleted")]
-        public bool IsWorkflowCompleted { get; set; }
-
-        [DataMember(Name = "applyWorkflowToChildren")]
-        public bool ApplyWorkflowToChildren { get; set; }
-
-        [DataMember(Name = "isWorkflowPropagationAvailable")]
-        public bool IsWorkflowPropagationAvailable { get; set; }
 
         [DataMember(Name = "trackLinks")]
         public bool TrackLinks { get; set; }
