@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        public string DisplayMode => Request.QueryString["Display"];
+        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected PackageInfo Package
         {
@@ -276,21 +276,24 @@ namespace DotNetNuke.Modules.Admin.Extensions
             if (!IsPostBack)
             {
                 ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
-
-                if (!string.IsNullOrEmpty(DisplayMode))
+                switch (DisplayMode)
                 {
-                    switch (DisplayMode.ToLowerInvariant())
-                    {
-                        case "editor":
-                            packageSettingsSection.Visible = false;
-                            break;
-                        case "settings":
-                            extensionSection.Visible = false;
-                            break;
-                    }
+                    case "editor":
+                        packageSettingsSection.Visible = false;
+                        break;
+                    case "settings":
+                        extensionSection.Visible = false;
+                        break;
                 }
             }
 
+            switch (DisplayMode)
+            {
+                case "editor":
+                case "settings":
+                    cmdCancel.Visible = cmdCancel.Enabled = false;
+                    break;
+            }
         }
 
         protected void OnCancelClick(object sender, EventArgs e)

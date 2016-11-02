@@ -40,6 +40,8 @@ namespace DotNetNuke.Services.Installer.Packages
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
 
+        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+
         protected virtual string EditorID
         {
             get
