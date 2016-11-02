@@ -492,7 +492,7 @@ BEGIN
         WHERE Identifier = 'Logout'
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET CssClass = 'double'
+        SET CssClass = 'two-columns'
         WHERE Identifier = 'Settings'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]

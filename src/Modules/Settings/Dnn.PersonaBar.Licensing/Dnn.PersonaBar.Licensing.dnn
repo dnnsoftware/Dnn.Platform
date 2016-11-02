@@ -41,7 +41,7 @@
                         <resourceKey>nav_Licensing</resourceKey>
                         <path>Licensing</path>
                         <mobileSupport>true</mobileSupport>
-                        <parent>Manage</parent>
+                        <parent>Settings</parent>
                         <order>100</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>

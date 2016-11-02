@@ -69,7 +69,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var config = cf.init();
         var utility = ut.init(config);
         var inAnimation = false;
-        var personaBarMenuWidth = 85;
+        var personaBarMenuWidth = parseInt($("#personabar").width());
         var $iframe = $(iframe);
         var $body = $(body);
         var $personaBarPanels = $("#personabar-panels");
@@ -279,18 +279,24 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 this.loadCustomModules();
             },
-            initCustomModules: function () {
+            initCustomModules: function (callback) {
                 if (config.customModules && config.customModules.length > 0) {
                     var self = this;
                     for (var i = 0; i < config.customModules.length; i++) {
-                        var path = '../' + config.customModules[i];
+                        (function (index) {
+                            var path = '../' + config.customModules[index];
+                            require([path], function (module) {
+                                customModules.push(module);
+                                if (typeof module.init === "function") {
+                                    module.init.call(self, util);
+                                }
+
+                                if (index === config.customModules.length - 1 && typeof callback === "function") {
+                                    callback();
+                                }
+                            });
+                        })(i);
                         
-                        require([path], function (module) {
-                            customModules.push(module);
-                            if (typeof module.init === "function") {
-                                module.init.call(self);
-                            }
-                        });
                     }
                 }
             },
@@ -425,6 +431,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 var mouseOnHovermenu = false;
 
                                 (function setupMenu() {
+                                    $(".btn_panel .hovermenu").click(function(e) {
+                                        e.stopPropagation();
+                                    });
 
                                     $(".btn_panel, .hovermenu > ul > li").click(function handleClickOnHoverMenuItem(evt) {
                                         evt.preventDefault();
@@ -680,9 +689,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             $avatarImage.css('background-image', 'url(\'' + config.avatarUrl + '\')');
 
                             var $logout = $('li#Logout');
-                            if (!$logout.parents('.hovermenu').length) {
-                                $logout.before($showSiteButton);
-                            }
                             $logout.off('click').click(function (evt) {
                                 evt.preventDefault();
                                 evt.stopPropagation();
@@ -720,9 +726,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     callback();
                 },
                 function initCustomModules(callback) {
-                    util.initCustomModules();
-
-                    callback();
+                    util.initCustomModules(callback);
                 }
         ],
         function loadPanelFromPersistedSetting() {

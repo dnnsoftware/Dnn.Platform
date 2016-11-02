@@ -43,7 +43,7 @@
             <path>extensions</path>
             <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
-            <order>6</order>
+            <order>15</order>
             <defaultRoles>Administrators</defaultRoles>
           </menu>
         </component>
