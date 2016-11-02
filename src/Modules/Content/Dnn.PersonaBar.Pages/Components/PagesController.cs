@@ -122,17 +122,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 return false;
             }
 
-            isValid = pageSettings.TabId > 0 || pageSettings.PageType == "template" || pageSettings.TemplateId > 0;
-            if (!isValid)
-            {
-                invalidField = "template";
-                if (string.IsNullOrEmpty(errorMessage))
-                {
-                    errorMessage = (pageSettings.PageType == "template" ? "templates_" : "") + "NoTemplate";
-                }
-                return false;
-            }
-
             var parentId = tab != null ? tab.ParentId : Null.NullInteger;
             if (pageSettings.PageType == "template")
             {

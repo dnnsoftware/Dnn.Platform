@@ -26,7 +26,7 @@ export default function pagesReducer(state = {
                 doingOperation: false,
                 selectedPage: action.data.page
             };
-            
+
         case ActionTypes.ERROR_LOADING_PAGE:
             return { ...state,
                 doingOperation: false           

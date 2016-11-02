@@ -6,11 +6,11 @@ import Localization from "../../localization";
 
 class Modules extends Component {
 
-    onDeleteModule(){
+    onDeleteModule() {
         // TODO: to be implemented
     }
 
-    onEditModule(){
+    onEditModule() {
         // TODO: to be implemented
     }
 

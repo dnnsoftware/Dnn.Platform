@@ -18,12 +18,17 @@ class PageHierarchy extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.itemTemplate !== nextProps.itemTemplate) {
+        const {itemTemplate, searchKeyword, createdPage} = this.props;
+        if (itemTemplate !== nextProps.itemTemplate) {
             pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
         }    
 
-        if (this.props.searchKeyword !== nextProps.searchKeyword) {
+        if (searchKeyword !== nextProps.searchKeyword) {
             pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
+        }
+
+        if (createdPage !== nextProps.createdPage) {
+            pageHierarchyManager.addPage(nextProps.createdPage);
         }    
     }
     
@@ -44,7 +49,8 @@ class PageHierarchy extends Component {
 PageHierarchy.propTypes = {
     itemTemplate: PropTypes.string.isRequired,
     searchKeyword: PropTypes.string.isRequired,
-    onPageSettings: PropTypes.func.isRequired
+    onPageSettings: PropTypes.func.isRequired,
+    createdPage: PropTypes.object
 };
 
 PageHierarchy.defaultProps = {

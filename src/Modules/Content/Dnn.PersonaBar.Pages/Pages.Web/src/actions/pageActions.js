@@ -23,6 +23,16 @@ const pageActions = {
         };
     },
 
+    addPage() {
+        return (dispatch) => {
+            const page = PagesService.getNewPage();
+            dispatch({
+                type: ActionTypes.LOADED_PAGE,
+                data: { page }
+            });
+        };
+    },
+
     savePage(page) {
         return (dispatch) => {
             dispatch({
@@ -33,7 +43,7 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {
-                        page: response
+                        createdPage: page.tabId === 0 ? response.Page : null 
                     }
                 });  
             }).catch(() => {

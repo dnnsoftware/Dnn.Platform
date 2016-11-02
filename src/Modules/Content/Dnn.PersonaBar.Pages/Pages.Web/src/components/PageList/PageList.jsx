@@ -29,22 +29,26 @@ class PageList extends Component {
                 <PageHierarchy
                     itemTemplate={this.props.itemTemplate}
                     searchKeyword={this.props.searchKeyword} 
-                    onPageSettings={pageId => this.onPageSettings(pageId)} />
+                    onPageSettings={this.props.onPageSettings}
+                    createdPage={this.props.createdPage} />
             </SocialPanelBody>
         );
     }
 }
 
 PageList.propTypes = {
+    onPageSettings: PropTypes.func,
     dispatch: PropTypes.func.isRequired,
     searchKeyword: PropTypes.string.isRequired,
-    itemTemplate: PropTypes.string.isRequired
+    itemTemplate: PropTypes.string.isRequired,
+    createdPage: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         searchKeyword: state.pageHierarchy.searchKeyword,
-        itemTemplate: state.pageHierarchy.itemTemplate
+        itemTemplate: state.pageHierarchy.itemTemplate,
+        createdPage: state.pageHierarchy.createdPage
     };
 }
 
