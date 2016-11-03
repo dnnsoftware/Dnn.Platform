@@ -112,13 +112,13 @@ class DetailsRow extends Component {
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
             },
-            {
-                index: 20,
-                content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
-                    {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
-                    {user.authorized === "-" && user.authorized}
-                </GridCell>
-            },
+            // {
+            //     index: 20,
+            //     content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
+            //         {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
+            //         {user.authorized === "-" && user.authorized}
+            //     </GridCell>
+            // },
             {
                 index: 25,
                 content: id !== "add" && <GridCell columnSize={columnSize} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>

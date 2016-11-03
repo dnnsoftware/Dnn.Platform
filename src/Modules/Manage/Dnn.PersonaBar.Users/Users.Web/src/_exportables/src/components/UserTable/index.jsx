@@ -70,7 +70,7 @@ class UserTable extends Component {
         let headers = [{index: 5, header: Localization.get("Name.Header")},
                     {index: 10,header: Localization.get("Email.Header")},
                     {index: 15,header: Localization.get("Created.Header")},
-                    {index: 20,header: Localization.get("Authorized.Header")},
+                    //{index: 20,header: Localization.get("Authorized.Header")},
                     {index: 25,header:""}];
         if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function"){
             let extraColumns = this.props.getUserColumns();
