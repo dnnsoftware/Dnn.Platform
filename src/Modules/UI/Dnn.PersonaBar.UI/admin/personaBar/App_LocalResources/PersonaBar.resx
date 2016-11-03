@@ -198,4 +198,70 @@
   <data name="nav_Home.Text" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="permissiongrid.Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="permissiongrid.Add Content.Text" xml:space="preserve">
+    <value>Add Content</value>
+  </data>
+  <data name="permissiongrid.Add User.Text" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="permissiongrid.Add.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="permissiongrid.AllRoles.Text" xml:space="preserve">
+    <value>&lt;All Roles&gt;</value>
+  </data>
+  <data name="permissiongrid.Copy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="permissiongrid.Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="permissiongrid.Display Name.Text" xml:space="preserve">
+    <value>Display Name:</value>
+  </data>
+  <data name="permissiongrid.Edit Content.Text" xml:space="preserve">
+    <value>Edit Content</value>
+  </data>
+  <data name="permissiongrid.Edit Tab.Text" xml:space="preserve">
+    <value>Full Control</value>
+  </data>
+  <data name="permissiongrid.Edit.Text" xml:space="preserve">
+    <value>Full Control</value>
+  </data>
+  <data name="permissiongrid.Export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="permissiongrid.Filter By Group.Text" xml:space="preserve">
+    <value>Filter By Group</value>
+  </data>
+  <data name="permissiongrid.GlobalRoles.Text" xml:space="preserve">
+    <value>&lt;Global Roles&gt;</value>
+  </data>
+  <data name="permissiongrid.Import.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="permissiongrid.Manage Settings.Text" xml:space="preserve">
+    <value>Manage Settings</value>
+  </data>
+  <data name="permissiongrid.Navigate.Text" xml:space="preserve">
+    <value>Navigate</value>
+  </data>
+  <data name="permissiongrid.Select Role.Text" xml:space="preserve">
+    <value>Select Role</value>
+  </data>
+  <data name="permissiongrid.Type-roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="permissiongrid.Type-users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="permissiongrid.View Tab.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="permissiongrid.View.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>
