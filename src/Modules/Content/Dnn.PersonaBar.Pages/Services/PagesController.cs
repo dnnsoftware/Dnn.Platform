@@ -7,21 +7,17 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Pages.Services

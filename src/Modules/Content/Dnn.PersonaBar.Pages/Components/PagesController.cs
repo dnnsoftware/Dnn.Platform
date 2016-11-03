@@ -738,15 +738,83 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             UpdateTabInfoFromPageSettings(tab, pageSettings);
             UpdateTabExtension(tab, pageSettings);
+            SavePagePermissions(tab, pageSettings.Permissions);
 
             _tabController.UpdateTab(tab);
 
             CreateOrUpdateContentItem(tab);
 
             SaveTabUrl(tab, pageSettings);
-
+            
             return tab.TabID;
         }
+
+        
+        public void SavePagePermissions(TabInfo tab, PagePermissions permissions)
+        {
+            var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == PortalSettings.AdministratorRoleId);
+
+            tab.TabPermissions.Clear();
+
+            //add default permissions for administrators
+            if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
+            {
+                //add default permissions
+                var permissionController = new PermissionController();
+                var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", "VIEW");
+                permissionsList.AddRange(permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT"));
+                foreach (var permissionInfo in permissionsList)
+                {
+                    var editPermisison = (PermissionInfo)permissionInfo;
+                    var permission = new TabPermissionInfo(editPermisison)
+                    {
+                        RoleID = PortalSettings.AdministratorRoleId,
+                        AllowAccess = true,
+                        RoleName = PortalSettings.AdministratorRoleName
+                    };
+                    tab.TabPermissions.Add(permission);
+
+                }
+            }
+
+            //add role permissions
+            if (permissions.RolePermissions != null)
+            {
+                foreach (var rolePermission in permissions.RolePermissions)
+                {
+                    foreach (var permission in rolePermission.Permissions)
+                    {
+                        tab.TabPermissions.Add(new TabPermissionInfo()
+                        {
+                            PermissionID = permission.PermissionId,
+                            RoleID = rolePermission.RoleId,
+                            UserID = Null.NullInteger,
+                            AllowAccess = permission.AllowAccess
+                        });
+                    }
+                }
+            }
+
+
+            //add user permissions
+            if (permissions.UserPermissions != null)
+            {
+                foreach (var userPermission in permissions.UserPermissions)
+                {
+                    foreach (var permission in userPermission.Permissions)
+                    {
+                        tab.TabPermissions.Add(new TabPermissionInfo()
+                        {
+                            PermissionID = permission.PermissionId,
+                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            UserID = userPermission.UserId,
+                            AllowAccess = permission.AllowAccess
+                        });
+                    }
+                }
+            }
+        }
+
 
         protected void UpdateTabExtension(TabInfo tab, PageSettings pageSettings)
         {

@@ -15,11 +15,6 @@ import Button from "dnn-button";
 
 class App extends Component {
 
-    navigateMap(page) {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(page));
-    }
-
     onPageSettings(pageId) {
         const {props} = this;
         props.onNavigate(1);
@@ -30,11 +25,6 @@ class App extends Component {
         const {props} = this;
         props.onNavigate(0);
         props.onSavePage(props.selectedDnnPage);
-    }
-
-    onPermissionsChanged(permissions) {
-        console.log("onPermissionsChanged", permissions);
-        this.props.dispatch(PageActions.changePermissions(permissions));
     }
 
     onAddPage() {
@@ -67,7 +57,7 @@ class App extends Component {
                                             onCancel={() => props.onNavigate(0)} 
                                             onSave={this.onSavePage.bind(this)}
                                             onChangeField={props.onChangePageField}
-                                            onPermissionsChanged={this.onPermissionsChanged.bind(this)}
+                                            onPermissionsChanged={props.onPermissionsChanged}
                                             onChangePageType={props.onChangePageType} />
                         </SocialPanelBody>
                     </PersonaBarPage>
@@ -87,7 +77,8 @@ App.propTypes = {
     onLoadPage: PropTypes.func,
     onAddPage: PropTypes.func,
     onChangePageField: PropTypes.func,
-    onChangePageType: PropTypes.func
+    onChangePageType: PropTypes.func,
+    onPermissionsChanged: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -105,7 +96,8 @@ function mapDispatchToProps(dispatch) {
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
         onChangePageField: PageActions.changePageField,
-        onChangePageType: PageActions.changePageType
+        onChangePageType: PageActions.changePageType,
+        onPermissionsChanged: PageActions.changePermissions
     }, dispatch);
 }
 

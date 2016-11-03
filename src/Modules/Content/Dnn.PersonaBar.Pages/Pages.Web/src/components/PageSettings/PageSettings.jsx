@@ -2,13 +2,11 @@ import React, {Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import Localization from "../../localization";
 import PageDetails from "../PageDetails/PageDetails";
-import PermissionGrid from "../../../node_modules/dnn-permission-grid";
-import utils from "../../utils";
+import PermissionGrid from "./PermissionGrid";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
-
 
 class PageSettings extends Component {
 
@@ -51,10 +49,9 @@ class PageSettings extends Component {
                     {buttons}
                 </div>
                 <div className="dnn-simple-tab-item">                
-                    <PermissionGrid 
+                    <PermissionGrid
                         permissions={selectedPage.permissions} 
-                        service={utils.utilities.sf} 
-                        onPermissionsChanged={this.props.onPermissionsChanged} />                
+                        onPermissionsChanged={this.props.onPermissionsChanged} />
                     {buttons}
                 </div>
                 <div>

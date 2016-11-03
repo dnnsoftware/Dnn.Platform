@@ -23,7 +23,6 @@ const application = {
         throw new Error("dispatch method needs to be overwritten from the Redux store");
     },
     setItemTemplate(template) {
-        console.log("setItemTemplate", template);
         application.dispatch(PageHierarchyActions.setItemTemplate(template));
     }
 };
