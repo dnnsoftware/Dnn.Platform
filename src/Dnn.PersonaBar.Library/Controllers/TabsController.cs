@@ -54,8 +54,9 @@ namespace Dnn.PersonaBar.Library.Controllers
         public string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
 
 
-        public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
-            int selectedTabId = -1)
+        public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
+            string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
+            int selectedTabId = -1, string validateTab = "")
         {
             var rootNode = new TabDto
             {
@@ -80,7 +81,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             tabs = excludeAdminTabs
                 ? tabs.Where(tab => tab.Level == 0 && tab.TabID != portalInfo.AdminTabId).ToList()
                 : tabs.Where(tab => tab.Level == 0).ToList();
-
+            
+            if (!string.IsNullOrEmpty(validateTab))
+            {
+                tabs = ValidateModuleInTab(tabs, validateTab).ToList();
+            }
             var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             rootNode.HasChildren = tabs.Count > 0;
             foreach (var tab in tabs)
@@ -101,12 +106,13 @@ namespace Dnn.PersonaBar.Library.Controllers
                 rootNode.ChildTabs.Add(node);
             }
             rootNode.ChildTabs = ApplySort(rootNode.ChildTabs, sortOrder).ToList();
+
             return selectedTabId > -1
-                ? MarkSelectedTab(rootNode, selectedTabId, portalInfo, cultureCode, isMultiLanguage)
+                ? MarkSelectedTab(rootNode, selectedTabId, portalInfo, cultureCode, isMultiLanguage, validateTab)
                 : rootNode;
         }
 
-        public TabDto SearchPortalTabs(string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0)
+        public TabDto SearchPortalTabs(string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "")
         {
             var rootNode = new TabDto
             {
@@ -151,7 +157,24 @@ namespace Dnn.PersonaBar.Library.Controllers
                 rootNode.ChildTabs.Add(node);
             }
             rootNode.ChildTabs = ApplySort(rootNode.ChildTabs, sortOrder).ToList();
+            if (!string.IsNullOrEmpty(validateTab))
+            {
+                rootNode.ChildTabs = ValidateModuleInTab(rootNode.ChildTabs, validateTab).ToList();
+            }
             return rootNode;
+        }
+
+        private IEnumerable<TabDto> ValidateModuleInTab(IEnumerable<TabDto> tabs, string validateTab)
+        {
+            return tabs.Where(
+                tab =>
+                    (Convert.ToInt32(tab.TabId) > 0 &&
+                     Globals.ValidateModuleInTab(Convert.ToInt32(tab.TabId), validateTab)) ||
+                    Convert.ToInt32(tab.TabId) == Null.NullInteger);
+        }
+        private IEnumerable<TabInfo> ValidateModuleInTab(IEnumerable<TabInfo> tabs, string validateTab)
+        {
+            return tabs.Where(tab =>(tab.TabID > 0 && Globals.ValidateModuleInTab(tab.TabID, validateTab)) || tab.TabID == Null.NullInteger);
         }
 
         private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
@@ -182,7 +205,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         }
 
         private TabDto MarkSelectedTab(TabDto rootNode, int selectedTabId, PortalInfo portalInfo, string cultureCode,
-            bool isMultiLanguage)
+            bool isMultiLanguage, string validateTab)
         {
             var tempTabs = new List<int>();
             cultureCode = string.IsNullOrEmpty(cultureCode) ? portalInfo.CultureCode : cultureCode;
@@ -204,6 +227,10 @@ namespace Dnn.PersonaBar.Library.Controllers
             tempTabs.Reverse();
             rootNode.ChildTabs = GetDescendantsForTabs(tempTabs, rootNode.ChildTabs, selectedTabId, portalInfo.PortalID,
                 cultureCode, isMultiLanguage).ToList();
+            if (!string.IsNullOrEmpty(validateTab))
+            {
+                rootNode.ChildTabs = ValidateModuleInTab(rootNode.ChildTabs, validateTab).ToList();
+            }
             return rootNode;
         }
 
@@ -265,7 +292,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return GetTabByCulture(tabId, portalId, locale);
         }
 
-        public IEnumerable<TabDto> GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0)
+        public IEnumerable<TabDto> GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "")
         {
             var descendants = new List<TabDto>();
             cultureCode = string.IsNullOrEmpty(cultureCode) ? PortalController.Instance.GetPortal(portalId).CultureCode : cultureCode;
@@ -273,6 +300,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             var tabs =
                 GetExportableTabs(TabController.Instance.GetTabsByPortal(portalId)
                     .WithCulture(cultureCode, true)).WithParentId(parentId);
+
+            if (!string.IsNullOrEmpty(validateTab))
+            {
+                tabs = ValidateModuleInTab(tabs, validateTab).ToList();
+            }
 
             var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             foreach (var tab in tabs.Where(x => x.ParentId == parentId))
