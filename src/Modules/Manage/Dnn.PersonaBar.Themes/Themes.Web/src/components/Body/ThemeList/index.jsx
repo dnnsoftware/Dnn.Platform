@@ -26,7 +26,7 @@ class ThemeList extends Component {
                     className="theme-list"
                     autoHeight
                     autoHeightMin={0}
-                    autoHeightMax={460}>
+                    autoHeightMax={480}>
                 <GridCell>
                     {props.dataSource.map((theme, index) => {
                         return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
