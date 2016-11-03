@@ -47,11 +47,18 @@ class PackageInformation extends Component {
         const version = props.validationMapped ? (extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : [0, 0, 0]) : (extensionBeingEdited.version ? extensionBeingEdited.version.split(".") : [0, 0, 0]);
 
         return (
-            <GridCell className={styles.packageInformationBox}>
+            <GridCell className={styles.pkgInformationBox}>
+                {props.installationMode &&
+                    <GridCell className="package-information-header">
+                        <h6>{Localization.get("InstallExtension_PackageInfo.Header")}</h6>
+                        <p>{Localization.get("InstallExtension_PackageInfo.HelpText")}</p>
+                        <hr />
+                    </GridCell>
+                }
                 <GridCell columnSize={100} style={{ marginBottom: 15 }}>
                     <DropdownWithError
                         tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
-                        label="Extension Type"
+                        label={Localization.get("EditExtension_PackageType.Label")}
                         defaultDropdownValue={!props.validationMapped ? extensionBeingEdited.packageType : extensionBeingEdited.packageType.value}
                         style={inputStyle}
                         enabled={false}
@@ -156,9 +163,9 @@ class PackageInformation extends Component {
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>}
-                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                    {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                    {(!props.disabled || props.installationMode) && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
                 </GridCell>
             </GridCell>
         );

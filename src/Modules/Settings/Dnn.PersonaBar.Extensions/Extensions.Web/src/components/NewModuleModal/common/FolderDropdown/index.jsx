@@ -4,10 +4,8 @@ import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
 import Collapsible from "react-collapse";
+import Localization from "localization";
 import styles from "./style.less";
-
-const inputStyle = { width: "100%" };
-
 
 class FolderDropdown extends Component {
     constructor() {
@@ -52,11 +50,11 @@ class FolderDropdown extends Component {
         const { props, state } = this;
         const folders = [
             {
-                label: "[New Folder]",
+                label: "[" + Localization.get("CreateNewModule_NewFolder.Label") + "]",
                 value: "AddNewFolder"
             },
             {
-                label: "<Not Specified>",
+                label: Localization.get("CreateNewModule_NotSpecified.Label"),
                 value: ""
             }
         ].concat(props.folders);
@@ -65,17 +63,17 @@ class FolderDropdown extends Component {
                 <Collapsible isOpened={state.addNewFolderOpen} className="add-new-folder-box" fixedHeight={250} style={{ float: "left" }}>
                     <GridCell style={{ padding: "20px 10px" }}>
                         <GridCell>
-                            <h3 className="new-folder-title">New Folder</h3>
+                            <h3 className="new-folder-title">{Localization.get("CreateNewModule_NewFolder.Label")}</h3>
                             <SingleLineInputWithError
-                                label="Folder Name"
+                                label={Localization.get("CreateNewModule_FolderName.Label")}
                                 inputStyle={{ marginBottom: 16 }}
                                 value={state.newFolderValue}
                                 onChange={this.onFolderNameChange.bind(this)}
                                 />
                         </GridCell>
                         <GridCell className="new-folder-buttons">
-                            <Button type="secondary" onClick={this.closeAddNewFolderBox.bind(this)}>Cancel</Button>
-                            <Button type="primary" onClick={this.onAddNewFolder.bind(this)}>Save</Button>
+                            <Button type="secondary" onClick={this.closeAddNewFolderBox.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
+                            <Button type="primary" onClick={this.onAddNewFolder.bind(this)}>{Localization.get("NewModule_Create.Button")}</Button>
                         </GridCell>
                     </GridCell>
                 </Collapsible>
@@ -91,7 +89,6 @@ class FolderDropdown extends Component {
                     />
             </GridCell>
         );
-        // <p className="modal-pagination"> --1 of 2 -- </p>
     }
 }
 

@@ -282,4 +282,7 @@
   <data name="UnnamedImage.Text" xml:space="preserve">
     <value>unnamed-image</value>
   </data>
+  <data name="GenericErrorMessage.Error" xml:space="preserve">
+    <value>An unknown error has occured. Please check the admin logs for more information.</value>
+  </data>
 </root>

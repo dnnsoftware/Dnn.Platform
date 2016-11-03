@@ -1,19 +1,15 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
-import Dropdown from "dnn-dropdown";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
 import Button from "dnn-button";
 import CustomSettings from "../EditExtension/CustomSettings";
 import BasicPackageInformation from "../common/BasicPackageInformation";
-import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -162,8 +158,7 @@ class NewExtensionModal extends Component {
     }
 
 
-    onSave(close) {
-        const { props } = this;
+    onSave() {
         if (!this.validateFields()) {
             return;
         }
@@ -176,7 +171,7 @@ class NewExtensionModal extends Component {
         const version = extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : [0, 0, 0];
         return (
             <div className={styles.newExtensionModal}>
-                <SocialPanelHeader title="Create New Extension" />
+                <SocialPanelHeader title={Localization.get("CreateExtension.Action")} />
                 <SocialPanelBody>
                     <GridCell className="new-extension-box extension-form">
                         <BasicPackageInformation
@@ -197,13 +192,13 @@ class NewExtensionModal extends Component {
                         <GridSystem className="with-right-border bottom-half">
                             <div>
                                 <SingleLineInputWithError
-                                    label="Owner"
+                                    label={Localization.get("EditExtension_PackageOwner.Label")}
                                     tooltipMessage={Localization.get("EditExtension_PackageOwner.HelpText")}
                                     style={inputStyle}
                                     value={extensionBeingEdited.owner.value}
                                     onChange={this.onChange.bind(this, "owner")} />
                                 <SingleLineInputWithError
-                                    label="Organization"
+                                    label={Localization.get("EditExtension_PackageOrganization.Label")}
                                     tooltipMessage={Localization.get("EditExtension_PackageOrganization.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 0 }}
@@ -212,14 +207,14 @@ class NewExtensionModal extends Component {
                             </div>
                             <div>
                                 <SingleLineInputWithError
-                                    label="URL"
+                                    label={Localization.get("EditExtension_PackageURL.Label")}
                                     tooltipMessage={Localization.get("EditExtension_PackageURL.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 32 }}
                                     value={extensionBeingEdited.url.value}
                                     onChange={this.onChange.bind(this, "url")} />
                                 <SingleLineInputWithError
-                                    label="Email Address"
+                                    label={Localization.get("EditExtension_PackageEmailAddress.Label")}
                                     tooltipMessage={Localization.get("EditExtension_PackageEmailAddress.HelpText")}
                                     style={inputStyle}
                                     inputStyle={{ marginBottom: 32 }}
@@ -229,14 +224,13 @@ class NewExtensionModal extends Component {
                         </GridSystem>
                         <CustomSettings
                             type={extensionBeingEdited.packageType.value}
-                            primaryButtonText="Next"
                             onChange={this.onChange.bind(this)}
                             actionButtonsDisabled={true}
                             isAddMode={true}
                             />
                         <GridCell columnSize={100} className="modal-footer">
-                            <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                            <Button type="primary" onClick={this.onSave.bind(this)}>Update</Button>
+                            <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("CreateExtension_Cancel.Button")}</Button>
+                            <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("CreateExtension_Save.Button")}</Button>
                         </GridCell>
                     </GridCell>
                 </SocialPanelBody>

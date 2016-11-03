@@ -8,6 +8,7 @@ import Switch from "dnn-switch";
 import FolderDropdown from "../common/FolderDropdown";
 import Button from "dnn-button";
 import Localization from "localization";
+import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -21,26 +22,7 @@ function getValidateRequired(key) {
             return false;
     }
 }
-export function validationMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        let required = getValidateRequired(key);
-        _newModule[key] = {
-            value: _newModule[key],
-            required,
-            error: required ? !_newModule[key] : false
-        };
-    });
-    return _newModule;
-}
 
-export function valueMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        _newModule[key] = _newModule[key].value;
-    });
-    return _newModule;
-}
 
 const emptyNewModule = {
     type: 1,
@@ -56,7 +38,7 @@ class FromControl extends Component {
     constructor() {
         super();
         this.state = {
-            newModule: validationMapNewModule(emptyNewModule),
+            newModule: validationMapNewModule(emptyNewModule, getValidateRequired),
             triedToSave: false
         };
     }
@@ -79,7 +61,7 @@ class FromControl extends Component {
         if (key === "ownerFolder") {
             props.onSelectOwnerFolder(option.value);
         }
-        if (key === "moduleFolder") {
+        if (key === "moduleFolder" && option.value !== "") {
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
                 moduleFolder: option.value,

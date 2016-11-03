@@ -28,7 +28,7 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 })}
                 enabled={!disabled}
                 tooltipMessage={Localization.get("EditExtension_PackageType.HelpText")}
-                label="Extension Type"
+                label={Localization.get("EditExtension_PackageType.Label")}
                 onSelect={onPackageTypeSelect}
                 value={!validationMapped ? extensionData.packageType : (extensionData.packageType.value)}
                 style={inputStyle}

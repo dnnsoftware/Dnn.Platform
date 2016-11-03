@@ -1,11 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import DropdownWithError from "dnn-dropdown-with-error";
 import Switch from "dnn-switch";
 import FolderDropdown from "../common/FolderDropdown";
+import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import Button from "dnn-button";
 import Localization from "localization";
 import styles from "./style.less";
@@ -19,26 +18,6 @@ function getValidateRequired(key) {
         default:
             return false;
     }
-}
-export function validationMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        let required = getValidateRequired(key);
-        _newModule[key] = {
-            value: _newModule[key],
-            required,
-            error: required ? !_newModule[key] : false
-        };
-    });
-    return _newModule;
-}
-
-export function valueMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        _newModule[key] = _newModule[key].value;
-    });
-    return _newModule;
 }
 
 const emptyNewModule = {
@@ -55,7 +34,7 @@ class FromManifest extends Component {
     constructor() {
         super();
         this.state = {
-            newModule: validationMapNewModule(emptyNewModule),
+            newModule: validationMapNewModule(emptyNewModule, getValidateRequired),
             triedToSave: false
         };
     }
@@ -78,7 +57,7 @@ class FromManifest extends Component {
         if (key === "ownerFolder") {
             props.onSelectOwnerFolder(option.value);
         }
-        if (key === "moduleFolder") {
+        if (key === "moduleFolder" && option.value !== "") {
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
                 moduleFolder: option.value,

@@ -1,6 +1,7 @@
 import { extension as ActionTypes, installation as InstallationActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
 import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
+import Localization from "localization";
 import utilities from "utils";
 
 function errorCallback(error) {
@@ -96,8 +97,9 @@ const extensionActions = {
                         updatedExtension: valueMapExtensionBeingEdited(updatedExtension)
                     }
                 });
+                utilities.utilities.notify(Localization.get("EditExtension_Notify.Success"));
                 if (callback) {
-                    callback();
+                    utilities.utilities.throttleExecution(callback);
                 }
             }, errorCallback);
         };

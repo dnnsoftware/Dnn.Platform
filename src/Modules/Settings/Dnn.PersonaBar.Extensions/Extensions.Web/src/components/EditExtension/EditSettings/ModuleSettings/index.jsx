@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import { ExtensionActions } from "actions";
+import { ExtensionActions, VisiblePanelActions } from "actions";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import GridSystem from "dnn-grid-system";
@@ -28,20 +28,24 @@ class ModuleSettings extends Component {
         this.setState({ permissions: newPermissions });
     }
 
-    savePermissions() {
+    savePermissions(closeOnSave) {
         const {props, state} = this;
         let permissions = Object.assign({}, state.permissions);
 
         let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
         extensionBeingUpdated.permissions.value = permissions;
 
-        let actions = {permissions: JSON.stringify(permissions)};
+        let actions = { permissions: JSON.stringify(permissions) };
 
         props.updateExtensionBeingEdited(extensionBeingUpdated);
 
         props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex, function () {
-            utils.utilities.notify(Localization.get("UpdateComplete"));
+            utils.utilities.notify(Localization.get("EditExtension_Notify.Success"));
         }));
+        if (closeOnSave) {
+            props.dispatch(VisiblePanelActions.selectPanel(0));
+            props.dispatch(ExtensionActions.selectEditingTab(0));
+        }
     }
 
     render() {
@@ -55,8 +59,8 @@ class ModuleSettings extends Component {
                     onPermissionsChanged={this.onPermissionsChanged.bind(this)} />
                 <GridCell className="actions-row">
                     <Button onClick={props.onCancel.bind(this)}>{Localization.get("Cancel")}</Button>
-                    <Button type="primary" onClick={this.savePermissions.bind(this, true)}>Save & Close</Button>
-                    <Button type="primary" onClick={this.savePermissions.bind(this)}>{Localization.get("Save")}</Button>
+                    <Button type="primary" onClick={this.savePermissions.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>
+                    <Button type="primary" onClick={this.savePermissions.bind(this, false)}>{Localization.get("Save")}</Button>
                 </GridCell>
             </GridCell>
         );
@@ -65,7 +69,10 @@ class ModuleSettings extends Component {
 
 ModuleSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    extensionBeingEdited: PropTypes.object
+    onCancel: PropTypes.func,
+    updateExtensionBeingEdited: PropTypes.func,
+    extensionBeingEdited: PropTypes.object,
+    extensionBeingEditedIndex: PropTypes.object
 };
 
 function mapStateToProps(state) {

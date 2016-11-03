@@ -55,7 +55,7 @@ class Controls extends Component {
     confirmAction(callback) {
         const { props } = this;
         if (props.controlFormIsDirty) {
-            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+            utilities.utilities.confirm(Localization.get("UnsavedChanges.HelpText"), Localization.get("UnsavedChanges.Confirm"), Localization.get("UnsavedChanges.Cancel"), () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setControlFormDirt(false));
             });

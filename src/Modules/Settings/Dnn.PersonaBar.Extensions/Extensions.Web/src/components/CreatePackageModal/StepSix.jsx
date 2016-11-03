@@ -31,7 +31,7 @@ const StepSix = ({onClose, logs}) => (
             </Scrollbars>
         </GridCell>
         <GridCell className="modal-footer">
-            <Button type="primary" onClick={onClose}>Close</Button>
+            <Button type="primary" onClick={onClose}>{Localization.get("Done.Button")}</Button>
         </GridCell>
     </GridCell>
 );
