@@ -104,8 +104,8 @@ class LanguageRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component1"}>
-                <div className={"collapsible-header1 " + !opened} >
+            <div className={"collapsible-component-language"}>
+                <div className={"collapsible-header-language " + !opened} >
                     <div className={"row"}>
                         <div className="language-item item-row-name">
                             {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}

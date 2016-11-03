@@ -76,11 +76,25 @@ class LanguagesPanel extends Component {
     }
 
     toggle(openId, mode) {
-        if (openId !== "") {
-            this.uncollapse(openId);
-            this.setState({
-                openMode: mode
+        const {props, state} = this;
+        if (props.languageClientModified) {
+            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                props.dispatch(SiteSettingsActions.cancelLanguageClientModified());
+                if (openId !== "") {
+                    this.uncollapse(openId);
+                    this.setState({
+                        openMode: mode
+                    });
+                }
             });
+        }
+        else {
+            if (openId !== "") {
+                this.uncollapse(openId);
+                this.setState({
+                    openMode: mode
+                });
+            }
         }
     }
 
@@ -201,13 +215,15 @@ LanguagesPanel.propTypes = {
     tabIndex: PropTypes.number,
     languageList: PropTypes.array,
     portalId: PropTypes.number,
-    languageDisplayMode: PropTypes.string
+    languageDisplayMode: PropTypes.string,
+    languageClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
         languageList: state.siteSettings.languageList,
-        tabIndex: state.pagination.tabIndex
+        tabIndex: state.pagination.tabIndex,
+        languageClientModified: state.siteSettings.languageClientModified
     };
 }
 
