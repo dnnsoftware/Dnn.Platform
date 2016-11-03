@@ -107,9 +107,19 @@ class EditableField extends Component {
         return <div className="edit-button" onClick={this.toggleEditMode.bind(this) } dangerouslySetInnerHTML={{ __html: EditIcon }}></div>;
     }
 
+    getUrl(text) {
+        if (!text.startsWith("http://") || !text.startsWith("https://")) {
+            return "http://" + text;
+        }
+        return text;
+    }
+
     getEditableValue() {
-        const {state} = this;
-        return <span className="editable-value">{state.value}</span>;
+        const {props, state} = this;
+        if (!props.isUrl) {
+            return <span className="editable-value">{state.value}</span>;
+        }
+        return <span className="editable-value"><a href={this.getUrl(state.value)} target="_blank">{state.value}</a></span>;
     }
 
     render() {
@@ -138,11 +148,13 @@ EditableField.PropTypes = {
     inputType: PropTypes.string,
     onEnter: PropTypes.func,
     editable: PropTypes.bool,
-    helpText: PropTypes.string
+    helpText: PropTypes.string,
+    isUrl: PropTypes.bool.isRequired 
 };
 
 EditableField.defaultProps = {
-    editable: true
+    editable: true,
+    isUrl: false
 };
 
 export default EditableField;
