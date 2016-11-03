@@ -336,16 +336,16 @@ define(['jquery'], function ($) {
                         } else if (topMenuItem.menuItems.length <= 14) {
                             firstColumn  = topMenuItem.menuItems.splice(0, 7);
                             topMenuItem.menuItems = [firstColumn, topMenuItem.menuItems];
-                            topMenuItem.css += " two-columns";
+                            topMenuItem.css += " two-columns-menu";
                         } else if (topMenuItem.menuItems.length <= 18) {
                             firstColumn = topMenuItem.menuItems.splice(0, 9);
                             topMenuItem.menuItems = [firstColumn, topMenuItem.menuItems];
-                            topMenuItem.css += " two-columns";
+                            topMenuItem.css += " two-columns-menu";
                         } else {
                             firstColumn = topMenuItem.menuItems.splice(0, 7);
                             secondColumn = topMenuItem.menuItems.splice(0, 7);
                             topMenuItem.menuItems = [firstColumn, secondColumn, topMenuItem.menuItems];
-                            topMenuItem.css += " three-columns";
+                            topMenuItem.css += " three-columns-menu";
                         }
 
                         menu.menuItems.push(topMenuItem);

@@ -34,6 +34,9 @@ define(['jquery',
                     window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
                 }
 
+                if (typeof callback === 'function') {
+                    callback();
+                }
             },
 
             initMobile: function (wrapper, util, params, callback) {
@@ -49,6 +52,10 @@ define(['jquery',
                 if (optin && optin.load) {
                     var mode = getOptInMode();
                     optin.load(mode);
+                }
+
+                if (typeof callback === 'function') {
+                    callback();
                 }
             },
 

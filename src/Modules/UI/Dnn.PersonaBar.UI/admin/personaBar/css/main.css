@@ -247,57 +247,57 @@ a.plainbtn {
         }
 
 /* basic layout */
-div.two-columns {
+.two-columns {
     display: block;
     width: 400px;
     float: left;
 }
 
-div.two-columns > h3 {
+.two-columns > h3 {
     font-size: 20px;
     margin: 3px 0 20px 0;
     letter-spacing: .5px;
     font-weight: normal;
 }
 
-div.two-columns > ul.right.pager {
+.two-columns > ul.right.pager {
     margin-right: 30px;
 }
 
-div.two-columns > ul.right.pager > li > a {
+.two-columns > ul.right.pager > li > a {
     margin-right: -3px;
 }
 
-div.two-columns > ul.right.pager > li > a.prev {
+.two-columns > ul.right.pager > li > a.prev {
     border-right: none;
 }
 
-div.three-columns {
+.three-columns {
     display: block;
     width: 266px;
     float: left;
     margin-bottom: 25px;
 }
 
-div.four-columns {
+.four-columns {
     display: block;
     width: 199px;
     float: left;
 }
 
-div.four-columns > h4 {
+.four-columns > h4 {
     display: block;
     margin: 15px;
 }
 
-div.four-columns > select {
+.four-columns > select {
     margin: 0 10px 0 10px;
     padding: 4px;
     border: 1px solid #ddd;
     width: 170px;
 }
 
-div.four-columns > ul {
+.four-columns > ul {
     list-style-type: none;
     margin: 15px;
     padding: 5px 0 10px 0;
@@ -305,19 +305,19 @@ div.four-columns > ul {
     border-radius: 2px;
 }
 
-div.four-columns > ul > li {
+.four-columns > ul > li {
     list-style-type: none;
     display: block;
     padding: 8px 10px 0 10px;
 }
 
-div.four-columns > ul > li > input[type="checkbox"] {
+.four-columns > ul > li > input[type="checkbox"] {
     display: inline-block;
     vertical-align: top;
     margin-right: 5px;
 }
 
-div.four-columns > ul > li > label {
+.four-columns > ul > li > label {
     display: inline-block;
     vertical-align: top;
     overflow: hidden;
@@ -819,17 +819,17 @@ transform: rotate(180deg);
     margin-top: 20px;
     padding-top: 20px;
 }
-.btn_panel.two-columns .hovermenu {
+.btn_panel.two-columns-menu .hovermenu {
     width: 363px;
 }
-.btn_panel.three-columns .hovermenu {
+.btn_panel.three-columns-menu .hovermenu {
     width: 491px;
 }
-.btn_panel.two-columns .hovermenu > ul, .btn_panel.three-columns .hovermenu > ul {
+.btn_panel.two-columns-menu .hovermenu > ul, .btn_panel.three-columns-menu .hovermenu > ul {
     width: 126px;
     float: left;
 }
-.btn_panel.two-columns .hovermenu > ul:first-of-type, .btn_panel.three-columns .hovermenu > ul:first-of-type {
+.btn_panel.two-columns-menu .hovermenu > ul:first-of-type, .btn_panel.three-columns-menu .hovermenu > ul:first-of-type {
     width: 163px;
 }
 
