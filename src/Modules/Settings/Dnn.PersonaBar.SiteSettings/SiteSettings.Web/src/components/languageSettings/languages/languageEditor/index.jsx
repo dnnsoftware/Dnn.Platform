@@ -177,7 +177,7 @@ class LanguageEditor extends Component {
                     value={this.getLanguageValue(state.languageDetail.Code)}
                     onSelect={this.onSettingChange.bind(this, "Name")}
                     enabled={props.id === "add"}
-                    />                
+                    />
             </InputGroup>
         </div>;
         const columnTwo = <div className="right-column">
@@ -270,11 +270,16 @@ class LanguageEditor extends Component {
         let {state, props} = this;
         /* eslint-disable react/no-danger */
         if (state.languageDetail !== undefined || props.id === "add") {
-            if (props.id === "add") {
-                return this.renderNewForm();
+            if (props.openMode === 1) {
+                if (props.id === "add") {
+                    return this.renderNewForm();
+                }
+                else {
+                    return this.renderEditForm();
+                }
             }
-            else {
-                return this.renderEditForm();
+            else if (props.openMode === 2) {
+                return <div>Translator</div>;
             }
         }
         else return <div />;
@@ -287,7 +292,7 @@ LanguageEditor.propTypes = {
     languageDetail: PropTypes.object,
     languageId: PropTypes.number,
     fallbacks: PropTypes.array,
-    fullLanguageList: PropTypes.array,    
+    fullLanguageList: PropTypes.array,
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
     id: PropTypes.string,

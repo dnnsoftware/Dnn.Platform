@@ -1638,7 +1638,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Languages = LocaleController.Instance.GetLocales(pid).Values.Select(l => new
+                    Languages = LocaleController.Instance.GetLocales(Null.NullInteger).Values.Select(l => new
                     {
                         l.LanguageId,
                         Icon = string.IsNullOrEmpty(l.Code) ? "/images/Flags/none.gif" : string.Format("/images/Flags/{0}.gif", l.Code),

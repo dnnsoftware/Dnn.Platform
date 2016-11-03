@@ -156,7 +156,7 @@ class LanguagesPanel extends Component {
                 <div className="language-items">
                     <div className="AddItemRow">
                         <div className="sectionTitle-languages">{resx.get("Languages")}</div>
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add", 1)}>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                             </div> Add Language
                         </div>
