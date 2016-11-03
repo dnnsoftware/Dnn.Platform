@@ -333,12 +333,12 @@ define(['jquery'], function ($) {
                             topMenuItem.menuItems = [];
                         } else if (topMenuItem.menuItems.length < 9) {
                             topMenuItem.menuItems = [topMenuItem.menuItems];
-                        } else if (topMenuItem.menuItems.length <= 14) {
-                            firstColumn  = topMenuItem.menuItems.splice(0, 7);
-                            topMenuItem.menuItems = [firstColumn, topMenuItem.menuItems];
-                            topMenuItem.css += " two-columns-menu";
                         } else if (topMenuItem.menuItems.length <= 18) {
-                            firstColumn = topMenuItem.menuItems.splice(0, 9);
+                            var count = topMenuItem.menuItems.length / 2;
+                            if (topMenuItem.menuItems.length % 2 !== 0) {
+                                count++;
+                            }
+                            firstColumn = topMenuItem.menuItems.splice(0, count);
                             topMenuItem.menuItems = [firstColumn, topMenuItem.menuItems];
                             topMenuItem.css += " two-columns-menu";
                         } else {

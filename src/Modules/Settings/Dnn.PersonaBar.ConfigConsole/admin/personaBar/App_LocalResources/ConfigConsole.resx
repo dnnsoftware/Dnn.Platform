@@ -190,12 +190,12 @@
     <value>Configuration Manager</value>
   </data>
   <data name="nav_ConfigConsole.Text" xml:space="preserve">
-    <value>Config Console</value>
+    <value>Config Manager</value>
   </data>
   <data name="ConfigConsole.Text" xml:space="preserve">
     <value>Configuration Manager</value>
   </data>
-    <data name="SaveButton.Text" xml:space="preserve">
+  <data name="SaveButton.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
   <data name="CancelButton.Text" xml:space="preserve">

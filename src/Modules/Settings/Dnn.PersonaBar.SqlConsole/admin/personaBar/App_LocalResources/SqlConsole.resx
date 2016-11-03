@@ -121,7 +121,7 @@
     <value>Connection:</value>
   </data>
   <data name="nav_SqlConsole.Text" xml:space="preserve">
-    <value>Sql Console</value>
+    <value>SQL Console</value>
   </data>
   <data name="Query.Text" xml:space="preserve">
     <value>Query:</value>

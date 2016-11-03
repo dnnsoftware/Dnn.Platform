@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="nav_Seo.Text" xml:space="preserve">
-    <value>Seo</value>
+    <value>S E O</value>
   </data>
   <data name="URLManagementTab.Text" xml:space="preserve">
     <value>URL Management</value>
@@ -135,7 +135,7 @@
   <data name="SitemapSettingsTab.Text" xml:space="preserve">
     <value>Sitemap Settings</value>
   </data>
-    <data name="minusCharacter.Text" xml:space="preserve">
+  <data name="minusCharacter.Text" xml:space="preserve">
     <value>"-" e.g. page-name</value>
   </data>
   <data name="underscoreCharacter.Text" xml:space="preserve">
@@ -170,7 +170,8 @@
   </data>
   <data name="autoAsciiConvertLabel.Text" xml:space="preserve">
     <value>Convert Accented Characters</value>
-  </data><data name="setDefaultSiteLanguageLabel.Help" xml:space="preserve">
+  </data>
+  <data name="setDefaultSiteLanguageLabel.Help" xml:space="preserve">
     <value>When checked, the default language for this site will always be set in the rewritten URL when no other language is found.</value>
   </data>
   <data name="setDefaultSiteLanguageLabel.Text" xml:space="preserve">

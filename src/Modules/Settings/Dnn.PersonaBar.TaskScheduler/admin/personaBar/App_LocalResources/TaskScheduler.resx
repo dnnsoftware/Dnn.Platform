@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ContentOptions.Action" xml:space="preserve">
     <value>View Schedule Status</value>
@@ -211,10 +211,10 @@
     <value>This is the full class name followed by the assembly name.  E.g. "DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE"</value>
   </data>
   <data name="plServers.Text" xml:space="preserve">
-    <value>Run on Servers</value>
+    <value>Server Name:</value>
   </data>
   <data name="plServers.Help" xml:space="preserve">
-    <value>Select the web server(s) that this schedule should run on.  Leave empty to run on all servers.</value>
+    <value>Filter scheduled tasks by a single server or choose All to view all tasks.</value>
   </data>
   <data name="Seconds.Text" xml:space="preserve">
     <value>Seconds</value>
@@ -259,13 +259,7 @@
     <value>The values for frequency and retry are invalid as the retry interval exceeds the frequency interval.</value>
   </data>
   <data name="AddContent.Action" xml:space="preserve">
-    <value>Add Item to Schedule</value>
-  </data>
-  <data name="ContentOptions.Action" xml:space="preserve">
-    <value>View Schedule Status</value>
-  </data>
-  <data name="ScheduleHistory.Action" xml:space="preserve">
-    <value>View Schedule History</value>
+    <value>Add Item To Schedule</value>
   </data>
   <data name="Type.Header" xml:space="preserve">
     <value>Type</value>
@@ -283,7 +277,7 @@
     <value>RETRY TIME LAPSE</value>
   </data>
   <data name="NextStart.Header" xml:space="preserve">
-    <value>NEXT START</value>
+    <value>Next Start</value>
   </data>
   <data name="NextStart.Label" xml:space="preserve">
     <value>Next Start</value>
@@ -309,11 +303,8 @@
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Schedule</value>
   </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
-  </data>
   <data name="Name.Header" xml:space="preserve">
-    <value>NAME</value>
+    <value>Task Name</value>
   </data>
   <data name="History.Text" xml:space="preserve">
     <value>View History</value>
@@ -342,12 +333,6 @@
   <data name="Settings.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="plServers.Text" xml:space="preserve">
-    <value>Server Name:</value>
-  </data>
-  <data name="plServers.Help" xml:space="preserve">
-    <value>Filter scheduled tasks by a single server or choose All to view all tasks.</value>
-  </data>
   <data name="plScheduleAppStartDelay.Text" xml:space="preserve">
     <value>Schedule Delay:</value>
   </data>
@@ -357,20 +342,14 @@
   <data name="ScheduleAppStartDelayValidation.Text" xml:space="preserve">
     <value>Value should be in minutes.</value>
   </data>
-  <data name="AddContent.Action" xml:space="preserve">
-    <value>Add Item To Schedule</value>
-  </data>
-  <data name="ContentOptions.Action" xml:space="preserve">
-    <value>View Schedule Status</value>
-  </data>
   <data name="Started.Header" xml:space="preserve">
-    <value>Started: </value>
+    <value>Started</value>
   </data>
   <data name="Ended.Header" xml:space="preserve">
     <value>Ended</value>
   </data>
   <data name="Duration.Header" xml:space="preserve">
-    <value>Duration (seconds): </value>
+    <value>Duration (seconds)</value>
   </data>
   <data name="Succeeded.Header" xml:space="preserve">
     <value>Succeeded</value>
@@ -384,9 +363,6 @@
   <data name="ControlTitle_history.Text" xml:space="preserve">
     <value>Schedule History</value>
   </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
-  </data>
   <data name="Description.Header" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -395,9 +371,6 @@
   </data>
   <data name="Server.Header" xml:space="preserve">
     <value>Ran On Server</value>
-  </data>
-  <data name="AddContent.Action" xml:space="preserve">
-    <value>Add Item To Schedule</value>
   </data>
   <data name="lblStatusLabel.Text" xml:space="preserve">
     <value>Status:</value>
@@ -420,15 +393,6 @@
   <data name="ScheduleID.Header" xml:space="preserve">
     <value>ID: </value>
   </data>
-  <data name="Type.Header" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="Started.Header" xml:space="preserve">
-    <value>Started</value>
-  </data>
-  <data name="Duration.Header" xml:space="preserve">
-    <value>Duration (seconds)</value>
-  </data>
   <data name="ObjectDependencies.Header" xml:space="preserve">
     <value>Object Dependencies: </value>
   </data>
@@ -438,17 +402,11 @@
   <data name="Thread.Header" xml:space="preserve">
     <value>Thread: </value>
   </data>
-  <data name="Notes.Header" xml:space="preserve">
-    <value>Notes</value>
-  </data>
   <data name="Servers.Header" xml:space="preserve">
     <value>Servers: </value>
   </data>
   <data name="lblQueue.Text" xml:space="preserve">
     <value>Items in Queue</value>
-  </data>
-  <data name="NextStart.Header" xml:space="preserve">
-    <value>Next Start</value>
   </data>
   <data name="Overdue.Header" xml:space="preserve">
     <value>Overdue (seconds): </value>
@@ -462,14 +420,8 @@
   <data name="DisabledMessage.Text" xml:space="preserve">
     <value>Scheduler is currently disabled.</value>
   </data>
-  <data name="Disabled.Text" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
   <data name="ManuallyStopped.Text" xml:space="preserve">
     <value>Manually stopped from scheduler status page</value>
-  </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
   </data>
   <data name="cmdStart.Text" xml:space="preserve">
     <value>Start</value>
@@ -482,12 +434,6 @@
   </data>
   <data name="ControlTitle_status.Text" xml:space="preserve">
     <value>Schedule Status</value>
-  </data>
-  <data name="ScheduleHistory.Action" xml:space="preserve">
-    <value>View Schedule History</value>
-  </data>
-  <data name="Name.Header" xml:space="preserve">
-    <value>Task Name</value>
   </data>
   <data name="Stop.Header" xml:space="preserve">
     <value>Stop</value>
@@ -534,7 +480,7 @@
   <data name="SHUTTING_DOWN.Text" xml:space="preserve">
     <value>SHUTTING DOWN</value>
   </data>
-   <data name="STOPPED.Text" xml:space="preserve">
+  <data name="STOPPED.Text" xml:space="preserve">
     <value>STOPPED</value>
   </data>
   <data name="SchedulerUpdateSuccess.Text" xml:space="preserve">
@@ -589,7 +535,7 @@
     <value>Task Listed by Most Current</value>
   </data>
   <data name="nav_TaskScheduler.Text" xml:space="preserve">
-    <value>Task Scheduler</value>
+    <value>Scheduler</value>
   </data>
   <data name="ScheduleItemUpdateSuccess.Text" xml:space="preserve">
     <value>Schedule item updated successfully.</value>
