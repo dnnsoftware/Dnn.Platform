@@ -86,7 +86,7 @@ class Theme extends Component {
             <ul className={(isHost || theme.level === 1) ? '' : 'short'}>
                 <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
                 <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
-                {(isHost || theme.level === 1) && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
+                {((isHost || theme.level === 1) && theme.canDelete)  && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }

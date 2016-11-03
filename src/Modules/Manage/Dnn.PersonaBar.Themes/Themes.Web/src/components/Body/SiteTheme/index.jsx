@@ -33,7 +33,7 @@ class SiteTheme extends Component {
         return (
             <GridCell className="site-theme">
                 <GridCell columnSize={168} type="px">
-                    <CurrentTheme theme={props.currentTheme} />
+                    <CurrentTheme />
                 </GridCell>
                 <GridCell className="site-theme-tabs" columnSize={560} type="px">
                     <div className="site-theme-title">
@@ -42,8 +42,8 @@ class SiteTheme extends Component {
                     </div>
                     <Tabs tabHeaders={[Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]}
                             type="secondary">
-                        <ThemeFileList theme={props.currentTheme} type={0} />
-                        <ThemeFileList theme={props.currentTheme} type={1} />
+                        <ThemeFileList type={0} />
+                        <ThemeFileList type={1} />
                         <ThemeSettings />
                     </Tabs>
                 </GridCell>

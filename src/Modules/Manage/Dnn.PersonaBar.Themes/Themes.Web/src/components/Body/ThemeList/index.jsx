@@ -22,11 +22,17 @@ class ThemeList extends Component {
         const {props, state} = this;
 
         return (
-            <GridCell  className="theme-list">
-                {props.dataSource.map((theme, index) => {
-                    return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
-                }) }
-            </GridCell>
+            <Scrollbars
+                    className="theme-list"
+                    autoHeight
+                    autoHeightMin={0}
+                    autoHeightMax={460}>
+                <GridCell>
+                    {props.dataSource.map((theme, index) => {
+                        return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
+                    }) }
+                </GridCell>
+            </Scrollbars>
         );
     }
 }
