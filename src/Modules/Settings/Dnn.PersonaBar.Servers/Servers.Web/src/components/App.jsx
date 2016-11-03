@@ -14,7 +14,25 @@ const restartAppButtonStyle = {
 };
 
 class App extends Component { 
+
+    constructor() {
+        super();
+        this.state = {
+            serverInfoLoaded: false
+        };
+    }
+
+    componentDidMount() {
+        if (!this.state.serverInfoLoaded) {
+            this.props.onLoadServersInfo();
+        }
+    }
+
     componentWillReceiveProps(newProps) {  
+        if (!this.state.serverInfoLoaded && newProps.serversInfo) {
+            this.setState({serverInfoLoaded: true});
+        }
+
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
             utils.notify(newProps.infoMessage);
         }
@@ -30,15 +48,20 @@ class App extends Component {
 
     render() {
         const {props} = this;
+        const buttonVisible = !this.state.serverInfoLoaded || props.serversInfo.serversCount <= 1;
         return (
             <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={true}>
                     <SocialPanelHeader title="Servers">
-                        <Button type="secondary" size="large" 
-                            onClick={props.onClearCacheClicked}>{localization.get("clearCacheButtonLabel")}</Button>
-                        <Button type="secondary" size="large" 
-                            onClick={props.onRestartApplicationClicked} 
-                            style={restartAppButtonStyle}>{localization.get("restartApplicationButtonLabel")}</Button>                        
+                        {buttonVisible && 
+                            <Button type="secondary" size="large" 
+                                onClick={props.onClearCacheClicked}>{localization.get("clearCacheButtonLabel")}</Button>
+                        }
+                        {buttonVisible && 
+                            <Button type="secondary" size="large" 
+                                onClick={props.onRestartApplicationClicked} 
+                                style={restartAppButtonStyle}>{localization.get("restartApplicationButtonLabel")}</Button>
+                        }                        
                     </SocialPanelHeader>
                     <Body />
                 </PersonaBarPage>                
@@ -54,7 +77,9 @@ App.propTypes = {
     onRestartApplicationClicked: PropTypes.func.isRequired,
     reloadPage: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
-    infoMessage: PropTypes.string
+    infoMessage: PropTypes.string,
+    serversInfo: PropTypes.object,
+    onLoadServersInfo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -63,7 +88,8 @@ function mapStateToProps(state) {
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
         reloadPage: state.server.reloadPage,
         errorMessage: state.server.errorMessage,
-        infoMessage: state.server.infoMessage
+        infoMessage: state.server.infoMessage,
+        serversInfo: state.server.serversInfo
     };
 }
 
@@ -71,7 +97,8 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRestartApplicationClicked: ServerActions.restartApplication,
-            onClearCacheClicked: ServerActions.clearCache
+            onClearCacheClicked: ServerActions.clearCache,
+            onLoadServersInfo: ServerActions.getServersInfo
         }, dispatch)
     };
 }
