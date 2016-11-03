@@ -31,6 +31,7 @@ const CheckMarkIcon = require(`!raw!./svg/checkmark.svg`);
 const ClockStopIcon = require(`!raw!./svg/clock_stop.svg`);
 const CrossOutIcon = require(`!raw!./svg/cross_out.svg`);
 const CycleIcon = require(`!raw!./svg/cycle.svg`);
+const DragRowIcon = require(`!raw!./svg/drag_row.svg`);
 const ErrorStateIcon = require(`!raw!./svg/error_state.svg`);
 const EyeIcon = require(`!raw!./svg/eye.svg`);
 const FolderIcon = require(`!raw!./svg/folder.svg`);
@@ -83,6 +84,7 @@ export {
     ClockStopIcon,
     CrossOutIcon,
     CycleIcon,
+    DragRowIcon,
     ErrorStateIcon,
     EyeIcon,
     FolderIcon,
