@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, SettingsIcon, UsersIcon, ActivityIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon } from "dnn-svg-icons";
 
 class LanguageRow extends Component {
     componentWillMount() {
@@ -114,7 +114,7 @@ class LanguageRow extends Component {
                             {this.getBooleanDisplay(props.enabled)}
                         </div>
                         <div className="language-item item-row-actionButtons">
-                            <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: ActivityIcon }} onClick={props.onOpenEditor.bind(this)}></div>
+                            <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor.bind(this)}></div>
                             {!props.isDefault &&
                                 <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
                             }
