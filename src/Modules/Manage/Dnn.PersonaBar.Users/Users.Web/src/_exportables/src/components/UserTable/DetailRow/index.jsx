@@ -90,7 +90,7 @@ class DetailsRow extends Component {
     getUserColumns(user, id, opened) {
         let userActions = this.getUserActions(user, opened);
         let extraColumns = this.props.getUserColumns && this.props.getUserColumns(user);
-        let columnSize = 100 / ((extraColumns != undefined && extraColumns != null ? extraColumns.length : 0) + 5);
+        let columnSize = 100 / ((extraColumns != undefined && extraColumns != null ? extraColumns.length : 0) + 4);
         let userColumns = [
             {
                 index: 5,
