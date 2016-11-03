@@ -6,8 +6,8 @@ namespace Dnn.PersonaBar.Users.Components
 {
     public interface IUsersController
     {
-        IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, out int totalRecords);
-        IEnumerable<KeyValuePair<string, int>> GetUserFilters();
+        IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords);
+        IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser= false);
         UserDetailDto GetUserDetail(int portalId, int userId);
         bool ChangePassword(int portalId, int userId, string newPassword, out string errorMessage);
         UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto);

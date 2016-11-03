@@ -118,7 +118,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Filter = filter
                 };
 
-                var results = Components.UsersController.Instance.GetUsers(getUsersContract, out totalRecords);
+                var results = Components.UsersController.Instance.GetUsers(getUsersContract, UserInfo.IsSuperUser, out totalRecords);
                 var response = new
                 {
                     Success = true,
@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var response = new
                 {
                     Success = true,
-                    Results = Components.UsersController.Instance.GetUserFilters()
+                    Results = Components.UsersController.Instance.GetUserFilters(UserInfo.IsSuperUser)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);

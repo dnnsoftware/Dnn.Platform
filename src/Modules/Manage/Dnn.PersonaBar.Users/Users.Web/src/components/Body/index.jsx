@@ -86,7 +86,7 @@ class Body extends Component {
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable"/>
                     {
-                        state.searchParameters.filter === 0 && <div className="users-paging">
+                        (state.searchParameters.filter === 0 || state.searchParameters.filter === 3) && <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 
                                 showSummary={true} 
                                 showPageInfo={false}
