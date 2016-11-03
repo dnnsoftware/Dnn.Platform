@@ -68,8 +68,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "dependencies":
                                 desktopModule.Dependencies = settingValue;
                                 break;
-                            case "hostPermissions":
+                            case "hostpermissions":
                                 desktopModule.Permissions = settingValue;
+                                break;
+                            case "premiummodule":
+                                desktopModule.IsPremium = Convert.ToBoolean(settingValue);
                                 break;
                             case "shareable":
                                 desktopModule.Shareable = (ModuleSharing) Convert.ToInt32(settingValue);
@@ -94,7 +97,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                             case "deletemodulecontrol":
                                 DeleteModuleControl(Convert.ToInt32(settingValue));
                                 break;
-
                         }
                     }
 
