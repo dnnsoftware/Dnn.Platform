@@ -227,25 +227,17 @@ namespace Dnn.PersonaBar.Users.Components
             var users = new List<UserBasicDto>();
             ArrayList dbUsers = null;
             IList<UserInfo> dbUsersList = null;
+
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-//                        using (
-//                            var reader = DataProvider.Instance()
-//                                .ExecuteReader("Personabar_GetUsers", usersContract.PortalId, usersContract.SortColumn,
-//                                    usersContract.SortAscending, usersContract.PageIndex, usersContract.PageSize))
-//                        {
-//                            if (!reader.Read())
-//                            {
-//                                return CBO.FillCollection<UserBasicDto>(reader);
-//                            }
-//                            totalRecords = reader.GetInt32(0);
-//                            reader.NextResult();
-//                            return CBO.FillCollection<UserBasicDto>(reader);
-//                        }
+                case UserFilters.SuperUsers:
+                    var getSuperUsers = usersContract.Filter == UserFilters.SuperUsers;
+                    var portalId = getSuperUsers ? Null.NullInteger : usersContract.PortalId;
+                    var pageIndex = usersContract.PageIndex;
+                    var pageSize = usersContract.PageSize;
 
-                    dbUsers = UserController.GetUsers(usersContract.PortalId, usersContract.PageIndex,
-                        usersContract.PageSize, ref totalRecords, true, false);
+                    dbUsers = UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, getSuperUsers);
                     users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 case UserFilters.UnAuthorized:
@@ -259,10 +251,6 @@ namespace Dnn.PersonaBar.Users.Components
 //                    case UserFilters.Online:
 //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
 //                        break;
-                case UserFilters.SuperUsers:
-                    dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId, "Superusers");
-                    users = dbUsersList?.Select(UserBasicDto.FromUserInfo).ToList();
-                    break;
                 case UserFilters.RegisteredUsers:
                     dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId,
                         PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
