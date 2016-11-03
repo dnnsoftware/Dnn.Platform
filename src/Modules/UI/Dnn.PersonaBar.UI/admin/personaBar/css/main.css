@@ -901,8 +901,11 @@ transform: rotate(180deg);
     z-index: 1001;
     background-color: #FFF;
     min-height: 103px;
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
 }
-    
+
 .socialpanelheader > span {
     color: #b2aeae;
     text-transform: uppercase;
