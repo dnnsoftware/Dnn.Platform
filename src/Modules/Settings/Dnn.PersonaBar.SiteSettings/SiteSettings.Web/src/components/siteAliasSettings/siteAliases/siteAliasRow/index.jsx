@@ -52,7 +52,7 @@ class SiteAliasRow extends Component {
                         }
                         <div className="alias-item item-row-primary">
                             {this.getBooleanDisplay(props.isPrimary)}</div>
-                        <div className="alias-item item-row-editButton">
+                        <div className="alias-item item-row-actionButtons">
                             {props.deletable &&
                                 <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete.bind(this)}></div>
                             }

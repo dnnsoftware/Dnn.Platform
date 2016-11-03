@@ -192,6 +192,31 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("DeleteIgnoreWords", payload, callback, failureCallback);
     } 
+
+    getLanguageSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguageSettings?portalId=" + portalId, {}, callback);
+    } 
+
+    updateLanguageSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateLanguageSettings", payload, callback, failureCallback);
+    }
+
+    getLanguages(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguages?portalId=" + portalId, {}, callback);
+    } 
+
+    getLanguage(portalId, languageId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguage?portalId=" + portalId + "&languageId=" + languageId, {}, callback);
+    } 
+
+    getAllLanguages(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetAllLanguages?portalId=" + portalId, {}, callback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

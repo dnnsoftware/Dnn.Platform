@@ -6,10 +6,13 @@ import {
     siteSettings as SiteSettingsActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
+import Languages from "./languages";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
+import RadioButtons from "dnn-radio-buttons";
+import Switch from "dnn-switch";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import "./style.less";
@@ -41,7 +44,7 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;        
+        let {state} = this;
 
         this.setState({
             languageSettings: Object.assign({}, props.languageSettings)
@@ -52,7 +55,15 @@ class LanguageSettingsPanelBody extends Component {
         let {state, props} = this;
         let languageSettings = Object.assign({}, state.languageSettings);
 
-        languageSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        if (key === "LanguageDisplayMode") {
+            languageSettings[key] = event;
+        }
+        else if (key === "SiteDefaultLanguage") {
+            languageSettings[key] = event.value;
+        }
+        else {
+            languageSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        }
 
         this.setState({
             languageSettings: languageSettings
@@ -60,7 +71,7 @@ class LanguageSettingsPanelBody extends Component {
 
         props.dispatch(SiteSettingsActions.languageSettingsClientModified(languageSettings));
     }
-    
+
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
@@ -83,20 +94,121 @@ class LanguageSettingsPanelBody extends Component {
         });
     }
 
+    getLanguageOptions() {
+        const {props, state} = this;
+        let options = [];
+        if (props.languages !== undefined) {
+            options = props.languages.map((item) => {
+                if (state.languageSettings.LanguageDisplayMode === "NATIVE") {
+                    return { label: item.NativeName, value: item.Name };
+                }
+                else {
+                    return { label: item.EnglishName, value: item.Name };
+                }
+            });
+        }
+        return options;
+    }
+
+    getLanguageDisplayModes() {
+        const {props} = this;
+        let options = [];
+        if (props.languageDisplayModes !== undefined) {
+            options = props.languageDisplayModes.map((item) => {
+                return { label: item.Key, value: item.Value };
+            });
+        }
+        return options;
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
         if (state.languageSettings) {
             const columnOne = <div className="left-column">
-                
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("systemDefaultLabel.Help")}
+                        label={resx.get("systemDefaultLabel")}
+                        />
+                    <SingleLineInputWithError
+                        inputStyle={{ margin: "0" }}
+                        withLabel={false}
+                        error={false}
+                        value={state.languageSettings.SystemDefaultLanguage}
+                        enabled={false}
+                        />
+                </InputGroup>
+                <InputGroup>
+                    <Label
+                        tooltipMessage={resx.get("siteDefaultLabel.Help")}
+                        label={resx.get("siteDefaultLabel")}
+                        />
+                    <Dropdown
+                        options={this.getLanguageOptions()}
+                        value={state.languageSettings.SiteDefaultLanguage}
+                        onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
+                        enabled={!state.languageSettings.ContentLocalizationEnabled}
+                        />
+                    <RadioButtons
+                        onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
+                        options={this.getLanguageDisplayModes()}
+                        buttonGroup="languageDisplayMode"
+                        value={state.languageSettings.LanguageDisplayMode}                        
+                        />
+                </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
-                
-            </div>;           
+                <InputGroup>
+                    <div className="languageSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("plUrl.Help")}
+                            label={resx.get("plUrl")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.languageSettings.EnableUrlLanguage}
+                            onChange={this.onSettingChange.bind(this, "EnableUrlLanguage")}
+                            readOnly={state.languageSettings.ContentLocalizationEnabled}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="languageSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("detectBrowserLable.Help")}
+                            label={resx.get("detectBrowserLable")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.languageSettings.EnableBrowserLanguage}
+                            onChange={this.onSettingChange.bind(this, "EnableBrowserLanguage")}
+                            />
+                    </div>
+                </InputGroup>
+                <InputGroup>
+                    <div className="languageSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            tooltipMessage={resx.get("allowUserCulture.Help")}
+                            label={resx.get("allowUserCulture")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.languageSettings.AllowUserUICulture}
+                            onChange={this.onSettingChange.bind(this, "AllowUserUICulture")}
+                            />
+                    </div>
+                </InputGroup>
+            </div>;
 
             return (
-                <div className={styles.languageSettings}>                    
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />                    
+                <div className={styles.languageSettings}>
+                    <Languages portalId={this.props.portalId} languageDisplayMode={state.languageSettings.LanguageDisplayMode} />
+                    <div className="sectionTitle">{resx.get("LanguageSettings")}</div>
+                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.languageSettingsClientModified}
@@ -122,6 +234,8 @@ LanguageSettingsPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     languageSettings: PropTypes.object,
+    languages: PropTypes.array,
+    languageDisplayModes: PropTypes.array,
     languageSettingsClientModified: PropTypes.bool,
     portalId: PropTypes.number
 };
@@ -129,8 +243,10 @@ LanguageSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        languageSettings: state.siteSettings.settings,
-        languageSettingsClientModified: state.siteSettings.clientModified
+        languageSettings: state.siteSettings.languageSettings,
+        languages: state.siteSettings.languages,
+        languageDisplayModes: state.siteSettings.languageDisplayModes,
+        languageSettingsClientModified: state.siteSettings.languageSettingsClientModified
     };
 }
 

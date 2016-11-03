@@ -13,28 +13,23 @@
         padding: 15px 0 10px 0;
         box-sizing: border-box;
         cursor: auto;
-        .row {    
+        .row {
             float: left;
-            width: 100%;      
-            .item-row-alias {
-                width: 35%;
+            width: 100%;
+            .item-row-name {
+                width: 45%;
                 float: left;
                 padding-left: 15px;
+                .language-flag {
+                    float: left;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }
             }
-            .item-row-browser {
-                width: 12%;
-                float: left;
-            }
-            .item-row-theme {
-                width: 20%;
-                float: left;
-            }
-            .item-row-language {
-                width: 10%;
-                float: left;
-            }
-            .item-row-primary {
-                width: 10%;
+            .item-row-enabled {
+                width: 15%;
                 float: left;
                 text-align: center;
                 .checkMarkIcon {
@@ -48,22 +43,21 @@
                 }
             }
             .item-row-actionButtons {
-                width: 8%;                
+                width: 35%;
                 margin-right: 15px;
                 float: left;
                 &:not(:last-child) {
-                   float: left; 
-                   margin-right: 0px;                  
+                    float: left;
+                    margin-right: 0px;
                 }
-                .delete-icon,
-                .edit-icon {
+                .edit-icon, .editor-icon, .translator-icon {
                     margin-left: 5px;
                     float: right;
                     display: block;
                     cursor: pointer;
                     > svg {
                         width: 16px;
-                        float: left;
+                        float: right;
                         height: 16px;
                         &:hover {
                             fill: @thunder;
@@ -71,18 +65,30 @@
                         fill: @alto;
                     }
                 }
-                .delete-icon-hidden{
-                    display: none;
-                }
-                .edit-icon-active {
+                .edit-icon-active, .editor-icon-active, .translator-icon-active {
                     > svg {
                         width: 16px;
                         float: right;
-                        height: 16px;                        
+                        height: 16px;
+                        margin-left: 5px;
                         fill: @curiousBlue;
                     }
                 }
-            }            
+                .translator-icon-disable, .editor-icon-disable, .edit-icon-disable {
+                    margin-left: 5px;
+                    float: right;
+                    display: block;
+                    > svg {
+                        width: 16px;
+                        float: right;
+                        height: 16px;
+                        fill: @alto;
+                    }
+                }
+                .edit-icon-hidden, .editor-icon-hidden, .translator-icon-hidden {
+                    display: none;
+                }
+            }
             .item-row-wrapper {
                 padding: 0 5px 0 5px;
             }

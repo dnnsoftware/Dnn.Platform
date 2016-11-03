@@ -11,6 +11,7 @@ import MessagingSettings from "../messagingSettings";
 import ProfileSettings from "../profileSettings";
 import SiteAliasSettings from "../siteAliasSettings";
 import BasicSearchSettings from "../basicSearchSettings";
+import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
 import Tooltip from "dnn-tooltip";
@@ -76,7 +77,7 @@ export class Body extends Component {
                     type="primary">
                     <BasicSettings portalId={this.props.portalId} />
                     {this.renderSiteBehaviorTab()}
-                    <div />
+                    <LanguageSettings portalId={this.props.portalId} />
                     <Tabs onSelect={this.handleSelect.bind(this)}
                         tabHeaders={[resx.get("TabBasicSettings"),
                         resx.get("TabSynonyms"),

@@ -30,6 +30,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
@@ -1512,10 +1513,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetLanguageSettings
         /// <summary>
-        /// Gets profile settings
+        /// Gets language settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>profile settings</returns>
+        /// <returns>language settings</returns>
         [HttpGet]
         public HttpResponseMessage GetLanguageSettings([FromUri] int? portalId)
         {
@@ -1533,8 +1534,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Settings = new
                     {
                         portalSettings.ContentLocalizationEnabled,
-                        Localization.SystemLocale,
-                        portalSettings.DefaultLanguage,
+                        SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale) ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
+                            : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid)),
+                        SiteDefaultLanguage = portalSettings.DefaultLanguage,
+                        LanguageDisplayMode = GetLanguageDisplayMode(pid),
                         portalSettings.EnableUrlLanguage,
                         portalSettings.EnableBrowserLanguage,
                         portalSettings.AllowUserUICulture
@@ -1553,6 +1556,256 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        /// POST: api/SiteSettings/UpdateLanguageSettings
+        /// <summary>
+        /// Updates language settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateLanguageSettings(UpdateLanguageSettingsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString());
+                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString());
+
+                if (!portalSettings.ContentLocalizationEnabled)
+                {
+                    // first check whether or not portal default language has changed
+                    string newDefaultLanguage = request.SiteDefaultLanguage;
+                    if (newDefaultLanguage != portalSettings.DefaultLanguage)
+                    {
+                        var needToRemoveOldDefaultLanguage = LocaleController.Instance.GetLocales(pid).Count == 1;
+                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(portalSettings.DefaultLanguage);
+                        if (!IsLanguageEnabled(pid, newDefaultLanguage))
+                        {
+                            var language = LocaleController.Instance.GetLocale(newDefaultLanguage);
+                            Localization.AddLanguageToPortal(pid, language.LanguageId, true);
+                        }
+
+                        // update portal default language
+                        var portal = PortalController.Instance.GetPortal(PortalId);
+                        portal.DefaultLanguage = newDefaultLanguage;
+                        PortalController.Instance.UpdatePortalInfo(portal);
+
+                        if (needToRemoveOldDefaultLanguage)
+                        {
+                            Localization.RemoveLanguageFromPortal(PortalId, oldDefaultLanguage.LanguageId);
+                        }
+                    }
+
+                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString());
+                }
+
+                var oldLanguageDisplayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
+                if (request.LanguageDisplayMode != oldLanguageDisplayMode)
+                {
+                    var personalizationController = new PersonalizationController();
+                    var personalization = personalizationController.LoadProfile(UserInfo.UserID, pid);
+                    Personalization.SetProfile(personalization, "LanguageDisplayMode", "ViewType" + pid, request.LanguageDisplayMode);
+                    personalizationController.SaveProfile(personalization);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetLanguages
+        /// <summary>
+        /// Gets languages
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>languages</returns>
+        [HttpGet]
+        public HttpResponseMessage GetLanguages([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Languages = LocaleController.Instance.GetLocales(pid).Values.Select(l => new
+                    {
+                        l.LanguageId,
+                        Icon = string.IsNullOrEmpty(l.Code) ? "/images/Flags/none.gif" : string.Format("/images/Flags/{0}.gif", l.Code),
+                        l.Code,
+                        Name = Localization.GetLocaleName(l.Code, GetCultureDropDownType(pid)),
+                        Enabled = IsLanguageEnabled(pid, l.Code),
+                        IsDefault = l.Code == portalSettings.DefaultLanguage
+                    })
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetLanguage
+        /// <summary>
+        /// Gets language
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="languageId"></param>
+        /// <returns>language</returns>
+        [HttpGet]
+        public HttpResponseMessage GetLanguage([FromUri] int? portalId, [FromUri] int? languageId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var lid = languageId ?? Null.NullInteger;
+                var portalSettings = new PortalSettings(pid);
+                var language = lid != Null.NullInteger ? LocaleController.Instance.GetLocale(lid) : null;
+
+                var fallbacks = language != null ? LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger))
+                    .Where(l => l.Name != language.Code)
+                    .Select(l => new
+                    {
+                        l.NativeName,
+                        l.EnglishName,
+                        l.Name,
+                        Icon =
+                            string.IsNullOrEmpty(l.Name)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", l.Name)
+                    }).ToList() : LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger))
+                    .Select(l => new
+                    {
+                        l.NativeName,
+                        l.EnglishName,
+                        l.Name,
+                        Icon =
+                            string.IsNullOrEmpty(l.Name)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", l.Name)
+                    }).ToList();
+
+                fallbacks.Insert(0, new
+                {
+                    NativeName = Localization.GetString("System_Default", LocalResourcesFile),
+                    EnglishName = Localization.GetString("System_Default", LocalResourcesFile),
+                    Name = "",
+                    Icon = "/images/Flags/none.gif"
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Language = language != null ? new
+                    {
+                        language.NativeName,
+                        language.EnglishName,
+                        language.Code,
+                        language.Fallback,
+                        Enabled = IsLanguageEnabled(pid, language.Code),
+                        IsDefault = language.Code == portalSettings.DefaultLanguage
+                    } : new
+                    {
+                        NativeName = "",
+                        EnglishName = "",
+                        Code ="",
+                        Fallback = "",
+                        Enabled = false,
+                        IsDefault = false
+                    },
+                    SupportedFallbacks = fallbacks
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetAllLanguages
+        /// <summary>
+        /// Gets language
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>all languages</returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllLanguages([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var supportedLanguages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger));
+                var cultures = new List<CultureInfo>(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
+
+                foreach (CultureInfo info in supportedLanguages)
+                {
+                    string cultureCode = info.Name;
+                    CultureInfo culture = cultures.Where(c => c.Name == cultureCode).SingleOrDefault();
+                    if (culture != null)
+                    {
+                        cultures.Remove(culture);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    FullLanguageList = cultures.Select(c => new
+                    {
+                        c.NativeName,
+                        c.EnglishName,
+                        c.Name
+                    })
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private bool IsLanguageEnabled(int portalId, string code)
+        {
+            Locale enabledLanguage;
+            return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage);
+        }
+
+        private CultureDropDownTypes GetCultureDropDownType(int portalId)
+        {
+            CultureDropDownTypes displayType;
+            string viewTypePersonalizationKey = "ViewType" + portalId;
+            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            switch (viewType)
+            {
+                case "NATIVE":
+                    displayType = CultureDropDownTypes.NativeName;
+                    break;
+                case "ENGLISH":
+                    displayType = CultureDropDownTypes.EnglishName;
+                    break;
+                default:
+                    displayType = CultureDropDownTypes.DisplayName;
+                    break;
+            }
+            return displayType;
+        }
+
+        private string GetLanguageDisplayMode(int portalId)
+        {
+            string viewTypePersonalizationKey = "ViewType" + portalId;
+            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
         }
     }
 }
