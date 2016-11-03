@@ -804,4 +804,73 @@
   <data name="BackToSiteBehavior.Text" xml:space="preserve">
     <value>&lt; BACK TO SITE BEHAVIOR</value>
   </data>
+  <data name="NativeName.Text" xml:space="preserve">
+    <value>Native Name</value>
+  </data>
+  <data name="EnglishName.Text" xml:space="preserve">
+    <value>English Name</value>
+  </data>
+  <data name="LanguageSettings.Text" xml:space="preserve">
+    <value>SETTINGS</value>
+  </data>
+  <data name="Languages.Text" xml:space="preserve">
+    <value>LANGUAGES</value>
+  </data>
+  <data name="systemDefaultLabel.Help" xml:space="preserve">
+    <value>The SystemDefault Language is the language that the application uses if no other language is available.  It is the ultimate fallback.</value>
+  </data>
+  <data name="systemDefaultLabel.Text" xml:space="preserve">
+    <value>System Default</value>
+  </data>
+  <data name="siteDefaultLabel.Help" xml:space="preserve">
+    <value>Select the default language for the site here.  If the language is not enabled yet, it will be enabled automatically.  The default language cannot be changed once Content Localization is enabled.</value>
+  </data>
+  <data name="siteDefaultLabel.Text" xml:space="preserve">
+    <value>Site Default</value>
+  </data>
+  <data name="plUrl.Help" xml:space="preserve">
+    <value>Check this box to enable the Language Parameter in the URL.</value>
+  </data>
+  <data name="plUrl.Text" xml:space="preserve">
+    <value>Enable Language Parameter in URLs</value>
+  </data>
+  <data name="detectBrowserLable.Help" xml:space="preserve">
+    <value>Check this box to detect the language selected on the user's browser and switch the site to that language.</value>
+  </data>
+  <data name="detectBrowserLable.Text" xml:space="preserve">
+    <value>Enable Browser Language Detection</value>
+  </data>
+  <data name="allowUserCulture.Help" xml:space="preserve">
+    <value>Check this box to allow site users to select a different language for the interface than the one used for content.</value>
+  </data>
+  <data name="allowUserCulture.Text" xml:space="preserve">
+    <value>Users May Choose Interface Language</value>
+  </data>
+  <data name="NeutralCulture.Text" xml:space="preserve">
+    <value>Neutral Culture</value>
+  </data>
+  <data name="NeutralCulture.Text" xml:space="preserve">
+    <value>Neutral Culture</value>
+  </data>
+  <data name="Culture.Header" xml:space="preserve">
+    <value>CULTURE</value>
+  </data>
+  <data name="Enabled.Header.Text" xml:space="preserve">
+    <value>ENABLED</value>
+  </data>
+  <data name="fallBackLabel.Help" xml:space="preserve">
+    <value>Select the fallback language to be used if the selected language is not available.</value>
+  </data>
+  <data name="fallBackLabel.Text" xml:space="preserve">
+    <value>Fallback Language</value>
+  </data>
+  <data name="enableLanguageLabel.Text" xml:space="preserve">
+    <value>Enable Language</value>
+  </data>
+  <data name="languageLabel.Help" xml:space="preserve">
+    <value>Select the language.</value>
+  </data>
+  <data name="languageLabel.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>
