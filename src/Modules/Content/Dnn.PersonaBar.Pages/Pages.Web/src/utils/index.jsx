@@ -7,4 +7,5 @@ const utils = {
     },
     utilities: null
 };
+
 export default utils;

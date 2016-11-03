@@ -1,3 +1,5 @@
+import util from "../utils";
+
 function serializeQueryStringParameters(obj) {
     const s = [];
     for (let p in obj) {
@@ -9,7 +11,7 @@ function serializeQueryStringParameters(obj) {
 }
 
 function getServiceFramework() {
-    const sf = window.dnn.initPages().utility.sf;
+    const sf = util.utilities.sf;
 
     sf.moduleRoot = "PersonaBar/Admin";
     sf.controller = window.dnn.pages.apiController;
