@@ -913,6 +913,25 @@ const siteSettingsActions = {
                 }
             });
         };
+    },
+    addLanguage(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addLanguage(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_LANGUAGE,
+                    data: {
+                        languageClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

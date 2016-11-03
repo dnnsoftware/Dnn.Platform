@@ -95,7 +95,7 @@ class LanguageEditor extends Component {
         let {state, props} = this;
         let languageDetail = Object.assign({}, state.languageDetail);
 
-        if (key === "Name" || key === "Fallback") {
+        if (key === "Code" || key === "Fallback") {
             languageDetail[key] = event.value;
         }
         else {
@@ -155,11 +155,21 @@ class LanguageEditor extends Component {
     }
 
     getLanguageValue(code) {
+        let {props, state} = this;
         if (code) {
             return code;
         }
         else {
             let languages = this.getLanguageOptions();
+
+            if (languages.length > 0) {
+                let languageDetail = Object.assign({}, state.languageDetail);
+                languageDetail["Code"] = languages[0].value;
+                this.setState({
+                    languageDetail: languageDetail
+                });
+            }
+
             return languages.length > 0 ? languages[0].value : "";
         }
     }
@@ -175,7 +185,7 @@ class LanguageEditor extends Component {
                 <Dropdown
                     options={this.getLanguageOptions()}
                     value={this.getLanguageValue(state.languageDetail.Code)}
-                    onSelect={this.onSettingChange.bind(this, "Name")}
+                    onSelect={this.onSettingChange.bind(this, "Code")}
                     enabled={props.id === "add"}
                     />
             </InputGroup>

@@ -873,4 +873,10 @@
   <data name="languageLabel.Text" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="LanguageUpdateSuccess.Text" xml:space="preserve">
+    <value>The language has been updated.</value>
+  </data>
+  <data name="LanguageCreateSuccess.Text" xml:space="preserve">
+    <value>The language has been added.</value>
+  </data>
 </root>

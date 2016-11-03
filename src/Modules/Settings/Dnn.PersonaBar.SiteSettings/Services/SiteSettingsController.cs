@@ -1709,6 +1709,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Language = language != null ? new
                     {
+                        PortalId= pid,
                         language.NativeName,
                         language.EnglishName,
                         language.Code,
@@ -1717,9 +1718,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         IsDefault = language.Code == portalSettings.DefaultLanguage
                     } : new
                     {
+                        PortalId = pid,
                         NativeName = "",
                         EnglishName = "",
-                        Code ="",
+                        Code = "",
                         Fallback = "",
                         Enabled = false,
                         IsDefault = false
@@ -1768,6 +1770,49 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         c.Name
                     })
                 });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/AddLanguage
+        /// <summary>
+        /// Adds language
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage AddLanguage(UpdateLanguageRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+
+                var language = LocaleController.Instance.GetLocale(request.Code);
+                if (language == null)
+                {
+                    language = new Locale();
+                    language.Code = request.Code;
+                }
+                language.Code = request.Code;
+                language.Fallback = request.Fallback;
+                language.Text = CultureInfo.GetCultureInfo(request.Code).NativeName;
+                Localization.SaveLanguage(language);
+
+                if (!IsLanguageEnabled(pid, language.Code))
+                {
+                    Localization.AddLanguageToPortal(PortalId, language.LanguageId, true);
+                }
+
+                string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
+                PortalController.UpdatePortalSetting(PortalId, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {

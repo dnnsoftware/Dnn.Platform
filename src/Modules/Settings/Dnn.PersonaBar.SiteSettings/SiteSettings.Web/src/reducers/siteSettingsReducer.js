@@ -245,6 +245,10 @@ export default function siteSettings(state = {
             return { ...state,
                 languageClientModified: action.data.languageClientModified
             };
+        case ActionTypes.CREATED_SITESETTINGS_LANGUAGE:
+            return { ...state,
+                languageClientModified: action.data.languageClientModified
+            };
         default:
             return state;
     }

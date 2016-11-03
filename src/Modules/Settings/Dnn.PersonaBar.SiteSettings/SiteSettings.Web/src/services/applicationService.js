@@ -217,6 +217,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("GetAllLanguages?portalId=" + portalId, {}, callback);
     } 
+
+    addLanguage(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddLanguage", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;
