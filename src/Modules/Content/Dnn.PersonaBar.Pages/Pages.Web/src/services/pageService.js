@@ -48,7 +48,7 @@ const PageService = function () {
     const toFrontEndPage = function (page) {
         return {
             ...page,
-            schedulingEnabled: page.StartDate || page.EndDate 
+            schedulingEnabled: page.startDate || page.endDate 
         };
     }; 
 

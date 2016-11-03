@@ -61,6 +61,7 @@ class PageDetails extends Component {
                             enabled={false} />
                     </GridCell>
                 </GridSystem>
+                <div style={{clear: "both"}}></div>
             </div>
         );
     }
