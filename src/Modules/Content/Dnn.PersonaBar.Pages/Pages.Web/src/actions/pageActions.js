@@ -12,7 +12,7 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: {
-                        page: response
+                        page: PagesService.toFrontEndPage(response)
                     }
                 });  
             }).catch(() => {

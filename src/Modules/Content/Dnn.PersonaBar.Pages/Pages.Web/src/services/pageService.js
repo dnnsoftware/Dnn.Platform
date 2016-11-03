@@ -7,7 +7,7 @@ const PageService = function () {
     };
 
     const savePage = function (page) {
-        return serviceFramework.post("SavePageDetails", page);
+        return serviceFramework.post("SavePageDetails", toBackEndPage(page));
     };
 
     const getNewPage = function () {
@@ -40,14 +40,32 @@ const PageService = function () {
                 permissionDefinitions: [],
                 rolePermissions: [],
                 userPermissions: []
-            }
+            },
+            schedulingEnabled: false
+        };
+    };
+
+    const toFrontEndPage = function (page) {
+        return {
+            ...page,
+            schedulingEnabled: page.StartDate || page.EndDate 
+        };
+    }; 
+
+    const toBackEndPage = function (page) {
+        return {
+            ...page,
+            startDate: page.schedulingEnabled ? page.startDate : null,
+            endDate: page.schedulingEnabled ? page.endDate : null,
+            schedulingEnabled: undefined
         };
     };
 
     return {
         getPage,
         savePage,
-        getNewPage
+        getNewPage,
+        toFrontEndPage
     };
 };
 
