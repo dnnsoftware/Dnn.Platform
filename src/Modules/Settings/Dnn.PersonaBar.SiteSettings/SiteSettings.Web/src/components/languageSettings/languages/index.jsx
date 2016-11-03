@@ -135,7 +135,7 @@ class LanguagesPanel extends Component {
                 return (
                     <LanguageRow
                         languageId={item.LanguageId}
-                        name={item.Name}
+                        name={this.props.languageDisplayMode === "NATIVE" ? item.NativeName : item.EnglishName}
                         icon={item.Icon}
                         enabled={item.Enabled}
                         isDefault={item.IsDefault}

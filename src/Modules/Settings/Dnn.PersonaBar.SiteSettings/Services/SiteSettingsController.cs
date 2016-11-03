@@ -1643,7 +1643,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         l.LanguageId,
                         Icon = string.IsNullOrEmpty(l.Code) ? "/images/Flags/none.gif" : string.Format("/images/Flags/{0}.gif", l.Code),
                         l.Code,
-                        Name = Localization.GetLocaleName(l.Code, GetCultureDropDownType(pid)),
+                        l.NativeName,
+                        l.EnglishName,
                         Enabled = IsLanguageEnabled(pid, l.Code),
                         IsDefault = l.Code == portalSettings.DefaultLanguage
                     })
