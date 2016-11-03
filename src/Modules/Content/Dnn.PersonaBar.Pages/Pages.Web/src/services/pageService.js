@@ -28,7 +28,7 @@ const PageService = function () {
             hasChild: false,
             type: 0,
             customUrlEnabled: true,
-            pageType: "",
+            pageType: "normal",
             isCopy: false,
             trackLinks: false,
             startDate: null,

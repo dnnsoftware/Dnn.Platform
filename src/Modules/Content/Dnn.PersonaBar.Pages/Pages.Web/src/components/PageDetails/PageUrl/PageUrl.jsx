@@ -1,18 +1,20 @@
 import React, {Component, PropTypes} from "react";
-import PageStandard from "./PageStandard/PageStandard";
-import PageUrl from "./PageUrl/PageUrl";
-import PageDetailsFooter from "./PageDetailsFooter/PageDetailsFooter";
+import PageExisting from "./PageExisting/PageExisting";
+import PageFile from "./PageFile/PageFile";
+import PageExternalUrl from "./PageExternalUrl/PageExternalUrl";
+import PageUrlCommons from "./PageUrlCommons/PageUrlCommons";
+import styles from "./style.less";
 
-class PageDetail extends Component {
+class PageUrl extends Component {
 
     getDetail(pageType) {        
         switch (pageType) {
-            case "normal": 
-                return PageStandard;
             case "tab":
+                return PageExisting;
             case "url":
+                return PageExternalUrl;
             case "file":
-                return PageUrl;
+                return PageFile;
             default: 
                 throw "invalid page type";                                                                        
         }        
@@ -21,17 +23,17 @@ class PageDetail extends Component {
     render() {
         const DetailComponent = this.getDetail(this.props.page.pageType);
         return (
-            <div>
+            <div className={styles.pageUrl}>
                 <DetailComponent {...this.props} />
-                <PageDetailsFooter {...this.props} />
+                <PageUrlCommons {...this.props} />
             </div>
         );
     }
 }
 
-PageDetail.propTypes = {
+PageUrl.propTypes = {
     page: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
 };
 
-export default PageDetail;
+export default PageUrl;
