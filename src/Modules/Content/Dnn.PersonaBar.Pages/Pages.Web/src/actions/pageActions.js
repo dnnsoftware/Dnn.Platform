@@ -25,10 +25,11 @@ const pageActions = {
 
     addPage() {
         return (dispatch) => {
-            const page = PagesService.getNewPage();
-            dispatch({
-                type: ActionTypes.LOADED_PAGE,
-                data: { page }
+            PagesService.getNewPage().then(page => {
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: { page }
+                });
             });
         };
     },

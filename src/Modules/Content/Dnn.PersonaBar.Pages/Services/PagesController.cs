@@ -150,5 +150,12 @@ namespace Dnn.PersonaBar.Pages.Services
                 return Request.CreateResponse(HttpStatusCode.OK, new {Status = 1, ex.Field, ex.Message});
             }
         }
+        
+        [HttpGet]
+        public HttpResponseMessage GetDefaultPermissions()
+        {
+            var permissions = _pagesController.GetPermissionsData(0);
+            return Request.CreateResponse(HttpStatusCode.OK, permissions);
+        }
     }
 }

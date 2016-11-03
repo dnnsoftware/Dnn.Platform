@@ -11,38 +11,37 @@ const PageService = function () {
     };
 
     const getNewPage = function () {
-        return {
-            tabId: 0,
-            name: "",
-            localizedName: "",
-            alias: "",
-            title: "",
-            description: "",
-            keywords: "",
-            tags: "",
-            url: "",
-            includeInMenu: true,
-            thumbnail: "",
-            created: "",
-            hierarchy: "",
-            hasChild: false,
-            type: 0,
-            customUrlEnabled: true,
-            pageType: "normal",
-            isCopy: false,
-            trackLinks: false,
-            startDate: null,
-            endDate: null,
-            createdOnDate: "",
-            placeholderURL: "/",
-            modules: [],
-            permissions: {
-                permissionDefinitions: [],
-                rolePermissions: [],
-                userPermissions: []
-            },
-            schedulingEnabled: false
-        };
+        return serviceFramework.get("GetDefaultPermissions")
+        .then(permissions => {
+            return {
+                tabId: 0,
+                name: "",
+                localizedName: "",
+                alias: "",
+                title: "",
+                description: "",
+                keywords: "",
+                tags: "",
+                url: "",
+                includeInMenu: true,
+                thumbnail: "",
+                created: "",
+                hierarchy: "",
+                hasChild: false,
+                type: 0,
+                customUrlEnabled: true,
+                pageType: "normal",
+                isCopy: false,
+                trackLinks: false,
+                startDate: null,
+                endDate: null,
+                createdOnDate: "",
+                placeholderURL: "/",
+                modules: [],
+                permissions: permissions,
+                schedulingEnabled: false
+            };
+        });
     };
 
     const toFrontEndPage = function (page) {

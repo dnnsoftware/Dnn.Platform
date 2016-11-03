@@ -368,9 +368,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.CultureCode = PortalSettings.CultureCode;
             }
 
+            SavePagePermissions(tab, pageSettings.Permissions);
+
             var tabId = _tabController.AddTab(tab);
             tab = _tabController.GetTab(tabId, portalId);
-
+            
             AddTabExtension(tab, pageSettings);
 
             CreateOrUpdateContentItem(tab);
