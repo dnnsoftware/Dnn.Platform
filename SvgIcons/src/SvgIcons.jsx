@@ -36,6 +36,7 @@ const EyeIcon = require(`!raw!./svg/eye.svg`);
 const FolderIcon = require(`!raw!./svg/folder.svg`);
 const GlobalIcon = require(`!raw!./svg/global.svg`);
 const HistoryIcon = require(`!raw!./svg/history.svg`);
+const LanguagesIcon = require(`!raw!./svg/languages.svg`);
 const LinkIcon = require(`!raw!./svg/link.svg`);
 const LockClosedIcon = require(`!raw!./svg/lock_closed.svg`);
 const MoreMenuIcon = require(`!raw!./svg/more.svg`);
@@ -87,6 +88,7 @@ export {
     FolderIcon,
     GlobalIcon,
     HistoryIcon,
+    LanguagesIcon,
     LinkIcon,
     LockClosedIcon,
     MoreMenuIcon,
