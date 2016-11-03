@@ -120,16 +120,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static void LoadCustomSettings(int portalId, PackageInfo package, AuthenticationInfo authSystem, AuthSystemPackageDetailDto detail)
         {
+            var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
+            if (hasCustomSettings)
+            {
+                detail.SettingUrl = GetSettingUrl(portalId, package.PackageID);
+            }
+
             // special case for DNN provided external authentication systems
             switch (detail.AuthenticationType.ToLowerInvariant())
             {
-                case "dnnpro_activedirectory":
-                    var hasCustomSettings = !string.IsNullOrEmpty(authSystem.SettingsControlSrc);
-                    if (hasCustomSettings)
-                    {
-                        detail.SettingUrl = GetSettingUrl(portalId, package.PackageID);
-                    }
-                    break;
                 case "facebook":
                 case "google":
                 case "live":

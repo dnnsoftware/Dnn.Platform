@@ -10,7 +10,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -23,11 +22,9 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
 using System.Collections.Generic;
@@ -232,10 +229,8 @@ namespace Dnn.PersonaBar.Users.Services
                     UserController.UpdateUser(PortalId, user);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = false, Message = "OptionUnavailable" });
-                }
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Message = "OptionUnavailable" });
             }
             catch (Exception ex)
             {
@@ -469,7 +464,7 @@ namespace Dnn.PersonaBar.Users.Services
             catch (SqlException ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.OK,
+                return Request.CreateResponse(HttpStatusCode.BadRequest,
                     new {Success = false, Message = "Username must be unique."});
             }
             catch (Exception ex)
@@ -518,7 +513,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound"); ;
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
                 }
 
                 var allUserRoles = RoleController.Instance.GetUserRoles(user, true);

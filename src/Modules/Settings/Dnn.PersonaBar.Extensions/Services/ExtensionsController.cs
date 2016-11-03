@@ -21,7 +21,6 @@ using System.Web.Http;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components;
 using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using Dnn.PersonaBar.Extensions.Components.Editors;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
