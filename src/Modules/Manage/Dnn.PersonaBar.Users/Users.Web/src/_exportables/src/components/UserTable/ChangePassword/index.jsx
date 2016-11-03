@@ -66,10 +66,10 @@ class ChangePassword extends Component {
             this.props.dispatch(CommonUsersActions.changePassword(this.state.changePassword, (data) => {
                 if (data.Success) {
                     this.cancel();
-                    utilities.notify(Localization.get("ChangeSuccessful"));
+                    utilities.notify(Localization.get("ChangeSuccessful"), 3000);
                 }
                 else {
-                    utilities.notify(data.Message);
+                    utilities.notify(data.Message, 10000);
                 }
             }));
         }

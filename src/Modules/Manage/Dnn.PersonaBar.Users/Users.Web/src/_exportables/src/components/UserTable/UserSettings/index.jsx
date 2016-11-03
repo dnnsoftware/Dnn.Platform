@@ -99,14 +99,14 @@ class UserSettings extends Component {
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.updateUserBasicInfo(this.state.accountSettings, (data) => {
                 if (data.Success) {
-                    utilities.notify(Localization.get("UserUpdated"));
+                    utilities.notify(Localization.get("UserUpdated"), 3000);
                     let {reload} = this.state;
                     reload = true;
                     this.setState({ reload });
                     this.props.collapse();
                 }
                 else {
-                    utilities.notify(data.Message);
+                    utilities.notify(data.Message, 10000);
                 }
             }));
         }
@@ -148,22 +148,22 @@ class UserSettings extends Component {
     onForcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
             if (data.Success) {
-                utilities.notify(Localization.get("UserPasswordUpdateChanged"));
+                utilities.notify(Localization.get("UserPasswordUpdateChanged"), 3000);
                 let {userDetails} = this.state;
                 userDetails.needUpdatePassword = true;
                 this.setState({ userDetails });
             }
             else {
-                utilities.notify(data.Message);
+                utilities.notify(data.Message, 10000);
             }
         }));
     }
     onSendPasswordLink() {
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
             if (data.Success)
-                utilities.notify(Localization.get("PasswordSent"));
+                utilities.notify(Localization.get("PasswordSent"), 3000);
             else {
-                utilities.notify(data.Message);
+                utilities.notify(data.Message, 10000);
             }
         }));
     }
