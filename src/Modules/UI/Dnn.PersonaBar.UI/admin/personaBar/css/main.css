@@ -890,15 +890,6 @@ transform: rotate(180deg);
 
 /* PANEL HEADER */
 
-#dashboard .socialpanelheader, #dashboard-header.socialpanelheader {
-    padding: 34px 30px 4px 30px;
-    position: fixed;
-}
-
-#dashboard-body.socialpanelbody {
-    margin-top: 100px;
-}
-
 .ie .socialpanelheader {
     position: relative;
 }
@@ -909,15 +900,8 @@ transform: rotate(180deg);
     width: 800px;
     z-index: 1001;
     background-color: #FFF;
-    height:62px;
+    min-height: 103px;
 }
-
-    /*.socialpanelheader:after {
-        content: "\a0";
-        display: block;
-        height: 14px;
-        margin-top: -1px;
-    }*/
     
 .socialpanelheader > span {
     color: #b2aeae;
@@ -1047,7 +1031,7 @@ only screen and (min-width: 768px) and (max-width: 1024px)   {
 
 .socialpanelbody {
     z-index: 1000;
-	margin-top: 100px;
+	margin-top: 103px;
 }
 
 .ie .socialpanelbody {
