@@ -700,21 +700,31 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             $avatarImage = $('.useravatar span');
                             $avatarImage.css('background-image', 'url(\'' + config.avatarUrl + '\')');
 
-                            var $logout = $('li#Logout');
-                            $logout.off('click').click(function (evt) {
-                                evt.preventDefault();
-                                evt.stopPropagation();
+                            var retryTimes = 0;
+                            var handleLogoutFunc = function() {
+                                var $logout = $('li#Logout');
+                                if (!$logout.length && retryTimes < 3) {
+                                    setTimeout(handleLogoutFunc, 500);
+                                    retryTimes++;
+                                }
 
-                                function onLogOffSuccess() {
-                                    if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
-                                        window.top.dnn.PersonaBar.userLoggedOut = true;
-                                    }
-                                    window.top.document.location.href = window.top.document.location.href;
-                                };
+                                $logout.off('click').click(function(evt) {
+                                    evt.preventDefault();
+                                    evt.stopPropagation();
 
-                                util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess, null, null, null, null, true);
-                                return;
-                            });
+                                    function onLogOffSuccess() {
+                                        if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
+                                            window.top.dnn.PersonaBar.userLoggedOut = true;
+                                        }
+                                        window.top.document.location.href = window.top.document.location.href;
+                                    };
+
+                                    util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess, null, null, null, null, true);
+                                    return;
+                                });
+                            };
+
+                            handleLogoutFunc();
                             if (!$iframe.attr('style') || $iframe.attr('style').indexOf("width") === -1) {
                                 $iframe.width(personaBarMenuWidth);
                             }
