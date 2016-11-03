@@ -135,21 +135,23 @@ define(['jquery'], function ($) {
                     });
                 },
 
-                notify: function (text) {
+                notify: function (text, timeout) {
+                    timeout = timeout || 2000;
                     $('#notification-dialog > p').removeClass().html(text);
                     $('#notification-dialog').fadeIn(200, 'linear', function () {
                         setTimeout(function () {
                             $('#notification-dialog').fadeOut(200, 'linear');
-                        }, 2000);
+                        }, timeout);
                     });
                 },
 
-                notifyError: function (text) {
+                notifyError: function (text, timeout) {
+                    timeout = timeout || 2000;
                     $('#notification-dialog > p').removeClass().addClass('errorMessage').html(text);
                     $('#notification-dialog').fadeIn(200, 'linear', function () {
                         setTimeout(function () {
                             $('#notification-dialog').fadeOut(200, 'linear');
-                        }, 2000);
+                        }, timeout);
                     });
                 },
 
