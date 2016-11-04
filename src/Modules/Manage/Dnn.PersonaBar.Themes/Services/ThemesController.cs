@@ -145,11 +145,15 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
             {
+                if (theme.Level == ThemeLevel.Global && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "NoPermission");
+                }
+
                 _controller.DeleteThemePackage(PortalSettings, theme);
                 return Request.CreateResponse(HttpStatusCode.OK, new { });
             }

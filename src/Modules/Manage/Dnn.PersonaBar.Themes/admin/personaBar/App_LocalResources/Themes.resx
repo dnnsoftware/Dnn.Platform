@@ -216,6 +216,9 @@
   <data name="Successful.Text" xml:space="preserve">
     <value>Operation Complete!</value>
   </data>
+  <data name="NoPermission.Text" xml:space="preserve">
+    <value>You don't have permission to perform this action.</value>
+  </data>
   <data name="NoThemeFile.Text" xml:space="preserve">
     <value>No theme files exist in this theme.</value>
   </data>
