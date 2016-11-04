@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import SiteAliases from "./siteAliases";
 import InputGroup from "dnn-input-group";
@@ -36,7 +36,7 @@ class SiteAliasSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getUrlMappingSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, (data) => {
             this.setState({
                 urlMappingSettings: Object.assign({}, data.Settings)
             });
@@ -76,14 +76,14 @@ class SiteAliasSettingsPanelBody extends Component {
             urlMappingSettings: urlMappingSettings
         });
 
-        props.dispatch(SiteSettingsActions.urlMappingSettingsClientModified(urlMappingSettings));
+        props.dispatch(SiteBehaviorActions.urlMappingSettingsClientModified(urlMappingSettings));
     }
 
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteSettingsActions.updateUrlMappingSettings(state.urlMappingSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateUrlMappingSettings(state.urlMappingSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -93,7 +93,7 @@ class SiteAliasSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getUrlMappingSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, (data) => {
                 let urlMappingSettings = Object.assign({}, data.Settings);
                 this.setState({
                     urlMappingSettings
@@ -173,9 +173,9 @@ SiteAliasSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        urlMappingSettings: state.siteSettings.urlMappingSettings,
-        portalAliasMappingModes: state.siteSettings.portalAliasMappingModes,
-        urlMappingSettingsClientModified: state.siteSettings.urlMappingSettingsClientModified
+        urlMappingSettings: state.siteBehavior.urlMappingSettings,
+        portalAliasMappingModes: state.siteBehavior.portalAliasMappingModes,
+        urlMappingSettingsClientModified: state.siteBehavior.urlMappingSettingsClientModified
     };
 }
 

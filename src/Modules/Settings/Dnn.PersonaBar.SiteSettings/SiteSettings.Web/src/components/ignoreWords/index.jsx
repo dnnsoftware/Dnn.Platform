@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    search as SearchActions
 } from "../../actions";
 import IgnoreWordsRow from "./ignoreWordsRow";
 import IgnoreWordsEditor from "./ignoreWordsEditor";
@@ -36,7 +36,7 @@ class IgnoreWordsPanel extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getIgnoreWords(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
+        props.dispatch(SearchActions.getIgnoreWords(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
             this.setState({
                 ignoreWords: Object.assign({}, data.IgnoreWords)
             });
@@ -90,7 +90,7 @@ class IgnoreWordsPanel extends Component {
         const {props, state} = this;
 
         if (words.StopWordsId) {
-            props.dispatch(SiteSettingsActions.updateIgnoreWords(words, (data) => {
+            props.dispatch(SearchActions.updateIgnoreWords(words, (data) => {
                 util.utilities.notify(resx.get("IgnoreWordsUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -99,7 +99,7 @@ class IgnoreWordsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SiteSettingsActions.addIgnoreWords(words, (data) => {
+            props.dispatch(SearchActions.addIgnoreWords(words, (data) => {
                 util.utilities.notify(resx.get("IgnoreWordsCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -112,7 +112,7 @@ class IgnoreWordsPanel extends Component {
     onDeleteIgnoreWords(words) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("IgnoreWordsDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.deleteIgnoreWords(words, () => {
+            props.dispatch(SearchActions.deleteIgnoreWords(words, () => {
                 util.utilities.notify(resx.get("IgnoreWordsDeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -202,7 +202,7 @@ IgnoreWordsPanel.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        ignoreWords: state.siteSettings.ignoreWords,
+        ignoreWords: state.search.ignoreWords,
         tabIndex: state.pagination.tabIndex
     };
 }

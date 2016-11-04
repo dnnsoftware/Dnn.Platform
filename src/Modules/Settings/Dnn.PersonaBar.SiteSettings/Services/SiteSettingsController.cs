@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
@@ -1529,19 +1531,25 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("NativeName", LocalResourcesFile), "NATIVE"));
                 languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("EnglishName", LocalResourcesFile), "ENGLISH"));
 
+                dynamic settings = new ExpandoObject();
+                settings.ContentLocalizationEnabled = portalSettings.ContentLocalizationEnabled;
+                settings.SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
+                    ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
+                    : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid));
+                settings.SiteDefaultLanguage = portalSettings.DefaultLanguage;
+                settings.LanguageDisplayMode = GetLanguageDisplayMode(pid);
+                settings.EnableUrlLanguage = portalSettings.EnableUrlLanguage;
+                settings.EnableBrowserLanguage = portalSettings.EnableBrowserLanguage;
+                settings.AllowUserUICulture = portalSettings.AllowUserUICulture;
+
+                if (UserInfo.IsSuperUser)
+                {
+                    settings.EnableContentLocalization = Host.EnableContentLocalization;
+                }
+
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Settings = new
-                    {
-                        portalSettings.ContentLocalizationEnabled,
-                        SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale) ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
-                            : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid)),
-                        SiteDefaultLanguage = portalSettings.DefaultLanguage,
-                        LanguageDisplayMode = GetLanguageDisplayMode(pid),
-                        portalSettings.EnableUrlLanguage,
-                        portalSettings.EnableBrowserLanguage,
-                        portalSettings.AllowUserUICulture
-                    },
+                    Settings = settings,
                     Languages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger)).Select(l => new
                     {
                         l.NativeName,
@@ -1611,6 +1619,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     var personalization = personalizationController.LoadProfile(UserInfo.UserID, pid);
                     Personalization.SetProfile(personalization, "LanguageDisplayMode", "ViewType" + pid, request.LanguageDisplayMode);
                     personalizationController.SaveProfile(personalization);
+                }
+
+                if (UserInfo.IsSuperUser)
+                {
+                    HostController.Instance.Update("EnableContentLocalization", request.EnableContentLocalization.Value ? "Y" : "N", false);
+                    DataCache.ClearCache();
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });

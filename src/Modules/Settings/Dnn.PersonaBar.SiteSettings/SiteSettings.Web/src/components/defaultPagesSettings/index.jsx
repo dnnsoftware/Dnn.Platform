@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import MultiLineInput from "dnn-multi-line-input";
@@ -34,7 +34,7 @@ class DefaultPagesSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getDefaultPagesSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, (data) => {
             this.setState({
                 defaultPagesSettings: Object.assign({}, data.Settings)
             });
@@ -69,14 +69,14 @@ class DefaultPagesSettingsPanelBody extends Component {
             defaultPagesSettings: defaultPagesSettings
         });
 
-        props.dispatch(SiteSettingsActions.defaultPagesSettingsClientModified(defaultPagesSettings));
+        props.dispatch(SiteBehaviorActions.defaultPagesSettingsClientModified(defaultPagesSettings));
     }
 
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteSettingsActions.updateDefaultPagesSettings(state.defaultPagesSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateDefaultPagesSettings(state.defaultPagesSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -86,7 +86,7 @@ class DefaultPagesSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getDefaultPagesSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, (data) => {
                 let defaultPagesSettings = Object.assign({}, data.Settings);
                 this.setState({
                     defaultPagesSettings
@@ -305,8 +305,8 @@ DefaultPagesSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        defaultPagesSettings: state.siteSettings.defaultPagesSettings,
-        defaultPagesSettingsClientModified: state.siteSettings.defaultPagesSettingsClientModified
+        defaultPagesSettings: state.siteBehavior.defaultPagesSettings,
+        defaultPagesSettingsClientModified: state.siteBehavior.defaultPagesSettingsClientModified
     };
 }
 

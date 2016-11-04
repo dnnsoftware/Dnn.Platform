@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteInfo as SiteInfoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -38,7 +38,7 @@ class BasicSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getPortalSettings(props.portalId, (data) => {
+        props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, (data) => {
             this.setState({
                 basicSettings: Object.assign({}, data.Settings)
             });
@@ -93,7 +93,7 @@ class BasicSettingsPanelBody extends Component {
             triedToSubmit: false
         });
 
-        props.dispatch(SiteSettingsActions.portalSettingsClientModified(basicSettings));
+        props.dispatch(SiteInfoActions.portalSettingsClientModified(basicSettings));
     }
 
     getTimeZoneOptions() {
@@ -127,7 +127,7 @@ class BasicSettingsPanelBody extends Component {
             return;
         }
 
-        props.dispatch(SiteSettingsActions.updatePortalSettings(state.basicSettings, (data) => {
+        props.dispatch(SiteInfoActions.updatePortalSettings(state.basicSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -137,7 +137,7 @@ class BasicSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getPortalSettings((data) => {
+            props.dispatch(SiteInfoActions.getPortalSettings((data) => {
                 this.setState({
                     basicSettings: Object.assign({}, data.Settings)
                 });
@@ -323,10 +323,10 @@ BasicSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        basicSettings: state.siteSettings.settings,
-        timeZones: state.siteSettings.timeZones,
-        iconSets: state.siteSettings.iconSets,
-        clientModified: state.siteSettings.clientModified
+        basicSettings: state.siteInfo.settings,
+        timeZones: state.siteInfo.timeZones,
+        iconSets: state.siteInfo.iconSets,
+        clientModified: state.siteInfo.clientModified
     };
 }
 

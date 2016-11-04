@@ -9,7 +9,7 @@ import Tags from "dnn-tags";
 import InputGroup from "dnn-input-group";
 import Input from "dnn-single-line-input";
 import {
-    siteSettings as SiteSettingsActions
+    search as SearchActions
 } from "../../../actions";
 import util from "../../../utils";
 import resx from "../../../resources";
@@ -77,7 +77,7 @@ class SynonymsGroupEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SiteSettingsActions.synonymsGroupClientModified(group));
+        props.dispatch(SearchActions.synonymsGroupClientModified(group));
     }
 
     onSave(event) {
@@ -96,7 +96,7 @@ class SynonymsGroupEditor extends Component {
         const {props, state} = this;
         if (props.synonymsGroupClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteSettingsActions.cancelSynonymsGroupClientModified());
+                props.dispatch(SearchActions.cancelSynonymsGroupClientModified());
                 props.Collapse();
             });
         }
@@ -150,7 +150,7 @@ SynonymsGroupEditor.propTypes = {
 
 function mapStateToProps(state) {
     return {              
-        synonymsGroupClientModified: state.siteSettings.synonymsGroupClientModified
+        synonymsGroupClientModified: state.search.synonymsGroupClientModified
     };
 }
 

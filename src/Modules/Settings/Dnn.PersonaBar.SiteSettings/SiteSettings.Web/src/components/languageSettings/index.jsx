@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    languages as LanguagesActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import Languages from "./languages";
@@ -13,6 +13,7 @@ import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
 import RadioButtons from "dnn-radio-buttons";
 import Switch from "dnn-switch";
+import Tooltip from "dnn-tooltip";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import "./style.less";
@@ -20,12 +21,15 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let isHost = false;
+
 class LanguageSettingsPanelBody extends Component {
     constructor() {
         super();
         this.state = {
             languageSettings: undefined
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
@@ -36,7 +40,7 @@ class LanguageSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getLanguageSettings(props.portalId, (data) => {
+        props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, (data) => {
             this.setState({
                 languageSettings: Object.assign({}, data.Settings)
             });
@@ -69,14 +73,14 @@ class LanguageSettingsPanelBody extends Component {
             languageSettings: languageSettings
         });
 
-        props.dispatch(SiteSettingsActions.languageSettingsClientModified(languageSettings));
+        props.dispatch(LanguagesActions.languageSettingsClientModified(languageSettings));
     }
 
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteSettingsActions.updateLanguageSettings(state.languageSettings, (data) => {
+        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -86,12 +90,20 @@ class LanguageSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getLanguageSettings(props.portalId, (data) => {
+            props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, (data) => {
                 this.setState({
                     languageSettings: Object.assign({}, data.Settings)
                 });
             }));
         });
+    }
+
+    onCreateLanguagePack(event) {
+        const {props, state} = this;
+    }
+
+    onVerifyLanguageResources(event){
+        const {props, state} = this;
     }
 
     getLanguageOptions() {
@@ -154,7 +166,7 @@ class LanguageSettingsPanelBody extends Component {
                         onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
                         options={this.getLanguageDisplayModes()}
                         buttonGroup="languageDisplayMode"
-                        value={state.languageSettings.LanguageDisplayMode}                        
+                        value={state.languageSettings.LanguageDisplayMode}
                         />
                 </InputGroup>
             </div>;
@@ -202,6 +214,28 @@ class LanguageSettingsPanelBody extends Component {
                             />
                     </div>
                 </InputGroup>
+                {isHost &&
+                    <InputGroup>
+                        <div className="languageSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plEnableContentLocalization.Help")}
+                                label={resx.get("plEnableContentLocalization")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
+                                />
+                            <Switch
+                                labelHidden={true}
+                                value={state.languageSettings.EnableContentLocalization}
+                                onChange={this.onSettingChange.bind(this, "EnableContentLocalization")}
+                                />
+                        </div>
+                    </InputGroup>
+                }
             </div>;
 
             return (
@@ -209,13 +243,27 @@ class LanguageSettingsPanelBody extends Component {
                     <Languages portalId={this.props.portalId} languageDisplayMode={state.languageSettings.LanguageDisplayMode} />
                     <div className="sectionTitle">{resx.get("LanguageSettings")}</div>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
-                    <div className="buttons-box">
+                    <div className={isHost ? "buttons-box-alter" : "buttons-box"}>
                         <Button
                             disabled={!this.props.languageSettingsClientModified}
                             type="secondary"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
+                        {isHost &&
+                            <Button
+                                type="secondary"
+                                onClick={this.onVerifyLanguageResources.bind(this)}>
+                                {resx.get("VerifyLanguageResources")}
+                            </Button>
+                        }
+                        {isHost &&
+                            <Button
+                                type="secondary"
+                                onClick={this.onCreateLanguagePack.bind(this)}>
+                                {resx.get("CreateLanguagePack")}
+                            </Button>
+                        }
                         <Button
                             disabled={!this.props.languageSettingsClientModified}
                             type="primary"
@@ -243,10 +291,10 @@ LanguageSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        languageSettings: state.siteSettings.languageSettings,
-        languages: state.siteSettings.languages,
-        languageDisplayModes: state.siteSettings.languageDisplayModes,
-        languageSettingsClientModified: state.siteSettings.languageSettingsClientModified
+        languageSettings: state.languages.languageSettings,
+        languages: state.languages.languages,
+        languageDisplayModes: state.languages.languageDisplayModes,
+        languageSettingsClientModified: state.languages.languageSettingsClientModified
     };
 }
 

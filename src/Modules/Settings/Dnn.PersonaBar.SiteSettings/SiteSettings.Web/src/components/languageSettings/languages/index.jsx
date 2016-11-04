@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    languages as LanguagesActions
 } from "../../../actions";
 import LanguageRow from "./languageRow";
 import LanguageEditor from "./languageEditor";
@@ -34,7 +34,7 @@ class LanguagesPanel extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getLanguages(props.portalId, (data) => {
+        props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
             this.setState({
                 languageList: Object.assign({}, data.Languages)
             });
@@ -79,7 +79,7 @@ class LanguagesPanel extends Component {
         const {props, state} = this;
         if (props.languageClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteSettingsActions.cancelLanguageClientModified());
+                props.dispatch(LanguagesActions.cancelLanguageClientModified());
                 if (openId !== "") {
                     this.uncollapse(openId);
                     this.setState({
@@ -101,21 +101,21 @@ class LanguagesPanel extends Component {
     onUpdateLanguage(languageDetail) {
         const {props, state} = this;
         if (languageDetail.LanguageId && languageDetail.LanguageId !== -1) {
-            props.dispatch(SiteSettingsActions.updateLanguage(languageDetail, (data) => {
+            props.dispatch(LanguagesActions.updateLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageUpdateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getLanguages(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
             }));
         }
         else {
-            props.dispatch(SiteSettingsActions.addLanguage(languageDetail, (data) => {
+            props.dispatch(LanguagesActions.addLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageCreateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getLanguages(props.portalId));
-                props.dispatch(SiteSettingsActions.getAllLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getAllLanguages(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -222,9 +222,9 @@ LanguagesPanel.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        languageList: state.siteSettings.languageList,
+        languageList: state.languages.languageList,
         tabIndex: state.pagination.tabIndex,
-        languageClientModified: state.siteSettings.languageClientModified
+        languageClientModified: state.languages.languageClientModified
     };
 }
 

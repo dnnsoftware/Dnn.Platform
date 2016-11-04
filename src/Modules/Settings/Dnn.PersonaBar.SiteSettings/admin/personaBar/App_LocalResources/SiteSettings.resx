@@ -567,6 +567,9 @@
   <data name="SetPrimary.Text" xml:space="preserve">
     <value>Set Primary</value>
   </data>
+  <data name="UnassignPrimary.Text" xml:space="preserve">
+    <value>Unassign Primary</value>
+  </data>
   <data name="UrlMappingSettings.Text" xml:space="preserve">
     <value>URL MAPPING</value>
   </data>
@@ -849,9 +852,6 @@
   <data name="NeutralCulture.Text" xml:space="preserve">
     <value>Neutral Culture</value>
   </data>
-  <data name="NeutralCulture.Text" xml:space="preserve">
-    <value>Neutral Culture</value>
-  </data>
   <data name="Culture.Header" xml:space="preserve">
     <value>CULTURE</value>
   </data>
@@ -881,5 +881,41 @@
   </data>
   <data name="DefaultLanguage.Text" xml:space="preserve">
     <value>*NOTE: This Language is the System Default</value>
+  </data>
+  <data name="plEnableContentLocalization.Help" xml:space="preserve">
+    <value>Check this box to allow Administrators to enable content localization for their site.</value>
+  </data>
+  <data name="plEnableContentLocalization.Text" xml:space="preserve">
+    <value>Allow Content Localization</value>
+  </data>
+  <data name="GlobalSetting.Text" xml:space="preserve">
+    <value>This is a global setting. Changes to this setting will affect all of your sites.</value>
+  </data>
+  <data name="CreateLanguagePack.Text" xml:space="preserve">
+    <value>Create Language Pack</value>
+  </data>
+  <data name="VerifyLanguageResources.Text" xml:space="preserve">
+    <value>Verify Language Resource Files</value>
+  </data>
+  <data name="MissingFiles.Text">
+    <value>Missing Resource files:&amp;nbsp;</value>
+  </data>
+  <data name="MissingEntries.Text">
+    <value>Files With Missing Entries:&amp;nbsp;</value>
+  </data>
+  <data name="ObsoleteEntries.Text">
+    <value>Files With Obsolete Entries:&amp;nbsp;</value>
+  </data>
+  <data name="ControlTitle_verify.Text">
+    <value>Resource File Verifier</value>
+  </data>
+  <data name="OldFiles.Text">
+    <value>Files Older Than System Default:&amp;nbsp;</value>
+  </data>
+  <data name="DuplicateEntries.Text">
+    <value>Files With Duplicate Entries:&amp;nbsp;</value>
+  </data>
+  <data name="ErrorFiles.Text">
+    <value>Malformed Resource Files:&amp;nbsp;</value>
   </data>
 </root>

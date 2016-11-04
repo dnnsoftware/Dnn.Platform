@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    pagination as PaginationActions
 } from "../../actions";
 import BasicSettings from "../basicSettings";
 import DefaultPagesSettings from "../defaultPagesSettings";
