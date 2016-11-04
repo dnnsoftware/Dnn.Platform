@@ -100,7 +100,7 @@ class LanguagesPanel extends Component {
 
     onUpdateLanguage(languageDetail) {
         const {props, state} = this;
-        if (languageDetail.LanguageID) {
+        if (languageDetail.LanguageId && languageDetail.LanguageId !== -1) {
             props.dispatch(SiteSettingsActions.updateLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageUpdateSuccess"));
                 this.collapse();

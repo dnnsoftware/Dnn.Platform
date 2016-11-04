@@ -1710,6 +1710,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Language = language != null ? new
                     {
                         PortalId= pid,
+                        language.LanguageId,
                         language.NativeName,
                         language.EnglishName,
                         language.Code,
@@ -1719,6 +1720,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     } : new
                     {
                         PortalId = pid,
+                        LanguageId = Null.NullInteger,
                         NativeName = "",
                         EnglishName = "",
                         Code = "",
