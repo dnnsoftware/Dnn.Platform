@@ -40,9 +40,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "needUpdatePassword")]
         public bool NeedUpdatePassword { get; set; }
 
-        [DataMember(Name = "userFolder")]
-        public string UserFolder { get; set; }
-
         [IgnoreDataMember]
         public int PortalId { get; set; }
 
@@ -52,6 +49,15 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "editProfileUrl")]
         public string EditProfileUrl => UserId > 0 ? GetSettingUrl(PortalId, UserId) : null;
+
+        [DataMember(Name = "userFolder")]
+        public string UserFolder { get; set; }
+
+        [DataMember(Name = "userFolderId")]
+        public int UserFolderId { get; set; }
+
+        [DataMember(Name = "hasUserFiles")]
+        public bool HasUserFiles { get; set; }
 
         public UserDetailDto()
         {
@@ -68,6 +74,15 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             IsLocked = user.Membership.LockedOut;
             NeedUpdatePassword = user.Membership.UpdatePassword;
             UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
+            var userFolder = FolderManager.Instance.GetUserFolder(user);
+            if (userFolder != null)
+            {
+                UserFolderId = userFolder.FolderID;
+
+                //check whether user had upload files
+                var files = FolderManager.Instance.GetFiles(userFolder, true);
+                HasUserFiles = files.Any();
+            }
         }
 
         private static string GetSettingUrl(int portalId, int userId)

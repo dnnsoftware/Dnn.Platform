@@ -92,6 +92,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
             }
+            userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.RegisteredUsers)));//Temporarily removed registered users.
             return userFilters;
         }
 

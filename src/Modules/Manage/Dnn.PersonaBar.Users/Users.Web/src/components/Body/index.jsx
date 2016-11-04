@@ -9,6 +9,7 @@ import { UserTable, FiltersBar } from "dnn-users-common-components";
 import Pager from "dnn-pager";
 import "./style.less";
 import {CommonUsersActions } from "dnn-users-common-actions";
+import appSettings from "utils/applicationSettings";
 
 const searchParameters = {
     searchText: "",
@@ -75,7 +76,6 @@ class Body extends Component {
     render() {
         const {props, state} = this;
         const panelBodyMargin = state.createBoxVisible ? "without-margin" : "";
-
         return (
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
@@ -84,7 +84,7 @@ class Body extends Component {
                     </Button>
                 </SocialPanelHeader>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable ref="userTable"/>
+                    <UserTable ref="userTable" appSettings={appSettings}/>
                     {
                         (state.searchParameters.filter === 0 || state.searchParameters.filter === 3) && <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 

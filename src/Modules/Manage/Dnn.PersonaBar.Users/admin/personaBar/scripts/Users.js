@@ -18,6 +18,7 @@
         window.dnn.initUsers = function initializeUsers() {
             return {
                 utility: util,
+                settings: params.settings,
                 moduleName: 'Users'
             };
         };

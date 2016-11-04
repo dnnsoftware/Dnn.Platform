@@ -96,7 +96,9 @@ class UserMenu extends Component {
                 this.props.onClose();
                 break;
             case "PromoteToSuperUser":
-                this.PromoteToSuperUser();
+                if (this.props.appSettings.applicationSettings.settings.isHost){
+                    this.PromoteToSuperUser();
+                }
                 this.props.onClose();
                 break;
             case "ViewProfile":
@@ -198,10 +200,9 @@ class UserMenu extends Component {
             { key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 },
             { key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }
         ];
-
-        //if (1 === 1) {
-        visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
-        //}
+        if (this.props.appSettings.applicationSettings.settings.isHost){
+            visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
+        }
         if (!this.state.userDetails.needUpdatePassword) {
             visibleMenus = [{ key:"ForceChangePassword", title:  Localization.get("ForceChangePassword"), index: 40 }].concat(visibleMenus);
         }
@@ -245,7 +246,8 @@ UserMenu.propTypes = {
     onClose: PropTypes.func.isRequired,
     userDetails: PropTypes.object,
     getUserMenu: PropTypes.func.isRequired,
-    userMenuAction: PropTypes.func.isRequired
+    userMenuAction: PropTypes.func.isRequired,
+    appSettings: PropTypes.object
 };
 
 function mapStateToProps(state) {

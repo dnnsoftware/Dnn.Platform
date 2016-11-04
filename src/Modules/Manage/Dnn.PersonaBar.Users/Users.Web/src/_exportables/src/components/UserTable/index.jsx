@@ -114,10 +114,11 @@ class UserTable extends Component {
                             currentIndex={this.state.renderIndex}
                             openId={this.state.openId }
                             key={"user-" + index}
-                            getUserColumns={this.props.getUserColumns && this.props.getUserColumns.bind(this) }
-                            getUserTabsIcons={this.props.getUserTabsIcons && this.props.getUserTabsIcons.bind(this) }
-                            getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} 
-                            userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)}
+                            getUserColumns={props.getUserColumns && props.getUserColumns.bind(this) }
+                            getUserTabsIcons={props.getUserTabsIcons && props.getUserTabsIcons.bind(this) }
+                            getUserMenu={props.getUserMenu && props.getUserMenu.bind(this)} 
+                            userMenuAction={props.userMenuAction && props.userMenuAction.bind(this)}
+                            appSettings={props.appSettings}
                             id={id}>
                             <CollapsibleSwitcher children={this.getChildren(user) } renderIndex={this.state.renderIndex} />
                         </DetailRow>;
@@ -137,7 +138,8 @@ UserTable.propTypes = {
     getUserTabsIcons: PropTypes.func,
     getUserColumns: PropTypes.func,
     getUserMenu: PropTypes.func,
-    userMenuAction: PropTypes.func
+    userMenuAction: PropTypes.func,
+    appSettings: PropTypes.object
 };
 function mapStateToProps(state) {
     return {

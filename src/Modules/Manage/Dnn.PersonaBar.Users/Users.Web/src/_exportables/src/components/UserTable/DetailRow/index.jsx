@@ -84,7 +84,7 @@ class DetailsRow extends Component {
             <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
                 onClick={this.toggleUserMenu.bind(this) }>
             </div>
-            { this.state.showMenu && <UserMenu getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
+            { this.state.showMenu && <UserMenu appSettings={this.props.appSettings} getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
         </div>]);
     }
     getUserColumns(user, id, opened) {
@@ -173,7 +173,8 @@ DetailsRow.propTypes = {
     getUserTabsIcons: PropTypes.func,
     getUserColumns: PropTypes.func,
     getUserMenu: PropTypes.func.isRequired,
-    userMenuAction: PropTypes.func.isRequired
+    userMenuAction: PropTypes.func.isRequired,
+    appSettings: PropTypes.object
 };
 DetailsRow.defaultProps = {
     isEvoq: false
