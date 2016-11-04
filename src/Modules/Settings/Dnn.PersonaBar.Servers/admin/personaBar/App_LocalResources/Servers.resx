@@ -372,6 +372,9 @@
   <data name="errorMessageLoadingServersInfo.Text" xml:space="preserve">
     <value>Error loading Servers Info</value>
   </data>
+  <data name="EmailTest.Text" xml:space="preserve">
+    <value>Test SMTP Settings</value>
+  </data>
   <data name="GlobalSettings.Text" xml:space="preserve">
     <value>These are global settings. Changes to the settings will affect all of your sites.</value>
   </data>
@@ -431,6 +434,9 @@
   </data>
   <data name="plSMTPUsername.Text" xml:space="preserve">
     <value>SMTP Username:</value>
+  </data>
+  <data name="SaveButtonText.Text" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="SiteSmtpHostSetting.Text" xml:space="preserve">
     <value>My Website {0}</value>

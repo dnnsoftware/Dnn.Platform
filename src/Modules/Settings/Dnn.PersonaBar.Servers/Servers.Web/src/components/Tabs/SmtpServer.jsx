@@ -4,6 +4,7 @@ import RadioButtonBlock from "../common/RadioButtonBlock";
 import EditBlock from "../common/EditBlock";
 import SwitchBlock from "../common/SwitchBlock";
 import localization from "../../localization";
+import Button from "dnn-button";
 
 const smtpServerOptions = [
     {
@@ -54,9 +55,18 @@ export default class SmtpServer extends Component {
 
     }
 
+    onTestSmtpSettings() {
+
+    }
+
+    onSave() {
+
+    }
+
     render() {
         const {props} = this;
         const areGlobalSettings = this.state.smtpServerMode === "global";
+        const credentialVisible = this.state.smtpAuthentication === "basic";
         return <div className="dnn-servers-info-panel-big">
             <GridSystem>
                 <div className="leftPane">
@@ -99,16 +109,19 @@ export default class SmtpServer extends Component {
                                 isGlobal={areGlobalSettings} />
                     </div>
                     <div className="tooltipAdjustment">
-                        <EditBlock label={localization.get("plSMTPUsername")}
-                            tooltip={localization.get("plSMTPUsername.Help")}
-                            value={props.smtpSettings.smtpUserName} 
-                            isGlobal={areGlobalSettings} />                   
-                    
-                        <EditBlock label={localization.get("plSMTPPassword")}
-                            tooltip={localization.get("plSMTPPassword.Help")}
-                            value={props.smtpSettings.smtpPassword} 
-                            isGlobal={areGlobalSettings} />     
-
+                        {credentialVisible && 
+                            <div>
+                                <EditBlock label={localization.get("plSMTPUsername")}
+                                    tooltip={localization.get("plSMTPUsername.Help")}
+                                    value={props.smtpSettings.smtpUserName} 
+                                    isGlobal={areGlobalSettings} />                   
+                            
+                                <EditBlock label={localization.get("plSMTPPassword")}
+                                    tooltip={localization.get("plSMTPPassword.Help")}
+                                    value={props.smtpSettings.smtpPassword} 
+                                    isGlobal={areGlobalSettings} />
+                            </div>     
+                        }
                         <SwitchBlock label={localization.get("plSMTPEnableSSL")}
                             tooltip={localization.get("plSMTPEnableSSL.Help")}
                             value={props.smtpSettings.enableSmtpSsl}
@@ -117,6 +130,13 @@ export default class SmtpServer extends Component {
                     </div>
                 </div>
             </GridSystem>
+            <div className="clear" />
+            <div className="buttons-panel">
+                 <Button type="secondary"
+                    onClick={props.onTestSmtpSettings}>{localization.get("EmailTest")}</Button>
+                 <Button type="primary" 
+                    onClick={props.onSave}>{localization.get("SaveButtonText")}</Button>
+            </div>
         </div>;
     }
 }
