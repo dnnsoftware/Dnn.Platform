@@ -104,6 +104,7 @@ class InstallExtensionModal extends Component {
             }
         }));
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
+        props.dispatch(InstallationActions.toggleAcceptLicense(false));
         this.setState({
             package: null
         });
