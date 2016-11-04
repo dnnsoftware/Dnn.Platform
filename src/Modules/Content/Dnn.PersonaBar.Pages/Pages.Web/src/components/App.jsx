@@ -37,8 +37,28 @@ class App extends Component {
         
     }
 
+    getSettingsPage(){
+        const {props} = this;
+        const titleSettings = props.selectedDnnPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedDnnPage.name;
+
+        return (<PersonaBarPage isOpen={props.selectedPage === 1}>
+                    <SocialPanelHeader title={titleSettings}>
+                    </SocialPanelHeader>
+                    <SocialPanelBody>
+                        <PageSettings selectedPage={props.selectedDnnPage} 
+                                        onCancel={() => props.onNavigate(0)} 
+                                        onSave={this.onSavePage.bind(this)}
+                                        onChangeField={props.onChangePageField}
+                                        onPermissionsChanged={props.onPermissionsChanged}
+                                        onChangePageType={props.onChangePageType} />
+                    </SocialPanelBody>
+                </PersonaBarPage>);
+    }
+
     render() {
         const {props} = this;
+        
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
@@ -49,18 +69,7 @@ class App extends Component {
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
                 {props.selectedDnnPage && 
-                    <PersonaBarPage isOpen={props.selectedPage === 1}>
-                        <SocialPanelHeader title={Localization.get("Page Settings:") + " " + props.selectedDnnPage.name}>
-                        </SocialPanelHeader>
-                        <SocialPanelBody>
-                            <PageSettings selectedPage={props.selectedDnnPage} 
-                                            onCancel={() => props.onNavigate(0)} 
-                                            onSave={this.onSavePage.bind(this)}
-                                            onChangeField={props.onChangePageField}
-                                            onPermissionsChanged={props.onPermissionsChanged}
-                                            onChangePageType={props.onChangePageType} />
-                        </SocialPanelBody>
-                    </PersonaBarPage>
+                    this.getSettingsPage()
                 }
             </div>
         );
