@@ -5,6 +5,10 @@ import EditBlock from "../common/EditBlock";
 import SwitchBlock from "../common/SwitchBlock";
 import localization from "../../localization";
 import Button from "dnn-button";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import SmtpServerTabActions from "../../actions/smtpServerTab";
+import utils from "../../utils";
 
 const smtpServerOptions = [
     {
@@ -32,7 +36,7 @@ const smtpAuthenticationOptions = [
     }
 ];
 
-export default class SmtpServer extends Component {
+class SmtpServer extends Component {
 
     constructor() {
         super();
@@ -41,6 +45,16 @@ export default class SmtpServer extends Component {
             smtpServerMode: "site",
             smtpAuthentication: "anonymous"
         };
+    }
+
+    componentDidMount() {
+        this.props.onRetrieveSmtpServerInfo();
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
+            utils.notifyError(newProps.errorMessage);
+        }
     }
 
     onChangeSmtpServerMode(mode) {
@@ -80,22 +94,22 @@ export default class SmtpServer extends Component {
                     <div className="tooltipAdjustment">
                         <EditBlock label={localization.get("plSMTPServer")}
                             tooltip={localization.get("plSMTPServer.Help")}
-                            value={props.smtpSettings.smtpServer}
+                            value={props.smtpServerInfo.smtpServer}
                             isGlobal={areGlobalSettings} />
                    
                         <EditBlock label={localization.get("plConnectionLimit")}
                             tooltip={localization.get("plConnectionLimit.Help")}
-                            value={props.smtpSettings.smtpConnectionLimit} 
+                            value={props.smtpServerInfo.smtpConnectionLimit} 
                             isGlobal={areGlobalSettings} />
                    
                         <EditBlock label={localization.get("plMaxIdleTime")}
                             tooltip={localization.get("plMaxIdleTime.Help")}
-                            value={props.smtpSettings.smtpMaxIdleTime} 
+                            value={props.smtpServerInfo.smtpMaxIdleTime} 
                             isGlobal={areGlobalSettings} />
                  
                         <EditBlock label={localization.get("plBatch")}
                             tooltip={localization.get("plBatch.Help")}
-                            value={props.smtpSettings.messageSchedulerBatchSize} 
+                            value={props.smtpServerInfo.messageSchedulerBatchSize} 
                             isGlobal={areGlobalSettings} />
                     </div>
                 </div>
@@ -113,18 +127,18 @@ export default class SmtpServer extends Component {
                             <div>
                                 <EditBlock label={localization.get("plSMTPUsername")}
                                     tooltip={localization.get("plSMTPUsername.Help")}
-                                    value={props.smtpSettings.smtpUserName} 
+                                    value={props.smtpServerInfo.smtpUserName} 
                                     isGlobal={areGlobalSettings} />                   
                             
                                 <EditBlock label={localization.get("plSMTPPassword")}
                                     tooltip={localization.get("plSMTPPassword.Help")}
-                                    value={props.smtpSettings.smtpPassword} 
+                                    value={props.smtpServerInfo.smtpPassword} 
                                     isGlobal={areGlobalSettings} />
                             </div>     
                         }
                         <SwitchBlock label={localization.get("plSMTPEnableSSL")}
                             tooltip={localization.get("plSMTPEnableSSL.Help")}
-                            value={props.smtpSettings.enableSmtpSsl}
+                            value={props.smtpServerInfo.enableSmtpSsl}
                             onChange={this.onChangeSmtpEnableSsl.bind(this)}
                             isGlobal={areGlobalSettings}  />              
                     </div>
@@ -141,6 +155,26 @@ export default class SmtpServer extends Component {
     }
 }
 
-SmtpServer.propTypes = {
-    smtpSettings: PropTypes.object
+
+SmtpServer.propTypes = {   
+    smtpServerInfo: PropTypes.object.isRequired,
+    errorMessage: PropTypes.string,
+    onRetrieveSmtpServerInfo: PropTypes.func.isRequired
 };
+
+function mapStateToProps(state) {    
+    return {
+        smtpServerInfo: state.smtpServer.smtpServerInfo,
+        errorMessage: state.webTab.errorMessage
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators ({
+            onRetrieveSmtpServerInfo: SmtpServerTabActions.loadSmtpServerInfo     
+        }, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SmtpServer);

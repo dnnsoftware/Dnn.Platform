@@ -123,8 +123,8 @@
     <Compile Include="Services\Dto\UpdateWebServerSettingsRequest.cs" />
     <Compile Include="Services\ServerController.cs" />
     <Compile Include="Services\ServerSettingsLogsController.cs" />
-    <Compile Include="Services\ServerSettingsPerformance.cs" />
-    <Compile Include="Services\ServerSettingsSmtpControllers.cs" />
+    <Compile Include="Services\ServerSettingsPerformanceController.cs" />
+    <Compile Include="Services\ServerSettingsSmtpController.cs" />
     <Compile Include="Services\SystemInfoApplicationController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
     <Compile Include="Services\SystemInfoWebController.cs" />

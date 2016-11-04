@@ -75,7 +75,7 @@ class Web extends Component {
 Web.propTypes = {   
     webServerInfo: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
-    onRetrieveWebServerInfo: PropTypes.func.isRequired    
+    onRetrieveWebServerInfo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
