@@ -10,7 +10,7 @@ function errorCallback(xhr) {
     }
 
     let utils = window.dnn.initThemes().utility;
-    utils.notify(Localization.get(message));
+    utils.notifyError(Localization.get(message));
 }
 const themeActions = {
     getCurrentTheme(callback) {

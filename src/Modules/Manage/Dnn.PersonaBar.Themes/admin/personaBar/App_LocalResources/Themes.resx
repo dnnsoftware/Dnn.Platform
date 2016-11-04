@@ -216,4 +216,10 @@
   <data name="Successful.Text" xml:space="preserve">
     <value>Operation Complete!</value>
   </data>
+  <data name="NoThemeFile.Text" xml:space="preserve">
+    <value>No theme files exist in this theme.</value>
+  </data>
+  <data name="ThemeNotFound.Text" xml:space="preserve">
+    <value>Can't find the specific theme.</value>
+  </data>
 </root>
