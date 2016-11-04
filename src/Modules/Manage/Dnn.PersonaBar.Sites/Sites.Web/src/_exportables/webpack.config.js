@@ -28,6 +28,7 @@ module.exports = {
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"],
         root: [
+            path.resolve('./src'),
             path.resolve('../') // Look in src first
         ]
     }

@@ -6,7 +6,6 @@ const extensions = {
         // eslint-disable-next-line no-undef
         // __webpack_public_path__ = options.publicPath;        
         let options = window.dnn.initExtensions();
-        console.log(options);
         utilities.init(options);
 
         // delay the styles loading after the __webpack_public_path__ is set

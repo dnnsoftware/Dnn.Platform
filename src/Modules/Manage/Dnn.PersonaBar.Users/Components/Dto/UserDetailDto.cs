@@ -4,10 +4,15 @@
 // All rights reserved.
 
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
@@ -38,6 +43,16 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "userFolder")]
         public string UserFolder { get; set; }
 
+        [IgnoreDataMember]
+        public int PortalId { get; set; }
+
+
+        [DataMember(Name = "profileUrl")]
+        public string ProfileUrl => UserId > 0 ? Globals.UserProfileURL(UserId) : null;
+
+        [DataMember(Name = "editProfileUrl")]
+        public string EditProfileUrl => UserId > 0 ? GetSettingUrl(PortalId, UserId) : null;
+
         public UserDetailDto()
         {
             
@@ -53,6 +68,28 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             IsLocked = user.Membership.LockedOut;
             NeedUpdatePassword = user.Membership.UpdatePassword;
             UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
+        }
+
+        private static string GetSettingUrl(int portalId, int userId)
+        {
+            var module = ModuleController.Instance.GetModulesByDefinition(portalId, "User Accounts")
+                .Cast<ModuleInfo>().FirstOrDefault();
+            if (module == null)
+            {
+                return string.Empty;
+            }
+
+            var tabId = TabController.Instance.GetTabsByModuleID(module.ModuleID).Keys.FirstOrDefault();
+            if (tabId <= 0)
+            {
+                return string.Empty;
+            }
+            //ctl/Edit/mid/345/packageid/52
+            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit",
+                                            "mid=" + module.ModuleID,
+                                            "popUp=true",
+                                            "UserId=" + userId,
+                                            "editprofile=true");
         }
     }
 }

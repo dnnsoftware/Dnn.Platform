@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridSystem from "dnn-grid-system";
@@ -8,41 +9,45 @@ import Localization from "localization";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class ExtensionLanguagePack extends Component {
-    render() {
-        const {props, state} = this;
+    onSelect(key, option) {
+        this.props.onChange(key, option.value);
+    }
 
+    render() {
+        const {props} = this;
+        let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editExtensionLanguagePack}>
+            <GridCell className={styles.editExtensionLanguagePack + (props.className ? " " + props.className : "")}>
                 <GridCell>
                     <DropdownWithError
                         label={Localization.get("EditExtensionLanguagePack_Language.Label")}
-                        options={
-                            [
-                                { label: "", value: "" }
-                            ]
-                        }
+                        options={extensionBeingEdited.locales.value.map((locale) => {
+                            return { label: locale.name, value: locale.id };
+                        })}
+                        value={extensionBeingEdited.languageId.value}
+                        onSelect={this.onSelect.bind(this, "languageId")}
+                        enabled={!props.disabled}
                         tooltipMessage={Localization.get("EditExtensionLanguagePack_Language.HelpText")}
-                        style={inputStyle} />
+                        style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                     <DropdownWithError
                         label={Localization.get("EditExtensionLanguagePack_Package.Label")}
-                        options={
-                            [
-                                { label: "", value: "" }
-                            ]
-                        }
+                        options={extensionBeingEdited.packages.value.map((_package) => {
+                            return { label: _package.name, value: _package.id };
+                        })}
+                        value={extensionBeingEdited.dependentPackageId.value}
+                        enabled={!props.disabled}
+                        onSelect={this.onSelect.bind(this, "dependentPackageId")}
                         tooltipMessage={Localization.get("EditExtensionLanguagePack_Package.HelpText")}
                         style={inputStyle} />
                 </GridCell>
-                
+
                 {!props.actionButtonsDisabled &&
-                <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary">{props.primaryButtonText}</Button>
-                </GridCell>
+                    <GridCell columnSize={100} className="modal-footer">
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary">{props.primaryButtonText}</Button>}
+                    </GridCell>
                 }
             </GridCell>
         );
@@ -50,7 +55,7 @@ class ExtensionLanguagePack extends Component {
     }
 }
 
-ExtensionLanguagePack.PropTypes = {
+ExtensionLanguagePack.propTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
@@ -58,4 +63,11 @@ ExtensionLanguagePack.PropTypes = {
     primaryButtonText: PropTypes.string
 };
 
-export default ExtensionLanguagePack;
+
+function mapStateToProps(state) {
+    return {
+        extensionBeingEdited: state.extension.extensionBeingEdited,
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
+    };
+}
+export default connect(mapStateToProps)(ExtensionLanguagePack);

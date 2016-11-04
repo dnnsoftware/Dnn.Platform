@@ -53,11 +53,12 @@
           <menu>
             <identifier>Security</identifier>
             <moduleName>Security</moduleName>
+            <controller>Dnn.PersonaBar.Security.Components.ExtensionMenuController, Dnn.PersonaBar.Security</controller>
             <resourceKey>nav_Security</resourceKey>
             <path>Security</path>
             <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
-            <order>3</order>
+            <order>20</order>
             <defaultRoles>Administrators</defaultRoles>
           </menu>
         </component>

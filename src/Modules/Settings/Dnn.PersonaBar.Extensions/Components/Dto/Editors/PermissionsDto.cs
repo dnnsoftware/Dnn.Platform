@@ -5,15 +5,15 @@
 // All Rights Reserved
 #endregion
 
-using System.Runtime.Serialization;
 using Dnn.PersonaBar.Library.DTO;
 using Dnn.PersonaBar.Library.Helper;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
+    [JsonObject]
     public class PermissionsDto : Permissions
     {
         public PermissionsDto(bool needDefinitions) : base(needDefinitions)
@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
             }
         }
 
-        [DataMember(Name = "desktopModuleId")]
+        [JsonProperty("desktopModuleId")]
         public int DesktopModuleId { get; set; }
 
         protected override void LoadPermissionDefinitions()

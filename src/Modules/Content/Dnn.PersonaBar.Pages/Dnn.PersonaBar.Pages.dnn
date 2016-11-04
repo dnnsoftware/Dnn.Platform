@@ -42,7 +42,7 @@
                         <path>Pages</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
-                        <order>1</order>
+                        <order>20</order>
                     </menu>
                 </component>
             </components>

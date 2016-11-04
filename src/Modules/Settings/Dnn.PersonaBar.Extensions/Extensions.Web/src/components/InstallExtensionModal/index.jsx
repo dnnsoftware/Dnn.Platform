@@ -12,6 +12,7 @@ import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
 import FileUpload from "./FileUpload";
+import Checkbox from "dnn-checkbox";
 import styles from "./style.less";
 class InstallExtensionModal extends Component {
     constructor() {
@@ -95,8 +96,11 @@ class InstallExtensionModal extends Component {
     cancelInstall(cancelRevertStep) {
         const {props} = this;
         props.dispatch(InstallationActions.clearParsedInstallationPackage(() => {
-            if (!cancelRevertStep) {
+            if (cancelRevertStep) {
                 this.goToStep(0);
+            } else {
+                this.goToStep(0);
+                props.onCancel();
             }
         }));
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
@@ -111,7 +115,8 @@ class InstallExtensionModal extends Component {
             return <PackageInformation
                 extensionBeingEdited={props.parsedInstallationPackage}
                 validationMapped={false}
-                onCancel={this.endInstallation.bind(this)}
+                onCancel={this.cancelInstall.bind(this)}
+                installationMode={true}
                 onSave={this.goToReleaseNotes.bind(this)}
                 primaryButtonText="Next"
                 disabled={true} />;
@@ -123,6 +128,7 @@ class InstallExtensionModal extends Component {
         if (props.installingAvailablePackage) {
             props.dispatch(PaginationActions.loadTab(0, () => {
                 props.dispatch(ExtensionActions.getInstalledPackages(props.availablePackage.PackageType));
+                props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackage.PackageType));
             }));
         } else {
             if (props.tabIndex !== 0) {
@@ -135,13 +141,15 @@ class InstallExtensionModal extends Component {
         props.onCancel();
         this.cancelInstall();
     }
-
+    onToggleLicenseAccept() {
+        this.props.dispatch(InstallationActions.toggleAcceptLicense(!this.props.licenseAccepted));
+    }
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const {wizardStep} = props;
         return (
             <GridCell className={styles.installExtensionModal}>
-                <SocialPanelHeader title="Install Extension" />
+                <SocialPanelHeader title={Localization.get("ExtensionInstall.Action")} />
                 <SocialPanelBody>
                     <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
@@ -164,37 +172,53 @@ class InstallExtensionModal extends Component {
                         {wizardStep === 2 &&
                             <ReleaseNotes
                                 value={props.parsedInstallationPackage.releaseNotes}
-                                onCancel={this.endInstallation.bind(this)}
+                                onCancel={this.cancelInstall.bind(this)}
                                 onSave={this.goToLicense.bind(this)}
-                                primaryButtonText="Next"
+                                primaryButtonText={Localization.get("Next.Button")}
+                                installationMode={true}
                                 readOnly={true}
                                 disabled={true} />}
                         {wizardStep === 3 &&
                             <License
                                 value={props.parsedInstallationPackage.license}
-                                onCancel={this.endInstallation.bind(this)}
+                                onCancel={this.cancelInstall.bind(this)}
+                                installationMode={true}
                                 readOnly={true}
                                 onSave={this.installPackage.bind(this)}
-                                primaryButtonText="Next"
-                                disabled={true} />}
+                                primaryButtonText={Localization.get("Next.Button")}
+                                disabled={true}
+                                primaryButtonDisabled={!props.licenseAccepted}
+                                acceptLicenseCheckbox={
+                                    <Checkbox
+                                        label={Localization.get("InstallExtension_AcceptLicense.Label")}
+                                        value={props.licenseAccepted}
+                                        onCancel={this.cancelInstall.bind(this)}
+                                        onChange={this.onToggleLicenseAccept.bind(this)} />}
+                                />}
                         {wizardStep === 4 &&
                             <InstallLog
                                 logs={props.installationLogs}
                                 onDone={this.endInstallation.bind(this)}
-                                primaryButtonText="Next" />}
+                                primaryButtonText={Localization.get("Next.Button")} />}
 
                         <p className="modal-pagination">{"-- " + (props.wizardStep + 1) + " of 5 --"} </p>
                     </GridCell>
                 </SocialPanelBody>
             </GridCell>
         );
-        // <p className="modal-pagination"> --1 of 2 -- </p>
     }
 }
 
-InstallExtensionModal.PropTypes = {
+InstallExtensionModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    parsedInstallationPackage: PropTypes.object,
+    selectedInstalledPackageType: PropTypes.string,
+    wizardStep: PropTypes.number,
+    installationLogs: PropTypes.array,
+    installingAvailablePackage: PropTypes.bool,
+    availablePackage: PropTypes.object,
+    licenseAccepted: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -204,7 +228,8 @@ function mapStateToProps(state) {
         wizardStep: state.installation.installWizardStep,
         installationLogs: state.installation.installationLogs,
         installingAvailablePackage: state.installation.installingAvailablePackage,
-        availablePackage: state.installation.availablePackage
+        availablePackage: state.installation.availablePackage,
+        licenseAccepted: state.installation.licenseAccepted
     };
 }
 

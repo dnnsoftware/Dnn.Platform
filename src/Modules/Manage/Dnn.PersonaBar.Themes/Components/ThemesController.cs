@@ -249,7 +249,7 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             var container = GetContainers(portalSettings, ThemeLevel.Global | ThemeLevel.Site)
-                .FirstOrDefault(t => t.PackageName == themeName);
+                .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
             if (container != null)
             {
                 var containerFile = GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);

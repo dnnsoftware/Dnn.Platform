@@ -9,6 +9,7 @@ define(['jquery',
         function loadScript() {
             var url = "scripts/bundles/site-settings-bundle.js";
             //var url = "http://localhost:8080/dist/site-settings-bundle.js";
+            
             $.ajax({
                 dataType: "script",
                 cache: true,
@@ -20,10 +21,10 @@ define(['jquery',
             init: function (wrapper, util, params, callback) {
                 utility = util;
 
-
                 window.dnn.initSiteSettings = function initializeSiteSettings() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'SiteSettings'
                     };
                 };
@@ -32,7 +33,10 @@ define(['jquery',
                 if (config.debugMode === true) {
                     window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
                 }
-
+                
+                if (typeof callback === "function") {
+                    callback();
+                }
             },
 
             initMobile: function (wrapper, util, params, callback) {

@@ -12,7 +12,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         private string LocalResourceFile
         {
-            get { return "~/DesktopModules/DNNCorp/SecurityAnalyzer/App_LocalResources/view.ascx"; }
+            get { return "~/admin/Dnn.PersonaBar/App_LocalResources/Security.resx"; }
         }
 
         public CheckResult Execute()
@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public static string LoadScript(string name)
         {
-            var resourceName = string.Format("DNN.Modules.SecurityAnalyzer.Resources.{0}.resources", name);
+            var resourceName = string.Format("Dnn.PersonaBar.Security.Components.Resources.{0}.resources", name);
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
                 if (stream != null)

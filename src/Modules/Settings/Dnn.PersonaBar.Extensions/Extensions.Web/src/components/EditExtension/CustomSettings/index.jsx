@@ -9,25 +9,24 @@ import SkinObject from "./SkinObject";
 
 class CustomSettings extends Component {
     getExtensionSetting(props) {
-        console.log(props.type);
         switch (props.type) {
             case "Auth_System":
-                return <EditAuthenticationSystem {...props} />;
+                return !props.isAddMode && <EditAuthenticationSystem {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "SkinObject":
-                return <SkinObject {...props} />;
+                return !props.isAddMode && <SkinObject {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "Skin":
             case "Container":
-                return <Container {...props} />;
+                return !props.isAddMode && <Container {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "ExtensionLanguagePack":
-                return <ExtensionLanguagePack {...props} />;
+                return <ExtensionLanguagePack {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "CoreLanguagePack":
-                return <CoreLanguagePack {...props} />;
+                return <CoreLanguagePack {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "JavaScript_Library":
-                return <JavascriptLibrary {...props} />;
+                return !props.isAddMode && <JavascriptLibrary {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "Module":
-                return <Module {...props} />;
+                return <Module {...props} className={props.isAddMode ? "add-mode": ""} />;
             default:
-                return <p>Extension Settings</p>;
+                return <div></div>;
         }
     }
 

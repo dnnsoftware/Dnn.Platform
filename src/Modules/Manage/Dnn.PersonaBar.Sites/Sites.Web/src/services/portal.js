@@ -17,31 +17,10 @@ class PortalService {
 
         return sf;
     }
-
     getPortals(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Sites");
         sf.get("GetPortals?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
     }
-    getPortalTemplates(callback, errorCallback) {
-        const sf = this.getServiceFramework("Sites");
-        sf.get("GetPortalTemplates", {}, callback, errorCallback);
-    }
-    createPortal(payload, callback, errorCallback) {
-        const sf = this.getServiceFramework("Sites");
-        sf.post("CreatePortal", payload, callback, errorCallback);
-    }
-
-    /*
-    addVocabulary(vocabulary, callback) {
-        const sf = this.getServiceFramework("Vocabularies");
-
-        sf.post("CreateVocabulary", vocabulary, callback);
-    }
-    updateVocabulary(payload, callback) {
-        const sf = this.getServiceFramework("Vocabularies");
-
-        sf.post("UpdateVocabulary", payload, callback);
-    } */
 }
 const portalService = new PortalService();
 export default portalService;

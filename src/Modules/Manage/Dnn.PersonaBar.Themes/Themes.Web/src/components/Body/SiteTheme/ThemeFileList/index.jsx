@@ -36,7 +36,7 @@ class ThemeFileList extends Component {
     parseProps(props){
         const {state} = this;
 
-        if(!props.theme.SiteLayout.themeName){
+        if(!props.theme || !props.theme.SiteLayout.themeName){
             return;
         }
 
@@ -51,7 +51,7 @@ class ThemeFileList extends Component {
 
     selectedAsSite(themeFile){
         const {props, state} = this;
-        let currentTheme = props.currentTheme;
+        let currentTheme = props.theme;
 
         if(themeFile.type === 0){
             return currentTheme.SiteLayout.path.toLowerCase() === themeFile.path.toLowerCase();
@@ -62,7 +62,7 @@ class ThemeFileList extends Component {
 
     selectedAsEdit(themeFile){
         const {props, state} = this;
-        let currentTheme = props.currentTheme;
+        let currentTheme = props.theme;
 
         if(themeFile.type === 0){
             return currentTheme.EditLayout.path.toLowerCase() === themeFile.path.toLowerCase();
@@ -123,7 +123,7 @@ ThemeFileList.propTypes = {
 function mapStateToProps(state) {
     return {
         themeFiles: state.theme.currentThemeFiles,
-        currentTheme: state.theme.currentTheme
+        theme: state.theme.currentTheme
     };
 }
 

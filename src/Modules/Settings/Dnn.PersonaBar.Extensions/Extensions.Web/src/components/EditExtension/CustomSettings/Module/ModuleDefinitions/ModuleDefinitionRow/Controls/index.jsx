@@ -9,8 +9,9 @@ import { AddIcon } from "dnn-svg-icons";
 import ControlRow from "./ControlRow";
 import Collapse from "react-collapse";
 import utilities from "utils";
-import { ModuleDefinitionActions } from "actions";
+import { ModuleDefinitionActions, ExtensionActions } from "actions";
 import ControlFields from "./ControlFields";
+import utils from "utils";
 import styles from "./style.less";
 
 function removeRecordFromArray(arr, index) {
@@ -54,7 +55,7 @@ class Controls extends Component {
     confirmAction(callback) {
         const { props } = this;
         if (props.controlFormIsDirty) {
-            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+            utilities.utilities.confirm(Localization.get("UnsavedChanges.HelpText"), Localization.get("UnsavedChanges.Confirm"), Localization.get("UnsavedChanges.Cancel"), () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setControlFormDirt(false));
             });
@@ -90,8 +91,14 @@ class Controls extends Component {
     onDelete(controlId, index) {
         utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {
             const { props } = this;
-            props.dispatch(ModuleDefinitionActions.deleteModuleControl(controlId, () => {
-                props.onChange({ target: { value: removeRecordFromArray(props.moduleControls, index) } });
+
+            let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+
+            let actions = {deletemodulecontrol: controlId.toString()};
+
+            props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
+                utils.utilities.notify(Localization.get("UpdateComplete"));
+                props.onControlSave();
             }));
         });
     }
@@ -111,14 +118,23 @@ class Controls extends Component {
         if (errorCount > 0) {
             return;
         }
-        props.dispatch(ModuleDefinitionActions.addOrUpdateModuleControl(state.controlBeingEdited, () => {
-            let _controls = JSON.parse(JSON.stringify(props.moduleControls));
-            if (state.controlBeingEdited.id > -1) {
-                _controls[state.controlBeingEditedIndex] = state.controlBeingEdited;
-            } else {
-                _controls.push(state.controlBeingEdited);
-            }
-            props.onChange({ target: { value: _controls } });
+
+
+        let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
+        let controls = JSON.parse(JSON.stringify(props.moduleControls));
+        if (state.controlBeingEdited.id > -1) {
+            controls[state.controlBeingEditedIndex] = state.controlBeingEdited;
+        } else {
+            controls.push(state.controlBeingEdited);
+        }
+
+        state.controlBeingEdited.definitionId = props.moduleDefinitionId;
+
+        let actions = {savemodulecontrol: JSON.stringify(state.controlBeingEdited)};
+
+        props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex,  () => {
+            utils.utilities.notify(Localization.get("UpdateComplete"));
+            props.onControlSave();
             props.dispatch(ModuleDefinitionActions.setControlFormDirt(false, () => {
                 this.exitEditMode();
             }));

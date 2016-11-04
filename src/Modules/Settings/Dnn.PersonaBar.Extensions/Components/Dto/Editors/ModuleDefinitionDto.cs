@@ -21,32 +21,32 @@
 #region Usings
 
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using DotNetNuke.Entities.Modules.Definitions;
+using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
+    [JsonObject]
     public class ModuleDefinitionDto
     {
-        [DataMember(Name = "id")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [DataMember(Name = "desktopModuleId")]
+        [JsonProperty("desktopModuleId")]
         public int DesktopModuleId { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "friendlyName")]
+        [JsonProperty("friendlyName")]
         public string FriendlyName { get; set; }
 
-        [DataMember(Name = "cacheTime")]
+        [JsonProperty("cacheTime")]
         public int CacheTime { get; set; }
 
-        [DataMember(Name = "controls")]
+        [JsonProperty("controls")]
         public IList<ModuleControlDto> Controls { get; set; } = new List<ModuleControlDto>();
 
         public ModuleDefinitionDto()

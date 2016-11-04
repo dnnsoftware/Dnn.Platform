@@ -1,16 +1,12 @@
 import { combineReducers } from "redux";
-import pagination from "./paginationReducer";
-import visiblePanel from "./visiblePanelReducer";
-import portal from "./portalReducer";
-import viewMode from "./viewModeReducer";
-import portalList from "dnn-sites-portal-list-reducer";
+import { portal, exportPortal, visiblePanel, pagination } from "dnn-sites-common-reducers";
+
 
 const rootReducer = combineReducers({
-    pagination,
-    portal,
-    visiblePanel,
-    viewMode,
-    portalList
+    visiblePanel: visiblePanel(),
+    portal: portal(),
+    exportPortal: exportPortal(),
+    pagination: pagination()
 });
 
 export default rootReducer;

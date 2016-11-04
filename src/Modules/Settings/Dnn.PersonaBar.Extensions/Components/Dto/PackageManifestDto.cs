@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Web;
+﻿using System.Collections.Generic;
 using DotNetNuke.Services.Installer.Packages;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class PackageManifestDto : PackageInfoDto
     {
-        [DataMember(Name = "archiveName")]
+        [JsonProperty("archiveName")]
         public string ArchiveName { get; set; }
 
-        [DataMember(Name = "manifestName")]
+        [JsonProperty("manifestName")]
         public string ManifestName { get; set; }
 
-        [DataMember(Name = "basePath")]
+        [JsonProperty("basePath")]
         public string BasePath { get; set; }
 
-        [DataMember(Name = "manifests")]
+        [JsonProperty("manifests")]
         public IDictionary<string, string> Manifests  { get; set; } = new Dictionary<string, string>();
 
-        [DataMember(Name = "assemblies")]
+        [JsonProperty("assemblies")]
         public IList<string> Assemblies { get; set; } = new List<string>();
 
-        [DataMember(Name = "files")]
+        [JsonProperty("files")]
         public IList<string> Files { get; set; } = new List<string>();
 
         public PackageManifestDto()

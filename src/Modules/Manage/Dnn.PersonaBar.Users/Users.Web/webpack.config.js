@@ -30,7 +30,13 @@ module.exports = {
             path.resolve('./node_modules')
         ]
     },
-    externals: webpackExternals,
+    externals: Object.assign(webpackExternals, 
+    {
+        "dnn-users-common-action-types":"window.dnn.Users.CommonActionTypes",
+        "dnn-users-common-components":"window.dnn.Users.CommonComponents",
+        "dnn-users-common-reducers": "window.dnn.Users.CommonReducers",
+        "dnn-users-common-actions":"window.dnn.Users.CommonActions"
+    }),
     plugins: isProduction ? [
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.DedupePlugin(),

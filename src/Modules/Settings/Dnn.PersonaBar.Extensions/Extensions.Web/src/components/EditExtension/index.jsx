@@ -14,6 +14,7 @@ import Tooltip from "dnn-tooltip";
 import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
 
 
@@ -74,23 +75,91 @@ class EditExtension extends Component {
     onAssignedPortalsChange(key, value, callback) {
         const { props } = this;
         let _extensionBeingEdited = JSON.parse(JSON.stringify(props.extensionBeingEdited));
-
-        let editorActions = {key: value};
-        this.updateExtensionBeingEdited(_extensionBeingEdited, editorActions, callback);
+        _extensionBeingEdited[key].value = value;
+        this.updateExtensionBeingEdited(_extensionBeingEdited, callback);
     }
 
-    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, callback) {
         const { props } = this;
-        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback));
+        props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
+    }
+
+    getAuthSystemCustomSettings(extension) {
+        let payload = {
+            loginControlSource: extension.loginControlSource.value,
+            logoffControlSource: extension.logoffControlSource.value,
+            enabled: extension.enabled.value,
+            settingsControlSource: extension.settingsControlSource.value,
+            authenticationType: extension.authenticationType.value,
+            appId: extension.appId.value,
+            appSecret: extension.appSecret.value,
+            appEnabled: extension.appEnabled.value
+        };
+
+        if (extension.name.value === "DNNPro_ActiveDirectoryAuthentication") {
+            delete payload.appId;
+            delete payload.appSecret;
+            delete payload.appEnabled;
+        }
+
+        return payload;
+    }
+
+    parseEditorActions(extension) {
+        switch (extension.packageType.value.toLowerCase()) {
+            case "module":
+                return {
+                    category: extension.category.value,
+                    dependencies: extension.dependencies.value,
+                    hostPermissions: extension.hostPermissions.value,
+                    shareable: extension.shareable.value,
+                    premiumModule: extension.premiumModule.value,
+                    assignPortal: JSON.stringify(extension.assignedPortals.value),
+                    unassignPortal: JSON.stringify(extension.unassignedPortals.value),
+                    folderName: extension.folderName.value,
+                    businessController: extension.businessController.value
+                };
+            case "auth_system":
+                return this.getAuthSystemCustomSettings(extension);
+            case "javascript_library":
+                return {
+                    customCdn: extension.customCdn.value
+                };
+            case "skin":
+            case "container":
+                return {
+                    themePackageName: extension.themePackageName.value
+                };
+            case "skinobject":
+                return {
+                    controlKey: extension.controlKey.value,
+                    controlSrc: extension.controlSrc.value,
+                    supportsPartialRendering: extension.supportsPartialRendering.value
+                };
+            case "corelanguagepack":
+                return {
+                    languageId: extension.languageId.value
+                };
+            case "extensionlanguagepack":
+                return {
+                    languageId: extension.languageId.value,
+                    dependentPackageId: extension.dependentPackageId.value
+                };
+            default:
+                return {};
+        }
     }
 
     onSaveExtension(close) {
         const {props} = this;
-        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, props.extensionBeingEditedIndex));
-        console.log(close);
-        if (close) {
-            this.selectPanel(0);
-        }
+
+        let editorActions = this.parseEditorActions(props.extensionBeingEdited);
+        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex, () => {
+            if (close) {
+                this.selectPanel(0);
+                props.dispatch(ExtensionActions.selectEditingTab(0));
+            }
+        }));
     }
 
     toggleTriedToSave() {
@@ -131,16 +200,21 @@ class EditExtension extends Component {
     }
 
     _getTabHeaders() {
-        const PackageInformationTabHeader = Localization.get("EditExtension_PackageInformation.TabHeader"),
-            ExtensionSettingsTabHeader = Localization.get("EditExtension_ExtensionSettings.TabHeader"),
-            SiteSettingsTabHeader = Localization.get("EditExtension_SiteSettings.TabHeader"),
-            LicenseTabHeader = Localization.get("EditExtension_License.TabHeader"),
-            ReleaseNotesTabHeader = Localization.get("EditExtension_ReleaseNotes.TabHeader");
-        if (this.isHost) {
-            return [PackageInformationTabHeader, ExtensionSettingsTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
-        } else {
-            return [PackageInformationTabHeader, SiteSettingsTabHeader, LicenseTabHeader, ReleaseNotesTabHeader];
+        let tabHeaders = [Localization.get("EditExtension_PackageInformation.TabHeader"),
+        Localization.get("EditExtension_ExtensionSettings.TabHeader"),
+        Localization.get("EditExtension_SiteSettings.TabHeader"),
+        Localization.get("EditExtension_License.TabHeader"),
+        Localization.get("EditExtension_ReleaseNotes.TabHeader")];
+
+        let siteSettingIndex = 2;
+        if (!this.isHost || !this.getExtensionSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
+            tabHeaders.splice(1, 1);
+            siteSettingIndex = 1;
         }
+        if (!this.getSiteSettingTabVisible(this.props.extensionBeingEdited.packageType.value)) {
+            tabHeaders.splice(siteSettingIndex, 1);
+        }
+        return tabHeaders;
     }
 
     getTabHeaders() {
@@ -148,7 +222,7 @@ class EditExtension extends Component {
         const tabHeaders = this._getTabHeaders();
         return tabHeaders.map((tabHeader, index) => {
             const hasError = props.tabsWithError.indexOf(index) > -1;
-            return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={["This field has an error"]} /></span>;
+            return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={[Localization.get("EditExtensions_TabHasError")]} /></span>;
         });
     }
 
@@ -157,17 +231,14 @@ class EditExtension extends Component {
         if (!this.validateFields()) {
             return;
         }
-        if (close === true) {
-            this.onSaveExtension(true);
-        } else {
-            this.onSaveExtension(false);
-        }
+
+        this.onSaveExtension(close === true);
     }
     confirmAction(callback) {
         const { props } = this;
         if (props.moduleDefinitionFormIsDirty) {
             this.setState({});
-            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+            utilities.utilities.confirm(Localization.get("UnsavedChanges.HelpText"), Localization.get("UnsavedChanges.Confirm"), Localization.get("UnsavedChanges.Cancel"), () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setFormDirt(false));
             });
@@ -177,9 +248,8 @@ class EditExtension extends Component {
     }
     onTabSelect(index) {
         this.confirmAction(() => {
-            this.setState({
-                selectedTabIndex: index
-            });
+            const { props } = this;
+            props.dispatch(ExtensionActions.selectEditingTab(index));
         });
     }
 
@@ -191,105 +261,125 @@ class EditExtension extends Component {
         }));
     }
 
+    onCancel(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        props.dispatch(ExtensionActions.selectEditingTab(0));
+        this.selectPanel(0);
+    }
+
+    getExtensionSettingTabVisible(type) {
+        switch (type) {
+            case "Auth_System":
+            case "SkinObject":
+            case "Skin":
+            case "Container":
+            case "ExtensionLanguagePack":
+            case "CoreLanguagePack":
+            case "JavaScript_Library":
+            case "Module":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    getSiteSettingTabVisible(type) {
+        switch (type) {
+            case "SkinObject":
+            case "Skin":
+            case "Container":
+            case "ExtensionLanguagePack":
+            case "CoreLanguagePack":
+            case "JavaScript_Library":
+                return !this.isHost;
+            case "Auth_System":
+            case "Module":
+                return true;
+            default:
+                return false;
+        }
+    }
+    getTabUI() {
+        const {props} = this, {extensionBeingEdited} = props;
+        let allTabs = [
+            <GridCell className="package-information-box extension-form">
+                <PackageInformation
+                    onSave={this.onSave.bind(this)}
+                    validationMapped={true}
+                    extensionBeingEdited={extensionBeingEdited}
+                    onVersionChange={this.onVersionChange.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
+                    validateFields={this.validateFields.bind(this)}
+                    onChange={this.onChange.bind(this)}
+                    disabled={!this.isHost}
+                    updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
+                    triedToSave={props.triedToSave}
+                    toggleTriedToSave={this.toggleTriedToSave.bind(this)}
+                    primaryButtonText={Localization.get("Save.Button")} />
+            </GridCell>,
+            <GridCell className="extension-form">
+                <CustomSettings
+                    type={extensionBeingEdited.packageType.value}
+                    primaryButtonText={Localization.get("Save.Button")}
+                    onChange={this.onChange.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
+                    onSave={this.onSave.bind(this)}
+                    onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)}
+                    />
+            </GridCell>,
+            <GridCell>
+                <EditSettings
+                    type={extensionBeingEdited.packageType.value}
+                    onChange={this.onChange.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
+                    onSave={this.onSave.bind(this)}
+                    extensionBeingEdited={extensionBeingEdited}
+                    updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
+            </GridCell>,
+            <License value={extensionBeingEdited.license.value}
+                onChange={this.onChange.bind(this)}
+                disabled={!this.isHost}
+                onCancel={this.onCancel.bind(this)}
+                onSave={this.onSave.bind(this)}
+                primaryButtonText={Localization.get("Save.Button")} />,
+            <ReleaseNotes
+                value={extensionBeingEdited.releaseNotes.value}
+                onChange={this.onChange.bind(this)}
+                onCancel={this.onCancel.bind(this)}
+                disabled={!this.isHost}
+                onSave={this.onSave.bind(this)}
+                primaryButtonText={Localization.get("Save.Button")} />
+        ];
+        let siteSettingIndex = 2;
+        if (!this.isHost || !this.getExtensionSettingTabVisible(extensionBeingEdited.packageType.value)) {
+            allTabs.splice(1, 1);
+            siteSettingIndex = 1;
+        }
+        if (!this.getSiteSettingTabVisible(extensionBeingEdited.packageType.value)) {
+            allTabs.splice(siteSettingIndex, 1);
+        }
+        return allTabs;
+    }
+
     render() {
         const {props, state} = this;
         const {extensionBeingEdited} = props;
         return (
             <GridCell className={styles.editExtension}>
-                <SocialPanelHeader title={extensionBeingEdited.friendlyName.value + " Extension"} >
+                <SocialPanelHeader title={<TextOverflowWrapper maxWidth={500} text={extensionBeingEdited.friendlyName.value + " Extension"} />} >
                     {this.isHost && <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>{Localization.get("EditExtension_CreatePackage.Button")}</Button>}
                 </SocialPanelHeader>
                 <SocialPanelBody>
-                    {this.isHost && <Tabs
+                    <Tabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
-                        selectedIndex={state.selectedTabIndex}
+                        selectedIndex={props.selectedEditingTab}
                         type="primary">
-                        <GridCell className="package-information-box extension-form">
-                            <PackageInformation
-                                onSave={this.onSave.bind(this)}
-                                validationMapped={true}
-                                extensionBeingEdited={extensionBeingEdited}
-                                onVersionChange={this.onVersionChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
-                                validateFields={this.validateFields.bind(this)}
-                                onChange={this.onChange.bind(this)}
-                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
-                                triedToSave={props.triedToSave}
-                                toggleTriedToSave={this.toggleTriedToSave.bind(this)}
-                                primaryButtonText="Save" />
-                        </GridCell>
-                        <GridCell className="extension-form">
-                            <CustomSettings
-                                type={extensionBeingEdited.packageType.value}
-                                primaryButtonText="Save"
-                                onChange={this.onChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
-                                onSave={this.onSave.bind(this)}
-                                onAssignedPortalsChange={this.onAssignedPortalsChange.bind(this)}
-                                />
-                        </GridCell>
-                        <GridCell>
-                            <EditSettings
-                                type={extensionBeingEdited.packageType.value}
-                                onCancel={this.selectPanel.bind(this, 0)}
-                                extensionBeingEdited={extensionBeingEdited}
-                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
-                        </GridCell>
-                        <License value={extensionBeingEdited.license.value}
-                            onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
-                            onSave={this.onSave.bind(this)}
-                            primaryButtonText="Save" />
-                        <ReleaseNotes
-                            value={extensionBeingEdited.releaseNotes.value}
-                            onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
-                            onSave={this.onSave.bind(this)}
-                            primaryButtonText="Save" />
-                    </Tabs>}
-                    {!this.isHost && <Tabs
-                        tabHeaders={this.getTabHeaders()}
-                        onSelect={this.onTabSelect.bind(this)}
-                        selectedIndex={state.selectedTabIndex}
-                        type="primary">
-                        <GridCell className="package-information-box extension-form">
-                            <PackageInformation
-                                onSave={this.onSave.bind(this)}
-                                validationMapped={true}
-                                disabled={true}
-                                extensionBeingEdited={extensionBeingEdited}
-                                onVersionChange={this.onVersionChange.bind(this)}
-                                onCancel={this.selectPanel.bind(this, 0)}
-                                validateFields={this.validateFields.bind(this)}
-                                onChange={this.onChange.bind(this)}
-                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
-                                triedToSave={props.triedToSave}
-                                toggleTriedToSave={this.toggleTriedToSave.bind(this)}
-                                primaryButtonText="Save" />
-                        </GridCell>
-                        <GridCell>
-                            <EditSettings
-                                type={extensionBeingEdited.packageType.value}
-                                onCancel={this.selectPanel.bind(this, 0)}
-                                extensionBeingEdited={extensionBeingEdited}
-                                updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
-                        </GridCell>
-                        <License value={extensionBeingEdited.license.value}
-                            onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
-                            disabled={true}
-                            onSave={this.onSave.bind(this)}
-                            primaryButtonText="Save" />
-                        <ReleaseNotes
-                            value={extensionBeingEdited.releaseNotes.value}
-                            disabled={true}
-                            onChange={this.onChange.bind(this)}
-                            onCancel={this.selectPanel.bind(this, 0)}
-                            onSave={this.onSave.bind(this)}
-                            primaryButtonText="Save" />
+                        {this.getTabUI()}
                     </Tabs>
-                    }
                 </SocialPanelBody>
             </GridCell >
         );
@@ -297,10 +387,11 @@ class EditExtension extends Component {
     }
 }
 
-EditExtension.PropTypes = {
+EditExtension.propTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     disabled: PropTypes.func,
+    extensionBeingEdited: PropTypes.object,
     packageBeingEditedSettings: PropTypes.object
 };
 
@@ -312,7 +403,8 @@ function mapStateToProps(state) {
         moduleDefinitionFormIsDirty: state.moduleDefinition.formIsDirty,
         triedToSave: state.extension.triedToSave,
         tabsWithError: state.extension.tabsWithError,
-        moduleCategories: state.extension.moduleCategories
+        moduleCategories: state.extension.moduleCategories,
+        selectedEditingTab: state.extension.tabBeingEdited
     };
 }
 

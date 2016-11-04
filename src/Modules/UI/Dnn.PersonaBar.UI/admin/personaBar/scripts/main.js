@@ -58,7 +58,7 @@ if (window.parent['personaBarSettings'].debugMode === true) {
 }
 
 require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
-        '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/dist/export-bundle'],
+        '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/export-bundle'],
     function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;
@@ -74,7 +74,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         var config = cf.init();
         var utility = ut.init(config);
         var inAnimation = false;
-        var personaBarMenuWidth = 85;
+        var personaBarMenuWidth = parseInt($("#personabar").width());
         var $iframe = $(iframe);
         var $body = $(body);
         var $personaBarPanels = $("#personabar-panels");
@@ -284,18 +284,31 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                 this.loadCustomModules();
             },
-            loadCustomModules: function () {
+            initCustomModules: function (callback) {
                 if (config.customModules && config.customModules.length > 0) {
                     var self = this;
                     for (var i = 0; i < config.customModules.length; i++) {
-                        var path = '../' + config.customModules[i];
+                        (function (index) {
+                            var path = '../' + config.customModules[index];
+                            require([path], function (module) {
+                                customModules.push(module);
+                                if (typeof module.init === "function") {
+                                    module.init.call(self, util);
+                                }
+
+                                if (index === config.customModules.length - 1 && typeof callback === "function") {
+                                    callback();
+                                }
+                            });
+                        })(i);
                         
-                        require([path], function (module) {
-                            customModules.push(module);
-                            if (typeof module.load === "function") {
-                                module.load.call(self);
-                            }
-                        });
+                    }
+                }
+            },
+            loadCustomModules: function () {
+                for (var i = 0; i < customModules.length; i++) {
+                    if (typeof customModules[i].load === "function") {
+                        customModules[i].load.call(this);
                     }
                 }
             },
@@ -311,18 +324,25 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var settings = null;
                 for (var i = 0; i < menuItems.length; i++) {
                     var menuItem = menuItems[i];
-                    if (menuItem.id === identifier) {
-                        if (menuItem.settings) {
-                            settings = eval("(" + menuItem.settings + ")");
-                        } else {
-                            settings = {};
+                    if (typeof menuItem.length === "number" && menuItem.length > 0) {
+                        settings = this.findMenuSettings(identifier, menuItem);
+                        if (settings) {
+                            break;
                         }
-                    } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
-                        settings = this.findMenuSettings(identifier, menuItem.menuItems);
-                    }
+                    } else {
+                        if (menuItem.id === identifier) {
+                            if (menuItem.settings) {
+                                settings = eval("(" + menuItem.settings + ")");
+                            } else {
+                                settings = {};
+                            }
+                        } else if (typeof menuItem.menuItems !== "undefined" && menuItem.menuItems.length > 0) {
+                            settings = this.findMenuSettings(identifier, menuItem.menuItems);
+                        }
 
-                    if (settings) {
-                        break;
+                        if (settings) {
+                            break;
+                        }
                     }
                 }
 
@@ -342,6 +362,23 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             (function ($) {
                 $(parent.document).trigger('personabar:show');
             }(parent.$));
+        }
+
+        function checkMenuLink($menu) {
+            var href = $menu.attr('href');
+            if (href) {
+                if (href.indexOf('://') > -1) {
+                    window.open(href);
+                } else {
+                    href = config.siteRoot + href;
+                    util.closePersonaBar(function () {
+                        window.top.location.href = href;
+                    });
+                }
+                return true;
+            }
+
+            return false;
         }
 
         util.asyncParallel([
@@ -423,25 +460,15 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 var mouseOnHovermenu = false;
 
                                 (function setupMenu() {
+                                    $(".btn_panel .hovermenu").click(function(e) {
+                                        e.stopPropagation();
+                                    });
 
                                     $(".btn_panel, .hovermenu > ul > li").click(function handleClickOnHoverMenuItem(evt) {
                                         evt.preventDefault();
                                         evt.stopPropagation();
 
                                         var $this = $(this);
-
-                                        var href = $this.attr('href');
-                                        if (href) {
-                                            if (href.indexOf('://') > -1) {
-                                                window.open(href);
-                                            } else {
-                                                href = config.siteRoot + href;
-                                                util.closePersonaBar(function() {
-                                                    window.top.location.href = href;
-                                                });
-                                            }
-                                            return;
-                                        }
 
                                         if ($this.hasClass('selected')) {
                                             var path = $this.data('path');
@@ -465,7 +492,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                             for (var i = 0; i < menuItems.length; i++) {
                                                 if (menuItems[i].id === identifier) {
                                                     if (menuItems[i].menuItems.length > 0) {
-                                                        var subMenu = menuItems[i].menuItems[0];
+                                                        var subMenu = menuItems[i].menuItems[0][0];
                                                         identifier = subMenu.id;
                                                         moduleName = subMenu.moduleName;
                                                         path = subMenu.path;
@@ -474,6 +501,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                     }
                                                 }
                                             }
+                                        }
+
+                                        if (checkMenuLink($('li#' + identifier))) {
+                                            return;
                                         }
 
                                         if (!path) return;
@@ -677,25 +708,34 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             $avatarImage = $('.useravatar span');
                             $avatarImage.css('background-image', 'url(\'' + config.avatarUrl + '\')');
 
-                            var $logout = $('li#Logout');
-                            if (!$logout.parents('.hovermenu').length) {
-                                $logout.before($showSiteButton);
+                            var retryTimes = 0;
+                            var handleLogoutFunc = function() {
+                                var $logout = $('li#Logout');
+                                if (!$logout.length && retryTimes < 3) {
+                                    setTimeout(handleLogoutFunc, 500);
+                                    retryTimes++;
+                                }
+
+                                $logout.off('click').click(function(evt) {
+                                    evt.preventDefault();
+                                    evt.stopPropagation();
+
+                                    function onLogOffSuccess() {
+                                        if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
+                                            window.top.dnn.PersonaBar.userLoggedOut = true;
+                                        }
+                                        window.top.document.location.href = window.top.document.location.href;
+                                    };
+
+                                    util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess, null, null, null, null, true);
+                                    return;
+                                });
+                            };
+
+                            handleLogoutFunc();
+                            if (!$iframe.attr('style') || $iframe.attr('style').indexOf("width") === -1) {
+                                $iframe.width(personaBarMenuWidth);
                             }
-                            $logout.off('click').click(function (evt) {
-                                evt.preventDefault();
-                                evt.stopPropagation();
-
-                                function onLogOffSuccess() {
-                                    if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
-                                        window.top.dnn.PersonaBar.userLoggedOut = true;
-                                    }
-                                    window.top.document.location.href = window.top.document.location.href;
-                                };
-
-                                util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess, null, null, null, null, true);
-                                return;
-                            });
-                            $iframe.width(personaBarMenuWidth);
                         }, 0);
                         callback();
                     });
@@ -712,6 +752,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 200, 'linear', callback);
                     }
+
+                    callback();
+                },
+                function initCustomModules(callback) {
+                    util.initCustomModules(callback);
                 }
         ],
         function loadPanelFromPersistedSetting() {

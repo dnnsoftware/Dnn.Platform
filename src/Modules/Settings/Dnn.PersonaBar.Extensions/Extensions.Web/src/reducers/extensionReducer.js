@@ -40,7 +40,7 @@ function validationMapExtensionBeingEdited(extensionBeingEdited) {
         let validateRequired = getValidateRequired(key);
         let tabMapping = getTabMapping(key);
         _extensionBeingEdited[key] = {
-            value: !_extensionBeingEdited[key].hasOwnProperty("value") ? _extensionBeingEdited[key] : _extensionBeingEdited[key].value,
+            value: _extensionBeingEdited[key] && !_extensionBeingEdited[key].hasOwnProperty("value") ? _extensionBeingEdited[key] : _extensionBeingEdited[key] && _extensionBeingEdited[key].value,
             validateRequired,
             tabMapping,
             error: false
@@ -64,7 +64,10 @@ export default function extension(state = {
     selectedAvailablePackageType: "",
     triedToSave: false,
     tabsWithError: [],
-    moduleCategories: []
+    moduleCategories: [],
+    tabBeingEdited: 0,
+    locales: [],
+    localePackages: []
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
@@ -102,7 +105,7 @@ export default function extension(state = {
             };
         case ActionTypes.UPDATED_EXTENSION_BEING_EDITED:
             return { ...state,
-                extensionBeingEdited: action.payload
+                extensionBeingEdited: action.payload.extensionBeingEdited
             };
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGE_TYPES:
             return { ...state,
@@ -113,6 +116,7 @@ export default function extension(state = {
             return { ...state,
                 availablePackageTypes: action.payload.Results
             };
+        case ActionTypes.ADDED_NEW_EXTENSION:
         case ActionTypes.INSTALLED_EXTENSION:
         case ActionTypes.CREATED_NEW_MODULE:
             return { ...state,
@@ -121,6 +125,18 @@ export default function extension(state = {
         case ActionTypes.RETRIEVED_MODULE_CATEGORIES:
             return { ...state,
                 moduleCategories: action.payload
+            };
+        case ActionTypes.SELECT_EDITING_TAB:
+            return { ...state,
+                tabBeingEdited: action.payload
+            };
+        case ActionTypes.RETRIEVED_LOCALE_LIST:
+            return { ...state,
+                locales: action.payload
+            };
+        case ActionTypes.RETRIEVED_PACKAGE_LOCALE_LIST:
+            return { ...state,
+                localePackages: action.payload
             };
         default:
             return state;

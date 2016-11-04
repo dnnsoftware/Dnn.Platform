@@ -26,56 +26,56 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Installer.Packages;
+using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
+    [JsonObject]
     public class ModulePackageDetailDto : ModulePackagePermissionsDto
     {
-        [DataMember(Name = "moduleName")]
+        [JsonProperty("moduleName")]
         public string ModuleName { get; set; }
 
-        [DataMember(Name = "folderName")]
+        [JsonProperty("folderName")]
         public string FolderName { get; set; }
 
-        [DataMember(Name = "category")]
+        [JsonProperty("category")]
         public string Category { get; set; }
 
-        [DataMember(Name = "businessController")]
+        [JsonProperty("businessController")]
         public string BusinessController { get; set; }
 
-        [DataMember(Name = "dependencies")]
+        [JsonProperty("dependencies")]
         public string Dependencies { get; set; }
 
-        [DataMember(Name = "hostPermissions")]
+        [JsonProperty("hostPermissions")]
         public string HostPermissions { get; set; }
 
-        [DataMember(Name = "portable")]
+        [JsonProperty("portable")]
         public bool Portable { get; set; }
 
-        [DataMember(Name = "searchable")]
+        [JsonProperty("searchable")]
         public bool Searchable { get; set; }
 
-        [DataMember(Name = "upgradeable")]
+        [JsonProperty("upgradeable")]
         public bool Upgradeable { get; set; }
 
-        [DataMember(Name = "shareable")]
+        [JsonProperty("shareable")]
         public ModuleSharing Shareable { get; set; }
 
-        [DataMember(Name = "premiumModule")]
+        [JsonProperty("premiumModule")]
         public bool PremiumModule { get; set; }
 
-        [DataMember(Name = "assignedPortals")]
-        public IList<IdNameDto> AssignedPortals { get; set; } = new List<IdNameDto>();
+        [JsonProperty("assignedPortals")]
+        public IList<ListItemDto> AssignedPortals { get; set; } = new List<ListItemDto>();
 
-        [DataMember(Name = "unassignedPortals")]
-        public IList<IdNameDto> UnassignedPortals { get; set; } = new List<IdNameDto>();
+        [JsonProperty("unassignedPortals")]
+        public IList<ListItemDto> UnassignedPortals { get; set; } = new List<ListItemDto>();
 
-        [DataMember(Name = "moduleDefinitions")]
+        [JsonProperty("moduleDefinitions")]
         public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; }  = new List<ModuleDefinitionDto>();
 
         public ModulePackageDetailDto()
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 foreach (var portalDesktopModuleInfo in portalDesktopModules)
                 {
                     var value = portalDesktopModuleInfo.Value;
-                    AssignedPortals.Add(new IdNameDto { Id = value.PortalID, Name = value.PortalName });
+                    AssignedPortals.Add(new ListItemDto { Id = value.PortalID, Name = value.PortalName });
                 }
 
                 var assignedIds = AssignedPortals.Select(p => p.Id).ToArray();
@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
                 foreach (var portalInfo in allPortals)
                 {
-                    UnassignedPortals.Add(new IdNameDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
+                    UnassignedPortals.Add(new ListItemDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
                 }
             }
 

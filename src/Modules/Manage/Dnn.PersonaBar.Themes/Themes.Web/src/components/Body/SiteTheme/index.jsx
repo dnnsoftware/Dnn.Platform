@@ -13,6 +13,8 @@ import CurrentTheme from "./CurrentTheme";
 import ThemeFileList from "./ThemeFileList";
 import ThemeSettings from "./ThemeSettings";
 
+import utils from "utils";
+
 import "./style.less";
 
 class SiteTheme extends Component {
@@ -26,6 +28,22 @@ class SiteTheme extends Component {
         props.dispatch(ThemeActions.getCurrentTheme());
     }
 
+    hasData(){
+        const {props, state} = this;
+
+        let source = props.themes.layouts;
+        let isHost = utils.params.settings.isHost;
+        let hasData = source.filter(l => {
+            return isHost || l.level === 1;
+        }).length > 0;
+
+        return isHost || hasData;
+    }
+
+    getTabs(){
+        return this.hasData() ? [Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]
+                              : [Localization.get("Layouts"), Localization.get("Containers")];
+    }
 
     render() {
         const {props, state} = this;
@@ -33,18 +51,18 @@ class SiteTheme extends Component {
         return (
             <GridCell className="site-theme">
                 <GridCell columnSize={168} type="px">
-                    <CurrentTheme theme={props.currentTheme} />
+                    <CurrentTheme />
                 </GridCell>
                 <GridCell className="site-theme-tabs" columnSize={560} type="px">
                     <div className="site-theme-title">
                         <label>{Localization.get("SiteTheme")}</label>
                         <span>{props.currentTheme.SiteLayout.themeName}</span>
                     </div>
-                    <Tabs tabHeaders={[Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]}
+                    <Tabs tabHeaders={this.getTabs()}
                             type="secondary">
-                        <ThemeFileList theme={props.currentTheme} type={0} />
-                        <ThemeFileList theme={props.currentTheme} type={1} />
-                        <ThemeSettings />
+                        <ThemeFileList type={0} />
+                        <ThemeFileList type={1} />
+                        {this.hasData() && <ThemeSettings />}
                     </Tabs>
                 </GridCell>
                 
@@ -59,6 +77,7 @@ SiteTheme.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        themes: state.theme.themes,
         currentTheme: state.theme.currentTheme
     };
 }

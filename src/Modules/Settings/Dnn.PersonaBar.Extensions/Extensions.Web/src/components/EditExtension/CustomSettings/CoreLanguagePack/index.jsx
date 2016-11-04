@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridSystem from "dnn-grid-system";
@@ -8,31 +9,35 @@ import Localization from "localization";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class CoreLanguagePack extends Component {
-    render() {
-        const {props, state} = this;
 
+    onSelect(option) {
+        this.props.onChange("languageId", option.value);
+    }
+
+    render() {
+        const {props} = this;
+        let { extensionBeingEdited } = props;
         return (
-            <GridCell className={styles.editCoreLanguagePack}>
+            <GridCell className={styles.editCoreLanguagePack + (props.className ? " " + props.className : "")}>
                 <GridCell>
                     <DropdownWithError
                         label={Localization.get("EditExtensionLanguagePack_Language.Label")}
-                        options={
-                            [
-                                { label: "", value: "" }
-                            ]
-                        }
+                        options={extensionBeingEdited.locales.value.map((locale) => {
+                            return { label: locale.name, value: locale.id };
+                        })}
+                        enabled={!props.disabled}
+                        value={extensionBeingEdited.languageId.value}
+                        onSelect={this.onSelect.bind(this)}
                         tooltipMessage={Localization.get("EditExtensionLanguagePack_Language.HelpText")}
                         style={inputStyle} />
                 </GridCell>
                 {!props.actionButtonsDisabled &&
-                <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    <Button type="primary">{props.primaryButtonText}</Button>
-                </GridCell>
+                    <GridCell columnSize={100} className="modal-footer">
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary">{props.primaryButtonText}</Button>}
+                    </GridCell>
                 }
             </GridCell>
         );
@@ -40,7 +45,7 @@ class CoreLanguagePack extends Component {
     }
 }
 
-CoreLanguagePack.PropTypes = {
+CoreLanguagePack.propTypes = {
     onCancel: PropTypes.func,
     onUpdateExtension: PropTypes.func,
     onChange: PropTypes.func,
@@ -48,4 +53,11 @@ CoreLanguagePack.PropTypes = {
     primaryButtonText: PropTypes.string
 };
 
-export default CoreLanguagePack;
+
+function mapStateToProps(state) {
+    return {
+        extensionBeingEdited: state.extension.extensionBeingEdited,
+        extensionBeingEditedIndex: state.extension.extensionBeingEditedIndex
+    };
+}
+export default connect(mapStateToProps)(CoreLanguagePack);

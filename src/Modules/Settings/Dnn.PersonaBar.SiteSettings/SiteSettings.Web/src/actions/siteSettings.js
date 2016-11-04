@@ -1,4 +1,4 @@
-import {siteSettings as ActionTypes}  from "../constants/actionTypes";
+import { siteSettings as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
@@ -196,7 +196,7 @@ const siteSettingsActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTIES,
                     data: {
-                        profileProperties: data.ProfileProperties                        
+                        profileProperties: data.ProfileProperties
                     }
                 });
                 if (callback) {
@@ -215,7 +215,7 @@ const siteSettingsActions = {
                         userVisibilityOptions: data.UserVisibilityOptions,
                         dataTypeOptions: data.DataTypeOptions,
                         languageOptions: data.LanguageOptions,
-                        profilePropertyClientModified: false                        
+                        profilePropertyClientModified: false
                     }
                 });
                 if (callback) {
@@ -273,7 +273,7 @@ const siteSettingsActions = {
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION,
                     data: {
                         propertyLocalization: data.PropertyLocalization,
-                        propertyLocalizationClientModified: false                        
+                        propertyLocalizationClientModified: false
                     }
                 });
                 if (callback) {
@@ -346,6 +346,581 @@ const siteSettingsActions = {
                     type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION,
                     data: {
                         propertyLocalizationClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getUrlMappingSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getUrlMappingSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS_SETTINGS,
+                    data: {
+                        urlMappingSettings: data.Settings,
+                        portalAliasMappingModes: data.PortalAliasMappingModes,
+                        urlMappingSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getSiteAliases(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getSiteAliases(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES,
+                    data: {
+                        siteAliases: data.PortalAliases,
+                        browsers: data.BrowserTypes,
+                        languages: data.Languages,
+                        skins: data.Skins
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    urlMappingSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_URL_MAPPING_SETTINGS_CLIENT_MODIFIED,
+                data: {
+                    urlMappingSettings: parameter,
+                    urlMappingSettingsClientModified: true
+                }
+            });
+        };
+    },
+    updateUrlMappingSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateUrlMappingSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_URL_MAPPING_SETTINGS,
+                    data: {
+                        urlMappingSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getSiteAlias(aliasId, callback) {
+        return (dispatch) => {
+            ApplicationService.getSiteAlias(aliasId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS,
+                    data: {
+                        aliasDetail: data.PortalAlias
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    cancelSiteAliasClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED,
+                data: {
+                    siteAliasClientModified: false
+                }
+            });
+        };
+    },
+    siteAliasClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_SITE_ALIAS_CLIENT_MODIFIED,
+                data: {
+                    aliasDetail: parameter,
+                    siteAliasClientModified: true
+                }
+            });
+        };
+    },
+    addSiteAlias(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addSiteAlias(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliasClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateSiteAlias(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateSiteAlias(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliasClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    deleteSiteAlias(aliasId, aliases, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteSiteAlias(aliasId, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_SITE_ALIAS,
+                    data: {
+                        siteAliases: aliases
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getBasicSearchSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getBasicSearchSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_BASIC_SEARCH_SETTINGS,
+                    data: {
+                        basicSearchSettings: data.Settings,
+                        searchCustomAnalyzers: data.SearchCustomAnalyzers
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    basicSearchSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_BASIC_SEARCH_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    basicSearchSettings: parameter,
+                    basicSearchSettingsClientModified: true
+                }
+            });
+        };
+    },
+    updateBasicSearchSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateBasicSearchSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_BASIC_SEARCH_SETTINGS,
+                    data: {
+                        basicSearchSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    compactSearchIndex(callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.compactSearchIndex(data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    hostSearchReindex(callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.hostSearchReindex(data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    portalSearchReindex(portalId, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.portalSearchReindex(portalId, data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getSynonymsGroups(portalId, cultureCode, callback) {
+        return (dispatch) => {
+            ApplicationService.getSynonymsGroups(portalId, cultureCode, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_SYNONYMS_GROUPS,
+                    data: {
+                        synonymsGroups: data.SynonymsGroups
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    addSynonymsGroup(payload, groups, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addSynonymsGroup(payload, data => {
+                let updatedGroups = groups.map((item, index) => {
+                    return item;
+                });                
+                updatedGroups.unshift({SynonymsGroupId: data.Id, SynonymsTags: payload.SynonymsTags});
+
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_SYNONYMS_GROUP,
+                    data: {
+                        synonymsGroups: updatedGroups,
+                        synonymsGroupClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateSynonymsGroup(payload, groups, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateSynonymsGroup(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_SYNONYMS_GROUP,
+                    data: {
+                        synonymsGroups: groups,
+                        synonymsGroupClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    deleteSynonymsGroup(groupId, groups, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteSynonymsGroup(groupId, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_SYNONYMS_GROUP,
+                    data: {
+                        synonymsGroups: groups
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    synonymsGroupClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_SYNONYMS_GROUP_CLIENT_MODIFIED,
+                data: {
+                    synonymsGroup: parameter,
+                    synonymsGroupClientModified: true
+                }
+            });
+        };
+    },
+    cancelSynonymsGroupClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_SYNONYMS_GROUP_CLIENT_MODIFIED,
+                data: {
+                    synonymsGroupClientModified: false
+                }
+            });
+        };
+    },
+    getIgnoreWords(portalId, cultureCode, callback) {
+        return (dispatch) => {
+            ApplicationService.getIgnoreWords(portalId, cultureCode, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_IGNORE_WORDS,
+                    data: {
+                        ignoreWords: data.IgnoreWords
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    addIgnoreWords(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addIgnoreWords(payload, data => {
+                let updatedWords = Object.assign({ StopWordsId: data.Id }, payload);
+
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_IGNORE_WORDS,
+                    data: {
+                        ignoreWords: updatedWords,
+                        ignoreWordsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateIgnoreWords(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateIgnoreWords(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_IGNORE_WORDS,
+                    data: {
+                        ignoreWords: payload,
+                        ignoreWordsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    ignoreWordsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_IGNORE_WORDS_CLIENT_MODIFIED,
+                data: {
+                    ignoreWords: parameter,
+                    ignoreWordsClientModified: true
+                }
+            });
+        };
+    },
+    cancelIgnoreWordsClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_IGNORE_WORDS_CLIENT_MODIFIED,
+                data: {
+                    ignoreWordsClientModified: false
+                }
+            });
+        };
+    },
+    deleteIgnoreWords(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteIgnoreWords(payload, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_SITESETTINGS_IGNORE_WORDS,
+                    data: {
+                        ignoreWords: undefined
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getLanguageSettings(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getLanguageSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_SETTINGS,
+                    data: {
+                        languageSettings: data.Settings,
+                        languages: data.Languages,
+                        languageDisplayModes: data.LanguageDisplayModes,
+                        languageSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    languageSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_LANGUAGE_SETTINGS_CLIENT_MODIFIED,
+                data: {
+                    languageSettings: parameter,
+                    languageSettingsClientModified: true
+                }
+            });
+        };
+    },
+    updateLanguageSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateLanguageSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_SETTINGS,
+                    data: {
+                        languageSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getLanguages(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getLanguages(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGES,
+                    data: {
+                        languageList: data.Languages
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getLanguage(portalId, languageId, callback) {
+        return (dispatch) => {
+            ApplicationService.getLanguage(portalId, languageId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE,
+                    data: {
+                        language: data.Language,
+                        fallbacks: data.SupportedFallbacks,
+                        languageClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getAllLanguages(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getAllLanguages(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_ALL_LANGUAGES,
+                    data: {
+                        fullLanguageList: data.FullLanguageList
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    languageClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_LANGUAGE_CLIENT_MODIFIED,
+                data: {
+                    language: parameter,
+                    languageClientModified: true
+                }
+            });
+        };
+    },
+    cancelLanguageClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_LANGUAGE_CLIENT_MODIFIED,
+                data: {
+                    ignoreWordsClientModified: false
+                }
+            });
+        };
+    },
+    addLanguage(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.addLanguage(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_LANGUAGE,
+                    data: {
+                        languageClientModified: false
                     }
                 });
                 if (callback) {

@@ -63,7 +63,6 @@ export default class FileUpload extends Component {
     }
 
     uploadFile(file) {
-        let format = file.type;
         this.setState({ fileName: file.name });
         this.postFile(file);
     }
@@ -88,14 +87,16 @@ export default class FileUpload extends Component {
     }
 
     uploadComplete(alreadyInstalled) {
-        this.setState({ uploadComplete: true }, () => {
-            if (alreadyInstalled) {
-                this.setState({
-                    alreadyInstalled: true,
-                    uploading: false
-                });
-            }
-        });
+        setTimeout(() => {
+            this.setState({ uploadComplete: true }, () => {
+                if (alreadyInstalled) {
+                    this.setState({
+                        alreadyInstalled: true,
+                        uploading: false
+                    });
+                }
+            });
+        }, 1000);
     }
 
     onDragOver() {
@@ -120,15 +121,15 @@ export default class FileUpload extends Component {
 
         /* eslint-disable react/no-danger */
         return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.state.alreadyInstalled ? " already-installed" : "")}>
-            <div className="dropzone-container">
+
+            {(!this.state.uploading || this.state.uploadComplete) && <div className="dropzone-container">
                 <div
                     id="dropzoneId"
                     className={className}
                     onDragOver={this.onDragOver.bind(this)}
                     onDragLeave={this.onDragLeave.bind(this)}
                     onDrop={this.onDrop.bind(this)}
-                    >
-                    <div className="buttons" style={buttonsStyle}>
+                    ><div className="buttons" style={buttonsStyle}>
                         <div
                             className="button upload"
                             onMouseEnter={this.onMouseEnter.bind(this, Localization.get("InstallExtension_UploadAFile"))}
@@ -140,6 +141,7 @@ export default class FileUpload extends Component {
                     <span>{this.state.text}</span>
                 </div>
             </div>
+            }
             {this.state.uploading &&
                 <UploadBar
                     uploadComplete={this.state.uploadComplete}

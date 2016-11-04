@@ -1,23 +1,15 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Tabs from "dnn-tabs";
-import {
-    pagination as PaginationActions,
-    users as UserActions
-} from "../../actions";
 import Localization from "localization";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
-import Dropdown from "dnn-dropdown";
-import SearchBox from "dnn-search-box";
-import UserTable from "./UserTable";
-import CreateUserBox from "./CreateUserBox";
-import Collapse from "react-collapse";
-import FiltersBar from "./FiltersBar";
+import { UserTable, FiltersBar } from "dnn-users-common-components";
 import Pager from "dnn-pager";
 import "./style.less";
+import {CommonUsersActions } from "dnn-users-common-actions";
+
 const searchParameters = {
     searchText: "",
     filter: 0,
@@ -30,30 +22,17 @@ class Body extends Component {
     constructor() {
         super();
         this.state = {
-            selectedRadioButton: 0,
-            value: "Test Me!",
-            textAreaValue: "Multi line!",
-            singleLineValue: "Single line!",
             userFilters: [],
             searchParameters
         };
     }
     componentWillMount() {
-        this.props.dispatch(UserActions.getUserFilters((data) => {
+        this.props.dispatch(CommonUsersActions.getUserFilters((data) => {
             let userFilters = Object.assign([], JSON.parse(JSON.stringify(data.Results)));
             this.setState({
                 userFilters
             });
         }));
-    }
-
-    onRadioButtonChange(value) {
-        alert(value);
-    }
-
-    onEnter(key) {
-        const { state } = this;
-        alert("You pressed enter! My value is: " + state[key]);
     }
 
     onChange(key, event) {
@@ -67,7 +46,7 @@ class Body extends Component {
         searchParameters.searchText = searchText;
         searchParameters.filter = option.value;
         searchParameters.pageIndex = 0;
-        this.props.dispatch(UserActions.getUsers(searchParameters));
+        this.props.dispatch(CommonUsersActions.getUsers(searchParameters));
         this.setState({ searchParameters });
     }
 
@@ -75,7 +54,7 @@ class Body extends Component {
         let {searchParameters} = this.state;
         searchParameters.pageIndex = currentPage;
         searchParameters.pageSize = pageSize;
-        this.props.dispatch(UserActions.getUsers(searchParameters));
+        this.props.dispatch(CommonUsersActions.getUsers(searchParameters));
         this.setState({ searchParameters });
     }
 
@@ -100,14 +79,19 @@ class Body extends Component {
         return (
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
-                    <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) }>{Localization.get("btn_CreateUser") }</Button>
+                    <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
+                        {Localization.get("btnCreateUser") }
+                    </Button>
                 </SocialPanelHeader>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable"/>
                     {
-                        state.searchParameters.filter === 0 && <div className="users-paging">
-                            <Pager pageSizeDropDownWithoutBorder={true} showSummary={true} showPageInfo={false}
-                                pageSizeOptionText={"{0} users per page"}
+                        (state.searchParameters.filter === 0 || state.searchParameters.filter === 3) && <div className="users-paging">
+                            <Pager pageSizeDropDownWithoutBorder={true} 
+                                showSummary={true} 
+                                showPageInfo={false}
+                                pageSizeOptionText={Localization.get("usersPageSizeOptionText")}
+                                summaryText={Localization.get("usersSummaryText")}
                                 pageSize={this.state.searchParameters.pageSize}
                                 totalRecords={props.totalUsers}
                                 onPageChanged={this.onPageChanged.bind(this) }
@@ -122,13 +106,11 @@ class Body extends Component {
 
 Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number,
     totalUsers: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
-        tabIndex: state.pagination.tabIndex,
         totalUsers: state.users.totalUsers
     };
 }

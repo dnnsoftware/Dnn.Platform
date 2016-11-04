@@ -56,7 +56,7 @@ class InstalledExtensions extends Component {
 
     onDelete(packageId, index) {
         const {props} = this;
-        utilities.utilities.confirm("Are you sure you want to delete this package?", "Yes", "No", () => {
+        utilities.utilities.confirm(Localization.get("DeleteExtension.Warning"), Localization.get("DeleteExtension.Confirm"), Localization.get("DeleteExtension.Cancel"), () => {
             props.dispatch(ExtensionActions.deletePackage(packageId, index));
         });
     }

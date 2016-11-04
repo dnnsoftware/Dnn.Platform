@@ -1,14 +1,14 @@
-import SitesListView from "./src/ListView";
-import ExportPortal from "./src/ExportPortal";
-import PortalListReducer from "./src/reducers/portalListReducer";
-
+import * as CommonComponents from "./src/Components";
+import * as CommonActions from "./src/actions";
+import * as CommonReducers from "./src/reducers";
+import * as CommonActionTypes from "./src/actionTypes";
 if(!window.dnn){
     window.dnn = {};
 }
 if(!window.dnn.Sites){
     window.dnn.Sites = {};
 }
-
-window.dnn.Sites.SitesListView = SitesListView;
-window.dnn.Sites.ExportPortal = ExportPortal;
-window.dnn.Sites.PortalListReducer = PortalListReducer;
+window.dnn.Sites.CommonActionTypes = CommonActionTypes; 
+window.dnn.Sites.CommonComponents = CommonComponents;
+window.dnn.Sites.CommonReducers = CommonReducers;
+window.dnn.Sites.CommonActions = CommonActions;

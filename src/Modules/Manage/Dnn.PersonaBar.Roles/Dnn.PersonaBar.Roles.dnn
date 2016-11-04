@@ -42,7 +42,7 @@
                         <path>Roles</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
-                        <order>2</order>
+                        <order>20</order>
                         <defaultRoles>Administrators,Content Managers</defaultRoles>
                     </menu>
                 </component>

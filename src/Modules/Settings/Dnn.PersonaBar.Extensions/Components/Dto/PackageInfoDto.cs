@@ -20,74 +20,76 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Linq;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class PackageInfoDto
     {
-        [DataMember(Name = "packageId")]
+        [JsonProperty("packageId")]
         public int PackageId { get; set; }
 
-        [DataMember(Name = "packageType")]
+        [JsonProperty("packageType")]
         public string PackageType { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "friendlyName")]
+        [JsonProperty("friendlyName")]
         public string FriendlyName { get; set; }
 
-        [DataMember(Name = "description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "version")]
+        [JsonProperty("version")]
         public string Version { get; set; }
 
-        [DataMember(Name = "inUse")]
+        [JsonProperty("inUse")]
         public string IsInUse { get; set; }
 
-        [DataMember(Name = "upgradeUrl")]
+        [JsonProperty("upgradeUrl")]
         public string UpgradeUrl { get; set; }
 
-        [DataMember(Name = "packageIcon")]
+        [JsonProperty("packageIcon")]
         public string PackageIcon { get; set; }
 
-        [DataMember(Name = "license")]
+        [JsonProperty("license")]
         public string License { get; set; }
 
-        [DataMember(Name = "releaseNotes")]
+        [JsonProperty("releaseNotes")]
         public string ReleaseNotes { get; set; }
 
-        [DataMember(Name = "owner")]
+        [JsonProperty("owner")]
         public string Owner { get; set; }
 
-        [DataMember(Name = "organization")]
+        [JsonProperty("organization")]
         public string Organization { get; set; }
 
-        [DataMember(Name = "url")]
+        [JsonProperty("url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [DataMember(Name = "canDelete")]
+        [JsonProperty("canDelete")]
         public bool CanDelete { get; set; }
 
         [JsonProperty("readOnly")]
         public bool ReadOnly { get; set; }
+
+        [JsonProperty("siteSettingsLink", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string SiteSettingsLink { get; set; }
 
         public PackageInfoDto()
         {
@@ -114,11 +116,29 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-            ReadOnly = authService != null &&  authService.AuthenticationType == Constants.DnnAuthTypeName;
+            ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+
+            var locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+            var tabId = TabController.GetTabByTabPath(portalId, "//Admin//Extensions", locale.Culture.Name);
+            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
+            var module = tabInfo.Modules.OfType<ModuleInfo>().First();
+            SiteSettingsLink = (module == null)
+                ? ""
+                : Globals.NavigateURL(tabId, "Edit",
+                    new[]
+                    {
+                        $"mid={module.ModuleID}",
+                        $"packageid={PackageId}",
+                        "Display=editor",
+                        "popUp=true",
+                    });
         }
 
         public PackageInfo ToPackageInfo()
         {
+            System.Version ver;
+            System.Version.TryParse(Version, out ver);
+
             return new PackageInfo
             {
                 PackageType = PackageType,
@@ -126,7 +146,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
                 Name = Name,
                 PackageID = PackageId,
                 Description = Description,
-                Version = new Version(Version),
+                Version = ver,
                 License = License,
                 ReleaseNotes = ReleaseNotes,
                 Owner = Owner,

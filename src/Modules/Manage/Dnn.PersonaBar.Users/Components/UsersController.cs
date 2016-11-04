@@ -72,14 +72,14 @@ namespace Dnn.PersonaBar.Users.Components
 
         #region Public Methods
 
-        public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, out int totalRecords)
+        public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             return !string.IsNullOrEmpty(usersContract.SearchText) && usersContract.Filter == UserFilters.All
                 ? GetUsersFromLucene(usersContract, out totalRecords)
-                : GetUsersFromDb(usersContract, out totalRecords);
+                : GetUsersFromDb(usersContract, isSuperUser, out totalRecords);
         }
 
-        public IEnumerable<KeyValuePair<string, int>> GetUserFilters()
+        public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser= false)
         {
             var userFilters = new List<KeyValuePair<string, int>>();
             for (var i = 0; i < 5; i++)
@@ -87,6 +87,10 @@ namespace Dnn.PersonaBar.Users.Components
                 userFilters.Add(
                     new KeyValuePair<string, int>(
                         Localization.GetString(Convert.ToString((UserFilters) i), LocalResourcesFile), i));
+            }
+            if (!isSuperUser)
+            {
+                userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
             }
             return userFilters;
         }
@@ -98,7 +102,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 return null;
             }
-
+            user.PortalID = portalId;
             return new UserDetailDto(user);
         }
 
@@ -106,7 +110,7 @@ namespace Dnn.PersonaBar.Users.Components
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                errorMessage = "ChangePasswordNotAvailable";
+                errorMessage = Localization.GetString("CannotChangePassword", LocalResourcesFile);
                 return false;
             }
 
@@ -124,7 +128,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (membershipPasswordController.FoundBannedPassword(newPassword) || user.Username == newPassword)
                 {
-                    errorMessage = "BannedPasswordUsed";
+                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                     return false;
                 }
 
@@ -133,7 +137,7 @@ namespace Dnn.PersonaBar.Users.Components
             //check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
-                errorMessage = "PasswordResetFailed";
+                errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory", LocalResourcesFile);
                 return false;
             }
 
@@ -142,7 +146,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
-                    errorMessage = "PasswordResetFailed";
+                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                 }
 
                 return passwordChanged;
@@ -151,7 +155,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Password Answer missing
                 Logger.Error(exc);
-                errorMessage = "InvalidPasswordAnswer";
+                errorMessage = Localization.GetString("PasswordInvalid", LocalResourcesFile);
                 return false;
             }
             catch (ThreadAbortException)
@@ -162,7 +166,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Fail
                 Logger.Error(exc);
-                errorMessage = "PasswordResetFailed";
+                errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                 return false;
             }
         }
@@ -221,52 +225,57 @@ namespace Dnn.PersonaBar.Users.Components
 
         #region Private Methods
 
-        private static IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, out int totalRecords)
+        private static IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             totalRecords = 0;
             var users = new List<UserBasicDto>();
             ArrayList dbUsers = null;
-            IList<UserInfo> dbUsersList = null;
+            IEnumerable<UserInfo> userInfos = null;
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-//                        using (
-//                            var reader = DataProvider.Instance()
-//                                .ExecuteReader("Personabar_GetUsers", usersContract.PortalId, usersContract.SortColumn,
-//                                    usersContract.SortAscending, usersContract.PageIndex, usersContract.PageSize))
-//                        {
-//                            if (!reader.Read())
-//                            {
-//                                return CBO.FillCollection<UserBasicDto>(reader);
-//                            }
-//                            totalRecords = reader.GetInt32(0);
-//                            reader.NextResult();
-//                            return CBO.FillCollection<UserBasicDto>(reader);
-//                        }
-
                     dbUsers = UserController.GetUsers(usersContract.PortalId, usersContract.PageIndex,
-                        usersContract.PageSize, ref totalRecords, true, false);
+                        usersContract.PageSize, ref totalRecords, true,
+                        false);
                     users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    break;
+                case UserFilters.SuperUsers:
+                    if (isSuperUser)
+                    {
+                        dbUsers = UserController.GetUsers(Null.NullInteger, usersContract.PageIndex,
+                            usersContract.PageSize, ref totalRecords, true, true);
+                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    }
                     break;
                 case UserFilters.UnAuthorized:
                     dbUsers = UserController.GetUnAuthorizedUsers(usersContract.PortalId, true, false);
-                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
+                    if (!isSuperUser)
+                    {
+                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
+                    }
+                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 case UserFilters.Deleted:
                     dbUsers = UserController.GetDeletedUsers(usersContract.PortalId);
-                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
+                    if (!isSuperUser)
+                    {
+                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
+                    }
+                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
 //                    case UserFilters.Online:
 //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
 //                        break;
-                case UserFilters.SuperUsers:
-                    dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId, "Superusers");
-                    users = dbUsersList?.Select(UserBasicDto.FromUserInfo).ToList();
-                    break;
                 case UserFilters.RegisteredUsers:
-                    dbUsersList = RoleController.Instance.GetUsersByRole(usersContract.PortalId,
+                    userInfos = RoleController.Instance.GetUsersByRole(usersContract.PortalId,
                         PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
-                    users = dbUsersList?.Select(UserBasicDto.FromUserInfo).ToList();
+                    if (!isSuperUser)
+                    {
+                        userInfos = userInfos?.Where(x => !x.IsSuperUser);
+                    }
+                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

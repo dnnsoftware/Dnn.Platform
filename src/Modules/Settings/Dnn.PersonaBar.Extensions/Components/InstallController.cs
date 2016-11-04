@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
@@ -14,8 +12,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
@@ -28,12 +24,13 @@ namespace Dnn.PersonaBar.Extensions.Components
             return () => new InstallController();
         }
 
-        public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string fileName, Stream stream)
+        public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
             var parseResult = new ParseResultDto();
-            var extension = Path.GetExtension(fileName);
+            var fileName = Path.GetFileName(filePath);
+            var extension = Path.GetExtension(fileName ?? "").ToLowerInvariant();
 
-            if (extension.ToLowerInvariant() != ".zip" && extension.ToLowerInvariant() != ".resources")
+            if (extension != ".zip" && extension != ".resources")
             {
                 parseResult.Failed("InvalidExt");
             }
@@ -61,7 +58,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         parseResult.Failed("InvalidFile");
                     }
 
-                    DeleteInstallFile(installer);
+                    DeleteTempInstallFiles(installer);
                 }
                 catch (ICSharpCode.SharpZipLib.ZipException)
                 {
@@ -72,14 +69,15 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
-        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string fileName, Stream stream)
+        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
             var installResult = new InstallResultDto();
-            var extension = Path.GetExtension(fileName);
+            var fileName = Path.GetFileName(filePath);
+            var extension = Path.GetExtension(fileName ?? "").ToLowerInvariant();
 
-            if (extension.ToLowerInvariant() != ".zip" && extension.ToLowerInvariant() != ".resources")
+            if (extension != ".zip" && extension != ".resources")
             {
-                installResult.Failed("InvalidExt");
+                    installResult.Failed("InvalidExt");
             }
             else
             {
@@ -110,6 +108,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         {
                             installResult.NewPackageId = installer.Packages.First().Value.Package.PackageID;
                             installResult.Succeed(logs);
+                            DeleteInstallFile(filePath);
                         }
                     }
                     else
@@ -117,7 +116,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                         installResult.Failed("InstallError");
                     }
 
-                    DeleteInstallFile(installer);
+                    DeleteTempInstallFiles(installer);
                 }
                 catch (ICSharpCode.SharpZipLib.ZipException)
                 {
@@ -147,7 +146,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             manifestWriter.Close();
         }
 
-        private void DeleteInstallFile(Installer installer)
+        private static void DeleteTempInstallFiles(Installer installer)
         {
             try
             {
@@ -155,6 +154,22 @@ namespace Dnn.PersonaBar.Extensions.Components
                 if (!String.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
                 {
                     Globals.DeleteFolderRecursive(tempFolder);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        private static void DeleteInstallFile(string installerFile)
+        {
+            try
+            {
+                if (File.Exists(installerFile))
+                {
+                        File.SetAttributes(installerFile, FileAttributes.Normal);
+                        File.Delete(installerFile);
                 }
             }
             catch (Exception ex)

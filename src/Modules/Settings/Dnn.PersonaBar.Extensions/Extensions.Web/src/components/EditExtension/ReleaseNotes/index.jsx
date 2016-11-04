@@ -3,7 +3,8 @@ import GridCell from "dnn-grid-cell";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import { Scrollbars } from "react-custom-scrollbars";
 import Button from "dnn-button";
-import styles from "./style.less";
+import Localization from "localization";
+import "./style.less";
 
 const inputStyle = { width: "100%" };
 const releaseBoxStyle = {
@@ -19,8 +20,10 @@ class EditExtension extends Component {
         /* eslint-disable react/no-danger */
         return (
             <GridCell style={{ padding: 50 }} className="release-notes extension-form">
+                {props.installationMode && <h6>{Localization.get("InstallExtension_ReleaseNotes.Header")}</h6>}
+                {props.installationMode && <p>{Localization.get("InstallExtension_ReleaseNotes.HelpText")}</p>}
                 {!props.readOnly && <MultiLineInputWithError
-                    label="Release Notes"
+                        label={!props.installationMode && Localization.get("InstallExtension_ReleaseNotes.Header")}
                     style={inputStyle}
                     enabled={!props.disabled}
                     value={value}
@@ -31,9 +34,9 @@ class EditExtension extends Component {
                     </Scrollbars>
                 }
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                    {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>}
-                    <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                    {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                    {(!props.disabled || props.installationMode) && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
                 </GridCell>
             </GridCell>
         );

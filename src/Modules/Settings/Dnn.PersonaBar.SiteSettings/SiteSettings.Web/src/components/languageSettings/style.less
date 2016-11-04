@@ -1,0 +1,51 @@
+@import "../../less/globals.less";
+@import "~dnn-global-styles/index";
+:local(.languageSettings) {
+    margin: 30px 30px;
+    .dnn-ui-common-input-group {
+        padding: 0 0 15px 0;
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+        .dnn-switch-container {
+            float: right;
+        }
+        .dnn-radio-buttons {
+            li {
+                width: 40% !important;
+                margin: 15px 0 0 0 !important;
+            }
+        }
+    }
+    .buttons-box {
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin: 0  0 30px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+    .sectionTitle {
+        font-weight: bolder;
+        float: left;
+        width: 100%;
+        padding: 30px 0 15px 0;
+    }
+    .dnn-grid-system {
+        .left-column {
+            padding-right: 30px;
+            .dnn-dropdown {
+                width: 281px;
+            }
+        }
+        .right-column {
+            padding-left: 30px;
+            border-left: 1px solid @alto;
+        }
+    }
+}

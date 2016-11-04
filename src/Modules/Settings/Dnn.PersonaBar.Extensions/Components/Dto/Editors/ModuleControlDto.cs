@@ -20,49 +20,49 @@
 #endregion
 #region Usings
 
-using System.Runtime.Serialization;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
+using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    [DataContract]
+    [JsonObject]
     public class ModuleControlDto
     {
-        [DataMember(Name = "id")]
+        [JsonProperty("id")]
         public int Id { get; set; }
 
-        [DataMember(Name = "definitionId")]
+        [JsonProperty("definitionId")]
         public int DefinitionId { get; set; }
 
-        [DataMember(Name = "key")]
+        [JsonProperty("key")]
         public string Key { get; set; }
 
-        [DataMember(Name = "title")]
+        [JsonProperty("title")]
         public string Title { get; set; }
 
-        [DataMember(Name = "source")]
+        [JsonProperty("source")]
         public string Source { get; set; }
 
 
-        [DataMember(Name = "type")]
+        [JsonProperty("type")]
         public SecurityAccessLevel Type { get; set; }
 
-        [DataMember(Name = "order")]
+        [JsonProperty("order")]
         public int Order { get; set; }
 
-        [DataMember(Name = "icon")]
+        [JsonProperty("icon")]
         public string Icon { get; set; }
 
-        [DataMember(Name = "helpUrl")]
+        [JsonProperty("helpUrl")]
         public string HelpUrl { get; set; }
 
-        [DataMember(Name = "supportPopups")]
+        [JsonProperty("supportPopups")]
         public bool SupportPopups { get; set; }
 
-        [DataMember(Name = "supportPartialRendering")]
+        [JsonProperty("supportPartialRendering")]
         public bool SupportPartialRendering { get; set; }
 
         public ModuleControlDto()

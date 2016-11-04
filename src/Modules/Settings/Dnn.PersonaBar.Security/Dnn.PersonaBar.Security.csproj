@@ -75,6 +75,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -114,6 +115,7 @@
     <Compile Include="Components\Checks\CheckTracing.cs" />
     <Compile Include="Components\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Checks\CheckViewstatemac.cs" />
+    <Compile Include="Components\ExtensionMenuController.cs" />
     <Compile Include="Components\IAuditCheck.cs" />
     <Compile Include="Components\SecurityController.cs" />
     <Compile Include="Components\SeverityEnum.cs" />

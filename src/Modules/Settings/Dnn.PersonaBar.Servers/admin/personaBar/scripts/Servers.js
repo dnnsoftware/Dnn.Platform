@@ -14,6 +14,9 @@
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initServers = function initServers() {
+            if (typeof callback === 'function') {
+                callback();
+            }
             return {
                 utilities: util,
                 moduleName: "Servers",
@@ -22,9 +25,7 @@
         };
         loadScript();
 
-        if (typeof callback === 'function') {
-            callback();
-        }
+       
     };
 
     var initMobile = function (wrapper, util, params, callback) {

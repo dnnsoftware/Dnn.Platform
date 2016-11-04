@@ -3,9 +3,15 @@
 {
     .dnn-servers-info-panel {
         margin: 30px 80px;
-        display: inline-block;        
-
-        
+        display: inline-block;          
+    }
+    .dnn-servers-info-panel-big {
+        margin: 30px 30px;
+        display: inline-block;
+        width: 93%;
+        .dnn-switch-container {
+            float: right;
+        }
     }
     .dnn-ui-common-input-group {
         padding: 0 0 15px 0;        
@@ -20,6 +26,39 @@
         div.tooltip-text {
             max-width: 320px;
             word-break: normal;
+        }
+    }
+
+    .leftPane {
+        padding-right:30px;
+        border-right: 1px solid @alto;
+    }
+
+    .rightPane {
+        padding-left:30px;
+        padding-right:30px;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid @alto;
+        margin-bottom: 25px;
+    }
+
+    .dnn-radio-buttons ul li {
+        padding-top: 10px;
+        div.check {
+            margin-top: 8px;
+        }
+        label {
+            margin-bottom: 10px;
+        }        
+    }
+
+    .buttons-panel {
+        text-align: center;
+        margin-top: 25px;
+        .dnn-ui-common-button {
+            margin-right:10px;
         }
     }
 

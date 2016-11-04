@@ -92,6 +92,136 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("UpdateProfilePropertyLocalization", payload, callback, failureCallback);
     } 
+
+    getUrlMappingSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetUrlMappingSettings?portalId=" + portalId, {}, callback);
+    }  
+
+    getSiteAliases(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetSiteAliases?portalId=" + portalId, {}, callback);
+    } 
+
+    updateUrlMappingSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateUrlMappingSettings", payload, callback, failureCallback);
+    }
+
+    getSiteAlias(aliasId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetSiteAlias?portalAliasId=" + aliasId, {}, callback);
+    } 
+
+    addSiteAlias(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddSiteAlias", payload, callback, failureCallback);
+    }
+
+    updateSiteAlias(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateSiteAlias", payload, callback, failureCallback);
+    }
+
+    deleteSiteAlias(aliasId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteSiteAlias?portalAliasId=" + aliasId, {}, callback, failureCallback);
+    } 
+
+    getBasicSearchSettings(callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetBasicSearchSettings", {}, callback);
+    } 
+
+    updateBasicSearchSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateBasicSearchSettings", payload, callback, failureCallback);
+    }
+
+    compactSearchIndex(callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("CompactSearchIndex", {}, callback, failureCallback);
+    }
+
+    hostSearchReindex(callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("HostSearchReindex", {}, callback, failureCallback);
+    }
+
+    portalSearchReindex(portalId, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("PortalSearchReindex?portalId=" + portalId, {}, callback, failureCallback);
+    }
+
+    getSynonymsGroups(portalId, cultureCode, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetSynonymsGroups?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+    } 
+
+    addSynonymsGroup(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddSynonymsGroup", payload, callback, failureCallback);
+    }
+
+    updateSynonymsGroup(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateSynonymsGroup", payload, callback, failureCallback);
+    }
+
+    deleteSynonymsGroup(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteSynonymsGroup", payload, callback, failureCallback);
+    } 
+
+    getIgnoreWords(portalId, cultureCode, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetIgnoreWords?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+    } 
+
+    addIgnoreWords(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddIgnoreWords", payload, callback, failureCallback);
+    }
+
+    updateIgnoreWords(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateIgnoreWords", payload, callback, failureCallback);
+    }
+
+    deleteIgnoreWords(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("DeleteIgnoreWords", payload, callback, failureCallback);
+    } 
+
+    getLanguageSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguageSettings?portalId=" + portalId, {}, callback);
+    } 
+
+    updateLanguageSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateLanguageSettings", payload, callback, failureCallback);
+    }
+
+    getLanguages(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguages?portalId=" + portalId, {}, callback);
+    } 
+
+    getLanguage(portalId, languageId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetLanguage?portalId=" + portalId + "&languageId=" + languageId, {}, callback);
+    } 
+
+    getAllLanguages(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetAllLanguages?portalId=" + portalId, {}, callback);
+    } 
+
+    addLanguage(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("AddLanguage", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

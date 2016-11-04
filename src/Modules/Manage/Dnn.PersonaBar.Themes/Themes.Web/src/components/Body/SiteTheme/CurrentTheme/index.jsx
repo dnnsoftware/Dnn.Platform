@@ -25,7 +25,7 @@ class CurrentTheme extends Component {
             <div className="current-theme">
             {
                 (function(){
-                    if(props.theme.SiteLayout.thumbnail){
+                    if(props.theme && props.theme.SiteLayout.thumbnail){
                         return <img src={props.theme.SiteLayout.thumbnail} />;
                     }
                     else{
@@ -45,6 +45,7 @@ CurrentTheme.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        currentTheme: state.theme.currentTheme
     };
 }
 

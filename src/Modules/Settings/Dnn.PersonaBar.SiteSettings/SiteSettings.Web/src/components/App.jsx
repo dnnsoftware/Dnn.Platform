@@ -1,9 +1,13 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import SocialPanelHeader from "dnn-social-panel-header";
+import {
+    visiblePanel as VisiblePanelActions
+} from "../actions";
 import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
+import HtmlEditorManager from "./moreSettings/htmlEditorManager";
 import resx from "../resources";
 require('es6-object-assign').polyfill();
 require('array.prototype.find').shim();
@@ -13,7 +17,17 @@ class App extends Component {
     constructor() {
         super();
     }
-    
+
+    openHtmlEditorManager() {
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(1));
+    }
+
+    closeHtmlEditorManager() {
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(0));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -21,7 +35,12 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
                     </SocialPanelHeader>
-                    <Body />
+                    <Body portalId={props.portalId} openHtmlEditorManager={this.openHtmlEditorManager.bind(this)} />
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 1}>
+                    <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
+                    </SocialPanelHeader>
+                    <HtmlEditorManager portalId={props.portalId} closeHtmlEditorManager={this.closeHtmlEditorManager.bind(this)} />
                 </PersonaBarPage>
             </div>
         );
@@ -30,7 +49,8 @@ class App extends Component {
 
 App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
-    selectedPage: PropTypes.number
+    selectedPage: PropTypes.number,
+    portalId: PropTypes.number
 };
 
 

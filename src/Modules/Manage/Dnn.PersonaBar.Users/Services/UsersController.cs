@@ -10,7 +10,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -23,13 +22,12 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
+using System.Collections.Generic;
 
 namespace Dnn.PersonaBar.Users.Services
 {
@@ -117,7 +115,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Filter = filter
                 };
 
-                var results = Components.UsersController.Instance.GetUsers(getUsersContract, out totalRecords);
+                var results = Components.UsersController.Instance.GetUsers(getUsersContract, UserInfo.IsSuperUser, out totalRecords);
                 var response = new
                 {
                     Success = true,
@@ -142,7 +140,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var response = new
                 {
                     Success = true,
-                    Results = Components.UsersController.Instance.GetUserFilters()
+                    Results = Components.UsersController.Instance.GetUserFilters(UserInfo.IsSuperUser)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -231,10 +229,8 @@ namespace Dnn.PersonaBar.Users.Services
                     UserController.UpdateUser(PortalId, user);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = false, Message = "OptionUnavailable" });
-                }
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Message = "OptionUnavailable" });
             }
             catch (Exception ex)
             {
@@ -429,37 +425,6 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
-        public HttpResponseMessage LoginAsUser([FromUri]int userId)
-        {
-            try
-            {
-                var user = UserController.Instance.GetUserById(PortalId, userId);
-                if (user == null)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
-                }
-
-                EventLogController.Instance.AddLog("Username", user.Username, PortalSettings, user.UserID, EventLogController.EventLogType.USER_IMPERSONATED);
-
-                //Remove user from cache
-                DataCache.ClearUserCache(PortalId, UserInfo.Username);
-
-                new PortalSecurity().SignOut();
-
-                UserController.UserLogin(user.PortalID, user, PortalSettings.PortalName, HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"], false);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         [RequireHost]
         public HttpResponseMessage UpdateSuperUserStatus([FromUri]int userId, [FromUri]bool setSuperUser)
         {
@@ -499,7 +464,7 @@ namespace Dnn.PersonaBar.Users.Services
             catch (SqlException ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.OK,
+                return Request.CreateResponse(HttpStatusCode.BadRequest,
                     new {Success = false, Message = "Username must be unique."});
             }
             catch (Exception ex)
@@ -514,17 +479,52 @@ namespace Dnn.PersonaBar.Users.Services
         #region User Roles API
 
         [HttpGet]
-        public HttpResponseMessage GetUserRoles(int userId, int pageIndex, int pageSize)
+        public HttpResponseMessage GetSuggestRoles(string keyword, int count)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
+                }
+
+                var roles = RoleController.Instance.GetRoles(PortalId, x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
+                var matchedRoles = roles.ToList().Take(count).Select(u => new UserRoleInfo
+                {
+                    RoleID = u.RoleID,
+                    RoleName = $"{u.RoleName}",
+                    SecurityMode = u.SecurityMode
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, matchedRoles.ToList().Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r)));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetUserRoles(string keyword, int userId, int pageIndex, int pageSize)
         {
             try
             {
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound"); ;
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
                 }
 
                 var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    allUserRoles =
+                        allUserRoles.Where(
+                            u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
+                            .ToList();
+                }
+
                 var userRoles = allUserRoles
                                     .Skip(pageIndex * pageSize)
                                     .Take(pageSize)
@@ -559,14 +559,16 @@ namespace Dnn.PersonaBar.Users.Services
 
                 RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
+                var addedRole = RoleController.Instance.GetUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new UserRoleDto
                 {
-                    UserId = user.UserID,
-                    RoleId = role.RoleID,
-                    DisplayName = user.DisplayName,
-                    StartTime = userRoleDto.StartTime,
-                    ExpiresTime = userRoleDto.ExpiresTime,
+                    UserId = addedRole.UserID,
+                    RoleId = addedRole.RoleID,
+                    DisplayName = addedRole.FullName,
+                    RoleName = addedRole.RoleName,
+                    StartTime = addedRole.EffectiveDate,
+                    ExpiresTime = addedRole.ExpiryDate,
                     AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
                     AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
                 });
@@ -609,6 +611,12 @@ namespace Dnn.PersonaBar.Users.Services
                 .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
 
             return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetUserProfile(int userId)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         #endregion

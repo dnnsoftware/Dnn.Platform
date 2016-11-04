@@ -22,14 +22,23 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     public enum PackageTypes
     {
+        Generic = 0,
         AuthSystem,
+        AuthenticationSystem = AuthSystem,
+        Auth_System = AuthSystem,
+        CoreLanguagePack,
         Container,
+        DashboardControl,
+        ExtensionLanguagePack,
         JavascriptLibrary,
+        Javascript_Library = JavascriptLibrary,
         Language,
         Library,
         Module,
         Provider,
-        Skin
+        Skin,
+        SkinObject,
+        Widget,
     }
 
     public enum FileType

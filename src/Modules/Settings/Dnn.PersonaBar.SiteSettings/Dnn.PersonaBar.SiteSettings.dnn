@@ -38,11 +38,12 @@
                     <menu>
                         <identifier>SiteSettings</identifier>
                         <moduleName>SiteSettings</moduleName>
+                        <controller>Dnn.PersonaBar.SiteSettings.Components.ExtensionMenuController, Dnn.PersonaBar.SiteSettings</controller>
                         <resourceKey>nav_SiteSettings</resourceKey>
                         <path>SiteSettings</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
-                        <order>1</order>
+                        <order>10</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>

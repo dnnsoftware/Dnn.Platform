@@ -156,7 +156,7 @@
     <Compile Include="Components\IFileUploadService.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
     <Compile Include="MenuControllers\LinkMenuController.cs" />
-    <Compile Include="MenuControllers\HomeController.cs" />
+    <Compile Include="MenuControllers\PlatformMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -178,6 +178,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
+    <Content Include="admin\personaBar\images\icon-exclamation.png" />
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />

@@ -42,7 +42,7 @@
                         <path>Servers</path>
                         <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
-                        <order>7</order>
+                        <order>50</order>
                     </menu>
                 </component>
             </components>

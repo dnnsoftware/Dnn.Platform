@@ -105,8 +105,6 @@ class CreatePackage extends Component {
         const { props } = this;
         let _packagePayload = deepCopy(props.packagePayload);
 
-        console.log(option);
-        console.log(key, value);
         _packagePayload[key] = value;
         _packagePayload.selectedManifestKey = option.label;
 
@@ -115,7 +113,6 @@ class CreatePackage extends Component {
 
     getManifestDropdown(manifests) {
         return Object.keys(manifests).map((key) => {
-            console.log(manifests);
             return {
                 label: key,
                 value: manifests[key]

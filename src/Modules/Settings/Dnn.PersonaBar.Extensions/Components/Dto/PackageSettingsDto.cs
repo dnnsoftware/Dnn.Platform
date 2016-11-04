@@ -20,30 +20,26 @@
 #endregion
 #region Usings
 
-using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class PackageSettingsDto
     {
-        [DataMember(Name = "packageId")]
+        [JsonProperty("packageId")]
         public int PackageId { get; set; }
 
-        [DataMember(Name = "portalId")]
+        [JsonProperty("portalId")]
         public int PortalId { get; set; }
 
-        [DataMember(Name = "settings")]
+        [JsonProperty("settings")]
         public IDictionary<string, string> Settings { get; set; } = new Dictionary<string, string>();
 
-        [DataMember(Name = "editorActions")]
+        [JsonProperty("editorActions")]
         public IDictionary<string, string> EditorActions { get; set; } = new Dictionary<string, string>();
     }
 }

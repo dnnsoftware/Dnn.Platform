@@ -1,8 +1,18 @@
 import { extension as ActionTypes, installation as InstallationActionTypes } from "constants/actionTypes";
 import { ExtensionService } from "services";
+import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
+import Localization from "localization";
 import utilities from "utils";
 
-function errorCallback(message) {
+function errorCallback(error) {
+    let message = utilities.utilities.getResx("SharedResources", "GenericErrorMessage.Error");
+    if (error.Error) {
+        message = error.Error;
+    } else if (error.Message) {
+        message = error.Message;
+    } else if (typeof error === "string") {
+        message = error;
+    }
     utilities.utilities.notifyError(message);
 }
 function valueMapExtensionBeingEdited(extensionBeingEdited) {
@@ -71,9 +81,15 @@ const extensionActions = {
             }, errorCallback);
         };
     },
-    updateExtension(updatedExtension, index, callback) {
+    updateExtension(updatedExtension, editorActions, index, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(updatedExtension, {}, () => {
+            ExtensionService.updateExtension(updatedExtension, editorActions, (data) => {
+                dispatch({
+                    type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                    payload: {
+                        extensionBeingEdited: validationMapExtensionBeingEdited(data.PackageDetail)
+                    }
+                });
                 dispatch({
                     type: ActionTypes.UPDATED_EXTENSION,
                     payload: {
@@ -81,8 +97,9 @@ const extensionActions = {
                         updatedExtension: valueMapExtensionBeingEdited(updatedExtension)
                     }
                 });
+                utilities.utilities.notify(Localization.get("EditExtension_Notify.Success"));
                 if (callback) {
-                    callback();
+                    utilities.utilities.throttleExecution(callback);
                 }
             }, errorCallback);
         };
@@ -97,7 +114,6 @@ const extensionActions = {
         };
     },
     installAvailablePackage(packageType, packageName, newExtension, callback) {
-        console.log(newExtension);
         return (dispatch) => {
             ExtensionService.installAvailablePackage(packageType, packageName, (data) => {
                 if (data.success) {
@@ -181,6 +197,24 @@ const extensionActions = {
             }
         };
     },
+    createNewExtension(extensionBeingAdded, editorActions, index, callback) {
+        return (dispatch) => {
+            ExtensionService.createNewExtension(extensionBeingAdded, editorActions, (data) => {
+                let _extensionBeingAdded = JSON.parse(JSON.stringify(extensionBeingAdded));
+                _extensionBeingAdded.packageId = {};
+                _extensionBeingAdded.packageId.value = data.PackageId;
+                dispatch({
+                    type: ActionTypes.ADDED_NEW_EXTENSION,
+                    payload: {
+                        PackageInfo: valueMapExtensionBeingEdited(_extensionBeingAdded)
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
     editExtension(parameters, extensionBeingEditedIndex, callback) {
         return (dispatch) => {
             ExtensionService.getPackageSettings(parameters, (data) => {
@@ -204,19 +238,19 @@ const extensionActions = {
             });
         };
     },
-    updateExtensionBeingEdited(extensionBeingEdited, editorActions, callback) {
+    updateExtensionBeingEdited(extensionBeingEdited, callback) {
         return (dispatch) => {
-            ExtensionService.updateExtension(extensionBeingEdited, editorActions, () => {
-                dispatch({
-                    type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
-                    payload: extensionBeingEdited
-                });
-                if (callback) {
-                    setTimeout(() => {  //let JS propagate
-                        callback();
-                    }, 0);
+            dispatch({
+                type: ActionTypes.UPDATED_EXTENSION_BEING_EDITED,
+                payload: {
+                    extensionBeingEdited: extensionBeingEdited
                 }
-            }, errorCallback);
+            });
+            if (callback) {
+                setTimeout(() => {  //let JS propagate
+                    callback();
+                }, 0);
+            }
         };
     },
     toggleTabError(tabIndex, action, callback) {
@@ -240,6 +274,45 @@ const extensionActions = {
             ExtensionService.getModuleCategories((data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_MODULE_CATEGORIES,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+    selectEditingTab(index, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SELECT_EDITING_TAB,
+                payload: index
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    getLocaleList(callback) {
+        return (dispatch) => {
+            ExtensionService.getLocaleList((data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_LOCALE_LIST,
+                    payload: data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+    getLocalePackageList(callback) {
+        return (dispatch) => {
+            ExtensionService.getLocalePackagesList((data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PACKAGE_LOCALE_LIST,
                     payload: data
                 });
                 if (callback) {

@@ -20,48 +20,40 @@
 #endregion
 #region Usings
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
 #endregion
 
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    [DataContract]
+    [JsonObject]
     public class CreateModuleDto
     {
-        [DataMember(Name = "type")]
+        [JsonProperty("type")]
         public CreateModuleType Type { get; set; }
 
-        [DataMember(Name = "ownerFolder")]
+        [JsonProperty("ownerFolder")]
         public string OwnerFolder { get; set; }
 
-        [DataMember(Name = "moduleFolder")]
+        [JsonProperty("moduleFolder")]
         public string ModuleFolder { get; set; }
 
-        [DataMember(Name = "language")]
+        [JsonProperty("language")]
         public string Language { get; set; }
 
-        [DataMember(Name = "fileName")]
+        [JsonProperty("fileName")]
         public string FileName { get; set; }
 
-        [DataMember(Name = "moduleName")]
+        [JsonProperty("moduleName")]
         public string ModuleName { get; set; }
 
-        [DataMember(Name = "description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "manifest")]
+        [JsonProperty("manifest")]
         public string Manifest { get; set; }
 
-        [DataMember(Name = "addPage")]
+        [JsonProperty("addPage")]
         public bool AddPage { get; set; }
 
     }
