@@ -138,5 +138,6 @@ module.exports = [
     "cas",
     "Mb",
     "ntlm",
-    "ssl"
+    "ssl",
+    "smtp"
 ]

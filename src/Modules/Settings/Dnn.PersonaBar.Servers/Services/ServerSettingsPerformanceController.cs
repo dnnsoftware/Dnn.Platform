@@ -39,9 +39,9 @@ using DotNetNuke.Web.Api;
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class ServerSettingsPerformance : PersonaBarApiController
+    public class ServerSettingsPerformanceController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformance));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
         private readonly PerformanceController _performanceController = new PerformanceController();
 
         /// GET: api/Servers/GetPerformanceSettings

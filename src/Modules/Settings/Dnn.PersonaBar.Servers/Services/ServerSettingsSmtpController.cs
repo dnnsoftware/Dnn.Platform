@@ -41,9 +41,9 @@ using DotNetNuke.Web.Api;
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class ServerSettingsSmtpControllers : PersonaBarApiController
+    public class ServerSettingsSmtpController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpControllers));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpController));
         
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()

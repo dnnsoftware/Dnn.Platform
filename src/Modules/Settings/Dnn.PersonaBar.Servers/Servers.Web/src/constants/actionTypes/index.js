@@ -4,6 +4,7 @@ import webTab from "./webTab";
 import server from "./server";
 import applicationTab from "./applicationTab";
 import databaseTab from "./databaseTab";
+import smtpServerTab from "./smtpServerTab";
 
 export {
     pagination,
@@ -11,5 +12,6 @@ export {
     webTab,
     server,
     applicationTab,
-    databaseTab
+    databaseTab,
+    smtpServerTab
 };

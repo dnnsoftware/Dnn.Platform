@@ -375,6 +375,9 @@
   <data name="EmailTest.Text" xml:space="preserve">
     <value>Test SMTP Settings</value>
   </data>
+  <data name="errorMessageLoadingSmtpServerTab.Text" xml:space="preserve">
+    <value>Error loading Smtp Server tab</value>
+  </data>
   <data name="GlobalSettings.Text" xml:space="preserve">
     <value>These are global settings. Changes to the settings will affect all of your sites.</value>
   </data>
