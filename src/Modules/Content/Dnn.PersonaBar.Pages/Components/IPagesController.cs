@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;

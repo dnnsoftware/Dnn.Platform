@@ -26,7 +26,8 @@ class PageExisting extends Component {
 
     render() {
         const {page} = this.props;
-        
+        const serviceFramework = utils.getServiceFramework(); 
+
         return (
             <div className={styles.pageExisting}>
                 <InputGroup>
@@ -34,7 +35,7 @@ class PageExisting extends Component {
                         tooltipMessage={localization.get("existing_page_tooltip")}
                         label={localization.get("Existing Page")} />
                     <PagePicker 
-                        serviceFramework={utils.utilities.sf}
+                        serviceFramework={serviceFramework}
                         style={{ width: "100%", zIndex: 2 }}
                         OnSelect={this.onChangeField.bind(this, "url")}
                         defaultLabel={noneSpecifiedText}

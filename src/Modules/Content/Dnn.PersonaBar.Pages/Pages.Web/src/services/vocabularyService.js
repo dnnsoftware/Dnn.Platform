@@ -1,4 +1,4 @@
-import util from "../utils";
+import utils from "../utils";
 import "fetch-ie8";
 function serializeQueryStringParameters(obj) {
     let s = [];
@@ -11,7 +11,7 @@ function serializeQueryStringParameters(obj) {
 }
 class VocabularyService {
     getServiceFramework(controller) {
-        let sf = util.utilities.sf;
+        const sf = utils.getServiceFramework(); 
 
         sf.moduleRoot = "PersonaBar/AdminHost";
         sf.controller = controller;

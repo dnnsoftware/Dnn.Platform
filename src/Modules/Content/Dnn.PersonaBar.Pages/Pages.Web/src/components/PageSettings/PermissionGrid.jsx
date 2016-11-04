@@ -14,11 +14,13 @@ class PermissionGrid extends Component {
     }
 
     render() {
+        const serviceFramework = utils.getServiceFramework(); 
+
         return (
             <DnnPermissionGrid 
                 permissions={cloneDeep(this.props.permissions)} 
                 onPermissionsChanged={this.onPermissionsChanged.bind(this)}
-                service={utils.utilities.sf} />
+                service={serviceFramework} />
         );
     }
 }

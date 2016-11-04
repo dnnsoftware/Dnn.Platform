@@ -17,17 +17,18 @@
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initPages = function initializePages() {
-            if (typeof callback === 'function') {
-                callback();
-            }
-
             return {
-                utility: util,
-                moduleName: "Pages"
+                utilities: util,
+                moduleName: "Pages",
+                config: config
             };
         };
 
         loadScript();
+
+        if (typeof callback === 'function') {
+            callback();
+        }
     };
 
     var initMobile = function (wrapper, util, params, callback) {

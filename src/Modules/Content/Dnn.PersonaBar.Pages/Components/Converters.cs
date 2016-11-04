@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     public static class Converters
     {
+
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
         {
             return new T
@@ -45,6 +46,8 @@ namespace Dnn.PersonaBar.Pages.Components
             var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Current.Description;
             var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
 
+            var pageManagementController = PageManagementController.Instance;
+
             return new PageSettings
             {
                 TabId = tab.TabID,
@@ -56,6 +59,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 Tags = string.Join(",", from t in tab.Terms select t.Name),
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
                 Url = tab.Url,
+                Created = pageManagementController.GetCreatedInfo(tab),
+                Hierarchy = pageManagementController.GetTabHierarchy(tab),
+                Status = GetTabStatus(tab),
                 PageType = GetPageType(tab.Url),
                 CreatedOnDate = tab.CreatedOnDate,
                 IncludeInMenu = tab.IsVisible,

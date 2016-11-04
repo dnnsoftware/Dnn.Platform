@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import {pageHierarchyManager} from "./pages.pageHierarchy";
-import util from "../../utils";
+import utils from "../../utils";
 import pagesResx from "./pagesResx";
 import "./css/pages-hierarchy.css";
 
@@ -9,7 +9,7 @@ class PageHierarchy extends Component {
     componentDidMount() {
         this.node = ReactDOM.findDOMNode(this);
         pageHierarchyManager.resx = pagesResx;
-        pageHierarchyManager.utility = util.utilities;
+        pageHierarchyManager.utility = utils.getUtilities();
         pageHierarchyManager._viewModel = {};
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));

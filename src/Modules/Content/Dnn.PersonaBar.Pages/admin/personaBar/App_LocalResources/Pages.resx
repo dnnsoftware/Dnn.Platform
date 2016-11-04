@@ -342,4 +342,13 @@
   <data name="Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="page_name_tooltip" xml:space="preserve">
+    <value>Page Name</value>
+  </data>
+  <data name="page_title_tooltip" xml:space="preserve">
+    <value>Page Title</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>System</value>
+  </data>
 </root>
