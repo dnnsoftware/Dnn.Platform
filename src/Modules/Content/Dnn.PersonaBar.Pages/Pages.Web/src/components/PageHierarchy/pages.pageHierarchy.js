@@ -133,7 +133,9 @@
             ko.cleanNode(this.panel[0]);
             viewModel.itemTemplate(template);
             ko.applyBindings(viewModel, this.panel[0]);
-            viewModel.inDrag(false);
+            if (template != "pages-list-item-template") {
+                viewModel.inDrag(false);
+            }
         },
 
         setSearchKeyword: function (searchKeyword) {
