@@ -364,6 +364,23 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             }(parent.$));
         }
 
+        function checkMenuLink($menu) {
+            var href = $menu.attr('href');
+            if (href) {
+                if (href.indexOf('://') > -1) {
+                    window.open(href);
+                } else {
+                    href = config.siteRoot + href;
+                    util.closePersonaBar(function () {
+                        window.top.location.href = href;
+                    });
+                }
+                return true;
+            }
+
+            return false;
+        }
+
         util.asyncParallel([
                 function (callback) {
                     util.loadResx(function onResxLoaded() {
@@ -453,19 +470,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                         var $this = $(this);
 
-                                        var href = $this.attr('href');
-                                        if (href) {
-                                            if (href.indexOf('://') > -1) {
-                                                window.open(href);
-                                            } else {
-                                                href = config.siteRoot + href;
-                                                util.closePersonaBar(function() {
-                                                    window.top.location.href = href;
-                                                });
-                                            }
-                                            return;
-                                        }
-
                                         if ($this.hasClass('selected')) {
                                             var path = $this.data('path');
                                             var panelId = utility.getPanelIdFromPath(path);
@@ -497,6 +501,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                     }
                                                 }
                                             }
+                                        }
+
+                                        if (checkMenuLink($('li#' + identifier))) {
+                                            return;
                                         }
 
                                         if (!path) return;

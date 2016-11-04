@@ -20,8 +20,18 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             if (Visible(menuItem))
             {
                 var query = GetPathQuery(menuItem);
-                var portalId = Convert.ToInt32(query["portalId"]);
-                var tabId = Convert.ToInt32(query["tabId"]);
+
+                int tabId, portalId;
+                if (query.ContainsKey("path"))
+                {
+                    portalId = PortalSettings.Current.PortalId;
+                    tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
+                }
+                else
+                {
+                    portalId = Convert.ToInt32(query["portalId"]);
+                    tabId = Convert.ToInt32(query["tabId"]);
+                }
 
                 var tabUrl = Globals.NavigateURL(tabId, portalId == Null.NullInteger);
                 var alias = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
@@ -39,13 +49,35 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                 return false;
             }
 
-            if (!query.ContainsKey("portalId") || !query.ContainsKey("tabId"))
+            if (query.ContainsKey("sku") && !string.IsNullOrEmpty(query["sku"]))
             {
-                return false;
+                if (DotNetNukeContext.Current.Application.SKU != query["sku"])
+                {
+                    return false;
+                }
             }
 
-            var portalId = Convert.ToInt32(query["portalId"]);
-            var tabId = Convert.ToInt32(query["tabId"]);
+            int tabId, portalId;
+            if (query.ContainsKey("path") && !string.IsNullOrEmpty(query["path"]))
+            {
+                portalId = PortalSettings.Current.PortalId;
+                tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
+
+                if (tabId == Null.NullInteger)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!query.ContainsKey("portalId") || !query.ContainsKey("tabId"))
+                {
+                    return false;
+                }
+
+                portalId = Convert.ToInt32(query["portalId"]);
+                tabId = Convert.ToInt32(query["tabId"]);
+            }
 
             var tab = TabController.Instance.GetTab(tabId, portalId);
             return (portalId == Null.NullInteger || portalId == PortalSettings.Current.PortalId)

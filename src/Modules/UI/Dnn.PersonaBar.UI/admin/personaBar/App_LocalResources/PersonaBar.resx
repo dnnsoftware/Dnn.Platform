@@ -264,4 +264,7 @@
   <data name="permissiongrid.View.Text" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="nav_Assets.Text" xml:space="preserve">
+    <value>Assets</value>
+  </data>
 </root>

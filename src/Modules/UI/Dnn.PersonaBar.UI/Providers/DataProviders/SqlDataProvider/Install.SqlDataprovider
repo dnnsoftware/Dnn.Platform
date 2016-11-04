@@ -480,12 +480,7 @@ BEGIN
             [LastModifiedOnDate]
         )
         SELECT Item, Item, '', 'nav_' + Item, '', 1, NULL, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) * 5, 1, 1, -1, GETDATE(), -1, GETDATE() 
-            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Home,Content,Manage,Settings,Logout,Edit', ',')
-
-    UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI',
-            Link = 'Default.aspx'
-        WHERE Identifier = 'Home'
+            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Content,Manage,Settings,Logout,Edit,Assets', ',')
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
         SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI'
@@ -494,6 +489,16 @@ BEGIN
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
         SET [Order] = 1000
         WHERE Identifier = 'Edit'
+    
+    DECLARE @ParentId INT
+    SELECT @ParentId = MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] WHERE Identifier = 'Content'
+
+    UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
+        SET [Order] = 10,
+        ParentId = @ParentId,
+        Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
+        Path = 'LinkMenu?path=//Admin//FileManagement&sku=DNN'
+        WHERE Identifier = 'Assets'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
