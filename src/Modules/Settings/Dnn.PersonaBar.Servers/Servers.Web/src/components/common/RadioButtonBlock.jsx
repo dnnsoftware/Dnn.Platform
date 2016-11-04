@@ -1,0 +1,30 @@
+import React, { Component, PropTypes } from "react";
+import Label from "dnn-label";
+import InputGroup from "dnn-input-group";
+import RadioButtons from "dnn-radio-buttons";
+
+
+export default class RadioButtonBlock extends Component {
+
+    render() {
+        const {props} = this;
+
+        return <InputGroup>
+            <Label className="title"
+                tooltipMessage={props.tooltip}
+                label={props.label} />
+            <RadioButtons
+                options={props.options}                
+                value={props.value}
+                onChange={props.onChange} />
+        </InputGroup>;
+    }
+}
+
+RadioButtonBlock.propTypes = {
+    label: PropTypes.string,
+    tooltip: PropTypes.string,
+    options: PropTypes.array.isRequired,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired
+};

@@ -44,13 +44,7 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerSettingsSmtpControllers : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpControllers));
-
-        /// GET: api/Servers/GetSmtpSettings
-        /// <summary>
-        /// Gets SMTP settings
-        /// </summary>
-        /// <param></param>
-        /// <returns>SMTP settings</returns>
+        
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
         {
@@ -58,14 +52,14 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var smtpSettings = new
                 {
-                    Host.SMTPServer,
-                    SMTPConnectionLimit = Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture),
-                    SMTPMaxIdleTime = Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture),
-                    Host.SMTPAuthentication,
-                    Host.EnableSMTPSSL,
-                    Host.SMTPUsername,
-                    SMTPPassword = new Regex(".").Replace(Host.SMTPPassword, "*"),
-                    Host.MessageSchedulerBatchSize
+                    smtpServer = Host.SMTPServer,
+                    smtpConnectionLimit = Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture),
+                    smtpMaxIdleTime = Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture),
+                    smtpAuthentication = Host.SMTPAuthentication,
+                    enableSmtpSsl = Host.EnableSMTPSSL,
+                    smtpUserName = Host.SMTPUsername,
+                    smtpPassword = new Regex(".").Replace(Host.SMTPPassword, "*"),
+                    messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
@@ -75,13 +69,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        /// POST: api/Servers/UpdateSmtpSettings
-        /// <summary>
-        /// Updates SMTP settings
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSmtpSettings(UpdateSMTPSettingsRequest request)

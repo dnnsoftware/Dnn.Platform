@@ -372,4 +372,55 @@
   <data name="errorMessageLoadingServersInfo.Text" xml:space="preserve">
     <value>Error loading Servers Info</value>
   </data>
+  <data name="GlobalSmtpHostSetting.Text" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="plBatch.Help" xml:space="preserve">
+    <value>The number of messages sent by the messaging scheduler in each batch.</value>
+  </data>
+  <data name="plBatch.Text" xml:space="preserve">
+    <value>Number of messages sent in each batch:</value>
+  </data>
+  <data name="plConnectionLimit.Help" xml:space="preserve">
+    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1.</value>
+  </data>
+  <data name="plConnectionLimit.Text" xml:space="preserve">
+    <value>Connection Limit:</value>
+  </data>
+  <data name="plMaxIdleTime.Help" xml:space="preserve">
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0.</value>
+  </data>
+  <data name="plMaxIdleTime.Text" xml:space="preserve">
+    <value>Max Idle Time:</value>
+  </data>
+  <data name="plSMTPAuthentication.Help" xml:space="preserve">
+    <value>Enter the SMTP server authentication method. Default is Anonymous.</value>
+  </data>
+  <data name="plSMTPAuthentication.Text" xml:space="preserve">
+    <value>SMTP Authentication:</value>
+  </data>
+  <data name="plSMTPMode.Help" xml:space="preserve">
+    <value>Host mode utilizes all SMTP settings set at the application level. Site level allows you to select your own SMTP server, port and authentication method.</value>
+  </data>
+  <data name="plSMTPMode.Text" xml:space="preserve">
+    <value>SMTP Server Mode:</value>
+  </data>
+  <data name="plSMTPServer.Help" xml:space="preserve">
+    <value>Please enter the name (address) and port of the SMTP server to be used for sending mails from this site.</value>
+  </data>
+  <data name="plSMTPServer.Text" xml:space="preserve">
+    <value>SMTP Server and port:</value>
+  </data>
+  <data name="SiteSmtpHostSetting.Text" xml:space="preserve">
+    <value>My Website {0}</value>
+  </data>
+  <data name="SMTPAnonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="SMTPBasic.Text" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="SMTPNTLM.Text" xml:space="preserve">
+    <value>NTLM</value>
+  </data>
 </root>
