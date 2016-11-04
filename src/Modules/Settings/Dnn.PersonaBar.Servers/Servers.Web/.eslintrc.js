@@ -19,7 +19,8 @@ module.exports = {
     "globals": {
         "__": false,
         "Promise": false,
-        "VERSION": false
+        "VERSION": false,
+        "process": false
     },
     "rules": {
        "spellcheck/spell-checker": [1,

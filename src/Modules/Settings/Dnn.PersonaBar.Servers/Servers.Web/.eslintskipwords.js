@@ -136,5 +136,6 @@ module.exports = [
     "guid",
     "urls",
     "cas",
-    "Mb"
+    "Mb",
+    "ntlm"
 ]

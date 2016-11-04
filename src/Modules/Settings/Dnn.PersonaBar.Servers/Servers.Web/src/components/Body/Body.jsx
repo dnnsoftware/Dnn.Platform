@@ -54,7 +54,7 @@ class Body extends Component {
         const systemInfoTabHeaders = [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle")];
         const systemInfoTabBody = [<ApplicationTab />, <WebTab />, <DatabaseTab />]; 
         const serverSettingsTabHeaders = [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")];
-        const serverSettingsTabBody = [<SmtpServerTab />, <PerformanceTab />, <LogsTab />];
+        const serverSettingsTabBody = [<SmtpServerTab smtpSettings={{}} />, <PerformanceTab />, <LogsTab />];
         const mainTabHeaders = [Localization.get("tabSystemInfoTitle"), Localization.get("tabServerSettingsTitle")];
         const mainTabBody = [
             <Tabs tabHeaders={systemInfoTabHeaders}
