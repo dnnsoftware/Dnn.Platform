@@ -372,6 +372,9 @@
   <data name="errorMessageLoadingServersInfo.Text" xml:space="preserve">
     <value>Error loading Servers Info</value>
   </data>
+  <data name="GlobalSettings.Text" xml:space="preserve">
+    <value>These are global settings. Changes to the settings will affect all of your sites.</value>
+  </data>
   <data name="GlobalSmtpHostSetting.Text" xml:space="preserve">
     <value>Global</value>
   </data>
@@ -399,17 +402,35 @@
   <data name="plSMTPAuthentication.Text" xml:space="preserve">
     <value>SMTP Authentication:</value>
   </data>
+  <data name="plSMTPEnableSSL.Help" xml:space="preserve">
+    <value>Used for SMTP services that require secure connection. This setting is typically not required.</value>
+  </data>
+  <data name="plSMTPEnableSSL.Text" xml:space="preserve">
+    <value>SMTP Enable SSL:</value>
+  </data>
   <data name="plSMTPMode.Help" xml:space="preserve">
     <value>Host mode utilizes all SMTP settings set at the application level. Site level allows you to select your own SMTP server, port and authentication method.</value>
   </data>
   <data name="plSMTPMode.Text" xml:space="preserve">
     <value>SMTP Server Mode:</value>
   </data>
+  <data name="plSMTPPassword.Help" xml:space="preserve">
+    <value>Enter the password for the SMTP server.</value>
+  </data>
+  <data name="plSMTPPassword.Text" xml:space="preserve">
+    <value>SMTP Password:</value>
+  </data>
   <data name="plSMTPServer.Help" xml:space="preserve">
     <value>Please enter the name (address) and port of the SMTP server to be used for sending mails from this site.</value>
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
     <value>SMTP Server and port:</value>
+  </data>
+  <data name="plSMTPUsername.Help" xml:space="preserve">
+    <value>Enter the user name for the SMTP server.</value>
+  </data>
+  <data name="plSMTPUsername.Text" xml:space="preserve">
+    <value>SMTP Username:</value>
   </data>
   <data name="SiteSmtpHostSetting.Text" xml:space="preserve">
     <value>My Website {0}</value>
