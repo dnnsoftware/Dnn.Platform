@@ -250,10 +250,19 @@ class LanguageEditor extends Component {
                         labelHidden={true}
                         value={state.languageDetail.Enabled}
                         onChange={this.onSettingChange.bind(this, "Enabled")}
-                        readOnly={false}
+                        readOnly={state.languageDetail.IsDefault}
                         />
                 </div>
             </InputGroup>
+            {state.languageDetail.IsDefault &&
+                <InputGroup>
+                    <Label
+                        style={{ marginTop: "-15px" }}
+                        labelType="inline"
+                        label={resx.get("DefaultLanguage")}
+                        />
+                </InputGroup>
+            }
         </div>;
         return (
             <div className="language-editor">

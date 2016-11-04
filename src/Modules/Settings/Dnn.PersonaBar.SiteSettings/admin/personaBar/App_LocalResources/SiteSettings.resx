@@ -879,4 +879,7 @@
   <data name="LanguageCreateSuccess.Text" xml:space="preserve">
     <value>The language has been added.</value>
   </data>
+  <data name="DefaultLanguage.Text" xml:space="preserve">
+    <value>*NOTE: This Language is the System Default</value>
+  </data>
 </root>
