@@ -75,5 +75,29 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "modules")]
         public IEnumerable<ModuleItem> Modules { get; set; }
+
+        [DataMember(Name = "isSecure")]
+        public bool IsSecure { get; set; }
+
+        [DataMember(Name = "allowIndex")]
+        public bool AllowIndex { get; set; }
+
+        [DataMember(Name = "cacheProvider")]
+        public string CacheProvider { get; set; }
+
+        [DataMember(Name = "cacheDuration")]
+        public int? CacheDuration { get; set; }
+
+        [DataMember(Name = "cacheIncludeExclude")]
+        public bool? CacheIncludeExclude { get; set; }
+
+        [DataMember(Name = "cacheIncludeVaryBy")]
+        public string CacheIncludeVaryBy { get; set; }
+
+        [DataMember(Name = "cacheExcludeVaryBy")]
+        public string CacheExcludeVaryBy { get; set; }
+
+        [DataMember(Name = "cacheMaxVaryByCount")]
+        public int? CacheMaxVaryByCount { get; set; }
     }
 }

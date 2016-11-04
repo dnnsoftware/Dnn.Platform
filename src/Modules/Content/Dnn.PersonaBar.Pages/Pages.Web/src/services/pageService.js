@@ -45,6 +45,10 @@ const PageService = function () {
             });
     };
 
+    const getCacheProviderList = function () {
+        return serviceFramework.get("GetCacheProviderList");
+    };
+    
     const toFrontEndPage = function (page) {
         return {
             ...page,
@@ -65,7 +69,8 @@ const PageService = function () {
         getPage,
         savePage,
         getNewPage,
-        toFrontEndPage
+        toFrontEndPage,
+        getCacheProviderList
     };
 };
 

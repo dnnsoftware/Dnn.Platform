@@ -18,6 +18,7 @@ using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Pages.Services
@@ -156,6 +157,13 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             var permissions = _pagesController.GetPermissionsData(0);
             return Request.CreateResponse(HttpStatusCode.OK, permissions);
+        }
+        
+        [HttpGet]
+        public HttpResponseMessage GetCacheProviderList()
+        {
+            var providers = from p in OutputCachingProvider.GetProviderList() select p.Key;
+            return Request.CreateResponse(HttpStatusCode.OK, providers);
         }
     }
 }

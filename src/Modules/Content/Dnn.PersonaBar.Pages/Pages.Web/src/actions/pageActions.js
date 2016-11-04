@@ -80,6 +80,27 @@ const pageActions = {
             type: ActionTypes.CHANGE_PERMISSIONS,
             permissions
         };
+    },
+
+    fetchCacheProviderList() {
+        return (dispatch, getState) => {
+            if (!getState().pages.cacheProviderList) {
+                dispatch({
+                    type: ActionTypes.FETCH_CACHE_PROVIDER_LIST
+                });
+
+                PagesService.getCacheProviderList().then(cacheProviderList => {
+                    dispatch({
+                        type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
+                        data: { cacheProviderList }
+                    });  
+                }).catch(() => {
+                    dispatch({
+                        type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST
+                    });
+                });                     
+            }
+        };
     }
 };
 

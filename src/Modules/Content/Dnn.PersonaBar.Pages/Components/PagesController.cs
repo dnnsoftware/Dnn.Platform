@@ -405,6 +405,16 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.StartDate = pageSettings.StartDate ?? Null.NullDate;
             tab.EndDate = pageSettings.EndDate ?? Null.NullDate;
 
+            tab.IsSecure = pageSettings.IsSecure;
+            tab.TabSettings["AllowIndex"] = pageSettings.AllowIndex;
+
+            tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
+            tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
+            tab.TabSettings["CacheIncludeExclude"] = pageSettings.CacheIncludeExclude;
+            tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
+            tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
+            tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
+
             if (pageSettings.PageType == "template")
             {
                 tab.ParentId = GetTemplateParentId(tab.PortalID);
@@ -858,16 +868,6 @@ namespace Dnn.PersonaBar.Pages.Components
         protected override Func<IPagesController> GetFactory()
         {
             return () => new PagesController();
-        }
-    }
-
-    public class PageValidationException : Exception
-    {
-        public string Field { get; set; }
-
-        public PageValidationException(string field, string message) : base(message)
-        {
-            Field = field;
         }
     }
 }

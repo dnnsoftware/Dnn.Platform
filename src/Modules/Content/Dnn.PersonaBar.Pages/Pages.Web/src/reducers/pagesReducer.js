@@ -2,6 +2,7 @@ import ActionTypes from "../constants/actionTypes/pageActionTypes";
 
 export default function pagesReducer(state = {
     selectedPage: null,
+    cacheProviderList: null,
     doingOperation: false
 }, action) {    
 
@@ -58,6 +59,17 @@ export default function pagesReducer(state = {
                     permissions: action.permissions
                 }           
             };
+
+        case ActionTypes.FETCH_CACHE_PROVIDER_LIST:
+            return state;
+            
+        case ActionTypes.FETCHED_CACHE_PROVIDER_LIST:
+            return { ...state,
+                cacheProviderList: action.data.cacheProviderList                           
+            };
+
+        case ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST:
+            return state;
         
         default:
             return state;

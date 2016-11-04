@@ -67,8 +67,22 @@ namespace Dnn.PersonaBar.Pages.Components
                 IncludeInMenu = tab.IsVisible,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
                 StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?) null,
-                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null
+                EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null,
+                IsSecure = tab.IsSecure,
+                AllowIndex = AllowIndex(tab),
+                CacheProvider = (string)tab.TabSettings["CacheProvider"],
+                CacheDuration = tab.TabSettings["CacheDuration"] != null ? int.Parse((string)tab.TabSettings["CacheDuration"]) : (int?)null,
+                CacheIncludeExclude = tab.TabSettings["CacheIncludeExclude"] != null ? (string)tab.TabSettings["CacheIncludeExclude"] == "1" : (bool?)null,
+                CacheIncludeVaryBy = (string)tab.TabSettings["IncludeVaryBy"],
+                CacheExcludeVaryBy = (string)tab.TabSettings["ExcludeVaryBy"],
+                CacheMaxVaryByCount = tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null
             };
+        }
+
+        private static bool AllowIndex(TabInfo tab)
+        {
+            bool allowIndex;
+            return !tab.TabSettings.ContainsKey("AllowIndex") || !bool.TryParse(tab.TabSettings["AllowIndex"].ToString(), out allowIndex) || allowIndex;
         }
 
         private static string GetPageType(string tabUrl)

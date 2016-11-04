@@ -6,6 +6,7 @@ import PermissionGrid from "./PermissionGrid";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
+import More from "../More/More";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
 class PageSettings extends Component {
@@ -67,7 +68,10 @@ class PageSettings extends Component {
                         </div>
                         <div></div>
                         <div></div>
-                        <div></div>
+                        <div>
+                            <More page={selectedPage}
+                                onChangeField={onChangeField} />
+                        </div>
                     </Tabs>
                 </div>
             </Tabs>
