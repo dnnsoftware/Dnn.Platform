@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import {pageHierarchyManager} from "./pages.pageHierarchy";
-import util from "../../utils";
+import utils from "../../utils";
 import pagesResx from "./pagesResx";
 import "./css/pages-hierarchy.css";
 
@@ -9,12 +9,29 @@ class PageHierarchy extends Component {
     componentDidMount() {
         this.node = ReactDOM.findDOMNode(this);
         pageHierarchyManager.resx = pagesResx;
-        pageHierarchyManager.utility = util.utilities;
+        pageHierarchyManager.utility = utils.getUtilities();
         pageHierarchyManager._viewModel = {};
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
+        pageHierarchyManager.setItemTemplate(this.props.itemTemplate);
+        pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);        
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {itemTemplate, searchKeyword, createdPage} = this.props;
+        if (itemTemplate !== nextProps.itemTemplate) {
+            pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
+        }    
+
+        if (searchKeyword !== nextProps.searchKeyword) {
+            pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
+        }
+
+        if (createdPage !== nextProps.createdPage) {
+            pageHierarchyManager.addPage(nextProps.createdPage);
+        }    
+    }
+    
     initCallback() {
     }
 
@@ -30,7 +47,14 @@ class PageHierarchy extends Component {
 } 
 
 PageHierarchy.propTypes = {
-    onPageSettings: PropTypes.func.isRequired
+    itemTemplate: PropTypes.string.isRequired,
+    searchKeyword: PropTypes.string.isRequired,
+    onPageSettings: PropTypes.func.isRequired,
+    createdPage: PropTypes.object
+};
+
+PageHierarchy.defaultProps = {
+    itemTemplate: "pages-list-item-template"
 };
 
 export default PageHierarchy; 

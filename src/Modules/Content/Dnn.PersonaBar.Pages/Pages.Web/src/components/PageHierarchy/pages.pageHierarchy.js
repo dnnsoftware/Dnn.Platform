@@ -1,4 +1,6 @@
-/* eslint-disable */
+/* eslint-disable no-var, id-match, quotes, no-mixed-spaces-and-tabs, comma-dangle */ // errors
+/* eslint-disable spellcheck/spell-checker, no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
+/* global $, jQuery, ko */
 
     var OVER_TIME_TO_OPEN_PAGE_CHILDS;
     var pageHierarchyManager, pageHierarchyDefaultOptions;
@@ -124,6 +126,21 @@
                 e.stopImmediatePropagation();
             }
             return false;
+        },
+
+        setItemTemplate: function (template) {
+            var viewModel = this._getViewModel();
+            ko.cleanNode(this.panel[0]);
+            viewModel.itemTemplate(template);
+            ko.applyBindings(viewModel, this.panel[0]);
+            if (template != "pages-list-item-template") {
+                viewModel.inDrag(false);
+            }
+        },
+
+        setSearchKeyword: function (searchKeyword) {
+            this._getViewModel().searchKeyword(searchKeyword);
+            this._searchKeywordsChangedHandler();
         },
 
         _loadRootPageList: function() {
@@ -498,7 +515,7 @@
 
         _resizeContentContainer: function(resetContainer) {
 
-            var $body = this.panel.closest(".dnn-social-panel-body")
+            var $body = this.panel.closest(".dnn-social-panel-body");
             var bodyHeight = parseInt($body.css("margin-top")) 
                 + parseInt($body.css("padding-top")) + parseInt($body.css("padding-bottom"));
             var innerMargin = parseInt($body.find(".pagehierarchy-container").css("margin-top"));
@@ -649,7 +666,8 @@
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceUl, sourceIndex, sourceFind, targetId, targetIndex, targetFind;
+                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target;
+                        var params, movePage200Callback, movePageErrorCallback;
 
                         pageDropped = {
                             item: $(ui.draggable[0]),
@@ -924,8 +942,8 @@
                         };
 
                         handler._getService().post('MovePage', params, function(data) {
-                            var pageData, sourceParentFindB, targetId, targetFind, targetFindB;
-
+                            var pageData, sourceParentFindB, sourceParentData, targetId, targetFind, targetFindB;
+                        
                             if (data.Status > 0) {
                                 handler.utility.notifyError(handler.resx['pagesettings_Errors_' + data.Message]);
                                 $self.sortable('cancel');
@@ -1108,6 +1126,7 @@
             var handler = this;
 
             if (typeof this._viewModel.pagesList == "undefined") {
+                this._viewModel.itemTemplate = ko.observable("pages-list-item-template");
                 this._viewModel.pagesList = ko.observableArray([]);
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());
@@ -1128,8 +1147,6 @@
                 this._viewModel.deletePageClick = $.proxy(this._deletePageClickHandler, this);
                 this._viewModel.doSelectPage = $.proxy(this._selectPage, this);
 
-                this._viewModel.searchKeyDown = $.proxy(this._searchKeywordsChangedHandler, this);
-                this._viewModel.searchKeyUp = $.proxy(this._searchKeywordsChangedHandler, this);
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
             }
             return this._viewModel;
@@ -1137,7 +1154,7 @@
 
         _getService: function () {
             this.utility.sf.moduleRoot = "PersonaBar/Admin";
-            this.utility.sf.controller = "Pages";
+            this.utility.sf.controller = window.dnn.pages.apiController;
 
             return this.utility.sf;
         },

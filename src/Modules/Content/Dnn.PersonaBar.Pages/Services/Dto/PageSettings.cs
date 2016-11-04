@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
@@ -11,6 +12,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "name")]
         public string Name { get; set; }
+
+        [DataMember(Name = "status")]
+        public string Status { get; set; }
 
         [DataMember(Name = "localizedName")]
         public string LocalizedName { get; set; }
@@ -32,9 +36,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "url")]
         public string Url { get; set; }
-
-        [DataMember(Name = "thumbnail")]
-        public string Thumbnail { get; set; }
 
         [DataMember(Name = "includeInMenu")]
         public bool IncludeInMenu { get; set; }
@@ -60,18 +61,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "pageType")]
         public string PageType { get; set; }
 
-        [DataMember(Name = "workflowId")]
-        public int WorkflowId { get; set; }
-
-        [DataMember(Name = "isWorkflowCompleted")]
-        public bool IsWorkflowCompleted { get; set; }
-
-        [DataMember(Name = "applyWorkflowToChildren")]
-        public bool ApplyWorkflowToChildren { get; set; }
-
-        [DataMember(Name = "isWorkflowPropagationAvailable")]
-        public bool IsWorkflowPropagationAvailable { get; set; }
-
         [DataMember(Name = "trackLinks")]
         public bool TrackLinks { get; set; }
 
@@ -80,5 +69,35 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "endDate")]
         public DateTime? EndDate { get; set; }
+
+        [DataMember(Name = "permissions")]
+        public PagePermissions Permissions { get; set; }
+
+        [DataMember(Name = "modules")]
+        public IEnumerable<ModuleItem> Modules { get; set; }
+
+        [DataMember(Name = "isSecure")]
+        public bool IsSecure { get; set; }
+
+        [DataMember(Name = "allowIndex")]
+        public bool AllowIndex { get; set; }
+
+        [DataMember(Name = "cacheProvider")]
+        public string CacheProvider { get; set; }
+
+        [DataMember(Name = "cacheDuration")]
+        public int? CacheDuration { get; set; }
+
+        [DataMember(Name = "cacheIncludeExclude")]
+        public bool? CacheIncludeExclude { get; set; }
+
+        [DataMember(Name = "cacheIncludeVaryBy")]
+        public string CacheIncludeVaryBy { get; set; }
+
+        [DataMember(Name = "cacheExcludeVaryBy")]
+        public string CacheExcludeVaryBy { get; set; }
+
+        [DataMember(Name = "cacheMaxVaryByCount")]
+        public int? CacheMaxVaryByCount { get; set; }
     }
 }

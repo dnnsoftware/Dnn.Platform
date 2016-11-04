@@ -1,7 +1,8 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
 
-export default function visualizersReducer(state = {
+export default function pagesReducer(state = {
     selectedPage: null,
+    cacheProviderList: null,
     doingOperation: false
 }, action) {    
 
@@ -26,7 +27,7 @@ export default function visualizersReducer(state = {
                 doingOperation: false,
                 selectedPage: action.data.page
             };
-            
+
         case ActionTypes.ERROR_LOADING_PAGE:
             return { ...state,
                 doingOperation: false           
@@ -39,8 +40,7 @@ export default function visualizersReducer(state = {
 
         case ActionTypes.SAVED_PAGE:
             return { ...state,
-                doingOperation: false,
-                selectedPage: action.data.page
+                doingOperation: false
             };
             
         case ActionTypes.ERROR_SAVING_PAGE:
@@ -50,9 +50,26 @@ export default function visualizersReducer(state = {
         
         case ActionTypes.CHANGE_FIELD_VALUE:
             return { ...state,
-                doingOperation: false,
                 selectedPage: changeField(action.field, action.value)           
             };
+
+        case ActionTypes.CHANGE_PERMISSIONS:
+            return { ...state,
+                selectedPage: { ...state.selectedPage,
+                    permissions: action.permissions
+                }           
+            };
+
+        case ActionTypes.FETCH_CACHE_PROVIDER_LIST:
+            return state;
+            
+        case ActionTypes.FETCHED_CACHE_PROVIDER_LIST:
+            return { ...state,
+                cacheProviderList: action.data.cacheProviderList                           
+            };
+
+        case ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST:
+            return state;
         
         default:
             return state;

@@ -1,72 +1,93 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
-import Button from "dnn-button";
+import { bindActionCreators } from "redux";
 import SocialPanelHeader from "dnn-social-panel-header";
-import PageHierarchy from "./PageHierarchy/PageHierarchy";
 import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     visiblePanel as VisiblePanelActions,
-    pageActions as PageActions 
+    pageActions as PageActions
 } from "../actions";
-import PageSettings from "../containers/PageSettings";
+import PageSettings from "./PageSettings/PageSettings";
+import Localization from "../localization";
+import PageList from "./PageList/PageList";
+import Button from "dnn-button";
 
 class App extends Component {
 
-    navigateMap(page) {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(page));
-    }
-
     onPageSettings(pageId) {
         const {props} = this;
-        this.navigateMap(1);
-        props.dispatch(PageActions.loadPage(pageId));
+        props.onNavigate(1);
+        props.onLoadPage(pageId);
     }
 
     onSavePage() {
         const {props} = this;
-        props.dispatch(PageActions.savePage(props.selectedDnnPage));
+        props.onNavigate(0);
+        props.onSavePage(props.selectedDnnPage);
     }
 
-    onChangePageField(key, value) {
+    onAddPage() {
         const {props} = this;
-        props.dispatch(PageActions.changePageField(key, value));
+        props.onNavigate(1);
+        props.onAddPage();
+    }
+
+    onAddMultiplePage() {
+        
+    }
+
+    getSettingsPage(){
+        const {props} = this;
+        const titleSettings = props.selectedDnnPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedDnnPage.name;
+
+        return (<PersonaBarPage isOpen={props.selectedPage === 1}>
+                    <SocialPanelHeader title={titleSettings}>
+                    </SocialPanelHeader>
+                    <SocialPanelBody>
+                        <PageSettings selectedPage={props.selectedDnnPage} 
+                                        onCancel={() => props.onNavigate(0)} 
+                                        onSave={this.onSavePage.bind(this)}
+                                        onChangeField={props.onChangePageField}
+                                        onPermissionsChanged={props.onPermissionsChanged}
+                                        onChangePageType={props.onChangePageType} />
+                    </SocialPanelBody>
+                </PersonaBarPage>);
     }
 
     render() {
         const {props} = this;
+        
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title="Pages">
+                    <SocialPanelHeader title={Localization.get("Pages")}>
+                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("Add Page") }</Button>
+                        <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("Add Multiple Page") }</Button>
                     </SocialPanelHeader>
-                    <SocialPanelBody>                        
-                        <PageHierarchy onPageSettings={pageId => this.onPageSettings(pageId)} />
-                    </SocialPanelBody>
+                    <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 1}>
-                    <SocialPanelHeader title="Pane 2">
-                    </SocialPanelHeader>
-                    <SocialPanelBody>
-                        {props.selectedDnnPage && 
-                            <PageSettings selectedPage={props.selectedDnnPage} 
-                                          onCancel={this.navigateMap.bind(this, 0)} 
-                                          onSave={this.onSavePage.bind(this)}
-                                          onChangeField={this.onChangePageField.bind(this)}/>
-                        }
-                    </SocialPanelBody>
-                </PersonaBarPage>
+                {props.selectedDnnPage && 
+                    this.getSettingsPage()
+                }
             </div>
         );
     }
 }
 
-App.PropTypes = {
+App.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
-    selectedDnnPage: PropTypes.object
+    selectedDnnPage: PropTypes.object,
+    onNavigate: PropTypes.func,
+    onSavePage: PropTypes.func,
+    onLoadPage: PropTypes.func,
+    onAddPage: PropTypes.func,
+    onChangePageField: PropTypes.func,
+    onChangePageType: PropTypes.func,
+    onPermissionsChanged: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -77,4 +98,16 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators ({
+        onNavigate: VisiblePanelActions.selectPanel,
+        onSavePage: PageActions.savePage,
+        onLoadPage: PageActions.loadPage,
+        onAddPage: PageActions.addPage,
+        onChangePageField: PageActions.changePageField,
+        onChangePageType: PageActions.changePageType,
+        onPermissionsChanged: PageActions.changePermissions
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
