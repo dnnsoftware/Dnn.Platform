@@ -11,6 +11,7 @@ import UsersRoles from "./UsersRoles";
 import styles from "./style.less";
 import {sort} from "../../helpers";
 import Localization from "localization";
+import ColumnSizes from "./columnSizes";
 
 class UserTable extends Component {
     constructor() {
@@ -67,11 +68,12 @@ class UserTable extends Component {
     }
     getHeaders()
     {
-        let headers = [{index: 5, header: Localization.get("Name.Header")},
-                    {index: 10,header: Localization.get("Email.Header")},
-                    {index: 15,header: Localization.get("Created.Header")},
+        let columnSizes =this.props.columnSizes!==undefined? this.props.columnSizes: ColumnSizes;
+        let headers = [{index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header")},
+                    {index: 10, size: columnSizes.find(x=>x.index===10).size, header: Localization.get("Email.Header")},
+                    {index: 15, size: columnSizes.find(x=>x.index===15).size, header: Localization.get("Created.Header")},
                     //{index: 20,header: Localization.get("Authorized.Header")},
-                    {index: 25,header:""}];
+                    {index: 25, size: columnSizes.find(x=>x.index===25).size, header:""}];
         if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function"){
             let extraColumns = this.props.getUserColumns();
             if (extraColumns!==undefined && extraColumns.length>0)
@@ -79,7 +81,8 @@ class UserTable extends Component {
                 headers = sort(extraColumns.map(column=>{
                     return {
                         index:column.index,
-                        header:column.header
+                        header:column.header,
+                        size: columnSizes.find(x=>x.index===column.index).size
                     };
                 }).concat(headers), "index");
             }
@@ -119,6 +122,7 @@ class UserTable extends Component {
                             getUserMenu={props.getUserMenu && props.getUserMenu.bind(this)} 
                             userMenuAction={props.userMenuAction && props.userMenuAction.bind(this)}
                             appSettings={props.appSettings}
+                            columnSizes={props.columnSizes}
                             id={id}>
                             <CollapsibleSwitcher children={this.getChildren(user) } renderIndex={this.state.renderIndex} />
                         </DetailRow>;
@@ -139,7 +143,8 @@ UserTable.propTypes = {
     getUserColumns: PropTypes.func,
     getUserMenu: PropTypes.func,
     userMenuAction: PropTypes.func,
-    appSettings: PropTypes.object
+    appSettings: PropTypes.object,
+    columnSizes: PropTypes.array
 };
 function mapStateToProps(state) {
     return {

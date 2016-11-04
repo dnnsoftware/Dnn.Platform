@@ -7,6 +7,7 @@ import Collapse from "react-collapse";
 import UserMenu from "../UserMenu";
 import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
+import ColumnSizes from "../columnSizes";
 
 class DetailsRow extends Component {
     constructor() {
@@ -90,38 +91,38 @@ class DetailsRow extends Component {
     getUserColumns(user, id, opened) {
         let userActions = this.getUserActions(user, opened);
         let extraColumns = this.props.getUserColumns && this.props.getUserColumns(user);
-        let columnSize = 100 / ((extraColumns != undefined && extraColumns != null ? extraColumns.length : 0) + 4);
+        let columnSizes =this.props.columnSizes!==undefined? this.props.columnSizes: ColumnSizes;
         let userColumns = [
             {
                 index: 5,
-                content: <GridCell columnSize={columnSize}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
                     <h6>{user.displayName}</h6>
                     {user.displayName !== "-" && <p>{user.userName}</p> }
                 </GridCell>
             },
             {
                 index: 10,
-                content: <GridCell columnSize={columnSize}  className={ user.isDeleted ? "deleted" : "" } >
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={ user.isDeleted ? "deleted" : "" } >
                     <p>{user.email}</p>
                 </GridCell >
             },
             {
                 index: 15,
-                content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===15).size}  className={user.isDeleted ? "deleted" : ""}>
                     {user.createdOnDate !== "-" && <p>{formatDate(user.createdOnDate) }</p>}
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
             },
             // {
             //     index: 20,
-            //     content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
+            //     content: <GridCell columnSize={columnSizes.find(x=>x.index===20).size}  className={user.isDeleted ? "deleted" : ""}>
             //         {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
             //         {user.authorized === "-" && user.authorized}
             //     </GridCell>
             // },
             {
                 index: 25,
-                content: id !== "add" && <GridCell columnSize={columnSize} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
+                content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
             }
         ].concat((extraColumns) || []);
 
@@ -174,7 +175,8 @@ DetailsRow.propTypes = {
     getUserColumns: PropTypes.func,
     getUserMenu: PropTypes.func.isRequired,
     userMenuAction: PropTypes.func.isRequired,
-    appSettings: PropTypes.object
+    appSettings: PropTypes.object,
+    columnSizes: PropTypes.array
 };
 DetailsRow.defaultProps = {
     isEvoq: false

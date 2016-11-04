@@ -4,12 +4,11 @@ import "./style.less";
 
 class ExtensionHeader extends Component {
     render() {
-        let columnSize = 100 / this.props.headers.length;
         return (
             <GridCell columnSize={100} className="header-row">
                 {
                     this.props.headers.map((header) => {
-                        return <GridCell columnSize={columnSize}>
+                        return <GridCell columnSize={header.size}>
                             <h6>{header.header }</h6>
                         </GridCell>;
                     })
