@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
 import RadioButtonBlock from "../common/RadioButtonBlock";
 import EditBlock from "../common/EditBlock";
+import SwitchBlock from "../common/SwitchBlock";
 import localization from "../../localization";
 
 const smtpServerOptions = [
@@ -36,7 +37,7 @@ export default class SmtpServer extends Component {
         super();
 
         this.state = {
-            smtpServerMode: "global",
+            smtpServerMode: "site",
             smtpAuthentication: "anonymous"
         };
     }
@@ -49,8 +50,13 @@ export default class SmtpServer extends Component {
         this.setState({ smtpAuthentication: authentication });
     }
 
+    onChangeSmtpEnableSsl() {
+
+    }
+
     render() {
         const {props} = this;
+        const areGlobalSettings = this.state.smtpServerMode === "global";
         return <div className="dnn-servers-info-panel-big">
             <GridSystem>
                 <div className="leftPane">
@@ -64,22 +70,23 @@ export default class SmtpServer extends Component {
                     <div className="tooltipAdjustment">
                         <EditBlock label={localization.get("plSMTPServer")}
                             tooltip={localization.get("plSMTPServer.Help")}
-                            value={props.smtpSettings.smtpServer} />
-                    </div>
-                    <div className="tooltipAdjustment">
+                            value={props.smtpSettings.smtpServer}
+                            isGlobal={areGlobalSettings} />
+                   
                         <EditBlock label={localization.get("plConnectionLimit")}
                             tooltip={localization.get("plConnectionLimit.Help")}
-                            value={props.smtpSettings.smtpConnectionLimit} />
-                    </div>
-                    <div className="tooltipAdjustment">
+                            value={props.smtpSettings.smtpConnectionLimit} 
+                            isGlobal={areGlobalSettings} />
+                   
                         <EditBlock label={localization.get("plMaxIdleTime")}
                             tooltip={localization.get("plMaxIdleTime.Help")}
-                            value={props.smtpSettings.smtpMaxIdleTime} />
-                    </div>
-                    <div className="tooltipAdjustment">
+                            value={props.smtpSettings.smtpMaxIdleTime} 
+                            isGlobal={areGlobalSettings} />
+                 
                         <EditBlock label={localization.get("plBatch")}
                             tooltip={localization.get("plBatch.Help")}
-                            value={props.smtpSettings.messageSchedulerBatchSize} />
+                            value={props.smtpSettings.messageSchedulerBatchSize} 
+                            isGlobal={areGlobalSettings} />
                     </div>
                 </div>
                 <div className="rightPane">
@@ -88,7 +95,25 @@ export default class SmtpServer extends Component {
                                 label={localization.get("plSMTPAuthentication")}
                                 tooltip={localization.get("plSMTPAuthentication.Help")}
                                 onChange={this.onChangeAuthenticationMode.bind(this)}
-                                value={this.state.smtpAuthentication} />
+                                value={this.state.smtpAuthentication} 
+                                isGlobal={areGlobalSettings} />
+                    </div>
+                    <div className="tooltipAdjustment">
+                        <EditBlock label={localization.get("plSMTPUsername")}
+                            tooltip={localization.get("plSMTPUsername.Help")}
+                            value={props.smtpSettings.smtpUserName} 
+                            isGlobal={areGlobalSettings} />                   
+                    
+                        <EditBlock label={localization.get("plSMTPPassword")}
+                            tooltip={localization.get("plSMTPPassword.Help")}
+                            value={props.smtpSettings.smtpPassword} 
+                            isGlobal={areGlobalSettings} />     
+
+                        <SwitchBlock label={localization.get("plSMTPEnableSSL")}
+                            tooltip={localization.get("plSMTPEnableSSL.Help")}
+                            value={props.smtpSettings.enableSmtpSsl}
+                            onChange={this.onChangeSmtpEnableSsl.bind(this)}
+                            isGlobal={areGlobalSettings}  />              
                     </div>
                 </div>
             </GridSystem>

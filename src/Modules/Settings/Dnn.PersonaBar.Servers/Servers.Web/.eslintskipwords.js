@@ -137,5 +137,6 @@ module.exports = [
     "urls",
     "cas",
     "Mb",
-    "ntlm"
+    "ntlm",
+    "ssl"
 ]

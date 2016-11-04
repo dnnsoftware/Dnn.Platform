@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Label from "dnn-label";
 import InputGroup from "dnn-input-group";
 import RadioButtons from "dnn-radio-buttons";
-
+import GlobalIcon from "./GlobalIcon";
 
 export default class RadioButtonBlock extends Component {
 
@@ -12,7 +12,8 @@ export default class RadioButtonBlock extends Component {
         return <InputGroup>
             <Label className="title"
                 tooltipMessage={props.tooltip}
-                label={props.label} />
+                label={props.label} style={{width: "auto"}}/>
+            {props.isGlobal && <GlobalIcon /> }
             <RadioButtons
                 options={props.options}                
                 value={props.value}
@@ -26,5 +27,10 @@ RadioButtonBlock.propTypes = {
     tooltip: PropTypes.string,
     options: PropTypes.array.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    isGlobal: PropTypes.bool.isRequired
+};
+
+RadioButtonBlock.defaultProps = {
+    isGlobal: false
 };
