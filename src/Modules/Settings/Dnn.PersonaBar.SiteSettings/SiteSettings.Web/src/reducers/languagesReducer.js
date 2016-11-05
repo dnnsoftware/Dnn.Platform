@@ -1,11 +1,11 @@
-import { 
-    languages as ActionTypes, 
-    pagination as PaginationActionTypes 
+import {
+    languages as ActionTypes,
+    pagination as PaginationActionTypes
 } from "../constants/actionTypes";
 
 export default function languages(state = {
 }, action) {
-    switch (action.type) {        
+    switch (action.type) {
         case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_SETTINGS:
             return { ...state,
                 languageSettings: action.data.languageSettings,
@@ -48,6 +48,10 @@ export default function languages(state = {
         case ActionTypes.CREATED_SITESETTINGS_LANGUAGE:
             return { ...state,
                 languageClientModified: action.data.languageClientModified
+            };
+        case ActionTypes.VERIFIED_SITESETTINGS_LANGUAGE_RESOURCE_FILES:
+            return { ...state,
+                verificationResults: action.data.verificationResults
             };
         default:
             return state;

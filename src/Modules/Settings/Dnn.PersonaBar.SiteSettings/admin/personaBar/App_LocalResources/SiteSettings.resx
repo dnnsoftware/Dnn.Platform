@@ -807,6 +807,9 @@
   <data name="BackToSiteBehavior.Text" xml:space="preserve">
     <value>&lt; BACK TO SITE BEHAVIOR</value>
   </data>
+  <data name="BackToLanguages.Text" xml:space="preserve">
+    <value>&lt; BACK TO LANGUAGES</value>
+  </data>
   <data name="NativeName.Text" xml:space="preserve">
     <value>Native Name</value>
   </data>
@@ -898,24 +901,24 @@
     <value>Verify Language Resource Files</value>
   </data>
   <data name="MissingFiles.Text">
-    <value>Missing Resource files:&amp;nbsp;</value>
+    <value>Missing Resource files: </value>
   </data>
   <data name="MissingEntries.Text">
-    <value>Files With Missing Entries:&amp;nbsp;</value>
+    <value>Files With Missing Entries: </value>
   </data>
   <data name="ObsoleteEntries.Text">
-    <value>Files With Obsolete Entries:&amp;nbsp;</value>
+    <value>Files With Obsolete Entries: </value>
   </data>
   <data name="ControlTitle_verify.Text">
     <value>Resource File Verifier</value>
   </data>
   <data name="OldFiles.Text">
-    <value>Files Older Than System Default:&amp;nbsp;</value>
+    <value>Files Older Than System Default: </value>
   </data>
   <data name="DuplicateEntries.Text">
-    <value>Files With Duplicate Entries:&amp;nbsp;</value>
+    <value>Files With Duplicate Entries: </value>
   </data>
   <data name="ErrorFiles.Text">
-    <value>Malformed Resource Files:&amp;nbsp;</value>
+    <value>Malformed Resource Files: </value>
   </data>
 </root>

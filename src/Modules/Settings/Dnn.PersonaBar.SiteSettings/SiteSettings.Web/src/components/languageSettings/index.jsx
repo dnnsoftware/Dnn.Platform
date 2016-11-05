@@ -253,7 +253,7 @@ class LanguageSettingsPanelBody extends Component {
                         {isHost &&
                             <Button
                                 type="secondary"
-                                onClick={this.onVerifyLanguageResources.bind(this)}>
+                                onClick={props.openLanguageVerifier.bind(this)}>
                                 {resx.get("VerifyLanguageResources")}
                             </Button>
                         }
@@ -285,7 +285,8 @@ LanguageSettingsPanelBody.propTypes = {
     languages: PropTypes.array,
     languageDisplayModes: PropTypes.array,
     languageSettingsClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    openLanguageVerifier: PropTypes.func
 };
 
 function mapStateToProps(state) {

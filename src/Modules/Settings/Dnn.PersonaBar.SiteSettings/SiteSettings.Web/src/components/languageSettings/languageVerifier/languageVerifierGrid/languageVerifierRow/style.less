@@ -1,0 +1,36 @@
+@import "~dnn-global-styles/index";
+.collapsible-component-verifier {
+    display: inline-block;
+    width: 100%;
+    cursor: auto;
+    &:not(:last-child) {
+        border-bottom: 1px solid @alto;
+    }
+    div.collapsible-header-verifier {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 10px 0;
+        box-sizing: border-box;
+        cursor: auto;
+        .row {
+            float: left;
+            width: 100%;
+            .item-row-name {
+                width: 45%;
+                float: left;
+                padding-left: 15px;
+                .language-flag {
+                    float: left;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }           
+            }
+            .item-row-wrapper {
+                padding: 0 5px 0 5px;
+            }
+        }
+    }
+}

@@ -222,6 +222,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("AddLanguage", payload, callback, failureCallback);
     }
+
+    verifyLanguageResourceFiles(callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("VerifyLanguageResourceFiles", {}, callback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

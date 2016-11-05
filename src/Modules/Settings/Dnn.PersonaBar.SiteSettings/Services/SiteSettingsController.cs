@@ -6,7 +6,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Dynamic;
 using System.Globalization;
 using System.IO;
@@ -14,8 +16,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -31,12 +36,15 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.UI.WebControls;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -47,6 +55,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
         private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx");
         private static readonly string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+        private static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -1834,6 +1843,198 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/VerifyLanguageResourceFiles
+        /// <summary>
+        /// Verifies language resource files
+        /// </summary>
+        /// <returns>verification results</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage VerifyLanguageResourceFiles()
+        {
+            try
+            {
+                var files = new SortedList();
+                Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(Null.NullInteger);
+                GetResourceFiles(files, HttpContext.Current.Server.MapPath("~\\"));
+
+                var tables = new List<object>();
+
+                foreach (var locale in locales.Values)
+                {
+                    var tableMissing = new List<string>();
+                    var tableEntries = new List<string>();
+                    var tableObsolete = new List<string>();
+                    var tableOld = new List<string>();
+                    var tableDuplicate = new List<string>();
+                    var tableError = new List<string>();
+
+                    foreach (DictionaryEntry file in files)
+                    {
+                        if (!File.Exists(ResourceFile(file.Key.ToString(), locale.Code)))
+                        {
+                            tableMissing.Add(
+                                ResourceFile(file.Key.ToString(), locale.Code)
+                                    .Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                        }
+                        else
+                        {
+                            var dsDef = new DataSet();
+                            var dsRes = new DataSet();
+
+                            try
+                            {
+                                dsDef.ReadXml(file.Key.ToString());
+                            }
+                            catch
+                            {
+                                tableError.Add(file.Key.ToString().Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                dsDef = null;
+                            }
+                            try
+                            {
+                                dsRes.ReadXml(ResourceFile(file.Key.ToString(), locale.Code));
+                            }
+                            catch
+                            {
+                                if (locale.Text != Localization.SystemLocale)
+                                {
+                                    tableError.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                    dsRes = null;
+                                }
+                            }
+
+                            if (dsRes != null && dsDef != null && dsRes.Tables["data"] != null && dsDef.Tables["data"] != null)
+                            {
+                                var dtDef = dsDef.Tables["data"];
+                                dtDef.TableName = "default";
+                                var dtRes = dsRes.Tables["data"].Copy();
+                                dtRes.TableName = "localized";
+                                dsDef.Tables.Add(dtRes);
+
+                                // Check for duplicate entries in localized file
+                                try
+                                {
+                                    // if this fails-> file contains duplicates
+                                    var c = new UniqueConstraint("uniqueness", dtRes.Columns["name"]);
+                                    dtRes.Constraints.Add(c);
+                                    dtRes.Constraints.Remove("uniqueness");
+                                }
+                                catch
+                                {
+                                    tableDuplicate.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+
+                                // Check for missing entries in localized file
+                                try
+                                {
+                                    // if this fails-> some entries in System default file are not found in Resource file
+                                    dsDef.Relations.Add("missing", dtRes.Columns["name"], dtDef.Columns["name"]);
+                                }
+                                catch
+                                {
+                                    tableEntries.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                                finally
+                                {
+                                    dsDef.Relations.Remove("missing");
+                                }
+
+                                // Check for obsolete entries in localized file
+                                try
+                                {
+                                    // if this fails-> some entries in Resource File are not found in System default
+                                    dsDef.Relations.Add("obsolete", dtDef.Columns["name"], dtRes.Columns["name"]);
+                                }
+                                catch
+                                {
+                                    tableObsolete.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                                finally
+                                {
+                                    dsDef.Relations.Remove("obsolete");
+                                }
+
+                                // Check older files
+                                var resFile = new FileInfo(ResourceFile(file.Key.ToString(), locale.Code));
+                                if (((FileInfo)file.Value).LastWriteTime > resFile.LastWriteTime)
+                                {
+                                    tableOld.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                            }
+                        }
+                    }
+
+                    if (tableMissing.Count > 0 || tableDuplicate.Count > 0 || tableEntries.Count > 0 ||
+                        tableObsolete.Count > 0 || tableOld.Count > 0 || tableError.Count > 0)
+                    {
+                        tables.Add(new
+                        {
+                            Language = locale.EnglishName,
+                            Icon = string.IsNullOrEmpty(locale.Code)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", locale.Code),
+                            MissingFiles = tableMissing,
+                            FilesWithDuplicateEntries = tableDuplicate,
+                            FilesWithMissingEntries = tableEntries,
+                            FilesWithObsoleteEntries = tableObsolete,
+                            OldFiles = tableOld,
+                            MalformedFiles = tableError
+                        });
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Results = tables
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private static string ResourceFile(string filename, string language)
+        {
+            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
+        }
+
+        private static void GetResourceFiles(SortedList fileList, string path)
+        {
+            var folders = Directory.GetDirectories(path);
+            DirectoryInfo objFolder;
+
+            foreach (var folder in folders)
+            {
+                objFolder = new DirectoryInfo(folder);
+
+                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
+                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
+                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
+
+                if (resxFilesDirectory)
+                {
+                    foreach (string file in Directory.GetFiles(objFolder.FullName, "*.resx"))
+                    {
+                        var fileInfo = new FileInfo(file);
+                        var match = FileInfoRegex.Match(fileInfo.Name);
+
+                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
+                        {
+                            continue;
+                        }
+                        fileList.Add(fileInfo.FullName, fileInfo);
+                    }
+                }
+                else
+                {
+                    GetResourceFiles(fileList, folder);
+                }
             }
         }
 

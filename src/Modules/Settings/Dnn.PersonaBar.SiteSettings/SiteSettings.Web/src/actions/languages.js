@@ -137,6 +137,21 @@ const languagesActions = {
                 }
             });
         };
+    },
+    verifyLanguageResourceFiles(callback) {
+        return (dispatch) => {
+            ApplicationService.verifyLanguageResourceFiles(data => {
+                dispatch({
+                    type: ActionTypes.VERIFIED_SITESETTINGS_LANGUAGE_RESOURCE_FILES,
+                    data: {
+                        verificationResults: data.Results
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 
