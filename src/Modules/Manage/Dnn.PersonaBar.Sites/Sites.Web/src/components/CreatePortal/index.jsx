@@ -14,7 +14,6 @@ import Switch from "dnn-switch";
 import Localization from "localization";
 import Collapse from "react-collapse";
 import "./style.less";
-
 const emptyNewPortal = {
     SiteTemplate: "",
     SiteName: "",
@@ -31,6 +30,25 @@ const emptyNewPortal = {
     Password: "",
     PasswordConfirm: ""
 };
+function extractDomain(url) {
+    let domain;
+    //find & remove protocol (http, ftp, etc.) and get domain
+    if (url.indexOf("://") > -1) {
+        domain = url.split('/')[2];
+    }
+    else {
+        domain = url.split('/')[0];
+    }
+
+    //find & remove port number
+    domain = domain.split(':')[0];
+
+    return domain;
+}
+function validateEmail(email) {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 
 class CreatePortal extends Component {
     constructor() {
@@ -39,8 +57,8 @@ class CreatePortal extends Component {
             defaultTemplate: "",
             newPortal: Object.assign({}, emptyNewPortal),
             error: {
-                SiteName: false,
-                SiteAlias: false,
+                SiteName: true,
+                SiteAlias: true,
                 Firstname: false,
                 Lastname: false,
                 Username: false,
@@ -69,33 +87,88 @@ class CreatePortal extends Component {
             });
         }));
     }
+    resolveSiteUrl(isChildSite) {
+        let rootDomain = extractDomain(window.location.href);
+        if (isChildSite) {
+            let { newPortal } = this.state;
+            if (newPortal.SiteAlias !== "" && newPortal.SiteAlias.indexOf(rootDomain) === -1) {
+                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteAlias;
+            } else {
+                newPortal.SiteAlias = rootDomain + "/";
+            }
+            this.setState({ newPortal });
+        } else {
+            let { newPortal } = this.state;
+            newPortal.SiteAlias = newPortal.SiteAlias.replace(rootDomain + "/", "");
+            this.setState({ newPortal });
+        }
+    }
+
+    resolveSiteAliasError(value, isChildSite) {
+        let rootDomain = extractDomain(window.location.href);
+        if (!isChildSite) {
+            return value === "";
+        } else {
+            if ((value.lastIndexOf("/") < value.length - 1) && value.indexOf(rootDomain) >= 0) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    resolvePasswordError(value) {
+        if (value !== this.state.newPortal.Password || value === "") {
+            return true;
+        }
+        return false;
+    }
+    resolveEmailError(value) {
+        return !validateEmail(value);
+    }
     onChange(key, event) {
         const value = typeof event === "object" ? event.target.value : event;
         let {newPortal, error} = this.state;
         switch (key) {
             case "IsChildSite"://Convert radio button's return of string to boolean.
                 newPortal[key] = (value === "true");
+                this.resolveSiteUrl((value === "true"));
                 break;
+            case "PasswordConfirm":
+                newPortal[key] = value;
+                error[key] = this.resolvePasswordError(value);
+                break;
+            case "Email":
+                newPortal[key] = value;
+                error[key] = this.resolveEmailError(value);
+                break;
+            case "Password":
             case "Firstname":
             case "Lastname":
             case "Username":
-            case "Email":
-            case "Password":
-            case "PasswordConfirm":
             case "SiteName":
-            case "SiteAlias":
                 newPortal[key] = value;
                 error[key] = (value === "");
                 break;
+            case "SiteAlias":
+                newPortal[key] = value;
+                error[key] = this.resolveSiteAliasError(value, newPortal.IsChildSite);
+                break;
             case "UseCurrentUserAsAdmin":
                 newPortal[key] = value;
-                if (!(value === "true")) {
+                if ((value === true)) {
                     error.Firstname = false;
                     error.Lastname = false;
                     error.Username = false;
                     error.Email = false;
                     error.Password = false;
                     error.PasswordConfirm = false;
+                } else {
+                    error.Firstname = (newPortal.Firstname === "");
+                    error.Lastname = (newPortal.Lastname === "");
+                    error.Username = (newPortal.Username === "");
+                    error.Email = this.resolveEmailError(newPortal.Email);
+                    error.Password = (newPortal.Password === "");
+                    error.PasswordConfirm = this.resolvePasswordError(newPortal.PasswordConfirm);
                 }
                 break;
             default:
@@ -104,7 +177,8 @@ class CreatePortal extends Component {
 
         }
         this.setState({
-            newPortal
+            newPortal,
+            error
         });
     }
     onSelect(option) {
@@ -121,21 +195,10 @@ class CreatePortal extends Component {
     }
     createPortal() {
         const { props, state } = this;
-        let {triedToSave, error} = state;
+        let {triedToSave} = state;
         triedToSave = true;
-        error.SiteName = this.checkForError(state.newPortal, "SiteName");
-        error.SiteAlias = this.checkForError(state.newPortal, "SiteAlias");
-        if (!state.newPortal.UseCurrentUserAsAdmin) {
-            error.Firstname = this.checkForError(state.newPortal, "Firstname");
-            error.Lastname = this.checkForError(state.newPortal, "Lastname");
-            error.Username = this.checkForError(state.newPortal, "Username");
-            error.Email = this.checkForError(state.newPortal, "Email");
-            error.Password = this.checkForError(state.newPortal, "Password");
-            error.PasswordConfirm = this.checkForError(state.newPortal, "PasswordConfirm");
-        }
         this.setState({
-            triedToSave,
-            error
+            triedToSave
         }, () => {
             let withError = false;
             Object.keys(state.error).forEach((errorKey) => {
@@ -180,6 +243,7 @@ class CreatePortal extends Component {
                                 label={Localization.get("Title.Label") + "*"}
                                 inputId="add-new-site-title"
                                 value={state.newPortal.SiteName}
+                                errorMessage={Localization.getFromPlatform("SiteTitleRequired.Error")}
                                 onChange={this.onChange.bind(this, "SiteName")}
                                 error={state.error.SiteName && state.triedToSave}
                                 />
@@ -212,7 +276,6 @@ class CreatePortal extends Component {
                                     onChange={this.onChange.bind(this, "IsChildSite")}
                                     buttonGroup="siteType"
                                     value={state.newPortal.IsChildSite}
-                                    defaultValue={state.newPortal.IsChildSite}
                                     buttonWidth={130}
                                     options={[
                                         {
@@ -242,6 +305,7 @@ class CreatePortal extends Component {
                                     inputId="site-url"
                                     value={state.newPortal.SiteAlias}
                                     onChange={this.onChange.bind(this, "SiteAlias")}
+                                    errorMessage={Localization.getFromPlatform("SiteAliasRequired.Error")}
                                     error={state.error.SiteAlias && state.triedToSave}
                                     />
                             </GridCell>
@@ -256,46 +320,54 @@ class CreatePortal extends Component {
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminUserName.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminUserName.Label")}
                                             inputId="admin-user-name"
                                             value={state.newPortal.Username}
                                             onChange={this.onChange.bind(this, "Username")}
+                                            errorMessage={Localization.getFromPlatform("UsernameRequired.Error")}
                                             error={state.error.Username && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminFirstName.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminFirstName.Label")}
                                             inputId="admin-first-name"
                                             value={state.newPortal.Firstname}
                                             onChange={this.onChange.bind(this, "Firstname")}
+                                            errorMessage={Localization.getFromPlatform("FirstNameRequired.Error")}
                                             error={state.error.Firstname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminLastName.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminLastName.Label")}
                                             inputId="admin-last-name"
                                             value={state.newPortal.Lastname}
                                             onChange={this.onChange.bind(this, "Lastname")}
+                                            errorMessage={Localization.getFromPlatform("LastNameRequired.Error")}
                                             error={state.error.Lastname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                     </GridCell>
                                     <GridCell>
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminEmail.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminEmail.Label")}
                                             inputId="admin-email"
                                             value={state.newPortal.Email}
                                             onChange={this.onChange.bind(this, "Email")}
+                                            errorMessage={Localization.getFromPlatform("EmailRequired.Error")}
                                             error={state.error.Email && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminPassword.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminPassword.Label")}
                                             inputId="admin-password"
                                             value={state.newPortal.Password}
+                                            type="password"
                                             onChange={this.onChange.bind(this, "Password")}
+                                            errorMessage={Localization.getFromPlatform("PasswordRequired.Error")}
                                             error={state.error.Password && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.get("CreateSite_AdminPasswordConfirm.Label")}
+                                            label={Localization.getFromPlatform("CreateSite_AdminPasswordConfirm.Label")}
                                             inputId="admin-password-confirm"
+                                            type="password"
                                             value={state.newPortal.PasswordConfirm}
+                                            errorMessage={Localization.getFromPlatform("PasswordConfirmRequired.Error")}
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
                                             error={state.error.PasswordConfirm && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
