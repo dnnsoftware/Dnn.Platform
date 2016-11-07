@@ -20,7 +20,7 @@ class ModuleRow extends Component {
                     {module.friendlyName}
                 </GridCell>
                 <GridCell  columnSize={10} >
-                    <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>
+                    <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete.bind(this, module)}></div>
                     <div className={editClassName} onClick={onToggleEditing.bind(this, module)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
                 </GridCell>
                 <Collapse accordion={true} isOpened={isEditingModule} keepCollapsedContent={true} className="module-settings">

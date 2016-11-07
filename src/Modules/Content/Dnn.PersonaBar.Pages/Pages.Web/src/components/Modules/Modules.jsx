@@ -3,11 +3,19 @@ import ModulesRow from "./ModuleRow/ModuleRow";
 import styles from "./style.less";
 import GridCell from "dnn-grid-cell";
 import Localization from "../../localization";
+import utils from "../../utils";
 
 class Modules extends Component {
 
-    onDeleteModule() {
-        // TODO: to be implemented
+    onDeleteModule(module) {
+        const {onDeleteModule} = this.props;
+        utils.confirm(
+            Localization.get("DeleteModuleConfirm").replace("[MODULETITLE]", module.title),
+            Localization.get("Delete"),
+            Localization.get("Cancel"),
+            function onConfirmDeletion() {
+                onDeleteModule(module);
+            });
     }
 
     getModules() {

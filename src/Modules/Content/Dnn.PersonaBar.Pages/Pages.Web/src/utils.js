@@ -50,6 +50,13 @@ function notifyError(message) {
     return utilities.notifyError(message);
 }
 
+function confirm(message, confirmText, cancelText, confirmHandler, cancelHandler) {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    return utilities.confirm(message, confirmText, cancelText, confirmHandler, cancelHandler);
+}
+
 function getServiceFramework() {
     return utilities.sf;
 }
@@ -65,6 +72,7 @@ const utils = {
     formatNumeric2Decimals,
     notify,
     notifyError,
+    confirm,
     getServiceFramework,
     getUtilities
 };

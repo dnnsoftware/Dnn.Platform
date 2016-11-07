@@ -171,4 +171,7 @@
   <data name="page_title_tooltip" xml:space="preserve">
     <value>Page Title</value>
   </data>
+  <data name="DeleteModuleConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want delete the module '[MODULETITLE]' from this page?</value>
+  </data>
 </root>
