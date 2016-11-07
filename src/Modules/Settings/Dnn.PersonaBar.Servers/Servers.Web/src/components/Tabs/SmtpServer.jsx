@@ -53,7 +53,7 @@ class SmtpServer extends Component {
     }
 
     onChangeAuthenticationMode(authentication) {
-        //this.setState({ smtpAuthentication: authentication });
+        this.props.onChangeSmtpAuthentication(authentication);
     }
 
     onChangeSmtpEnableSsl() {
@@ -128,7 +128,8 @@ class SmtpServer extends Component {
                                 <EditBlock label={localization.get("plSMTPPassword")}
                                     tooltip={localization.get("plSMTPPassword.Help")}
                                     value={selectedSmtpSettings.smtpPassword} 
-                                    isGlobal={areGlobalSettings} />
+                                    isGlobal={areGlobalSettings} 
+                                    type="password" />
                             </div>     
                         }
                         <SwitchBlock label={localization.get("plSMTPEnableSSL")}
@@ -155,7 +156,8 @@ SmtpServer.propTypes = {
     smtpServerInfo: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
     onRetrieveSmtpServerInfo: PropTypes.func.isRequired,
-    onChangeSmtpServerMode:PropTypes.func.isRequired
+    onChangeSmtpServerMode: PropTypes.func.isRequired,
+    onChangeSmtpAuthentication: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
@@ -169,7 +171,8 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRetrieveSmtpServerInfo: SmtpServerTabActions.loadSmtpServerInfo,
-            onChangeSmtpServerMode: SmtpServerTabActions.changeSmtpServerMode
+            onChangeSmtpServerMode: SmtpServerTabActions.changeSmtpServerMode,
+            onChangeSmtpAuthentication: SmtpServerTabActions.changeSmtpAuthentication
         }, dispatch)
     };
 }

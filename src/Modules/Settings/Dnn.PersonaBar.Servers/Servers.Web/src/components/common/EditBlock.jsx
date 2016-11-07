@@ -14,7 +14,7 @@ export default class EditBlock extends Component {
                 tooltipMessage={props.tooltip}
                 label={props.label} style={{width: "auto"}} />
             {props.isGlobal && <GlobalIcon /> }
-            <SingleLineInput value={props.value} />
+            <SingleLineInput value={props.value} type={props.type} />
         </InputGroup>;
     }
 }
@@ -23,7 +23,8 @@ EditBlock.propTypes = {
     label: PropTypes.string,
     tooltip: PropTypes.string,
     value: PropTypes.string,
-    isGlobal: PropTypes.bool.isRequired
+    isGlobal: PropTypes.bool.isRequired,
+    type: PropTypes.string
 };
 
 EditBlock.defaultProps = {
