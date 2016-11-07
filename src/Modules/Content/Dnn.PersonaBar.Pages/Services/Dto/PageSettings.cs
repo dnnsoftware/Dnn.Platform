@@ -13,6 +13,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "absoluteUrl")]
+        public string AbsoluteUrl { get; set; }
+
         [DataMember(Name = "status")]
         public string Status { get; set; }
 

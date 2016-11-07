@@ -52,6 +52,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 TabId = tab.TabID,
                 Name = tab.TabName,
+                AbsoluteUrl = tab.FullUrl,
                 LocalizedName = tab.LocalizedTabName,
                 Title = tab.Title,
                 Description = description,
