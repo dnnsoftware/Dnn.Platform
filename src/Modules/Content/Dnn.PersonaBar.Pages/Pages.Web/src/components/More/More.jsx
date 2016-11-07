@@ -10,6 +10,7 @@ import RadioButtons from "dnn-radio-buttons";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import localization from "../../localization";
 import {pageActions as PageActions} from "../../actions";
+import styles from "./style.less";
 
 class More extends Component {
     
@@ -26,6 +27,11 @@ class More extends Component {
         this.props.onChangeField("cacheProvider", option.value);
     }
 
+    onChangeIncludeExclude(value) {
+        const include = value === "true";
+        this.props.onChangeField("cacheIncludeExclude", include);
+    }
+
     render() {
         const {page, onChangeField, cacheProviderList} = this.props;
         const cacheProviderOptions = cacheProviderList && 
@@ -34,7 +40,10 @@ class More extends Component {
         const includeExcludeOptions = [{ value: true, label: "Include" }, { value: false, label: "Exclude" }];
 
         return (
-            <div>
+            <div className={styles.moreContainer}>
+                <div className="title">
+                    {localization.get("Security")}
+                </div>
                 <GridSystem>
                     <GridCell className="left-column">
                         <Label
@@ -60,9 +69,14 @@ class More extends Component {
                     </GridCell>
                 </GridSystem>
 
+                <div className="title sectionTitle">
+                    {localization.get("Cache settings")}
+                </div>
+
+                <GridSystem>
                     <GridCell className="left-column">
                         <Label
-                            labelType="inline"
+                            labelType="block"
                             tooltipMessage={localization.get("output_cache_provider_tooltip")}
                             label={localization.get("Output Cache Provider")}
                             />
@@ -70,7 +84,7 @@ class More extends Component {
                             <Dropdown options={cacheProviderOptions}
                                 value={page.cacheProvider} 
                                 onSelect={this.onCacheProviderSelected.bind(this)} 
-                                withBorder={false} />}
+                                withBorder={true} />}
 
                         {page.cacheProvider &&        
                             <SingleLineInputWithError
@@ -88,17 +102,20 @@ class More extends Component {
                                 label={localization.get("Include / Exclude Params by default")}/>
                             <RadioButtons 
                                 options={includeExcludeOptions} 
-                                value={page.cacheIncludeExclude}/>
+                                value={page.cacheIncludeExclude}
+                                onChange={this.onChangeIncludeExclude.bind(this)}/>
 
-                            <SingleLineInputWithError
-                                label={localization.get("Include Params In Cache validation")}
-                                tooltipMessage={localization.get("include_params_in_cache_validation_tooltip")} 
-                                value={page.cacheIncludeVaryBy} />
+                            {!page.cacheIncludeExclude &&
+                                <SingleLineInputWithError
+                                    label={localization.get("Include Params In Cache validation")}
+                                    tooltipMessage={localization.get("include_params_in_cache_validation_tooltip")} 
+                                    value={page.cacheIncludeVaryBy} />}
 
-                            <SingleLineInputWithError
-                                label={localization.get("Exclude Params In Cache validation")}
-                                tooltipMessage={localization.get("exclude_params_in_cache_validation_tooltip")} 
-                                value={page.cacheExcludeVaryBy} />
+                            {page.cacheIncludeExclude &&
+                                <SingleLineInputWithError
+                                    label={localization.get("Exclude Params In Cache validation")}
+                                    tooltipMessage={localization.get("exclude_params_in_cache_validation_tooltip")} 
+                                    value={page.cacheExcludeVaryBy} /> }
 
                             <SingleLineInputWithError                                 
                                 label={localization.get("Vary By Limit")}
@@ -107,6 +124,7 @@ class More extends Component {
                             
                         </GridCell>       
                     } 
+                </GridSystem>
             </div>
         );
     }

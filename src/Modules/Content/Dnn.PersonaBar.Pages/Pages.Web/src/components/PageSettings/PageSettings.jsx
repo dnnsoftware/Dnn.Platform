@@ -67,9 +67,9 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <Modules modules={selectedPage.modules}/>
                         </div>
-                        <div></div>
-                        <div></div>
-                        <div>
+                        <div className="dnn-simple-tab-item"></div>
+                        <div className="dnn-simple-tab-item"></div>
+                        <div className="dnn-simple-tab-item">
                             <More page={selectedPage}
                                 onChangeField={onChangeField} />
                         </div>
