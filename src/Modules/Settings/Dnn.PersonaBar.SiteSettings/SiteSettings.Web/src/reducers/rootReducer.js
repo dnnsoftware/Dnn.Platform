@@ -5,6 +5,7 @@ import siteInfo from "./siteInfoReducer";
 import siteBehavior from "./siteBehaviorReducer";
 import languages from "./languagesReducer";
 import search from "./searchReducer";
+import languageEditor from "./languageEditorReducer";
 
 const rootReducer = combineReducers({
     pagination,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     siteInfo,
     siteBehavior,
     languages,
-    search
+    search,
+    languageEditor
 });
 
 export default rootReducer;

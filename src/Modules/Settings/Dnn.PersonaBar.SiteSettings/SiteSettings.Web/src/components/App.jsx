@@ -9,6 +9,7 @@ import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import HtmlEditorManager from "./moreSettings/htmlEditorManager";
 import LanguageVerifier from "./languageSettings/languageVerifier";
+import EditLanguagePanel from "./editLanguagePanel";
 import resx from "../resources";
 require('es6-object-assign').polyfill();
 require('array.prototype.find').shim();
@@ -39,6 +40,11 @@ class App extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(0));
     }
 
+    closeLanguageEditor(){
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(0));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -61,6 +67,10 @@ class App extends Component {
                     <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
                     </SocialPanelHeader>
                     <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closeLanguageVerifier.bind(this)} />
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 3}>
+                    <SocialPanelHeader title={resx.get("LanguageEditor.Header")}/>
+                    <EditLanguagePanel backToSiteSettings={this.closeLanguageEditor.bind(this)} />
                 </PersonaBarPage>
             </div>
         );

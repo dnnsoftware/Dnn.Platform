@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    languages as LanguagesActions
+    languages as LanguagesActions,
+    visiblePanel as VisiblePanelActions,
+    languageEditor as LanguageEditorActions
 } from "../../../actions";
 import LanguageRow from "./languageRow";
 import LanguageEditor from "./languageEditor";
@@ -123,8 +125,9 @@ class LanguagesPanel extends Component {
         }
     }
 
-    onOpenEditor() {
-
+    onOpenEditor(language) {
+        this.props.dispatch(VisiblePanelActions.selectPanel(3));
+        this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
     }
 
     /* eslint-disable react/no-danger */
@@ -145,7 +148,7 @@ class LanguagesPanel extends Component {
                         closeOnClick={true}
                         openId={this.state.openId}
                         OpenCollapse={this.toggle.bind(this)}
-                        onOpenEditor={this.onOpenEditor.bind(this)}
+                        onOpenEditor={this.onOpenEditor.bind(this, item)}
                         Collapse={this.collapse.bind(this)}
                         id={id}>
                         <LanguageEditor

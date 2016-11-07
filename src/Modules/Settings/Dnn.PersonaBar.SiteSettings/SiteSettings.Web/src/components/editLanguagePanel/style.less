@@ -1,0 +1,145 @@
+@import "~dnn-global-styles/index";
+.edit-language-panel {
+    .socialpanelbody {
+        border: none;
+        .normalPanel, .searchpanel {
+            background-color: transparent;
+            border: none;
+        }
+        .edit-language-info {
+            padding: 5px 25px;
+            border: 1px solid @cerulean;
+            margin-top: 5px;
+            .edit-language-top-bar {
+                border-bottom: 1px solid @alto;
+                margin-bottom: 15px;
+                .language-info {
+                    padding: 15px 0;
+                    .language-flag {
+                        float: left;
+                        margin-right: 25px;
+                        width: 35px;
+                    }
+                    p {
+                        margin-top: 3px;
+                    }
+                }
+                .mode-container {
+                    padding-top: 2px;
+                    .dnn-radio-buttons {
+                        float: right;
+                        /* text-align: right; */
+                        width: auto;
+                        padding-top: 15px;
+                        > label {
+                            margin-top: 2px;
+                            font-weight: bold;
+                        }
+                        .dnn-ui-common-tooltip-info {
+                            margin-right: 25px;
+                        }
+                        ul {
+                            li {
+                                margin-left: 25px;
+                                label {
+                                    margin-top: 2px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .edit-resource-files {
+                >.dnn-grid-cell {
+                    padding: 15px;
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                    &:last-child {
+                        padding-right: 0;
+                    }
+                }
+                .dnn-switch-container {
+                    width: 100%;
+                    margin-top: 25px;
+                    .dnn-switch {
+                        float: right;
+                    }
+                }
+                .dnn-ui-common-button {
+                    margin-top: 25px;
+                    float: right;
+                    margin-left: 10px;
+                }
+                .dnn-dropdown-with-error {
+                    width: 100%;
+                }
+            }
+        }
+        .resource-list {
+            margin-top: 25px;
+            .resource-controls {
+                margin-bottom: 25px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid @alto;
+                .clear-pending-translations, .pending-translations {
+                    color: @cerulean;
+                    margin-top: 2px;
+                }
+                .search-box-container {
+                    float: right;
+                    border-left: 1px solid @alto;
+                    border-right: 1px solid @alto;
+                    height: 24px;
+                    .dnn-search-box {
+                        margin-top: -3px;
+                    }
+                    input::-webkit-search-cancel-button {
+                        margin-right: 25px;
+                    }
+                    input:focus {
+                        outline: none;
+                    }
+                }
+            }
+            .row-headers {
+                border: 1px solid @alto;
+                .row-header {
+                    background-color: white;
+                    padding: 15px;
+                }
+            }
+            .resource-rows {
+                .resource-row {
+                    border: 1px solid @alto;
+                    border-top: none;
+                    background-color: white;
+                    .row-detail {
+                        padding: 15px;
+                        .dnn-ui-common-single-line-input {
+                            width: 100%;
+                            border-radius: 0;
+                        }
+                        >p {
+                            margin-top: 7px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .dnn-workspace-tray {
+        border: none;
+        margin-bottom: 0;
+        height: 24px;
+    }
+    .siteSettings-back {
+        float: left;
+        font-weight: bolder;
+        color: @thunder;
+        cursor: pointer;
+        &:hover {
+            color: @curiousBlue;
+        }
+    }
+}

@@ -4,6 +4,7 @@ import siteInfo from "./siteInfo";
 import siteBehavior from "./siteBehavior";
 import search from "./search";
 import languages from "./languages";
+import languageEditor from "./languageEditor";
 
 export {
     pagination,
@@ -11,5 +12,6 @@ export {
     siteInfo,
     siteBehavior,
     search,
-    languages
+    languages,
+    languageEditor
 };
