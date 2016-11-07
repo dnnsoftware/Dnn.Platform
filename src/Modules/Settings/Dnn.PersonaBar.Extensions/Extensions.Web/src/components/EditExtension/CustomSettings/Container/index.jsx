@@ -9,9 +9,6 @@ import { connect } from "react-redux";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class Container extends Component {
     render() {
         const {props, state} = this;
@@ -23,14 +20,15 @@ class Container extends Component {
                         label={Localization.get("EditContainer_ThemePackageName.Label")}
                         value={extensionBeingEdited.themePackageName.value}
                         onChange={props.onChange.bind(this, "themePackageName")}
+                        enabled={!props.disabled}
                         tooltipMessage={Localization.get("EditContainer_ThemePackageName.HelpText")}
                         style={inputStyle} />
                 </GridCell>
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
                     </GridCell>
                 }
             </GridCell>

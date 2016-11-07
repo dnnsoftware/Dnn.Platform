@@ -118,6 +118,21 @@ namespace Dnn.PersonaBar.Themes.Services
         {
             try
             {
+                var themeInfo = _controller.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site)
+                                    .FirstOrDefault(
+                                        t => t.PackageName.Equals(defaultTheme.ThemeName, StringComparison.InvariantCultureIgnoreCase));
+
+                if (themeInfo == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
+                }
+
+                var themeFiles = _controller.GetThemeFiles(PortalSettings, themeInfo);
+                if (themeFiles.Count == 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "NoThemeFile");
+                }
+
                 _controller.ApplyDefaultTheme(PortalSettings, defaultTheme.ThemeName);
                 return Request.CreateResponse(HttpStatusCode.OK, GetCurrentThemeObject());
             }
@@ -130,11 +145,15 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage DeleteThemePackage(ThemeInfo theme)
         {
             try
             {
+                if (theme.Level == ThemeLevel.Global && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "NoPermission");
+                }
+
                 _controller.DeleteThemePackage(PortalSettings, theme);
                 return Request.CreateResponse(HttpStatusCode.OK, new { });
             }

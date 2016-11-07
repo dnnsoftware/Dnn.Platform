@@ -68,6 +68,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
@@ -100,6 +101,8 @@
     <Compile Include="Components\ExtensionMenuController.cs" />
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\UpdateLanguageRequest.cs" />
+    <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSynonymsGroupRequest.cs" />
     <Compile Include="Services\Dto\UpdateBasicSearchSettingsRequest.cs" />

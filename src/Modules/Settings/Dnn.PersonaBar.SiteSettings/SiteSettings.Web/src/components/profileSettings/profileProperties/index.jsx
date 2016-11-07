@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
@@ -26,7 +26,7 @@ class ProfilePropertiesPanel extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
+        props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
 
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
@@ -71,20 +71,20 @@ class ProfilePropertiesPanel extends Component {
     onUpdateProperty(propertyDetail) {
         const {props, state} = this;
         if (propertyDetail.DefinitionId) {
-            props.dispatch(SiteSettingsActions.UpdateProfileProperty(propertyDetail, (data) => {
+            props.dispatch(SiteBehaviorActions.UpdateProfileProperty(propertyDetail, (data) => {
                 util.utilities.notify(resx.get("PropertyDefinitionUpdateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
+                props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
             }));
         }
         else {
-            props.dispatch(SiteSettingsActions.AddProfileProperty(propertyDetail, (data) => {
+            props.dispatch(SiteBehaviorActions.AddProfileProperty(propertyDetail, (data) => {
                 util.utilities.notify(resx.get("PropertyDefinitionCreateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getProfileProperties(props.portalId));
+                props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
             }, (error) => {
                 util.utilities.notify(resx.get("PropertyDefinitionCreateError"));
                 const errorMessage = JSON.parse(error.responseText);
@@ -97,7 +97,7 @@ class ProfilePropertiesPanel extends Component {
         const {props, state} = this;
         util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
-            props.dispatch(SiteSettingsActions.deleteProfileProperty(propertyId, itemList, () => {
+            props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
                 util.utilities.notify(resx.get("DeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -192,7 +192,7 @@ ProfilePropertiesPanel.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        profileProperties: state.siteSettings.profileProperties,
+        profileProperties: state.siteBehavior.profileProperties,
         tabIndex: state.pagination.tabIndex
     };
 }

@@ -342,13 +342,14 @@ namespace Dnn.PersonaBar.Sites.Components
             return selectedTabs;
         }
 
-        public int CreatePortal(ref ArrayList errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords,
-            bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password,
+        public int CreatePortal(ref ArrayList errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
+            string siteDescription, string siteKeywords,
+            bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email,
+            string password,
             string confirm, string question = "", string answer = "")
         {
             var template = LoadPortalTemplateInfoForSelectedItem(siteTemplate);
 
-            string strPortalAlias;
             var strChildPath = string.Empty;
             var closePopUpStr = string.Empty;
             var intPortalId = -1;
@@ -363,18 +364,12 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             //Set Portal Name
-            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", "");
+            siteAlias = siteAlias.ToLowerInvariant().Replace("http://", "").Replace("https://", "");
 
             //Validate Portal Name
-            if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-            {
-                isChildSite = true;
-                strPortalAlias = siteAlias;
-            }
-            else
-            {
-                strPortalAlias = isChildSite ? PortalController.GetPortalFolder(siteAlias) : siteAlias;
-            }
+            var strPortalAlias = isChildSite
+                ? PortalController.GetPortalFolder(siteAlias)
+                : siteAlias;
 
             var message = string.Empty;
             if (!PortalAliasController.ValidateAlias(strPortalAlias, isChildSite))
@@ -410,15 +405,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
                     else
                     {
-                        if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-                        {
-                            //strPortalAlias = Globals.GetDomainName(Request, true) + "/" + strPortalAlias;
-                            strPortalAlias = domainName + "/" + strPortalAlias;
-                        }
-                        else
-                        {
-                            strPortalAlias = siteAlias;
-                        }
+                        strPortalAlias = siteAlias;
                     }
                 }
             }
@@ -469,15 +456,15 @@ namespace Dnn.PersonaBar.Sites.Components
                     {
                         adminUser = PortalSettings.Current.UserInfo;
                         intPortalId = PortalController.Instance.CreatePortal(siteName,
-                                                                   adminUser.UserID,
-                                                                   siteDescription,
-                                                                   siteKeywords,
-                                                                   template,
-                                                                   homeDir,
-                                                                   strPortalAlias,
-                                                                   serverPath,
-                                                                   strChildPath,
-                                                                   isChildSite);
+                            adminUser.UserID,
+                            siteDescription,
+                            siteKeywords,
+                            template,
+                            homeDir,
+                            strPortalAlias,
+                            serverPath,
+                            strChildPath,
+                            isChildSite);
                     }
                     else
                     {
@@ -490,31 +477,30 @@ namespace Dnn.PersonaBar.Sites.Components
                             Email = email,
                             IsSuperUser = false,
                             Membership =
-                                                        {
-                                                            Approved = true,
-                                                            Password = password,
-                                                            PasswordQuestion = question,
-                                                            PasswordAnswer = answer
-                                                        },
+                            {
+                                Approved = true,
+                                Password = password,
+                                PasswordQuestion = question,
+                                PasswordAnswer = answer
+                            },
                             Profile =
-                                                        {
-                                                            FirstName = firstname,
-                                                            LastName = lastname
-                                                        }
+                            {
+                                FirstName = firstname,
+                                LastName = lastname
+                            }
                         };
 
                         intPortalId = PortalController.Instance.CreatePortal(siteName,
-                                                                   adminUser,
-                                                                   siteDescription,
-                                                                   siteKeywords,
-                                                                   template,
-                                                                   homeDir,
-                                                                   strPortalAlias,
-                                                                   serverPath,
-                                                                   strChildPath,
-                                                                   isChildSite);
+                            adminUser,
+                            siteDescription,
+                            siteKeywords,
+                            template,
+                            homeDir,
+                            strPortalAlias,
+                            serverPath,
+                            strChildPath,
+                            isChildSite);
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -541,45 +527,28 @@ namespace Dnn.PersonaBar.Sites.Components
 
                     //Create a Portal Settings object for the new Portal
                     var objPortal = PortalController.Instance.GetPortal(intPortalId);
-                    var newSettings = new PortalSettings { PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias }, PortalId = intPortalId, DefaultLanguage = objPortal.DefaultLanguage };
+                    var newSettings = new PortalSettings
+                    {
+                        PortalAlias = new PortalAliasInfo {HTTPAlias = strPortalAlias},
+                        PortalId = intPortalId,
+                        DefaultLanguage = objPortal.DefaultLanguage
+                    };
                     var webUrl = Globals.AddHTTP(strPortalAlias);
                     try
                     {
-                        if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-                        {
-                            message = (string.IsNullOrEmpty(PortalSettings.Email) &&
-                                string.IsNullOrEmpty(Host.HostEmail)) ?
-                                string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourcesFile), message, webUrl, closePopUpStr) :
-                                Mail.SendMail(PortalSettings.Email,
-                                                       email,
-                                                       string.IsNullOrEmpty(PortalSettings.Email) ? Host.HostEmail : string.IsNullOrEmpty(Host.HostEmail) 
-                                                            ? PortalSettings.Email : PortalSettings.Email + ";" + Host.HostEmail,
-                                                       Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
-                                                       Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "");
-
-                        }
-                        else
-                        {
-                            message = string.IsNullOrEmpty(Host.HostEmail) ?
-                                string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourcesFile), message, webUrl, closePopUpStr) :
-                                Mail.SendMail(Host.HostEmail,
-                                                       email,
-                                                       Host.HostEmail,
-                                                       Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
-                                                       Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "",
-                                                       "");
-                        }
+                        message = string.IsNullOrEmpty(Host.HostEmail)
+                            ? string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourcesFile), message, webUrl, closePopUpStr)
+                            : Mail.SendMail(Host.HostEmail,
+                                email,
+                                Host.HostEmail,
+                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
+                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "");
                     }
                     catch (Exception exc)
                     {
@@ -590,7 +559,8 @@ namespace Dnn.PersonaBar.Sites.Components
                         "", EventLogController.EventLogType.PORTAL_CREATED);
 
                     // mark default language as published if content localization is enabled
-                    var ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalSettings.PortalId, false);
+                    var ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalSettings.PortalId,
+                        false);
                     if (ContentLocalizationEnabled)
                     {
                         var lc = new LocaleController();
@@ -609,7 +579,7 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 errors.Add(message);
             }
-            
+
             return intPortalId;
         }
 

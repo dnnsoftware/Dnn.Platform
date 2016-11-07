@@ -96,11 +96,15 @@ class InstallExtensionModal extends Component {
     cancelInstall(cancelRevertStep) {
         const {props} = this;
         props.dispatch(InstallationActions.clearParsedInstallationPackage(() => {
-            if (!cancelRevertStep) {
+            if (cancelRevertStep) {
                 this.goToStep(0);
+            } else {
+                this.goToStep(0);
+                props.onCancel();
             }
         }));
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
+        props.dispatch(InstallationActions.toggleAcceptLicense(false));
         this.setState({
             package: null
         });
@@ -112,7 +116,8 @@ class InstallExtensionModal extends Component {
             return <PackageInformation
                 extensionBeingEdited={props.parsedInstallationPackage}
                 validationMapped={false}
-                onCancel={this.endInstallation.bind(this)}
+                onCancel={this.cancelInstall.bind(this)}
+                installationMode={true}
                 onSave={this.goToReleaseNotes.bind(this)}
                 primaryButtonText="Next"
                 disabled={true} />;
@@ -124,6 +129,7 @@ class InstallExtensionModal extends Component {
         if (props.installingAvailablePackage) {
             props.dispatch(PaginationActions.loadTab(0, () => {
                 props.dispatch(ExtensionActions.getInstalledPackages(props.availablePackage.PackageType));
+                props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackage.PackageType));
             }));
         } else {
             if (props.tabIndex !== 0) {
@@ -140,11 +146,11 @@ class InstallExtensionModal extends Component {
         this.props.dispatch(InstallationActions.toggleAcceptLicense(!this.props.licenseAccepted));
     }
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const {wizardStep} = props;
         return (
             <GridCell className={styles.installExtensionModal}>
-                <SocialPanelHeader title="Install Extension" />
+                <SocialPanelHeader title={Localization.get("ExtensionInstall.Action")} />
                 <SocialPanelBody>
                     <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
@@ -167,39 +173,40 @@ class InstallExtensionModal extends Component {
                         {wizardStep === 2 &&
                             <ReleaseNotes
                                 value={props.parsedInstallationPackage.releaseNotes}
-                                onCancel={this.endInstallation.bind(this)}
+                                onCancel={this.cancelInstall.bind(this)}
                                 onSave={this.goToLicense.bind(this)}
-                                primaryButtonText="Next"
+                                primaryButtonText={Localization.get("Next.Button")}
+                                installationMode={true}
                                 readOnly={true}
                                 disabled={true} />}
                         {wizardStep === 3 &&
                             <License
                                 value={props.parsedInstallationPackage.license}
-                                onCancel={this.endInstallation.bind(this)}
+                                onCancel={this.cancelInstall.bind(this)}
+                                installationMode={true}
                                 readOnly={true}
                                 onSave={this.installPackage.bind(this)}
-                                primaryButtonText="Next"
+                                primaryButtonText={Localization.get("Next.Button")}
                                 disabled={true}
                                 primaryButtonDisabled={!props.licenseAccepted}
                                 acceptLicenseCheckbox={
                                     <Checkbox
-                                        label={"Accept License?"}
+                                        label={Localization.get("InstallExtension_AcceptLicense.Label")}
                                         value={props.licenseAccepted}
-                                        onCancel={this.endInstallation.bind(this)}
+                                        onCancel={this.cancelInstall.bind(this)}
                                         onChange={this.onToggleLicenseAccept.bind(this)} />}
                                 />}
                         {wizardStep === 4 &&
                             <InstallLog
                                 logs={props.installationLogs}
                                 onDone={this.endInstallation.bind(this)}
-                                primaryButtonText="Next" />}
+                                primaryButtonText={Localization.get("Next.Button")} />}
 
                         <p className="modal-pagination">{"-- " + (props.wizardStep + 1) + " of 5 --"} </p>
                     </GridCell>
                 </SocialPanelBody>
             </GridCell>
         );
-        // <p className="modal-pagination"> --1 of 2 -- </p>
     }
 }
 

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import Switch from "dnn-switch";
@@ -59,7 +59,7 @@ class MessagingSettingsPanelBody extends Component {
         recipientLimitOptions.push({ "value": 75, "label": "75" });
         recipientLimitOptions.push({ "value": 100, "label": "100" });
 
-        props.dispatch(SiteSettingsActions.getMessagingSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, (data) => {
             this.setState({
                 messagingSettings: Object.assign({}, data.Settings)
             });
@@ -89,14 +89,14 @@ class MessagingSettingsPanelBody extends Component {
             messagingSettings: messagingSettings
         });
 
-        props.dispatch(SiteSettingsActions.messagingSettingsClientModified(messagingSettings));
+        props.dispatch(SiteBehaviorActions.messagingSettingsClientModified(messagingSettings));
     }
 
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteSettingsActions.updateMessagingSettings(state.messagingSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateMessagingSettings(state.messagingSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -106,7 +106,7 @@ class MessagingSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getMessagingSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, (data) => {
                 this.setState({
                     messagingSettings: Object.assign({}, data.Settings)
                 });
@@ -250,8 +250,8 @@ MessagingSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        messagingSettings: state.siteSettings.messagingSettings,
-        messagingSettingsClientModified: state.siteSettings.messagingSettingsClientModified
+        messagingSettings: state.siteBehavior.messagingSettings,
+        messagingSettingsClientModified: state.siteBehavior.messagingSettingsClientModified
     };
 }
 

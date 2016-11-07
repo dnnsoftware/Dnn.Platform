@@ -2,29 +2,32 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
-import { FolderActions, ExtensionActions } from "actions";
+import { FolderActions, ExtensionActions, VisiblePanelActions } from "actions";
 import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import FromControl from "./FromControl";
 import FromManifest from "./FromManifest";
 import FromNew from "./FromNew";
-import utilities from "utils";
+import Localization from "localization";
 import Button from "dnn-button";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
-const newModuleTypes = [{
-    label: "New",
-    value: 0
-},
-{
-    label: "Control",
-    value: 1
-}, {
-    label: "Manifest",
-    value: 2
-}];
+const newModuleTypes = [
+    {
+        label: "New",
+        value: 0
+    },
+    {
+        label: "Control",
+        value: 1
+    },
+    {
+        label: "Manifest",
+        value: 2
+    }
+];
 
 class NewModuleModal extends Component {
     constructor() {
@@ -78,7 +81,7 @@ class NewModuleModal extends Component {
             if (!shouldAppend) {
                 props.dispatch(ExtensionActions.getInstalledPackages("Module"));
             }
-            props.onCancel();
+            this.onCancel();
         }));
     }
 
@@ -107,7 +110,7 @@ class NewModuleModal extends Component {
                 return <FromNew
                     ownerFolders={ownerFolders}
                     moduleFolders={moduleFolders}
-                    onCancel={props.onCancel.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onCreateNewModule={this.onCreateNewModule.bind(this)} />;
@@ -116,7 +119,7 @@ class NewModuleModal extends Component {
                     ownerFolders={ownerFolders}
                     moduleFolders={moduleFolders}
                     moduleFiles={moduleFiles}
-                    onCancel={props.onCancel.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
@@ -126,7 +129,7 @@ class NewModuleModal extends Component {
                     ownerFolders={ownerFolders}
                     moduleFolders={moduleFolders}
                     moduleFiles={moduleFiles}
-                    onCancel={props.onCancel.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
@@ -136,24 +139,31 @@ class NewModuleModal extends Component {
         }
     }
 
-    render() {
+    onCancel() {
         const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(0));
+    }
+
+    render() {
         return (
             <div className={styles.newModuleModal}>
-                <SocialPanelHeader title="Create New Module" />
+                <SocialPanelHeader title={Localization.get("CreateModule.Action")} />
                 <SocialPanelBody>
                     <GridCell className="new-module-box extension-form">
                         <GridCell columnSize={100} style={{ marginBottom: 15, padding: 0 }}>
-                            <GridCell>
+                            <GridCell className="new-module-dropdown-container">
                                 <DropdownWithError
                                     className="create-new-module-dropdown"
                                     options={newModuleTypes}
-                                    tooltipMessage="Hey"
+                                    tooltipMessage={Localization.get("CreateNewModule.HelpText")}
                                     value={this.state.selectedType}
                                     onSelect={this.onSelectNewModuleType.bind(this)}
-                                    label="Create New Module From:"
+                                    label={Localization.get("CreateNewModuleFrom.Label")}
                                     style={inputStyle}
                                     />
+                                {this.state.selectedType === "" &&
+                                    <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
+                                }
                             </GridCell>
                         </GridCell>
                         <GridCell style={{ padding: 0 }}>
@@ -163,13 +173,16 @@ class NewModuleModal extends Component {
                 </SocialPanelBody>
             </div>
         );
-        // <p className="modal-pagination"> --1 of 2 -- </p>
     }
 }
 
-NewModuleModal.PropTypes = {
+NewModuleModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    selectedInstalledPackageType: PropTypes.string,
+    ownerFolders: PropTypes.array,
+    moduleFolders: PropTypes.array,
+    moduleFiles: PropTypes.array
 };
 
 function mapStateToProps(state) {

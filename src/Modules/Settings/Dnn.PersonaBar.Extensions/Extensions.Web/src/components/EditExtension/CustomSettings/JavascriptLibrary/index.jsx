@@ -10,9 +10,6 @@ import Label from "dnn-label";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class JavascriptLibrary extends Component {
     getNameVersionRows(list) {
         return list.map(item => {
@@ -45,7 +42,7 @@ class JavascriptLibrary extends Component {
         ];
     }
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editJSLibrary + (props.className ? " " + props.className : "")}>
@@ -94,6 +91,7 @@ class JavascriptLibrary extends Component {
                             value={extensionBeingEdited.customCdn.value}
                             onChange={props.onChange.bind(this, "customCdn")}
                             tooltipMessage={Localization.get("EditJavascriptLibrary_CustomCDN.HelpText")}
+                            enabled={!props.disabled}
                             style={inputStyle} />
                     </div>
                 </GridSystem>
@@ -109,9 +107,9 @@ class JavascriptLibrary extends Component {
                 </GridSystem>
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
-                        <Button type="primary">{props.primaryButtonText}</Button>
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary">{props.primaryButtonText}</Button>}
                     </GridCell>
                 }
             </GridCell>

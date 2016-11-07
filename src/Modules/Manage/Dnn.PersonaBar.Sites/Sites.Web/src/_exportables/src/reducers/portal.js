@@ -18,11 +18,13 @@ const switchCase = [{
 }, {
     condition: ActionTypes.DELETED_PORTAL,
     functionToRun: (state, action) => {
+        let totalCount = Object.assign(state.totalCount);
         return {
             portals: [
                 ...state.portals.slice(0, action.payload.index),
                 ...state.portals.slice(action.payload.index + 1)
-            ]
+            ],
+            totalCount: totalCount - 1
         };
     }
 }, {

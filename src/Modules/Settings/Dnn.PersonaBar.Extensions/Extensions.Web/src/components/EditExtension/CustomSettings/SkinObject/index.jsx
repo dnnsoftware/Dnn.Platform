@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
+
 function formatVersionNumber(n) {
     return n > 9 ? "" + n : "0" + n;
 }
@@ -18,7 +19,7 @@ class SkinObject extends Component {
         let { extensionBeingEdited } = props;
 
         return (
-            <GridCell className={styles.editSkinObject + (props.className ? " " + props.className : "")}>
+            <GridCell className={(styles.editSkinObj + (props.className ? " " + props.className : ""))}>
                 <GridSystem className="with-right-border top-half">
                     <div>
                         <SingleLineInputWithError
@@ -26,7 +27,8 @@ class SkinObject extends Component {
                             value={extensionBeingEdited.controlKey.value}
                             onChange={props.onChange.bind(this, "controlKey")}
                             tooltipMessage={Localization.get("EditSkinObject_ControlKey.HelpText")}
-                            style={inputStyle} />
+                            style={inputStyle}
+                            enabled={!props.disabled} />
                     </div>
                     <div>
                         <SingleLineInputWithError
@@ -34,18 +36,21 @@ class SkinObject extends Component {
                             value={extensionBeingEdited.controlSrc.value}
                             onChange={props.onChange.bind(this, "controlSrc")}
                             tooltipMessage={Localization.get("EditSkinObject_ControlSrc.HelpText")}
-                            style={inputStyle} />
+                            style={inputStyle}
+                            enabled={!props.disabled} />
                         <Switch
                             label={Localization.get("EditSkinObject_SupportsPartialRender.Label")}
                             value={extensionBeingEdited.supportsPartialRendering.value}
                             onChange={props.onChange.bind(this, "supportsPartialRendering")}
-                            tooltipMessage={Localization.get("EditSkinObject_SupportsPartialRender.HelpText")} />
+                            tooltipMessage={Localization.get("EditSkinObject_SupportsPartialRender.HelpText")}
+                            readOnly={props.disabled} />
                     </div>
                 </GridSystem>
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
                     </GridCell>
                 }
             </GridCell>

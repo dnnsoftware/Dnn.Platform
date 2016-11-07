@@ -23,7 +23,7 @@ class ModuleDefinitionRow extends Component {
         return (
             <GridCell className="module-definition-row">
                 <GridCell columnSize={85} className="module-definition-name">
-                    {props.moduleDefinition.name + "-" + props.moduleDefinition.id}
+                    {props.moduleDefinition.name}
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
                     <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>

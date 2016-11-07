@@ -6,7 +6,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,7 +21,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Client;
 
 namespace Dnn.PersonaBar.CssEditor.Services
@@ -43,21 +41,18 @@ namespace Dnn.PersonaBar.CssEditor.Services
         {
             try
             {
-                ArrayList portals = PortalController.Instance.GetPortals();
-                var query = from PortalInfo portal in portals
-                                  select portal;
+                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
                 if (!PortalSettings.Current.UserInfo.IsSuperUser)
                 {
-                    query = from PortalInfo portal in portals
-                                where portal.PortalID == PortalSettings.Current.PortalId
-                                select portal;
+                    var userPortalId = PortalSettings.Current.PortalId;
+                    portals = portals.Where(portal => portal.PortalID == userPortalId);
                 }
 
-                var availablePortals = query.Select(v => new
+                var availablePortals = portals.Select(v => new
                 {
                     v.PortalID,
                     v.PortalName
-                });
+                }).ToList();
 
                 var response = new
                 {

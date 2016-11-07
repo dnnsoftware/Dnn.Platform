@@ -33,7 +33,6 @@ namespace Dnn.PersonaBar.Sites.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SitesController));
         private readonly Components.SitesController _controller = new Components.SitesController();
 
-        /// GET: api/Sites/GetPortals
         /// <summary>
         /// Gets list of portals
         /// </summary>
@@ -42,6 +41,9 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns>List of portals</returns>
+        /// <example>
+        /// GET /api/personabar/host/evoqsites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10
+        /// </example>
         [HttpGet]
         public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)
         {
@@ -64,33 +66,10 @@ namespace Dnn.PersonaBar.Sites.Services
                     portals = PortalController.GetPortalsByName($"%{filter}%", pageIndex, pageSize,
                                 ref totalRecords).Cast<PortalInfo>();
                 }
-                string contentLocalizable;
-                var query = (from PortalInfo portal in portals
-                    select new
-                    {
-                        portal.PortalID,
-                        portal.PortalName,
-                        PortalAliases = _controller.FormatPortalAliases(portal.PortalID),
-                        portal.Users,
-                        portal.Pages,
-                        portal.HostSpace,
-                        portal.HostFee,
-                        portal.LastModifiedOnDate,
-                        ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
-                        portal.DefaultLanguage,
-                        contentLocalizable =
-                            PortalController.Instance.GetPortalSettings(portal.PortalID)
-                                .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
-                            Convert.ToBoolean(contentLocalizable),
-                        allowDelete =
-                            (portal.PortalID != PortalSettings.PortalId &&
-                             !PortalController.IsMemberOfPortalGroup(portal.PortalID))
-                    }).ToList();
-
                 var response = new
                 {
                     Success = true,
-                    Results = query,
+                    Results = portals.Select(GetPortalDto).ToList(),
                     TotalResults = totalRecords
                 };
 
@@ -111,11 +90,12 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage CreatePortal(CreatePortalRequest request)
         {
             try
             {
-                ArrayList errors = new ArrayList();
+                var errors = new ArrayList();
                 var portalId = _controller.CreatePortal(ref errors, GetDomainName(), GetAbsoluteServerPath(),
                     request.SiteTemplate, request.SiteName,
                     request.SiteAlias, request.SiteDescription, request.SiteKeywords,
@@ -124,37 +104,17 @@ namespace Dnn.PersonaBar.Sites.Services
                     request.PasswordConfirm, request.Question, request.Answer);
                 if (portalId < 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
                     {
                         Success = false,
                         ErrorMessage = errors
                     });
                 }
                 var portal = PortalController.Instance.GetPortal(portalId);
-                string contentLocalizable;
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = true,
-                    Portal = new
-                    {
-                        portal.PortalID,
-                        portal.PortalName,
-                        PortalAliases = _controller.FormatPortalAliases(portal.PortalID),
-                        portal.Users,
-                        portal.Pages,
-                        portal.HostSpace,
-                        portal.HostFee,
-                        ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
-                        portal.DefaultLanguage,
-                        portal.LastModifiedOnDate,
-                        contentLocalizable =
-                            PortalController.Instance.GetPortalSettings(portal.PortalID)
-                                .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
-                            Convert.ToBoolean(contentLocalizable),
-                        allowDelete =
-                            (portal.PortalID != PortalSettings.PortalId &&
-                             !PortalController.IsMemberOfPortalGroup(portal.PortalID))
-                    },
+                    Portal = GetPortalDto(portal),
                     ErrorMessage = errors
                 });
             }
@@ -190,19 +150,19 @@ namespace Dnn.PersonaBar.Sites.Services
                                 UserInfo.UserID, EventLogController.EventLogType.PORTAL_DELETED);
                             return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                         }
-                        return Request.CreateResponse(HttpStatusCode.OK, new
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new
                         {
                             Success = false,
                             ErrorMessage = strMessage
                         });
                     }
-                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
                     {
                         Success = false,
                         ErrorMessage = "Portal deletion not allowed."
                     });
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
                 {
                     Success = false,
                     ErrorMessage = "Portal not found"
@@ -232,7 +192,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
                 if (!success)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
                     {
                         Success = false,
                         Message = message
@@ -396,6 +356,32 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
             return httpContext != null ? Globals.GetDomainName(httpContext.Request, true) : string.Empty;
+        }
+
+        private object GetPortalDto(PortalInfo portal)
+        {
+            string contentLocalizable;
+            var portalDto = new
+            {
+                portal.PortalID,
+                portal.PortalName,
+                PortalAliases = _controller.FormatPortalAliases(portal.PortalID),
+                portal.Users,
+                portal.Pages,
+                portal.HostSpace,
+                portal.HostFee,
+                portal.DefaultLanguage,
+                ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
+                portal.LastModifiedOnDate,
+                contentLocalizable =
+                    PortalController.Instance.GetPortalSettings(portal.PortalID)
+                        .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
+                    Convert.ToBoolean(contentLocalizable),
+                allowDelete =
+                    (portal.PortalID != PortalSettings.PortalId &&
+                     !PortalController.IsMemberOfPortalGroup(portal.PortalID))
+            };
+            return portalDto;
         }
     }
 }

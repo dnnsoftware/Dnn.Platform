@@ -568,7 +568,7 @@
     <value>You can create a new module in three ways. Select which method to use. New - creates a new module control, Control - creates a module from an existing control, Manifest - creates a module from an existing manifest.</value>
   </data>
   <data name="NewModule_CreateFrom.Label" xml:space="preserve">
-    <value>CreateNew Module From:</value>
+    <value>Create New Module From:</value>
   </data>
   <data name="NewModule_Description.HelpText" xml:space="preserve">
     <value>You can provide a description for your module.</value>
@@ -763,7 +763,7 @@
     <value>Permissions</value>
   </data>
   <data name="EditModule_PremiumModuleAssignment.Header" xml:space="preserve">
-    <value>Premium ModuleAssignment</value>
+    <value>Premium Module Assignment</value>
   </data>
   <data name="EditModule_Unassigned.Label" xml:space="preserve">
     <value>Unassigned</value>
@@ -998,5 +998,137 @@
   </data>
   <data name="EditJavascriptLibrary_TableVersion.Header" xml:space="preserve">
     <value>Version</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppEnabled.HelpText" xml:space="preserve">
+    <value>Check this box to enable this authentication provider for this site.</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppEnabled.Label" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppId.HelpText" xml:space="preserve">
+    <value>Enter the value of the APP ID/API Key/Consumer Key you configured for this authentication provider.</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppId.Label" xml:space="preserve">
+    <value>App ID</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppSecret.HelpText" xml:space="preserve">
+    <value>Enter the value of the APP Secret/Consumer Secret you configured for this authentication provider.</value>
+  </data>
+  <data name="AuthSystemSiteSettings_AppSecret.Label" xml:space="preserve">
+    <value>App Secret</value>
+  </data>
+  <data name="CreateExtension_Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CreateExtension_Save.Button" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="CreateNewModule.HelpText" xml:space="preserve">
+    <value>You can create a new module in three ways. Select which method to use. New - creates a new module control, Control - creates a module from an existing control, Manifest - creates a module from an existing manifest.</value>
+  </data>
+  <data name="CreateNewModuleFrom.Label" xml:space="preserve">
+    <value>Create New Module From:</value>
+  </data>
+  <data name="CreateNewModule_FolderName.Label" xml:space="preserve">
+    <value>Folder Name</value>
+  </data>
+  <data name="CreateNewModule_NewFolder.Label" xml:space="preserve">
+    <value>New Folder</value>
+  </data>
+  <data name="CreateNewModule_NotSpecified.Label" xml:space="preserve">
+    <value>&lt;Not Specified&gt;</value>
+  </data>
+  <data name="Done.Button" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="EditModule_SaveAndClose.Button" xml:space="preserve">
+    <value>Save &amp; Close</value>
+  </data>
+  <data name="InstallExtension_AcceptLicense.Label" xml:space="preserve">
+    <value>Accept License?</value>
+  </data>
+  <data name="InstallExtension_License.Header" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="InstallExtension_License.HelpText" xml:space="preserve">
+    <value>Before proceeding you must accept the terms of the license for this extension. \n Please review the license and check the Accept License check box.</value>
+  </data>
+  <data name="InstallExtension_Logs.Header" xml:space="preserve">
+    <value>Package Installation Report</value>
+  </data>
+  <data name="InstallExtension_Logs.HelpText" xml:space="preserve">
+    <value>Installation is complete. See details below.</value>
+  </data>
+  <data name="InstallExtension_ReleaseNotes.Header" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="InstallExtension_ReleaseNotes.HelpText" xml:space="preserve">
+    <value>Review the Release Notes for this package.</value>
+  </data>
+  <data name="Next.Button" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Cancel.Button" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="EditExtensions_TabHasError.Text" xml:space="preserve">
+    <value>This tab has an error.  Package Information, Extension Settings, License and Release Notes cannot be saved.</value>
+  </data>
+  <data name="EditExtension_PackageType.Label" xml:space="preserve">
+    <value>Extension Type</value>
+  </data>
+  <data name="InstallExtension_PackageInfo.Header" xml:space="preserve">
+    <value>Package Information</value>
+  </data>
+  <data name="InstallExtension_PackageInfo.HelpText" xml:space="preserve">
+    <value>The following information was found in the package manifest.</value>
+  </data>
+  <data name="Save.Button" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="UnsavedChanges.Cancel" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="UnsavedChanges.Confirm" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="UnsavedChanges.HelpText" xml:space="preserve">
+    <value>You have unsaved changes. Are you sure you want to proceed?</value>
+  </data>
+  <data name="CreatePackage_ArchiveFileName.HelpText" xml:space="preserve">
+    <value>Enter the file name to use for the archive (zip).</value>
+  </data>
+  <data name="CreatePackage_ManifestFileName.HelpText" xml:space="preserve">
+    <value>Enter the file name to use for the manifest.</value>
+  </data>
+  <data name="DeleteExtension.Cancel" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="DeleteExtension.Confirm" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DeleteExtension.Warning" xml:space="preserve">
+    <value>Are you sure you want to delete this package?</value>
+  </data>
+  <data name="Download.Button" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="EditExtension_Notify.Success" xml:space="preserve">
+    <value>Extension updated sucessfully.</value>
+  </data>
+  <data name="EditModule_ModuleSharingSupported.Label" xml:space="preserve">
+    <value>Supported</value>
+  </data>
+  <data name="EditModule_ModuleSharingUnknown.Label" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="EditModule_ModuleSharingUnsupported.Label" xml:space="preserve">
+    <value>Unsupported</value>
+  </data>
+  <data name="Install.Button" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="Previous.Button" xml:space="preserve">
+    <value>Previous</value>
   </data>
 </root>

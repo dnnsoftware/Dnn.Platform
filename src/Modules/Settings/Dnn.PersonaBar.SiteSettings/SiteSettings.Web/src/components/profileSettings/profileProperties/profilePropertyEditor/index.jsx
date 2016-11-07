@@ -13,7 +13,7 @@ import InputGroup from "dnn-input-group";
 import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import {
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../../../actions";
 import util from "../../../../utils";
 import resx from "../../../../resources";
@@ -42,7 +42,7 @@ class ProfilePropertyEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(SiteSettingsActions.getProfileProperty(props.propertyId));
+        props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId));
     }
 
     componentWillReceiveProps(props) {
@@ -158,7 +158,7 @@ class ProfilePropertyEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SiteSettingsActions.profilePropertyClientModified(profileProperty));
+        props.dispatch(SiteBehaviorActions.profilePropertyClientModified(profileProperty));
     }
 
     onLanguageChange(event){
@@ -166,7 +166,7 @@ class ProfilePropertyEditor extends Component {
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         propertyLocalization["Language"] = event.value;
-        props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
+        props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
         
         this.setState({
             propertyLocalization: propertyLocalization,
@@ -194,7 +194,7 @@ class ProfilePropertyEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SiteSettingsActions.propertyLocalizationClientModified(propertyLocalization));
+        props.dispatch(SiteBehaviorActions.propertyLocalizationClientModified(propertyLocalization));
     }
 
     getProfileVisibilityOptions() {
@@ -250,10 +250,10 @@ class ProfilePropertyEditor extends Component {
 
         if (props.profilePropertyClientModified) {
             if (props.id === "add") {
-                props.dispatch(SiteSettingsActions.addProfileProperty(state.profileProperty, (data) => {
+                props.dispatch(SiteBehaviorActions.addProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-                    props.dispatch(SiteSettingsActions.getProfileProperties());
-                    props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfileProperties());
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
                     });
@@ -262,10 +262,10 @@ class ProfilePropertyEditor extends Component {
                 }));
             }
             else {
-                props.dispatch(SiteSettingsActions.updateProfileProperty(state.profileProperty, (data) => {
+                props.dispatch(SiteBehaviorActions.updateProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-                    props.dispatch(SiteSettingsActions.getProfileProperties());
-                    props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfileProperties());
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
                     });
@@ -275,7 +275,7 @@ class ProfilePropertyEditor extends Component {
             }
         }
         else {
-            props.dispatch(SiteSettingsActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
             this.setState({
                 showFirstPage: false
             });
@@ -302,7 +302,7 @@ class ProfilePropertyEditor extends Component {
             CategoryNameString: state.propertyLocalization.CategoryName
         };
 
-        props.dispatch(SiteSettingsActions.updateProfilePropertyLocalization(localization, (data) => {
+        props.dispatch(SiteBehaviorActions.updateProfilePropertyLocalization(localization, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             props.Collapse();
         }, (error) => {
@@ -314,7 +314,7 @@ class ProfilePropertyEditor extends Component {
         const {props, state} = this;
         if (props.profilePropertyClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteSettingsActions.cancelProfilePropertyClientModified());
+                props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
                 props.Collapse();
             });
         }
@@ -625,13 +625,13 @@ ProfilePropertyEditor.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        profileProperty: state.siteSettings.profileProperty,
-        propertyLocalization: state.siteSettings.propertyLocalization,
-        userVisibilityOptions: state.siteSettings.userVisibilityOptions,
-        dataTypeOptions: state.siteSettings.dataTypeOptions,
-        languageOptions: state.siteSettings.languageOptions,
-        profilePropertyClientModified: state.siteSettings.profilePropertyClientModified,
-        propertyLocalizationClientModified: state.siteSettings.propertyLocalizationClientModified
+        profileProperty: state.siteBehavior.profileProperty,
+        propertyLocalization: state.siteBehavior.propertyLocalization,
+        userVisibilityOptions: state.siteBehavior.userVisibilityOptions,
+        dataTypeOptions: state.siteBehavior.dataTypeOptions,
+        languageOptions: state.siteBehavior.languageOptions,
+        profilePropertyClientModified: state.siteBehavior.profilePropertyClientModified,
+        propertyLocalizationClientModified: state.siteBehavior.propertyLocalizationClientModified
     };
 }
 

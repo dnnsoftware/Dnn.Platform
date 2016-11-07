@@ -7,6 +7,7 @@ import Collapse from "react-collapse";
 import UserMenu from "../UserMenu";
 import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
+import ColumnSizes from "../columnSizes";
 
 class DetailsRow extends Component {
     constructor() {
@@ -84,44 +85,44 @@ class DetailsRow extends Component {
             <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
                 onClick={this.toggleUserMenu.bind(this) }>
             </div>
-            { this.state.showMenu && <UserMenu getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
+            { this.state.showMenu && <UserMenu appSettings={this.props.appSettings} getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } userId={user.userId}/> }
         </div>]);
     }
     getUserColumns(user, id, opened) {
         let userActions = this.getUserActions(user, opened);
         let extraColumns = this.props.getUserColumns && this.props.getUserColumns(user);
-        let columnSize = 100 / ((extraColumns != undefined && extraColumns != null ? extraColumns.length : 0) + 4);
+        let columnSizes =this.props.columnSizes!==undefined? this.props.columnSizes: ColumnSizes;
         let userColumns = [
             {
                 index: 5,
-                content: <GridCell columnSize={columnSize}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===5).size}  className={"user-names" + (user.isDeleted ? " deleted" : "") }>
                     <h6>{user.displayName}</h6>
                     {user.displayName !== "-" && <p>{user.userName}</p> }
                 </GridCell>
             },
             {
                 index: 10,
-                content: <GridCell columnSize={columnSize}  className={ user.isDeleted ? "deleted" : "" } >
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={ user.isDeleted ? "deleted" : "" } >
                     <p>{user.email}</p>
                 </GridCell >
             },
             {
                 index: 15,
-                content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===15).size}  className={user.isDeleted ? "deleted" : ""}>
                     {user.createdOnDate !== "-" && <p>{formatDate(user.createdOnDate) }</p>}
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
             },
             // {
             //     index: 20,
-            //     content: <GridCell columnSize={columnSize}  className={user.isDeleted ? "deleted" : ""}>
+            //     content: <GridCell columnSize={columnSizes.find(x=>x.index===20).size}  className={user.isDeleted ? "deleted" : ""}>
             //         {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
             //         {user.authorized === "-" && user.authorized}
             //     </GridCell>
             // },
             {
                 index: 25,
-                content: id !== "add" && <GridCell columnSize={columnSize} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
+                content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
             }
         ].concat((extraColumns) || []);
 
@@ -149,8 +150,8 @@ class DetailsRow extends Component {
         let userColumns = this.getUserColumns(user, props.id, opened);
         return (
             /* eslint-disable react/no-danger */
-            <GridCell className={"collapsible-component1"} id={uniqueId}>
-                <GridCell  className={"collapsible-header1 " + !opened}>
+            <GridCell className={"collapsible-component-users"} id={uniqueId}>
+                <GridCell  className={"collapsible-header-users " + !opened}>
                     <GridCell className={styles.extensionDetailRow} columnSize={100}>
                         {userColumns }
                         <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
@@ -173,7 +174,9 @@ DetailsRow.propTypes = {
     getUserTabsIcons: PropTypes.func,
     getUserColumns: PropTypes.func,
     getUserMenu: PropTypes.func.isRequired,
-    userMenuAction: PropTypes.func.isRequired
+    userMenuAction: PropTypes.func.isRequired,
+    appSettings: PropTypes.object,
+    columnSizes: PropTypes.array
 };
 DetailsRow.defaultProps = {
     isEvoq: false

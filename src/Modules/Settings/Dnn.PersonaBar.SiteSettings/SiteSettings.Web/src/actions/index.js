@@ -1,9 +1,15 @@
 import pagination from "./pagination";
 import visiblePanel from "./visiblePanel";
-import siteSettings from "./siteSettings";
+import siteInfo from "./siteInfo";
+import siteBehavior from "./siteBehavior";
+import search from "./search";
+import languages from "./languages";
 
 export {
     pagination,
     visiblePanel,
-    siteSettings
+    siteInfo,
+    siteBehavior,
+    search,
+    languages
 };

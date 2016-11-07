@@ -18,10 +18,12 @@
         identifier = params.identifier;
         window.dnn.initPages = function initializePages() {
             return {
-                utility: util,
-                moduleName: "Pages"
+                utilities: util,
+                moduleName: "Pages",
+                config: config
             };
         };
+
         loadScript();
 
         if (typeof callback === 'function') {

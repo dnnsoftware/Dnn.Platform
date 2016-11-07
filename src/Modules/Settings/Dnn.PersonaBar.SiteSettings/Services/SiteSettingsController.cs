@@ -6,15 +6,21 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -22,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
@@ -29,11 +36,15 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.UI.WebControls;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -44,6 +55,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
         private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx");
         private static readonly string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+        private static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -1512,10 +1524,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetLanguageSettings
         /// <summary>
-        /// Gets profile settings
+        /// Gets language settings
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>profile settings</returns>
+        /// <returns>language settings</returns>
         [HttpGet]
         public HttpResponseMessage GetLanguageSettings([FromUri] int? portalId)
         {
@@ -1528,17 +1540,25 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("NativeName", LocalResourcesFile), "NATIVE"));
                 languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("EnglishName", LocalResourcesFile), "ENGLISH"));
 
+                dynamic settings = new ExpandoObject();
+                settings.ContentLocalizationEnabled = portalSettings.ContentLocalizationEnabled;
+                settings.SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
+                    ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
+                    : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid));
+                settings.SiteDefaultLanguage = portalSettings.DefaultLanguage;
+                settings.LanguageDisplayMode = GetLanguageDisplayMode(pid);
+                settings.EnableUrlLanguage = portalSettings.EnableUrlLanguage;
+                settings.EnableBrowserLanguage = portalSettings.EnableBrowserLanguage;
+                settings.AllowUserUICulture = portalSettings.AllowUserUICulture;
+
+                if (UserInfo.IsSuperUser)
+                {
+                    settings.EnableContentLocalization = Host.EnableContentLocalization;
+                }
+
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Settings = new
-                    {
-                        portalSettings.ContentLocalizationEnabled,
-                        Localization.SystemLocale,
-                        portalSettings.DefaultLanguage,
-                        portalSettings.EnableUrlLanguage,
-                        portalSettings.EnableBrowserLanguage,
-                        portalSettings.AllowUserUICulture
-                    },
+                    Settings = settings,
                     Languages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger)).Select(l => new
                     {
                         l.NativeName,
@@ -1553,6 +1573,502 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        /// POST: api/SiteSettings/UpdateLanguageSettings
+        /// <summary>
+        /// Updates language settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateLanguageSettings(UpdateLanguageSettingsRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString());
+                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString());
+
+                if (!portalSettings.ContentLocalizationEnabled)
+                {
+                    // first check whether or not portal default language has changed
+                    string newDefaultLanguage = request.SiteDefaultLanguage;
+                    if (newDefaultLanguage != portalSettings.DefaultLanguage)
+                    {
+                        var needToRemoveOldDefaultLanguage = LocaleController.Instance.GetLocales(pid).Count == 1;
+                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(portalSettings.DefaultLanguage);
+                        if (!IsLanguageEnabled(pid, newDefaultLanguage))
+                        {
+                            var language = LocaleController.Instance.GetLocale(newDefaultLanguage);
+                            Localization.AddLanguageToPortal(pid, language.LanguageId, true);
+                        }
+
+                        // update portal default language
+                        var portal = PortalController.Instance.GetPortal(PortalId);
+                        portal.DefaultLanguage = newDefaultLanguage;
+                        PortalController.Instance.UpdatePortalInfo(portal);
+
+                        if (needToRemoveOldDefaultLanguage)
+                        {
+                            Localization.RemoveLanguageFromPortal(PortalId, oldDefaultLanguage.LanguageId);
+                        }
+                    }
+
+                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString());
+                }
+
+                var oldLanguageDisplayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
+                if (request.LanguageDisplayMode != oldLanguageDisplayMode)
+                {
+                    var personalizationController = new PersonalizationController();
+                    var personalization = personalizationController.LoadProfile(UserInfo.UserID, pid);
+                    Personalization.SetProfile(personalization, "LanguageDisplayMode", "ViewType" + pid, request.LanguageDisplayMode);
+                    personalizationController.SaveProfile(personalization);
+                }
+
+                if (UserInfo.IsSuperUser)
+                {
+                    HostController.Instance.Update("EnableContentLocalization", request.EnableContentLocalization.Value ? "Y" : "N", false);
+                    DataCache.ClearCache();
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetLanguages
+        /// <summary>
+        /// Gets languages
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>languages</returns>
+        [HttpGet]
+        public HttpResponseMessage GetLanguages([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var portalSettings = new PortalSettings(pid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Languages = LocaleController.Instance.GetLocales(Null.NullInteger).Values.Select(l => new
+                    {
+                        l.LanguageId,
+                        Icon = string.IsNullOrEmpty(l.Code) ? "/images/Flags/none.gif" : string.Format("/images/Flags/{0}.gif", l.Code),
+                        l.Code,
+                        l.NativeName,
+                        l.EnglishName,
+                        Enabled = IsLanguageEnabled(pid, l.Code),
+                        IsDefault = l.Code == portalSettings.DefaultLanguage
+                    })
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetLanguage
+        /// <summary>
+        /// Gets language
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="languageId"></param>
+        /// <returns>language</returns>
+        [HttpGet]
+        public HttpResponseMessage GetLanguage([FromUri] int? portalId, [FromUri] int? languageId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var lid = languageId ?? Null.NullInteger;
+                var portalSettings = new PortalSettings(pid);
+                var language = lid != Null.NullInteger ? LocaleController.Instance.GetLocale(lid) : null;
+
+                var fallbacks = language != null ? LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger))
+                    .Where(l => l.Name != language.Code)
+                    .Select(l => new
+                    {
+                        l.NativeName,
+                        l.EnglishName,
+                        l.Name,
+                        Icon =
+                            string.IsNullOrEmpty(l.Name)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", l.Name)
+                    }).ToList() : LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger))
+                    .Select(l => new
+                    {
+                        l.NativeName,
+                        l.EnglishName,
+                        l.Name,
+                        Icon =
+                            string.IsNullOrEmpty(l.Name)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", l.Name)
+                    }).ToList();
+
+                fallbacks.Insert(0, new
+                {
+                    NativeName = Localization.GetString("System_Default", LocalResourcesFile),
+                    EnglishName = Localization.GetString("System_Default", LocalResourcesFile),
+                    Name = "",
+                    Icon = "/images/Flags/none.gif"
+                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Language = language != null ? new
+                    {
+                        PortalId= pid,
+                        language.LanguageId,
+                        language.NativeName,
+                        language.EnglishName,
+                        language.Code,
+                        language.Fallback,
+                        Enabled = IsLanguageEnabled(pid, language.Code),
+                        IsDefault = language.Code == portalSettings.DefaultLanguage
+                    } : new
+                    {
+                        PortalId = pid,
+                        LanguageId = Null.NullInteger,
+                        NativeName = "",
+                        EnglishName = "",
+                        Code = "",
+                        Fallback = "",
+                        Enabled = false,
+                        IsDefault = false
+                    },
+                    SupportedFallbacks = fallbacks
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetAllLanguages
+        /// <summary>
+        /// Gets language
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>all languages</returns>
+        [HttpGet]
+        public HttpResponseMessage GetAllLanguages([FromUri] int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var supportedLanguages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger));
+                var cultures = new List<CultureInfo>(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
+
+                foreach (CultureInfo info in supportedLanguages)
+                {
+                    string cultureCode = info.Name;
+                    CultureInfo culture = cultures.Where(c => c.Name == cultureCode).SingleOrDefault();
+                    if (culture != null)
+                    {
+                        cultures.Remove(culture);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    FullLanguageList = cultures.Select(c => new
+                    {
+                        c.NativeName,
+                        c.EnglishName,
+                        c.Name
+                    })
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/AddLanguage
+        /// <summary>
+        /// Adds language
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage AddLanguage(UpdateLanguageRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+
+                var language = LocaleController.Instance.GetLocale(request.Code);
+                if (language == null)
+                {
+                    language = new Locale();
+                    language.Code = request.Code;
+                }
+                language.Code = request.Code;
+                language.Fallback = request.Fallback;
+                language.Text = CultureInfo.GetCultureInfo(request.Code).NativeName;
+                Localization.SaveLanguage(language);
+
+                if (!IsLanguageEnabled(pid, language.Code))
+                {
+                    Localization.AddLanguageToPortal(PortalId, language.LanguageId, true);
+                }
+
+                string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
+                PortalController.UpdatePortalSetting(PortalId, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/VerifyLanguageResourceFiles
+        /// <summary>
+        /// Verifies language resource files
+        /// </summary>
+        /// <returns>verification results</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage VerifyLanguageResourceFiles()
+        {
+            try
+            {
+                var files = new SortedList();
+                Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(Null.NullInteger);
+                GetResourceFiles(files, HttpContext.Current.Server.MapPath("~\\"));
+
+                var tables = new List<object>();
+
+                foreach (var locale in locales.Values)
+                {
+                    var tableMissing = new List<string>();
+                    var tableEntries = new List<string>();
+                    var tableObsolete = new List<string>();
+                    var tableOld = new List<string>();
+                    var tableDuplicate = new List<string>();
+                    var tableError = new List<string>();
+
+                    foreach (DictionaryEntry file in files)
+                    {
+                        if (!File.Exists(ResourceFile(file.Key.ToString(), locale.Code)))
+                        {
+                            tableMissing.Add(
+                                ResourceFile(file.Key.ToString(), locale.Code)
+                                    .Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                        }
+                        else
+                        {
+                            var dsDef = new DataSet();
+                            var dsRes = new DataSet();
+
+                            try
+                            {
+                                dsDef.ReadXml(file.Key.ToString());
+                            }
+                            catch
+                            {
+                                tableError.Add(file.Key.ToString().Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                dsDef = null;
+                            }
+                            try
+                            {
+                                dsRes.ReadXml(ResourceFile(file.Key.ToString(), locale.Code));
+                            }
+                            catch
+                            {
+                                if (locale.Text != Localization.SystemLocale)
+                                {
+                                    tableError.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                    dsRes = null;
+                                }
+                            }
+
+                            if (dsRes != null && dsDef != null && dsRes.Tables["data"] != null && dsDef.Tables["data"] != null)
+                            {
+                                var dtDef = dsDef.Tables["data"];
+                                dtDef.TableName = "default";
+                                var dtRes = dsRes.Tables["data"].Copy();
+                                dtRes.TableName = "localized";
+                                dsDef.Tables.Add(dtRes);
+
+                                // Check for duplicate entries in localized file
+                                try
+                                {
+                                    // if this fails-> file contains duplicates
+                                    var c = new UniqueConstraint("uniqueness", dtRes.Columns["name"]);
+                                    dtRes.Constraints.Add(c);
+                                    dtRes.Constraints.Remove("uniqueness");
+                                }
+                                catch
+                                {
+                                    tableDuplicate.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+
+                                // Check for missing entries in localized file
+                                try
+                                {
+                                    // if this fails-> some entries in System default file are not found in Resource file
+                                    dsDef.Relations.Add("missing", dtRes.Columns["name"], dtDef.Columns["name"]);
+                                }
+                                catch
+                                {
+                                    tableEntries.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                                finally
+                                {
+                                    dsDef.Relations.Remove("missing");
+                                }
+
+                                // Check for obsolete entries in localized file
+                                try
+                                {
+                                    // if this fails-> some entries in Resource File are not found in System default
+                                    dsDef.Relations.Add("obsolete", dtDef.Columns["name"], dtRes.Columns["name"]);
+                                }
+                                catch
+                                {
+                                    tableObsolete.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                                finally
+                                {
+                                    dsDef.Relations.Remove("obsolete");
+                                }
+
+                                // Check older files
+                                var resFile = new FileInfo(ResourceFile(file.Key.ToString(), locale.Code));
+                                if (((FileInfo)file.Value).LastWriteTime > resFile.LastWriteTime)
+                                {
+                                    tableOld.Add(ResourceFile(file.Key.ToString(), locale.Code).Replace(HttpContext.Current.Server.MapPath("~"), ""));
+                                }
+                            }
+                        }
+                    }
+
+                    if (tableMissing.Count > 0 || tableDuplicate.Count > 0 || tableEntries.Count > 0 ||
+                        tableObsolete.Count > 0 || tableOld.Count > 0 || tableError.Count > 0)
+                    {
+                        tables.Add(new
+                        {
+                            Language = locale.EnglishName,
+                            Icon = string.IsNullOrEmpty(locale.Code)
+                                ? "/images/Flags/none.gif"
+                                : string.Format("/images/Flags/{0}.gif", locale.Code),
+                            MissingFiles = tableMissing,
+                            FilesWithDuplicateEntries = tableDuplicate,
+                            FilesWithMissingEntries = tableEntries,
+                            FilesWithObsoleteEntries = tableObsolete,
+                            OldFiles = tableOld,
+                            MalformedFiles = tableError
+                        });
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Results = tables
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private static string ResourceFile(string filename, string language)
+        {
+            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
+        }
+
+        private static void GetResourceFiles(SortedList fileList, string path)
+        {
+            var folders = Directory.GetDirectories(path);
+            DirectoryInfo objFolder;
+
+            foreach (var folder in folders)
+            {
+                objFolder = new DirectoryInfo(folder);
+
+                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
+                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
+                                          (folder.ToLowerInvariant().EndsWith("\\portals\\_default"));
+
+                if (resxFilesDirectory)
+                {
+                    foreach (string file in Directory.GetFiles(objFolder.FullName, "*.resx"))
+                    {
+                        var fileInfo = new FileInfo(file);
+                        var match = FileInfoRegex.Match(fileInfo.Name);
+
+                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
+                        {
+                            continue;
+                        }
+                        fileList.Add(fileInfo.FullName, fileInfo);
+                    }
+                }
+                else
+                {
+                    GetResourceFiles(fileList, folder);
+                }
+            }
+        }
+
+        private bool IsLanguageEnabled(int portalId, string code)
+        {
+            Locale enabledLanguage;
+            return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage);
+        }
+
+        private CultureDropDownTypes GetCultureDropDownType(int portalId)
+        {
+            CultureDropDownTypes displayType;
+            string viewTypePersonalizationKey = "ViewType" + portalId;
+            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            switch (viewType)
+            {
+                case "NATIVE":
+                    displayType = CultureDropDownTypes.NativeName;
+                    break;
+                case "ENGLISH":
+                    displayType = CultureDropDownTypes.EnglishName;
+                    break;
+                default:
+                    displayType = CultureDropDownTypes.DisplayName;
+                    break;
+            }
+            return displayType;
+        }
+
+        private string GetLanguageDisplayMode(int portalId)
+        {
+            string viewTypePersonalizationKey = "ViewType" + portalId;
+            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
         }
     }
 }

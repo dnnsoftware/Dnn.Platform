@@ -1,4 +1,4 @@
-import utilities from "utils/applicationSettings";
+import appSettings from "utils/applicationSettings";
 
 const usersApplication = {
     init() {
@@ -7,7 +7,7 @@ const usersApplication = {
         // eslint-disable-next-line no-undef
         // __webpack_public_path__ = options.publicPath;        
         let options = window.dnn.initUsers();
-        utilities.init(options);
+        appSettings.init(options);
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
         require("../less/style.less");

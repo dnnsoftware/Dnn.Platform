@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../../actions";
 import SiteAliasRow from "./siteAliasRow";
 import SiteAliasEditor from "./siteAliasEditor";
@@ -33,7 +33,7 @@ class SiteAliasesPanel extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getSiteAliases(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, (data) => {
             this.setState({
                 siteAliases: Object.assign({}, data.PortalAliases)
             });
@@ -88,20 +88,20 @@ class SiteAliasesPanel extends Component {
     onUpdateSiteAlias(aliasDetail) {
         const {props, state} = this;
         if (aliasDetail.PortalAliasID) {
-            props.dispatch(SiteSettingsActions.updateSiteAlias(aliasDetail, (data) => {
+            props.dispatch(SiteBehaviorActions.updateSiteAlias(aliasDetail, (data) => {
                 util.utilities.notify(resx.get("SiteAliasUpdateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getSiteAliases(props.portalId));
+                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
             }));
         }
         else {
-            props.dispatch(SiteSettingsActions.addSiteAlias(aliasDetail, (data) => {
+            props.dispatch(SiteBehaviorActions.addSiteAlias(aliasDetail, (data) => {
                 util.utilities.notify(resx.get("SiteAliasCreateSuccess"));
                 this.collapse();
-                props.dispatch(SiteSettingsActions.getSiteAliases(props.portalId));
+                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -113,7 +113,7 @@ class SiteAliasesPanel extends Component {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SiteAliasDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.siteAliases.filter((item) => item.PortalAliasID !== aliasId);
-            props.dispatch(SiteSettingsActions.deleteSiteAlias(aliasId, itemList, () => {
+            props.dispatch(SiteBehaviorActions.deleteSiteAlias(aliasId, itemList, () => {
                 util.utilities.notify(resx.get("SiteAliasDeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -219,10 +219,10 @@ SiteAliasesPanel.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        siteAliases: state.siteSettings.siteAliases,
-        browsers: state.siteSettings.browsers,
-        languages: state.siteSettings.languages,
-        skins: state.siteSettings.skins,
+        siteAliases: state.siteBehavior.siteAliases,
+        browsers: state.siteBehavior.browsers,
+        languages: state.siteBehavior.languages,
+        skins: state.siteBehavior.skins,
         tabIndex: state.pagination.tabIndex
     };
 }

@@ -1,27 +1,31 @@
 import {
     portal as ActionTypes
 } from "../actionTypes";
-import 
-    {CommonPortalService as PortalService}
- from "../services";
+import
+{ CommonPortalService as PortalService }
+    from "../services";
 import utilities from "utils";
 
 function errorCallback(message) {
-    utilities.notify(message);
+    utilities.notifyError(message);
 }
 const portalActions = {
     deletePortal(portalId, index, callback) {
         return (dispatch) => {
             PortalService.deletePortal(portalId, data => {
-                dispatch({
-                    type: ActionTypes.DELETED_PORTAL,
-                    payload: {
-                        index,
-                        portalId
+                if (data.Success) {
+                    dispatch({
+                        type: ActionTypes.DELETED_PORTAL,
+                        payload: {
+                            index,
+                            portalId
+                        }
+                    });
+                    if (callback) {
+                        callback(data);
                     }
-                });
-                if (callback) {
-                    callback(data);
+                } else {
+                    errorCallback(data.ErrorMessage);
                 }
             }, errorCallback);
         };

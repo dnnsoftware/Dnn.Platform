@@ -12,7 +12,7 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: {
-                        page: response
+                        page: PagesService.toFrontEndPage(response)
                     }
                 });  
             }).catch(() => {
@@ -20,6 +20,17 @@ const pageActions = {
                     type: ActionTypes.ERROR_LOADING_PAGE
                 });
             });     
+        };
+    },
+
+    addPage() {
+        return (dispatch) => {
+            PagesService.getNewPage().then(page => {
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: { page }
+                });
+            });
         };
     },
 
@@ -33,7 +44,7 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {
-                        page: response
+                        createdPage: page.tabId === 0 ? response.Page : null 
                     }
                 });  
             }).catch(() => {
@@ -51,6 +62,44 @@ const pageActions = {
                 field: key,
                 value
             });  
+        };
+    },
+
+    changePageType(value) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_FIELD_VALUE,
+                field: "pageType",
+                value
+            });  
+        };
+    },
+
+    changePermissions(permissions) {
+        return {
+            type: ActionTypes.CHANGE_PERMISSIONS,
+            permissions
+        };
+    },
+
+    fetchCacheProviderList() {
+        return (dispatch, getState) => {
+            if (!getState().pages.cacheProviderList) {
+                dispatch({
+                    type: ActionTypes.FETCH_CACHE_PROVIDER_LIST
+                });
+
+                PagesService.getCacheProviderList().then(cacheProviderList => {
+                    dispatch({
+                        type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
+                        data: { cacheProviderList }
+                    });  
+                }).catch(() => {
+                    dispatch({
+                        type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST
+                    });
+                });                     
+            }
         };
     }
 };

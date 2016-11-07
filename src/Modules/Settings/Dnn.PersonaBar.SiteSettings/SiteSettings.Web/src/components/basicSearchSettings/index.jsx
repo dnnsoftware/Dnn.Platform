@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    search as SearchActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -46,7 +46,7 @@ class BasicSearchSettingsPanelBody extends Component {
                 return;
             }
 
-            props.dispatch(SiteSettingsActions.getBasicSearchSettings((data) => {
+            props.dispatch(SearchActions.getBasicSearchSettings((data) => {
                 this.setState({
                     basicSearchSettings: Object.assign({}, data.Settings)
                 });
@@ -115,7 +115,7 @@ class BasicSearchSettingsPanelBody extends Component {
             triedToSubmit: false
         });
 
-        props.dispatch(SiteSettingsActions.basicSearchSettingsClientModified(basicSearchSettings));
+        props.dispatch(SearchActions.basicSearchSettingsClientModified(basicSearchSettings));
     }
 
     getAnalyzerTypeOptions() {
@@ -141,7 +141,7 @@ class BasicSearchSettingsPanelBody extends Component {
             return;
         }
 
-        props.dispatch(SiteSettingsActions.updateBasicSearchSettings(state.basicSearchSettings, (data) => {
+        props.dispatch(SearchActions.updateBasicSearchSettings(state.basicSearchSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -151,7 +151,7 @@ class BasicSearchSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getBasicSearchSettings((data) => {
+            props.dispatch(SearchActions.getBasicSearchSettings((data) => {
                 this.setState({
                     basicSearchSettings: Object.assign({}, data.Settings)
                 });
@@ -162,21 +162,21 @@ class BasicSearchSettingsPanelBody extends Component {
     onReindexContent(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.portalSearchReindex(props.portalId));
+            props.dispatch(SearchActions.portalSearchReindex(props.portalId));
         });
     }
 
     onReindexHostContent(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.hostSearchReindex());
+            props.dispatch(SearchActions.hostSearchReindex());
         });
     }
 
     onCompactIndex(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("CompactIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.compactSearchIndex());
+            props.dispatch(SearchActions.compactSearchIndex());
         });
     }
 
@@ -449,9 +449,9 @@ BasicSearchSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        basicSearchSettings: state.siteSettings.basicSearchSettings,
-        searchCustomAnalyzers: state.siteSettings.searchCustomAnalyzers,
-        basicSearchSettingsClientModified: state.siteSettings.basicSearchSettingsClientModified
+        basicSearchSettings: state.search.basicSearchSettings,
+        searchCustomAnalyzers: state.search.searchCustomAnalyzers,
+        basicSearchSettingsClientModified: state.search.basicSearchSettingsClientModified
     };
 }
 

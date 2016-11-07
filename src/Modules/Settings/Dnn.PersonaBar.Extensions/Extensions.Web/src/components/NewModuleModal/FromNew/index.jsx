@@ -6,6 +6,7 @@ import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Switch from "dnn-switch";
 import RadioButtons from "dnn-radio-buttons";
 import FolderDropdown from "../common/FolderDropdown";
+import { validationMapNewModule, valueMapNewModule } from "../common/helperFunctions";
 import Button from "dnn-button";
 import Localization from "localization";
 import styles from "./style.less";
@@ -21,26 +22,6 @@ function getValidateRequired(key) {
         default:
             return false;
     }
-}
-export function validationMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        let required = getValidateRequired(key);
-        _newModule[key] = {
-            value: _newModule[key],
-            required,
-            error: required ? !_newModule[key] : false
-        };
-    });
-    return _newModule;
-}
-
-export function valueMapNewModule(newModule) {
-    let _newModule = Object.assign({}, newModule);
-    Object.keys(_newModule).forEach((key) => {
-        _newModule[key] = _newModule[key].value;
-    });
-    return _newModule;
 }
 
 const emptyNewModule = {
@@ -58,7 +39,7 @@ class FromNew extends Component {
     constructor() {
         super();
         this.state = {
-            newModule: validationMapNewModule(emptyNewModule),
+            newModule: validationMapNewModule(emptyNewModule, getValidateRequired),
             triedToSave: false
         };
     }

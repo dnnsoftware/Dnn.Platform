@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
 using DotNetNuke.Common;

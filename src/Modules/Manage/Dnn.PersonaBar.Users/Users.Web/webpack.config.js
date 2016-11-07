@@ -27,6 +27,7 @@ module.exports = {
         extensions: ["", ".js", ".json", ".jsx"],
         root: [
             path.resolve('./src'),
+            path.resolve('./exportables'),  // Look in exportables after
             path.resolve('./node_modules')
         ]
     },

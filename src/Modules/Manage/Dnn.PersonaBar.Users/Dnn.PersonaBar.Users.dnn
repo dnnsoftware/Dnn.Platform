@@ -53,6 +53,7 @@
                     <menu>
                         <identifier>Users</identifier>
                         <moduleName>Users</moduleName>
+                        <controller>Dnn.PersonaBar.Users.Components.UsersMenuController, Dnn.PersonaBar.Users</controller>
                         <resourceKey>nav_Users</resourceKey>
                         <path>Users</path>
                         <mobileSupport>true</mobileSupport>

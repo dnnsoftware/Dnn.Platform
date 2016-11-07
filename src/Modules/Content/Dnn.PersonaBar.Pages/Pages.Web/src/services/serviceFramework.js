@@ -1,4 +1,4 @@
-const controller = "Pages";
+import utils from "../utils";
 
 function serializeQueryStringParameters(obj) {
     const s = [];
@@ -11,10 +11,10 @@ function serializeQueryStringParameters(obj) {
 }
 
 function getServiceFramework() {
-    const sf = window.dnn.initPages().utility.sf;
+    const sf = utils.getServiceFramework(); 
 
     sf.moduleRoot = "PersonaBar/Admin";
-    sf.controller = controller;
+    sf.controller = window.dnn.pages.apiController;
 
     return sf;
 }
@@ -24,6 +24,13 @@ const serviceFramework = {
         const sf = getServiceFramework();
         return new Promise((callback, errorCallback) => {
             sf.get(method + "?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
+        });
+    },
+
+    post(method, payload) {
+        const sf = getServiceFramework();
+        return new Promise((callback, errorCallback) => {
+            sf.post(method, payload, callback, errorCallback);
         });
     }
 };

@@ -14,7 +14,7 @@ class CustomSettings extends Component {
                 return !props.isAddMode && <EditAuthenticationSystem {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "SkinObject":
                 return !props.isAddMode && <SkinObject {...props} className={props.isAddMode ? "add-mode": ""} />;
-            case "Skin" && !props.isAddMode:
+            case "Skin":
             case "Container":
                 return !props.isAddMode && <Container {...props} className={props.isAddMode ? "add-mode": ""} />;
             case "ExtensionLanguagePack":

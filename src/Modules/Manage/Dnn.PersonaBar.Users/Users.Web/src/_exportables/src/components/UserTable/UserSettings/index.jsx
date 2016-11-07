@@ -30,14 +30,13 @@ class UserSettings extends Component {
                 userName: false,
                 email: false
             },
-            reload: false,
             ChangePasswordVisible: false
         };
     }
     componentWillMount() {
         let {props} = this;
         if (props.userDetails === undefined || props.userDetails.userId !== props.userId) {
-            this.getUserDetails(props);
+            this.getUserDetails(props, props.userId);
         }
         else
         {
@@ -49,14 +48,13 @@ class UserSettings extends Component {
             accountSettings.userId = userDetails.userId;
             this.setState({
                 accountSettings,
-                userDetails,
-                reload: false
+                userDetails
             });
         }
     }
     componentWillReceiveProps(newProps) {
-        if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId || this.state.reload) {
-            this.getUserDetails(newProps);
+        if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId) {
+            this.getUserDetails(newProps, newProps.userId);
         }
         else
         {
@@ -68,13 +66,12 @@ class UserSettings extends Component {
             accountSettings.userId = userDetails.userId;
             this.setState({
                 accountSettings,
-                userDetails,
-                reload: false
+                userDetails
             });
         }
     }
-    getUserDetails(props) {
-        props.dispatch(CommonUsersActions.getUserDetails({ userId: props.userId }, (data) => {
+    getUserDetails(props, userId) {
+        props.dispatch(CommonUsersActions.getUserDetails({ userId: userId }, (data) => {
             let userDetails = Object.assign({}, data);
             let {accountSettings} = this.state;
             accountSettings.displayName = userDetails.displayName;
@@ -83,8 +80,7 @@ class UserSettings extends Component {
             accountSettings.userId = userDetails.userId;
             this.setState({
                 accountSettings,
-                userDetails,
-                reload: false
+                userDetails
             });
         }));
     }
@@ -99,14 +95,12 @@ class UserSettings extends Component {
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.updateUserBasicInfo(this.state.accountSettings, (data) => {
                 if (data.Success) {
-                    utilities.notify(Localization.get("UserUpdated"));
-                    let {reload} = this.state;
-                    reload = true;
-                    this.setState({ reload });
+                    utilities.notify(Localization.get("UserUpdated"), 3000);
+                    this.getUserDetails(this.props, this.state.accountSettings.userId);
                     this.props.collapse();
                 }
                 else {
-                    utilities.notify(data.Message);
+                    utilities.notify(data.Message, 10000);
                 }
             }));
         }
@@ -148,22 +142,22 @@ class UserSettings extends Component {
     onForcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
             if (data.Success) {
-                utilities.notify(Localization.get("UserPasswordUpdateChanged"));
+                utilities.notify(Localization.get("UserPasswordUpdateChanged"), 3000);
                 let {userDetails} = this.state;
                 userDetails.needUpdatePassword = true;
                 this.setState({ userDetails });
             }
             else {
-                utilities.notify(data.Message);
+                utilities.notify(data.Message, 10000);
             }
         }));
     }
     onSendPasswordLink() {
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
             if (data.Success)
-                utilities.notify(Localization.get("PasswordSent"));
+                utilities.notify(Localization.get("PasswordSent"), 3000);
             else {
-                utilities.notify(data.Message);
+                utilities.notify(data.Message, 10000);
             }
         }));
     }

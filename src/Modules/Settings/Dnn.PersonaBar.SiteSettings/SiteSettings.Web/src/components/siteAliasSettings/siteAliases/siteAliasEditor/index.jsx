@@ -13,7 +13,7 @@ import InputGroup from "dnn-input-group";
 import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import {
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../../../actions";
 import util from "../../../../utils";
 import resx from "../../../../resources";
@@ -40,7 +40,7 @@ class SiteAliasEditor extends Component {
     componentWillMount() {
         const {props} = this;
         if (props.aliasId) {
-            props.dispatch(SiteSettingsActions.getSiteAlias(props.aliasId));
+            props.dispatch(SiteBehaviorActions.getSiteAlias(props.aliasId));
         }
     }
 
@@ -89,7 +89,7 @@ class SiteAliasEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SiteSettingsActions.siteAliasClientModified(aliasDetail));
+        props.dispatch(SiteBehaviorActions.siteAliasClientModified(aliasDetail));
     }
 
     getBrowserOptions() {
@@ -138,7 +138,7 @@ class SiteAliasEditor extends Component {
         props.onUpdate(state.aliasDetail);
     }
 
-    onSetPrimary(event) {
+    onChangePrimary(isPrimary, event) {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -147,7 +147,7 @@ class SiteAliasEditor extends Component {
             return;
         }
         let aliasDetail = Object.assign({}, state.aliasDetail);
-        aliasDetail["IsPrimary"] = true;
+        aliasDetail["IsPrimary"] = isPrimary;
         this.setState({
             aliasDetail: aliasDetail
         }, () => {
@@ -159,7 +159,7 @@ class SiteAliasEditor extends Component {
         const {props, state} = this;
         if (props.siteAliasClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteSettingsActions.cancelSiteAliasClientModified());
+                props.dispatch(SiteBehaviorActions.cancelSiteAliasClientModified());
                 props.Collapse();
             });
         }
@@ -232,10 +232,9 @@ class SiteAliasEditor extends Component {
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={this.state.aliasDetail.IsPrimary }
                             type="secondary"
-                            onClick={this.onSetPrimary.bind(this)}>
-                            {resx.get("SetPrimary")}
+                            onClick={this.onChangePrimary.bind(this, this.state.aliasDetail.IsPrimary ? false : true)}>
+                            {this.state.aliasDetail.IsPrimary ? resx.get("UnassignPrimary") :resx.get("SetPrimary")}
                         </Button>
                         <Button
                             type="primary"
@@ -265,11 +264,11 @@ SiteAliasEditor.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        aliasDetail: state.siteSettings.aliasDetail,
-        browsers: state.siteSettings.browsers,
-        languages: state.siteSettings.languages,
-        skins: state.siteSettings.skins,
-        siteAliasClientModified: state.siteSettings.siteAliasClientModified
+        aliasDetail: state.siteBehavior.aliasDetail,
+        browsers: state.siteBehavior.browsers,
+        languages: state.siteBehavior.languages,
+        skins: state.siteBehavior.skins,
+        siteAliasClientModified: state.siteBehavior.siteAliasClientModified
     };
 }
 

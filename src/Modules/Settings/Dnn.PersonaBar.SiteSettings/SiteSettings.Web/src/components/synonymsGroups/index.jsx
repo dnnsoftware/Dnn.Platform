@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    search as SearchActions
 } from "../../actions";
 import SynonymsGroupRow from "./synonymsGroupRow";
 import SynonymsGroupEditor from "./synonymsGroupEditor";
@@ -36,7 +36,7 @@ class SynonymsGroupsPanel extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getSynonymsGroups(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
+        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
             this.setState({
                 synonymsGroups: Object.assign({}, data.SynonymsGroups)
             });
@@ -99,7 +99,7 @@ class SynonymsGroupsPanel extends Component {
                 }
             });
 
-            props.dispatch(SiteSettingsActions.updateSynonymsGroup(group, groups, (data) => {
+            props.dispatch(SearchActions.updateSynonymsGroup(group, groups, (data) => {
                 util.utilities.notify(resx.get("SynonymsGroupUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -108,7 +108,7 @@ class SynonymsGroupsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SiteSettingsActions.addSynonymsGroup(group, props.synonymsGroups, (data) => {
+            props.dispatch(SearchActions.addSynonymsGroup(group, props.synonymsGroups, (data) => {
                 util.utilities.notify(resx.get("SynonymsGroupCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -122,7 +122,7 @@ class SynonymsGroupsPanel extends Component {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SynonymsGroupDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.synonymsGroups.filter((item) => item.SynonymsGroupId !== group.SynonymsGroupId);
-            props.dispatch(SiteSettingsActions.deleteSynonymsGroup(group, itemList, () => {
+            props.dispatch(SearchActions.deleteSynonymsGroup(group, itemList, () => {
                 util.utilities.notify(resx.get("SynonymsGroupDeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -212,7 +212,7 @@ SynonymsGroupsPanel.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        synonymsGroups: state.siteSettings.synonymsGroups,        
+        synonymsGroups: state.search.synonymsGroups,        
         tabIndex: state.pagination.tabIndex
     };
 }

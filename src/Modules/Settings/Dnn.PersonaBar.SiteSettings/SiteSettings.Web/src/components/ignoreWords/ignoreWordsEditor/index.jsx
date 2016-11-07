@@ -9,7 +9,7 @@ import Tags from "dnn-tags";
 import InputGroup from "dnn-input-group";
 import Input from "dnn-single-line-input";
 import {
-    siteSettings as SiteSettingsActions
+    search as SearchActions
 } from "../../../actions";
 import util from "../../../utils";
 import resx from "../../../resources";
@@ -77,7 +77,7 @@ class IgnoreWordsEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SiteSettingsActions.ignoreWordsClientModified(words));
+        props.dispatch(SearchActions.ignoreWordsClientModified(words));
     }
 
     onSave(event) {
@@ -96,7 +96,7 @@ class IgnoreWordsEditor extends Component {
         const {props, state} = this;
         if (props.ignoreWordsClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteSettingsActions.cancelIgnoreWordsClientModified());
+                props.dispatch(SearchActions.cancelIgnoreWordsClientModified());
                 props.Collapse();
             });
         }
@@ -150,7 +150,7 @@ IgnoreWordsEditor.propTypes = {
 
 function mapStateToProps(state) {
     return {              
-        ignoreWordsClientModified: state.siteSettings.ignoreWordsClientModified
+        ignoreWordsClientModified: state.search.ignoreWordsClientModified
     };
 }
 

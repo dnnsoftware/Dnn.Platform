@@ -9,16 +9,13 @@ import Localization from "localization";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class ExtensionLanguagePack extends Component {
     onSelect(key, option) {
         this.props.onChange(key, option.value);
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editExtensionLanguagePack + (props.className ? " " + props.className : "")}>
@@ -30,6 +27,7 @@ class ExtensionLanguagePack extends Component {
                         })}
                         value={extensionBeingEdited.languageId.value}
                         onSelect={this.onSelect.bind(this, "languageId")}
+                        enabled={!props.disabled}
                         tooltipMessage={Localization.get("EditExtensionLanguagePack_Language.HelpText")}
                         style={Object.assign({ marginBottom: 32 }, inputStyle)} />
                     <DropdownWithError
@@ -38,6 +36,7 @@ class ExtensionLanguagePack extends Component {
                             return { label: _package.name, value: _package.id };
                         })}
                         value={extensionBeingEdited.dependentPackageId.value}
+                        enabled={!props.disabled}
                         onSelect={this.onSelect.bind(this, "dependentPackageId")}
                         tooltipMessage={Localization.get("EditExtensionLanguagePack_Package.HelpText")}
                         style={inputStyle} />
@@ -45,9 +44,9 @@ class ExtensionLanguagePack extends Component {
 
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this, true)}>Save & Close</Button>
-                        <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
+                        {!props.disabled && <Button type="primary">{props.primaryButtonText}</Button>}
                     </GridCell>
                 }
             </GridCell>

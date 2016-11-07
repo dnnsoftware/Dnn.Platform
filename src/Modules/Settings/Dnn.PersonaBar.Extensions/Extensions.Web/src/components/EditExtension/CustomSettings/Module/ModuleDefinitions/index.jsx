@@ -51,7 +51,7 @@ class ModuleDefinitions extends Component {
     confirmAction(callback) {
         const { props } = this;
         if (props.formIsDirty) {
-            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+            utilities.utilities.confirm(Localization.get("UnsavedChanges.HelpText"), Localization.get("UnsavedChanges.Confirm"), Localization.get("UnsavedChanges.Cancel"), () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setFormDirt(false));
                 if (props.controlFormIsDirty) {
@@ -147,7 +147,6 @@ class ModuleDefinitions extends Component {
         let actions = { savedefinition: JSON.stringify(state.moduleDefinitionBeingEdited) };
 
         props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex, () => {
-            utils.utilities.notify(Localization.get("UpdateComplete"));
             props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
                 this.exitEditMode();
             }));
@@ -160,7 +159,6 @@ class ModuleDefinitions extends Component {
         let actions = { savedefinition: JSON.stringify(state.moduleDefinitionBeingEdited) };
 
         props.dispatch(ExtensionActions.updateExtension(extensionBeingUpdated, actions, props.extensionBeingEditedIndex, () => {
-            utils.utilities.notify(Localization.get("UpdateComplete"));
             props.dispatch(ModuleDefinitionActions.setFormDirt(false, () => {
                 this.exitEditMode();
             }));

@@ -125,15 +125,15 @@ class Module extends Component {
                             tooltipMessage={Localization.get("EditModule_ModuleSharing.HelpText")}
                             options={[
                                 {
-                                    label: "Unknown",
+                                    label: Localization.get("EditModule_ModuleSharingUnknown.Label"),
                                     value: 0
                                 },
                                 {
-                                    label: "Unsupported",
+                                    label: Localization.get("EditModule_ModuleSharingUnsupported.Label"),
                                     value: 1
                                 },
                                 {
-                                    label: "Supported",
+                                    label: Localization.get("EditModule_ModuleSharingSupported.Label"),
                                     value: 2
                                 }
                             ]}
@@ -208,7 +208,7 @@ class Module extends Component {
                 <GridCell><hr /></GridCell>
                 {!props.isAddMode &&
                     <GridCell className="premium-module">
-                        <h3 className="box-title">Premium Module Assignment</h3>
+                        <h3 className="box-title">{Localization.get("EditModule_PremiumModuleAssignment.Header")}</h3>
                         <Switch value={extensionBeingEdited.premiumModule.value}
                             label={Localization.get("EditModule_IsPremiumModule.Label")}
                             onChange={props.onChange.bind(this, "premiumModule")}
@@ -231,9 +231,9 @@ class Module extends Component {
                 }
                 {!props.actionButtonsDisabled &&
                     <GridCell columnSize={100} className="modal-footer">
-                        <Button type="secondary" onClick={props.onCancel.bind(this)}>Cancel</Button>
-                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this, true)}>Save & Close</Button>
-                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>Save</Button>
+                        <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
+                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>
+                        <Button type="primary" disabled={props.formIsDirty || props.controlFormIsDirty} onClick={props.onSave.bind(this)}>{Localization.get("Save.Button")}</Button>
                     </GridCell>
                 }
             </GridCell>

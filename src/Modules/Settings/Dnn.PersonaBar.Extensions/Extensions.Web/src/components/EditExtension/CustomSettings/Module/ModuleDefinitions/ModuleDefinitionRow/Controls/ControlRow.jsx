@@ -25,7 +25,7 @@ class ControlRow extends Component {
         return (
             <GridCell className="module-control-row">
                 <GridCell columnSize={15} className="module-control-title">
-                    {props.moduleControl.title + "-" + props.moduleControl.id}
+                    {props.moduleControl.title}
                 </GridCell>
                 <GridCell columnSize={70} className="module-control-source">
                     {props.moduleControl.source}

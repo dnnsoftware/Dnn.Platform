@@ -84,6 +84,27 @@ class EditExtension extends Component {
         props.dispatch(ExtensionActions.updateExtensionBeingEdited(extensionBeingEdited, callback));
     }
 
+    getAuthSystemCustomSettings(extension) {
+        let payload = {
+            loginControlSource: extension.loginControlSource.value,
+            logoffControlSource: extension.logoffControlSource.value,
+            enabled: extension.enabled.value,
+            settingsControlSource: extension.settingsControlSource.value,
+            authenticationType: extension.authenticationType.value,
+            appId: extension.appId.value,
+            appSecret: extension.appSecret.value,
+            appEnabled: extension.appEnabled.value
+        };
+
+        if (extension.name.value === "DNNPro_ActiveDirectoryAuthentication") {
+            delete payload.appId;
+            delete payload.appSecret;
+            delete payload.appEnabled;
+        }
+
+        return payload;
+    }
+
     parseEditorActions(extension) {
         switch (extension.packageType.value.toLowerCase()) {
             case "module":
@@ -99,13 +120,7 @@ class EditExtension extends Component {
                     businessController: extension.businessController.value
                 };
             case "auth_system":
-                return {
-                    loginControlSource: extension.loginControlSource.value,
-                    logoffControlSource: extension.logoffControlSource.value,
-                    enabled: extension.enabled.value,
-                    settingsControlSource: extension.settingsControlSource.value,
-                    authenticationType: extension.authenticationType.value
-                };
+                return this.getAuthSystemCustomSettings(extension);
             case "javascript_library":
                 return {
                     customCdn: extension.customCdn.value
@@ -139,11 +154,12 @@ class EditExtension extends Component {
         const {props} = this;
 
         let editorActions = this.parseEditorActions(props.extensionBeingEdited);
-        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex));
-        if (close) {
-            this.selectPanel(0);
-            props.dispatch(ExtensionActions.selectEditingTab(0));
-        }
+        props.dispatch(ExtensionActions.updateExtension(props.extensionBeingEdited, editorActions, props.extensionBeingEditedIndex, () => {
+            if (close) {
+                this.selectPanel(0);
+                props.dispatch(ExtensionActions.selectEditingTab(0));
+            }
+        }));
     }
 
     toggleTriedToSave() {
@@ -206,7 +222,7 @@ class EditExtension extends Component {
         const tabHeaders = this._getTabHeaders();
         return tabHeaders.map((tabHeader, index) => {
             const hasError = props.tabsWithError.indexOf(index) > -1;
-            return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={["This field has an error"]} /></span>;
+            return <span>{tabHeader} <Tooltip type="error" rendered={hasError} messages={[Localization.get("EditExtensions_TabHasError")]} /></span>;
         });
     }
 
@@ -222,7 +238,7 @@ class EditExtension extends Component {
         const { props } = this;
         if (props.moduleDefinitionFormIsDirty) {
             this.setState({});
-            utilities.utilities.confirm("You have unsaved changes. Are you sure you want to proceed?", "Yes", "No", () => {
+            utilities.utilities.confirm(Localization.get("UnsavedChanges.HelpText"), Localization.get("UnsavedChanges.Confirm"), Localization.get("UnsavedChanges.Cancel"), () => {
                 callback();
                 props.dispatch(ModuleDefinitionActions.setFormDirt(false));
             });
@@ -298,15 +314,16 @@ class EditExtension extends Component {
                     onCancel={this.onCancel.bind(this)}
                     validateFields={this.validateFields.bind(this)}
                     onChange={this.onChange.bind(this)}
+                    disabled={!this.isHost}
                     updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)}
                     triedToSave={props.triedToSave}
                     toggleTriedToSave={this.toggleTriedToSave.bind(this)}
-                    primaryButtonText="Save" />
+                    primaryButtonText={Localization.get("Save.Button")} />
             </GridCell>,
             <GridCell className="extension-form">
                 <CustomSettings
                     type={extensionBeingEdited.packageType.value}
-                    primaryButtonText="Save"
+                    primaryButtonText={Localization.get("Save.Button")}
                     onChange={this.onChange.bind(this)}
                     onCancel={this.onCancel.bind(this)}
                     onSave={this.onSave.bind(this)}
@@ -316,21 +333,25 @@ class EditExtension extends Component {
             <GridCell>
                 <EditSettings
                     type={extensionBeingEdited.packageType.value}
+                    onChange={this.onChange.bind(this)}
                     onCancel={this.onCancel.bind(this)}
+                    onSave={this.onSave.bind(this)}
                     extensionBeingEdited={extensionBeingEdited}
                     updateExtensionBeingEdited={this.updateExtensionBeingEdited.bind(this)} />
             </GridCell>,
             <License value={extensionBeingEdited.license.value}
                 onChange={this.onChange.bind(this)}
+                disabled={!this.isHost}
                 onCancel={this.onCancel.bind(this)}
                 onSave={this.onSave.bind(this)}
-                primaryButtonText="Save" />,
+                primaryButtonText={Localization.get("Save.Button")} />,
             <ReleaseNotes
                 value={extensionBeingEdited.releaseNotes.value}
                 onChange={this.onChange.bind(this)}
                 onCancel={this.onCancel.bind(this)}
+                disabled={!this.isHost}
                 onSave={this.onSave.bind(this)}
-                primaryButtonText="Save" />
+                primaryButtonText={Localization.get("Save.Button")} />
         ];
         let siteSettingIndex = 2;
         if (!this.isHost || !this.getExtensionSettingTabVisible(extensionBeingEdited.packageType.value)) {

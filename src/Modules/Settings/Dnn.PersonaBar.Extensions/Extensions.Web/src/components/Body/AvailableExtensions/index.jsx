@@ -10,13 +10,6 @@ import GridCell from "dnn-grid-cell";
 import ExtensionList from "./ExtensionList";
 import DropdownWithError from "dnn-dropdown-with-error";
 import "./style.less";
-function camelize(str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
-        if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
-        return index == 0 ? match.toLowerCase() : match.toUpperCase();
-    });
-}
-
 class AvailableExtensions extends Component {
     constructor() {
         super();
@@ -29,7 +22,6 @@ class AvailableExtensions extends Component {
         return !props.availablePackages || props.availablePackages.length === 0;
     }
     componentWillMount() {
-        // console.log(props);
         const { props } = this;
         if (!this.checkIfAvailablePackageTypesEmpty(props) && this.checkIfAvailablePackagesEmpty(props) && props.selectedAvailablePackageType === "") {
             props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackageTypes[0].Type));
@@ -51,14 +43,6 @@ class AvailableExtensions extends Component {
         const {props} = this;
         props.dispatch(ExtensionActions.getAvailablePackages(option.value));
     }
-    onDownload(type, name, event) {
-        if (event) {
-            event.preventDefault();
-        }
-        const {props} = this;
-        props.dispatch(ExtensionActions.downloadPackage(props.selectedAvailablePackageType, name));
-    }
-
 
     onInstall(name, event) {
         if (event) {
@@ -92,7 +76,6 @@ class AvailableExtensions extends Component {
                 {(props.availablePackages && props.availablePackages.length > 0) &&
                     <ExtensionList
                         packages={props.availablePackages}
-                        onDownload={this.onDownload.bind(this)}
                         type={props.selectedAvailablePackageType}
                         onInstall={this.onInstall.bind(this)} />
                 }

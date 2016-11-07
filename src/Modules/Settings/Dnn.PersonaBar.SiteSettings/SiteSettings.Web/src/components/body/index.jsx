@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    pagination as PaginationActions
 } from "../../actions";
 import BasicSettings from "../basicSettings";
 import DefaultPagesSettings from "../defaultPagesSettings";
@@ -11,6 +10,7 @@ import MessagingSettings from "../messagingSettings";
 import ProfileSettings from "../profileSettings";
 import SiteAliasSettings from "../siteAliasSettings";
 import BasicSearchSettings from "../basicSearchSettings";
+import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
 import Tooltip from "dnn-tooltip";
@@ -76,7 +76,7 @@ export class Body extends Component {
                     type="primary">
                     <BasicSettings portalId={this.props.portalId} />
                     {this.renderSiteBehaviorTab()}
-                    <div />
+                    <LanguageSettings portalId={this.props.portalId} openLanguageVerifier={this.props.openLanguageVerifier.bind(this)} />
                     <Tabs onSelect={this.handleSelect.bind(this)}
                         tabHeaders={[resx.get("TabBasicSettings"),
                         resx.get("TabSynonyms"),
@@ -96,7 +96,8 @@ Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     portalId: PropTypes.number,
-    openHtmlEditorManager: PropTypes.func
+    openHtmlEditorManager: PropTypes.func,
+    openLanguageVerifier: PropTypes.func
 };
 
 function mapStateToProps(state) {

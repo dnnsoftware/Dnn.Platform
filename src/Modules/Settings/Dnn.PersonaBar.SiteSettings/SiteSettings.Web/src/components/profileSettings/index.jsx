@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     pagination as PaginationActions,
-    siteSettings as SiteSettingsActions
+    siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import ProfileProperties from "./profileProperties";
 import InputGroup from "dnn-input-group";
@@ -35,7 +35,7 @@ class ProfileSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteSettingsActions.getProfileSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getProfileSettings(props.portalId, (data) => {
             this.setState({
                 profileSettings: Object.assign({}, data.Settings)
             });
@@ -74,14 +74,14 @@ class ProfileSettingsPanelBody extends Component {
             profileSettings: profileSettings
         });
 
-        props.dispatch(SiteSettingsActions.profileSettingsClientModified(profileSettings));
+        props.dispatch(SiteBehaviorActions.profileSettingsClientModified(profileSettings));
     }
 
     onUpdate(event) {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteSettingsActions.updateProfileSettings(state.profileSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateProfileSettings(state.profileSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -91,7 +91,7 @@ class ProfileSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteSettingsActions.getProfileSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getProfileSettings(props.portalId, (data) => {
                 let profileSettings = Object.assign({}, data.Settings);
                 this.setState({
                     profileSettings
@@ -200,9 +200,9 @@ ProfileSettingsPanelBody.propTypes = {
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
-        profileSettings: state.siteSettings.profileSettings,
-        userVisibilityOptions: state.siteSettings.userVisibilityOptions,
-        profileSettingsClientModified: state.siteSettings.profileSettingsClientModified
+        profileSettings: state.siteBehavior.profileSettings,
+        userVisibilityOptions: state.siteBehavior.userVisibilityOptions,
+        profileSettingsClientModified: state.siteBehavior.profileSettingsClientModified
     };
 }
 

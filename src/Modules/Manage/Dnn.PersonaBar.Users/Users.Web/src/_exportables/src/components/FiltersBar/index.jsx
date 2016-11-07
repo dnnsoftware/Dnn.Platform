@@ -24,7 +24,8 @@ class FiltersBar extends Component {
             selectedUserFilter.label = label;
             selectedUserFilter.value = value;
             this.setState({
-                selectedUserFilter
+                selectedUserFilter,
+                searchText: ""
             }, () => { this.props.onChange(option, this.state.searchText); });
         }
     }
