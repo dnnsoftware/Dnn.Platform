@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, ArrowDownIcon } from "dnn-svg-icons";
 
 class LanguageVerifierRow extends Component {
     componentWillMount() {
@@ -14,7 +14,7 @@ class LanguageVerifierRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            this.props.Collapse();
         }
         else {
             this.props.OpenCollapse(this.props.id);
@@ -29,9 +29,10 @@ class LanguageVerifierRow extends Component {
             <div className={"collapsible-component-verifier"}>
                 <div className={"collapsible-header-verifier " + !opened} >
                     <div className={"row"}>
-                        <div className="verifier-item item-row-name" onClick={this.toggle.bind(this)}>
+                        <div className="verifier-item item-row-name">
                             {props.text}
-                        </div>                        
+                        </div>     
+                        <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggle.bind(this)} />                    
                     </div>
                 </div>
                 <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
