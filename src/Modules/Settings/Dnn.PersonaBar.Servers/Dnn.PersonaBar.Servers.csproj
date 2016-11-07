@@ -113,14 +113,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateCachingSettingsRequest.cs" />
-    <Compile Include="Services\Dto\UpdateWebRequestAdapterRequest.cs" />
-    <Compile Include="Services\Dto\DeleteCacheItemRequest.cs" />
-    <Compile Include="Services\Dto\DeleteWebServerRequest.cs" />
     <Compile Include="Services\Dto\SendTestEmailRequest.cs" />
     <Compile Include="Services\Dto\UpdatePerfSettingsRequest.cs" />
-    <Compile Include="Services\Dto\UpdateProxySettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
-    <Compile Include="Services\Dto\UpdateWebServerSettingsRequest.cs" />
     <Compile Include="Services\ServerController.cs" />
     <Compile Include="Services\ServerSettingsLogsController.cs" />
     <Compile Include="Services\ServerSettingsPerformanceController.cs" />
