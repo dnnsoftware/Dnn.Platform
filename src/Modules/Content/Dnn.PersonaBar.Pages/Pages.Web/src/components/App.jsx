@@ -12,8 +12,20 @@ import PageSettings from "./PageSettings/PageSettings";
 import Localization from "../localization";
 import PageList from "./PageList/PageList";
 import Button from "dnn-button";
+import utils from "../utils";
 
 class App extends Component {
+
+    componentWillReceiveProps(newProps) {
+        this.notifyErrorIfNeeded(newProps);
+    }
+
+    notifyErrorIfNeeded(newProps) {
+        if (newProps.error !== this.props.error) {
+            const errorMessage = (newProps.error && newProps.error.message) || Localization.get("AnErrorOccurred");
+            utils.notifyError(errorMessage);
+        }
+    }
 
     onPageSettings(pageId) {
         const {props} = this;
@@ -94,7 +106,8 @@ App.propTypes = {
     onChangePageType: PropTypes.func,
     onPermissionsChanged: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
-    onToggleEditPageModule: PropTypes.func.isRequired
+    onToggleEditPageModule: PropTypes.func.isRequired,
+    error: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -102,7 +115,8 @@ function mapStateToProps(state) {
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
-        editingSettingModuleId: state.pages.editingSettingModuleId
+        editingSettingModuleId: state.pages.editingSettingModuleId,
+        error: state.errors.error
     };
 }
 

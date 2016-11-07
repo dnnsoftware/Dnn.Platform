@@ -19,18 +19,35 @@ function getServiceFramework() {
     return sf;
 }
 
+function getErrorMessageFromXHRError(error) {
+    if (error && 
+        error.responseJSON && 
+        error.responseJSON.Message) {
+        return {
+            message: error.responseJSON.Message
+        };
+    }
+    return {
+        message: null
+    };
+}
+
 const serviceFramework = {
     get(method, searchParameters) {
         const sf = getServiceFramework();
         return new Promise((callback, errorCallback) => {
-            sf.get(method + "?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
+            sf.get(method + "?" + serializeQueryStringParameters(searchParameters), {}, callback, function onError(error) {
+                errorCallback(getErrorMessageFromXHRError(error));
+            });
         });
     },
 
     post(method, payload) {
         const sf = getServiceFramework();
         return new Promise((callback, errorCallback) => {
-            sf.post(method, payload, callback, errorCallback);
+            sf.post(method, payload, callback, function onError(error) {
+                errorCallback(getErrorMessageFromXHRError(error));
+            });
         });
     }
 };
