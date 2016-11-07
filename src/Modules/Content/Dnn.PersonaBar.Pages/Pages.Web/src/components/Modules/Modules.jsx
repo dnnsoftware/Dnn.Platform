@@ -21,6 +21,12 @@ class Modules extends Component {
     getModules() {
         const {modules, absolutePageUrl, onToggleEditModule, editingSettingModuleId} = this.props;
 
+        if (modules.length === 0) {
+            return <GridCell className="no-modules" columnSize={100} >
+                        {Localization.get("NoModules")}
+                    </GridCell>;
+        }
+
         return modules.map((module, index) => {
             const isEditingModule = module.id === editingSettingModuleId;
             return (
