@@ -8,7 +8,7 @@ import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
 import RadioButtons from "dnn-radio-buttons";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import localization from "../../localization";
+import Localization from "../../localization";
 import {pageActions as PageActions} from "../../actions";
 import styles from "./style.less";
 
@@ -35,21 +35,23 @@ class More extends Component {
     render() {
         const {page, onChangeField, cacheProviderList} = this.props;
         const cacheProviderOptions = cacheProviderList && 
-            [{value: null, label:localization.get("None")},
+            [{value: null, label:Localization.get("None")},
                  ...cacheProviderList.map(x => ({value: x, label: x}))];
-        const includeExcludeOptions = [{ value: true, label: "Include" }, { value: false, label: "Exclude" }];
+        const includeExcludeOptions = [
+            { value: true, label: Localization.get("Include") }, 
+            { value: false, label: Localization.get("Exclude") }];
 
         return (
             <div className={styles.moreContainer}>
                 <div className="title">
-                    {localization.get("Security")}
+                    {Localization.get("Security")}
                 </div>
                 <GridSystem>
                     <GridCell className="left-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("secure_connection_tooltip")}
-                            label={localization.get("Secure Connection")}
+                            tooltipMessage={Localization.get("SecureConnection_tooltip")}
+                            label={Localization.get("SecureConnection")}
                             />
                         <Switch
                             labelHidden={true}
@@ -59,8 +61,8 @@ class More extends Component {
                     <GridCell className="right-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("allow_indexing_tooltip")}
-                            label={localization.get("Allow Indexing")}
+                            tooltipMessage={Localization.get("AllowIndexing_tooltip")}
+                            label={Localization.get("AllowIndexing")}
                             />
                         <Switch
                             labelHidden={true}
@@ -70,15 +72,15 @@ class More extends Component {
                 </GridSystem>
 
                 <div className="title sectionTitle">
-                    {localization.get("Cache settings")}
+                    {Localization.get("CacheSettings")}
                 </div>
 
                 <GridSystem>
                     <GridCell className="left-column">
                         <Label
                             labelType="block"
-                            tooltipMessage={localization.get("output_cache_provider_tooltip")}
-                            label={localization.get("Output Cache Provider")}
+                            tooltipMessage={Localization.get("OutputCacheProvider_tooltip")}
+                            label={Localization.get("OutputCacheProvider")}
                             />
                         {cacheProviderOptions && 
                             <Dropdown options={cacheProviderOptions}
@@ -88,8 +90,8 @@ class More extends Component {
 
                         {page.cacheProvider &&        
                             <SingleLineInputWithError
-                                label={localization.get("Cache Duration (seconds)")}
-                                tooltipMessage={localization.get("cache_duration_tooltip")} 
+                                label={Localization.get("CacheDuration")}
+                                tooltipMessage={Localization.get("CacheDuration_tooltip")} 
                                 value={page.cacheDuration}
                                 onChange={this.onChangeField.bind(this, "cacheDuration")} />}
                     </GridCell>
@@ -98,8 +100,8 @@ class More extends Component {
                         <GridCell className="right-column">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={localization.get("include_exclude_params_by_default_tooltip")}
-                                label={localization.get("Include / Exclude Params by default")}/>
+                                tooltipMessage={Localization.get("IncludeExcludeParams_tooltip")}
+                                label={Localization.get("IncludeExcludeParams")}/>
                             <RadioButtons 
                                 options={includeExcludeOptions} 
                                 value={page.cacheIncludeExclude}
@@ -107,19 +109,19 @@ class More extends Component {
 
                             {!page.cacheIncludeExclude &&
                                 <SingleLineInputWithError
-                                    label={localization.get("Include Params In Cache validation")}
-                                    tooltipMessage={localization.get("include_params_in_cache_validation_tooltip")} 
+                                    label={Localization.get("IncludeParamsInCacheValidation")}
+                                    tooltipMessage={Localization.get("IncludeParamsInCacheValidation_tooltip")} 
                                     value={page.cacheIncludeVaryBy} />}
 
                             {page.cacheIncludeExclude &&
                                 <SingleLineInputWithError
-                                    label={localization.get("Exclude Params In Cache validation")}
-                                    tooltipMessage={localization.get("exclude_params_in_cache_validation_tooltip")} 
+                                    label={Localization.get("ExcludeParamsInCacheValidation")}
+                                    tooltipMessage={Localization.get("ExcludeParamsInCacheValidation_tooltip")} 
                                     value={page.cacheExcludeVaryBy} /> }
 
                             <SingleLineInputWithError                                 
-                                label={localization.get("Vary By Limit")}
-                                tooltipMessage={localization.get("vary_by_limit_tooltip")}
+                                label={Localization.get("VaryByLimit")}
+                                tooltipMessage={Localization.get("VaryByLimit_tooltip")}
                                 value={page.cacheMaxVaryByCount} />
                             
                         </GridCell>       
