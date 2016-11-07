@@ -6,7 +6,8 @@ export default function installation(state = {
     installationLogs: [],
     availablePackage: {},
     licenseAccepted: false,
-    installingAvailablePackage: false
+    installingAvailablePackage: false,
+    viewingLog: false
 }, action) {
     switch (action.type) {
         case ActionTypes.PARSED_INSTALLATION_PACKAGE:
@@ -46,6 +47,10 @@ export default function installation(state = {
         case ActionTypes.TOGGLE_ACCEPT_LICENSE:
             return { ...state,
                 licenseAccepted: action.payload
+            };
+        case ActionTypes.TOGGLE_VIEWING_LOG:
+            return { ...state,
+                viewingLog: action.payload
             };
         default:
             return state;

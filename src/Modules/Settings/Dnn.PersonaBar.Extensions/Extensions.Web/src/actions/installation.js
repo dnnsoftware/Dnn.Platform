@@ -101,6 +101,17 @@ const installationActions = {
                 callback();
             }
         };
+    },
+    setViewingLog(value, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.TOGGLE_VIEWING_LOG,
+                payload: value
+            });
+            if (callback) {
+                callback();
+            }
+        };
     }
 };
 

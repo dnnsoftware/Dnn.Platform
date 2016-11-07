@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import UploadBar from "./UploadBar";
 import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
+import LogDisplay from "./LogDisplay";
 import "./style.less";
 
 export default class FileUpload extends Component {
@@ -20,7 +21,8 @@ export default class FileUpload extends Component {
             uploading: false,
             uploadComplete: false,
 
-            errorText: ""
+            errorText: "",
+            errorInPackage: false
         };
     }
 
@@ -51,19 +53,26 @@ export default class FileUpload extends Component {
         this.uploadFile(e.target.files[0]);
     }
 
+    getErrorCount(_package){
+        let count = 0;
+        _package.forEach(key => {
+            if(key.Type === "Failure"){
+                count++;
+            }
+        });
+        return count;
+    }
+
     handleError(error) {
-        const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed");
+        const errorCount = this.getErrorCount(this.props.parsedInstallationPackage.logs);
+        const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
         const { props } = this;
-        props.cancelInstall(true);
-        this.setState({ uploading: true, errorText }, () => {
-            setTimeout(() => {
-                this.setState({ uploading: false, errorText: "" });
-            }, 2000);
+        this.setState({ uploading: true, errorText, errorInPackage : true }, () => {
         });
     }
 
     uploadFile(file) {
-        this.setState({ fileName: file.name });
+        this.setState({ fileName: file.name, errorInPackage: false });
         this.postFile(file);
     }
 
@@ -75,9 +84,12 @@ export default class FileUpload extends Component {
     }
 
     cancelRepair() {
+        this.props.clearParsedInstallationPackage();
         this.setState({
             alreadyInstalled: false,
-            uploading: false
+            uploading: false,
+            errorInPackage: false,
+            errorText: ""
         });
     }
 
@@ -97,6 +109,10 @@ export default class FileUpload extends Component {
                 }
             });
         }, 1000);
+    }
+
+    onViewLog() {
+        this.props.toggleViewLog(true);
     }
 
     onDragOver() {
@@ -120,9 +136,9 @@ export default class FileUpload extends Component {
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
 
         /* eslint-disable react/no-danger */
-        return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.state.alreadyInstalled ? " already-installed" : "")}>
+        return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.state.alreadyInstalled ? " already-installed" : "") + (this.props.viewingLog ? " viewing-log" : "")}>
 
-            {(!this.state.uploading || this.state.uploadComplete) && <div className="dropzone-container">
+            {((!this.state.uploading || this.state.uploadComplete) && !this.props.viewingLog) && <div className="dropzone-container">
                 <div
                     id="dropzoneId"
                     className={className}
@@ -142,11 +158,18 @@ export default class FileUpload extends Component {
                 </div>
             </div>
             }
-            {this.state.uploading &&
+            {this.props.viewingLog &&
+                <LogDisplay logs={this.props.parsedInstallationPackage.logs} />}
+            {(this.state.uploading && !this.props.viewingLog) &&
                 <UploadBar
                     uploadComplete={this.state.uploadComplete}
                     errorText={this.state.errorText}
+                    errorInPackage={this.state.errorInPackage}
                     fileName={this.state.fileName}
+                    onViewLog={this.onViewLog.bind(this)}
+                    onTryAgain={this.cancelRepair.bind(this)}
+                    viewLogText={Localization.get("ViewErrorLog")}
+                    tryAgainText={Localization.get("TryAgain")}
                     uploadCompleteText={Localization.get("InstallExtension_UploadComplete")}
                     uploadingText={Localization.get("InstallExtension_Uploading")}
                     />
@@ -165,8 +188,10 @@ export default class FileUpload extends Component {
 
 FileUpload.propTypes = {
     cancelInstall: PropTypes.func,
-
-
+    parsedInstallationPackage: PropTypes.object,
+    viewingLog: PropTypes.bool,
+    toggleViewLog: PropTypes.func,
+    clearParsedInstallationPackage: PropTypes.func,
     //---OPTIONAL PROPS---
     buttons: PropTypes.array
 };

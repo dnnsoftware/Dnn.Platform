@@ -538,7 +538,7 @@
     <value>Upload Complete</value>
   </data>
   <data name="InstallExtension_UploadFailed.Text" xml:space="preserve">
-    <value>Upload Failed</value>
+    <value>Zip File Upload Failed with </value>
   </data>
   <data name="InstallExtension_Uploading.Text" xml:space="preserve">
     <value>Uploading</value>
@@ -1130,5 +1130,14 @@
   </data>
   <data name="Previous.Button" xml:space="preserve">
     <value>Previous</value>
+  </data>
+  <data name="Errors.Text" xml:space="preserve">
+    <value>errors</value>
+  </data>
+  <data name="TryAgain.Text" xml:space="preserve">
+    <value>[Try Again]</value>
+  </data>
+  <data name="ViewErrorLog.Text" xml:space="preserve">
+    <value>[View Error Log]</value>
   </data>
 </root>

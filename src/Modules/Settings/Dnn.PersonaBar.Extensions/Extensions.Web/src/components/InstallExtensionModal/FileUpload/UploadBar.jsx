@@ -55,6 +55,12 @@ export default class UploadBar extends Component {
                 <div className="upload-file-name">{this.props.fileName || "myImage.jpg"}</div>
                 <div className="upload-icon" dangerouslySetInnerHTML={{ __html: svg }} />
                 <h4>{text}</h4>
+                {props.errorInPackage &&
+                    <p className="view-log-or-try-again">
+                        <span onClick={props.onViewLog.bind(this)}>{props.viewLogText} </span>
+                        or
+                        <span onClick={props.onTryAgain.bind(this)}>{props.tryAgainText}</span>
+                    </p>}
                 <div className="upload-percent">{percent + "%"}</div>
                 <div className="upload-bar-box">
                     <div className="upload-bar" style={{ width: percent + "%" }} />
@@ -69,7 +75,8 @@ UploadBar.propTypes = {
     fileName: PropTypes.string.isRequired,
     uploadComplete: PropTypes.bool.isRequired,
     uploadCompleteText: PropTypes.string,
-    uploadingText: PropTypes.string
+    uploadingText: PropTypes.string,
+    errorInPackage: PropTypes.bool
 };
 
 UploadBar.defaultProps = {

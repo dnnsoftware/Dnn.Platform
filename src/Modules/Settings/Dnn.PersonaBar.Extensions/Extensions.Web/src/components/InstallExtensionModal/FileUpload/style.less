@@ -5,12 +5,16 @@
     width: 100%;
     height: 215px;
     background: @alabaster;
-    border: 12px solid white;
     outline: 1px solid @mountainMist;
     position: relative;
+    border: 12px solid @white;
     box-sizing: content-box;
     * {
         box-sizing: content-box;
+    }
+    &.viewing-log {
+        outline: none;
+        border: none;
     }
     .dropzone-container {
         position: absolute;
@@ -24,7 +28,7 @@
             background-color: transparent;
             .overlay {
                 opacity: 0;
-                &.hover{
+                &.hover {
                     opacity: 1;
                 }
                 &:hover {
@@ -186,6 +190,22 @@
     }
 }
 
+.install-failure-logs {
+    z-index: 10000;
+    background-color: white;
+    .package-installation-report {
+        padding: 25px;
+        p.failure {
+            color: @alizarinCrimson;
+            font-weight: bold;
+        }
+        p.startjob, p.endjob {
+            color: #000;
+            font-weight: bold;
+        }
+    }
+}
+
 .dnn-package-upload .file-upload-container {
     &.dnn-upload-bar {
         padding: 12px;
@@ -242,6 +262,15 @@
             color: @alizarinCrimson;
             h4 {
                 color: @alizarinCrimson;
+            }
+            .view-log-or-try-again {
+                text-align: center;
+                span {
+                    float: none;
+                    color: @curiousBlue;
+                    cursor: pointer;
+                    margin-left: 10px;
+                }
             }
             .upload-bar-box {
                 background: @alizarinCrimson;

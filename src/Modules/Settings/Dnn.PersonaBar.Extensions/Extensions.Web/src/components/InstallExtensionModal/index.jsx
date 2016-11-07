@@ -145,6 +145,12 @@ class InstallExtensionModal extends Component {
     onToggleLicenseAccept() {
         this.props.dispatch(InstallationActions.toggleAcceptLicense(!this.props.licenseAccepted));
     }
+    toggleViewLog(value) {
+        this.props.dispatch(InstallationActions.setViewingLog(value));
+    }
+    clearParsedInstallationPackage() {
+        this.props.dispatch(InstallationActions.clearParsedInstallationPackage());
+    }
     render() {
         const {props} = this;
         const {wizardStep} = props;
@@ -161,11 +167,16 @@ class InstallExtensionModal extends Component {
                                     <FileUpload
                                         parsePackage={this.parsePackage.bind(this)}
                                         repairInstall={this.goToStep.bind(this, 1)}
-                                        cancelInstall={this.cancelInstall.bind(this)} />
+                                        cancelInstall={this.cancelInstall.bind(this)}
+                                        parsedInstallationPackage={props.parsedInstallationPackage}
+                                        toggleViewLog={this.toggleViewLog.bind(this)}
+                                        clearParsedInstallationPackage={this.clearParsedInstallationPackage.bind(this)}
+                                        viewingLog={props.viewingLog}
+                                        />
                                 </GridCell>
                                 <GridCell className="modal-footer">
-                                    <Button onClick={props.onCancel.bind(this)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
-                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary" disabled={!props.parsedInstallationPackage}>{Localization.get("InstallExtension_Upload.Button")}</Button>
+                                    <Button onClick={!props.viewingLog ? props.onCancel.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
+                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary" disabled={!props.parsedInstallationPackage || !props.parsedInstallationPackage.success}>{Localization.get("InstallExtension_Upload.Button")}</Button>
                                 </GridCell>
                             </GridCell>
                         }
@@ -219,7 +230,8 @@ InstallExtensionModal.propTypes = {
     installationLogs: PropTypes.array,
     installingAvailablePackage: PropTypes.bool,
     availablePackage: PropTypes.object,
-    licenseAccepted: PropTypes.bool
+    licenseAccepted: PropTypes.bool,
+    viewingLog: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -230,7 +242,8 @@ function mapStateToProps(state) {
         installationLogs: state.installation.installationLogs,
         installingAvailablePackage: state.installation.installingAvailablePackage,
         availablePackage: state.installation.availablePackage,
-        licenseAccepted: state.installation.licenseAccepted
+        licenseAccepted: state.installation.licenseAccepted,
+        viewingLog: state.installation.viewingLog
     };
 }
 
