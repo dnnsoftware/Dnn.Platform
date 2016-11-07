@@ -1,46 +1,35 @@
 @import "~dnn-global-styles/index";
 .role-group-editor {
-    float: right;
-    width: auto;
-    .role-group-actions {
-        float: left;
-        width: auto;
+    float: left;
+    width: 235px;
+    //position: absolute;
+    background-color: @white;
+    border-radius: 3px;
+    border: 1px sol @alto;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 1px 0px @alto;
+    -moz-box-shadow: 0px 0px 10px 0px @alto;
+    box-shadow: 0px 0px 10px 0px @alto;
+    z-index: 9999;
+    cursor: default;
+    //top: 143px;
+    //left: 71px;
+    h2 {
+        color: @rollingStone;
+        margin-bottom: 20px;
     }
-    .popup.popup-editgroup {
-        cursor: default;
-        top: 30px;
-        left: 100px;
-        h2 {
-            color: @rollingStone;
-            margin-bottom: 20px;
-        }
-        textarea {
-            height: 75px;
-        }
-        .dnn-ui-common-multi-line-input {
-            padding: 0;
-            border-radius: 0px;
-            height: 88px;
-        }
+    textarea {
+        height: 75px;
     }
-    .popup {
-        position: absolute;
-        background-color: @white;
-        border-radius: 3px;
-        border: 1px sol @alto;
-        width: 100%;
-        padding: 20px;
-        -webkit-box-shadow: 0px 0px 1px 0px @alto;
-        -moz-box-shadow: 0px 0px 10px 0px @alto;
-        box-shadow: 0px 0px 10px 0px @alto;
-        z-index: 9999;
-        .edit-form {
-            .form-items:after {
-                display: none;
-            }
-        }
+    .dnn-ui-common-multi-line-input {
+        padding: 10px 10px;
+        border-radius: 0px;
+        height: 88px;
     }
     .edit-form {
+        .form-items:after {
+            display: none;
+        }
         color: @thunder;
         clear: both;
         text-align: left;
@@ -54,7 +43,7 @@
             float: right;
             clear: right;
             padding-left: 5%;
-            border-left: 1px solid @alto;
+            //border-left: 1px solid @alto;
         }
         &.short-right::before {
             content: ".";
@@ -67,7 +56,6 @@
             line-height: 24px;
             width: 100%;
             clear: both;
-            margin-bottom: 25px;
         }
         .form-item.last {
             margin-bottom: 0;
@@ -174,7 +162,7 @@
             content: "";
             height: 100%;
             position: absolute;
-            border-left: 1px solid @alto;
+            //border-left: 1px solid @alto;
             left: 50%;
             top: 0;
         }

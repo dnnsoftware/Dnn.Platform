@@ -7,8 +7,7 @@ import Button from "dnn-button";
 import Select from "dnn-dropdown";
 import util from "../../../utils";
 import resx from "../../../resources";
-import Validator from "../../common/validator";
-import SingleInput from "dnn-single-line-input";
+import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import RoleGroupEditor from "./RoleGroupEditor";
 import Label from "dnn-label";
@@ -32,11 +31,15 @@ class RolesEditor extends Component {
                 autoAssign: false,
                 isSystem: false
             },
+            errors: {
+                roleName: false
+            },
             groupId: props.roleId !== -1 ? roleDetails.groupId : -1,
             assignToUsers: false,
             formModified: false,
             createGroupVisible: false
         };
+        this.submitted = false;
     }
 
     getValue(selectKey) {
@@ -88,6 +91,8 @@ class RolesEditor extends Component {
         state.formModified = true;
         this.setState({
             state
+        }, () => {
+            this.validateForm();
         });
     }
 
@@ -97,10 +102,8 @@ class RolesEditor extends Component {
     addUpdateRoleDetails(event) {
         event.preventDefault();
         const {props, state} = this;
-        this.setState({
-            triedToSubmit: true
-        });
-        if (!Validator.validate("role")) {
+        this.submitted = true;
+        if (!this.validateForm()) {
             return;
         }
 
@@ -126,6 +129,21 @@ class RolesEditor extends Component {
         else {
             props.Collapse(event);
         }
+    }
+
+    validateForm() {
+        let valid = true;
+        if (this.submitted) {
+            let {roleDetails} = this.state;
+            let {errors} = this.state;
+            errors.roleName = false;
+            if (roleDetails.name === "") {
+                errors.roleName = true;
+                valid = false;
+            }
+            this.setState({ errors });
+        }
+        return valid;
     }
     refreshRolesListIfRequired() {
         const {props, state} = this;
@@ -187,10 +205,18 @@ class RolesEditor extends Component {
         let {state} = this;
         const columnOne = <div className="editor-container">
             <div className="editor-row divider">
-                <Validator required={true} errorMessage={resx.get("RoleName.Required") } group="role" name="rolename">
-                    <Label label={resx.get("RoleName") } tooltipMessage={resx.get("RoleName.Help") } tooltipPlace={"top"} />
-                    <SingleInput value={state.roleDetails.name } enabled={!state.roleDetails.isSystem} onChange={this.onTextChange.bind(this, "name") } maxLength={50} />
-                </Validator>
+                <SingleLineInputWithError
+                    value={state.roleDetails.name }
+                    enabled={!state.roleDetails.isSystem}
+                    onChange={this.onTextChange.bind(this, "name") }
+                    maxLength={50}
+                    error={state.errors.roleName}
+                    label={resx.get("RoleName") }
+                    tooltipMessage={resx.get("RoleName.Help") }
+                    errorMessage={resx.get("RoleName.Required") }
+                    autoComplete="off"
+                    inputStyle={{ marginBottom: 15 }}
+                    tabIndex={1}/>
             </div>
             <div className="editor-row divider">
                 <Label label={resx.get("Description") } tooltipMessage={resx.get("Description.Help") } tooltipPlace={"top"} />
@@ -223,6 +249,7 @@ class RolesEditor extends Component {
                         onCancel={this.onCancelCreateGroup.bind(this) }
                         onClick={this.doNothing.bind(this) }
                         showPopup={this.state.createGroupVisible}
+                        group={{ id: -2, name: "", description: "" }}
                         title="New Group" />
                 </div>
             </div>

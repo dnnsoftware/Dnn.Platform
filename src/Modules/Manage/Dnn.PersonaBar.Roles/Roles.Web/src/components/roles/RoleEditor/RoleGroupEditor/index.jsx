@@ -3,11 +3,9 @@ import { connect } from "react-redux";
 import "./style.less";
 import util from "../../../../utils";
 import resx from "../../../../resources";
-import Validator from "../../../common/validator";
-import SingleInput from "dnn-single-line-input";
+import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import Button from "dnn-button";
-import IconButton from "../../../common/IconButton";
 import ReactDOM from "react-dom";
 import Label from "dnn-label";
 import {
@@ -20,10 +18,12 @@ class RoleGroupEditor extends Component {
         let group = Object.assign({}, props.group);
 
         this.state = {
-            showPopup: props.showPopup,
-            showActions: props.showActions,
-            group
+            group,
+            errors: {
+                groupName: false
+            }
         };
+        this.submitted = false;
         this.handleClick = this.handleClick.bind(this);
     }
     componentDidMount() {
@@ -48,7 +48,7 @@ class RoleGroupEditor extends Component {
             if (typeof this.props.onCancel === "function") {
                 this.props.onCancel();
             }
-            this.closeCreateGroup();
+            this.props.onCancel();
         }
     }
     onEditFieldChanged(name, event) {
@@ -56,106 +56,79 @@ class RoleGroupEditor extends Component {
         group[name] = event.target.value;
         this.setState({
             group
+        }, () => {
+            this.validateForm();
         });
     }
 
     onCancel() {
-        if (typeof this.props.onCancel === "function") {
-            this.props.onCancel();
-        }
-        this.closeCreateGroup();
+        this.setState({
+            group: {}
+        }, () => {
+            if (typeof this.props.onCancel === "function") {
+                this.props.onCancel();
+            }
+        });
     }
 
     onSave() {
         const {props, state} = this;
-
-        if (!Validator.validate("rolegroup")) {
-            return;
-        }
-        props.dispatch(RolesActions.saveRoleGroup(state.group, (group) => {
-            util.utilities.notify(resx.get("RoleGroupUpdated.Message"));
-            if (typeof this.props.onSave === "function") {
-                this.props.onSave(group);
-            }
-            this.closeCreateGroup();
-        }, () => {
-            util.utilities.notify(resx.get("RoleGroupUpdated.Error"));
-        }));
-    }
-    onEdit() {
-        if (typeof this.props.onEdit === "function") {
-            this.props.onEdit();
-        }
-        let {showPopup} = this.state;
-        if (!showPopup) {
-            showPopup = true;
-            this.setState({
-                showPopup
-            });
-        }
-    }
-    onDelete() {
-        const {props, state} = this;
-        props.onDeleteClick();
-        util.utilities.confirm(resx.get("DeleteRoleGroup.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
-            props.dispatch(RolesActions.deleteRoleGroup(state.group, (group) => {
-                util.utilities.notify(resx.get("DeleteRoleGroup.Message"));
-                if (typeof props.onDeleted === "function") {
-                    props.onDeleted(group);
+        this.submitted = true;
+        if (this.validateForm()) {
+            props.dispatch(RolesActions.saveRoleGroup(state.group, (group) => {
+                util.utilities.notify(resx.get("RoleGroupUpdated.Message"));
+                if (typeof this.props.onSave === "function") {
+                    this.props.onSave(group);
                 }
-            }, (error) => {
-                util.utilities.notify(resx.get("DeleteRoleGroup.Error"));
+            }, () => {
+                util.utilities.notify(resx.get("RoleGroupUpdated.Error"));
             }));
-        }, () => {
-            util.utilities.notify(resx.get("ConfigDeleteCancelled"));
-        });
-        this.closeCreateGroup();
+        }
     }
-    closeCreateGroup() {
-        let {showPopup} = this.state;
-        showPopup = false;
-        this.setState({
-            showPopup,
-            group: {}
-        });
+
+
+    validateForm() {
+        let valid = true;
+        if (this.submitted) {
+            let {group} = this.state;
+            let {errors} = this.state;
+            errors.groupName = false;
+            if (group.name === "") {
+                errors.groupName = true;
+                valid = false;
+            }
+            this.setState({ errors });
+        }
+        return valid;
     }
+
 
     render() {
         const {props, state} = this;
         let group = Object.assign({}, state.group);
         return props.visible && <div className="role-group-editor" onClick={this.props.onClick.bind(this) }>
-            {
-                state.showActions &&
-                <div className="role-group-actions">
-                    <IconButton type="Edit" onClick={this.onEdit.bind(this) } />
-                    {this.props.deleteAllowed && <IconButton type="Trash" onClick={this.onDelete.bind(this) } />}
-                </div>
-            }
-            {
-                state.showPopup &&
-                <div className="popup popup-editgroup">
-                    <h2>{resx.get(props.title) }</h2>
-                    <div className="edit-form">
-                        <div className="form-items">
-                            <div className="form-item">
-                                <Validator required={true} errorMessage={resx.get("GroupName.Required") } group="rolegroup" name="groupname">
-                                    <Label label={resx.get("GroupName") } tooltipMessage={resx.get("GroupName.Help") } tooltipPlace={"top"} />
-                                    <SingleInput type="text" value={group.name} onChange={this.onEditFieldChanged.bind(this, "name") } maxLength={50} />
-                                </Validator>
-                            </div>
-                            <div className="form-item">
-                                <Label label={resx.get("GroupDescription") } tooltipMessage={resx.get("GroupDescription.Help") } tooltipPlace={"top"} />
-                                <MultiLineInput value={group.description} onChange={this.onEditFieldChanged.bind(this, "description") } maxLength={500} />
-                            </div>
-                            <div className="clear"></div>
-                        </div>
-                        <div className="actions">
-                            <Button onClick={this.onCancel.bind(this) } className="do-not-close">{resx.get("Cancel") }</Button>
-                            <Button type="primary" onClick={this.onSave.bind(this) }>{resx.get("Save") }</Button>
-                        </div>
+            <h2>{resx.get(props.title) }</h2>
+            <div className="edit-form">
+                <div className="form-items">
+                    <div className="form-item">
+                        <SingleLineInputWithError  value={group.name} onChange={this.onEditFieldChanged.bind(this, "name") } maxLength={50}
+                            error={state.errors.groupName} label={resx.get("GroupName") }
+                            tooltipMessage={resx.get("GroupName.Help") } errorMessage={resx.get("GroupName.Help") }
+                            autoComplete="off"
+                            inputStyle={{ marginBottom: 15 }}
+                            tabIndex={1}/>
                     </div>
+                    <div className="form-item">
+                        <Label label={resx.get("GroupDescription") } tooltipMessage={resx.get("GroupDescription.Help") } tooltipPlace={"top"} />
+                        <MultiLineInput value={group.description} onChange={this.onEditFieldChanged.bind(this, "description") } maxLength={500} />
+                    </div>
+                    <div className="clear"></div>
                 </div>
-            }
+                <div className="actions">
+                    <Button onClick={this.onCancel.bind(this) } className="do-not-close">{resx.get("Cancel") }</Button>
+                    <Button type="primary" onClick={this.onSave.bind(this) }>{resx.get("Save") }</Button>
+                </div>
+            </div>
         </div >;
     }
 }
@@ -166,20 +139,20 @@ RoleGroupEditor.propTypes = {
     visible: PropTypes.bool,
     group: PropTypes.object,
     deleteAllowed: PropTypes.bool,
-    showActions: PropTypes.bool,
-    showPopup: PropTypes.bool,
     onDeleteClick: PropTypes.func,
     onDeleted: PropTypes.func,
-    onEdit: PropTypes.func,
     onSave: PropTypes.func,
     onClick: PropTypes.func,
     onCancel: PropTypes.func
 };
 RoleGroupEditor.defaultProps = {
-    showPopup: false,
-    showActions: false,
     deleteAllowed: false,
-    visible: true
+    visible: true,
+    group: {
+        id: -2,
+        name: "",
+        description: ""
+    }
 };
 
 function mapStateToProps(state) {

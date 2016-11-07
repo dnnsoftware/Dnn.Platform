@@ -9,6 +9,10 @@ import IconButton from "../../common/IconButton";
 import SearchBox from "dnn-search-box";
 import GridCell from "dnn-grid-cell";
 import RoleGroupEditor from "../RoleEditor/RoleGroupEditor";
+import util from "../../../utils";
+import {
+    roles as RolesActions
+} from "../../../actions";
 
 class FiltersBar extends Component {
     constructor(props) {
@@ -17,7 +21,8 @@ class FiltersBar extends Component {
             selectedGroup: {
                 label: resx.get("GlobalRolesGroup"),
                 value: -1
-            }
+            },
+            showPopup: false
         };
     }
     componentWillMount() {
@@ -28,17 +33,33 @@ class FiltersBar extends Component {
     }
     componentWillReceiveProps(newProps) {
     }
-    onDelete() {
-        let {selectedGroup} = this.state;
-        selectedGroup.value = -1;
-        selectedGroup.label = resx.get("GlobalRolesGroup");
-        this.setState({
-            selectedGroup
+    onDeleteGroup() {
+        const {props, state} = this;
+        this.closeDropDown();
+        util.utilities.confirm(resx.get("DeleteRoleGroup.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
+            props.dispatch(RolesActions.deleteRoleGroup(this.getCurrentGroup(), (group) => {
+                util.utilities.notify(resx.get("DeleteRoleGroup.Message"));
+                let {selectedGroup} = this.state;
+                selectedGroup.value = -1;
+                selectedGroup.label = resx.get("GlobalRolesGroup");
+                this.setState({
+                    selectedGroup
+                });
+                this.props.onRoleGroupChanged(selectedGroup);
+            }, (error) => {
+                util.utilities.notify(resx.get("DeleteRoleGroup.Error"));
+            }));
+        }, () => {
         });
-        this.props.onRoleGroupChanged(selectedGroup);
     }
+
     onSave(group) {
         this.updateSelectedGroup({ label: group.name, value: group.id });
+        let {showPopup} = this.state;
+        showPopup = !showPopup;
+        this.setState({
+            showPopup
+        });
     }
     closeDropDown() {
         /*This is done in order to keep the dropdown closed on click on edit/delete*/
@@ -52,9 +73,15 @@ class FiltersBar extends Component {
         this.updateSelectedGroup(option);
         this.props.onRoleGroupChanged(option);
     }
-
+    toggleEditGroup() {
+        this.closeDropDown();
+        let {showPopup} = this.state;
+        showPopup = !showPopup;
+        this.setState({
+            showPopup
+        });
+    }
     updateSelectedGroup(option) {
-        let {props} = this;
         let { label} = option;
         let { value} = option;
         let {selectedGroup} = this.state;
@@ -76,16 +103,24 @@ class FiltersBar extends Component {
         }
         if (value > -1) {
             label = <div className="group-actions">{label}
-                <RoleGroupEditor showActions={true} deleteAllowed={this.props.DeleteAllowed}
-                    onDeleteClick={this.closeDropDown.bind(this) }
-                    onDeleted={this.onDelete.bind(this) }
-                    onEdit={this.closeDropDown.bind(this) }
-                    onSave={this.onSave.bind(this) }
-                    onClick={this.closeDropDown.bind(this) }
-                    title="Edit Group" group={group} />
+                <div className="role-group-actions">
+                    <IconButton type="Edit" onClick={this.toggleEditGroup.bind(this) } />
+                    {this.props.DeleteAllowed && <IconButton type="Trash" onClick={this.onDeleteGroup.bind(this) } />}
+                </div>
             </div>;
         }
         return label;
+    }
+    getCurrentGroup() {
+        let {props} = this;
+        let selectedGroup = Object.assign({}, this.state.selectedGroup);
+        let value = selectedGroup.value;
+        let label = selectedGroup.label;
+        let group = { id: value, name: label };
+        if (props.roleGroups.some(group => group.id === this.state.selectedGroup.value)) {
+            group = Object.assign({}, props.roleGroups.filter(group => group.id === value)[0]);
+        }
+        return group;
     }
 
 
@@ -114,7 +149,18 @@ class FiltersBar extends Component {
     render() {
         return <div className="filter-container">
             <GridCell columnSize={35} >
-                {this.props.roleGroups.length > 0 && this.getRoleGroupsDropDown() }</GridCell>
+                {this.props.roleGroups.length > 0 && this.getRoleGroupsDropDown() }
+                {
+                    this.state.showPopup &&
+                    <div className="edit-group-popup">
+                        <RoleGroupEditor
+                            onSave={this.onSave.bind(this) }
+                            onClick={this.closeDropDown.bind(this) }
+                            onCancel={this.toggleEditGroup.bind(this) }
+                            title="Edit Group" group={this.getCurrentGroup() } />
+                    </div>
+                }
+            </GridCell>
             <GridCell columnSize={30} >
                 <div>&nbsp; </div></GridCell>
             <GridCell columnSize={35} >
