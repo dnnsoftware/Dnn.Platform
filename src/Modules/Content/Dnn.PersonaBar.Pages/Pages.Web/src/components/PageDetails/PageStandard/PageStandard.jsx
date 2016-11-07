@@ -6,6 +6,8 @@ import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import localization from "../../../localization";
 import styles from "./style.less";
+import Tags from "dnn-tags";
+import Label from "dnn-label";
 
 class PageDetails extends Component {
 
@@ -14,8 +16,14 @@ class PageDetails extends Component {
         onChangeField(key, event.target.value);
     }
 
+    onChangeTags(tags) {
+        const {onChangeField} = this.props;
+        onChangeField("tags", tags.join(","));
+    }
+
     render() {
         const {page, errors} = this.props;
+        const tags = page.tags ? page.tags.split(",") : [];
 
         return (
             <div className={styles.pageStandard}>
@@ -51,10 +59,12 @@ class PageDetails extends Component {
                 </InputGroup>
                 <GridSystem>
                     <GridCell className="left-column">
-                        <SingleLineInputWithError
-                            label={localization.get("Tags")}
-                            value={page.tags} 
-                            onChange={this.onChangeField.bind(this, "tags")} />
+                        <InputGroup>
+                            <Label label={localization.get("Tags")}/>
+                            <Tags 
+                                tags={tags} 
+                                onUpdateTags={this.onChangeTags.bind(this)}/>
+                        </InputGroup>
                     </GridCell>
                     <GridCell className="right-column">
                         <SingleLineInputWithError

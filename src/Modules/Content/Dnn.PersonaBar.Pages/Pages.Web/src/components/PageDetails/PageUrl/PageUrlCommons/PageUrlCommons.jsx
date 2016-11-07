@@ -9,7 +9,7 @@ import Label from "dnn-label";
 
 class PageUrlCommons extends Component {
 
-    onChangeField(key, value){
+    onChangeField(key) {
         const {onChangeField} = this.props;
         onChangeField(key, event.target.value);
     }

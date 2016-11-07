@@ -12,7 +12,9 @@ import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 class PageSettings extends Component {
 
     getButtons() {
-        const {onCancel, onSave} = this.props;
+        const {selectedPage, onCancel, onSave} = this.props;
+        const saveButtonText = selectedPage.tabId === 0 ? 
+            Localization.get("Add Page") : Localization.get("Save");
 
         return (
             <div className="buttons-box">
@@ -24,7 +26,7 @@ class PageSettings extends Component {
                 <Button
                     type="primary"
                     onClick={onSave}>
-                    {Localization.get("Save")}
+                    {saveButtonText}
                 </Button>
             </div>
         );

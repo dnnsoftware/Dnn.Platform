@@ -37,7 +37,7 @@ class App extends Component {
         
     }
 
-    getSettingsPage(){
+    getSettingsPage() {
         const {props} = this;
         const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedPage.name;
 

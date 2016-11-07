@@ -7,6 +7,8 @@ import localization from "../../../../localization";
 import Label from "dnn-label";
 
 const noneSpecifiedText = "<" + localization.get("NoneSpecified") + ">";
+
+/* eslint-disable spellcheck/spell-checker */
 const PageToTestParameters = {
     portalId: -2,
     cultureCode: "",
@@ -16,16 +18,16 @@ const PageToTestParameters = {
     roles: "0",
     sortOrder: 0
 };
+/* eslint-enable spellcheck/spell-checker */
 
 class PageExisting extends Component {
 
-    onChangeField(key, value){
+    onChangeField(key) {
         const {onChangeField} = this.props;
         onChangeField(key, event.target.value);
     }
 
     render() {
-        const {page} = this.props;
         const serviceFramework = utils.getServiceFramework(); 
 
         return (
