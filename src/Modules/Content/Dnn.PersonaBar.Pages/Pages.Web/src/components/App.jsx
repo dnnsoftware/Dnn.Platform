@@ -24,7 +24,7 @@ class App extends Component {
     onSavePage() {
         const {props} = this;
         props.onNavigate(0);
-        props.onSavePage(props.selectedDnnPage);
+        props.onSavePage(props.selectedPage);
     }
 
     onAddPage() {
@@ -39,14 +39,15 @@ class App extends Component {
 
     getSettingsPage(){
         const {props} = this;
-        const titleSettings = props.selectedDnnPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedDnnPage.name;
+        const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedPage.name;
 
-        return (<PersonaBarPage isOpen={props.selectedPage === 1}>
+        return (<PersonaBarPage isOpen={props.selectedView === 1}>
                     <SocialPanelHeader title={titleSettings}>
                     </SocialPanelHeader>
                     <SocialPanelBody>
-                        <PageSettings selectedPage={props.selectedDnnPage} 
-                                        onCancel={() => props.onNavigate(0)} 
+                        <PageSettings selectedPage={props.selectedPage}
+                                      selectedPageErrors={props.selectedPageErrors} 
+                                      onCancel={() => props.onNavigate(0)} 
                                         onSave={this.onSavePage.bind(this)}
                                         onChangeField={props.onChangePageField}
                                         onPermissionsChanged={props.onPermissionsChanged}
@@ -61,14 +62,14 @@ class App extends Component {
 
         return (
             <div className="pages-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={props.selectedPage === 0}>
+                <PersonaBarPage isOpen={props.selectedView === 0}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
                         <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("Add Page") }</Button>
                         <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("Add Multiple Page") }</Button>
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
-                {props.selectedDnnPage && 
+                {props.selectedPage && 
                     this.getSettingsPage()
                 }
             </div>
@@ -78,9 +79,9 @@ class App extends Component {
 
 App.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    selectedPage: PropTypes.number,
-    selectedPageVisibleIndex: PropTypes.number,
-    selectedDnnPage: PropTypes.object,
+    selectedView: PropTypes.number,
+    selectedPage: PropTypes.object,
+    selectedPageErrors: PropTypes.object,
     onNavigate: PropTypes.func,
     onSavePage: PropTypes.func,
     onLoadPage: PropTypes.func,
@@ -92,9 +93,9 @@ App.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        selectedPage: state.visiblePanel.selectedPage,
-        selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        selectedDnnPage: state.pages.selectedPage
+        selectedView: state.visiblePanel.selectedPage,
+        selectedPage: state.pages.selectedPage,
+        selectedPageErrors: state.pages.errors
     };
 }
 

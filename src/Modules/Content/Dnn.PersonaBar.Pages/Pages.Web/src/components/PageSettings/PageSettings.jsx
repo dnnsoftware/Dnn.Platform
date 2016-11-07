@@ -31,7 +31,7 @@ class PageSettings extends Component {
     }
 
     render() {
-        const {selectedPage, onChangeField, onChangePageType} = this.props;
+        const {selectedPage, selectedPageErrors, onChangeField, onChangePageType} = this.props;
         const buttons = this.getButtons();
 
         return (
@@ -45,7 +45,8 @@ class PageSettings extends Component {
                         page={selectedPage}
                         onChangePageType={onChangePageType} />
                     <PageDetails 
-                        page={selectedPage} 
+                        page={selectedPage}
+                        errors={selectedPageErrors} 
                         onChangeField={onChangeField} />
                     {buttons}
                 </div>
@@ -81,6 +82,7 @@ class PageSettings extends Component {
 
 PageSettings.propTypes = {
     selectedPage: PropTypes.object.isRequired,
+    selectedPageErrors: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,

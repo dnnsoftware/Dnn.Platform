@@ -31,6 +31,7 @@ class PageDetail extends Component {
 
 PageDetail.propTypes = {
     page: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
 };
 

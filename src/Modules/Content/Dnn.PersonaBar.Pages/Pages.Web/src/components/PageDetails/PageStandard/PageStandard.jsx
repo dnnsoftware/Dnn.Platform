@@ -15,15 +15,17 @@ class PageDetails extends Component {
     }
 
     render() {
-        const {page} = this.props;
+        const {page, errors} = this.props;
 
         return (
             <div className={styles.pageStandard}>
                 <GridSystem>
                     <GridCell className="left-column">
                         <SingleLineInputWithError
-                            label={localization.get("Name")}
+                            label={localization.get("Name") + "*"}
                             tooltipMessage={localization.get("page_name_tooltip")}
+                            error={!!errors.name}
+                            errorMessage={errors.name}
                             value={page.name} 
                             onChange={this.onChangeField.bind(this, "name")} />
                     </GridCell>
@@ -70,6 +72,7 @@ class PageDetails extends Component {
 
 PageDetails.propTypes = {
     page: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
 };
 

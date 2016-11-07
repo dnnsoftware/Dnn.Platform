@@ -1,7 +1,9 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
+import validateFields from "../validation";
 
 export default function pagesReducer(state = {
     selectedPage: null,
+    errors: {},
     cacheProviderList: null,
     doingOperation: false
 }, action) {    
@@ -25,7 +27,8 @@ export default function pagesReducer(state = {
         case ActionTypes.LOADED_PAGE:
             return { ...state,
                 doingOperation: false,
-                selectedPage: action.data.page
+                selectedPage: action.data.page,
+                errors: {}
             };
 
         case ActionTypes.ERROR_LOADING_PAGE:
@@ -50,7 +53,11 @@ export default function pagesReducer(state = {
         
         case ActionTypes.CHANGE_FIELD_VALUE:
             return { ...state,
-                selectedPage: changeField(action.field, action.value)           
+                selectedPage: changeField(action.field, action.value), 
+                errors: {
+                    ...(state.errors),
+                    ...validateFields(action.field, action.value)
+                }          
             };
 
         case ActionTypes.CHANGE_PERMISSIONS:
