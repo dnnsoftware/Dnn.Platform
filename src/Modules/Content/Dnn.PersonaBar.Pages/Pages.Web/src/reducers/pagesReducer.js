@@ -87,6 +87,16 @@ export default function pagesReducer(state = {
             };
         }
 
+        case ActionTypes.DELETED_PAGE_MODULE: {
+            const modules = [...state.selectedPage.modules.filter(f => f.id !== action.data.module.id)];
+            return { ...state,
+                selectedPage: {
+                    ...state.selectedPage, 
+                    modules
+                }
+            };
+        }        
+
         default:
             return state;
     }

@@ -104,12 +104,17 @@ const pageActions = {
     },
 
     deletePageModule(module) {
-        return (dispatch) => {            
+        return (dispatch, getState) => {            
             dispatch({
                 type: ActionTypes.DELETING_PAGE_MODULE
             });
 
-            PagesService.deletePageModule(module).then(() => {
+            const pageId = getState().pages.selectedPage.tabId;
+            const moduleToDelete = {
+                moduleId: module.id,
+                pageId
+            };
+            PagesService.deletePageModule(moduleToDelete).then(() => {
                 dispatch({
                     type: ActionTypes.DELETED_PAGE_MODULE,
                     data: { module }

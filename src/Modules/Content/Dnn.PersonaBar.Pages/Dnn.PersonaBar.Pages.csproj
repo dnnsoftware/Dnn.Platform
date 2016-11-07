@@ -100,6 +100,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Exceptions\PageModuleNotFoundException.cs" />
     <Compile Include="Components\IPageManagementController.cs" />
     <Compile Include="Components\IPagesController.cs" />
     <Compile Include="Components\Exceptions\PageException.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Components\Exceptions\PageValidationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
+    <Compile Include="Services\Dto\PageModuleItem.cs" />
     <Compile Include="Services\Dto\PageItem.cs" />
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageMoveRequest.cs" />

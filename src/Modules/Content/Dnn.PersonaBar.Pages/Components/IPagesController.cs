@@ -24,6 +24,9 @@ namespace Dnn.PersonaBar.Pages.Components
         TabInfo SavePageDetails(PageSettings pageSettings);
 
         IEnumerable<ModuleInfo> GetModules(int pageId);
-        PagePermissions GetPermissionsData(int pageId);        
+
+        PagePermissions GetPermissionsData(int pageId);
+
+        void DeleteTabModule(int pageId, int moduleId);
     }
 }

@@ -119,6 +119,21 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeletePageModule(PageModuleItem module)
+        {
+            try
+            {
+                _pagesController.DeleteTabModule(module.PageId, module.ModuleId);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            }
+            catch (PageModuleNotFoundException)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
         // TODO: This should be a POST
         [HttpGet]
         public HttpResponseMessage EditModeForPage(int id)

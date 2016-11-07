@@ -40,6 +40,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Personalization;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -275,9 +276,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public IEnumerable<ModuleInfo> GetModules(int pageId)
         {
-            var dic = ModuleController.Instance.GetTabModules(pageId);
-            var modules = dic.Values.Where(objModule => objModule.IsDeleted == false);
-            return modules;
+            var tabModules = _moduleController.GetTabModules(pageId);
+            return tabModules.Values.Where(m => !m.IsDeleted && !m.AllTabs);
         }
 
         public bool ValidatePageSettingsData(PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage)
@@ -866,6 +866,29 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return permissions;
+        }
+
+        public void DeleteTabModule(int pageId, int moduleId)
+        {
+            var tab = _tabController.GetTab(pageId, PortalSettings.PortalId);
+            if (tab == null)
+            {
+                throw new PageModuleNotFoundException();
+            }
+
+            var tabModule = _moduleController.GetModule(moduleId, pageId, false);
+            if (tabModule == null)
+            {
+                throw new PageModuleNotFoundException();
+            }
+
+            if (!TabPermissionController.CanAddContentToPage(tab))
+            {
+                throw new SecurityException("You do not have permission to delete module on this page");
+            }
+
+            _moduleController.DeleteTabModule(pageId, moduleId, true);
+            _moduleController.ClearCache(pageId);
         }
 
         protected override Func<IPagesController> GetFactory()
