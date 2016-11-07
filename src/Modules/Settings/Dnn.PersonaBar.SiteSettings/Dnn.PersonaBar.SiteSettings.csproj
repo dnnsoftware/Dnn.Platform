@@ -101,6 +101,7 @@
     <Compile Include="Components\ExtensionMenuController.cs" />
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\CreateLanguagePackRequest.cs" />
     <Compile Include="Services\Dto\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />

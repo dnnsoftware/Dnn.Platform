@@ -115,7 +115,7 @@ class LanguagesPanel extends Component {
                 util.utilities.notify(resx.get("LanguageCreateSuccess"));
                 this.collapse();
                 props.dispatch(LanguagesActions.getLanguages(props.portalId));
-                props.dispatch(LanguagesActions.getAllLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getAllLanguages());
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);

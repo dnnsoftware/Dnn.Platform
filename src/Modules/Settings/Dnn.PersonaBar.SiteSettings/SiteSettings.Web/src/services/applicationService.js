@@ -213,9 +213,9 @@ class ApplicationService {
         sf.get("GetLanguage?portalId=" + portalId + "&languageId=" + languageId, {}, callback);
     } 
 
-    getAllLanguages(portalId, callback) {
+    getAllLanguages(callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetAllLanguages?portalId=" + portalId, {}, callback);
+        sf.get("GetAllLanguages", {}, callback);
     } 
 
     addLanguage(payload, callback, failureCallback) {

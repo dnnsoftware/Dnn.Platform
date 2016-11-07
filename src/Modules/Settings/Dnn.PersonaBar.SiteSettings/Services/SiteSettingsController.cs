@@ -19,8 +19,6 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
@@ -30,21 +28,20 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Web.UI.WebControls;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -70,6 +67,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchContentBoostSetting = "Search_Content_Boost";
         private const string SearchDescriptionBoostSetting = "Search_Description_Boost";
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
+
+        #region Site Settings API
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -409,18 +408,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        private string DisplayDataType(int dataType)
-        {
-            var retValue = Null.NullString;
-            var listController = new ListController();
-            var definitionEntry = listController.GetListEntryInfo("DataType", dataType);
-            if (definitionEntry != null)
-            {
-                retValue = definitionEntry.Value;
-            }
-            return retValue;
-        }
-
         /// GET: api/SiteSettings/GetProfileProperty
         /// <summary>
         /// Gets profile property by id
@@ -602,24 +589,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        private bool ValidateProperty(ProfilePropertyDefinition definition)
-        {
-            bool isValid = true;
-            var objListController = new ListController();
-            string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
-
-            switch (strDataType)
-            {
-                case "Text":
-                    if (definition.Required && definition.Length == 0)
-                    {
-                        isValid = Null.NullBoolean;
-                    }
-                    break;
-            }
-            return isValid;
-        }
-
         /// POST: api/SiteSettings/UpdateProfileProperty
         /// <summary>
         /// Updates profile property
@@ -708,20 +677,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        private bool CanDeleteProperty(ProfilePropertyDefinition definition)
-        {
-            switch (definition.PropertyName.ToLowerInvariant())
-            {
-                case "lastname":
-                case "firstname":
-                case "preferredtimezone":
-                case "preferredlocale":
-                    return false;
-                default:
-                    return true;
             }
         }
 
@@ -998,33 +953,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        private bool IsHttpAliasValid(string strAlias)
-        {
-            bool isValid = true;
-            if (string.IsNullOrEmpty(strAlias))
-            {
-                isValid = false;
-            }
-            else
-            {
-                if (strAlias.IndexOf("://", StringComparison.Ordinal) != -1)
-                {
-                    strAlias = strAlias.Remove(0, strAlias.IndexOf("://", StringComparison.Ordinal) + 3);
-                }
-                if (strAlias.IndexOf("\\\\", StringComparison.Ordinal) != -1)
-                {
-                    strAlias = strAlias.Remove(0, strAlias.IndexOf("\\\\", StringComparison.Ordinal) + 2);
-                }
-
-                //Validate Alias, this needs to be done with lowercase, downstream we only check with lowercase variables
-                if (!PortalAliasController.ValidateAlias(strAlias.ToLowerInvariant(), false))
-                {
-                    isValid = false;
-                }
-            }
-            return isValid;
-        }
-
         /// POST: api/SiteSettings/DeleteSiteAlias
         /// <summary>
         /// Deletes site alias
@@ -1056,18 +984,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-        }
-
-        private string GetAbsoluteServerPath()
-        {
-            var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            string strServerPath = string.Empty;
-            strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
-            if (!strServerPath.EndsWith("\\"))
-            {
-                strServerPath += "\\";
-            }
-            return strServerPath;
         }
 
         /// POST: api/SiteSettings/SetPrimarySiteAlias
@@ -1765,14 +1681,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <summary>
         /// Gets language
         /// </summary>
-        /// <param name="portalId"></param>
         /// <returns>all languages</returns>
         [HttpGet]
-        public HttpResponseMessage GetAllLanguages([FromUri] int? portalId)
+        public HttpResponseMessage GetAllLanguages()
         {
             try
             {
-                var pid = portalId ?? PortalId;
                 var supportedLanguages = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger));
                 var cultures = new List<CultureInfo>(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
 
@@ -1999,6 +1913,236 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        /// GET: api/SiteSettings/GetModuleList
+        /// <summary>
+        /// Gets module list by type
+        /// </summary>
+        /// <returns>list of modules</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetModuleList(string type)
+        {
+            try
+            {
+                List<object> modules = new List<object>();
+                switch (type)
+                {
+                    case "Module":
+                        foreach (
+                            DesktopModuleInfo objDM in
+                                DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
+                        {
+                            if (!objDM.FolderName.StartsWith("Admin/"))
+                            {
+                                if (Null.IsNull(objDM.Version))
+                                {
+                                    modules.Add(new KeyValuePair<string, int>(objDM.FriendlyName, objDM.DesktopModuleID));
+                                }
+                                else
+                                {
+                                    modules.Add(
+                                        new KeyValuePair<string, int>(objDM.FriendlyName + " [" + objDM.Version + "]",
+                                            objDM.DesktopModuleID));
+                                }
+                            }
+                        }
+                        break;
+                    case "Provider":
+                        foreach (PackageInfo objPackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Provider"))
+                        {
+                            if (Null.IsNull(objPackage.Version))
+                            {
+                                modules.Add(new KeyValuePair<string, int>(objPackage.FriendlyName, objPackage.PackageID));
+                            }
+                            else
+                            {
+                                modules.Add(new KeyValuePair<string, int>(objPackage.FriendlyName + " [" + Globals.FormatVersion(objPackage.Version) + "]", objPackage.PackageID));
+                            }
+                        }
+                        break;
+                    case "AuthSystem":
+                        foreach (PackageInfo objPackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Auth_System"))
+                        {
+                            if (Null.IsNull(objPackage.Version))
+                            {
+                                modules.Add(new KeyValuePair<string, int>(objPackage.FriendlyName, objPackage.PackageID));
+                            }
+                            else
+                            {
+                                modules.Add(new KeyValuePair<string, int>(objPackage.FriendlyName + " [" + Globals.FormatVersion(objPackage.Version) + "]", objPackage.PackageID));
+                            }
+                        }
+                        break;
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Modules = modules
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/CreateLanguagePack
+        /// <summary>
+        /// Creates language
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage CreateLanguagePack(CreateLanguagePackRequest request)
+        {
+            try
+            {
+                bool created = false;
+                switch (request.PackType)
+                {
+                    case "Core":
+                        created = _controller.CreateCorePackage(request.CultureCode, request.FileName, true);
+                        break;
+                    case "Module":
+                        foreach (int moduleId in request.ModuleIds)
+                        {
+                            DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModule(moduleId, Null.NullInteger);
+                            created = _controller.CreateModulePackage(request.CultureCode, desktopModule, true);
+                        }
+
+                        break;
+                    case "Provider":
+                        foreach (int moduleId in request.ModuleIds)
+                        {
+                            PackageInfo provider = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == moduleId);
+                            created = _controller.CreateProviderPackage(request.CultureCode, provider, true);
+                        }
+
+                        break;
+                    case "AuthSystem":
+                        foreach (int moduleId in request.ModuleIds)
+                        {
+                            PackageInfo authSystem = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == moduleId);
+                            created = _controller.CreateAuthSystemPackage(request.CultureCode, authSystem, true);
+                        }
+
+                        break;
+                    case "Full":
+                        _controller.CreateFullPackage(request.CultureCode, request.FileName);
+                        created = true;
+                        break;
+                }
+
+                if (created)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new
+                    {
+                        Success = true,
+                        Message = string.Format(Localization.GetString("LanguagePackCreateSuccess", LocalResourcesFile), PortalSettings.PortalAlias.HTTPAlias)
+                    });
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("LanguagePackCreateFailure", LocalResourcesFile));
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool CanDeleteProperty(ProfilePropertyDefinition definition)
+        {
+            switch (definition.PropertyName.ToLowerInvariant())
+            {
+                case "lastname":
+                case "firstname":
+                case "preferredtimezone":
+                case "preferredlocale":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        private string GetAbsoluteServerPath()
+        {
+            var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
+            string strServerPath = string.Empty;
+            strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
+            if (!strServerPath.EndsWith("\\"))
+            {
+                strServerPath += "\\";
+            }
+            return strServerPath;
+        }
+
+        private string DisplayDataType(int dataType)
+        {
+            var retValue = Null.NullString;
+            var listController = new ListController();
+            var definitionEntry = listController.GetListEntryInfo("DataType", dataType);
+            if (definitionEntry != null)
+            {
+                retValue = definitionEntry.Value;
+            }
+            return retValue;
+        }
+
+        private bool ValidateProperty(ProfilePropertyDefinition definition)
+        {
+            bool isValid = true;
+            var objListController = new ListController();
+            string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+
+            switch (strDataType)
+            {
+                case "Text":
+                    if (definition.Required && definition.Length == 0)
+                    {
+                        isValid = Null.NullBoolean;
+                    }
+                    break;
+            }
+            return isValid;
+        }
+
+        private bool IsHttpAliasValid(string strAlias)
+        {
+            bool isValid = true;
+            if (string.IsNullOrEmpty(strAlias))
+            {
+                isValid = false;
+            }
+            else
+            {
+                if (strAlias.IndexOf("://", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("://", StringComparison.Ordinal) + 3);
+                }
+                if (strAlias.IndexOf("\\\\", StringComparison.Ordinal) != -1)
+                {
+                    strAlias = strAlias.Remove(0, strAlias.IndexOf("\\\\", StringComparison.Ordinal) + 2);
+                }
+
+                //Validate Alias, this needs to be done with lowercase, downstream we only check with lowercase variables
+                if (!PortalAliasController.ValidateAlias(strAlias.ToLowerInvariant(), false))
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
         private static string ResourceFile(string filename, string language)
         {
             return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
@@ -2070,5 +2214,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
             return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
         }
+
+        #endregion
     }
 }

@@ -35,7 +35,7 @@ class LanguageEditor extends Component {
         props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
 
         if (!props.fullLanguageList) {
-            props.dispatch(LanguagesActions.getAllLanguages(props.portalId));
+            props.dispatch(LanguagesActions.getAllLanguages());
         }
 
         this.setState({

@@ -83,9 +83,9 @@ const languagesActions = {
             });
         };
     },
-    getAllLanguages(portalId, callback) {
+    getAllLanguages(callback) {
         return (dispatch) => {
-            ApplicationService.getAllLanguages(portalId, data => {
+            ApplicationService.getAllLanguages(data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_ALL_LANGUAGES,
                     data: {

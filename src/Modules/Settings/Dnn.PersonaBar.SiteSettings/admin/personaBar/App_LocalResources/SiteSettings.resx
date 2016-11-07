@@ -921,4 +921,46 @@
   <data name="ErrorFiles.Text">
     <value>Malformed Resource Files: </value>
   </data>
+  <data name="LanguagePackCreateSuccess.Text" xml:space="preserve">
+    <value>The Language Pack(s) were created and can be found in the {0}/Install/Language folder.</value>
+  </data>
+  <data name="LanguagePackCreateFailure.Text" xml:space="preserve">
+    <value>You must create resource files before you can create a language pack.</value>
+  </data>
+  <data name="lbLocale.Text" xml:space="preserve">
+    <value>Resource Locale</value>
+  </data>
+  <data name="lbLocale.Help" xml:space="preserve">
+    <value>Select the locale for which you want to generate the language pack</value>
+  </data>
+  <data name="lblType.Text" xml:space="preserve">
+    <value>Resource Pack Type</value>
+  </data>
+  <data name="lblType.Help" xml:space="preserve">
+    <value>Select the type of resource pack to generate.</value>
+  </data>
+  <data name="lblName.Text" xml:space="preserve">
+    <value>Resource Pack Name</value>
+  </data>
+  <data name="lblName.Help" xml:space="preserve">
+    <value>The name of the generated resource pack can be modified.  Notice that part of the name is fixed.</value>
+  </data>
+  <data name="SelectModules.Text" xml:space="preserve">
+    <value>Include module(s) in resource pack</value>
+  </data>
+  <data name="Core.LangPackType" xml:space="preserve">
+    <value>Core</value>
+  </data>
+    <data name="Module.LangPackType" xml:space="preserve">
+    <value>Module</value>
+  </data>
+    <data name="Provider.LangPackType" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+    <data name="Full.LangPackType" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="AuthSystem.LangPackType" xml:space="preserve">
+    <value>Auth System</value>
+  </data>
 </root>
