@@ -132,4 +132,5 @@ module.exports = [
     "ko",
     "resx",
     "params",
+    "ctl",
 ]

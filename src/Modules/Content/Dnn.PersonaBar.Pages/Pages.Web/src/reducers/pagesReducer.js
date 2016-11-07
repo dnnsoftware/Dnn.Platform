@@ -5,7 +5,8 @@ export default function pagesReducer(state = {
     selectedPage: null,
     errors: {},
     cacheProviderList: null,
-    doingOperation: false
+    doingOperation: false,
+    editingSettingModuleId: null
 }, action) {    
 
     const changeField = function changeField(field, value) {
@@ -21,7 +22,8 @@ export default function pagesReducer(state = {
         case ActionTypes.LOAD_PAGE:
             return { ...state,                
                 doingOperation: true,
-                selectedPage: null
+                selectedPage: null,
+                editingSettingModuleId: null
             };
 
         case ActionTypes.LOADED_PAGE:
@@ -78,6 +80,13 @@ export default function pagesReducer(state = {
         case ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST:
             return state;
         
+        case ActionTypes.TOGGLE_EDIT_PAGE_MODULE: {
+            const editingSettingModuleId = state.editingSettingModuleId !== action.data.module.id ? action.data.module.id : null;
+            return { ...state,
+                editingSettingModuleId
+            };
+        }
+
         default:
             return state;
     }

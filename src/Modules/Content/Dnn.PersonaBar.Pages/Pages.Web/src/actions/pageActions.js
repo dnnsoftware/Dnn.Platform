@@ -101,6 +101,33 @@ const pageActions = {
                 });                     
             }
         };
+    },
+
+    deletePageModule(module) {
+        return (dispatch) => {            
+            dispatch({
+                type: ActionTypes.DELETING_PAGE_MODULE
+            });
+
+            PagesService.deletePageModule(module).then(() => {
+                dispatch({
+                    type: ActionTypes.DELETED_PAGE_MODULE,
+                    data: { module }
+                });  
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_DELETING_PAGE_MODULE,
+                    data: {error}
+                });
+            });      
+        };
+    },
+
+    toggleEditPageModule(module) {
+        return {
+            type: ActionTypes.TOGGLE_EDIT_PAGE_MODULE,
+            data: {module}
+        };
     }
 };
 

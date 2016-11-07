@@ -10,6 +10,11 @@ const PageService = function () {
         return serviceFramework.post("SavePageDetails", toBackEndPage(page));
     };
 
+    const deletePageModule = function (module) {
+        // TODO: Review payload
+        return serviceFramework.post("DeletePageModule", module);
+    };
+
     const getNewPage = function () {
         return serviceFramework.get("GetDefaultPermissions")
             .then(permissions => {
@@ -70,7 +75,8 @@ const PageService = function () {
         savePage,
         getNewPage,
         toFrontEndPage,
-        getCacheProviderList
+        getCacheProviderList,
+        deletePageModule
     };
 };
 

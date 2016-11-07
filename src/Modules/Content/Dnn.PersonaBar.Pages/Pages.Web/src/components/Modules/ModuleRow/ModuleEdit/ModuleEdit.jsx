@@ -12,7 +12,6 @@ const iFrameStyle = {
 class ModuleEdit extends Component {
     render() {
         const moduleSettingControlPath = this.props.absolutePageUrl + moduleControlPath + this.props.module.id + popUpQueryString;
-        console.log(moduleSettingControlPath);
         return (
             <iframe src={moduleSettingControlPath} style={iFrameStyle} frameBorder={0}></iframe>
         );

@@ -7,21 +7,9 @@ import ModuleEdit from "./ModuleEdit/ModuleEdit";
 
 class ModuleRow extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            editing: false
-        };
-    }
-
-    onEdit() {
-        const editing = this.state.editing;
-        this.setState({editing: !editing});
-    }
-
     render() {
-        const {module, onDelete, absolutePageUrl} = this.props;
-        const editClassName = "extension-action" + (this.state.editing ? " selected" : "");
+        const { module, onDelete, onToggleEditing, absolutePageUrl, isEditingModule} = this.props;
+        const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
         return (
             /* eslint-disable react/no-danger */
             <div className={styles.moduleRow} >
@@ -33,10 +21,10 @@ class ModuleRow extends Component {
                 </GridCell>
                 <GridCell  columnSize={10} >
                     <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>
-                    <div className={editClassName} onClick={this.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                    <div className={editClassName} onClick={onToggleEditing.bind(this, module)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
                 </GridCell>
-                <Collapse accordion={true} isOpened={this.state.editing} keepCollapsedContent={true} className="module-settings">
-                    {this.state.editing && 
+                <Collapse accordion={true} isOpened={isEditingModule} keepCollapsedContent={true} className="module-settings">
+                    {isEditingModule && 
                         <ModuleEdit absolutePageUrl={absolutePageUrl} module={module} />}
                 </Collapse>
             </div>
@@ -47,8 +35,10 @@ class ModuleRow extends Component {
 
 ModuleRow.propTypes = {
     module: PropTypes.object.isRequired,
+    isEditingModule: PropTypes.bool.isRequired,
     absolutePageUrl: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired,
+    onToggleEditing: PropTypes.func.isRequired
 };
 
 export default ModuleRow;

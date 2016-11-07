@@ -48,10 +48,13 @@ class App extends Component {
                         <PageSettings selectedPage={props.selectedPage}
                                       selectedPageErrors={props.selectedPageErrors} 
                                       onCancel={() => props.onNavigate(0)} 
-                                        onSave={this.onSavePage.bind(this)}
-                                        onChangeField={props.onChangePageField}
-                                        onPermissionsChanged={props.onPermissionsChanged}
-                                        onChangePageType={props.onChangePageType} />
+                                      onSave={this.onSavePage.bind(this)}
+                                      onChangeField={props.onChangePageField}
+                                      onPermissionsChanged={props.onPermissionsChanged}
+                                      onChangePageType={props.onChangePageType}
+                                      onDeletePageModule={props.onDeletePageModule}
+                                      onToggleEditPageModule={props.onToggleEditPageModule}
+                                      editingSettingModuleId={props.editingSettingModuleId} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -82,20 +85,24 @@ App.propTypes = {
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
+    editingSettingModuleId: PropTypes.number,
     onNavigate: PropTypes.func,
     onSavePage: PropTypes.func,
     onLoadPage: PropTypes.func,
     onAddPage: PropTypes.func,
     onChangePageField: PropTypes.func,
     onChangePageType: PropTypes.func,
-    onPermissionsChanged: PropTypes.func.isRequired
+    onPermissionsChanged: PropTypes.func.isRequired,
+    onDeletePageModule: PropTypes.func.isRequired,
+    onToggleEditPageModule: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
     return {
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
-        selectedPageErrors: state.pages.errors
+        selectedPageErrors: state.pages.errors,
+        editingSettingModuleId: state.pages.editingSettingModuleId
     };
 }
 
@@ -107,7 +114,9 @@ function mapDispatchToProps(dispatch) {
         onAddPage: PageActions.addPage,
         onChangePageField: PageActions.changePageField,
         onChangePageType: PageActions.changePageType,
-        onPermissionsChanged: PageActions.changePermissions
+        onPermissionsChanged: PageActions.changePermissions,
+        onDeletePageModule: PageActions.deletePageModule,
+        onToggleEditPageModule: PageActions.toggleEditPageModule
     }, dispatch);
 }
 

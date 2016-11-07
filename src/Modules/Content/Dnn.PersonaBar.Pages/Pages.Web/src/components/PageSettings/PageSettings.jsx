@@ -33,7 +33,15 @@ class PageSettings extends Component {
     }
 
     render() {
-        const {selectedPage, selectedPageErrors, onChangeField, onChangePageType} = this.props;
+        const {
+            selectedPage, 
+            selectedPageErrors, 
+            onChangeField, 
+            onChangePageType, 
+            onDeletePageModule, 
+            onToggleEditPageModule,
+            editingSettingModuleId
+        } = this.props;
         const buttons = this.getButtons();
 
         return (
@@ -69,7 +77,10 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <Modules 
                                 modules={selectedPage.modules} 
-                                absolutePageUrl={selectedPage.absoluteUrl} />
+                                absolutePageUrl={selectedPage.absoluteUrl}
+                                onDeleteModule={onDeletePageModule}
+                                onToggleEditModule={onToggleEditPageModule}
+                                editingSettingModuleId={editingSettingModuleId} />
                         </div>
                         <div className="dnn-simple-tab-item"></div>
                         <div className="dnn-simple-tab-item"></div>
@@ -92,7 +103,10 @@ PageSettings.propTypes = {
     onSave: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
-    onChangePageType: PropTypes.func.isRequired
+    onChangePageType: PropTypes.func.isRequired,
+    onDeletePageModule: PropTypes.func.isRequired,
+    onToggleEditPageModule: PropTypes.func.isRequired,
+    editingSettingModuleId: PropTypes.number
 };
 
 export default PageSettings;
