@@ -1,0 +1,86 @@
+@import "~dnn-global-styles/index";
+:local(.seoContainer) {
+    float: left;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .dnn-grid-system {
+         .right-column {
+            padding-left: 30px;
+        }
+
+        .left-column {
+            border-right: 1px solid @alto;
+            padding-right: 30px;
+        }
+    }
+
+    .AddItemRow {
+        text-align: right;
+        width: 100%;
+        float: right;
+        margin: 0 0 15px 0;
+        font-weight: bolder;
+        border-bottom: 1px solid @alto;
+        overflow: hidden;
+        height: 32px;    
+        .sectionTitle {
+            font-weight: bolder;
+            float: left;
+            line-height: 25px;
+        }                            
+        .AddItemBox {
+            width: auto;
+            float: right;
+            color: @thunder;
+            cursor: pointer;
+            line-height: 25px;
+            .add-icon {
+                margin-left: 20px;
+                margin-right: 5px;
+                margin-top: 4px;
+                float: left;
+                cursor: pointer;
+                svg {
+                    width: 16px;
+                    float: left;
+                    height: 16px;
+                    fill: @thunder;
+                }
+            }
+        }
+    }
+
+    .link-icon svg {
+        width: 24px;
+        height: 24px;
+        float: left;
+        fill: @thunder;
+        margin-right: 5px;
+    }
+
+    .url-table {
+        margin-bottom: 30px;
+        width: 100%;
+        float: left;
+        .header-row {
+            border-left: 1px solid @alto;
+            border-right: 1px solid @alto;
+            display: table;
+            width: 100%;
+            border-bottom: 1px solid @alto;
+            border-top: 1px solid @alto;
+            width: 100%;
+            float: left;
+            position: relative;
+            padding: 15px 20px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+        }
+    }
+
+    .add-setting-editor {
+        //border-bottom: 1px solid @alto;
+        float: left;
+    }
+}

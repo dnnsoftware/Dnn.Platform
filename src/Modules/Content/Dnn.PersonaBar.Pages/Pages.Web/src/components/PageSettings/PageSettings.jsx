@@ -6,6 +6,7 @@ import PermissionGrid from "./PermissionGrid";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
+import Seo from "../Seo/Seo";
 import More from "../More/More";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
@@ -83,7 +84,10 @@ class PageSettings extends Component {
                                 editingSettingModuleId={editingSettingModuleId} />
                         </div>
                         <div className="dnn-simple-tab-item"></div>
-                        <div className="dnn-simple-tab-item"></div>
+                        <div className="dnn-simple-tab-item">
+                            <Seo page={selectedPage}
+                                onChangeField={onChangeField} />
+                        </div>
                         <div className="dnn-simple-tab-item">
                             <More page={selectedPage}
                                 onChangeField={onChangeField} />

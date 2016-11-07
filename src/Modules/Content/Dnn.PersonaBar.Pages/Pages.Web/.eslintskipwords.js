@@ -133,4 +133,6 @@ module.exports = [
     "resx",
     "params",
     "ctl",
+    "seo",
+    "sitemap",
 ]

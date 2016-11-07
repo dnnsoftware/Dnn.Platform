@@ -408,6 +408,9 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.IsSecure = pageSettings.IsSecure;
             tab.TabSettings["AllowIndex"] = pageSettings.AllowIndex;
 
+            tab.SiteMapPriority = pageSettings.SiteMapPriority;
+            tab.PageHeadText = pageSettings.PageHeadText;
+            
             tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
             tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
             tab.TabSettings["CacheIncludeExclude"] = pageSettings.CacheIncludeExclude;

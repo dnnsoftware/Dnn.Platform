@@ -102,5 +102,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "cacheMaxVaryByCount")]
         public int? CacheMaxVaryByCount { get; set; }
+
+        [DataMember(Name = "pageHeadText")]
+        public string PageHeadText { get; set; }
+
+        [DataMember(Name = "sitemapPriority")]
+        public float SiteMapPriority { get; set; }
     }
 }

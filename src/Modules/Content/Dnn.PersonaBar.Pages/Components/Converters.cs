@@ -76,7 +76,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 CacheIncludeExclude = tab.TabSettings["CacheIncludeExclude"] != null ? (string)tab.TabSettings["CacheIncludeExclude"] == "1" : (bool?)null,
                 CacheIncludeVaryBy = (string)tab.TabSettings["IncludeVaryBy"],
                 CacheExcludeVaryBy = (string)tab.TabSettings["ExcludeVaryBy"],
-                CacheMaxVaryByCount = tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null
+                CacheMaxVaryByCount = tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null,
+                PageHeadText = tab.PageHeadText,
+                SiteMapPriority = tab.SiteMapPriority
             };
         }
 
