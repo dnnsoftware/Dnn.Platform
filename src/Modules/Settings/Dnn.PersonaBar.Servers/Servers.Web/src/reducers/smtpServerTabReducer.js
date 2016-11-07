@@ -40,7 +40,7 @@ export default function smtpServerTabReducer(state = {
 
             return { ...state,
                 smtpServerInfo: {...state.smtpServerInfo,
-                    site: {...state.smtpServerInfo.host,
+                    site: {...state.smtpServerInfo.site,
                         smtpAuthentication: action.payload.smtpAuthentication
                     }
                 }
