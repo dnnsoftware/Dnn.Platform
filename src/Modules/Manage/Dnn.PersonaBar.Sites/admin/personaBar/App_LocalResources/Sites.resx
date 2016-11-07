@@ -330,4 +330,31 @@
   <data name="CreateSite_AdminUserName.Label" xml:space="preserve">
     <value>Administrator User Name</value>
   </data>
+  <data name="CreateSite_SelectTemplate.Overlay" xml:space="preserve">
+    <value>click to select template</value>
+  </data>
+  <data name="EmailRequired.Error" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="FirstNameRequired.Error" xml:space="preserve">
+    <value>First name is required.</value>
+  </data>
+  <data name="LastNameRequired.Error" xml:space="preserve">
+    <value>Last name is required.</value>
+  </data>
+  <data name="PasswordConfirmRequired.Error" xml:space="preserve">
+    <value>Password confirmation is required.</value>
+  </data>
+  <data name="PasswordRequired.Error" xml:space="preserve">
+    <value>Password is required.</value>
+  </data>
+  <data name="SiteAliasRequired.Error" xml:space="preserve">
+    <value>Site Alias is required.</value>
+  </data>
+  <data name="SiteTitleRequired.Error" xml:space="preserve">
+    <value>Site Title is required.</value>
+  </data>
+  <data name="UsernameRequired.Error" xml:space="preserve">
+    <value>User name is required.</value>
+  </data>
 </root>
