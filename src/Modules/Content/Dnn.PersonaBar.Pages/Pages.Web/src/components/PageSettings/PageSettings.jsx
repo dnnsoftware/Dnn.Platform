@@ -87,9 +87,9 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <More page={selectedPage}
                                 onChangeField={onChangeField} />
+                            {buttons}
                         </div>
                     </Tabs>
-                    {buttons}
                 </div>
             </Tabs>
         );
