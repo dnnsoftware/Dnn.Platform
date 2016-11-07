@@ -513,7 +513,7 @@ BEGIN
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier = 'Manage'
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Community Manager' 
+        SELECT MenuId, 'Administrators,Content Managers,Community Manager' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier = 'Settings'
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
@@ -565,6 +565,13 @@ IF NOT EXISTS(SELECT PackageType FROM {databaseOwner}[{objectQualifier}PackageTy
 BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'PersonaBar', N'PersonaBar', 3, NULL, 0)
 END
+GO
+
+EXEC {databaseOwner}[{objectQualifier}UpdateHostSetting] @SettingName = N'AllowControlPanelToDetermineVisibility',
+    @SettingValue = N'True',
+    @SettingIsSecure = 0,
+    @UserID = -1
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
