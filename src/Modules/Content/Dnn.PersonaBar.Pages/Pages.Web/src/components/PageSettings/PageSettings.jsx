@@ -74,6 +74,7 @@ class PageSettings extends Component {
                                 onChangeField={onChangeField} />
                         </div>
                     </Tabs>
+                    {buttons}
                 </div>
             </Tabs>
         );
