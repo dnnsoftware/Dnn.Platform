@@ -21,7 +21,9 @@
 #region Usings
 
 using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 
@@ -53,27 +55,39 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("message")]
         public string Message { get; set; }
 
+        [JsonProperty("logs")]
+        public IList<InstallerLogEntry> Logs { get; set; }
+
         public ParseResultDto()
         {
-            
+
         }
 
         public ParseResultDto(PackageInfo package) : base(Null.NullInteger, package)
         {
-            
+
         }
 
-        public void Failed(string message, IList<string> logs = null)
+        public void Failed(string message, IList<LogEntry> logs = null)
         {
             Success = false;
             Message = message;
+            AddLogs(logs);
         }
 
-        public void Succeed(IList<string> logs)
+        public void Succeed(IList<LogEntry> logs)
         {
             Success = true;
             Message = string.Empty;
+            AddLogs(logs);
         }
 
+        public void AddLogs(IEnumerable<LogEntry> logs)
+        {
+            if (logs == null)
+                Logs = new List<InstallerLogEntry>();
+            else
+                Logs = logs.Select(l => new InstallerLogEntry { Type = l.Type.ToString(), Description = l.Description }).ToList();
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Portals;
@@ -52,10 +53,11 @@ namespace Dnn.PersonaBar.Extensions.Components
                         parseResult.LegacyError = installer.InstallerInfo.LegacyError;
                         parseResult.HasInvalidFiles = !installer.InstallerInfo.HasValidFiles;
                         parseResult.AlreadyInstalled = installer.InstallerInfo.Installed;
+                        parseResult.AddLogs(installer.InstallerInfo.Log.Logs);
                     }
                     else
                     {
-                        parseResult.Failed("InvalidFile");
+                        parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
                     }
 
                     DeleteTempInstallFiles(installer);
