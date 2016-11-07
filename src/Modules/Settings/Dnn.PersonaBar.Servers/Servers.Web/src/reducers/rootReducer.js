@@ -6,6 +6,7 @@ import server from "./serverReducer";
 import applicationTab from "./applicationTabReducer";
 import databaseTab from "./databaseTabReducer";
 import smtpServer from "./smtpServerTabReducer";
+import logsTab from "./logsTabReducer";
 
 const rootReducer = combineReducers({
     pagination,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     server,
     applicationTab,
     databaseTab,
-    smtpServer
+    smtpServer,
+    logsTab
 });
 
 export default rootReducer;

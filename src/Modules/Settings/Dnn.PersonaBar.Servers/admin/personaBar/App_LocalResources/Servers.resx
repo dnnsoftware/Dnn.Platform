@@ -453,4 +453,19 @@
   <data name="SMTPNTLM.Text" xml:space="preserve">
     <value>NTLM</value>
   </data>
+  <data name="errorMessageLoadingLog.Text" xml:space="preserve">
+    <value>Error loading log.</value>
+  </data>
+  <data name="errorMessageLoadingLogsTab.Text" xml:space="preserve">
+    <value>Error loading Logs Tab</value>
+  </data>
+  <data name="Logs_LogFiles.Text" xml:space="preserve">
+    <value>Log Files:</value>
+  </data>
+  <data name="Logs_LogFilesDefaultOption.Text" xml:space="preserve">
+    <value>Please select a log file to view</value>
+  </data>
+  <data name="Logs_LogFilesTooltip.Text" xml:space="preserve">
+    <value>List of log files available to view.</value>
+  </data>
 </root>
