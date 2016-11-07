@@ -189,7 +189,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 }
 
                 roleGroup = RoleController.GetRoleGroups(PortalId).Cast<RoleGroupInfo>()
-                    .FirstOrDefault(r => r.RoleGroupName == roleGroupDto.Name);
+                    .FirstOrDefault(r => r.RoleGroupName == roleGroupDto.Name?.Trim());
 
                 return Request.CreateResponse(HttpStatusCode.OK, RoleGroupDto.FromRoleGroupInfo(roleGroup));
             }

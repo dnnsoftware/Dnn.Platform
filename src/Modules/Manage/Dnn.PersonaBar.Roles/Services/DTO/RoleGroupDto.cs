@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
             return new RoleGroupDto()
             {
                 Id = roleGroup.RoleGroupID,
-                Name = roleGroup.RoleGroupName,
+                Name = roleGroup.RoleGroupName?.Trim(),
                 Description = roleGroup.Description,
                 RolesCount = roleGroup.Roles?.Count ?? 0
             };
@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
             return new RoleGroupInfo()
             {
                 RoleGroupID = Id,
-                RoleGroupName = Name,
+                RoleGroupName = Name?.Trim(),
                 Description = Description ?? ""
             };
         }
