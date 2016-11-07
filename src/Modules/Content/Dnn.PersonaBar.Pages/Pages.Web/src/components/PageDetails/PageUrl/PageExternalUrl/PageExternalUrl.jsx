@@ -3,6 +3,7 @@ import styles from "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import InputGroup from "dnn-input-group";
 import localization from "../../../../localization";
+import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
 class PageExternalUrl extends Component {
 
@@ -18,11 +19,14 @@ class PageExternalUrl extends Component {
             <div className={styles.pageExternalUrl}>
                 <InputGroup>
                     <SingleLineInputWithError
+                        className="external-url-input"
                         label={localization.get("External URL")}
                         tooltipMessage={localization.get("external_url_tooltip")}    
                         value={page.title}
                         onChange={this.onChangeField.bind(this, "title")} />
                 </InputGroup>
+                <PageUrlCommons {...this.props} />
+                <div style={{clear: "both"}}></div>
             </div>
         );
     }

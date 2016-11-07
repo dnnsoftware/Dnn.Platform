@@ -1,7 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
 import Switch from "dnn-switch";
 import localization from "../../../../localization";
 import Label from "dnn-label";
@@ -15,12 +13,13 @@ class PageUrlCommons extends Component {
     }
 
     render() {
-        const {page} = this.props;
+        const {page, display} = this.props;
+        const gridClass = "page-url-commons-grid " + display; 
         
         return (
             <div className={styles.pageUrlCommons}>
-                <GridSystem className="page-url-commons-grid">
-                    <GridCell className="left-column">
+                <div className={gridClass}>
+                    <div className="left-column">
                         <Label
                             labelType="inline"
                             tooltipMessage={localization.get("permanent_redirect_tooltip")}
@@ -30,8 +29,8 @@ class PageUrlCommons extends Component {
                             labelHidden={true}
                             value={page.permanentRedirect}
                             onChange={this.onChangeField.bind(this, "permanentRedirect")} />
-                    </GridCell>
-                    <GridCell className="right-column">
+                    </div>
+                    <div className="right-column">
                         <Label
                             labelType="inline"
                             tooltipMessage={localization.get("open_new_window_tooltip")}
@@ -41,9 +40,8 @@ class PageUrlCommons extends Component {
                             labelHidden={true}
                             value={page.openNewWindow}
                             onChange={this.onChangeField.bind(this, "openNewWindow")} />
-                    </GridCell>
-                </GridSystem>
-                <div style={{clear: "both"}}></div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -51,7 +49,12 @@ class PageUrlCommons extends Component {
 
 PageUrlCommons.propTypes = {
     page: PropTypes.object.isRequired,
-    onChangeField: PropTypes.func.isRequired
+    onChangeField: PropTypes.func.isRequired,
+    display: PropTypes.oneOf(["horizontal", "vertical"]).isRequired
+};
+
+PageUrlCommons.defaultProps = {
+    display: "horizontal" 
 };
 
 export default PageUrlCommons;

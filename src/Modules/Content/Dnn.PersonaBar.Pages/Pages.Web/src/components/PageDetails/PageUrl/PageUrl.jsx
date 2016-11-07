@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from "react";
 import PageExisting from "./PageExisting/PageExisting";
 import PageFile from "./PageFile/PageFile";
 import PageExternalUrl from "./PageExternalUrl/PageExternalUrl";
-import PageUrlCommons from "./PageUrlCommons/PageUrlCommons";
 import styles from "./style.less";
 
 class PageUrl extends Component {
@@ -25,7 +24,6 @@ class PageUrl extends Component {
         return (
             <div className={styles.pageUrl}>
                 <DetailComponent {...this.props} />
-                <PageUrlCommons {...this.props} />
             </div>
         );
     }

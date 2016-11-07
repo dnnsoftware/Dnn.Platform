@@ -4,6 +4,7 @@ import FileUpload from "dnn-file-upload";
 import utils from "../../../../utils";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
+import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
 class PageFile extends Component {
 
@@ -27,9 +28,10 @@ class PageFile extends Component {
                             onImageSelect={this.onFileSelect.bind(this)} />
                     </GridCell>
                     <GridCell className="right-column">
-                        
+                        <PageUrlCommons {...this.props} display="vertical" />
                     </GridCell>
                 </GridSystem>
+                <div style={{clear: "both"}}></div>
             </div>
         );
     }

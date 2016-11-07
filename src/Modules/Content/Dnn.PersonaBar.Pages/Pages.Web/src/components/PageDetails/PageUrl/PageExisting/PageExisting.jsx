@@ -5,6 +5,7 @@ import PagePicker from "dnn-page-picker";
 import utils from "../../../../utils";
 import localization from "../../../../localization";
 import Label from "dnn-label";
+import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
 const noneSpecifiedText = "<" + localization.get("NoneSpecified") + ">";
 
@@ -45,6 +46,8 @@ class PageExisting extends Component {
                         CountText={"{0} Results"}
                         PortalTabsParameters={PageToTestParameters} />
                 </InputGroup>
+                <PageUrlCommons {...this.props} />
+                <div style={{clear: "both"}}></div>
             </div>
         );
     }
