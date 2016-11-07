@@ -25,6 +25,26 @@ const smtpServeTabActions = {
                 });
             });        
         };
+    },
+    changeSmtpServerMode(smtpServeMode) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_SMTP_SERVER_MODE,
+                payload: {
+                    smtpServeMode
+                }
+            });
+        };
+    },
+    changeSmtpAuthentication(smtpAuthentication) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_SMTP_AUTHENTICATION,
+                payload: {
+                    smtpAuthentication
+                }
+            });
+        };
     }
 };
 

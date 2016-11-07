@@ -20,6 +20,13 @@ export default function smtpServerTabReducer(state = {
                 smtpServerInfo: {},
                 errorMessage:  action.payload.errorMessage
             };  
+        case ActionTypes.CHANGE_SMTP_SERVER_MODE:
+            return { ...state,
+                smtpServerInfo: {
+                    ...state.smtpServerInfo, 
+                    smtpServerMode: action.payload.smtpServeMode
+                }
+            };
         default:
             return state; 
     }

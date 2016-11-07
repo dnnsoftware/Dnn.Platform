@@ -33,6 +33,7 @@ using Dnn.PersonaBar.Servers.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
@@ -50,16 +51,32 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
+                var portalId = PortalSettings.Current.PortalId;
+
                 var smtpSettings = new
                 {
-                    smtpServer = Host.SMTPServer,
-                    smtpConnectionLimit = Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture),
-                    smtpMaxIdleTime = Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture),
-                    smtpAuthentication = Host.SMTPAuthentication,
-                    enableSmtpSsl = Host.EnableSMTPSSL,
-                    smtpUserName = Host.SMTPUsername,
-                    smtpPassword = new Regex(".").Replace(Host.SMTPPassword, "*"),
-                    messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
+                    smtpServerMode = PortalController.GetPortalSetting("SMTPmode", portalId, "h"),
+                    host = new
+                    {
+                        smtpServer = HostController.Instance.GetString("SMTPServer"),
+                        smtpConnectionLimit = HostController.Instance.GetInteger("SMTPConnectionLimit", 1),
+                        smtpMaxIdleTime = HostController.Instance.GetInteger("SMTPMaxIdleTime", 0),
+                        smtpAuthentication = HostController.Instance.GetString("SMTPAuthentication"),
+                        enableSmtpSsl = HostController.Instance.GetBoolean("SMTPEnableSSL", false),
+                        smtpUserName = HostController.Instance.GetString("SMTPUsername"),
+                        smtpPassword = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()),
+                        messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
+                    },
+                    site = new 
+                    {
+                        smtpServer = PortalController.GetPortalSetting("SMTPServer", portalId, string.Empty),
+                        smtpConnectionLimit = PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", portalId, 1),
+                        smtpMaxIdleTime = PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", portalId, 0),
+                        smtpAuthentication = PortalController.GetPortalSetting("SMTPAuthentication", portalId, "0"),
+                        enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
+                        smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
+                        smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
+                    }
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }
