@@ -117,194 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BasicSettings.Text" xml:space="preserve">
-    <value>Basic configuration</value>
-  </data>
-  <data name="cmdCancel.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="cmdExport.Text" xml:space="preserve">
-    <value>Create Template</value>
-  </data>
-  <data name="ControlTitle_template.Text" xml:space="preserve">
-    <value>Create Site Template</value>
-  </data>
-  <data name="DefaultLanguage.Text" xml:space="preserve">
-    <value>{0} is the default language of the selected site</value>
-  </data>
   <data name="ErrorPages.Text" xml:space="preserve">
     <value>You must select at least one page to be exported.</value>
-  </data>
-  <data name="ExportedMessage.Text" xml:space="preserve">
-    <value>The new site template has been saved in folder:&lt;br/&gt;&lt;b&gt;{0}&lt;/b&gt;</value>
-  </data>
-  <data name="lblAdminOnly.Text" xml:space="preserve">
-    <value>Visible to Administrators only</value>
-  </data>
-  <data name="lblDisabled.Text" xml:space="preserve">
-    <value>Page is disabled</value>
-  </data>
-  <data name="lblEveryone.Text" xml:space="preserve">
-    <value>Page is visible to everyone</value>
-  </data>
-  <data name="lblFiles.Help" xml:space="preserve">
-    <value>Check this box to export all site files and folders when creating the new template.</value>
-  </data>
-  <data name="lblFiles.Text" xml:space="preserve">
-    <value>Include Files</value>
-  </data>
-  <data name="lblHidden.Text" xml:space="preserve">
-    <value>Page is hidden in menu</value>
-  </data>
-  <data name="lblHome.Text" xml:space="preserve">
-    <value>Homepage of the site</value>
-  </data>
-  <data name="lblLanguages.Help" xml:space="preserve">
-    <value>Select each of the secondary languages to be included in a multi-language template, or select the language of a single language site.</value>
-  </data>
-  <data name="lblLanguages.Text" xml:space="preserve">
-    <value>Export Languages</value>
-  </data>
-  <data name="lblModules.Help" xml:space="preserve">
-    <value>Check this box to include module deploy permissions in the exported template. If this option is selected, it may also be necessary to export Roles if any custom roles has deployment permissions.</value>
-  </data>
-  <data name="lblModules.Text" xml:space="preserve">
-    <value>Include Module Deployment Permissions</value>
-  </data>
-  <data name="lblMultilanguage.Help" xml:space="preserve">
-    <value>Check this box to create a template for a multi-language site and select each language to be included in addition to the default language.</value>
-  </data>
-  <data name="lblMultilanguage.Text" xml:space="preserve">
-    <value>Export As Multilingual Site</value>
-  </data>
-  <data name="lblNote.Text" xml:space="preserve">
-    <value>The default language ({0}) will always be exported.</value>
-  </data>
-  <data name="lblNoteSingleLanguage.Text" xml:space="preserve">
-    <value>Note: the default language is &lt;b&gt;{0}&lt;/b&gt;</value>
-  </data>
-  <data name="lblPages.Help" xml:space="preserve">
-    <value>Select the pages to be exported. &lt;br /&gt;If you intend to use the exported template to create a new site, please be sure to select all, or selected Admin pages. If no Admin pages are available in the template, the new site will not have an Admin menu.</value>
-  </data>
-  <data name="lblPages.Text" xml:space="preserve">
-    <value>Pages to Export</value>
-  </data>
-  <data name="lblProfile.Help" xml:space="preserve">
-    <value>Check this box to include custom profile property definitions in the template.</value>
-  </data>
-  <data name="lblProfile.Text" xml:space="preserve">
-    <value>Include Profile Properties</value>
-  </data>
-  <data name="lblRedirect.Text" xml:space="preserve">
-    <value>Page redirection</value>
-  </data>
-  <data name="lblRegistered.Text" xml:space="preserve">
-    <value>Visible to registered users</value>
-  </data>
-  <data name="lblRoles.Help" xml:space="preserve">
-    <value>Check this box to export all security roles when creating the new template.</value>
-  </data>
-  <data name="lblRoles.Text" xml:space="preserve">
-    <value>Include Roles</value>
-  </data>
-  <data name="lblSecure.Text" xml:space="preserve">
-    <value>Visible to dedicated roles only</value>
-  </data>
-  <data name="lblSelectLanguages.Text" xml:space="preserve">
-    <value>-- Select Languages --</value>
-  </data>
-  <data name="ModuleHelp.Text" xml:space="preserve">
-    <value>&lt;h1&gt;About Templates&lt;/h1&gt;&lt;p&gt;Allows you to export a site template to be used to build new sites.&lt;/p&gt;</value>
   </data>
   <data name="nav_Pages.Text" xml:space="preserve">
     <value>Pages</value>
   </data>
-  <data name="plContent.Help" xml:space="preserve">
-    <value>Check this box to include the content within iPortable modules.</value>
-  </data>
-  <data name="plContent.Text" xml:space="preserve">
-    <value>Include Content</value>
-  </data>
-  <data name="plDescription.Help" xml:space="preserve">
-    <value>Enter a description for the template file.</value>
-  </data>
-  <data name="plDescription.Text" xml:space="preserve">
-    <value>Template Description</value>
-  </data>
-  <data name="plPortals.Help" xml:space="preserve">
-    <value>Select the site to export.</value>
-  </data>
-  <data name="plPortals.Text" xml:space="preserve">
-    <value>Site</value>
-  </data>
-  <data name="plTemplateName.Help" xml:space="preserve">
-    <value>Enter a name for the template file to be created.</value>
-  </data>
-  <data name="plTemplateName.Text" xml:space="preserve">
-    <value>Template File Name</value>
-  </data>
-  <data name="PortalSetup.Text" xml:space="preserve">
-    <value>Site Setup</value>
-  </data>
-  <data name="titleTemplateInfo.Text" xml:space="preserve">
-    <value>Site Template Info</value>
-  </data>
-  <data name="valDescription.ErrorMessage" xml:space="preserve">
-    <value>Template description is required.</value>
-  </data>
-  <data name="valFileName.ErrorMessage" xml:space="preserve">
-    <value>Template file name is required.</value>
-  </data>
   <data name="SiteDetails_Pages.Text" xml:space="preserve">
     <value>Pages</value>
-  </data>
-  <data name="SiteDetails_SiteID.Text" xml:space="preserve">
-    <value>Site ID</value>
-  </data>
-  <data name="SiteDetails_Updated.Text" xml:space="preserve">
-    <value>Updated</value>
-  </data>
-  <data name="SiteDetails_Users.Text" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="CancelPortalDelete.Text" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="ConfirmPortalDelete.Text" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="deletePortal.Text" xml:space="preserve">
-    <value>Are you sure you want to delete {0}?</value>
-  </data>
-  <data name="AddNewSite.Header" xml:space="preserve">
-    <value>Add New Site</value>
-  </data>
-  <data name="AssignCurrentUserAsAdmin.Label" xml:space="preserve">
-    <value>Assign Current User as Administrator</value>
-  </data>
-  <data name="cmdCreateSite.Text" xml:space="preserve">
-    <value>Create Site</value>
   </data>
   <data name="Description.Label" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="Directory.Text" xml:space="preserve">
-    <value>Directory</value>
-  </data>
-  <data name="Domain.Text" xml:space="preserve">
-    <value>Domain</value>
-  </data>
   <data name="HomeDirectory.Label" xml:space="preserve">
     <value>Home Directory</value>
-  </data>
-  <data name="SiteTemplate.Label" xml:space="preserve">
-    <value>Site Template</value>
-  </data>
-  <data name="SiteType.Label" xml:space="preserve">
-    <value>Site Type:</value>
-  </data>
-  <data name="SiteUrl.Label" xml:space="preserve">
-    <value>Site URL</value>
   </data>
   <data name="Title.Label" xml:space="preserve">
     <value>Title</value>
@@ -330,9 +156,6 @@
   <data name="DragPageTooltip.Text" xml:space="preserve">
     <value>Drag Page into Location</value>
   </data>
-  <data name="DragInvalid.Text" xml:space="preserve">
-    <value>You can't drag a page as a child of itself.</value>
-  </data>
   <data name="DeletePageConfirm.Text" xml:space="preserve">
     <value>&lt;p&gt;Please confirm you wish to delete this page.&lt;/p&gt;</value>
   </data>
@@ -347,8 +170,5 @@
   </data>
   <data name="page_title_tooltip" xml:space="preserve">
     <value>Page Title</value>
-  </data>
-  <data name="System" xml:space="preserve">
-    <value>System</value>
   </data>
 </root>
