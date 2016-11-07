@@ -10,20 +10,16 @@ class Modules extends Component {
         // TODO: to be implemented
     }
 
-    onEditModule() {
-        // TODO: to be implemented
-    }
-
     getModules() {
-        const {modules} = this.props;
+        const {modules, absolutePageUrl} = this.props;
 
         return modules.map((module, index) => {
             return (
                 <ModulesRow 
                     key={index}
                     module={module} 
-                    onDelete={this.onDeleteModule.bind(this)}
-                    onEdit={this.onEditModule.bind(this)} />
+                    absolutePageUrl={absolutePageUrl}
+                    onDelete={this.onDeleteModule.bind(this)} />
             );
         });
     }
@@ -47,7 +43,8 @@ class Modules extends Component {
 }
 
 Modules.propTypes = {
-    modules: PropTypes.array
+    modules: PropTypes.array.isRequired,
+    absolutePageUrl: PropTypes.string.isRequired
 };
 
 export default Modules;

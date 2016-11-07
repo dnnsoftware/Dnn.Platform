@@ -67,7 +67,9 @@ class PageSettings extends Component {
                         
                         type="secondary">
                         <div className="dnn-simple-tab-item">
-                            <Modules modules={selectedPage.modules}/>
+                            <Modules 
+                                modules={selectedPage.modules} 
+                                absolutePageUrl={selectedPage.absoluteUrl} />
                         </div>
                         <div className="dnn-simple-tab-item"></div>
                         <div className="dnn-simple-tab-item"></div>
