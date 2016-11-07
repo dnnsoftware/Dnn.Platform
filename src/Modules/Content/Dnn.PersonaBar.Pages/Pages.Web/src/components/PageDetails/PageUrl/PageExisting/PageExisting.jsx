@@ -40,7 +40,7 @@ class PageExisting extends Component {
                     <PagePicker 
                         serviceFramework={serviceFramework}
                         style={{ width: "100%", zIndex: 2 }}
-                        OnSelect={this.onChangeField.bind(this, "url")}
+                        OnSelect={this.onChangeField.bind(this, "internalUrl")}
                         defaultLabel={noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}

@@ -2,6 +2,7 @@ import React, {Component, PropTypes } from "react";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import InputGroup from "dnn-input-group";
+import SingleLineInput from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import localization from "../../../localization";
@@ -21,9 +22,19 @@ class PageDetails extends Component {
         onChangeField("tags", tags.join(","));
     }
 
+    onChangeUrl(event) {
+        const {onChangeField} = this.props;
+        let value = event.target.value;
+        if (!value.startsWith("/")) {
+            value = "/" + value;
+        }  
+        onChangeField("url", value);
+    }
+
     render() {
         const {page, errors} = this.props;
         const tags = page.tags ? page.tags.split(",") : [];
+        const domainName = window.location.host;
 
         return (
             <div className={styles.pageStandard}>
@@ -58,19 +69,20 @@ class PageDetails extends Component {
                         onChange={this.onChangeField.bind(this, "keywords")} />
                 </InputGroup>
                 <GridSystem>
-                    <GridCell className="left-column">
-                        <InputGroup>
-                            <Label label={localization.get("Tags")}/>
-                            <Tags 
-                                tags={tags} 
-                                onUpdateTags={this.onChangeTags.bind(this)}/>
-                        </InputGroup>
+                    <GridCell className="left-column input-cell">
+                        <Label label={localization.get("Tags")}/>
+                        <Tags 
+                            tags={tags} 
+                            onUpdateTags={this.onChangeTags.bind(this)}/>
                     </GridCell>
-                    <GridCell className="right-column">
-                        <SingleLineInputWithError
-                            label={localization.get("URL")}
-                            value={page.url}
-                            enabled={false} />
+                    <GridCell className="right-column input-cell">
+                        <Label label={localization.get("URL")}/>
+                        <InputGroup>
+                            <span className="input-group-addon">{domainName}</span>
+                            <SingleLineInput 
+                                value={page.url}
+                                onChange={this.onChangeUrl.bind(this)} />
+                        </InputGroup>
                     </GridCell>
                 </GridSystem>
                 <div style={{clear: "both"}}></div>

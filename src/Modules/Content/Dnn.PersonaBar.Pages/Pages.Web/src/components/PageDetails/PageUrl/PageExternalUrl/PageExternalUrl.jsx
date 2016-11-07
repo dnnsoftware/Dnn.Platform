@@ -22,8 +22,8 @@ class PageExternalUrl extends Component {
                         className="external-url-input"
                         label={localization.get("External URL")}
                         tooltipMessage={localization.get("external_url_tooltip")}    
-                        value={page.title}
-                        onChange={this.onChangeField.bind(this, "title")} />
+                        value={page.internalUrl}
+                        onChange={this.onChangeField.bind(this, "internalUrl")} />
                 </InputGroup>
                 <PageUrlCommons {...this.props} />
                 <div style={{clear: "both"}}></div>

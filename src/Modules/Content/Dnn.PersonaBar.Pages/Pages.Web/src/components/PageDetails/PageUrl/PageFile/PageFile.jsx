@@ -9,7 +9,7 @@ import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 class PageFile extends Component {
 
     onFileSelect(value) {
-        this.props.onChangeField("url", "FileId=" + value.fileId);
+        this.props.onChangeField("internalUrl", "FileId=" + value.fileId);
         this.props.onChangeField("filePath", value.path);
     }
 

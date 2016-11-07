@@ -7,6 +7,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,6 +19,7 @@ using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
 
@@ -179,6 +181,26 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             var providers = from p in OutputCachingProvider.GetProviderList() select p.Key;
             return Request.CreateResponse(HttpStatusCode.OK, providers);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetPageUrlPreview(string url)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(url))
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Url = string.Empty });
+                }
+
+                var cleanedUrl = _pagesController.CleanTabUrl(url);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Url = cleanedUrl });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

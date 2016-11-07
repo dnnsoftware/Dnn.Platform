@@ -7,12 +7,12 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
     public static class Converters
     {
-
         public static T ConvertToPageItem<T>(TabInfo tab, IEnumerable<TabInfo> portalTabs) where T : PageItem, new()
         {
             return new T
@@ -59,7 +59,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 Keywords = keywords,
                 Tags = string.Join(",", from t in tab.Terms select t.Name),
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
-                Url = tab.Url,
+                Url = pageManagementController.GetTabUrl(tab),
+                InternalUrl = tab.Url,
                 Created = pageManagementController.GetCreatedInfo(tab),
                 Hierarchy = pageManagementController.GetTabHierarchy(tab),
                 Status = GetTabStatus(tab),

@@ -28,5 +28,12 @@ namespace Dnn.PersonaBar.Pages.Components
         PagePermissions GetPermissionsData(int pageId);
 
         void DeleteTabModule(int pageId, int moduleId);
+
+        /// <summary>
+        /// Returns a clean tab relative url based on Advanced Management Url settings
+        /// </summary>
+        /// <param name="url">Url not cleaned, this could containes blank space or invalid characters</param>
+        /// <returns>Cleaned Url</returns>
+        string CleanTabUrl(string url);
     }
 }

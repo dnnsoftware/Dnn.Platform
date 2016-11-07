@@ -40,6 +40,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "url")]
         public string Url { get; set; }
 
+        [DataMember(Name = "internalUrl")]
+        public string InternalUrl { get; set; }
+
         [DataMember(Name = "includeInMenu")]
         public bool IncludeInMenu { get; set; }
 

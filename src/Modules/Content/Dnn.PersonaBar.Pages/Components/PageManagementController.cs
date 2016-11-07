@@ -23,8 +23,11 @@ using System;
 using System.IO;
 using System.Linq;
 using Dnn.PersonaBar.Library;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
@@ -78,6 +81,43 @@ namespace Dnn.PersonaBar.Pages.Components
         protected override Func<IPageManagementController> GetFactory()
         {
             return () => new PageManagementController();
+        }
+
+        public string GetTabUrl(TabInfo tab)
+        {
+            var url = string.Empty;
+
+            if (tab.IsSuperTab || (Config.GetFriendlyUrlProvider() != "advanced"))
+            {
+                return url;
+            }
+
+            if (tab.TabUrls.Count > 0)
+            {
+                var tabUrl = tab.TabUrls.SingleOrDefault(t => t.IsSystem && t.HttpStatus == "200" && t.SeqNum == 0);
+
+                if (tabUrl != null)
+                {
+                    url = tabUrl.Url;
+                }
+            }
+
+            if (String.IsNullOrEmpty(url) && tab.TabID > -1 && !tab.IsSuperTab)
+            {
+                var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.PortalId);
+                var baseUrl = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
+                var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                                                                            baseUrl,
+                                                                            Globals.glbDefaultPage,
+                                                                            PortalSettings.PortalAlias.HTTPAlias,
+                                                                            false, //dnndev-27493 :we want any custom Urls that apply
+                                                                            friendlyUrlSettings,
+                                                                            Guid.Empty);
+
+                url = path.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), "");
+            }
+
+            return url;
         }
     }
 }

@@ -30,5 +30,7 @@ namespace Dnn.PersonaBar.Pages.Components
         string GetCreatedInfo(TabInfo tab);
 
         string GetTabHierarchy(TabInfo tab);
+
+        string GetTabUrl(TabInfo tab);
     }
 }
