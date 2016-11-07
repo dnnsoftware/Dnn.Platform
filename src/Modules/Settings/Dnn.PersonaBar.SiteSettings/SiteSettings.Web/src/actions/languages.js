@@ -152,6 +152,40 @@ const languagesActions = {
                 }
             });
         };
+    },
+    getModuleList(type, callback) {
+        return (dispatch) => {
+            ApplicationService.getModuleList(type, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_PACK_MODULE_LIST,
+                    data: {
+                        modules: data.Modules
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    createLanguagePack(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.createLanguagePack(payload, data => {
+                dispatch({
+                    type: ActionTypes.CREATED_SITESETTINGS_LANGUAGE_PACK,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

@@ -98,14 +98,6 @@ class LanguageSettingsPanelBody extends Component {
         });
     }
 
-    onCreateLanguagePack(event) {
-        const {props, state} = this;
-    }
-
-    onVerifyLanguageResources(event){
-        const {props, state} = this;
-    }
-
     getLanguageOptions() {
         const {props, state} = this;
         let options = [];
@@ -260,7 +252,7 @@ class LanguageSettingsPanelBody extends Component {
                         {isHost &&
                             <Button
                                 type="secondary"
-                                onClick={this.onCreateLanguagePack.bind(this)}>
+                                onClick={props.openLanguagePack.bind(this)}>
                                 {resx.get("CreateLanguagePack")}
                             </Button>
                         }
@@ -286,7 +278,8 @@ LanguageSettingsPanelBody.propTypes = {
     languageDisplayModes: PropTypes.array,
     languageSettingsClientModified: PropTypes.bool,
     portalId: PropTypes.number,
-    openLanguageVerifier: PropTypes.func
+    openLanguageVerifier: PropTypes.func,
+    openLanguagePack: PropTypes.func
 };
 
 function mapStateToProps(state) {

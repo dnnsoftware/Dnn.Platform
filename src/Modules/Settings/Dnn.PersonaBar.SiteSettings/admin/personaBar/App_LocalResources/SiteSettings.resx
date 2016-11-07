@@ -963,6 +963,9 @@
   <data name="AuthSystem.LangPackType" xml:space="preserve">
     <value>Auth System</value>
   </data>
+  <data name="ModuleRequired.Error" xml:space="preserve">
+    <value>Please select at least one module from the list.</value>
+  </data>
   <data name="BackToSiteSettings.Text" xml:space="preserve">
     <value>&lt; BACK TO SITE SETTINGS</value>
   </data>

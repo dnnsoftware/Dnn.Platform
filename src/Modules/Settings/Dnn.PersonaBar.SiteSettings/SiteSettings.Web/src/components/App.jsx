@@ -9,6 +9,7 @@ import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import HtmlEditorManager from "./moreSettings/htmlEditorManager";
 import LanguageVerifier from "./languageSettings/languageVerifier";
+import LanguagePack from "./languageSettings/languagePack";
 import EditLanguagePanel from "./editLanguagePanel";
 import resx from "../resources";
 require('es6-object-assign').polyfill();
@@ -45,6 +46,16 @@ class App extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(0));
     }
 
+    openLanguagePack() {
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(4));
+    }
+
+    closeLanguagePack(){
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(0));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -54,6 +65,7 @@ class App extends Component {
                     </SocialPanelHeader>
                     <Body
                         portalId={props.portalId}
+                        openLanguagePack={this.openLanguagePack.bind(this)}
                         openLanguageVerifier={this.openLanguageVerifier.bind(this)}
                         openHtmlEditorManager={this.openHtmlEditorManager.bind(this)}
                         />
@@ -71,6 +83,10 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 3}>
                     <SocialPanelHeader title={resx.get("LanguageEditor.Header")}/>
                     <EditLanguagePanel backToSiteSettings={this.closeLanguageEditor.bind(this)} />
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 4}>
+                    <SocialPanelHeader title={resx.get("CreateLanguagePack")}/>
+                    <LanguagePack closeLanguagePack={this.closeLanguagePack.bind(this)} />
                 </PersonaBarPage>
             </div>
         );

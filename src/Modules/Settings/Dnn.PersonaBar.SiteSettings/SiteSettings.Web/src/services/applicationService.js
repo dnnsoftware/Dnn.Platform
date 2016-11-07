@@ -227,6 +227,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("VerifyLanguageResourceFiles", {}, callback);
     } 
+
+    getModuleList(type, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetModuleList?type=" + type, {}, callback);
+    } 
+
+    createLanguagePack(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("CreateLanguagePack", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

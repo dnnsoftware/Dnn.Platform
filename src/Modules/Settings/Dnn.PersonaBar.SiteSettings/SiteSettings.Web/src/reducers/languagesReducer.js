@@ -53,6 +53,10 @@ export default function languages(state = {
             return { ...state,
                 verificationResults: action.data.verificationResults
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_PACK_MODULE_LIST:
+            return { ...state,
+                modules: action.data.modules
+            };
         default:
             return state;
     }
