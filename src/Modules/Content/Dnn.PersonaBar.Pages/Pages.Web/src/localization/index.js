@@ -1,7 +1,7 @@
 const resx = {
     get(key) {
         const util = window.dnn.initPages();
-        let moduleName = util.moduleName;
+        const moduleName = util.moduleName;
         return util.utilities.getResx(moduleName, key);
     }	
 };

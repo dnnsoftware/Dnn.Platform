@@ -3,12 +3,8 @@ import { pageHierarchyActions as PageHierarchyActions } from "../actions";
 
 const application = {
     init(initCallback) {
-        // This setting is required and define the public path 
-        // to allow the web application to download assets on demand 
-        // eslint-disable-next-line no-undef
-        // __webpack_public_path__ = options.publicPath;        
-        let options = window.dnn[initCallback]();
 
+        const options = window.dnn[initCallback]();
         utilities.init(options);
 
         // delay the styles loading after the __webpack_public_path__ is set
