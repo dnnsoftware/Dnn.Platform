@@ -1,27 +1,39 @@
-import serviceFramework from "./serviceFramework";
+import Api from "./api";
 
 const PageService = function () {
 
+    let api = null;
+    function getApi() {
+        if (api === null) {
+            api = new Api(window.dnn.pages.apiController);
+        }        
+        return api;
+    }
+
     const getPage = function (pageId) {
-        return serviceFramework.get("GetPageDetails", { pageId })
+        const api = getApi();
+        return api.get("GetPageDetails", { pageId })
             .then(response => toFrontEndPage(response));
     };
 
     const savePage = function (page) {
-        return serviceFramework.post("SavePageDetails", toBackEndPage(page));
+        const api = getApi();
+        return api.post("SavePageDetails", toBackEndPage(page));
     };
 
     const deletePageModule = function (module) {
-        // TODO: Review payload
-        return serviceFramework.post("DeletePageModule", module);
+        const api = getApi();
+        return api.post("DeletePageModule", module);
     };
 
     const getPageUrlPreview = function (value) {
-        return serviceFramework.get("GetPageUrlPreview", { url: value });
+        const api = getApi();
+        return api.get("GetPageUrlPreview", { url: value });
     };
 
     const getNewPage = function () {
-        return serviceFramework.get("GetDefaultPermissions")
+        const api = getApi();
+        return api.get("GetDefaultPermissions")
             .then(permissions => {
                 return {
                     tabId: 0,
@@ -58,7 +70,8 @@ const PageService = function () {
     };
 
     const getCacheProviderList = function () {
-        return serviceFramework.get("GetCacheProviderList");
+        const api = getApi();
+        return api.get("GetCacheProviderList");
     };
     
     const toFrontEndPage = function (page) {

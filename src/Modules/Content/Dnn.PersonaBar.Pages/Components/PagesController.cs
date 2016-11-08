@@ -622,6 +622,18 @@ namespace Dnn.PersonaBar.Pages.Components
             return '/' + urlPath;
         }
 
+        public void CopyThemeToDescendantPages(int pageId, Theme theme)
+        {
+            var portalId = PortalSettings.PortalId;
+            var tab = _tabController.GetTab(pageId, portalId, false);
+            if (tab == null)
+            {
+                throw new PageNotFoundException();
+            }
+
+            TabController.CopyDesignToChildren(tab, theme.SkinSrc, theme.ContainerSrc);
+        }
+
         public void CreateOrUpdateContentItem(TabInfo tab)
         {
             var contentController = Util.GetContentController();

@@ -35,5 +35,12 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <param name="url">Url not cleaned, this could containes blank space or invalid characters</param>
         /// <returns>Cleaned Url</returns>
         string CleanTabUrl(string url);
+
+        /// <summary>
+        /// Copy the given theme to all descendant pages
+        /// </summary>
+        /// <param name="pageId">page identifier</param>
+        /// <param name="theme">Theme</param>
+        void CopyThemeToDescendantPages(int pageId, Theme theme);
     }
 }

@@ -7,7 +7,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -73,15 +72,46 @@ namespace Dnn.PersonaBar.Pages.Components
                 IsSecure = tab.IsSecure,
                 AllowIndex = AllowIndex(tab),
                 CacheProvider = (string)tab.TabSettings["CacheProvider"],
-                CacheDuration = tab.TabSettings["CacheDuration"] != null ? int.Parse((string)tab.TabSettings["CacheDuration"]) : (int?)null,
-                CacheIncludeExclude = tab.TabSettings["CacheIncludeExclude"] != null ? (string)tab.TabSettings["CacheIncludeExclude"] == "1" : (bool?)null,
+                CacheDuration = CacheDuration(tab),
+                CacheIncludeExclude = CacheIncludeExclude(tab),
                 CacheIncludeVaryBy = (string)tab.TabSettings["IncludeVaryBy"],
                 CacheExcludeVaryBy = (string)tab.TabSettings["ExcludeVaryBy"],
-                CacheMaxVaryByCount = tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null,
+                CacheMaxVaryByCount = MaxVaryByCount(tab),
                 PageHeadText = tab.PageHeadText,
                 SiteMapPriority = tab.SiteMapPriority,
                 PermanentRedirect = tab.PermanentRedirect,
-                LinkNewWindow = tab.TabSettings["LinkNewWindow"] != null && (string)tab.TabSettings["LinkNewWindow"] == "True",
+                LinkNewWindow = LinkNewWindow(tab),
+                PageStylesheet = (string)tab.TabSettings["CustomStylesheet"],
+                Theme = GetTabTheme(tab)
+            };
+        }
+
+        private static int? CacheDuration(TabInfo tab)
+        {
+            return tab.TabSettings["CacheDuration"] != null ? int.Parse((string)tab.TabSettings["CacheDuration"]) : (int?)null;
+        }
+
+        private static bool? CacheIncludeExclude(TabInfo tab)
+        {
+            return tab.TabSettings["CacheIncludeExclude"] != null ? (string)tab.TabSettings["CacheIncludeExclude"] == "1" : (bool?)null;
+        }
+
+        private static bool LinkNewWindow(TabInfo tab)
+        {
+            return tab.TabSettings["LinkNewWindow"] != null && (string)tab.TabSettings["LinkNewWindow"] == "True";
+        }
+
+        private static int? MaxVaryByCount(TabInfo tab)
+        {
+            return tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null;
+        }
+
+        private static Theme GetTabTheme(TabInfo tab)
+        {
+            return new Theme
+            {
+                SkinSrc = tab.SkinSrc,
+                ContainerSrc = tab.ContainerSrc
             };
         }
 

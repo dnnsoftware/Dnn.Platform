@@ -10,15 +10,6 @@ function serializeQueryStringParameters(obj) {
     return s.join("&");
 }
 
-function getServiceFramework() {
-    const sf = utils.getServiceFramework(); 
-
-    sf.moduleRoot = "PersonaBar/Admin";
-    sf.controller = window.dnn.pages.apiController;
-
-    return sf;
-}
-
 function getErrorMessageFromXHRError(error) {
     if (error && 
         error.responseJSON && 
@@ -32,24 +23,36 @@ function getErrorMessageFromXHRError(error) {
     };
 }
 
-const serviceFramework = {
+class Api {
+
+    constructor(controller) {
+        this.controller = controller;
+        this.moduleRoot = "PersonaBar/Admin";
+    }
+
+    getServiceFramework() {
+        const sf = utils.getServiceFramework(); 
+        sf.moduleRoot = this.moduleRoot;
+        sf.controller = this.controller;
+        return sf;
+    }
+
     get(method, searchParameters) {
-        const sf = getServiceFramework();
+        const sf = this.getServiceFramework();
         return new Promise((callback, errorCallback) => {
             sf.get(method + "?" + serializeQueryStringParameters(searchParameters), {}, callback, function onError(error) {
                 errorCallback(getErrorMessageFromXHRError(error));
             });
         });
-    },
+    }
 
     post(method, payload) {
-        const sf = getServiceFramework();
+        const sf = this.getServiceFramework();
         return new Promise((callback, errorCallback) => {
             sf.post(method, payload, callback, function onError(error) {
                 errorCallback(getErrorMessageFromXHRError(error));
             });
         });
     }
-};
-
-export default serviceFramework;
+}
+export default Api;

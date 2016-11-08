@@ -26,6 +26,7 @@ using DotNetNuke.Web.Api;
 namespace Dnn.PersonaBar.Pages.Services
 {
     [ServiceScope(Scope = ServiceScope.Admin)]
+    [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {
         private static readonly IPagesController _pagesController = Components.PagesController.Instance;
@@ -134,6 +135,14 @@ namespace Dnn.PersonaBar.Pages.Services
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CopyThemeToDescendantPages(CopyThemeRequest copyTheme)
+        {
+            _pagesController.CopyThemeToDescendantPages(copyTheme.PageId, copyTheme.Theme);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         // TODO: This should be a POST
