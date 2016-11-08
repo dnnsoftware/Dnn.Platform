@@ -273,4 +273,31 @@
   <data name="NoModules.Text" xml:space="preserve">
     <value>This page does not have any modules.</value>
   </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="CopyAppearanceToDescendantPages.Text" xml:space="preserve">
+    <value>Copy Appearance to Descendant Pages</value>
+  </data>
+  <data name="Layout.Text" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="PageContainer.Text" xml:space="preserve">
+    <value>Page Container</value>
+  </data>
+  <data name="PageStyleSheet.Text" xml:space="preserve">
+    <value>Page Stylesheet</value>
+  </data>
+  <data name="PageTheme.Text" xml:space="preserve">
+    <value>Page Theme</value>
+  </data>
+  <data name="PageThemeTooltip.Text" xml:space="preserve">
+    <value>The selected theme will be applied to this page.</value>
+  </data>
+  <data name="PreviewThemeLayoutAndContainer.Text" xml:space="preserve">
+    <value>Preview Theme Layout and Container</value>
+  </data>
 </root>

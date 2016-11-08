@@ -10,6 +10,7 @@ class Appearance extends Component {
 }
 
 Appearance.propTypes = {
+    page: PropTypes.object.isRequired
 };
 
 export default Appearance;
