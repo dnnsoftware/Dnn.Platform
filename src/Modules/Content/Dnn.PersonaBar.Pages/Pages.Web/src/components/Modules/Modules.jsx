@@ -47,21 +47,22 @@ class Modules extends Component {
         return (
             /* eslint-disable react/no-danger */
             <div className={styles.moduleContainer}>
-                <div className="title">
-                    <div className="module-icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
-                    <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
-                </div>
-
-                <div className="header-row">
-                    <GridCell columnSize={42} >
-                        {Localization.get("Title")}
-                    </GridCell>
-                    <GridCell  columnSize={42} >
-                        {Localization.get("Module")}
-                    </GridCell>
-                </div>
-                {moduleRows}
-            </div>            
+                <div className="module-title">
+                        <div className="module-icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
+                        <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
+                    </div>
+                <div className="module-table">    
+                    <div className="header-row">
+                        <GridCell columnSize={42} >
+                            {Localization.get("Title")}
+                        </GridCell>
+                        <GridCell  columnSize={42} >
+                            {Localization.get("Module")}
+                        </GridCell>
+                    </div>
+                    {moduleRows}
+                </div>      
+            </div>      
             /* eslint-enable react/no-danger */
         );
     }
