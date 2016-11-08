@@ -68,6 +68,10 @@ namespace DotNetNuke.Modules.Admin.Modules
         private Control _control;
         private ModuleInfo _module;
 
+        private bool HideDeleteButton => Request.QueryString["HideDelete"] == "true";
+        private bool HideCancelButton => Request.QueryString["HideCancel"] == "true";
+        private bool DoNotRedirectOnUpdate => Request.QueryString["NoRedirectOnUpdate"] == "true";
+
         private ModuleInfo Module
         {
             get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
@@ -391,8 +395,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
                     dgPermissions.ModuleID = _moduleId;
-
-
+                    
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
 
@@ -415,6 +418,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                     rowAllTabs.Visible = isAdmin;
                     chkAllModules.Enabled = isAdmin;
 
+                    if (HideCancelButton)
+                    {
+                        cancelHyperLink.Visible = false;
+                    }
+
                     //tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
                     {
@@ -427,7 +435,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     if (_moduleId != -1)
                     {
                         BindData();
-                        cmdDelete.Visible = ModulePermissionController.CanDeleteModule(Module) || TabPermissionController.CanAddContentToPage();
+                        cmdDelete.Visible = (ModulePermissionController.CanDeleteModule(Module) || 
+                             TabPermissionController.CanAddContentToPage()) && !HideDeleteButton;
                     }
                     else
                     {
@@ -717,8 +726,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //Navigate back to admin page
-                    Response.Redirect(ReturnURL, true);
+                    if (!DoNotRedirectOnUpdate)
+                    {
+                        //Navigate back to admin page
+                        Response.Redirect(ReturnURL, true);
+                    }
                 }
             }
             catch (Exception exc)
