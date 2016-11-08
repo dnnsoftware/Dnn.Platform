@@ -118,29 +118,32 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var password = request.SmtpPassword;
-                if (request.SmtpPassword == new Regex(".").Replace(Host.SMTPPassword, "*"))
-                {
-                    password = Host.SMTPPassword;
-                }
-                var strMessage = Mail.SendMail(Host.HostEmail,
-                                                  Host.HostEmail,
-                                                  "",
-                                                  "",
-                                                  MailPriority.Normal,
-                                                  Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
-                                                  MailFormat.Text,
-                                                  Encoding.UTF8,
-                                                  "",
-                                                  "",
-                                                  request.SmtpServer,
-                                                  request.SmtpAuthentication.ToString(),
-                                                  request.SmtpUsername,
-                                                  password,
-                                                  request.EnableSmtpSsl);
+                var smtpHostMode = request.SmtpServerMode == "h";
+                var mailFrom = Host.HostEmail;
+                var mailTo = smtpHostMode ? Host.HostEmail : PortalSettings.UserInfo.Email;
+
+                var strMessage = Mail.SendMail(mailFrom,
+                    mailTo,
+                    "",
+                    "",
+                    MailPriority.Normal,
+                    Localization.GetSystemMessage(PortalSettings, "EMAIL_SMTP_TEST_SUBJECT"),
+                    MailFormat.Text,
+                    Encoding.UTF8,
+                    "",
+                    "",
+                    smtpHostMode ? HostController.Instance.GetString("SMTPServer") : request.SmtpServer,
+                    smtpHostMode ? HostController.Instance.GetString("SMTPAuthentication") : request.SmtpAuthentication.ToString(),
+                    smtpHostMode ? HostController.Instance.GetString("SMTPUsername") : request.SmtpUsername,
+                    smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
+                    smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
+
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    success = string.IsNullOrEmpty(strMessage)
+                    success = string.IsNullOrEmpty(strMessage),
+                    confirmationMessage =
+                        string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
+                        mailFrom, mailTo)
                 });
             }
             catch (Exception exc)

@@ -13,9 +13,14 @@ const updateSmtpSettings = function (parameters) {
     return serviceFramework.post(getControllerName(), "UpdateSmtpSettings", parameters);
 };
 
+const sendTestEmail = function (parameters) {    
+    return serviceFramework.post(getControllerName(), "SendTestEmail", parameters);
+};
+
 const smtpServerService = {
-    getSmtpSettings: getSmtpSettings,
-    updateSmtpSettings: updateSmtpSettings
+    getSmtpSettings,
+    updateSmtpSettings,
+    sendTestEmail
 };
 
 export default smtpServerService; 

@@ -25,5 +25,7 @@ namespace Dnn.PersonaBar.Servers.Components
         internal const string UseSSLKey = "UseSSLForCacheSync";
         internal const string ValueCannotSerialize = "CannotSerialize";
         internal const string SizeUnknown = @"?";
+
+        internal const string ServersResourcersPath = Library.Constants.PersonaBarRelativePath + "/App_LocalResources/Servers.resx";
     }
 }

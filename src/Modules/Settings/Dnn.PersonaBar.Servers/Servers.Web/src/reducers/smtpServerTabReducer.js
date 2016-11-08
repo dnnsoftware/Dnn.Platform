@@ -2,7 +2,8 @@ import { smtpServerTab as ActionTypes } from "../constants/actionTypes";
 
 export default function smtpServerTabReducer(state = {
     smtpServerInfo: {},
-    errorMessage: ""
+    errorMessage: "",
+    infoMessage: ""
 }, action) { 
     switch (action.type) {
         case ActionTypes.LOAD_SMTP_SERVER_TAB:
@@ -73,11 +74,27 @@ export default function smtpServerTabReducer(state = {
             };
         case ActionTypes.UPDATED_SMTP_SERVER_SETTINGS: 
             return { ...state,
-                errorMessage:  ""
+                errorMessage: ""
             };
         case ActionTypes.ERROR_UPDATING_SMTP_SERVER_SETTINGS:
             return { ...state,
                 errorMessage: action.payload.errorMessage
+            };
+
+        case ActionTypes.SEND_TEST_EMAIL:
+            return { ...state,
+                errorMessage:  "",
+                infoMessage: ""
+            };
+        case ActionTypes.SENT_TEST_EMAIL: 
+            return { ...state,
+                errorMessage: action.payload.success ? "" : action.payload.errorMessage,
+                infoMessage: action.payload.success ? action.payload.infoMessage : ""
+            };
+        case ActionTypes.ERROR_SENDING_TEST_EMAIL:
+            return { ...state,
+                errorMessage: action.payload.errorMessage,
+                infoMessage: ""
             };
 
         default:

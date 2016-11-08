@@ -79,6 +79,31 @@ const smtpServeTabActions = {
                 });
             });        
         };
+    },
+    sendTestEmail(parameters) {       
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEND_TEST_EMAIL               
+            });        
+            
+            smtpServerService.sendTestEmail(parameters).then(response => {
+                dispatch({
+                    type: ActionTypes.SENT_TEST_EMAIL,
+                    payload: {
+                        success: response.success,
+                        infoMessage: response.confirmationMessage,
+                        errorMessage: localization.get("errorMessageSendingTestEmail")
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_SENDING_TEST_EMAIL,
+                    payload: {
+                        errorMessage: localization.get("errorMessageSendingTestEmail")
+                    }
+                });
+            });        
+        };
     }
 };
 

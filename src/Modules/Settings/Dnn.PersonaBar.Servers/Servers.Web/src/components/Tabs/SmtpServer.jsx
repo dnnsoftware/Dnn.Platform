@@ -17,6 +17,10 @@ class SmtpServer extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
+            utils.notify(newProps.infoMessage);
+        }
+
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.notifyError(newProps.errorMessage);
         }
@@ -36,11 +40,7 @@ class SmtpServer extends Component {
 
     onChangeField(key, event) {
         this.props.onChangeSmtpConfigurationValue(key, event.target.value);
-    }
-
-    onTestSmtpSettings() {
-       
-    }
+    }   
 
     onSave() {
         const {props} = this;
@@ -59,6 +59,27 @@ class SmtpServer extends Component {
             messageSchedulerBatchSize: props.smtpServerInfo.host.messageSchedulerBatchSize
         };
         props.onUpdateSmtpServerSettings(updateRequest);
+    }
+
+    onTestSmtpSettings() {
+        const {props} = this;
+        let smtpSettings = {};
+        if (props.smtpServerInfo.smtpServerMode === "h" && utils.isHostUser()) {
+            smtpSettings = props.smtpServerInfo.host;
+        }
+        if (props.smtpServerInfo.smtpServerMode === "p") {
+            smtpSettings = props.smtpServerInfo.site;
+        }
+        
+        const sendEmailRequest = {
+            smtpServerMode: props.smtpServerInfo.smtpServerMode,
+            smtpServer: smtpSettings.smtpServer,
+            smtpAuthentication: smtpSettings.smtpAuthentication,
+            smtpUsername: smtpSettings.smtpUserName,
+            smtpPassword: smtpSettings.smtpPassword,
+            enableSmtpSsl: smtpSettings.enableSmtpSsl
+        };
+        props.onSendTestEmail(sendEmailRequest);    
     }
 
     getSmtpServerOptions() {
@@ -195,13 +216,16 @@ SmtpServer.propTypes = {
     onChangeSmtpServerMode: PropTypes.func.isRequired,
     onChangeSmtpAuthentication: PropTypes.func.isRequired,
     onChangeSmtpConfigurationValue: PropTypes.func.isRequired,
-    onUpdateSmtpServerSettings: PropTypes.func.isRequired
+    onUpdateSmtpServerSettings: PropTypes.func.isRequired,
+    infoMessage: PropTypes.string,
+    onSendTestEmail: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
     return {
         smtpServerInfo: state.smtpServer.smtpServerInfo,
-        errorMessage: state.smtpServer.errorMessage
+        errorMessage: state.smtpServer.errorMessage,
+        infoMessage: state.smtpServer.infoMessage
     };
 }
 
@@ -212,7 +236,8 @@ function mapDispatchToProps(dispatch) {
             onChangeSmtpServerMode: SmtpServerTabActions.changeSmtpServerMode,
             onChangeSmtpAuthentication: SmtpServerTabActions.changeSmtpAuthentication,
             onChangeSmtpConfigurationValue: SmtpServerTabActions.changeSmtpConfigurationValue,
-            onUpdateSmtpServerSettings: SmtpServerTabActions.updateSmtpServerSettings
+            onUpdateSmtpServerSettings: SmtpServerTabActions.updateSmtpServerSettings,
+            onSendTestEmail: SmtpServerTabActions.sendTestEmail
         }, dispatch)
     };
 }
