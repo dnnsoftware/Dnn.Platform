@@ -26,11 +26,16 @@ const performanceTabActions = {
             });        
         };
     },
-    changePerformanceSettingsMode(mode) {
-        
-    },
-    changeCacheSettingMode(mode) {
-        
+    changePerformanceSettingsValue(key, value) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE,
+                payload: { 
+                    field: key,
+                    value
+                }
+            });  
+        };
     },
     incrementVersion() {
         

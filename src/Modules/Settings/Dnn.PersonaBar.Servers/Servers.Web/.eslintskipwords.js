@@ -5,6 +5,8 @@ module.exports = [
     "unauth",
     "minify",
     "cacheability",
+    "syncrhonization",
+    "css",
     "eslint",
     "fetch-ie8",
     "react-dom",

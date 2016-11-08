@@ -21,6 +21,16 @@ export default function webTabReducer(state = {
                 performanceSettings: {},
                 errorMessage:  action.payload.errorMessage
             }; 
+        case ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE: {
+            const field = action.payload.field;
+            const value = action.payload.value;
+            const performanceSettings = {
+                ...state.performanceSettings
+            };
+        
+            performanceSettings[field] = value;
+            return { ...state, performanceSettings};
+        }
         default:
             return state;     
     }

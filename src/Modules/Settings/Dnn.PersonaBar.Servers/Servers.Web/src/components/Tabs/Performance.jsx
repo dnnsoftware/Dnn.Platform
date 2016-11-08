@@ -24,7 +24,7 @@ class Performance extends Component {
         }
     }
     
-    getClientResourcesManagementModeOptions(){
+    getClientResourcesManagementModeOptions() {
         return [
             {
                 label: localization.get("PerformanceTab_GlobalClientResourcesManagementMode"),
@@ -37,15 +37,51 @@ class Performance extends Component {
         ];
     }
     
+    onSave() {
+        
+    }
+    
+    onChangeField(key, event) {
+        let value = event;
+        if (event && event.value) {
+            value = event.value;
+        } else if (event && event.target && event.target.value) {
+            value = event.target.value;
+        }
+        
+        this.props.onChangePerformanceSettingsValue(key, value);
+    }
+    
     render() {
         const {props} = this;
         const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
-        const enableCompositeFiles = areGlobalSettings ? props.performanceSettings.hostEnableCompositeFiles 
-                                        : props.performanceSettings.portalEnableCompositeFiles;
-        const minifyCcs = areGlobalSettings ? props.performanceSettings.hostMinifyCcs 
-                                        : props.performanceSettings.portalMinifyCcs;
-        const minifyJs = areGlobalSettings ? props.performanceSettings.hostMinifyJs 
-                                        : props.performanceSettings.portalMinifyJs;
+        let enableCompositeFiles;
+        let minifyCcs;
+        let minifyJs;
+        let enableCompositeFilesKey;
+        let minifyCcsKey;
+        let minifyJsKey;
+        let version;
+        let versionLocalizationKey;
+        if (areGlobalSettings){
+            enableCompositeFiles = props.performanceSettings.hostEnableCompositeFiles;
+            minifyCcs = props.performanceSettings.hostMinifyCcs;
+            minifyJs = props.performanceSettings.hostMinifyJs;
+            enableCompositeFilesKey = "hostEnableCompositeFiles";
+            minifyCcsKey = "hostMinifyCcs";
+            minifyJsKey = "hostMinifyJs";
+            version = props.performanceSettings.currentHostVersion;
+            versionLocalizationKey = "PerformanceTab_CurrentHostVersion";
+        } else {
+            enableCompositeFiles = props.performanceSettings.portalEnableCompositeFiles;
+            minifyCcs = props.performanceSettings.portalMinifyCcs;
+            minifyJs = props.performanceSettings.portalMinifyJs;
+            enableCompositeFilesKey = "portalEnableCompositeFiles";
+            minifyCcsKey = "portalMinifyCcs";
+            minifyJsKey = "portalMinifyJs";
+            version = props.performanceSettings.currentPortalVersion;
+            versionLocalizationKey = "PerformanceTab_CurrentPortalVersion";
+        }
                                         
         return <div className="dnn-servers-info-panel-big performanceSettingTab">
             <div className="clear" />
@@ -56,7 +92,7 @@ class Performance extends Component {
                         <RadioButtonBlock options={props.performanceSettings.pageStatePersistenceOptions}
                             label={localization.get("PerformanceTab_PageStatePersistenceMode")}
                             tooltip={localization.get("PerformanceTab_PageStatePersistenceMode.Help")}
-                            onChange={props.onChangePerformanceSettingsMode}
+                            onChange={this.onChangeField.bind(this, "pageStatePersistence")}
                             value={props.performanceSettings.pageStatePersistence} />
                         }
                         {props.performanceSettings.cacheSettingOptions &&
@@ -65,7 +101,7 @@ class Performance extends Component {
                                 label={localization.get("PerformanceTab_CachingProvider")}
                                 options={props.performanceSettings.cachingProviderOptions}
                                 value={props.performanceSettings.cachingProvider}
-                                onSelect={props.onChangeCacheSettingMode}
+                                onSelect={this.onChangeField.bind(this, "cachingProvider")}
                                 />
                         }
                         {props.performanceSettings.moduleCacheProviders &&
@@ -74,7 +110,7 @@ class Performance extends Component {
                                 label={localization.get("PerformanceTab_ModuleCacheProviders")}
                                 options={props.performanceSettings.moduleCacheProviders}
                                 value={props.performanceSettings.moduleCacheProvider}
-                                onSelect={props.onChangeCacheSettingMode}
+                                onSelect={this.onChangeField.bind(this, "moduleCacheProvider")}
                                 />
                         }
                         {props.performanceSettings.pageCacheProviders &&
@@ -83,7 +119,7 @@ class Performance extends Component {
                                 label={localization.get("PerformanceTab_PageCacheProviders")}
                                 options={props.performanceSettings.pageCacheProviders}
                                 value={props.performanceSettings.pageCacheProvider}
-                                onSelect={props.onChangeCacheSettingMode}
+                                onSelect={this.onChangeField.bind(this, "pageCacheProvider")}
                                 />
                         }
                     </div>
@@ -95,7 +131,7 @@ class Performance extends Component {
                             label={localization.get("PerformanceTab_CacheSetting")}
                             options={props.performanceSettings.cacheSettingOptions}
                             value={props.performanceSettings.cacheSetting}
-                            onSelect={props.onChangeCacheSettingMode}
+                            onSelect={this.onChangeField.bind(this, "cacheSetting")}
                             />
                     }
                     {props.performanceSettings.authCacheabilityOptions &&
@@ -104,7 +140,7 @@ class Performance extends Component {
                             label={localization.get("PerformanceTab_AuthCacheability")}
                             options={props.performanceSettings.authCacheabilityOptions}
                             value={props.performanceSettings.authCacheability}
-                            onSelect={props.onChangeCacheSettingMode}
+                            onSelect={this.onChangeField.bind(this, "authCacheability")}
                             />
                     }
                     {props.performanceSettings.unauthCacheabilityOptions &&
@@ -113,13 +149,13 @@ class Performance extends Component {
                             label={localization.get("PerformanceTab_UnauthCacheability")}
                             options={props.performanceSettings.unauthCacheabilityOptions}
                             value={props.performanceSettings.unauthCacheability}
-                            onSelect={props.onChangeCacheSettingMode}
+                            onSelect={this.onChangeField.bind(this, "unauthCacheability")}
                             />
                     }
                     <SwitchBlock label={localization.get("PerformanceTab_SslForCacheSyncrhonization")}
                             tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
                             value={props.performanceSettings.sslForCacheSynchronization}
-                            onChange={props.onChangeCacheSettingMode} />
+                            onChange={this.onChangeField.bind(this, "sslForCacheSynchronization")} />
                 </div>
             </GridSystem>
             <div className="dnn-servers-grid-panel newSection" style={{marginLeft: 0}}>
@@ -133,8 +169,8 @@ class Performance extends Component {
                             style={{width: "auto"}}/>
                     </InputGroup>
                     <div className="currentHostVersion">
-                        <InfoBlock label={localization.get("PerformanceTab_CurrentHostVersion")}
-                            text={props.performanceSettings.currentHostVersion}/>
+                        <InfoBlock label={localization.get(versionLocalizationKey)}
+                            text={version}/>
                     </div>
                     <Button type="secondary" style={{marginBottom: "75px"}}
                         onClick={props.onIncrementVersion}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
@@ -143,31 +179,31 @@ class Performance extends Component {
                     <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
                             label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
                             tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
-                            onChange={props.onChangePerformanceSettingsMode}
+                            onChange={this.onChangeField.bind(this, "clientResourcesManagementMode")}
                             value={props.performanceSettings.clientResourcesManagementMode} />
                     <SwitchBlock label={localization.get("PerformanceTab_EnableCompositeFiles")}
                             tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
                             value={enableCompositeFiles}
-                            onChange={props.onChangeCacheSettingMode}
+                            onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
                             tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
                             value={enableCompositeFiles ? minifyCcs : false}
                             readOnly={!enableCompositeFiles}
-                            onChange={props.onChangeCacheSettingMode}
+                            onChange={this.onChangeField.bind(this, minifyCcsKey)}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
                             tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
                             value={enableCompositeFiles ? minifyJs : false}
                             readOnly={!enableCompositeFiles}
-                            onChange={props.onChangeCacheSettingMode}
+                            onChange={this.onChangeField.bind(this, minifyJsKey)}
                             isGlobal={areGlobalSettings} />
                 </div>
             </GridSystem>
             <div className="clear" />
             <div className="buttons-panel">
                  <Button type="primary" 
-                    onClick={props.onSave}>{localization.get("SaveButtonText")}</Button>
+                    onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;
     }
@@ -177,8 +213,7 @@ Performance.propTypes = {
     performanceSettings: PropTypes.object.isRequired,
     errorMessage: PropTypes.string,
     onRetrievePerformanceSettings: PropTypes.func.isRequired,
-    onChangePerformanceSettingsMode: PropTypes.func.isRequired,
-    onChangeCacheSettingMode: PropTypes.func.isRequired,
+    onChangePerformanceSettingsValue: PropTypes.func.isRequired,
     onIncrementVersion: PropTypes.func.isRequired
 };
 
@@ -194,10 +229,7 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRetrievePerformanceSettings: PerformanceTabActions.loadPerformanceSettings,
-            onChangePerformanceSettingsMode: PerformanceTabActions.changePerformanceSettingsMode,
-            onChangeCacheSettingMode: PerformanceTabActions.changeCacheSettingMode,
-            onIncrementVersion: PerformanceTabActions.incrementVersion,
-            onSave: PerformanceTabActions.save
+            onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue
         }, dispatch)
     };
 }

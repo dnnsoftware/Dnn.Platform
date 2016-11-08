@@ -526,7 +526,7 @@
     <value>Client Resources Management Mode</value>
   </data>
   <data name="PerformanceTab_CurrentHostVersion.Text" xml:space="preserve">
-    <value>Current Host Version</value>
+    <value>Current Host Version:</value>
   </data>
   <data name="PerformanceTab_EnableCompositeFiles.Help" xml:space="preserve">
     <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
@@ -587,5 +587,8 @@
   </data>
   <data name="NoIntegerValueError.Text" xml:space="preserve">
     <value>Must be a positive integer value.</value>
+  </data>
+  <data name="PerformanceTab_CurrentPortalVersion.Text" xml:space="preserve">
+    <value>Site Version:</value>
   </data>
 </root>

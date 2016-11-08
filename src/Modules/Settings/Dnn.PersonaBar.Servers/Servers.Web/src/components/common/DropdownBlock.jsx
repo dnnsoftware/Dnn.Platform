@@ -17,7 +17,7 @@ export default class DropdownBlock extends Component {
             <Dropdown style={{width:"80%"}}
                     options={props.options}
                     value={props.value}
-                    onSelect={props.onChange}
+                    onSelect={props.onSelect}
                     />
         </InputGroup>;
     }
@@ -29,7 +29,7 @@ DropdownBlock.propTypes = {
     options: PropTypes.array.isRequired,
     value: PropTypes.string,
     isGlobal: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired
+    onSelect: PropTypes.func.isRequired
 };
 
 DropdownBlock.defaultProps = {
