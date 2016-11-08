@@ -40,5 +40,7 @@ module.exports = [
     "dropdown",
     "selectable",
     "scrollarea",
-    "searchbox"
+    "searchbox",
+	"checkmark",
+	"filesystem",
 ];
