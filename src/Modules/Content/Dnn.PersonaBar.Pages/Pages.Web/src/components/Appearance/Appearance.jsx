@@ -1,11 +1,18 @@
 import React, {Component, PropTypes} from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import localization from "../../localization";
 import ThemeSelector from "./ThemeSelector/ThemeSelector";
+import ThemeActions from "../../actions/themeActions";
 
 class Appearance extends Component {
+
+    componentWillMount() {
+        this.props.onRetrieveThemes();
+    }
 
     render() {        
         return (
@@ -29,7 +36,21 @@ class Appearance extends Component {
 }
 
 Appearance.propTypes = {
-    page: PropTypes.object.isRequired
+    page: PropTypes.object.isRequired,
+    onRetrieveThemes: PropTypes.func.isRequired,
+    themes: PropTypes.array.isRequired
 };
 
-export default Appearance;
+function mapStateToProps(state) {
+    return {
+        themes: state.theme.themes
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators ({
+        onRetrieveThemes: ThemeActions.retrieveThemes
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Appearance);

@@ -32,9 +32,10 @@ const pageActions = {
                         page: response
                     }
                 });  
-            }).catch(() => {
+            }).catch((error) => {
                 dispatch({
-                    type: ActionTypes.ERROR_LOADING_PAGE
+                    type: ActionTypes.ERROR_LOADING_PAGE,
+                    data: {error}
                 });
             });     
         };
@@ -64,9 +65,10 @@ const pageActions = {
                         createdPage: page.tabId === 0 ? response.Page : null 
                     }
                 });  
-            }).catch(() => {
+            }).catch((error) => {
                 dispatch({
-                    type: ActionTypes.ERROR_SAVING_PAGE
+                    type: ActionTypes.ERROR_SAVING_PAGE,
+                    data: {error}
                 });
             });     
         };
@@ -116,9 +118,10 @@ const pageActions = {
                         type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
                         data: { cacheProviderList }
                     });  
-                }).catch(() => {
+                }).catch((error) => {
                     dispatch({
-                        type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST
+                        type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST,
+                        data: {error}
                     });
                 });                     
             }

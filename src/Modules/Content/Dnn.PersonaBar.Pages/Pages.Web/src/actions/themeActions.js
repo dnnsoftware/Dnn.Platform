@@ -15,9 +15,10 @@ const themeActions = {
                         themes: response
                     }
                 });  
-            }).catch(() => {
+            }).catch((error) => {
                 dispatch({
-                    type: ActionTypes.ERROR_RETRIEVING_THEMES
+                    type: ActionTypes.ERROR_RETRIEVING_THEMES,
+                    data: {error}
                 });
             });     
         };
