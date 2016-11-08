@@ -1,7 +1,6 @@
-﻿define(['jquery', './extension', './config'], function ($, ext, cf, slv) {
+﻿define(['./config'], function (cf) {
     'use strict';
     var isMobile;
-    var identifier;
     var config = cf.init();
     function loadScript() {
         var url = "scripts/bundles/servers-bundle.js";
@@ -12,7 +11,6 @@
         });
     }
     var init = function (wrapper, util, params, callback) {
-        identifier = params.identifier;
         window.dnn.initServers = function initServers() {
             if (typeof callback === 'function') {
                 callback();
@@ -23,9 +21,7 @@
                 config: config
             };
         };
-        loadScript();
-
-       
+        loadScript();       
     };
 
     var initMobile = function (wrapper, util, params, callback) {
