@@ -300,4 +300,124 @@
   <data name="PreviewThemeLayoutAndContainer.Text" xml:space="preserve">
     <value>Preview Theme Layout and Container</value>
   </data>
+    <data name="NotEmptyNameError.Text" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="AddPage.Text" xml:space="preserve">
+    <value>Add Page</value>
+  </data>
+  <data name="PageSettings.Text" xml:space="preserve">
+    <value>Page Settings</value>
+  </data>
+  <data name="AddMultiplePages.Text" xml:space="preserve">
+    <value>Add Multiple Pages</value>
+  </data>
+  <data name="NameTooltip.Text" xml:space="preserve">
+    <value>This is the name of the Page. The text you enter will be displayed in the menu system.</value>
+  </data>
+  <data name="DisplayInMenu.Text" xml:space="preserve">
+    <value>Display in Menu</value>
+  </data>
+  <data name="DisplayInMenuTooltip.Text" xml:space="preserve">
+    <value>You have the choice on whether or not to include the page in the main navigation menu. If a page is not included in the menu, you can still link to it based on its page URL.</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EnableScheduling.Text" xml:space="preserve">
+    <value>Enable Scheduling</value>
+  </data>
+  <data name="EnableSchedulingTooltip.Text" xml:space="preserve">
+    <value>Enable scheduling for this page.</value>
+  </data>
+  <data name="StartDate.Text" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="EndDate.Text" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="TitleTooltip.Text" xml:space="preserve">
+    <value>Enter a title for the page. The title will be displayed in the browser window title.</value>
+  </data>
+  <data name="Keywords.Text" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
+  <data name="Tags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Url.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="ExistingPage.Text" xml:space="preserve">
+    <value>Existing Page</value>
+  </data>
+  <data name="ExistingPageTooltip.Text" xml:space="preserve">
+    <value>Redirect to an existing page on your site.</value>
+  </data>
+  <data name="ExternalUrl.Text" xml:space="preserve">
+    <value>External Url</value>
+  </data>
+  <data name="ExternalUrlTooltip.Text" xml:space="preserve">
+    <value>Redirect to an External URL Resource.</value>
+  </data>
+  <data name="PermanentRedirect.Text" xml:space="preserve">
+    <value>Permanent Redirect</value>
+  </data>
+  <data name="PermanentRedirectTooltip.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="OpenLinkInNewWindow.Text" xml:space="preserve">
+    <value>Open Link In New Window</value>
+  </data>
+  <data name="OpenLinkInNewWindowTooltip.Text" xml:space="preserve">
+    <value>Open Link in New Browser Window</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="Advanced.Text" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="Modules.Text" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SEO.Text" xml:space="preserve">
+    <value>S.E.O.</value>
+  </data>
+  <data name="More.Text" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="CreatedValue.Text" xml:space="preserve">
+    <value>[CREATEDDATE] by [CREATEDUSER]</value>
+  </data>
+  <data name="PageParent.Text" xml:space="preserve">
+    <value>Page Parent</value>
+  </data>
+  <data name="Status.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PageType.Text" xml:space="preserve">
+    <value>Page Type</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Existing.Text" xml:space="preserve">
+    <value>Existing</value>
+  </data>
+  <data name="File.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
 </root>

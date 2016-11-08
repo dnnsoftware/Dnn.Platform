@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import InputGroup from "dnn-input-group";
-import localization from "../../../../localization";
+import Localization from "../../../../localization";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
 class PageExternalUrl extends Component {
@@ -20,8 +20,8 @@ class PageExternalUrl extends Component {
                 <InputGroup>
                     <SingleLineInputWithError
                         className="external-url-input"
-                        label={localization.get("External URL")}
-                        tooltipMessage={localization.get("external_url_tooltip")}    
+                        label={Localization.get("ExternalUrl")}
+                        tooltipMessage={Localization.get("ExternalUrlTooltip")}    
                         value={page.internalUrl}
                         onChange={this.onChangeField.bind(this, "internalUrl")} />
                 </InputGroup>

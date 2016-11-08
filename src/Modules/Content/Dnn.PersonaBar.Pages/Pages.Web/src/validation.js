@@ -1,11 +1,11 @@
-import localization from "./localization";
+import Localization from "./localization";
 
 export default function validateFields(field, value) {
     const errors = {};
 
     if (field === "name") {
         if (!value) {
-            errors[field] = localization.get("not_empty_name_error");
+            errors[field] = Localization.get("NotEmptyNameError.Text");
         }
         else {
             errors[field] = undefined;

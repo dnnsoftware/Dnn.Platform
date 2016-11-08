@@ -6,7 +6,7 @@ import SearchBox from "dnn-search-box";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
 import "./PageList.less";
-import localization from "../../localization";
+import Localization from "../../localization";
 
 class PageList extends Component {
     onSearchKeywordChanged(value) {
@@ -20,7 +20,7 @@ class PageList extends Component {
                     <div>&nbsp; </div></GridCell>
                 <GridCell columnSize={35} >
                     <div className="search-filter">                                
-                        <SearchBox placeholder={localization.get("Search")} 
+                        <SearchBox placeholder={Localization.get("Search")} 
                             onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
                         <div className="clear"></div>
                     </div>

@@ -16,7 +16,7 @@ class PageSettings extends Component {
     getButtons() {
         const {selectedPage, onCancel, onSave} = this.props;
         const saveButtonText = selectedPage.tabId === 0 ? 
-            Localization.get("Add Page") : Localization.get("Save");
+            Localization.get("AddPage") : Localization.get("Save");
 
         return (
             <div className="buttons-box">
@@ -72,7 +72,7 @@ class PageSettings extends Component {
                     <Tabs 
                         tabHeaders={[Localization.get("Modules"), 
                                      Localization.get("Appearance"), 
-                                     Localization.get("S.E.O."), 
+                                     Localization.get("SEO"), 
                                      Localization.get("More")]}
                         
                         type="secondary">

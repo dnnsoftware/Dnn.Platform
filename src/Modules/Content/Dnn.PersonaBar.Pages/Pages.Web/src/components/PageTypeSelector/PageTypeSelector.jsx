@@ -1,14 +1,13 @@
 import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
-import localization from "../../localization";
-import utils from "../../utils";
+import Localization from "../../localization";
 import RadioButtons from "dnn-radio-buttons";
 
 class PageTypeSelector extends Component {
     render() {
         const {page, onChangePageType} = this.props;
-        const createdDate = utils.formatDateNoTime(page.createdOnDate) + " " + localization.get("by") + " " + (page.created ? page.created : localization.get("System"));
-        const hierarchy = page.hierarchy === "" ? localization.get("Top page") : page.hierarchy;
+        const createdDate = Localization.get("CreatedValue").replace("[CREATEDDATE]", page.createdOnDate).replace("[CREATEDUSER]", page.created);
+        const hierarchy = page.hierarchy === "" ? Localization.get("TopPage") : page.hierarchy;
 
         return (
             <div className={styles.pageTypeSelector}>
@@ -18,7 +17,7 @@ class PageTypeSelector extends Component {
                 <div className="page-info-row">
                     <div className="page-info-item">
                         <div className="page-info-item-label">
-                            {localization.get("Created") + ": "}
+                            {Localization.get("Created") + ": "}
                         </div>
                         <div className="page-info-item-value">
                             {createdDate}
@@ -26,7 +25,7 @@ class PageTypeSelector extends Component {
                     </div>
                     <div className="page-info-item">
                         <div className="page-info-item-label">
-                            {localization.get("Page Parent") + ": "}
+                            {Localization.get("PageParent") + ": "}
                         </div>
                         <div className="page-info-item-value">
                             {hierarchy}
@@ -34,7 +33,7 @@ class PageTypeSelector extends Component {
                     </div>
                     <div className="page-info-item">
                         <div className="page-info-item-label">
-                            {localization.get("Status") + ": "}
+                            {Localization.get("Status") + ": "}
                         </div>
                         <div className="page-info-item-value">
                             {page.status}
@@ -44,14 +43,14 @@ class PageTypeSelector extends Component {
                 <div className="page-info-row page-type">
                     <div className="page-info-item">
                         <div className="page-info-item-label">
-                            {localization.get("PageType") + ": "}
+                            {Localization.get("PageType") + ": "}
                         </div>
                         <div className="page-info-item-value">
                             <RadioButtons 
-                                options={[{value: "normal", label: localization.get("Standard")}, 
-                                          {value: "tab", label: localization.get("Existing")},
-                                          {value: "url", label: localization.get("URL")},
-                                          {value: "file", label: localization.get("File")}]} 
+                                options={[{value: "normal", label: Localization.get("Standard")}, 
+                                          {value: "tab", label: Localization.get("Existing")},
+                                          {value: "url", label: Localization.get("Url")},
+                                          {value: "file", label: Localization.get("File")}]} 
                                 onChange={onChangePageType}
                                 value={page.pageType}/>
                         </div>

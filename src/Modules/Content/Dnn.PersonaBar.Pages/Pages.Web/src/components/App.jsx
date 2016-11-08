@@ -51,7 +51,7 @@ class App extends Component {
 
     getSettingsPage() {
         const {props} = this;
-        const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("Add Page") : Localization.get("Page Settings:") + " " + props.selectedPage.name;
+        const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("AddPage") : Localization.get("PageSettings") + ": " + props.selectedPage.name;
 
         return (<PersonaBarPage isOpen={props.selectedView === 1}>
                     <SocialPanelHeader title={titleSettings}>
@@ -79,8 +79,8 @@ class App extends Component {
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedView === 0}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
-                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("Add Page") }</Button>
-                        <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("Add Multiple Page") }</Button>
+                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage") }</Button>
+                        <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages") }</Button>
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>

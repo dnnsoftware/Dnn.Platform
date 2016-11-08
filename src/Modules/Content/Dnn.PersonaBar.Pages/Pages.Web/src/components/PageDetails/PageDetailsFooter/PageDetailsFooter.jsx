@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import localization from "../../../localization";
+import Localization from "../../../localization";
 import styles from "./style.less";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
@@ -29,8 +29,8 @@ class PageDetailsFooter extends Component {
                 {!normalPage &&
                     <GridCell className="left-column">
                         <SingleLineInputWithError
-                            label={localization.get("Name")}
-                            tooltipMessage={localization.get("page_name_tooltip")}
+                            label={Localization.get("Name")}
+                            tooltipMessage={Localization.get("NameTooltip")}
                             value={page.name} 
                             onChange={this.onChangeField.bind(this, "name")} />
                     </GridCell>
@@ -39,8 +39,8 @@ class PageDetailsFooter extends Component {
                     <GridCell className="left-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("display_in_menu_tooltip")}
-                            label={localization.get("Display In Menu")}
+                            tooltipMessage={Localization.get("DisplayInMenu")}
+                            label={Localization.get("DisplayInMenuTooltip")}
                             />
                         <Switch
                             labelHidden={true}
@@ -50,8 +50,8 @@ class PageDetailsFooter extends Component {
                     <GridCell className="right-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("enable_scheduling_tooltip")}
-                            label={localization.get("Enable Scheduling")}
+                            tooltipMessage={Localization.get("EnableSchedulingTooltip")}
+                            label={Localization.get("EnableScheduling")}
                             />
                         <Switch
                             labelHidden={true}
@@ -62,7 +62,7 @@ class PageDetailsFooter extends Component {
                             <div className="scheduler-date-box">
                                 <div className="scheduler-date-row">
                                     <Label
-                                        label={localization.get("Start date")} />
+                                        label={Localization.get("StartDate")} />
                                     <DatePicker
                                         date={page.startDate}
                                         updateDate={this.onChangeValue.bind(this, "startDate")}
@@ -72,7 +72,7 @@ class PageDetailsFooter extends Component {
                                 </div>
                                 <div className="scheduler-date-row">
                                     <Label
-                                        label={localization.get("End date")} />
+                                        label={Localization.get("EndDate")} />
                                     <DatePicker
                                         date={page.endDate}
                                         updateDate={this.onChangeValue.bind(this, "endDate")}

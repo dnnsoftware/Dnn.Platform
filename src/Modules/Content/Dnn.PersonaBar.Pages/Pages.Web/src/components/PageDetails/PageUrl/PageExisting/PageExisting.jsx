@@ -3,7 +3,7 @@ import styles from "./style.less";
 import InputGroup from "dnn-input-group";
 import PagePicker from "dnn-page-picker";
 import utils from "../../../../utils";
-import localization from "../../../../localization";
+import Localization from "../../../../localization";
 import Label from "dnn-label";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
@@ -28,14 +28,14 @@ class PageExisting extends Component {
 
     render() {
         const serviceFramework = utils.getServiceFramework(); 
-        const noneSpecifiedText = "<" + localization.get("NoneSpecified") + ">";
+        const noneSpecifiedText = "<" + Localization.get("NoneSpecified") + ">";
 
         return (
             <div className={styles.pageExisting}>
                 <InputGroup>
                     <Label
-                        tooltipMessage={localization.get("existing_page_tooltip")}
-                        label={localization.get("Existing Page")} />
+                        tooltipMessage={Localization.get("ExistingPageTooltip")}
+                        label={Localization.get("ExistingPage")} />
                     <PagePicker 
                         serviceFramework={serviceFramework}
                         style={{ width: "100%", zIndex: 2 }}

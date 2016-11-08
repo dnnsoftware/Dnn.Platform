@@ -5,7 +5,7 @@ import InputGroup from "dnn-input-group";
 import SingleLineInput from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import localization from "../../../localization";
+import Localization from "../../../localization";
 import styles from "./style.less";
 import Tags from "dnn-tags";
 import Label from "dnn-label";
@@ -41,8 +41,8 @@ class PageDetails extends Component {
                 <GridSystem>
                     <GridCell className="left-column">
                         <SingleLineInputWithError
-                            label={localization.get("Name") + "*"}
-                            tooltipMessage={localization.get("page_name_tooltip")}
+                            label={Localization.get("Name") + "*"}
+                            tooltipMessage={Localization.get("NameTooltip")}
                             error={!!errors.name}
                             errorMessage={errors.name}
                             value={page.name} 
@@ -50,33 +50,33 @@ class PageDetails extends Component {
                     </GridCell>
                     <GridCell className="right-column">
                         <SingleLineInputWithError
-                            label={localization.get("Title")}
-                            tooltipMessage={localization.get("page_title_tooltip")}
+                            label={Localization.get("Title")}
+                            tooltipMessage={Localization.get("TitleTooltip")}
                             value={page.title}
                             onChange={this.onChangeField.bind(this, "title")} />
                     </GridCell>
                 </GridSystem>
                 <InputGroup>
                     <MultiLineInputWithError
-                        label={localization.get("Description")}
+                        label={Localization.get("Description")}
                         value={page.description}
                         onChange={this.onChangeField.bind(this, "description")} />
                 </InputGroup>
                 <InputGroup>
                     <MultiLineInputWithError
-                        label={localization.get("Keywords")}
+                        label={Localization.get("Keywords")}
                         value={page.keywords} 
                         onChange={this.onChangeField.bind(this, "keywords")} />
                 </InputGroup>
                 <GridSystem>
                     <GridCell className="left-column input-cell">
-                        <Label label={localization.get("Tags")}/>
+                        <Label label={Localization.get("Tags")}/>
                         <Tags 
                             tags={tags} 
                             onUpdateTags={this.onChangeTags.bind(this)}/>
                     </GridCell>
                     <GridCell className="right-column input-cell">
-                        <Label label={localization.get("URL")}/>
+                        <Label label={Localization.get("Url")}/>
                         <InputGroup>
                             <span className="input-group-addon">{domainName}</span>
                             <SingleLineInput 

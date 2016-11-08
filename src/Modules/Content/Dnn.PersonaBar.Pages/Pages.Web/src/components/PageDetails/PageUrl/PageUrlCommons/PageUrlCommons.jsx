@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
 import Switch from "dnn-switch";
-import localization from "../../../../localization";
+import Localization from "../../../../localization";
 import Label from "dnn-label";
 
 
@@ -22,8 +22,8 @@ class PageUrlCommons extends Component {
                     <div className="left-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("permanent_redirect_tooltip")}
-                            label={localization.get("Permanent Redirect")}
+                            tooltipMessage={Localization.get("PermanentRedirectTooltip")}
+                            label={Localization.get("PermanentRedirect")}
                             />
                         <Switch
                             labelHidden={true}
@@ -33,8 +33,8 @@ class PageUrlCommons extends Component {
                     <div className="right-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={localization.get("open_new_window_tooltip")}
-                            label={localization.get("Open Link in New Window")}
+                            tooltipMessage={Localization.get("OpenLinkInNewWindowTooltip")}
+                            label={Localization.get("OpenLinkInNewWindow")}
                             />
                         <Switch
                             labelHidden={true}
