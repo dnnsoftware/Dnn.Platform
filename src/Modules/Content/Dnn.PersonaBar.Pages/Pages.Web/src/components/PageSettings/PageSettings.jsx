@@ -8,6 +8,7 @@ import styles from "./style.less";
 import Modules from "../Modules/Modules";
 import Seo from "../Seo/Seo";
 import More from "../More/More";
+import Appearance from "../Appearance/Appearance";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
 class PageSettings extends Component {
@@ -83,7 +84,9 @@ class PageSettings extends Component {
                                 onToggleEditModule={onToggleEditPageModule}
                                 editingSettingModuleId={editingSettingModuleId} />
                         </div>
-                        <div className="dnn-simple-tab-item"></div>
+                        <div className="dnn-simple-tab-item">
+                            <Appearance page={selectedPage} />
+                        </div>
                         <div className="dnn-simple-tab-item">
                             <Seo page={selectedPage}
                                 onChangeField={onChangeField} />
