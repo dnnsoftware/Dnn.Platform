@@ -18,9 +18,9 @@ class ApplicationService {
         return sf;
     }
 
-    getPortalSettings(portalId, callback) {
+    getPortalSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetPortalSettings?portalId=" + portalId, {}, callback);
+        sf.get("GetPortalSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     }    
 
     updatePortalSettings(payload, callback, failureCallback) {
@@ -28,9 +28,9 @@ class ApplicationService {
         sf.post("UpdatePortalSettings", payload, callback, failureCallback);
     }
 
-    getDefaultPagesSettings(portalId, callback) {
+    getDefaultPagesSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetDefaultPagesSettings?portalId=" + portalId, {}, callback);
+        sf.get("GetDefaultPagesSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     }    
 
     updateDefaultPagesSettings(payload, callback, failureCallback) {
@@ -38,9 +38,9 @@ class ApplicationService {
         sf.post("UpdateDefaultPagesSettings", payload, callback, failureCallback);
     }
 
-    getMessagingSettings(portalId, callback) {
+    getMessagingSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetMessagingSettings?portalId=" + portalId, {}, callback);
+        sf.get("GetMessagingSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     }    
 
     updateMessagingSettings(payload, callback, failureCallback) {
@@ -93,14 +93,14 @@ class ApplicationService {
         sf.post("UpdateProfilePropertyLocalization", payload, callback, failureCallback);
     } 
 
-    getUrlMappingSettings(portalId, callback) {
+    getUrlMappingSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetUrlMappingSettings?portalId=" + portalId, {}, callback);
+        sf.get("GetUrlMappingSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     }  
 
-    getSiteAliases(portalId, callback) {
+    getSiteAliases(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetSiteAliases?portalId=" + portalId, {}, callback);
+        sf.get("GetSiteAliases?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     } 
 
     updateUrlMappingSettings(payload, callback, failureCallback) {
@@ -193,9 +193,9 @@ class ApplicationService {
         sf.post("DeleteIgnoreWords", payload, callback, failureCallback);
     } 
 
-    getLanguageSettings(portalId, callback) {
+    getLanguageSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetLanguageSettings?portalId=" + portalId, {}, callback);
+        sf.get("GetLanguageSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     } 
 
     updateLanguageSettings(payload, callback, failureCallback) {
@@ -203,9 +203,9 @@ class ApplicationService {
         sf.post("UpdateLanguageSettings", payload, callback, failureCallback);
     }
 
-    getLanguages(portalId, callback) {
+    getLanguages(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetLanguages?portalId=" + portalId, {}, callback);
+        sf.get("GetLanguages?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
     } 
 
     getLanguage(portalId, languageId, callback) {

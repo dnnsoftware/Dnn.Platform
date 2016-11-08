@@ -3,9 +3,9 @@ import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
 const siteInfoActions = {
-    getPortalSettings(portalId, callback) {
+    getPortalSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getPortalSettings(portalId, data => {
+            ApplicationService.getPortalSettings(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_SETTINGS,
                     data: {

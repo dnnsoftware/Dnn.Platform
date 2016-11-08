@@ -38,7 +38,7 @@ class BasicSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, (data) => {
+        props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 basicSettings: Object.assign({}, data.Settings)
             });
@@ -317,7 +317,8 @@ BasicSettingsPanelBody.propTypes = {
     timeZones: PropTypes.array,
     iconSets: PropTypes.array,
     clientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

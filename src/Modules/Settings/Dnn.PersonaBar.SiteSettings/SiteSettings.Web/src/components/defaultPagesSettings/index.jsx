@@ -34,7 +34,7 @@ class DefaultPagesSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 defaultPagesSettings: Object.assign({}, data.Settings)
             });
@@ -86,7 +86,7 @@ class DefaultPagesSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
                 let defaultPagesSettings = Object.assign({}, data.Settings);
                 this.setState({
                     defaultPagesSettings
@@ -299,7 +299,8 @@ DefaultPagesSettingsPanelBody.propTypes = {
     tabIndex: PropTypes.number,
     defaultPagesSettings: PropTypes.object,
     defaultPagesSettingsClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

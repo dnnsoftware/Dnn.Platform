@@ -44,10 +44,10 @@ export class Body extends Component {
                 resx.get("TabSiteAliases"),
                 resx.get("TabMore")]}
                 type="secondary">
-                <DefaultPagesSettings portalId={props.portalId} />
-                <MessagingSettings portalId={props.portalId} />
-                <ProfileSettings portalId={props.portalId} />
-                <SiteAliasSettings portalId={props.portalId} />
+                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
                 <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this)} />
             </Tabs>;
         }
@@ -57,9 +57,9 @@ export class Body extends Component {
                 resx.get("TabMessaging"),
                 resx.get("TabUserProfiles")]}
                 type="secondary">
-                <DefaultPagesSettings portalId={props.portalId} />
-                <MessagingSettings portalId={props.portalId} />
-                <ProfileSettings portalId={props.portalId} />
+                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
             </Tabs>;
         }
     }
@@ -74,10 +74,11 @@ export class Body extends Component {
                     resx.get("TabLanguage"),
                     resx.get("TabSearch")]}
                     type="primary">
-                    <BasicSettings portalId={this.props.portalId} />
+                    <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
                     {this.renderSiteBehaviorTab()}
                     <LanguageSettings
                         portalId={this.props.portalId}
+                        cultureCode={this.props.cultureCode}
                         openLanguageVerifier={this.props.openLanguageVerifier.bind(this)}
                         openLanguagePack={this.props.openLanguagePack.bind(this)}
                         />
@@ -86,9 +87,9 @@ export class Body extends Component {
                         resx.get("TabSynonyms"),
                         resx.get("TabIgnoreWords")]}
                         type="secondary">
-                        <BasicSearchSettings portalId={this.props.portalId} />
-                        <SynonymsGroups portalId={this.props.portalId} />
-                        <IgnoreWords portalId={this.props.portalId} />
+                        <BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />
+                        <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
+                        <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
                     </Tabs>
                 </Tabs>
             </SocialPanelBody>
@@ -100,6 +101,7 @@ Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     portalId: PropTypes.number,
+    cultureCode: PropTypes.string,
     openHtmlEditorManager: PropTypes.func,
     openLanguageVerifier: PropTypes.func,
     openLanguagePack: PropTypes.func

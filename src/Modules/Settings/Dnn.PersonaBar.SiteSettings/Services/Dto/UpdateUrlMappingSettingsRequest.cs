@@ -30,6 +30,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
     {
         public int? PortalId { get; set; }
 
+        public string CultureCode { get; set; }
+
         public string PortalAliasMapping { get; set; }
 
         public bool AutoAddPortalAlias { get; set; }

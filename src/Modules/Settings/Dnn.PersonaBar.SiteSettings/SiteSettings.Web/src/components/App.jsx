@@ -65,6 +65,7 @@ class App extends Component {
                     </SocialPanelHeader>
                     <Body
                         portalId={props.portalId}
+                        cultureCode={props.cultureCode}
                         openLanguagePack={this.openLanguagePack.bind(this)}
                         openLanguageVerifier={this.openLanguageVerifier.bind(this)}
                         openHtmlEditorManager={this.openHtmlEditorManager.bind(this)}
@@ -96,7 +97,8 @@ class App extends Component {
 App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 

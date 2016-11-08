@@ -75,18 +75,25 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets site settings
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>site settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetPortalSettings([FromUri] int? portalId)
+        public HttpResponseMessage GetPortalSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portalSettings = new PortalSettings(pid);
-                var portal = PortalController.Instance.GetPortal(pid);
-                var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
+
                 var settings = new
                 {
+                    PortalId = portal.PortalID,
+                    portal.CultureCode,
                     portal.PortalName,
                     portal.Description,
                     portal.KeyWords,
@@ -129,8 +136,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                var cultureCode = LocaleController.Instance.GetCurrentLocale(pid).Code;
-                var portalInfo = PortalController.Instance.GetPortal(pid);
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
+                var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.PortalName = request.PortalName;
                 portalInfo.LogoFile = request.LogoFile;
                 portalInfo.FooterText = request.FooterText;
@@ -138,7 +145,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.KeyWords = request.KeyWords;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
-                PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false);
+                PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false, cultureCode);
                 new FavIcon(pid).Update(request.FavIcon);
                 PortalController.UpdatePortalSetting(pid, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);
 
@@ -156,20 +163,28 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets default pages settings
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>default pages settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetDefaultPagesSettings([FromUri] int? portalId)
+        public HttpResponseMessage GetDefaultPagesSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portal = PortalController.Instance.GetPortal(pid);
-                var portalSettings = new PortalSettings(pid);
+
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Settings = new
                     {
+                        PortalId = portal.PortalID,
+                        portal.CultureCode,
                         portal.SplashTabId,
                         SplashTabName = portal.SplashTabId != Null.NullInteger ? TabController.Instance.GetTab(portal.SplashTabId, pid).TabName : string.Empty,
                         portal.HomeTabId,
@@ -210,7 +225,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                var portalInfo = PortalController.Instance.GetPortal(pid);
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
+
+                var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.SplashTabId = request.SplashTabId;
                 portalInfo.HomeTabId = request.HomeTabId;
                 portalInfo.LoginTabId = request.LoginTabId;
@@ -221,7 +238,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.Custom500TabId = request.Custom500TabId;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
-                PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
+                PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText, cultureCode);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -237,19 +254,27 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets messaging settings
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>messaging settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetMessagingSettings([FromUri] int? portalId)
+        public HttpResponseMessage GetMessagingSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portalSettings = new PortalSettings(pid);
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Settings = new
                     {
+                        PortalId = portal.PortalID,
+                        portal.CultureCode,
                         portalSettings.DisablePrivateMessage,
                         ThrottlingInterval = PortalController.GetPortalSettingAsInteger("MessagingThrottlingInterval", pid, 0),
                         RecipientLimit = PortalController.GetPortalSettingAsInteger("MessagingRecipientLimit", pid, 5),
@@ -280,15 +305,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
 
-                PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
-                PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false);
-                PortalController.UpdatePortalSetting(pid, "MessagingAllowAttachments", request.AllowAttachments ? "YES" : "NO", false);
+                PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "MessagingRecipientLimit", request.RecipientLimit.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "MessagingAllowAttachments", request.AllowAttachments ? "YES" : "NO", false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "MessagingIncludeAttachments", request.IncludeAttachments ? "YES" : "NO", false);
 
-                PortalController.UpdatePortalSetting(pid, "MessagingProfanityFilters", request.ProfanityFilters ? "YES" : "NO", false);
-                PortalController.UpdatePortalSetting(pid, "MessagingSendEmail", request.SendEmail ? "YES" : "NO", false);
-                PortalController.UpdatePortalSetting(pid, "DisablePrivateMessage", request.DisablePrivateMessage ? "Y" : "N", false);
+                PortalController.UpdatePortalSetting(pid, "MessagingProfanityFilters", request.ProfanityFilters ? "YES" : "NO", false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "MessagingSendEmail", request.SendEmail ? "YES" : "NO", false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "DisablePrivateMessage", request.DisablePrivateMessage ? "Y" : "N", false, cultureCode);
 
                 DataCache.ClearPortalCache(pid, false);
 
@@ -685,15 +711,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets Url mapping settings
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>Url mapping settings</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = "Superusers")]
-        public HttpResponseMessage GetUrlMappingSettings([FromUri] int? portalId)
+        public HttpResponseMessage GetUrlMappingSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(pid);
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(pid, cultureCode);
                 string portalAliasMapping;
                 if (settings.TryGetValue("PortalAliasMapping", out portalAliasMapping))
                 {
@@ -717,6 +748,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Success = true,
                     Settings = new
                     {
+                        PortalId = pid,
+                        CultureCode = cultureCode,
                         PortalAliasMapping = portalAliasMapping,
                         AutoAddPortalAliasEnabled = !(PortalController.Instance.GetPortals().Count > 1),
                         AutoAddPortalAlias = PortalController.Instance.GetPortals().Count <= 1 && HostController.Instance.GetBoolean("AutoAddPortalAlias")
@@ -746,7 +779,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false);
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
+
+                PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false, cultureCode);
                 HostController.Instance.Update("AutoAddPortalAlias", request.AutoAddPortalAlias ? "Y" : "N", true);
 
                 DataCache.ClearPortalCache(pid, false);
@@ -765,15 +800,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets site aliases
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>site aliases</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = "Superusers")]
-        public HttpResponseMessage GetSiteAliases([FromUri] int? portalId)
+        public HttpResponseMessage GetSiteAliases([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portal = PortalController.Instance.GetPortal(pid);
+
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+
                 var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(pid).Select(a => new
                 {
                     a.PortalAliasID,
@@ -1479,14 +1521,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets language settings
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>language settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetLanguageSettings([FromUri] int? portalId)
+        public HttpResponseMessage GetLanguageSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portalSettings = new PortalSettings(pid);
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(pid).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
 
                 var languageDisplayModes = new List<KeyValuePair<string, string>>();
                 languageDisplayModes.Add(new KeyValuePair<string, string>(Localization.GetString("NativeName", LocalResourcesFile), "NATIVE"));
@@ -1502,6 +1550,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 settings.EnableUrlLanguage = portalSettings.EnableUrlLanguage;
                 settings.EnableBrowserLanguage = portalSettings.EnableBrowserLanguage;
                 settings.AllowUserUICulture = portalSettings.AllowUserUICulture;
+                settings.PortalId = portal.PortalID;
+                settings.CultureCode = portal.CultureCode;
 
                 if (UserInfo.IsSuperUser)
                 {
@@ -1540,10 +1590,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                var portalSettings = new PortalSettings(pid);
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
 
-                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString());
-                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString());
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
+
+                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString(), cultureCode);
+                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString(), cultureCode);
 
                 if (!portalSettings.ContentLocalizationEnabled)
                 {
@@ -1560,7 +1613,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         }
 
                         // update portal default language
-                        var portal = PortalController.Instance.GetPortal(PortalId);
                         portal.DefaultLanguage = newDefaultLanguage;
                         PortalController.Instance.UpdatePortalInfo(portal);
 
@@ -1570,7 +1622,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         }
                     }
 
-                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString());
+                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString(), cultureCode);
                 }
 
                 var oldLanguageDisplayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
@@ -1602,14 +1654,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets languages
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <returns>languages</returns>
         [HttpGet]
-        public HttpResponseMessage GetLanguages([FromUri] int? portalId)
+        public HttpResponseMessage GetLanguages([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                var portalSettings = new PortalSettings(pid);
+                cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
+                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portalSettings = new PortalSettings(portal);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
