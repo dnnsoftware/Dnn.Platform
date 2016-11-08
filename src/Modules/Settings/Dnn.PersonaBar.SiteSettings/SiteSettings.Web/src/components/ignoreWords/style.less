@@ -50,15 +50,40 @@
                                 width: 100%;
                                 float: right;
                                 margin: 0 0 15px 0;
+                                padding: 0 0 5px 0;
                                 font-weight: bolder;
                                 border-bottom: 1px solid @alto;
-                                overflow: hidden;
                                 height: 25px;    
                                 .sectionTitle {
                                     font-weight: bolder;
                                     float: left;
                                     text-transform: uppercase;
                                 }                            
+                                .synonyms-filter {
+                                    float: right;
+                                    margin: -7px 0 0 0;
+                                    border-left: 1px solid @alto;
+                                    border-right: 1px solid @alto;
+                                    .dnn-dropdown {
+                                        text-align: left;
+                                        .collapsible-label {
+                                            height: 16px;
+                                        }
+                                        .collapsible-content {
+                                            text-align: left;
+                                            li {
+                                                float: left;
+                                            }
+                                        }
+                                        .language-flag {
+                                            float: left;
+                                        }
+                                        .language-name {
+                                            float: left;
+                                            margin-left: 10px;
+                                        }
+                                    }
+                                }
                                 .AddItemBox {
                                     width: auto;
                                     float: right;

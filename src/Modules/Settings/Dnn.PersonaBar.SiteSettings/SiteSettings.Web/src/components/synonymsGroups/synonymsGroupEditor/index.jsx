@@ -20,7 +20,8 @@ class SynonymsGroupEditor extends Component {
 
         this.state = {
             group: {
-                SynonymsTags: ""
+                SynonymsTags: "",
+                CultureCode: "en-US"
             },
             error: {
                 tags: true
@@ -31,9 +32,10 @@ class SynonymsGroupEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-        
+        let group = Object.assign({}, props.group);
+        group.CultureCode = props.culture;
         this.setState({
-            group: Object.assign({}, props.group)
+            group: group
         });
     }
 
@@ -70,6 +72,8 @@ class SynonymsGroupEditor extends Component {
         else if (group[key] !== "" && key === "SynonymsTags") {
             state.error["tags"] = false;
         }
+
+        group.CultureCode = props.culture;
 
         this.setState({
             group: group,
@@ -145,6 +149,7 @@ SynonymsGroupEditor.propTypes = {
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
     id: PropTypes.string,
+    culture: PropTypes.string,
     synonymsGroupClientModified: PropTypes.bool
 };
 

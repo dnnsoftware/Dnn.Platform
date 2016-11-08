@@ -20,8 +20,9 @@ class IgnoreWordsEditor extends Component {
 
         this.state = {
             words: {
-                StopWords: ""
-            },
+                StopWords: "",
+                CultureCode: "en-US"
+            },            
             error: {
                 tags: true
             },
@@ -31,7 +32,8 @@ class IgnoreWordsEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-        
+        let words = Object.assign({}, props.words);
+        words.CultureCode = props.culture;
         this.setState({
             words: Object.assign({}, props.words)
         });
@@ -71,6 +73,8 @@ class IgnoreWordsEditor extends Component {
             state.error["tags"] = false;
         }
 
+        words.CultureCode = props.culture;
+
         this.setState({
             words: words,
             triedToSubmit: false,
@@ -89,7 +93,7 @@ class IgnoreWordsEditor extends Component {
             return;
         }
 
-        props.onUpdate(state.words);
+        props.onUpdate(state.words, state.culture);
     }
     
     onCancel(event) {
@@ -145,6 +149,7 @@ IgnoreWordsEditor.propTypes = {
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
     id: PropTypes.string,
+    culture: PropTypes.string,
     ignoreWordsClientModified: PropTypes.bool
 };
 

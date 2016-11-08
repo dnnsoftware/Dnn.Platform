@@ -32,20 +32,22 @@ class SynonymsGroupsPanel extends Component {
             tableFields.push({ "name": resx.get("SynonymsGroup.Header"), "id": "Synonyms" });
         }
 
+        if (!props.cultures) {
+            props.dispatch(SearchActions.getCultureList(props.portalId));
+        }
+
         if (props.synonymsGroups) {
             this.setState({
                 synonymsGroups: props.synonymsGroups
             });
-            return;
         }
-
-        props.dispatch(SearchActions.getCultureList(props.portalId));
-
-        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
-            this.setState({
-                synonymsGroups: Object.assign({}, data.SynonymsGroups)
-            });
-        }));
+        else {
+            props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
+                this.setState({
+                    synonymsGroups: Object.assign({}, data.SynonymsGroups)
+                });
+            }));
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -137,11 +139,17 @@ class SynonymsGroupsPanel extends Component {
     }
 
     onSelectCulture(event) {
-        let {state, props} = this;     
+        let {state, props} = this;
 
-        this.setState({            
+        this.setState({
             culture: event.value
         });
+
+        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, event.value, (data) => {
+            this.setState({
+                synonymsGroups: Object.assign({}, data.SynonymsGroups)
+            });
+        }));
     }
 
     getCultureOptions() {
@@ -149,7 +157,14 @@ class SynonymsGroupsPanel extends Component {
         let options = [];
         if (props.cultures !== undefined) {
             options = props.cultures.map((item) => {
-                return { label: item.Name, value: item.Code };
+                return {
+                    label: <div style={{ float: "left", display: "flex" }}>
+                        <div className="language-flag">
+                            <img src={item.Icon} />
+                        </div>
+                        <div className="language-name">{item.Name}</div>
+                    </div>, value: item.Code
+                };
             });
         }
         return options;
@@ -175,6 +190,7 @@ class SynonymsGroupsPanel extends Component {
                         id={id}>
                         <SynonymsGroupEditor
                             group={item}
+                            culture={this.state.culture}
                             Collapse={this.collapse.bind(this)}
                             onUpdate={this.onUpdateSynonymsGroup.bind(this)}
                             id={id}
@@ -201,7 +217,7 @@ class SynonymsGroupsPanel extends Component {
                                 <DropDown
                                     value={this.state.culture}
                                     fixedHeight={200}
-                                    style={{ width: "120px" }}
+                                    style={{ width: "auto" }}
                                     options={this.getCultureOptions()}
                                     withBorder={false}
                                     onSelect={this.onSelectCulture.bind(this)}
@@ -224,6 +240,7 @@ class SynonymsGroupsPanel extends Component {
                                 id={"add"}>
                                 <SynonymsGroupEditor
                                     Collapse={this.collapse.bind(this)}
+                                    culture={this.state.culture}
                                     onUpdate={this.onUpdateSynonymsGroup.bind(this)}
                                     id={"add"}
                                     openId={this.state.openId} />
@@ -243,8 +260,7 @@ SynonymsGroupsPanel.propTypes = {
     tabIndex: PropTypes.number,
     synonymsGroups: PropTypes.array,
     cultures: PropTypes.array,
-    portalId: PropTypes.number,
-    cultureCode: PropTypes.string
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {

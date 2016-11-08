@@ -8,6 +8,7 @@ import IgnoreWordsRow from "./ignoreWordsRow";
 import IgnoreWordsEditor from "./ignoreWordsEditor";
 import Collapse from "react-collapse";
 import "./style.less";
+import DropDown from "dnn-dropdown";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../utils";
 import resx from "../../resources";
@@ -19,32 +20,38 @@ class IgnoreWordsPanel extends Component {
         super();
         this.state = {
             ignoreWords: undefined,
-            openId: ""
+            openId: "",
+            culture: "en-US"
         };
     }
 
     componentWillMount() {
-        const {props} = this;
+        const {props, state} = this;
 
         if (tableFields.length === 0) {
             tableFields.push({ "name": resx.get("IgnoreWords"), "id": "IgnoreWords" });
+        }
+
+        if (!props.cultures) {
+            props.dispatch(SearchActions.getCultureList(props.portalId));
         }
 
         if (props.ignoreWords) {
             this.setState({
                 ignoreWords: props.ignoreWords
             });
-            return;
         }
-        props.dispatch(SearchActions.getIgnoreWords(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
-            this.setState({
-                ignoreWords: Object.assign({}, data.IgnoreWords)
-            });
-        }));
+        else {
+            props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
+                this.setState({
+                    ignoreWords: Object.assign({}, data.IgnoreWords)
+                });
+            }));
+        }
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;       
+        let {state} = this;
 
         if (props.ignoreWords) {
             this.setState({
@@ -121,6 +128,38 @@ class IgnoreWordsPanel extends Component {
         });
     }
 
+    onSelectCulture(event) {
+        let {state, props} = this;
+
+        this.setState({
+            culture: event.value
+        });
+
+        props.dispatch(SearchActions.getIgnoreWords(props.portalId, event.value, (data) => {
+            this.setState({
+                ignoreWords: Object.assign({}, data.IgnoreWords)
+            });
+        }));
+    }
+
+    getCultureOptions() {
+        const {props, state} = this;
+        let options = [];
+        if (props.cultures !== undefined) {
+            options = props.cultures.map((item) => {
+                return {
+                    label: <div style={{ float: "left", display: "flex" }}>
+                        <div className="language-flag">
+                            <img src={item.Icon} />
+                        </div>
+                        <div className="language-name">{item.Name}</div>
+                    </div>, value: item.Code
+                };
+            });
+        }
+        return options;
+    }
+
     /* eslint-disable react/no-danger */
     renderedIgnoreWords() {
         const {props, state} = this;
@@ -139,6 +178,7 @@ class IgnoreWordsPanel extends Component {
                     id={"row-1"}>
                     <IgnoreWordsEditor
                         words={props.ignoreWords}
+                        culture={this.state.culture}
                         Collapse={this.collapse.bind(this)}
                         onUpdate={this.onUpdateIgnoreWords.bind(this)}
                         id={"row-1"}
@@ -157,11 +197,23 @@ class IgnoreWordsPanel extends Component {
                     <div className="AddItemRow">
                         <div className="sectionTitle">{resx.get("IgnoreWords")}</div>
                         {!props.ignoreWords &&
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> Add Word
+                            <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                </div> Add Word
                         </div>
-                    }
+                        }
+                        {this.props.cultures &&
+                            <div className="synonyms-filter">
+                                <DropDown
+                                    value={this.state.culture}
+                                    fixedHeight={200}
+                                    style={{ width: "auto" }}
+                                    options={this.getCultureOptions()}
+                                    withBorder={false}
+                                    onSelect={this.onSelectCulture.bind(this)}
+                                    />
+                            </div>
+                        }
                     </div>
                     <div className="words-items-grid">
                         {this.renderHeader()}
@@ -178,6 +230,7 @@ class IgnoreWordsPanel extends Component {
                                 id={"add"}>
                                 <IgnoreWordsEditor
                                     Collapse={this.collapse.bind(this)}
+                                    culture={this.state.culture}
                                     onUpdate={this.onUpdateIgnoreWords.bind(this)}
                                     id={"add"}
                                     openId={state.openId} />
@@ -197,13 +250,14 @@ IgnoreWordsPanel.propTypes = {
     tabIndex: PropTypes.number,
     ignoreWords: PropTypes.object,
     portalId: PropTypes.number,
-    cultureCode: PropTypes.string
+    cultures: PropTypes.array
 };
 
 function mapStateToProps(state) {
     return {
         ignoreWords: state.search.ignoreWords,
-        tabIndex: state.pagination.tabIndex
+        tabIndex: state.pagination.tabIndex,
+        cultures: state.search.cultures
     };
 }
 
