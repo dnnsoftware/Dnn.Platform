@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>Servers</identifier>
                         <moduleName>Servers</moduleName>
+                        <controller>Dnn.PersonaBar.Servers.Components.ServersMenuController, Dnn.PersonaBar.Servers</controller>
                         <resourceKey>nav_Servers</resourceKey>
                         <path>Servers</path>
                         <mobileSupport>true</mobileSupport>

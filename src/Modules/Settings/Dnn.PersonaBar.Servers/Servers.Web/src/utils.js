@@ -1,6 +1,7 @@
 let utilities = null;
 let config = null;
 let initialized = false;
+let settings = null;
 let moduleName = null;
 
 function init(options) {
@@ -14,9 +15,10 @@ function init(options) {
         throw new Error("This method needs to have an options.config object as an input parameter");
     }
     utilities = options.utilities;  
-    config = options.config; 
+    config = options.config;
+    moduleName = options.moduleName;
+    settings = options.settings; 
     initialized = true;
-    moduleName = options.moduleName;   
 }
 
 function formatDateNoTime(date) {
@@ -52,20 +54,19 @@ function notifyError(message) {
     return utilities.notifyError(message);
 }
 
-function getResx(moduleName, key) {
+function getResx(key) {
     if (!initialized) {
         throw new Error("Utils have not been initialized");
     }
     return utilities.getResx(moduleName, key);
 }
 
-function getModuleName() {
+function isHostUser() {
     if (!initialized) {
         throw new Error("Utils have not been initialized");
     }
-    return moduleName;
+    return settings.isHost;
 }
-
 
 const utils = {
     init,
@@ -75,7 +76,7 @@ const utils = {
     notify,
     notifyError,
     getResx,
-    getModuleName
+    isHostUser
 };
 
 export default utils;

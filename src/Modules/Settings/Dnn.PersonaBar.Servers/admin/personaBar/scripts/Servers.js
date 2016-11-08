@@ -18,7 +18,8 @@
             return {
                 utilities: util,
                 moduleName: "Servers",
-                config: config
+                config: config,
+                settings: params.settings
             };
         };
         loadScript();       

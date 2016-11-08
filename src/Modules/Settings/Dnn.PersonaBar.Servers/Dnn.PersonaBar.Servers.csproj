@@ -108,6 +108,7 @@
     <Compile Include="Components\DatabaseServer\DbInfo.cs" />
     <Compile Include="Components\Log\LogController.cs" />
     <Compile Include="Components\PerformanceSettings\PerformanceController.cs" />
+    <Compile Include="Components\ServersMenuController.cs" />
     <Compile Include="Components\WebServer\ServerInfo.cs" />
     <Compile Include="Components\WebServer\WebServersController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
