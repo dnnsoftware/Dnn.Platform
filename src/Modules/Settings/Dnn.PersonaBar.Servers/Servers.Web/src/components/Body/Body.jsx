@@ -14,6 +14,7 @@ import SmtpServerTab from "../Tabs/SmtpServer";
 import PerformanceTab from "../Tabs/Performance";
 import LogsTab from "../Tabs/Logs";
 import application from "../../globals/application";
+import utils from "../../utils";
 
 class Body extends Component {
     constructor() {
@@ -49,12 +50,22 @@ class Body extends Component {
    
     render() {
         const {props} = this;       
-        const registeredTabs = application.getRegisteredServerTabs();
+        const isHost = utils.isHostUser();
+        let registeredTabs = application.getRegisteredServerTabs();
+        if (!isHost) {
+            registeredTabs = registeredTabs.filter(function (tab) {
+                return !tab.isHostOnlyVisible;
+            });
+        }        
 
-        const systemInfoTabHeaders = [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle")];
-        const systemInfoTabBody = [<ApplicationTab />, <WebTab />, <DatabaseTab />]; 
-        const serverSettingsTabHeaders = [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")];
-        const serverSettingsTabBody = [<SmtpServerTab />, <PerformanceTab />, <LogsTab />];
+        const systemInfoTabHeaders = isHost ? [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle")] 
+            : [Localization.get("tabApplicationTitle")];
+        const systemInfoTabBody = isHost ? [<ApplicationTab />, <WebTab />, <DatabaseTab />]
+            :  [<ApplicationTab />]; 
+        const serverSettingsTabHeaders = isHost ? [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")]
+            : [Localization.get("tabSmtpServerTitle")];
+        const serverSettingsTabBody = isHost ? [<SmtpServerTab />, <PerformanceTab />, <LogsTab />]
+            : [<SmtpServerTab />];
         const mainTabHeaders = [Localization.get("tabSystemInfoTitle"), Localization.get("tabServerSettingsTitle")];
         const mainTabBody = [
             <Tabs tabHeaders={systemInfoTabHeaders}

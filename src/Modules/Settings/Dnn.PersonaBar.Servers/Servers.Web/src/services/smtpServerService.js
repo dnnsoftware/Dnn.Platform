@@ -1,7 +1,12 @@
 import serviceFramework from "./serviceFramework";
+import utils from "../utils";
 
-const getSmtpSettings = function () {
-    return serviceFramework.get("ServerSettingsSmtp", "GetSmtpSettings");
+function getControllerName() {
+    return utils.isHostUser() ? "ServerSettingsSmtpHost" : "ServerSettingsSmtpAdmin";
+}
+
+const getSmtpSettings = function () {    
+    return serviceFramework.get(getControllerName(), "GetSmtpSettings");
 };
 
 const smtpServerService = {

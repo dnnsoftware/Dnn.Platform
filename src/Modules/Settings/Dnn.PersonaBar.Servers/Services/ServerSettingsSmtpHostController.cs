@@ -41,9 +41,9 @@ using DotNetNuke.Web.Api;
 namespace Dnn.PersonaBar.Servers.Services
 {
     [ServiceScope(Scope = ServiceScope.Host)]
-    public class ServerSettingsSmtpController : PersonaBarApiController
+    public class ServerSettingsSmtpHostController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
         
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
@@ -97,29 +97,26 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 if (request.SmtpServerMode == "h")
                 {
-                    if (UserInfo != null && UserInfo.IsSuperUser)
-                    {
-                        HostController.Instance.Update("SMTPServer", request.SmtpServer, false);
-                        HostController.Instance.Update("SMTPConnectionLimit", request.SmtpConnectionLimit, false);
-                        HostController.Instance.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                        HostController.Instance.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
-                        HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
-                        HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
-                            Config.GetDecryptionkey());
-                        HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
-                        HostController.Instance.Update("MessageSchedulerBatchSize",
-                            request.MessageSchedulerBatchSize.ToString(), false);
-                    }
+                    HostController.Instance.Update("SMTPServer", request.SmtpServer, false);
+                    HostController.Instance.Update("SMTPConnectionLimit", request.SmtpConnectionLimit, false);
+                    HostController.Instance.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
+                    HostController.Instance.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                    HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
+                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
+                        Config.GetDecryptionkey());
+                    HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
+                    HostController.Instance.Update("MessageSchedulerBatchSize",
+                        request.MessageSchedulerBatchSize.ToString(), false);
                 }
                 else
                 {
                     PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
-                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication",
+                        request.SmtpAuthentication.ToString(), false);
                     PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
-                    PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword,
-                        Config.GetDecryptionkey());
+                    PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
                 }
 

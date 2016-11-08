@@ -15,24 +15,7 @@ const restartAppButtonStyle = {
 
 class App extends Component { 
 
-    constructor() {
-        super();
-        this.state = {
-            serverInfoLoaded: false
-        };
-    }
-
-    componentDidMount() {
-        if (!this.state.serverInfoLoaded) {
-            this.props.onLoadServersInfo();
-        }
-    }
-
-    componentWillReceiveProps(newProps) {  
-        if (!this.state.serverInfoLoaded && newProps.serversInfo) {
-            this.setState({serverInfoLoaded: true});
-        }
-
+    componentWillReceiveProps(newProps) {       
         if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
             utils.notify(newProps.infoMessage);
         }
@@ -48,7 +31,7 @@ class App extends Component {
 
     render() {
         const {props} = this;
-        const buttonVisible = !this.state.serverInfoLoaded || props.serversInfo.serversCount <= 1;
+        const buttonVisible = utils.isHostUser();
         return (
             <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={true}>
@@ -77,9 +60,7 @@ App.propTypes = {
     onRestartApplicationClicked: PropTypes.func.isRequired,
     reloadPage: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string,
-    infoMessage: PropTypes.string,
-    serversInfo: PropTypes.object,
-    onLoadServersInfo: PropTypes.func.isRequired
+    infoMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -88,8 +69,7 @@ function mapStateToProps(state) {
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
         reloadPage: state.server.reloadPage,
         errorMessage: state.server.errorMessage,
-        infoMessage: state.server.infoMessage,
-        serversInfo: state.server.serversInfo
+        infoMessage: state.server.infoMessage
     };
 }
 
@@ -97,8 +77,7 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRestartApplicationClicked: ServerActions.restartApplication,
-            onClearCacheClicked: ServerActions.clearCache,
-            onLoadServersInfo: ServerActions.getServersInfo
+            onClearCacheClicked: ServerActions.clearCache
         }, dispatch)
     };
 }

@@ -79,20 +79,5 @@ namespace Dnn.PersonaBar.Servers.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        [HttpGet]
-        public HttpResponseMessage GetServersCount()
-        {
-            try
-            {
-                var serversCount = DotNetNuke.Entities.Host.ServerController.GetServers().Count;
-                return Request.CreateResponse(HttpStatusCode.OK, new { serversCount });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
     }
 }
