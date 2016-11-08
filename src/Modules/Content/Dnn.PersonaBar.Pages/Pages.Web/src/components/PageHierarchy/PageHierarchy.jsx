@@ -8,7 +8,7 @@ import "./css/pages-hierarchy.css";
 class PageHierarchy extends Component {
     componentDidMount() {
         this.node = ReactDOM.findDOMNode(this);
-        pageHierarchyManager.resx = pagesResx;
+        pageHierarchyManager.resx = pagesResx();
         pageHierarchyManager.utility = utils.getUtilities();
         pageHierarchyManager._viewModel = {};
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);

@@ -7,8 +7,6 @@ import localization from "../../../../localization";
 import Label from "dnn-label";
 import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 
-const noneSpecifiedText = "<" + localization.get("NoneSpecified") + ">";
-
 /* eslint-disable spellcheck/spell-checker */
 const PageToTestParameters = {
     portalId: -2,
@@ -30,6 +28,7 @@ class PageExisting extends Component {
 
     render() {
         const serviceFramework = utils.getServiceFramework(); 
+        const noneSpecifiedText = "<" + localization.get("NoneSpecified") + ">";
 
         return (
             <div className={styles.pageExisting}>
