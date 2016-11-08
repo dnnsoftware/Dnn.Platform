@@ -1,0 +1,6 @@
+const themeActionTypes =  {    
+    RETRIEVING_THEMES: "RETRIEVING_THEMES",
+    RETRIEVED_THEMES: "RETRIEVED_THEMES",
+    ERROR_RETRIEVING_THEMES: "ERROR_RETRIEVING_THEMES"
+};
+export default themeActionTypes;
