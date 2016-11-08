@@ -201,7 +201,7 @@ SmtpServer.propTypes = {
 function mapStateToProps(state) {    
     return {
         smtpServerInfo: state.smtpServer.smtpServerInfo,
-        errorMessage: state.webTab.errorMessage
+        errorMessage: state.smtpServer.errorMessage
     };
 }
 

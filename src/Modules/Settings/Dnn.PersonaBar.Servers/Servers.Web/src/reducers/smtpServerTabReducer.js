@@ -67,6 +67,18 @@ export default function smtpServerTabReducer(state = {
 
             return { ...state, smtpServerInfo};
         }
+        case ActionTypes.UPDATE_SMTP_SERVER_SETTINGS:
+            return { ...state,
+                errorMessage:  ""
+            };
+        case ActionTypes.UPDATED_SMTP_SERVER_SETTINGS: 
+            return { ...state,
+                errorMessage:  ""
+            };
+        case ActionTypes.ERROR_UPDATING_SMTP_SERVER_SETTINGS:
+            return { ...state,
+                errorMessage: action.payload.errorMessage
+            };
 
         default:
             return state;

@@ -27,7 +27,7 @@ const serviceFramework = {
     post(controllerName, method, parameters) {
         const sf = getServiceFramework(controllerName);
         return new Promise((callback, errorCallback) => {
-             sf.post(method, parameters, callback, errorCallback);
+            sf.post(method, parameters, callback, errorCallback);
         });
     }
 };
