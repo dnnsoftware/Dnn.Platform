@@ -10,6 +10,7 @@ import PersonaBarPage from "dnn-persona-bar-page";
 import HtmlEditorManager from "./moreSettings/htmlEditorManager";
 import LanguageVerifier from "./languageSettings/languageVerifier";
 import LanguagePack from "./languageSettings/languagePack";
+import LocalizedContent from "./languageSettings/localizedContent";
 import EditLanguagePanel from "./editLanguagePanel";
 import resx from "../resources";
 require('es6-object-assign').polyfill();
@@ -73,7 +74,7 @@ class App extends Component {
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LocalizedContent}>
                     <SocialPanelHeader title={resx.get("EnableLocalizedContent") }/>
-                    <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this) } />
+                    <LocalizedContent closePersonaBarPage={this.closePersonaBarPage.bind(this) } />
                 </PersonaBarPage>
             </div>
         );
