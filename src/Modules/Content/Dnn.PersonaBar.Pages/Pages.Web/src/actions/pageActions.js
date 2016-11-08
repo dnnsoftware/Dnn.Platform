@@ -1,5 +1,22 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
 import PagesService from "../services/pageService";
+import debounce from "lodash/debounce";
+
+function updateUrlPreview(value, dispatch) {
+    PagesService.getPageUrlPreview(value).then(response => {
+        dispatch({
+            type: ActionTypes.CHANGE_FIELD_VALUE,
+            field: "url",
+            value: response.Url
+        });  
+    }).catch(() => {
+        dispatch({
+            type: ActionTypes.ERROR_SAVING_PAGE
+        });
+    });
+}
+
+const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const pageActions = {
     loadPage(pageId) {
@@ -56,12 +73,17 @@ const pageActions = {
     },
 
     changePageField(key, value) {
-        return (dispatch) => {
+        return (dispatch, getState) => {
+            const {pages} = getState();
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
                 value
-            });  
+            });
+
+            if (key === "name" && pages.selectedPage.tabId === 0 && !pages.urlChanged) {
+                debouncedUpdateUrlPreview(value, dispatch);    
+            }
         };
     },
 

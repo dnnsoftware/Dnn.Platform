@@ -2,11 +2,14 @@ import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
 import Localization from "../../localization";
 import RadioButtons from "dnn-radio-buttons";
+import utils from "../../utils";
 
 class PageTypeSelector extends Component {
     render() {
         const {page, onChangePageType} = this.props;
-        const createdDate = Localization.get("CreatedValue").replace("[CREATEDDATE]", page.createdOnDate).replace("[CREATEDUSER]", page.created);
+        const createdDate = Localization.get("CreatedValue")
+                                .replace("[CREATEDDATE]", utils.formatDateNoTime(page.createdOnDate))
+                                .replace("[CREATEDUSER]", page.created || "System");
         const hierarchy = page.hierarchy === "" ? Localization.get("TopPage") : page.hierarchy;
 
         return (

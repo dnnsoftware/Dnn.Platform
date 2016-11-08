@@ -34,7 +34,6 @@ class PageDetails extends Component {
     render() {
         const {page, errors} = this.props;
         const tags = page.tags ? page.tags.split(",") : [];
-        const domainName = window.location.host;
 
         return (
             <div className={styles.pageStandard}>
@@ -77,12 +76,9 @@ class PageDetails extends Component {
                     </GridCell>
                     <GridCell className="right-column input-cell">
                         <Label label={Localization.get("Url")}/>
-                        <InputGroup>
-                            <span className="input-group-addon">{domainName}</span>
-                            <SingleLineInput 
-                                value={page.url}
-                                onChange={this.onChangeUrl.bind(this)} />
-                        </InputGroup>
+                        <SingleLineInput 
+                            value={page.url}
+                            onChange={this.onChangeUrl.bind(this)} />
                     </GridCell>
                 </GridSystem>
                 <div style={{clear: "both"}}></div>

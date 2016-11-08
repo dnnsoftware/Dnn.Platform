@@ -39,8 +39,8 @@ class PageDetailsFooter extends Component {
                     <GridCell className="left-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={Localization.get("DisplayInMenu")}
-                            label={Localization.get("DisplayInMenuTooltip")}
+                            tooltipMessage={Localization.get("DisplayInMenuTooltip")}
+                            label={Localization.get("DisplayInMenu")}
                             />
                         <Switch
                             labelHidden={true}

@@ -15,6 +15,10 @@ const PageService = function () {
         return serviceFramework.post("DeletePageModule", module);
     };
 
+    const getPageUrlPreview = function (value) {
+        return serviceFramework.get("GetPageUrlPreview", { url: value });
+    };
+
     const getNewPage = function () {
         return serviceFramework.get("GetDefaultPermissions")
             .then(permissions => {
@@ -76,7 +80,8 @@ const PageService = function () {
         getNewPage,
         toFrontEndPage,
         getCacheProviderList,
-        deletePageModule
+        deletePageModule,
+        getPageUrlPreview
     };
 };
 

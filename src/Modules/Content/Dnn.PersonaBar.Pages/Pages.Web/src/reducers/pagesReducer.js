@@ -6,7 +6,8 @@ export default function pagesReducer(state = {
     errors: {},
     cacheProviderList: null,
     doingOperation: false,
-    editingSettingModuleId: null
+    editingSettingModuleId: null,
+    urlChanged: false
 }, action) {    
 
     const changeField = function changeField(field, value) {
@@ -30,7 +31,8 @@ export default function pagesReducer(state = {
             return { ...state,
                 doingOperation: false,
                 selectedPage: action.data.page,
-                errors: {}
+                errors: {},
+                urlChanged: false
             };
 
         case ActionTypes.ERROR_LOADING_PAGE:
@@ -59,7 +61,8 @@ export default function pagesReducer(state = {
                 errors: {
                     ...(state.errors),
                     ...validateFields(action.field, action.value)
-                }          
+                },
+                urlChanged: state.urlChanged || action.field === "url"           
             };
 
         case ActionTypes.CHANGE_PERMISSIONS:
