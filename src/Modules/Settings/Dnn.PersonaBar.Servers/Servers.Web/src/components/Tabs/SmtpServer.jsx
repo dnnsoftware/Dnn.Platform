@@ -43,7 +43,22 @@ class SmtpServer extends Component {
     }
 
     onSave() {
+        const {props} = this;
+        const smtpSettings = props.smtpServerInfo.smtpServerMode === "h" ? props.smtpServerInfo.host 
+            : props.smtpServerInfo.site;
 
+        const updateRequest = {
+            smtpServerMode: props.smtpServerInfo.smtpServerMode,
+            smtpServer: smtpSettings.smtpServer,
+            smtpConnectionLimit: smtpSettings.smtpConnectionLimit,
+            smtpMaxIdleTime: smtpSettings.smtpMaxIdleTime,
+            smtpAuthentication: smtpSettings.smtpAuthentication,
+            smtpUsername: smtpSettings.smtpUserName,
+            smtpPassword: smtpSettings.smtpPassword,
+            enableSmtpSsl: smtpSettings.enableSmtpSsl,
+            messageSchedulerBatchSize: props.smtpServerInfo.host.messageSchedulerBatchSize
+        };
+        props.onUpdateSmtpServerSettings(updateRequest);
     }
 
     getSmtpServerOptions() {
@@ -164,9 +179,9 @@ class SmtpServer extends Component {
             <div className="clear" />
             <div className="buttons-panel">
                  <Button type="secondary"
-                    onClick={props.onTestSmtpSettings}>{localization.get("EmailTest")}</Button>
+                    onClick={this.onTestSmtpSettings.bind(this)}>{localization.get("EmailTest")}</Button>
                  <Button type="primary" 
-                    onClick={props.onSave}>{localization.get("SaveButtonText")}</Button>
+                    onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;
     }
@@ -179,7 +194,8 @@ SmtpServer.propTypes = {
     onRetrieveSmtpServerInfo: PropTypes.func.isRequired,
     onChangeSmtpServerMode: PropTypes.func.isRequired,
     onChangeSmtpAuthentication: PropTypes.func.isRequired,
-    onChangeSmtpConfigurationValue: PropTypes.func.isRequired
+    onChangeSmtpConfigurationValue: PropTypes.func.isRequired,
+    onUpdateSmtpServerSettings: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
@@ -195,7 +211,8 @@ function mapDispatchToProps(dispatch) {
             onRetrieveSmtpServerInfo: SmtpServerTabActions.loadSmtpServerInfo,
             onChangeSmtpServerMode: SmtpServerTabActions.changeSmtpServerMode,
             onChangeSmtpAuthentication: SmtpServerTabActions.changeSmtpAuthentication,
-            onChangeSmtpConfigurationValue: SmtpServerTabActions.changeSmtpConfigurationValue
+            onChangeSmtpConfigurationValue: SmtpServerTabActions.changeSmtpConfigurationValue,
+            onUpdateSmtpServerSettings: SmtpServerTabActions.updateSmtpServerSettings
         }, dispatch)
     };
 }

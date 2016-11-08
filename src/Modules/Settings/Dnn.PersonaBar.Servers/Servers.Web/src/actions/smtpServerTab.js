@@ -56,6 +56,29 @@ const smtpServeTabActions = {
                 }
             });  
         };
+    },
+    updateSmtpServerSettings(parameters) {       
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATE_SMTP_SERVER_SETTINGS               
+            });        
+            
+            smtpServerService.updateSmtpSettings(parameters).then(response => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SMTP_SERVER_SETTINGS,
+                    payload: {
+                        success: response.success
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_UPDATING_SMTP_SERVER_SETTINGS,
+                    payload: {
+                        errorMessage: localization.get("errorMessageUpdatingSmtpServerTab")
+                    }
+                });
+            });        
+        };
     }
 };
 

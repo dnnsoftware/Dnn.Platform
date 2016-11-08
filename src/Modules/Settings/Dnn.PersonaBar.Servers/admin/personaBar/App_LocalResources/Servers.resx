@@ -465,4 +465,7 @@
   <data name="Logs_LogFilesTooltip.Text" xml:space="preserve">
     <value>List of log files available to view.</value>
   </data>
+  <data name="errorMessageUpdatingSmtpServerTab.Text" xml:space="preserve">
+    <value>Error updating Smtp Server settings</value>
+  </data>
 </root>

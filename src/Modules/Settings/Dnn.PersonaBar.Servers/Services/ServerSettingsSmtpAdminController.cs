@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
 
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new {success = true});
             }
             catch (Exception exc)
             {
@@ -140,7 +140,7 @@ namespace Dnn.PersonaBar.Servers.Services
                                                   request.EnableSmtpSsl);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Success = string.IsNullOrEmpty(strMessage)
+                    success = string.IsNullOrEmpty(strMessage)
                 });
             }
             catch (Exception exc)
