@@ -1,8 +1,9 @@
+import util from "./utils";
+
 const resx = {
     get(key) {
-        const util = window.dnn.initServers();
-        let moduleName = util.moduleName;
-        return util.utilities.getResx(moduleName, key);
+        let moduleName = util.getModuleName();
+        return util.getResx(moduleName, key);
     }
 };
 

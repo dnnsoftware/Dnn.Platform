@@ -10,32 +10,6 @@ import { bindActionCreators } from "redux";
 import SmtpServerTabActions from "../../actions/smtpServerTab";
 import utils from "../../utils";
 
-const smtpServerOptions = [
-    {
-        label: localization.get("GlobalSmtpHostSetting"),
-        value: "h"
-    },
-    {
-        label: localization.get("SiteSmtpHostSetting").replace("{0}", "Test site"),
-        value: "p"
-    }
-];
-
-const smtpAuthenticationOptions = [
-    {
-        label: localization.get("SMTPAnonymous"),
-        value: "0"
-    },
-    {
-        label: localization.get("SMTPBasic"),
-        value: "1"
-    },
-    {
-        label: localization.get("SMTPNTLM"),
-        value: "2"
-    }
-];
-
 class SmtpServer extends Component {
 
     componentDidMount() {
@@ -72,6 +46,35 @@ class SmtpServer extends Component {
 
     }
 
+    getSmtpServerOptions() {
+        return [{
+            label: localization.get("GlobalSmtpHostSetting"),
+            value: "h"
+        },
+        {
+            label: localization.get("SiteSmtpHostSetting").replace("{0}", "Test site"),
+            value: "p"
+        }
+        ];
+    }
+
+    getSmtpAuthenticationOptions() {
+        return [{
+            label: localization.get("SMTPAnonymous"),
+            value: "0"
+        },
+        {
+            label: localization.get("SMTPBasic"),
+            value: "1"
+        },
+        {
+            label: localization.get("SMTPNTLM"),
+            value: "2"
+        }
+        ];
+    }
+
+
     render() {
         const {props} = this;
         const areGlobalSettings = props.smtpServerInfo.smtpServerMode === "h";
@@ -82,7 +85,7 @@ class SmtpServer extends Component {
             <GridSystem>
                 <div className="leftPane">
                     <div className="tooltipAdjustment border-bottom">
-                        <RadioButtonBlock options={smtpServerOptions}
+                        <RadioButtonBlock options={this.getSmtpServerOptions()}
                             label={localization.get("plSMTPMode")}
                             tooltip={localization.get("plSMTPMode.Help")}
                             onChange={this.onChangeSmtpServerMode.bind(this)}
@@ -118,7 +121,7 @@ class SmtpServer extends Component {
                 </div>
                 <div className="rightPane">
                     <div className="tooltipAdjustment border-bottom">
-                        <RadioButtonBlock options={smtpAuthenticationOptions}
+                        <RadioButtonBlock options={this.getSmtpAuthenticationOptions()}
                                 label={localization.get("plSMTPAuthentication")}
                                 tooltip={localization.get("plSMTPAuthentication.Help")}
                                 onChange={this.onChangeAuthenticationMode.bind(this)}

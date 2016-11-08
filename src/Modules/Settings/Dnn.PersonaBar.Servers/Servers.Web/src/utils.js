@@ -1,6 +1,7 @@
 let utilities = null;
 let config = null;
 let initialized = false;
+let moduleName = null;
 
 function init(options) {
     if (!options) {
@@ -14,7 +15,8 @@ function init(options) {
     }
     utilities = options.utilities;  
     config = options.config; 
-    initialized = true;   
+    initialized = true;
+    moduleName = options.moduleName;   
 }
 
 function formatDateNoTime(date) {
@@ -50,13 +52,30 @@ function notifyError(message) {
     return utilities.notifyError(message);
 }
 
+function getResx(moduleName, key) {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    return utilities.getResx(moduleName, key);
+}
+
+function getModuleName() {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    return moduleName;
+}
+
+
 const utils = {
     init,
     formatDateNoTime,
     formatNumeric,
     formatNumeric2Decimals,
     notify,
-    notifyError
+    notifyError,
+    getResx,
+    getModuleName
 };
 
 export default utils;
