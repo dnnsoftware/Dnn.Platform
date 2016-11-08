@@ -284,7 +284,23 @@ const searchActions = {
                 }
             });
         };
+    },
+    getCultureList(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getCultureList(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_SEARCH_CULTURE_LIST,
+                    data: {
+                        cultures: data.Cultures
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
+
 };
 
 export default searchActions;

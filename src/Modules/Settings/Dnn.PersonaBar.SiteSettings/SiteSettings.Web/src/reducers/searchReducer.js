@@ -1,11 +1,11 @@
-import { 
-    search as ActionTypes, 
-    pagination as PaginationActionTypes 
+import {
+    search as ActionTypes,
+    pagination as PaginationActionTypes
 } from "../constants/actionTypes";
 
 export default function search(state = {
 }, action) {
-    switch (action.type) {        
+    switch (action.type) {
         case ActionTypes.RETRIEVED_SITESETTINGS_BASIC_SEARCH_SETTINGS:
             return { ...state,
                 basicSearchSettings: action.data.basicSearchSettings,
@@ -65,7 +65,11 @@ export default function search(state = {
         case ActionTypes.DELETED_SITESETTINGS_IGNORE_WORDS:
             return { ...state,
                 ignoreWords: action.data.ignoreWords
-            };        
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_SEARCH_CULTURE_LIST:
+            return { ...state,
+                cultures: action.data.cultures
+            };
         default:
             return state;
     }

@@ -7,6 +7,7 @@ import {
 import SynonymsGroupRow from "./synonymsGroupRow";
 import SynonymsGroupEditor from "./synonymsGroupEditor";
 import Collapse from "react-collapse";
+import DropDown from "dnn-dropdown";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../utils";
@@ -19,12 +20,13 @@ class SynonymsGroupsPanel extends Component {
         super();
         this.state = {
             synonymsGroups: [],
-            openId: ""
+            openId: "",
+            culture: "en-US"
         };
     }
 
     componentWillMount() {
-        const {props} = this;
+        const {state, props} = this;
 
         if (tableFields.length === 0) {
             tableFields.push({ "name": resx.get("SynonymsGroup.Header"), "id": "Synonyms" });
@@ -36,7 +38,10 @@ class SynonymsGroupsPanel extends Component {
             });
             return;
         }
-        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, props.cultureCode ? props.cultureCode : '', (data) => {
+
+        props.dispatch(SearchActions.getCultureList(props.portalId));
+
+        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
             this.setState({
                 synonymsGroups: Object.assign({}, data.SynonymsGroups)
             });
@@ -44,7 +49,7 @@ class SynonymsGroupsPanel extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;        
+        let {state} = this;
 
         if (props.synonymsGroups) {
             this.setState({
@@ -88,13 +93,13 @@ class SynonymsGroupsPanel extends Component {
 
     onUpdateSynonymsGroup(group) {
         const {props, state} = this;
-        let groups = []; 
+        let groups = [];
         if (group.SynonymsGroupId) {
             groups = props.synonymsGroups.map((item, index) => {
-                if(item.SynonymsGroupId === group.SynonymsGroupId) {
+                if (item.SynonymsGroupId === group.SynonymsGroupId) {
                     return group;
                 }
-                else{
+                else {
                     return item;
                 }
             });
@@ -131,6 +136,25 @@ class SynonymsGroupsPanel extends Component {
         });
     }
 
+    onSelectCulture(event) {
+        let {state, props} = this;     
+
+        this.setState({            
+            culture: event.value
+        });
+    }
+
+    getCultureOptions() {
+        const {props, state} = this;
+        let options = [];
+        if (props.cultures !== undefined) {
+            options = props.cultures.map((item) => {
+                return { label: item.Name, value: item.Code };
+            });
+        }
+        return options;
+    }
+
     /* eslint-disable react/no-danger */
     renderedSynonymsGroups() {
         let i = 0;
@@ -140,7 +164,7 @@ class SynonymsGroupsPanel extends Component {
                 return (
                     <SynonymsGroupRow
                         groupId={item.SynonymsGroupId}
-                        tags={item.SynonymsTags}   
+                        tags={item.SynonymsTags}
                         index={index}
                         key={"synonymsItem-" + index}
                         closeOnClick={true}
@@ -172,12 +196,24 @@ class SynonymsGroupsPanel extends Component {
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                             </div> Add Group
                         </div>
+                        {this.props.cultures &&
+                            <div className="synonyms-filter">
+                                <DropDown
+                                    value={this.state.culture}
+                                    fixedHeight={200}
+                                    style={{ width: "120px" }}
+                                    options={this.getCultureOptions()}
+                                    withBorder={false}
+                                    onSelect={this.onSelectCulture.bind(this)}
+                                    />
+                            </div>
+                        }
                     </div>
                     <div className="synonyms-items-grid">
                         {this.renderHeader()}
                         <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
                             <SynonymsGroupRow
-                                tags={"-"}                                
+                                tags={"-"}
                                 index={"add"}
                                 key={"aliasItem-add"}
                                 closeOnClick={true}
@@ -205,14 +241,16 @@ class SynonymsGroupsPanel extends Component {
 SynonymsGroupsPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    synonymsGroups: PropTypes.array,    
+    synonymsGroups: PropTypes.array,
+    cultures: PropTypes.array,
     portalId: PropTypes.number,
     cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
-        synonymsGroups: state.search.synonymsGroups,        
+        synonymsGroups: state.search.synonymsGroups,
+        cultures: state.search.cultures,
         tabIndex: state.pagination.tabIndex
     };
 }

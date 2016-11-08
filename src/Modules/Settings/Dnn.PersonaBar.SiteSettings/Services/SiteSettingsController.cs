@@ -1192,6 +1192,42 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        /// GET: api/SiteSettings/GetCultureList
+        /// <summary>
+        /// Gets culture list
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <returns>Culture List</returns>
+        [HttpGet]
+        public HttpResponseMessage GetCultureList([FromUri]int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
+
+                var locals = LocaleController.Instance.GetLocales(pid).Values;
+                var cultureCodeList = locals.Select(local => new
+                {
+                    Name = viewType == "NATIVE" ? local.NativeName : local.EnglishName,
+                    local.Code,
+                    Icon = string.IsNullOrEmpty(local.Code) ? "/images/Flags/none.gif" : string.Format("/images/Flags/{0}.gif", local.Code)
+                }).ToList();
+
+                var response = new
+                {
+                    Success = true,
+                    Cultures = cultureCodeList
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         /// GET: api/SiteSettings/GetSynonymsGroups
         /// <summary>
         /// Gets Synonyms Groups

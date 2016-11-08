@@ -215,6 +215,7 @@ class LanguagePackPanelBody extends Component {
                                     inputStyle={{ margin: "0" }}
                                     withLabel={false}
                                     error={state.error.name && state.triedToSubmit}
+                                    errorMessage={resx.get("valName.ErrorMessage")}
                                     value={state.languagePack.FileName}
                                     onChange={this.onSettingChange.bind(this, "FileName")}
                                     />

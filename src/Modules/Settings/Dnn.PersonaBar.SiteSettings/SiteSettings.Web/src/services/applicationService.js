@@ -237,6 +237,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");
         sf.post("CreateLanguagePack", payload, callback, failureCallback);
     }
+
+    getCultureList(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetCultureList?portalId=" + portalId, {}, callback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

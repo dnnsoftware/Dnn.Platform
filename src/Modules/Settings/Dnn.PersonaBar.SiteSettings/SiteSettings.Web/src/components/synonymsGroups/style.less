@@ -10,11 +10,11 @@
                             width: 100%;
                             float: left;
                             padding: 30px;
-                            box-sizing: border-box;                   
+                            box-sizing: border-box;
                             .synonyms-items-grid {
-                                border: solid 1px @alto;                                
-                                float: left;   
-                                width: 100%;                             
+                                border: solid 1px @alto;
+                                float: left;
+                                width: 100%;
                             }
                             .header-row {
                                 &:last-child {
@@ -31,7 +31,7 @@
                                 float: left;
                                 font-weight: bolder;
                                 margin-left: 15px;
-                            }                            
+                            }
                             .collapsible-component {
                                 .collapsible-header {
                                     text-align: right;
@@ -44,21 +44,27 @@
                                         }
                                     }
                                 }
-                            }                            
+                            }
                             .AddItemRow {
                                 text-align: right;
                                 width: 100%;
                                 float: right;
                                 margin: 0 0 15px 0;
+                                padding: 0 0 5px 0;
                                 font-weight: bolder;
                                 border-bottom: 1px solid @alto;
-                                overflow: hidden;
-                                height: 25px;    
+                                height: 25px;
                                 .sectionTitle {
                                     font-weight: bolder;
                                     float: left;
                                     text-transform: uppercase;
-                                }                            
+                                }
+                                .synonyms-filter {
+                                    float: right;
+                                    margin: -7px 0 0 0;
+                                    border-left: 1px solid @alto;
+                                    border-right: 1px solid @alto;
+                                }
                                 .AddItemBox {
                                     width: auto;
                                     float: right;
@@ -94,7 +100,7 @@
                                     }
                                 }
                             }
-                            .alias-item{
+                            .alias-item {
                                 color: @thunder;
                             }
                         }

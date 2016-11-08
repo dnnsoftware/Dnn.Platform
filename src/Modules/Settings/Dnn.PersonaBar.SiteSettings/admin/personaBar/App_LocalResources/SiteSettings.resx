@@ -945,6 +945,9 @@
   <data name="lblName.Help" xml:space="preserve">
     <value>The name of the generated resource pack can be modified.  Notice that part of the name is fixed.</value>
   </data>
+  <data name="valName.ErrorMessage" xml:space="preserve">
+    <value>The resource pack name is required.</value>
+  </data>
   <data name="SelectModules.Text" xml:space="preserve">
     <value>Include module(s) in resource pack</value>
   </data>
