@@ -34,6 +34,7 @@ const logsTabActions = {
             }
             
             const logName = log.value;
+            const upgradeLog = log.upgradeLog;
             dispatch({
                 type: ActionTypes.LOAD_LOG,
                 payload: {
@@ -41,11 +42,16 @@ const logsTabActions = {
                 }               
             });        
             
-            logsTabService.getLog(logName).then(response => {
+            logsTabService.getLog(logName, upgradeLog).then(response => {
+                let logResponse = "";
+                if (response && typeof response === "string") {
+                    logResponse = response;
+                }
+                
                 dispatch({
                     type: ActionTypes.LOADED_LOG,
                     payload: {
-                        log: response
+                        log: logResponse
                     }
                 });  
             }).catch(() => {

@@ -26,10 +26,6 @@ class Logs extends Component {
         }
     }
         
-    onChangeSelectedLog(log) {
-        this.setState({ onChangeSelectedLog: log });
-    }
-    
     render() {
         const {props} = this;
 
