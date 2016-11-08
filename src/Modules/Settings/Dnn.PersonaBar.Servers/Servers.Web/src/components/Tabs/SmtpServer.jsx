@@ -44,7 +44,7 @@ class SmtpServer extends Component {
 
     onSave() {
         const {props} = this;
-        const smtpSettings = props.smtpServerInfo.smtpServerMode === "h" ? props.smtpServerInfo.host 
+        const smtpSettings = props.smtpServerInfo.smtpServerMode === "h" && utils.isHostUser() ? props.smtpServerInfo.host 
             : props.smtpServerInfo.site;
 
         const updateRequest = {
