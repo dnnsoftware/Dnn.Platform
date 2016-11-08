@@ -46,6 +46,9 @@ const PageService = function () {
                     keywords: "",
                     tags: "",
                     url: "",
+                    externalRedirection: "",
+                    fileRedirection: "",
+                    existingTabRedirection: "",
                     includeInMenu: true,
                     thumbnail: "",
                     created: "",
@@ -80,6 +83,7 @@ const PageService = function () {
             schedulingEnabled: page.startDate || page.endDate 
         };
     }; 
+
 
     const toBackEndPage = function (page) {
         return {

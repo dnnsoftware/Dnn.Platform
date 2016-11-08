@@ -44,6 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Current.Description;
             var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
+            var pageType = GetPageType(tab.Url);
 
             var pageManagementController = PageManagementController.Instance;
 
@@ -59,11 +60,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 Tags = string.Join(",", from t in tab.Terms select t.Name),
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
                 Url = pageManagementController.GetTabUrl(tab),
-                InternalUrl = tab.Url,
+                ExternalRedirection = pageType == "url" ? tab.Url : null,
+                FileRedirection = pageType == "file" ? GetFileRedirectionId(tab.Url) : null,
+                ExistingTabRedirection = pageType == "tab" ? tab.Url : null,
                 Created = pageManagementController.GetCreatedInfo(tab),
                 Hierarchy = pageManagementController.GetTabHierarchy(tab),
                 Status = GetTabStatus(tab),
-                PageType = GetPageType(tab.Url),
+                PageType = pageType,
                 CreatedOnDate = tab.CreatedOnDate,
                 IncludeInMenu = tab.IsVisible,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
@@ -84,6 +87,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 PageStylesheet = (string)tab.TabSettings["CustomStylesheet"],
                 Theme = GetTabTheme(tab)
             };
+        }
+
+        private static string GetFileRedirectionId(string tabUrl)
+        {
+            var fileRedirectionId = tabUrl;
+            if (tabUrl != null && tabUrl.StartsWith("FileId="))
+            {
+                fileRedirectionId = tabUrl.Substring(7);
+            }
+
+            return fileRedirectionId;
         }
 
         private static int? CacheDuration(TabInfo tab)

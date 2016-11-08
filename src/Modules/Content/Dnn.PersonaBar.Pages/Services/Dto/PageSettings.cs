@@ -40,9 +40,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "internalUrl")]
-        public string InternalUrl { get; set; }
-
         [DataMember(Name = "includeInMenu")]
         public bool IncludeInMenu { get; set; }
 
@@ -117,5 +114,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "theme")]
         public Theme Theme { get; set; }
+
+        [DataMember(Name = "externalRedirection")]
+        public string ExternalRedirection { get; set; }
+
+        [DataMember(Name = "fileRedirection")]
+        public string FileRedirection { get; set; }
+
+        [DataMember(Name = "existingTabRedirection")]
+        public string ExistingTabRedirection { get; set; }
     }
 }

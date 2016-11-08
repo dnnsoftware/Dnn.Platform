@@ -402,6 +402,9 @@ namespace Dnn.PersonaBar.Pages.Components
 
             tab.SiteMapPriority = pageSettings.SiteMapPriority;
             tab.PageHeadText = pageSettings.PageHeadText;
+
+            tab.PermanentRedirect = pageSettings.PermanentRedirect;
+            tab.Url = GetInternalUrl(pageSettings);
             
             tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
             tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
@@ -409,6 +412,8 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
             tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
             tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
+            tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow;
+
 
             if (pageSettings.PageType == "template")
             {
@@ -472,6 +477,19 @@ namespace Dnn.PersonaBar.Pages.Components
                         tab.Terms.Add(term);
                     }
                 }
+            }
+        }
+
+        private string GetInternalUrl(PageSettings pageSettings) {
+            switch (pageSettings.PageType) {
+                case "tab":
+                    return pageSettings.ExistingTabRedirection;
+                case "url":
+                    return pageSettings.ExternalRedirection;
+                case "file":
+                    return "FileId=" + pageSettings.FileRedirection;
+                default:
+                    return null;
             }
         }
 
