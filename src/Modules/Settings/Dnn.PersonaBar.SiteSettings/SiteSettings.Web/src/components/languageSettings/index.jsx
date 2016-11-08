@@ -98,11 +98,6 @@ class LanguageSettingsPanelBody extends Component {
         });
     }
 
-    onEnableLocalizedContent () {
-        console.log('OPEN');
-        
-    }
-
     getLanguageOptions() {
         const {props, state} = this;
         let options = [];

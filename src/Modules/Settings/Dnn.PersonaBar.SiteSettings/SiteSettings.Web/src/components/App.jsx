@@ -16,7 +16,6 @@ require('es6-object-assign').polyfill();
 require('array.prototype.find').shim();
 require('array.prototype.findindex').shim();
 
-
 const Pages = {
     Default: 0,
     HtmlEditorManager: 1,
