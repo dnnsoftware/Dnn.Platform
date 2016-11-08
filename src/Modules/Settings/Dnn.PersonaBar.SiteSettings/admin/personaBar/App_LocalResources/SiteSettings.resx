@@ -999,4 +999,7 @@
   <data name="SaveTranslationsToFile.Text" xml:space="preserve">
     <value>Save Translations To File</value>
   </data>
+  <data name="EnableLocalizedContent.Text" xml:space="preserve">
+    <value>Enable Localized Content</value>
+  </data>
 </root>

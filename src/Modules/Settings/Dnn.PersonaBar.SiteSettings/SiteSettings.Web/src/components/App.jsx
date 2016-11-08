@@ -16,44 +16,26 @@ require('es6-object-assign').polyfill();
 require('array.prototype.find').shim();
 require('array.prototype.findindex').shim();
 
+
+const Pages = {
+    Default: 0,
+    HtmlEditorManager: 1,
+    LanguageVerifier: 2,
+    LanguageEditor: 3,
+    LanguagePack: 4,
+    LocalizedContent: 5
+};
+
 class App extends Component {
-    constructor() {
-        super();
+
+    openPersonaBarPage(pageNumber) {
+        const {props} = this;
+        props.dispatch(VisiblePanelActions.selectPanel(pageNumber));
     }
 
-    openHtmlEditorManager() {
+    closePersonaBarPage() {
         const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(1));
-    }
-
-    closeHtmlEditorManager() {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(0));
-    }
-
-    openLanguageVerifier() {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(2));
-    }
-
-    closeLanguageVerifier() {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(0));
-    }
-
-    closeLanguageEditor(){
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(0));
-    }
-
-    openLanguagePack() {
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(4));
-    }
-
-    closeLanguagePack(){
-        const {props} = this;
-        props.dispatch(VisiblePanelActions.selectPanel(0));
+        props.dispatch(VisiblePanelActions.selectPanel(Pages.Default));
     }
 
     render() {
@@ -61,32 +43,37 @@ class App extends Component {
         return (
             <div className="siteSettings-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
+                    <SocialPanelHeader title={resx.get("nav_SiteSettings") }>
                     </SocialPanelHeader>
                     <Body
                         portalId={props.portalId}
-                        openLanguagePack={this.openLanguagePack.bind(this)}
-                        openLanguageVerifier={this.openLanguageVerifier.bind(this)}
-                        openHtmlEditorManager={this.openHtmlEditorManager.bind(this)}
+                        openLanguagePack={this.openPersonaBarPage.bind(this, Pages.LanguagePack) }
+                        openLanguageVerifier={this.openPersonaBarPage.bind(this, Pages.LanguageVerifier) }
+                        openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager) }
+                        openLocalizedContent={this.openPersonaBarPage.bind(this, Pages.LocalizedContent) }
                         />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 1}>
-                    <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
+                <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
+                    <SocialPanelHeader title={resx.get("nav_SiteSettings") }>
                     </SocialPanelHeader>
-                    <HtmlEditorManager portalId={props.portalId} closeHtmlEditorManager={this.closeHtmlEditorManager.bind(this)} />
+                    <HtmlEditorManager portalId={props.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this) } />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 2}>
-                    <SocialPanelHeader title={resx.get("ResourceFileVerifier")}>
+                <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageVerifier}>
+                    <SocialPanelHeader title={resx.get("ResourceFileVerifier") }>
                     </SocialPanelHeader>
-                    <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closeLanguageVerifier.bind(this)} />
+                    <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closePersonaBarPage.bind(this) } />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 3}>
-                    <SocialPanelHeader title={resx.get("LanguageEditor.Header")}/>
-                    <EditLanguagePanel backToSiteSettings={this.closeLanguageEditor.bind(this)} />
+                <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageEditor}>
+                    <SocialPanelHeader title={resx.get("LanguageEditor.Header") }/>
+                    <EditLanguagePanel backToSiteSettings={this.closePersonaBarPage.bind(this) } />
                 </PersonaBarPage>
-                <PersonaBarPage isOpen={props.selectedPage === 4}>
-                    <SocialPanelHeader title={resx.get("CreateLanguagePack")}/>
-                    <LanguagePack closeLanguagePack={this.closeLanguagePack.bind(this)} />
+                <PersonaBarPage isOpen={props.selectedPage === Pages.LanguagePack}>
+                    <SocialPanelHeader title={resx.get("CreateLanguagePack") }/>
+                    <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this) } />
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === Pages.LocalizedContent}>
+                    <SocialPanelHeader title={resx.get("EnableLocalizedContent") }/>
+                    <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this) } />
                 </PersonaBarPage>
             </div>
         );

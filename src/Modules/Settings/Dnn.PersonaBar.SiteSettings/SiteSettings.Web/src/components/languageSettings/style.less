@@ -57,4 +57,18 @@
             border-left: 1px solid @alto;
         }
     }
+    .collapsible-button {
+        text-align: center;
+        background: @mercury;
+        transition: .18s;
+        max-height: 0px;
+        overflow: hidden;
+        &.open {
+            max-height: 80px;
+
+        } 
+        button {
+            margin: 20px;
+        }
+    }
 }
