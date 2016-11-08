@@ -15,7 +15,7 @@ export default class InfoBlock extends Component {
                 label={props.label} style={{width: "auto", "margin-top": "8px"}} />   
             {props.isGlobal && <GlobalIcon isSwitch={true} /> }         
             <Switch labelHidden={false}
-                readOnly={false}
+                readOnly={props.readOnly}
                 value={props.value}
                 onChange={props.onChange} 
                 style={{float: "right"}} />
@@ -26,11 +26,13 @@ export default class InfoBlock extends Component {
 InfoBlock.propTypes = {
     label: PropTypes.string,
     tooltip: PropTypes.string,
+    readOnly: PropTypes.bool,
     value: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
     isGlobal: PropTypes.bool.isRequired  
 };
 
 InfoBlock.defaultProps = {
-    isGlobal: false
+    isGlobal: false,
+    readOnly: false
 };

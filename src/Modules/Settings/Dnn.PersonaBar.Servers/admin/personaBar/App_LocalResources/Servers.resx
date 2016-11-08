@@ -468,4 +468,115 @@
   <data name="errorMessageUpdatingSmtpServerTab.Text" xml:space="preserve">
     <value>Error updating Smtp Server settings</value>
   </data>
+  <data name="errorMessageLoadingPerformanceTab.Text" xml:space="preserve">
+    <value>Error loading Performance Tab</value>
+  </data>
+  <data name="PerformanceTab_CacheSetting.Help" xml:space="preserve">
+    <value>Select how to optimize performance.</value>
+  </data>
+  <data name="PerformanceTab_CacheSetting.Text" xml:space="preserve">
+    <value>Cache Setting</value>
+  </data>
+  <data name="PerformanceTab_Heavy.Text" xml:space="preserve">
+    <value>Heavy</value>
+  </data>
+  <data name="PerformanceTab_Light.Text" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="PerformanceTab_Memory.Text" xml:space="preserve">
+    <value>Memory</value>
+  </data>
+  <data name="PerformanceTab_Moderate.Text" xml:space="preserve">
+    <value>Moderate</value>
+  </data>
+  <data name="PerformanceTab_None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="PerformanceTab_Page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="PerformanceTab_PageStatePersistenceMode.Help" xml:space="preserve">
+    <value>Select the mode to use to persist a page's state. This can either be a hidden field on the Page (Default) or in Memory (Cache).</value>
+  </data>
+  <data name="PerformanceTab_PageStatePersistenceMode.Text" xml:space="preserve">
+    <value>Page State Persistence:</value>
+  </data>
+  <data name="PerformanceTab_AuthCacheability.Help" xml:space="preserve">
+    <value>Sets the Cache-Control HTTP header value for authenticated users.</value>
+  </data>
+  <data name="PerformanceTab_AuthCacheability.Text" xml:space="preserve">
+    <value>Authenticated Cacheability</value>
+  </data>
+  <data name="PerformanceTab_CachingProvider.Help" xml:space="preserve">
+    <value>Caching Provider</value>
+  </data>
+  <data name="PerformanceTab_CachingProvider.Text" xml:space="preserve">
+    <value>Caching Provider</value>
+  </data>
+  <data name="PerformanceTab_ClientResourceManagementInfo.Text" xml:space="preserve">
+    <value>The Super User dictates the default Client Resource Management behavior, but if you choose to do so, you may configure your site to behave differently. The host-level settings are currently set as follows:</value>
+  </data>
+  <data name="PerformanceTab_ClientResourceManagementTitle.Text" xml:space="preserve">
+    <value>Client Resource Management</value>
+  </data>
+  <data name="PerformanceTab_ClientResourcesManagementMode.Help" xml:space="preserve">
+    <value>Host mode utilizes all Client Resources Management settings set at the application level. Site level allows you to select your own Client Resources Management settings.</value>
+  </data>
+  <data name="PerformanceTab_ClientResourcesManagementMode.Text" xml:space="preserve">
+    <value>Client Resources Management Mode</value>
+  </data>
+  <data name="PerformanceTab_CurrentHostVersion.Text" xml:space="preserve">
+    <value>Current Host Version</value>
+  </data>
+  <data name="PerformanceTab_EnableCompositeFiles.Help" xml:space="preserve">
+    <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
+  </data>
+  <data name="PerformanceTab_EnableCompositeFiles.Text" xml:space="preserve">
+    <value>Enable Composite Files</value>
+  </data>
+  <data name="PerformanceTab_GlobalClientResourcesManagementMode.Text" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="PerformanceTab_IncrementVersion.Text" xml:space="preserve">
+    <value>Increment Version</value>
+  </data>
+  <data name="PerformanceTab_MinifyCss.Help" xml:space="preserve">
+    <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead CSS". It is only available when composite files are enabled.</value>
+  </data>
+  <data name="PerformanceTab_MinifyCss.Text" xml:space="preserve">
+    <value>Minify CSS</value>
+  </data>
+  <data name="PerformanceTab_MinifyJs.Help" xml:space="preserve">
+    <value>JS minification will reduce the size of the JavaScript code using JSMin. It is only available when composite files are enabled.</value>
+  </data>
+  <data name="PerformanceTab_MinifyJs.Text" xml:space="preserve">
+    <value>Minify JS</value>
+  </data>
+  <data name="PerformanceTab_ModuleCacheProviders.Help" xml:space="preserve">
+    <value>Select the default module caching provider. This setting can be overridden by each individual module.</value>
+  </data>
+  <data name="PerformanceTab_ModuleCacheProviders.Text" xml:space="preserve">
+    <value>Module Cache Provider</value>
+  </data>
+  <data name="PerformanceTab_PageCacheProviders.Help" xml:space="preserve">
+    <value>Select the default Page Caching Provider. The caching provider must be enabled by setting the cache timeout on each page.</value>
+  </data>
+  <data name="PerformanceTab_PageCacheProviders.Text" xml:space="preserve">
+    <value>Page Output Cache Provider</value>
+  </data>
+  <data name="PerformanceTab_SiteClientResourcesManagementMode.Text" xml:space="preserve">
+    <value>My Website {0}</value>
+  </data>
+  <data name="PerformanceTab_SslForCacheSyncrhonization.Help" xml:space="preserve">
+    <value>By default, cache synchronization will happen over http. To use SSL for cache synchronization messages, please check this.</value>
+  </data>
+  <data name="PerformanceTab_SslForCacheSyncrhonization.Text" xml:space="preserve">
+    <value>Use SSL for Cache Synchronization</value>
+  </data>
+  <data name="PerformanceTab_UnauthCacheability.Help" xml:space="preserve">
+    <value>Sets the Cache-Control HTTP header value for unauthenticated users.</value>
+  </data>
+  <data name="PerformanceTab_UnauthCacheability.Text" xml:space="preserve">
+    <value>Unauthenticated Cacheability</value>
+  </data>
 </root>

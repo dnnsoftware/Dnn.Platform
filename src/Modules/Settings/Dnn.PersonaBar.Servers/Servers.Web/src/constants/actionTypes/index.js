@@ -6,6 +6,7 @@ import applicationTab from "./applicationTab";
 import databaseTab from "./databaseTab";
 import smtpServerTab from "./smtpServerTab";
 import logsTab from "./logsTab";
+import performanceTab from "./performanceTab";
 
 export {
     pagination,
@@ -15,5 +16,6 @@ export {
     applicationTab,
     databaseTab,
     smtpServerTab,
-    logsTab
+    logsTab,
+    performanceTab
 };

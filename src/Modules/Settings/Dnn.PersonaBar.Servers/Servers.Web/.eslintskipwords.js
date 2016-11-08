@@ -1,6 +1,8 @@
 module.exports = [
     "dnn",
     "evoq",
+    "auth",
+    "cacheability",
     "eslint",
     "fetch-ie8",
     "react-dom",
