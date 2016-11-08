@@ -1,9 +1,12 @@
 import { smtpServerTab as ActionTypes } from "../constants/actionTypes";
+import validateFields from "../validation/validationSmtpServerTab";
+import utils from "../utils";
 
 export default function smtpServerTabReducer(state = {
     smtpServerInfo: {},
     errorMessage: "",
-    infoMessage: ""
+    infoMessage: "",
+    errors: {}
 }, action) { 
     switch (action.type) {
         case ActionTypes.LOAD_SMTP_SERVER_TAB:
@@ -14,20 +17,41 @@ export default function smtpServerTabReducer(state = {
         case ActionTypes.LOADED_SMTP_SERVER_TAB:
             return { ...state,
                 smtpServerInfo: action.payload.smtpServerInfo,
-                errorMessage: ""
+                errorMessage: "",
+                errors: {}
             };
         case ActionTypes.ERROR_LOADING_SMTP_SERVER_TAB:
             return { ...state,
                 smtpServerInfo: {},
                 errorMessage: action.payload.errorMessage
             };
-        case ActionTypes.CHANGE_SMTP_SERVER_MODE:
+        case ActionTypes.CHANGE_SMTP_SERVER_MODE: {
+            let errors = {};
+            if (action.payload.smtpServeMode === "h") {             
+                if (utils.isHostUser()) {
+                    const smtpSettings = state.smtpServerInfo.host;
+                    errors = {                        
+                        ...validateFields("smtpConnectionLimit", smtpSettings.smtpConnectionLimit),
+                        ...validateFields("smtpMaxIdleTime", smtpSettings.smtpMaxIdleTime),
+                        ...validateFields("messageSchedulerBatchSize", smtpSettings.messageSchedulerBatchSize)
+                    };
+                }
+            } else {
+                const smtpSettings = state.smtpServerInfo.site;
+                errors = {                        
+                    ...validateFields("smtpConnectionLimit", smtpSettings.smtpConnectionLimit),
+                    ...validateFields("smtpMaxIdleTime", smtpSettings.smtpMaxIdleTime)
+                };
+            }
+
             return { ...state,
                 smtpServerInfo: {
                     ...state.smtpServerInfo,
                     smtpServerMode: action.payload.smtpServeMode
-                }
+                }, 
+                errors
             };
+        }
         case ActionTypes.CHANGE_SMTP_AUTHENTICATION: {
             if (state.smtpServerInfo.smtpServerMode === "h") {
                 return { ...state,
@@ -66,7 +90,12 @@ export default function smtpServerTabReducer(state = {
                 }
             }
 
-            return { ...state, smtpServerInfo};
+            return { ...state, smtpServerInfo,
+                errors: {
+                    ...(state.errors),
+                    ...validateFields(field, value)
+                }
+            };
         }
         case ActionTypes.UPDATE_SMTP_SERVER_SETTINGS:
             return { ...state,

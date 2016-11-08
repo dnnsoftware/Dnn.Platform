@@ -585,4 +585,7 @@
   <data name="errorMessageSendingTestEmail.Text" xml:space="preserve">
     <value>There has been an error trying to send the test email</value>
   </data>
+  <data name="NoIntegerValueError.Text" xml:space="preserve">
+    <value>Must be a positive integer value.</value>
+  </data>
 </root>
