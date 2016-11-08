@@ -3,9 +3,9 @@ import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
 const siteBehaviorActions = {    
-    getDefaultPagesSettings(portalId, callback) {
+    getDefaultPagesSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getDefaultPagesSettings(portalId, data => {
+            ApplicationService.getDefaultPagesSettings(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_DEFAULT_PAGES_SETTINGS,
                     data: {
@@ -49,9 +49,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getMessagingSettings(portalId, callback) {
+    getMessagingSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getMessagingSettings(portalId, data => {
+            ApplicationService.getMessagingSettings(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_MESSAGING_SETTINGS,
                     data: {
@@ -310,9 +310,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getUrlMappingSettings(portalId, callback) {
+    getUrlMappingSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getUrlMappingSettings(portalId, data => {
+            ApplicationService.getUrlMappingSettings(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS_SETTINGS,
                     data: {
@@ -327,9 +327,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getSiteAliases(portalId, callback) {
+    getSiteAliases(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getSiteAliases(portalId, data => {
+            ApplicationService.getSiteAliases(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES,
                     data: {

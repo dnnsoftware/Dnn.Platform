@@ -40,7 +40,7 @@ class LanguageSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, (data) => {
+        props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 languageSettings: Object.assign({}, data.Settings)
             });
@@ -90,7 +90,7 @@ class LanguageSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, (data) => {
+            props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
                 this.setState({
                     languageSettings: Object.assign({}, data.Settings)
                 });
@@ -291,6 +291,7 @@ LanguageSettingsPanelBody.propTypes = {
     languageDisplayModes: PropTypes.array,
     languageSettingsClientModified: PropTypes.bool,
     portalId: PropTypes.number,
+    cultureCode: PropTypes.string,
     openLanguageVerifier: PropTypes.func,
     openLanguagePack: PropTypes.func,
     openLocalizedContent: PropTypes.func

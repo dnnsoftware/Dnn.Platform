@@ -30,6 +30,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
     {
         public int? PortalId { get; set; }
 
+        public string CultureCode { get; set; }
+
         public int SplashTabId { get; set; }
 
         public int HomeTabId { get; set; }

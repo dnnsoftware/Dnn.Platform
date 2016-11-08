@@ -3,9 +3,9 @@ import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
 const languagesActions = {    
-    getLanguageSettings(portalId, callback) {
+    getLanguageSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getLanguageSettings(portalId, data => {
+            ApplicationService.getLanguageSettings(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_SETTINGS,
                     data: {
@@ -51,9 +51,9 @@ const languagesActions = {
             });
         };
     },
-    getLanguages(portalId, callback) {
+    getLanguages(portalId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getLanguages(portalId, data => {
+            ApplicationService.getLanguages(portalId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGES,
                     data: {

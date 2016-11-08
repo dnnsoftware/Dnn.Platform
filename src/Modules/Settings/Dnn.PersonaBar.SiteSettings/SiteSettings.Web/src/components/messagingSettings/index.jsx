@@ -59,7 +59,7 @@ class MessagingSettingsPanelBody extends Component {
         recipientLimitOptions.push({ "value": 75, "label": "75" });
         recipientLimitOptions.push({ "value": 100, "label": "100" });
 
-        props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 messagingSettings: Object.assign({}, data.Settings)
             });
@@ -106,7 +106,7 @@ class MessagingSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, props.cultureCode, (data) => {
                 this.setState({
                     messagingSettings: Object.assign({}, data.Settings)
                 });
@@ -244,7 +244,8 @@ MessagingSettingsPanelBody.propTypes = {
     tabIndex: PropTypes.number,
     messagingSettings: PropTypes.object,
     messagingSettingsClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

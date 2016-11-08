@@ -36,7 +36,7 @@ class LanguagesPanel extends Component {
             });
             return;
         }
-        props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
+        props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 languageList: Object.assign({}, data.Languages)
             });
@@ -106,7 +106,7 @@ class LanguagesPanel extends Component {
             props.dispatch(LanguagesActions.updateLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageUpdateSuccess"));
                 this.collapse();
-                props.dispatch(LanguagesActions.getLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -116,7 +116,7 @@ class LanguagesPanel extends Component {
             props.dispatch(LanguagesActions.addLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageCreateSuccess"));
                 this.collapse();
-                props.dispatch(LanguagesActions.getLanguages(props.portalId));
+                props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
                 props.dispatch(LanguagesActions.getAllLanguages());
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
@@ -219,6 +219,7 @@ LanguagesPanel.propTypes = {
     tabIndex: PropTypes.number,
     languageList: PropTypes.array,
     portalId: PropTypes.number,
+    cultureCode: PropTypes.string,
     languageDisplayMode: PropTypes.string,
     languageClientModified: PropTypes.bool
 };

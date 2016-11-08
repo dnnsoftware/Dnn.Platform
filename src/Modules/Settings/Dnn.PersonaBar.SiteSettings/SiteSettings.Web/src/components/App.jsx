@@ -51,6 +51,7 @@ class App extends Component {
                         openLanguageVerifier={this.openPersonaBarPage.bind(this, Pages.LanguageVerifier) }
                         openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager) }
                         openLocalizedContent={this.openPersonaBarPage.bind(this, Pages.LocalizedContent) }
+                        cultureCode={props.cultureCode}
                         />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
@@ -83,7 +84,8 @@ class App extends Component {
 App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 
