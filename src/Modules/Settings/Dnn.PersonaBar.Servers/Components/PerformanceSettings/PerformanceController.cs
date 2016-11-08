@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Framework.Providers;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.OutputCache;
 
@@ -45,6 +46,13 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
         public IEnumerable<KeyValuePair<string, string>> GetPageCacheProviders()
         {
             return GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetCachingProviderOptions()
+        {
+            var providers = ProviderConfiguration.GetProviderConfiguration("caching").Providers;
+
+            return (from object key in providers.Keys select new KeyValuePair<string, string>((string) key, (string) key)).ToList();
         }
 
         public object GetCacheSettingOptions()
@@ -75,6 +83,11 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
         {
             var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string> (filteredkey, provider.Key);
             return providers;
+        }
+
+        public string GetCachingProvider()
+        {
+            return ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider;
         }
     }
 }

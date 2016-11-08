@@ -13,17 +13,6 @@ import localization from "../../localization";
 import PerformanceTabActions from "../../actions/performanceTab";
 import utils from "../../utils";
 
-const clientResourcesManagementModeOptions = [
-    {
-        label: localization.get("PerformanceTab_GlobalClientResourcesManagementMode"),
-        value: "h"
-    },
-    {
-        label: localization.get("PerformanceTab_SiteClientResourcesManagementMode").replace("{0}", "Test site"),
-        value: "p"
-    }
-];
-
 class Performance extends Component {
     componentWillMount() {
         this.props.onRetrievePerformanceSettings();
@@ -35,11 +24,29 @@ class Performance extends Component {
         }
     }
     
+    getClientResourcesManagementModeOptions(){
+        return [
+            {
+                label: localization.get("PerformanceTab_GlobalClientResourcesManagementMode"),
+                value: "h"
+            },
+            {
+                label: localization.get("PerformanceTab_SiteClientResourcesManagementMode").replace("{0}", "Test site"),
+                value: "p"
+            }
+        ];
+    }
+    
     render() {
         const {props} = this;
-        //const areGlobalSettings = props.smtpServerInfo.smtpServerMode === "h";
-        const areGlobalSettings = false;
-        
+        const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
+        const enableCompositeFiles = areGlobalSettings ? props.performanceSettings.hostEnableCompositeFiles 
+                                        : props.performanceSettings.portalEnableCompositeFiles;
+        const minifyCcs = areGlobalSettings ? props.performanceSettings.hostMinifyCcs 
+                                        : props.performanceSettings.portalMinifyCcs;
+        const minifyJs = areGlobalSettings ? props.performanceSettings.hostMinifyJs 
+                                        : props.performanceSettings.portalMinifyJs;
+                                        
         return <div className="dnn-servers-info-panel-big performanceSettingTab">
             <div className="clear" />
             <GridSystem>
@@ -56,8 +63,8 @@ class Performance extends Component {
                         <DropdownBlock
                                 tooltip={localization.get("PerformanceTab_CachingProvider.Help")}
                                 label={localization.get("PerformanceTab_CachingProvider")}
-                                options={props.performanceSettings.cacheSettingOptions}
-                                value={props.performanceSettings.cacheSetting}
+                                options={props.performanceSettings.cachingProviderOptions}
+                                value={props.performanceSettings.cachingProvider}
                                 onSelect={props.onChangeCacheSettingMode}
                                 />
                         }
@@ -111,7 +118,7 @@ class Performance extends Component {
                     }
                     <SwitchBlock label={localization.get("PerformanceTab_SslForCacheSyncrhonization")}
                             tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
-                            value={false}
+                            value={props.performanceSettings.sslForCacheSynchronization}
                             onChange={props.onChangeCacheSettingMode} />
                 </div>
             </GridSystem>
@@ -127,32 +134,32 @@ class Performance extends Component {
                     </InputGroup>
                     <div className="currentHostVersion">
                         <InfoBlock label={localization.get("PerformanceTab_CurrentHostVersion")}
-                            text="1"/>
+                            text={props.performanceSettings.currentHostVersion}/>
                     </div>
                     <Button type="secondary" style={{marginBottom: "75px"}}
                         onClick={props.onIncrementVersion}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane">
-                    <RadioButtonBlock options={clientResourcesManagementModeOptions}
+                    <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
                             label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
                             tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
                             onChange={props.onChangePerformanceSettingsMode}
-                            value={props.performanceSettings.pageStatePersistence} />
+                            value={props.performanceSettings.clientResourcesManagementMode} />
                     <SwitchBlock label={localization.get("PerformanceTab_EnableCompositeFiles")}
                             tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
-                            value={true}
+                            value={enableCompositeFiles}
                             onChange={props.onChangeCacheSettingMode}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
                             tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
-                            value={false}
-                            readOnly={true}
+                            value={enableCompositeFiles ? minifyCcs : false}
+                            readOnly={!enableCompositeFiles}
                             onChange={props.onChangeCacheSettingMode}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
                             tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
-                            value={false}
-                            readOnly={true}
+                            value={enableCompositeFiles ? minifyJs : false}
+                            readOnly={!enableCompositeFiles}
                             onChange={props.onChangeCacheSettingMode}
                             isGlobal={areGlobalSettings} />
                 </div>

@@ -2,6 +2,8 @@ module.exports = [
     "dnn",
     "evoq",
     "auth",
+    "unauth",
+    "minify",
     "cacheability",
     "eslint",
     "fetch-ie8",

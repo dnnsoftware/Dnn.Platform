@@ -21,6 +21,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,8 +34,11 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Client;
+using static System.Boolean;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
@@ -55,14 +59,30 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
+                var portalId = PortalSettings.Current.PortalId;
                 var perfSettings = new
                 {
+                    CachingProvider = _performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,
                     PageCacheProvider = Host.PageCachingMethod,
                     CacheSetting = Host.PerformanceSetting,
                     AuthCacheability = Host.AuthenticatedCacheability,
                     UnauthCacheability = Host.UnauthenticatedCacheability,
+                    SslForCacheSynchronization = Host.UpgradeForceSsl,
+                    ClientResourcesManagementMode = PortalController.GetPortalSetting("ClientResourcesManagementMode", portalId, "h"),
+
+                    CurrentHostVersion = Host.CrmVersion.ToString(CultureInfo.InvariantCulture),
+                    HostEnableCompositeFiles = Host.CrmEnableCompositeFiles,
+                    HostMinifyCss = Host.CrmMinifyCss,
+                    HostMinifyJs = Host.CrmMinifyJs,
+                    CurrentPortalVersion = GetPortalVersion(portalId),
+                    PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
+                    PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
+                    PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
+
+                    // Options
+                    CachingProviderOptions = _performanceController.GetCachingProviderOptions(),
                     PageStatePersistenceOptions = _performanceController.GetPageStatePersistenceOptions(),
                     ModuleCacheProviders = _performanceController.GetModuleCacheProviders(),
                     PageCacheProviders = _performanceController.GetPageCacheProviders(),
@@ -77,6 +97,22 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private int GetPortalVersion(int portalId)
+        {
+            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
+            int version;
+            if (int.TryParse(settingValue, out version))
+            {
+                if (version == 0)
+                {
+                    version = 1;
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
+                }
+            }
+
+            return version;
         }
 
         /// POST: api/Servers/UpdatePerformanceSettings
