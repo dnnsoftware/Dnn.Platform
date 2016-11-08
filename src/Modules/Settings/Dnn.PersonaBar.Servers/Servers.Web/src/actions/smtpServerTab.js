@@ -45,6 +45,17 @@ const smtpServeTabActions = {
                 }
             });
         };
+    },
+    changeSmtpConfigurationValue(key, value) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CHANGE_SMTP_CONFIGURATION_VALUE,
+                payload: { 
+                    field: key,
+                    value
+                }
+            });  
+        };
     }
 };
 

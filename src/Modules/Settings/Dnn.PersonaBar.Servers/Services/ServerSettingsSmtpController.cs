@@ -21,7 +21,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -86,27 +85,46 @@ namespace Dnn.PersonaBar.Servers.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateSmtpSettings(UpdateSMTPSettingsRequest request)
+        public HttpResponseMessage UpdateSmtpSettings(UpdateSmtpSettingsRequest request)
         {
             try
             {
-                HostController.Instance.Update("SMTPServer", request.SMTPServer, false);
-                HostController.Instance.Update("SMTPConnectionLimit", request.SMTPConnectionLimit, false);
-                HostController.Instance.Update("SMTPMaxIdleTime", request.SMTPMaxIdleTime, false);
-                HostController.Instance.Update("SMTPAuthentication", request.SMTPAuthentication.ToString(), false);
-                HostController.Instance.Update("SMTPUsername", request.SMTPUsername, false);
-                if (request.SMTPPassword != new Regex(".").Replace(Host.SMTPPassword, "*"))
-                {
-                    HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SMTPPassword, Config.GetDecryptionkey());
-                }
-                HostController.Instance.Update("SMTPEnableSSL", request.EnableSMTPSSL ? "Y" : "N", false);
-                HostController.Instance.Update("MessageSchedulerBatchSize", request.MessageSchedulerBatchSize.ToString(), false);
-                DataCache.ClearCache();
+                var portalId = PortalSettings.Current.PortalId;
+                PortalController.UpdatePortalSetting(portalId, "SMTPmode", request.SmtpServerMode, false);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                if (request.SmtpServerMode == "h")
+                {
+                    if (UserInfo != null && UserInfo.IsSuperUser)
+                    {
+                        HostController.Instance.Update("SMTPServer", request.SmtpServer, false);
+                        HostController.Instance.Update("SMTPConnectionLimit", request.SmtpConnectionLimit, false);
+                        HostController.Instance.Update("SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
+                        HostController.Instance.Update("SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                        HostController.Instance.Update("SMTPUsername", request.SmtpUsername, false);
+                        HostController.Instance.UpdateEncryptedString("SMTPPassword", request.SmtpPassword,
+                            Config.GetDecryptionkey());
+                        HostController.Instance.Update("SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
+                        HostController.Instance.Update("MessageSchedulerBatchSize",
+                            request.MessageSchedulerBatchSize.ToString(), false);
+                    }
+                }
+                else
+                {
+                    PortalController.UpdatePortalSetting(portalId, "SMTPServer", request.SmtpServer, false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPConnectionLimit", request.SmtpConnectionLimit, false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPMaxIdleTime", request.SmtpMaxIdleTime, false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPAuthentication", request.SmtpAuthentication.ToString(), false);
+                    PortalController.UpdatePortalSetting(portalId, "SMTPUsername", request.SmtpUsername, false);
+                    PortalController.UpdateEncryptedString(portalId, "SMTPPassword", request.SmtpPassword,
+                        Config.GetDecryptionkey());
+                    PortalController.UpdatePortalSetting(portalId, "SMTPEnableSSL", request.EnableSmtpSsl ? "Y" : "N", false);
+                }
+
+                DataCache.ClearCache();
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
             }
             catch (Exception exc)
             {
@@ -127,8 +145,8 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var password = request.SMTPPassword;
-                if (request.SMTPPassword == new Regex(".").Replace(Host.SMTPPassword, "*"))
+                var password = request.SmtpPassword;
+                if (request.SmtpPassword == new Regex(".").Replace(Host.SMTPPassword, "*"))
                 {
                     password = Host.SMTPPassword;
                 }
@@ -142,11 +160,11 @@ namespace Dnn.PersonaBar.Servers.Services
                                                   Encoding.UTF8,
                                                   "",
                                                   "",
-                                                  request.SMTPServer,
-                                                  request.SMTPAuthentication.ToString(),
-                                                  request.SMTPUsername,
+                                                  request.SmtpServer,
+                                                  request.SmtpAuthentication.ToString(),
+                                                  request.SmtpUsername,
                                                   password,
-                                                  request.EnableSMTPSSL);
+                                                  request.EnableSmtpSsl);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = string.IsNullOrEmpty(strMessage)

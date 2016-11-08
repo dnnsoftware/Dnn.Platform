@@ -21,21 +21,23 @@
 
 namespace Dnn.PersonaBar.Servers.Services.Dto
 {
-    public class UpdateSMTPSettingsRequest
+    public class UpdateSmtpSettingsRequest
     {
-        public string SMTPServer { get; set; }
+        public string SmtpServerMode { get; set; }
 
-        public string SMTPConnectionLimit { get; set; }
+        public string SmtpServer { get; set; }
 
-        public string SMTPMaxIdleTime { get; set; }
+        public string SmtpConnectionLimit { get; set; }
 
-        public int SMTPAuthentication { get; set; }
+        public string SmtpMaxIdleTime { get; set; }
 
-        public string SMTPUsername { get; set; }
+        public int SmtpAuthentication { get; set; }
 
-        public string SMTPPassword { get; set; }
+        public string SmtpUsername { get; set; }
 
-        public bool EnableSMTPSSL { get; set; }
+        public string SmtpPassword { get; set; }
+
+        public bool EnableSmtpSsl { get; set; }
 
         public int MessageSchedulerBatchSize { get; set; }
     }

@@ -3,7 +3,7 @@ import { smtpServerTab as ActionTypes } from "../constants/actionTypes";
 export default function smtpServerTabReducer(state = {
     smtpServerInfo: {},
     errorMessage: ""
-}, action) {
+}, action) { 
     switch (action.type) {
         case ActionTypes.LOAD_SMTP_SERVER_TAB:
             return { ...state,
@@ -46,6 +46,28 @@ export default function smtpServerTabReducer(state = {
                 }
             };
         }
+        case ActionTypes.CHANGE_SMTP_CONFIGURATION_VALUE: {
+            const field = action.payload.field;
+            const value = action.payload.value;
+            const smtpServerInfo = {
+                ...state.smtpServerInfo
+            };
+            if (field === "messageSchedulerBatchSize") {
+                smtpServerInfo.host = {...state.smtpServerInfo.host };
+                smtpServerInfo.host[field] = value;
+            } else {
+                if (state.smtpServerInfo.smtpServerMode === "h") {
+                    smtpServerInfo.host = {...state.smtpServerInfo.host };
+                    smtpServerInfo.host[field] = value;
+                } else {
+                    smtpServerInfo.site = {...state.smtpServerInfo.site };
+                    smtpServerInfo.site[field] = value;
+                }
+            }
+
+            return { ...state, smtpServerInfo};
+        }
+
         default:
             return state;
     }

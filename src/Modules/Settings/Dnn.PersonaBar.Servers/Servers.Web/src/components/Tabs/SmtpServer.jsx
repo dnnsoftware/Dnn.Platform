@@ -56,12 +56,16 @@ class SmtpServer extends Component {
         this.props.onChangeSmtpAuthentication(authentication);
     }
 
-    onChangeSmtpEnableSsl() {
+    onChangeSmtpEnableSsl(enabled) {
+        this.props.onChangeSmtpConfigurationValue("enableSmtpSsl", enabled);
+    }
 
+    onChangeField(key, event) {
+        this.props.onChangeSmtpConfigurationValue(key, event.target.value);
     }
 
     onTestSmtpSettings() {
-
+       
     }
 
     onSave() {
@@ -88,23 +92,27 @@ class SmtpServer extends Component {
                         <EditBlock label={localization.get("plSMTPServer")}
                             tooltip={localization.get("plSMTPServer.Help")}
                             value={selectedSmtpSettings.smtpServer}
-                            isGlobal={areGlobalSettings} />
+                            isGlobal={areGlobalSettings} 
+                            onChange={this.onChangeField.bind(this, "smtpServer")} />
                    
                         <EditBlock label={localization.get("plConnectionLimit")}
                             tooltip={localization.get("plConnectionLimit.Help")}
                             value={selectedSmtpSettings.smtpConnectionLimit} 
-                            isGlobal={areGlobalSettings} />
+                            isGlobal={areGlobalSettings}
+                            onChange={this.onChangeField.bind(this, "smtpConnectionLimit")} />
                    
                         <EditBlock label={localization.get("plMaxIdleTime")}
                             tooltip={localization.get("plMaxIdleTime.Help")}
                             value={selectedSmtpSettings.smtpMaxIdleTime} 
-                            isGlobal={areGlobalSettings} />
+                            isGlobal={areGlobalSettings}
+                            onChange={this.onChangeField.bind(this, "smtpMaxIdleTime")} />
                  
                         {areGlobalSettings &&
                             <EditBlock label={localization.get("plBatch")}
                                 tooltip={localization.get("plBatch.Help")}
                                 value={props.smtpServerInfo.host.messageSchedulerBatchSize} 
-                                isGlobal={areGlobalSettings} />
+                                isGlobal={areGlobalSettings}
+                                onChange={this.onChangeField.bind(this, "messageSchedulerBatchSize")} />
                         }
                     </div>
                 </div>
@@ -123,13 +131,15 @@ class SmtpServer extends Component {
                                 <EditBlock label={localization.get("plSMTPUsername")}
                                     tooltip={localization.get("plSMTPUsername.Help")}
                                     value={selectedSmtpSettings.smtpUserName} 
-                                    isGlobal={areGlobalSettings} />                   
+                                    isGlobal={areGlobalSettings}
+                                    onChange={this.onChangeField.bind(this, "smtpUserName")} />                   
                             
                                 <EditBlock label={localization.get("plSMTPPassword")}
                                     tooltip={localization.get("plSMTPPassword.Help")}
                                     value={selectedSmtpSettings.smtpPassword} 
                                     isGlobal={areGlobalSettings} 
-                                    type="password" />
+                                    type="password"
+                                    onChange={this.onChangeField.bind(this, "smtpPassword")} />
                             </div>     
                         }
                         <SwitchBlock label={localization.get("plSMTPEnableSSL")}
@@ -157,7 +167,8 @@ SmtpServer.propTypes = {
     errorMessage: PropTypes.string,
     onRetrieveSmtpServerInfo: PropTypes.func.isRequired,
     onChangeSmtpServerMode: PropTypes.func.isRequired,
-    onChangeSmtpAuthentication: PropTypes.func.isRequired
+    onChangeSmtpAuthentication: PropTypes.func.isRequired,
+    onChangeSmtpConfigurationValue: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
@@ -172,7 +183,8 @@ function mapDispatchToProps(dispatch) {
         ...bindActionCreators ({
             onRetrieveSmtpServerInfo: SmtpServerTabActions.loadSmtpServerInfo,
             onChangeSmtpServerMode: SmtpServerTabActions.changeSmtpServerMode,
-            onChangeSmtpAuthentication: SmtpServerTabActions.changeSmtpAuthentication
+            onChangeSmtpAuthentication: SmtpServerTabActions.changeSmtpAuthentication,
+            onChangeSmtpConfigurationValue: SmtpServerTabActions.changeSmtpConfigurationValue
         }, dispatch)
     };
 }

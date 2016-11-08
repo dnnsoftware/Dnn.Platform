@@ -23,14 +23,14 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
 {
     public class SendTestEmailRequest
     {
-        public string SMTPServer { get; set; }
+        public string SmtpServer { get; set; }
 
-        public int SMTPAuthentication { get; set; }
+        public int SmtpAuthentication { get; set; }
 
-        public string SMTPUsername { get; set; }
+        public string SmtpUsername { get; set; }
 
-        public string SMTPPassword { get; set; }
+        public string SmtpPassword { get; set; }
 
-        public bool EnableSMTPSSL { get; set; }
+        public bool EnableSmtpSsl { get; set; }
     }
 }
