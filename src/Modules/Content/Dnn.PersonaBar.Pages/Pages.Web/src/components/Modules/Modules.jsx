@@ -4,6 +4,7 @@ import styles from "./style.less";
 import GridCell from "dnn-grid-cell";
 import Localization from "../../localization";
 import utils from "../../utils";
+import { ModuleIcon } from "dnn-svg-icons";
 
 class Modules extends Component {
 
@@ -44,7 +45,13 @@ class Modules extends Component {
     render() {
         const moduleRows = this.getModules();
         return (
+            /* eslint-disable react/no-danger */
             <div className={styles.moduleContainer}>
+                <div className="title">
+                    <div className="module-icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
+                    <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
+                </div>
+
                 <div className="header-row">
                     <GridCell columnSize={42} >
                         {Localization.get("Title")}
@@ -54,7 +61,8 @@ class Modules extends Component {
                     </GridCell>
                 </div>
                 {moduleRows}
-            </div>
+            </div>            
+            /* eslint-enable react/no-danger */
         );
     }
 }

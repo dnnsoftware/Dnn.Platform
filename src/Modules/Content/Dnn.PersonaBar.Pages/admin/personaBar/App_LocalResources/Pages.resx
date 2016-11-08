@@ -267,6 +267,9 @@
   <data name="VaryByLimit_tooltip.Text" xml:space="preserve">
     <value>Enter the maximum number of variations to cache for this page. This must be an integer. (Note, this feature prevents potential denial of service attacks.)</value>
   </data>
+  <data name="ModulesOnThisPage.Text" xml:space="preserve">
+    <value>Modules on this page</value>
+  </data>
   <data name="NoModules.Text" xml:space="preserve">
     <value>This page does not have any modules.</value>
   </data>
