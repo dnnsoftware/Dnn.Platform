@@ -111,5 +111,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "sitemapPriority")]
         public float SiteMapPriority { get; set; }
+
+        [DataMember(Name = "permanentRedirect")]
+        public bool PermanentRedirect { get; set; }
+
+        [DataMember(Name = "linkNewWindow")]
+        public bool LinkNewWindow { get; set; }
     }
 }

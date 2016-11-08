@@ -12,6 +12,11 @@ class PageUrlCommons extends Component {
         onChangeField(key, event.target.value);
     }
 
+    onChangeValue(key, value) {
+        const {onChangeField} = this.props;
+        onChangeField(key, value);
+    }
+
     render() {
         const {page, display} = this.props;
         const gridClass = "page-url-commons-grid " + display; 
@@ -28,7 +33,7 @@ class PageUrlCommons extends Component {
                         <Switch
                             labelHidden={true}
                             value={page.permanentRedirect}
-                            onChange={this.onChangeField.bind(this, "permanentRedirect")} />
+                            onChange={this.onChangeValue.bind(this, "permanentRedirect")} />
                     </div>
                     <div className="right-column">
                         <Label
@@ -38,8 +43,8 @@ class PageUrlCommons extends Component {
                             />
                         <Switch
                             labelHidden={true}
-                            value={page.openNewWindow}
-                            onChange={this.onChangeField.bind(this, "openNewWindow")} />
+                            value={page.linkNewWindow}
+                            onChange={this.onChangeValue.bind(this, "linkNewWindow")} />
                     </div>
                 </div>
             </div>

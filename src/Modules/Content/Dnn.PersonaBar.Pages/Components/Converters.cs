@@ -79,7 +79,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 CacheExcludeVaryBy = (string)tab.TabSettings["ExcludeVaryBy"],
                 CacheMaxVaryByCount = tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null,
                 PageHeadText = tab.PageHeadText,
-                SiteMapPriority = tab.SiteMapPriority
+                SiteMapPriority = tab.SiteMapPriority,
+                PermanentRedirect = tab.PermanentRedirect,
+                LinkNewWindow = tab.TabSettings["LinkNewWindow"] != null && (string)tab.TabSettings["LinkNewWindow"] == "True",
             };
         }
 

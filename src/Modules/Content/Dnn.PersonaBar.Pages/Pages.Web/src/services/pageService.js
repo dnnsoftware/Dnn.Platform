@@ -3,7 +3,8 @@ import serviceFramework from "./serviceFramework";
 const PageService = function () {
 
     const getPage = function (pageId) {
-        return serviceFramework.get("GetPageDetails", { pageId });
+        return serviceFramework.get("GetPageDetails", { pageId })
+            .then(response => toFrontEndPage(response));
     };
 
     const savePage = function (page) {
@@ -49,7 +50,9 @@ const PageService = function () {
                     placeholderURL: "/",
                     modules: [],
                     permissions: permissions,
-                    schedulingEnabled: false
+                    schedulingEnabled: false,
+                    permanentRedirect: false,
+                    linkNewWindow: false
                 };
             });
     };
@@ -78,7 +81,6 @@ const PageService = function () {
         getPage,
         savePage,
         getNewPage,
-        toFrontEndPage,
         getCacheProviderList,
         deletePageModule,
         getPageUrlPreview
