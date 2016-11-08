@@ -60,16 +60,10 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "customUrlEnabled")]
         public bool CustomUrlEnabled { get; set; }
-
-        [DataMember(Name = "templateId")]
-        public int TemplateId { get; set; }
-
+        
         [DataMember(Name = "pageType")]
         public string PageType { get; set; }
-
-        [DataMember(Name = "trackLinks")]
-        public bool TrackLinks { get; set; }
-
+        
         [DataMember(Name = "startDate")]
         public DateTime? StartDate { get; set; }
 
