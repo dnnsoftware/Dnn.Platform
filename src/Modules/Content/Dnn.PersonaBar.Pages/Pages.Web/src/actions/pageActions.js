@@ -6,12 +6,13 @@ function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
         dispatch({
             type: ActionTypes.CHANGE_FIELD_VALUE,
+            urlPreviewChange: true,
             field: "url",
             value: response.Url
         });  
     }).catch(() => {
         dispatch({
-            type: ActionTypes.ERROR_SAVING_PAGE
+            type: ActionTypes.ERROR_LOADING_PAGE
         });
     });
 }

@@ -19,6 +19,10 @@ export default function pagesReducer(state = {
         return newSelectedPage;
     };
 
+    const hasChangeUrl = function hasChangeUrl(action) {
+        return state.urlChanged || (!action.urlPreviewChange && action.field === "url");
+    };
+
     switch (action.type) {
         case ActionTypes.LOAD_PAGE:
             return { ...state,                
@@ -62,7 +66,7 @@ export default function pagesReducer(state = {
                     ...(state.errors),
                     ...validateFields(action.field, action.value)
                 },
-                urlChanged: state.urlChanged || action.field === "url"           
+                urlChanged: hasChangeUrl(action)           
             };
 
         case ActionTypes.CHANGE_PERMISSIONS:
