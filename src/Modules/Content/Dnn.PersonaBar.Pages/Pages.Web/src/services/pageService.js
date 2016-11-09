@@ -76,6 +76,13 @@ const PageService = function () {
         const api = getApi();
         return api.get("GetCacheProviderList");
     };
+
+    const copyAppearanceToDescendantPages = function (pageId, theme) {
+        const api = getApi();
+        return api.post("CopyThemeToDescendantPages", {
+            pageId, theme
+        });
+    };
     
     const toFrontEndPage = function (page) {
         return {
@@ -100,7 +107,8 @@ const PageService = function () {
         getNewPage,
         getCacheProviderList,
         deletePageModule,
-        getPageUrlPreview
+        getPageUrlPreview,
+        copyAppearanceToDescendantPages
     };
 };
 

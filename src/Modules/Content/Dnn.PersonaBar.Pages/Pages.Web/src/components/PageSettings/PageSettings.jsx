@@ -33,7 +33,7 @@ class PageSettings extends Component {
     }
 
     copyAppearanceToDescendantPages() {
-
+        this.props.onCopyAppearanceToDescendantPages();
     }
 
     getCopyAppearanceToDescendantPagesButton() {
@@ -138,6 +138,7 @@ PageSettings.propTypes = {
     onChangePageType: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
     onToggleEditPageModule: PropTypes.func.isRequired,
+    onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number
 };
 
