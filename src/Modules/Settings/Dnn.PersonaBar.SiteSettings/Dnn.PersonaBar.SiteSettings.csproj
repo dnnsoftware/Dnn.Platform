@@ -98,19 +98,15 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Components\Constants\LanguageResourceEnums.cs" />
     <Compile Include="Components\ExtensionMenuController.cs" />
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\CreateLanguagePackRequest.cs" />
-    <Compile Include="Services\Dto\LocalizationProgress.cs" />
-    <Compile Include="Services\Dto\NameValueEntry.cs" />
     <Compile Include="Services\Dto\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSynonymsGroupRequest.cs" />
     <Compile Include="Services\Dto\UpdateBasicSearchSettingsRequest.cs" />
-    <Compile Include="Services\Dto\UpdateTransaltionsRequest.cs" />
     <Compile Include="Services\Dto\UpdateUrlMappingSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteAliasRequest.cs" />
     <Compile Include="Services\Dto\UpdateProfilePropertyLocalizationRequest.cs" />
@@ -119,7 +115,6 @@
     <Compile Include="Services\Dto\UpdateDefaultPagesSettings.cs" />
     <Compile Include="Services\Dto\UpdateProfileSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSiteSettingsRequest.cs" />
-    <Compile Include="Services\LanguagesController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -142,9 +137,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\SiteSettings.resx">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="admin\personaBar\App_LocalResources\SiteSettings.resx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
