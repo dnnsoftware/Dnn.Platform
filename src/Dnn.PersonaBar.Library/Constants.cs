@@ -37,7 +37,5 @@ namespace Dnn.PersonaBar.Library
         // Js resources
 
         public static readonly string[] DefaultDocumentExtensions = { "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", "txt" };
-
-        public const string PageTagsVocabulary = "PageTags";
     }
 }
