@@ -597,18 +597,6 @@
   <data name="None.Text" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="portalAliasModeButtonListLabel.Help" xml:space="preserve">
-    <value>This setting determines how the site responds to URLs which are defined as alias, but are not the default alias.  Canonical (the alias URL is handled as a Canonical URL), Redirect (redirects to default alias) or None (no additional action is taken).</value>
-  </data>
-  <data name="portalAliasModeButtonListLabel.Text" xml:space="preserve">
-    <value>Site Alias Mapping Mode</value>
-  </data>
-  <data name="plAutoAddPortalAlias.Help" xml:space="preserve">
-    <value>This setting determines how the site responds to URLs which are mapped to the site but are not currently in the list of aliases.  This setting is effective in single-site configuration only.  Select this option to automatically map new URL.</value>
-  </data>
-  <data name="plAutoAddPortalAlias.Text" xml:space="preserve">
-    <value>Auto Add Site Alias</value>
-  </data>
   <data name="SiteAliases.Text" xml:space="preserve">
     <value>SITE ALIASES</value>
   </data>
@@ -957,13 +945,13 @@
   <data name="Core.LangPackType" xml:space="preserve">
     <value>Core</value>
   </data>
-    <data name="Module.LangPackType" xml:space="preserve">
+  <data name="Module.LangPackType" xml:space="preserve">
     <value>Module</value>
   </data>
-    <data name="Provider.LangPackType" xml:space="preserve">
+  <data name="Provider.LangPackType" xml:space="preserve">
     <value>Provider</value>
   </data>
-    <data name="Full.LangPackType" xml:space="preserve">
+  <data name="Full.LangPackType" xml:space="preserve">
     <value>Full</value>
   </data>
   <data name="AuthSystem.LangPackType" xml:space="preserve">
@@ -1019,5 +1007,11 @@
   </data>
   <data name="translatorsLabel.Help" xml:space="preserve">
     <value>The selected roles will be granted explicit Edit Rights to all new pages and localized modules for this language.</value>
+  </data>
+  <data name="MicroServices.Text" xml:space="preserve">
+    <value>MicroServices</value>
+  </data>
+  <data name="MicroServicesDescription.Text" xml:space="preserve">
+    <value>Warning: once you enable a microservice, you will need contact support yo disable it.</value>
   </data>
 </root>
