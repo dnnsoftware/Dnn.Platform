@@ -62,14 +62,17 @@ class MoreSettingsPanelBody extends Component {
             <div className="sectionTitle">{resx.get("MicroServices")}</div>
             <div className="messageBox">{resx.get("MicroServicesDescription")}</div>
             {
-                extensions.map(function(ext){
+                extensions.map(function(ext, index){
                     if(typeof ext.init === "function"){
                         ext.init({utility: util.utilities});
                     }
-
+                    
+                    let className = index % 2 === 0 ? "left-column" : "right-column";
                     let ExtensionComponent = ext.extension;
                     return <GridCell columnSize="50">
-                        <ExtensionComponent ref={ext.name} />
+                        <div className={className}>
+                            <ExtensionComponent ref={ext.name} />
+                        </div>
                     </GridCell>;
                 })
             }
