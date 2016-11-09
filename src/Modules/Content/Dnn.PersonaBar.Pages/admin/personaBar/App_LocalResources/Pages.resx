@@ -417,6 +417,9 @@
   <data name="PageLayoutTooltip.text" xml:space="preserve">
     <value>The selected theme will be applied to this page.</value>
   </data>
+  <data name="PageStyleSheetTooltip.Text" xml:space="preserve">
+    <value>A stylesheet that will only be loaded for this page. The file must be located in the home directory or a sub folder of the current website.</value>
+  </data>
   <data name="SetPageContainer.Text" xml:space="preserve">
     <value>set page container</value>
   </data>

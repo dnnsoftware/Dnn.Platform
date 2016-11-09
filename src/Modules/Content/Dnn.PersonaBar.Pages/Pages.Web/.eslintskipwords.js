@@ -135,4 +135,5 @@ module.exports = [
     "ctl",
     "seo",
     "sitemap",
+    "ascx",
 ]

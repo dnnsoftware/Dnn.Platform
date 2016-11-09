@@ -87,7 +87,8 @@ class PageSettings extends Component {
                                 editingSettingModuleId={editingSettingModuleId} />
                         </div>
                         <div className="dnn-simple-tab-item">
-                            <Appearance page={selectedPage} />
+                            <Appearance page={selectedPage}
+                                onChangeField={onChangeField} />
                         </div>
                         <div className="dnn-simple-tab-item">
                             <Seo page={selectedPage}
