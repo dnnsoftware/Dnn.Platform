@@ -30,10 +30,11 @@ class Card extends Component {
     }
     
     render() {
-        const { selected } = this.props;
-        const className = styles.moduleContainer + (selected ? " selected" : "");
+        const { selected, size } = this.props;
+        const className = styles.moduleContainer + (selected ? " selected" : "") + " " + size;
+        const columnSize = size === "big" ? 25 : 15;
         return (
-            <GridCell columnSize="25" className={className}>
+            <GridCell columnSize={columnSize} className={className}>
                 {this.getImageComponent()}
                 <OverflowText text={this.props.label} maxWidth={168} className="title" />
             </GridCell>
@@ -47,7 +48,12 @@ Card.propTypes = {
     hoverText: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     image: PropTypes.string,
-    selected: PropTypes.bool.isRequired
+    selected: PropTypes.bool.isRequired,
+    size: PropTypes.oneOf(["big","small"])
+};
+
+Card.defaultProps = {
+    size: "big"
 };
 
 export default Card;

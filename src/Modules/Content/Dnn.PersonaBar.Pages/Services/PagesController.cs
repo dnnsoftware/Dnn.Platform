@@ -233,7 +233,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
             return Request.CreateResponse(HttpStatusCode.OK, new {
                 layouts = _themesController.GetThemeFiles(PortalSettings, themeLayout),
-                container = _themesController.GetThemeFiles(PortalSettings, themeContainer)
+                containers = _themesController.GetThemeFiles(PortalSettings, themeContainer)
             });
         }
     }

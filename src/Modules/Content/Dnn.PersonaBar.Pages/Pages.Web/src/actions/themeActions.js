@@ -22,6 +22,29 @@ const themeActions = {
                 });
             });     
         };
+    },
+
+    retrieveThemeFiles(themeName) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.RETRIEVING_THEME_FILES
+            });    
+
+            ThemeService.getThemeFiles(themeName).then(response => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_THEME_FILES,
+                    data: {
+                        layouts: response.layouts,
+                        containers: response.containers
+                    }
+                });  
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_RETRIEVING_THEME_FILES,
+                    data: {error}
+                });
+            });     
+        };
     }
 };
 export default themeActions;
