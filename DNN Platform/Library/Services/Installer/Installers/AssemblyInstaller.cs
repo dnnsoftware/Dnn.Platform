@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             var name = assemblyName.Name;
             var publicKeyToken = PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
-            var oldVersion = "0.0.0.0-" + new Version(assemblyName.Version.Major, short.MaxValue, short.MaxValue, short.MaxValue);
+            var oldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
             var newVersion = assemblyName.Version.ToString();
 
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
