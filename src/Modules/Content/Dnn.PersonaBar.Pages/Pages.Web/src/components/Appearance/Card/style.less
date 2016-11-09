@@ -1,5 +1,7 @@
 @import "~dnn-global-styles/index";
 :local(.moduleContainer) {
+    padding: 15px;
+    
     img {
         width: 168px;
         height: 168px;
@@ -12,6 +14,7 @@
         margin: 9px 0;
         position: relative;
         vertical-align: top;
+        cursor: pointer;
 
         &.no-image {
             &:before {
@@ -38,6 +41,7 @@
         text-align: center;
         font-family: 'pb_semibold';
         line-height: 36px;
+        width: 100%;
     }
 
     &.selected {

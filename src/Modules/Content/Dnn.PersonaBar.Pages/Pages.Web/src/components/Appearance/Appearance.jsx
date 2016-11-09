@@ -16,21 +16,21 @@ class Appearance extends Component {
 
     render() {        
         return (
-            <GridSystem>
-                <GridCell columnSize={100}>
-                    <ThemeSelector />
-                </GridCell>
-                <GridCell columnSize={100}>
+            <div>
+                <div>
+                    <ThemeSelector themes={this.props.themes} />
+                </div>
+                <div>
                     <Label 
                         label={localization.get("Layout")} 
                         tooltipMessage={localization.get("AddTooltipHere_TODO")} />
-                </GridCell>
-                <GridCell columnSize={100}>
+                </div>
+                <div>
                     <Label 
                         label={localization.get("PageContainer")} 
                         tooltipMessage={localization.get("AddTooltipHere_TODO")} />
-                </GridCell>
-            </GridSystem>
+                </div>
+            </div>
         );
     }
 }

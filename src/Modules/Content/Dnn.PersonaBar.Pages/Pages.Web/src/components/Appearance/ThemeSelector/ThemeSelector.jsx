@@ -1,10 +1,25 @@
 import React, {Component, PropTypes} from "react";
 import Label from "dnn-label";
 import localization from "../../../localization";
-import { Scrollbars } from "react-custom-scrollbars";
-import GridCell from "dnn-grid-cell";
+import Card from "../Card/Card";
+import Gallery from "../Gallery/Gallery";
 
 class ThemeSelector extends Component {
+
+    onCardClick(cardId) {
+        console.log("clicked on " + cardId);
+    }
+
+    getThemeCards() {
+        return this.props.themes.map(theme => {
+            return <Card 
+                cardId={theme.packageName}
+                onClick={this.onCardClick.bind(this)}
+                hoverText={localization.get("ClickSelectTheme")}
+                label={theme.packageName}
+                image={theme.thumbnail} />;
+        });
+    }
 
     render() {        
         return (
@@ -12,18 +27,9 @@ class ThemeSelector extends Component {
                 <Label 
                     label={localization.get("PageTheme")} 
                     tooltipMessage={localization.get("PageThemeTooltip")} />
-                <div>
-                    <Scrollbars
-                        className="theme-list"
-                        autoHeight
-                        autoHeightMin={0}
-                        autoHeightMax={480}>
-                        <GridCell>
-                           
-                           
-                        </GridCell>
-                    </Scrollbars>
-                </div>
+                <Gallery>
+                    {this.getThemeCards()}
+                </Gallery>
             </div>
         );
     }

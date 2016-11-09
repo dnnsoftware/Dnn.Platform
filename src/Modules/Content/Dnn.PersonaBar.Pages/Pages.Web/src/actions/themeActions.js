@@ -12,7 +12,7 @@ const themeActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_THEMES,
                     data: {
-                        themes: response
+                        themes: response.themes
                     }
                 });  
             }).catch((error) => {

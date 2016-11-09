@@ -19,21 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-#region Usings
-
-
-
-#endregion
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using System.Xml;
 using Dnn.PersonaBar.Themes.Components.DTO;
 using DotNetNuke.Common;
@@ -43,10 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
 using Image = System.Drawing.Image;
 
 namespace Dnn.PersonaBar.Themes.Components

@@ -135,6 +135,10 @@
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Manage\Dnn.PersonaBar.Themes\Dnn.PersonaBar.Themes.csproj">
+      <Project>{5ad58dbf-e912-46e5-8812-342bb8af8182}</Project>
+      <Name>Dnn.PersonaBar.Themes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\App_LocalResources\Pages.resx" />
