@@ -13,6 +13,7 @@ const getPerformanceSettings = function () {
     return serviceFramework.get("ServerSettingsPerformance", "GetPerformanceSettings")
         .then(response => {
             return {
+                portalName: response.PortalName,
                 cachingProvider: response.CachingProvider,
                 pageStatePersistence: response.PageStatePersistence,
                 moduleCacheProvider: response.ModuleCacheProvider,

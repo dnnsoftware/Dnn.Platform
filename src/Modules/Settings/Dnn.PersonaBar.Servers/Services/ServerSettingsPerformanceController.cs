@@ -63,6 +63,8 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 var perfSettings = new
                 {
+                    PortalName = PortalSettings.Current.PortalName,
+
                     CachingProvider = _performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,

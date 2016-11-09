@@ -31,7 +31,7 @@ class Performance extends Component {
                 value: "h"
             },
             {
-                label: localization.get("PerformanceTab_SiteClientResourcesManagementMode").replace("{0}", "Test site"),
+                label: this.props.performanceSettings.portalName,
                 value: "p"
             }
         ];
