@@ -74,7 +74,6 @@ class App extends Component {
     render() {
         const {props} = this;
         
-
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedView === 0}>

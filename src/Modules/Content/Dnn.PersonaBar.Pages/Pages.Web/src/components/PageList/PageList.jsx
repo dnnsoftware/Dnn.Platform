@@ -15,17 +15,18 @@ class PageList extends Component {
 
     render() {
         return (
-            <SocialPanelBody>                        
-                <GridCell columnSize={65} >
-                    <div>&nbsp; </div></GridCell>
-                <GridCell columnSize={35} >
-                    <div className="search-filter">                                
-                        <SearchBox placeholder={Localization.get("Search")} 
-                            onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
-                        <div className="clear"></div>
-                    </div>
-                </GridCell>
-
+            <SocialPanelBody>                  
+                <div className="search-container">      
+                    <GridCell columnSize={65} >
+                        <div>&nbsp; </div></GridCell>
+                    <GridCell columnSize={35} >
+                        <div className="search-filter">                                
+                            <SearchBox placeholder={Localization.get("Search")} 
+                                onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
+                            <div className="clear"></div>
+                        </div>
+                    </GridCell>
+                </div>
                 <PageHierarchy
                     itemTemplate={this.props.itemTemplate}
                     searchKeyword={this.props.searchKeyword} 

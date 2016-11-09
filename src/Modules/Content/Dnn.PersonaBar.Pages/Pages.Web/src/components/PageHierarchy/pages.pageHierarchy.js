@@ -514,16 +514,11 @@
         },
 
         _resizeContentContainer: function(resetContainer) {
+            var $body = this.panel.closest(".dnn-social-panel-body");             
+            var pageHierarchyContainer = $body.find(".pagehierarchy-container");
+            var restHeight = pageHierarchyContainer.position().top;
 
-            var $body = this.panel.closest(".dnn-social-panel-body");
-            var bodyHeight = parseInt($body.css("margin-top")) 
-                + parseInt($body.css("padding-top")) + parseInt($body.css("padding-bottom"));
-            var innerMargin = parseInt($body.find(".pagehierarchy-container").css("margin-top"));
-            var breadcrumbContainerHeight = this.panel.find(".breadcrumbs-container").outerHeight();
-
-            var restHeight = bodyHeight + breadcrumbContainerHeight + innerMargin + 3;
-
-            this.container.css('height', $(window).height() - restHeight);
+            this.container.css('height', $(window).height() - restHeight - 20);
 
             this._initScrollView(resetContainer);
         },
