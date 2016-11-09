@@ -19,21 +19,29 @@ class PageSettings extends Component {
             Localization.get("AddPage") : Localization.get("Save");
         const pageErrors = Object.values(selectedPageErrors).some(value => value);
 
-        return (
-            <div className="buttons-box">
-                <Button
+        return [<Button
                     type="secondary"
                     onClick={onCancel}>
                     {Localization.get("Cancel")}
-                </Button>
+                </Button>,
                 <Button
                     type="primary"
                     onClick={onSave}
                     disabled={pageErrors}>
                     {saveButtonText}
-                </Button>
-            </div>
-        );
+                </Button>];
+    }
+
+    copyAppearanceToDescendantPages() {
+
+    }
+
+    getCopyAppearanceToDescendantPagesButton() {
+        return <Button 
+                type="secondary"
+                onClick={this.copyAppearanceToDescendantPages.bind(this)}> 
+                {Localization.get("CopyAppearanceToDescendantPages")}
+            </Button>;
     }
 
     render() {
@@ -47,6 +55,12 @@ class PageSettings extends Component {
             editingSettingModuleId
         } = this.props;
         const buttons = this.getButtons();
+
+        const isNewPage = selectedPage.tabId === 0;
+        const appearanceButtons = buttons;
+        if (!isNewPage) {
+            appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
+        }
 
         return (
             <Tabs 
@@ -89,15 +103,23 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <Appearance page={selectedPage}
                                 onChangeField={onChangeField} />
+                            <div className="buttons-box">
+                                {appearanceButtons}
+                            </div>
                         </div>
                         <div className="dnn-simple-tab-item">
                             <Seo page={selectedPage}
                                 onChangeField={onChangeField} />
+                            <div className="buttons-box">
+                                {buttons}
+                            </div>
                         </div>
                         <div className="dnn-simple-tab-item">
                             <More page={selectedPage}
                                 onChangeField={onChangeField} />
-                            {buttons}
+                            <div className="buttons-box">
+                                {buttons}
+                            </div>
                         </div>
                     </Tabs>
                 </div>
