@@ -26,6 +26,10 @@ class Appearance extends Component {
         window.open(previewUrl);
     }
 
+    onSelectTheme(theme) {
+        this.props.onRetrieveThemeFiles(theme.packageName);
+    }
+
     trimAscxExtension(value) {
         return value.replace(".ascx", "");
     }
@@ -40,7 +44,9 @@ class Appearance extends Component {
         return (
             <div className={style.moduleContainer}>
                 <GridCell>
-                    <ThemeSelector themes={this.props.themes} />
+                    <ThemeSelector 
+                        themes={this.props.themes}
+                        onSelectTheme={this.onSelectTheme.bind(this)} />
                 </GridCell>
                 <GridCell>
                     <LayoutSelector layouts={this.props.layouts} />

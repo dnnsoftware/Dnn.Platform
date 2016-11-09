@@ -6,15 +6,16 @@ import Gallery from "../Gallery/Gallery";
 
 class ThemeSelector extends Component {
 
-    onCardClick(cardId) {
-        console.log("clicked on " + cardId);
+    onThemeClick(packageName) {
+        const theme = this.props.themes.find(t => t.packageName === packageName);
+        this.props.onSelectTheme(theme);
     }
 
     getThemeCards() {
         return this.props.themes.map(theme => {
             return <Card 
                 cardId={theme.packageName}
-                onClick={this.onCardClick.bind(this)}
+                onClick={this.onThemeClick.bind(this)}
                 hoverText={localization.get("ClickSelectTheme")}
                 label={theme.packageName}
                 image={theme.thumbnail} />;
@@ -37,7 +38,8 @@ class ThemeSelector extends Component {
 
 ThemeSelector.propTypes = {
     currentTheme: PropTypes.object.isRequired,
-    themes: PropTypes.array.isRequired
+    themes: PropTypes.array.isRequired,
+    onSelectTheme: PropTypes.func.isRequired
 };
 
 export default ThemeSelector;
