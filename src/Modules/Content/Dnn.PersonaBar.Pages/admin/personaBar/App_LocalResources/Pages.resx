@@ -364,7 +364,7 @@
     <value>Permanent Redirect</value>
   </data>
   <data name="PermanentRedirectTooltip.Text" xml:space="preserve">
-    <value></value>
+    <value>Check this box if you want to notify the client that this page should be considered as permanently moved. This would allow SearchEngines to modify their URLs to directly link to the resource. This is ignored if the LinkType is None.</value>
   </data>
   <data name="OpenLinkInNewWindow.Text" xml:space="preserve">
     <value>Open Link In New Window</value>
