@@ -48,12 +48,13 @@ Card.propTypes = {
     hoverText: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     image: PropTypes.string,
-    selected: PropTypes.bool.isRequired,
+    selected: PropTypes.bool,
     size: PropTypes.oneOf(["big","small"])
 };
 
 Card.defaultProps = {
-    size: "big"
+    size: "big",
+    selected: false
 };
 
 export default Card;

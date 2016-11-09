@@ -11,6 +11,14 @@ class ThemeSelector extends Component {
         this.props.onSelectTheme(theme);
     }
 
+    isSelected(theme) {
+        const { selectedTheme } = this.props;
+        if (!selectedTheme) {
+            return false;
+        }
+        return selectedTheme.packageName === theme.packageName;
+    }
+
     getThemeCards() {
         return this.props.themes.map(theme => {
             return <Card 
@@ -18,6 +26,7 @@ class ThemeSelector extends Component {
                 onClick={this.onThemeClick.bind(this)}
                 hoverText={localization.get("ClickSelectTheme")}
                 label={theme.packageName}
+                selected={this.isSelected(theme)}
                 image={theme.thumbnail} />;
         });
     }
@@ -37,7 +46,7 @@ class ThemeSelector extends Component {
 }
 
 ThemeSelector.propTypes = {
-    currentTheme: PropTypes.object.isRequired,
+    selectedTheme: PropTypes.object,
     themes: PropTypes.array.isRequired,
     onSelectTheme: PropTypes.func.isRequired
 };

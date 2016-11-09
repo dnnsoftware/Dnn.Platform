@@ -28,10 +28,31 @@ class Appearance extends Component {
 
     onSelectTheme(theme) {
         this.props.onRetrieveThemeFiles(theme.packageName);
+        this.props.onChangeField("skinSrc", theme.defaultThemeFile);
+    }
+
+    onSelectLayout(layout) {
+        if (!layout) {
+            this.props.onChangeField("skinSrc", null);
+        }
+        const skinSrc = this.addAscxExtension(layout.path);
+        this.props.onChangeField("skinSrc", skinSrc);
+    }
+
+    onSelectContainer(container) {
+        if (!container) {
+            this.props.onChangeField("containerSrc", null);
+        }
+        const containerSrc = this.addAscxExtension(container.path);
+        this.props.onChangeField("containerSrc", containerSrc);
     }
 
     trimAscxExtension(value) {
         return value.replace(".ascx", "");
+    }
+
+    addAscxExtension(value) {
+        return value + ".ascx";
     }
 
     onChangePageStyleSheet(event) {
@@ -40,19 +61,29 @@ class Appearance extends Component {
     }
 
     render() {   
-        const { page } = this.props;     
+        const { page, themes, layouts, containers } = this.props;
+        const selectedLayout = layouts.find(l => this.addAscxExtension(l.path) === page.skinSrc);
+        const selectedTheme = selectedLayout ? themes.find(t => t.packageName === selectedLayout.themeName) : null;
+        const selectedContainer = containers.find(c => this.addAscxExtension(c.path) === page.containerSrc);     
         return (
             <div className={style.moduleContainer}>
                 <GridCell>
                     <ThemeSelector 
-                        themes={this.props.themes}
+                        themes={themes}
+                        selectedTheme={selectedTheme}
                         onSelectTheme={this.onSelectTheme.bind(this)} />
                 </GridCell>
                 <GridCell>
-                    <LayoutSelector layouts={this.props.layouts} />
+                    <LayoutSelector 
+                        layouts={layouts}
+                        selectedLayout={selectedLayout}
+                        onSelectLayout={this.onSelectLayout.bind(this)} />
                 </GridCell>
                 <GridCell>
-                    <ContainerSelector containers={this.props.layouts} />
+                    <ContainerSelector 
+                        containers={containers}
+                        selectedContainer={selectedContainer}
+                        onSelectContainer={this.onSelectContainer.bind(this)} />
                 </GridCell>
                 <GridCell>
                     <GridCell columnSize="50">

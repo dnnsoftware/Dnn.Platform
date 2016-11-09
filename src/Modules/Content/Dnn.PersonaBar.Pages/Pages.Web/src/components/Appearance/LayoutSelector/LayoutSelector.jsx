@@ -6,18 +6,28 @@ import Gallery from "../Gallery/Gallery";
 
 class LayoutSelector extends Component {
 
-    onCardClick(cardId) {
-        console.log("clicked on " + cardId);
+    onClickLayout(layoutName) {
+        const layout = this.props.layouts.find(l => l.name === layoutName);
+        this.props.onSelectLayout(layout);
+    }
+
+    isSelected(layout) {
+        const { selectedLayout } = this.props;
+        if (!selectedLayout) {
+            return false;
+        }
+        return selectedLayout.name === layout.name;
     }
 
     getLayoutCards() {
         return this.props.layouts.map(layout => {
             return <Card 
                 cardId={layout.name}
-                onClick={this.onCardClick.bind(this)}
+                onClick={this.onClickLayout.bind(this)}
                 hoverText={localization.get("SetPageLayout")}
                 label={layout.name}
                 image={layout.thumbnail}
+                selected={this.isSelected(layout)}
                 size="small" />;
         });
     }
@@ -37,8 +47,9 @@ class LayoutSelector extends Component {
 }
 
 LayoutSelector.propTypes = {
-    currentLayout: PropTypes.object.isRequired,
-    layouts: PropTypes.array.isRequired
+    selectedLayout: PropTypes.object,
+    layouts: PropTypes.array.isRequired,
+    onSelectLayout: PropTypes.func.isRequired
 };
 
 export default LayoutSelector;
