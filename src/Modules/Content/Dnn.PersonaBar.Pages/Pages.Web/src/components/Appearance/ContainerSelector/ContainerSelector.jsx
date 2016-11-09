@@ -38,7 +38,7 @@ class ContainerSelector extends Component {
                 <Label 
                     label={localization.get("PageContainer")} 
                     tooltipMessage={localization.get("PageContainerTooltip")} />
-                <Gallery>
+                <Gallery size="small">
                     {this.getContainerCards()}
                 </Gallery>
             </div>

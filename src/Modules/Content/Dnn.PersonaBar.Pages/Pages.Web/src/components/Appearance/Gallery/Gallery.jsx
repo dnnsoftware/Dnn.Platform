@@ -1,11 +1,17 @@
 import React, {Component, PropTypes} from "react";
 import { Scrollbars } from "react-custom-scrollbars";
-import GridCell from "dnn-grid-cell";
 import style from "./style.less";
 
 class Gallery extends Component {
 
-    render() {        
+    calculateGalleryWidth() {
+        const { children, size } = this.props;
+        const elementSize = size === "big" ? 198 : 130;
+        return elementSize * children.length;
+    }
+
+    render() {  
+        const width = this.calculateGalleryWidth();    
         return (
             <div className={style.moduleContainer}>
                 <Scrollbars
@@ -13,9 +19,9 @@ class Gallery extends Component {
                     autoHeight
                     autoHeightMin={0}
                     autoHeightMax={480}>
-                    <GridCell>
+                    <div style={{width}}>
                         {this.props.children}
-                    </GridCell>
+                    </div>
                 </Scrollbars>
             </div>
         );
@@ -23,7 +29,12 @@ class Gallery extends Component {
 }
 
 Gallery.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    size: PropTypes.oneOf(["small", "big"])
+};
+
+Gallery.defaultProps = {
+    size: "big"
 };
 
 export default Gallery;

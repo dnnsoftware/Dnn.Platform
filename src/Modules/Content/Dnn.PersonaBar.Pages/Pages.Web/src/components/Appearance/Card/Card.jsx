@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import OverflowText from "dnn-text-overflow-wrapper";
-import GridCell from "dnn-grid-cell";
 import styles from "./style.less";
 
 class Card extends Component {
@@ -42,12 +41,12 @@ class Card extends Component {
     render() {
         const { selected, size } = this.props;
         const className = styles.moduleContainer + (selected ? " selected" : "") + " " + size;
-        const columnSize = size === "big" ? 25 : 15;
+        const maxWidth = size === "big" ? 168 : 100;
         return (
-            <GridCell columnSize={columnSize} className={className}>
+            <div className={className}>
                 {this.getImageComponent()}
-                <OverflowText text={this.props.label} maxWidth={168} className="title" />
-            </GridCell>
+                <OverflowText text={this.props.label} maxWidth={maxWidth} className="card-title" />
+            </div>
         );
     }
 }

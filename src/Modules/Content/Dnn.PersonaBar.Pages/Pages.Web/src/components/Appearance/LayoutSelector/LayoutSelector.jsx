@@ -38,7 +38,7 @@ class LayoutSelector extends Component {
                 <Label 
                     label={localization.get("Layout")} 
                     tooltipMessage={localization.get("PageLayoutTooltip")} />
-                <Gallery>
+                <Gallery size="small">
                     {this.getLayoutCards()}
                 </Gallery>
             </div>
