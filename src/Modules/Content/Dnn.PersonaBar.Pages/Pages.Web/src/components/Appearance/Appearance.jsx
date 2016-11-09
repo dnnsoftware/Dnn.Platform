@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import localization from "../../localization";
 import ThemeSelector from "./ThemeSelector/ThemeSelector";
