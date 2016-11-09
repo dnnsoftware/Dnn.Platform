@@ -14,6 +14,11 @@ namespace Dnn.PersonaBar.Library.Containers
         bool Visible { get; }
 
         /// <summary>
+        /// The Roles which available in default roles permissions.
+        /// </summary>
+        IList<string> EditorRoles { get; } 
+
+        /// <summary>
         /// Initialize the persona bar container.
         /// </summary>
         /// <param name="personaBarControl">The Persona Bar Container control.</param>

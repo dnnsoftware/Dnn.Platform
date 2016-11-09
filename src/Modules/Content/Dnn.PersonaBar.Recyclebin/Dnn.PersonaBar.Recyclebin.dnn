@@ -43,7 +43,7 @@
                         <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
                         <order>30</order>
-                        <defaultRoles>Administrators,Content Managers</defaultRoles>
+                        <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>
             </components>

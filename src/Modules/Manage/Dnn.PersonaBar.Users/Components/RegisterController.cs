@@ -203,11 +203,6 @@ namespace Dnn.PersonaBar.Users.Components
 
             //membership is approved only for public registration
             newUser.Membership.Approved = 
-                // For Community Manager, he can always add user 
-                // whatever registration mode is set
-                // and no need to send email for approval or whatever...
-                // Please check below issue for this property
-                // https://dnntracker.atlassian.net/browse/SOCIAL-3158
                 (registerationDetails.IgnoreRegistrationMode || 
                 portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
 
@@ -224,11 +219,6 @@ namespace Dnn.PersonaBar.Users.Components
                 return null;
             }
 
-            // For Community Manager, he can always add user 
-            // whatever registration mode is set
-            // and no need to send email for approval or whatever...
-            // Please check below issue for this property
-            // https://dnntracker.atlassian.net/browse/SOCIAL-3158
             if (registerationDetails.IgnoreRegistrationMode)
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);

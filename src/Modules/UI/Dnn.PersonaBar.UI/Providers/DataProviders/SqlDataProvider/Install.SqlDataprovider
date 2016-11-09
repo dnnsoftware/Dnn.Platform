@@ -501,33 +501,9 @@ BEGIN
         WHERE Identifier = 'Assets'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Home'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Content'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Community Manager' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Manage'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Community Manager' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Settings'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Tools'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Content Editors,Community Manager' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Logout'
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
-        SELECT MenuId, 'Administrators,Content Managers,Content Editors' 
-            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier = 'Edit'
+            WHERE Identifier IN ('Content','Manage','Settings','Tools','Logout','Edit')
 END
 GO
 
