@@ -5,7 +5,7 @@ import GridCell from "dnn-grid-cell";
 import SearchBox from "dnn-search-box";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
-import "./PageList.less";
+import styles from "./PageList.less";
 import Localization from "../../localization";
 
 class PageList extends Component {
@@ -15,7 +15,7 @@ class PageList extends Component {
 
     render() {
         return (
-            <SocialPanelBody>                  
+            <SocialPanelBody className={styles.pageListBody}>                  
                 <div className="search-container">      
                     <GridCell columnSize={65} >
                         <div>&nbsp; </div></GridCell>
