@@ -4,6 +4,7 @@ export default function webTabReducer(state = {
     performanceSettings: {},
     pageStatePersistenceMode: "",
     errorMessage: "",
+    loading: false,
     saving: false,
     incrementingVersion: false
 }, action) {
@@ -11,16 +12,19 @@ export default function webTabReducer(state = {
         case ActionTypes.LOAD_PERFORMANCE_TAB:
             return { ...state,
                 performanceSettings: {},
+                loading: true,
                 errorMessage: ""
             };
         case ActionTypes.LOADED_PERFORMANCE_TAB:
             return { ...state,
                 performanceSettings: action.payload.performanceSettings,
+                loading: false,
                 errorMessage: ""
             };
         case ActionTypes.ERROR_LOADING_PERFORMANCE_TAB:
             return { ...state,
                 performanceSettings: {},
+                loading: false,
                 errorMessage:  action.payload.errorMessage
             }; 
         case ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE: {

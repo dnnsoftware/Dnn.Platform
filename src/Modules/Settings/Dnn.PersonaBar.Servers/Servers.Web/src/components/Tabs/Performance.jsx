@@ -77,6 +77,10 @@ class Performance extends Component {
     
     render() {
         const {props} = this;
+        if (props.isLoading) {
+            return null;
+        }
+        
         const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
         let enableCompositeFiles;
         let minifyCss;
@@ -234,15 +238,20 @@ class Performance extends Component {
 
 Performance.propTypes = {   
     performanceSettings: PropTypes.object.isRequired,
+    loading: PropTypes.bool,
+    isSaving: PropTypes.bool,
+    incrementingVersion: PropTypes.bool,
     errorMessage: PropTypes.string,
     onRetrievePerformanceSettings: PropTypes.func.isRequired,
     onChangePerformanceSettingsValue: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
     onIncrementVersion: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
     return {
         performanceSettings: state.performanceTab.performanceSettings,
+        loading: state.performanceTab.saving,
         isSaving: state.performanceTab.saving,
         incrementingVersion: state.performanceTab.incrementingVersion,
         errorMessage: state.logsTab.errorMessage
