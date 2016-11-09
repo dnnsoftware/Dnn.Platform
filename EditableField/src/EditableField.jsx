@@ -39,6 +39,9 @@ class EditableField extends Component {
 
     onFocus() {
         window.dnn.stopEscapeFromClosingPB = true;
+        if(typeof this.props.onFocus === "function") {
+            this.props.onFocus();
+        }
     }
     getInputFromType() {
         const {props, state} = this;
@@ -67,6 +70,9 @@ class EditableField extends Component {
 
     onKeyDown(event) {
         const {props, state} = this;
+        if(typeof this.props.onKeyDown === "function") {
+            this.props.onKeyDown(event);
+        }
         switch (event.keyCode) {
             case 13:
                 event.preventDefault();
@@ -84,6 +90,9 @@ class EditableField extends Component {
                     value: props.value,
                     editMode: false
                 });
+                if(typeof this.props.onEscape === "function") {
+                    this.props.onEscape(event);
+                }
                 setTimeout(() => {
                     ReactDOM.findDOMNode(this.refs.editableInput).blur();
                 }, 250);
@@ -94,12 +103,18 @@ class EditableField extends Component {
     }
     onBlur() {
         window.dnn.stopEscapeFromClosingPB = false;
+        if(typeof this.props.onBlur === "function") {
+            this.props.onBlur();
+        }
     }
     onKeyUp(event) {
         const value = event.target.value;
         this.setState({
             value
         });
+        if(typeof this.props.onKeyUp === "function") {
+            this.props.onKeyUp(event);
+        }
     }
 
     /* eslint-disable react/no-danger */
@@ -142,14 +157,19 @@ class EditableField extends Component {
     }
 }
 
-EditableField.PropTypes = {
+EditableField.propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
     inputType: PropTypes.string,
     onEnter: PropTypes.func,
     editable: PropTypes.bool,
     helpText: PropTypes.string,
-    isUrl: PropTypes.bool.isRequired 
+    isUrl: PropTypes.bool.isRequired,
+    onKeyUp: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
+    onEscape: PropTypes.func
 };
 
 EditableField.defaultProps = {
