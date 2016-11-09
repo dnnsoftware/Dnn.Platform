@@ -36,13 +36,17 @@ class MoreSettingsPanelBody extends Component {
     }
 
     onSave(){
-        let extensions = this.getMicroservicesExtensions();
-        for(let i  = 0;i < extensions.length; i++){
-            let ext = extensions[i].name;
-            if(this.refs[ext] && typeof this.refs[ext].save === "function"){
-                this.refs[ext].save();
+        util.utilities.confirm(resx.get("SaveConfirm"), resx.get("Save"), resx.get("No"), () => {
+            let extensions = this.getMicroservicesExtensions();
+            for(let i  = 0;i < extensions.length; i++){
+                let ext = extensions[i].name;
+                if(this.refs[ext] 
+                    && typeof this.refs[ext].save === "function"
+                    && (typeof this.refs[ext].hasChange !== "function" || this.refs[ext].hasChange())){
+                    this.refs[ext].save();
+                }
             }
-        }
+        });
     }
 
     renderExtensions(){

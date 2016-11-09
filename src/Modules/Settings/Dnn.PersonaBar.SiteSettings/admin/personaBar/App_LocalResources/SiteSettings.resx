@@ -1014,4 +1014,7 @@
   <data name="MicroServicesDescription.Text" xml:space="preserve">
     <value>Warning: once you enable a microservice, you will need contact support yo disable it.</value>
   </data>
+  <data name="SaveConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to save the changes?</value>
+  </data>
 </root>
