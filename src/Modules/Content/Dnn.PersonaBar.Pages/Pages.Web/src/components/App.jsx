@@ -23,9 +23,6 @@ class App extends Component {
             props.onNavigate(1);
             props.onLoadPage(utils.getCurrentPageId());
         }
-        else {
-            props.onNavigate(0);
-        }
     }
 
     componentWillReceiveProps(newProps) {
