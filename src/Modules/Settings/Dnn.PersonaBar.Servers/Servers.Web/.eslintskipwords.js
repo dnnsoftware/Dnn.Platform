@@ -147,5 +147,6 @@ module.exports = [
     "Mb",
     "ntlm",
     "ssl",
-    "smtp"
+    "smtp",
+    "minifaction"
 ]
