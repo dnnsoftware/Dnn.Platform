@@ -13,6 +13,7 @@ import RadioButtons from "dnn-radio-buttons";
 import InputGroup from "dnn-input-group";
 import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
+import Roles from "./roles";
 import {
     languages as LanguagesActions
 } from "../../../../actions";
@@ -26,7 +27,8 @@ class LanguageEditor extends Component {
         this.state = {
             languageDetail: {
 
-            }
+            },
+            roles: []
         };
     }
 
@@ -110,8 +112,12 @@ class LanguageEditor extends Component {
 
     onSave(event) {
         const {props, state} = this;
-
         props.onUpdate(state.languageDetail);
+    }
+
+    onSaveSecurity(event) {
+        const {props, state} = this;
+        props.onUpdateSecurity(state.roles);
     }
 
     onCancel(event) {
@@ -282,6 +288,27 @@ class LanguageEditor extends Component {
                 </div>
             </div>
         );
+    }    
+
+    renderRoleForm() {
+        let {state, props} = this;        
+        return (
+            <div className="language-editor">
+                <Roles>ccc</Roles>
+                <div className="editor-buttons-box">
+                    <Button
+                        type="secondary"
+                        onClick={this.onCancel.bind(this)}>
+                        {resx.get("Cancel")}
+                    </Button>
+                    <Button
+                        type="primary"
+                        onClick={this.onSaveSecurity.bind(this)}>
+                        {resx.get("Save")}
+                    </Button>
+                </div>
+            </div>
+        );
     }
 
     /* eslint-disable react/no-danger */
@@ -298,7 +325,7 @@ class LanguageEditor extends Component {
                 }
             }
             else if (props.openMode === 2) {
-                return <div>Translator</div>;
+                return this.renderRoleForm();
             }
         }
         else return <div />;
@@ -314,6 +341,7 @@ LanguageEditor.propTypes = {
     fullLanguageList: PropTypes.array,
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
+    onUpdateSecurity: PropTypes.func,
     id: PropTypes.string,
     languageClientModified: PropTypes.bool,
     languageDisplayModes: PropTypes.array,
@@ -325,6 +353,7 @@ LanguageEditor.propTypes = {
 function mapStateToProps(state) {
     return {
         languageDetail: state.languages.language,
+
         fallbacks: state.languages.fallbacks,
         fullLanguageList: state.languages.fullLanguageList,
         languageDisplayModes: state.languages.languageDisplayModes,

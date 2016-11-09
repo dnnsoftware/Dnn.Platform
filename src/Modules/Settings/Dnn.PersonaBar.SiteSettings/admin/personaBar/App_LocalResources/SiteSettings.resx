@@ -897,6 +897,9 @@
   <data name="CreateLanguagePack.Text" xml:space="preserve">
     <value>Create Language Pack</value>
   </data>
+  <data name="ResourceFileVerifier.Text" xml:space="preserve">
+    <value>Resource File Verifier</value>
+  </data>
   <data name="VerifyLanguageResources.Text" xml:space="preserve">
     <value>Verify Language Resource Files</value>
   </data>
@@ -999,13 +1002,22 @@
   <data name="SaveTranslationsToFile.Text" xml:space="preserve">
     <value>Save Translations To File</value>
   </data>
-  <data name="EnableLocalizedContent.Text" xml:space="preserve">
-    <value>Enable Localized Content</value>
+  <data name="GlobalRoles.Text" xml:space="preserve">
+    <value>Global Roles</value>
   </data>
-  <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-    <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and cannot be changed.</value>
+  <data name="AllRoles.Text" xml:space="preserve">
+    <value>All Roles</value>
   </data>
-  <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
-    <value>Click Cancel now if you want to change the current site default.</value>
+  <data name="RoleName.Header" xml:space="preserve">
+    <value>ROLE</value>
+  </data>
+  <data name="Select.Header" xml:space="preserve">
+    <value>SELECT</value>
+  </data>
+  <data name="Translators.Text" xml:space="preserve">
+    <value>TRANSLATORS</value>
+  </data>
+  <data name="translatorsLabel.Help" xml:space="preserve">
+    <value>The selected roles will be granted explicit Edit Rights to all new pages and localized modules for this language.</value>
   </data>
 </root>

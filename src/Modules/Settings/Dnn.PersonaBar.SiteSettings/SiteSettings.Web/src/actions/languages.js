@@ -186,6 +186,36 @@ const languagesActions = {
                 }
             });
         };
+    },
+    getRoleGroups(portalId, callback) {
+        return (dispatch) => {
+            ApplicationService.getRoleGroups(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLE_GROUPS,
+                    data: {
+                        roleGroups: data.Groups
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getRoles(portalId, groupId, callback) {
+        return (dispatch) => {
+            ApplicationService.getRoles(portalId, groupId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLES,
+                    data: {
+                        rolesList: data.Roles
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 
