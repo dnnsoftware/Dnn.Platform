@@ -75,9 +75,18 @@ const save = function (performanceSettings) {
                 request);
 };
 
+const incrementVersion = function (version, isGlobalSetting) {
+    if (isGlobalSetting) {
+        return serviceFramework.post("ServerSettingsPerformance", "IncrementHostVersion");
+    }
+    
+    return serviceFramework.post("ServerSettingsPerformance", "IncrementPortalVersion");
+};
+
 const performanceTabService = {
     getPerformanceSettings: getPerformanceSettings,
-    save: save
+    save: save,
+    incrementVersion: incrementVersion
 };
 
 export default performanceTabService; 

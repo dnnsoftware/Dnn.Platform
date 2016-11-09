@@ -37,8 +37,36 @@ const performanceTabActions = {
             });  
         };
     },
-    incrementVersion() {
-        
+    incrementVersion(version, isGlobalSettings) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.INCREMENT_VERSION               
+            });        
+            
+            const key = isGlobalSettings ? "currentHostVersion" : "currentPortalVersion" ;
+            performanceTabService.incrementVersion(version, isGlobalSettings).then(response => {
+                dispatch({
+                    type: ActionTypes.INCREMENTED_VERSION,
+                    payload: {
+                        success: response.success
+                    }
+                });  
+                dispatch({
+                    type: ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE,
+                    payload: { 
+                        field: key,
+                        value: parseInt(version, 10) + 1
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_INCREMENTING_VERSION,
+                    payload: {
+                        errorMessage: localization.get("errorMessageIncrementingVersion")
+                    }
+                });
+            });        
+        };
     },
     save(performanceSettings) {
         return (dispatch) => {

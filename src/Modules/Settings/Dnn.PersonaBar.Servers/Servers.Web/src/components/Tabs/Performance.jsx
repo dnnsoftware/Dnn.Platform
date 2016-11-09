@@ -43,6 +43,27 @@ class Performance extends Component {
         props.onSave(props.performanceSettings);
     }
     
+    confirmHandler() {
+        const {props} = this;
+        const isGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
+        if (isGlobalSettings) {
+            props.onIncrementVersion(props.performanceSettings.currentHostVersion, isGlobalSettings);
+        } else {
+            props.onIncrementVersion(props.performanceSettings.currentPortalVersion, isGlobalSettings);
+        }
+    }
+    
+    cancelHandler() {
+        
+    }
+    
+    onIncrementVersion() {
+        utils.confirm(localization.get("PerformanceTab_PortalVersionConfirmMessage"), 
+            localization.get("PerformanceTab_PortalVersionConfirmYes"), 
+            localization.get("PerformanceTab_PortalVersionConfirmNo"), 
+            this.confirmHandler.bind(this), this.cancelHandler.bind(this));
+    }
+    
     onChangeField(key, event) {
         let value = event;
         if (event && event.value) {
@@ -175,7 +196,7 @@ class Performance extends Component {
                             text={version}/>
                     </div>
                     <Button type="secondary" style={{marginBottom: "75px"}}
-                        onClick={props.onIncrementVersion}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
+                        onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane">
                     <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
@@ -232,7 +253,8 @@ function mapDispatchToProps(dispatch) {
         ...bindActionCreators ({
             onRetrievePerformanceSettings: PerformanceTabActions.loadPerformanceSettings,
             onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue,
-            onSave: PerformanceTabActions.save
+            onSave: PerformanceTabActions.save,
+            onIncrementVersion: PerformanceTabActions.incrementVersion
         }, dispatch)
     };
 }

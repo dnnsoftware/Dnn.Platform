@@ -54,6 +54,13 @@ function notifyError(message) {
     return utilities.notifyError(message);
 }
 
+function confirm(message, confirmText, cancelText, confirmHandler, cancelHandler) {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    return utilities.confirm(message, confirmText, cancelText, confirmHandler, cancelHandler);
+}
+
 function getResx(key) {
     if (!initialized) {
         throw new Error("Utils have not been initialized");
@@ -76,7 +83,8 @@ const utils = {
     notify,
     notifyError,
     getResx,
-    isHostUser
+    isHostUser,
+    confirm
 };
 
 export default utils;
