@@ -5,7 +5,9 @@ import {
 } from "../../../actions";
 import SocialPanelBody from "dnn-social-panel-body";
 import InputGroup from "dnn-input-group";
+import Label from "dnn-label";
 import Button from "dnn-button";
+import Switch from "dnn-switch";
 import resx from "../../../resources";
 import "./style.less";
 
@@ -13,10 +15,7 @@ class LanguagePackPanelBody extends Component {
     constructor() {
         super();
         this.state = {
-            error: {
-                name: false,
-                module: true
-            },
+            makeAllPagesTranslatable: false,
             triedToSubmit: false
         };
     }
@@ -24,8 +23,24 @@ class LanguagePackPanelBody extends Component {
     onEnable(event) {
     }
 
+    getDefaultLanguage() {
+        const {languages, languageSettings} = this.props;
+        if (!languages || !languageSettings) {
+            return {};
+        }
+        return languages.find(l => l.Code === languageSettings.SiteDefaultLanguage);
+    }
+
+    onSettingChange(key, event) {
+        let {state, props} = this;
+        let languageSettings = Object.assign({}, props.languageSettings);
+        languageSettings[key] = typeof (event) === "object" ? event.target.value : event;
+        props.dispatch(LanguagesActions.languageSettingsClientModified(languageSettings));
+    }
+
     /* eslint-disable react/no-danger */
     render() {
+        const defaultLanguage = this.getDefaultLanguage();
         const {props, state} = this;
         return (
             <SocialPanelBody
@@ -42,6 +57,29 @@ class LanguagePackPanelBody extends Component {
                             <p>{resx.get("EnableLocalizedContentClickCancel") }</p>
                         </div>
                     </InputGroup>
+
+                    <InputGroup>
+                        <Label
+                            tooltipMessage={resx.get("CurrentSiteDefault.Help") }
+                            label={resx.get("CurrentSiteDefault") }
+                            />
+                        <div>
+                            <div className="language-flag">
+                                <img src={defaultLanguage.Icon} />
+                            </div>
+                            <div className="language-name">{defaultLanguage.EnglishName }</div>
+                        </div>
+                        {props.languageSettings && <Switch
+                            value={props.languageSettings.AllPagesTranslatable}
+                            onChange={this.onSettingChange.bind(this, "AllPagesTranslatable") }
+                            />}
+                        <Label
+                            className="float-right"
+                            tooltipMessage={resx.get("AllPAgesTranslatable.Help") }
+                            label={resx.get("AllPAgesTranslatable") }
+                            />
+                    </InputGroup>
+
                     <div className="buttons-box">
                         <Button
                             type="secondary"
@@ -51,7 +89,7 @@ class LanguagePackPanelBody extends Component {
                         <Button
                             type="primary"
                             onClick={this.onEnable.bind(this) }>
-                            {resx.get("Create") }
+                            {resx.get("EnableLocalizedContent") }
                         </Button>
                     </div>
                 </div>
@@ -63,12 +101,16 @@ class LanguagePackPanelBody extends Component {
 LanguagePackPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     closePersonaBarPage: PropTypes.func,
-    languages: PropTypes.array
+    languages: PropTypes.array,
+    languageSettings: PropTypes.obj
 };
 
 function mapStateToProps(state) {
+    console.log('state:', state);
+
     return {
-        languages: state.languages.languageList
+        languages: state.languages.languageList,
+        languageSettings: state.languages.languageSettings
     };
 }
 

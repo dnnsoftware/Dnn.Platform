@@ -1008,4 +1008,20 @@
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
     <value>Click Cancel now if you want to change the current site default.</value>
   </data>
+  <data name="CurrentSiteDefault.Text" xml:space="preserve">
+    <value>Current Site Default:</value>
+  </data>
+  <data name="CurrentSiteDefault.Help" xml:space="preserve">
+    <value>The SystemDefault Language is the language that the application uses if no other language is available.  It is the ultimate fallback.</value>
+  </data>
+  <data name="AllPAgesTranslatable.Text" xml:space="preserve">
+    <value>Make All Pages Translatable: </value>
+  </data>
+  <data name="AllPAgesTranslatable.Help" xml:space="preserve">
+    <value>Check this box to allow site users to select a different language for the interface than the one used for content.</value>
+  </data>
+
+
+  AllPAgesTranslatable
+  
 </root>
