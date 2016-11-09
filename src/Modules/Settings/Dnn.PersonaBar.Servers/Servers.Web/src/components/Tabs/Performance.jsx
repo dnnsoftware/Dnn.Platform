@@ -79,28 +79,28 @@ class Performance extends Component {
         const {props} = this;
         const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
         let enableCompositeFiles;
-        let minifyCcs;
+        let minifyCss;
         let minifyJs;
         let enableCompositeFilesKey;
-        let minifyCcsKey;
+        let minifyCssKey;
         let minifyJsKey;
         let version;
         let versionLocalizationKey;
         if (areGlobalSettings) {
             enableCompositeFiles = props.performanceSettings.hostEnableCompositeFiles;
-            minifyCcs = props.performanceSettings.hostMinifyCcs;
+            minifyCss = props.performanceSettings.hostMinifyCss;
             minifyJs = props.performanceSettings.hostMinifyJs;
             enableCompositeFilesKey = "hostEnableCompositeFiles";
-            minifyCcsKey = "hostMinifyCcs";
+            minifyCssKey = "hostMinifyCss";
             minifyJsKey = "hostMinifyJs";
             version = props.performanceSettings.currentHostVersion;
             versionLocalizationKey = "PerformanceTab_CurrentHostVersion";
         } else {
             enableCompositeFiles = props.performanceSettings.portalEnableCompositeFiles;
-            minifyCcs = props.performanceSettings.portalMinifyCcs;
+            minifyCss = props.performanceSettings.portalMinifyCss;
             minifyJs = props.performanceSettings.portalMinifyJs;
             enableCompositeFilesKey = "portalEnableCompositeFiles";
-            minifyCcsKey = "portalMinifyCcs";
+            minifyCssKey = "portalMinifyCss";
             minifyJsKey = "portalMinifyJs";
             version = props.performanceSettings.currentPortalVersion;
             versionLocalizationKey = "PerformanceTab_CurrentPortalVersion";
@@ -195,7 +195,7 @@ class Performance extends Component {
                         <InfoBlock label={localization.get(versionLocalizationKey)}
                             text={version}/>
                     </div>
-                    <Button type="secondary" style={{marginBottom: "75px"}}
+                    <Button type="secondary" style={{marginBottom: "75px"}} disable={props.incrementingVersion}
                         onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane">
@@ -211,9 +211,9 @@ class Performance extends Component {
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
                             tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
-                            value={enableCompositeFiles ? minifyCcs : false}
+                            value={enableCompositeFiles ? minifyCss : false}
                             readOnly={!enableCompositeFiles}
-                            onChange={this.onChangeField.bind(this, minifyCcsKey)}
+                            onChange={this.onChangeField.bind(this, minifyCssKey)}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
                             tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
@@ -244,6 +244,7 @@ function mapStateToProps(state) {
     return {
         performanceSettings: state.performanceTab.performanceSettings,
         isSaving: state.performanceTab.saving,
+        incrementingVersion: state.performanceTab.incrementingVersion,
         errorMessage: state.logsTab.errorMessage
     };
 }

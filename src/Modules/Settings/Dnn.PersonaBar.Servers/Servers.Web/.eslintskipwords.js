@@ -6,6 +6,7 @@ module.exports = [
     "minify",
     "cacheability",
     "syncrhonization",
+    "incrementing",
     "css",
     "eslint",
     "fetch-ie8",
