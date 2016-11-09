@@ -5,11 +5,12 @@
 :local(.moduleContainer) {
     padding: 15px;
     
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
     &.big {
-        img {
-            width: @big;
-            height: @big;
-        }
 
         span.card-image {
             width: @big;
@@ -25,10 +26,6 @@
     }
 
     &.small {
-        img {
-            width: @small;
-            height: @small;
-        }
 
         span.card-image {
             width: @small;
@@ -40,20 +37,6 @@
                     height: @small;
                 }
             }
-        }
-    }
-
-    &.selected.big {
-        span.card-image {
-            width: @big;
-            height: @big;
-        }
-    }
-
-    &.selected.small {
-        span.card-image {
-            width: @small;
-            height: @small;
         }
     }
 
@@ -80,6 +63,27 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
+        span.hoverLayer {
+            position: absolute;
+            display: inline-block;
+            line-height: 18px;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(30, 136, 195, 0.6);
+            color: white;
+            padding: 15px 10px;
+            transition: opacity 100ms linear;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        &:hover span.hoverLayer {
+            opacity: 1;
+        }
     }
 
     div.title {
@@ -95,6 +99,10 @@
             border: 4px solid @curiousBlue;
             margin: 0;
             padding: 5px;
+
+            &:hover span.hoverLayer {
+                opacity: 0;
+            }
         }
 
         span.checkmark {

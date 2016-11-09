@@ -20,12 +20,22 @@ class Card extends Component {
                     </svg>;
     }
 
+    getCheckMarkIcon() {
+        return <svg version="1.1" x="0px" y="0px" viewBox="0 0 2048 2048">
+                    <g>
+                        <polygon points="1524.4,714.3 1417,606.9 868,1155.8 657.8,945.6 550.4,1053 868,1370.7 975.5,1263.3 975.5,1263.3"/>
+                    </g>
+                </svg>;
+    }
+
     getImageComponent() {
-        const {image } = this.props;
+        const {image, selected, hoverText } = this.props;
         const className = "card-image" + (image ? "" : " no-image");
 
         return <span className={className} onClick={this.onClick.bind(this)} >
                 {image ? <img src={image} /> : this.getNoImageIcon()}
+                {selected && <span className="checkmark">{this.getCheckMarkIcon()}</span>}
+                <span className="hoverLayer">{hoverText}</span>
             </span>;
     }
     

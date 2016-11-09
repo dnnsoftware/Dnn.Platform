@@ -426,4 +426,7 @@
   <data name="SetPageLayout.Text" xml:space="preserve">
     <value>set page layout</value>
   </data>
+  <data name="SetPageTheme.Text" xml:space="preserve">
+    <value>set page theme</value>
+  </data>
 </root>

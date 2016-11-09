@@ -24,7 +24,7 @@ class ThemeSelector extends Component {
             return <Card 
                 cardId={theme.packageName}
                 onClick={this.onThemeClick.bind(this)}
-                hoverText={localization.get("ClickSelectTheme")}
+                hoverText={localization.get("SetPageTheme")}
                 label={theme.packageName}
                 selected={this.isSelected(theme)}
                 image={theme.thumbnail} />;
