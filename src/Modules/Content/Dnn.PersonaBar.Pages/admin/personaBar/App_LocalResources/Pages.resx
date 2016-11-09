@@ -429,4 +429,7 @@
   <data name="SetPageTheme.Text" xml:space="preserve">
     <value>set page theme</value>
   </data>
+  <data name="BackToPages.Text" xml:space="preserve">
+    <value>Back to pages</value>
+  </data>
 </root>

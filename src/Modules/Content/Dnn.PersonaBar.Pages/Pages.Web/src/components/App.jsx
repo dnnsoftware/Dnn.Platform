@@ -58,14 +58,35 @@ class App extends Component {
         
     }
 
+    getBackToPages() {
+        const {onNavigate} = this.props;
+
+        return (
+            <div className="pages-back" onClick={() => onNavigate(0)}>
+                {Localization.get("BackToPages")}
+            </div>
+        );
+    }
+
+    getPageTitle() {
+        const {selectedPage} = this.props;
+        return selectedPage.tabId === 0 ? 
+                Localization.get("AddPage") : 
+                Localization.get("PageSettings") + ": " + selectedPage.name;
+    }
+
     getSettingsPage() {
         const {props} = this;
-        const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("AddPage") : Localization.get("PageSettings") + ": " + props.selectedPage.name;
+        const titleSettings = this.getPageTitle();
+        const backToPages = this.getBackToPages();
 
         return (<PersonaBarPage isOpen={props.selectedView === 1}>
                     <SocialPanelHeader title={titleSettings}>
                     </SocialPanelHeader>
-                    <SocialPanelBody>
+                    <SocialPanelBody
+                        workSpaceTrayOutside={true}
+                        workSpaceTray={backToPages}
+                        workSpaceTrayVisible={true}>
                         <PageSettings selectedPage={props.selectedPage}
                                       selectedPageErrors={props.selectedPageErrors} 
                                       onCancel={() => props.onNavigate(0)} 
