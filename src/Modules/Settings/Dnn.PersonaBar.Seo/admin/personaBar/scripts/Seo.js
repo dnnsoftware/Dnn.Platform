@@ -30,10 +30,6 @@ define(['jquery',
                 };
                 loadScript();
 
-                if (config.debugMode === true) {
-                    window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
-                }
-
                 if (typeof callback === 'function') {
                     callback();
                 }
@@ -44,16 +40,6 @@ define(['jquery',
             },
 
             load: function (params, callback) {
-                var fb = window.dnn.formBuilder;
-                if (fb && fb.load) {
-                    fb.load();
-                }
-                var optin = window.dnn.optIn;
-                if (optin && optin.load) {
-                    var mode = getOptInMode();
-                    optin.load(mode);
-                }
-
                 if (typeof callback === 'function') {
                     callback();
                 }
