@@ -20,7 +20,8 @@
             return {
                 utilities: util,
                 moduleName: "Pages",
-                config: config
+                config: config,
+                viewName: (params && params.viewName) ? params.viewName : null
             };
         };
 

@@ -1,6 +1,7 @@
 let utilities = null;
 let config = null;
 let moduleName = null;
+let viewName = null;
 let initialized = false;
 
 function init(options) {
@@ -19,6 +20,7 @@ function init(options) {
     utilities = options.utilities;  
     config = options.config; 
     moduleName = options.moduleName;
+    viewName = options.viewName;
     initialized = true;   
 }
 
@@ -73,6 +75,16 @@ function getModuleName() {
     return moduleName;
 }
 
+function getCurrentPageId() {
+    checkInit();
+    return parseInt(config.tabId);
+}
+
+function getViewName(){
+    checkInit();
+    return viewName;
+}
+
 function getResx(moduleName, key) {
     checkInit();
     return utilities.getResx(moduleName, key);
@@ -89,6 +101,8 @@ const utils = {
     getServiceFramework,
     getUtilities,
     getModuleName,
+    getCurrentPageId,
+    getViewName,
     getResx
 };
 

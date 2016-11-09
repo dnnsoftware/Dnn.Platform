@@ -16,6 +16,18 @@ import utils from "../utils";
 
 class App extends Component {
 
+    componentDidMount() {
+        const {props} = this;
+        const viewName = utils.getViewName();
+        if (viewName === "edit") {
+            props.onNavigate(1);
+            props.onLoadPage(utils.getCurrentPageId());
+        }
+        else {
+            props.onNavigate(0);
+        }
+    }
+
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
     }
