@@ -57,7 +57,7 @@ class PageSettings extends Component {
         const buttons = this.getButtons();
 
         const isNewPage = selectedPage.tabId === 0;
-        const appearanceButtons = buttons;
+        const appearanceButtons = [...buttons];
         if (!isNewPage) {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
         }
@@ -76,7 +76,9 @@ class PageSettings extends Component {
                         page={selectedPage}
                         errors={selectedPageErrors} 
                         onChangeField={onChangeField} />
-                    {buttons}
+                    <div className="buttons-box">
+                        {buttons}
+                    </div>
                 </div>
                 <div className="dnn-simple-tab-item">                
                     <PermissionGrid
