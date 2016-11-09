@@ -106,7 +106,6 @@ LanguagePackPanelBody.propTypes = {
 };
 
 function mapStateToProps(state) {
-    console.log('state:', state);
 
     return {
         languages: state.languages.languageList,
