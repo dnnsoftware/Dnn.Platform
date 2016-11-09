@@ -10,10 +10,18 @@
         float: left;
         text-transform: uppercase;
         width: auto;
-        margin-top: 5px;
+        margin-top: 8px;
+        .dnn-label {
+            float: left;
+            label {
+                color: #000;
+                float: left;
+            }
+        }
     }
     .group-filter {
         border-left: 1px solid @alto;
+        border-right: 1px solid @alto;
         float: right;
     }
     .container {
@@ -23,6 +31,7 @@
         margin-bottom: 20px;
         border-left: 1px solid @alto;
         border-right: 1px solid @alto;
+        box-sizing: border-box;
         .header-row {
             display: table;
             width: 100%;

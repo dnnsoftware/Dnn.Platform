@@ -26,9 +26,7 @@ class LanguageEditor extends Component {
 
         this.state = {
             languageDetail: {
-
-            },
-            roles: []
+            }
         };
     }
 
@@ -80,7 +78,7 @@ class LanguageEditor extends Component {
                 options.unshift({ label: state.languageDetail.EnglishName, value: state.languageDetail.Code });
             }
         }
-        return options.sort(function (a, b) {
+        return options.sort(function(a, b) {
             let nameA = a.label.toUpperCase();
             let nameB = b.label.toUpperCase();
             if (nameA < nameB) {
@@ -115,9 +113,9 @@ class LanguageEditor extends Component {
         props.onUpdate(state.languageDetail);
     }
 
-    onSaveSecurity(event) {
+    onSaveRoles(event) {
         const {props, state} = this;
-        props.onUpdateSecurity(state.roles);
+        props.onUpdateRoles(state.languageDetail);
     }
 
     onCancel(event) {
@@ -288,14 +286,45 @@ class LanguageEditor extends Component {
                 </div>
             </div>
         );
-    }    
+    }
+
+    onSelectChange(roleName, selected) {
+        let {state, props} = this;
+        let languageDetail = Object.assign({}, state.languageDetail);
+
+        let roles = languageDetail.Roles.split(';');
+        if (!roles) {
+            roles = [];
+        }
+
+        let index = roles.indexOf(roleName);
+        if (selected) {
+            if (index === -1) {
+                roles.push(roleName);
+            }
+        }
+        else {
+            if (index > -1) {
+                roles.splice(index, 1);
+            }
+        }
+
+        languageDetail.Roles = roles.join(';');
+
+        this.setState({
+            languageDetail: languageDetail
+        });
+    }
 
     renderRoleForm() {
-        let {state, props} = this;        
+        let {state, props} = this;
         return (
             <div className="language-editor">
-                <Roles>ccc</Roles>
-                <div className="editor-buttons-box">
+                {props.code &&
+                    <Roles cultureCode={props.code} 
+                    onSelectChange={this.onSelectChange.bind(this)} />
+                }
+                <div className="editor-buttons-box-roles">
                     <Button
                         type="secondary"
                         onClick={this.onCancel.bind(this)}>
@@ -303,7 +332,7 @@ class LanguageEditor extends Component {
                     </Button>
                     <Button
                         type="primary"
-                        onClick={this.onSaveSecurity.bind(this)}>
+                        onClick={this.onSaveRoles.bind(this)}>
                         {resx.get("Save")}
                     </Button>
                 </div>
@@ -341,19 +370,19 @@ LanguageEditor.propTypes = {
     fullLanguageList: PropTypes.array,
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
-    onUpdateSecurity: PropTypes.func,
+    onUpdateRoles: PropTypes.func,
     id: PropTypes.string,
     languageClientModified: PropTypes.bool,
     languageDisplayModes: PropTypes.array,
     openMode: PropTypes.number,
     portalId: PropTypes.number,
-    languageDisplayMode: PropTypes.string
+    languageDisplayMode: PropTypes.string,
+    code: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         languageDetail: state.languages.language,
-
         fallbacks: state.languages.fallbacks,
         fullLanguageList: state.languages.fullLanguageList,
         languageDisplayModes: state.languages.languageDisplayModes,

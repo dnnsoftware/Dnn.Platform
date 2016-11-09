@@ -49,6 +49,10 @@ export default function languages(state = {
             return { ...state,
                 languageClientModified: action.data.languageClientModified
             };
+        case ActionTypes.UPDATED_SITESETTINGS_LANGUAGE:
+            return { ...state,
+                languageClientModified: action.data.languageClientModified
+            };
         case ActionTypes.VERIFIED_SITESETTINGS_LANGUAGE_RESOURCE_FILES:
             return { ...state,
                 verificationResults: action.data.verificationResults
@@ -62,6 +66,10 @@ export default function languages(state = {
                 roleGroups: action.data.roleGroups
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLES:
+            return { ...state,
+                rolesList: action.data.rolesList
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_ROLE_SELECTION:
             return { ...state,
                 rolesList: action.data.rolesList
             };

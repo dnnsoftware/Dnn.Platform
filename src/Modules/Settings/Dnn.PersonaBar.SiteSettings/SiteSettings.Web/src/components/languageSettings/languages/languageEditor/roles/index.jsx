@@ -5,6 +5,7 @@ import resx from "../../../../../resources";
 import {
     languages as LanguagesActions
 } from "actions";
+import Label from "dnn-label";
 import RoleRow from "./RoleRow";
 import GridCell from "dnn-grid-cell";
 import DropDown from "dnn-dropdown";
@@ -20,7 +21,6 @@ class RolesPanel extends Component {
         super();
 
         this.state = {
-            defaultRoleGroup: resx.get("AllGroups"),
             groupId: -1
         };
     }
@@ -28,7 +28,11 @@ class RolesPanel extends Component {
     componentWillMount() {
         const {props, state} = this;
         props.dispatch(LanguagesActions.getRoleGroups(props.portalId));
-        props.dispatch(LanguagesActions.getRoles(props.portalId, state.groupId));
+        props.dispatch(LanguagesActions.getRoles(props.portalId, state.groupId, props.cultureCode));
+    }
+
+    componentWillReceiveProps(props) {
+
     }
 
     onRoleGroupChanged(group) {
@@ -38,7 +42,7 @@ class RolesPanel extends Component {
         this.setState({
             groupId: groupId
         });
-        props.dispatch(LanguagesActions.getRoles(props.portalId, groupId));
+        props.dispatch(LanguagesActions.getRoles(props.portalId, groupId, props.cultureCode));
     }
 
     renderHeader() {
@@ -55,7 +59,7 @@ class RolesPanel extends Component {
     }
 
     renderedRolesList() {
-        const {props} = this;
+        const {props, state} = this;
         let i = 0;
         if (props.rolesList) {
             return props.rolesList.map((role, index) => {
@@ -64,6 +68,8 @@ class RolesPanel extends Component {
                     <RoleRow
                         roleName={role.RoleName}
                         roleId={role.RoleID}
+                        selected={role.Selected}
+                        onSelectChange={props.onSelectChange}
                         index={index}
                         key={"role-" + index}
                         id={id}>
@@ -82,8 +88,10 @@ class RolesPanel extends Component {
                     label: item.RoleGroupName, value: item.RoleGroupID
                 };
             });
-            options.unshift({ label: "<" + resx.get("GlobalRoles") + ">", value: -1 });
-            options.unshift({ label: "<" + resx.get("AllRoles") + ">", value: -2 });
+            if (options.length > 0) {
+                options.unshift({ label: "<" + resx.get("GlobalRoles") + ">", value: -1 });
+                options.unshift({ label: "<" + resx.get("AllRoles") + ">", value: -2 });
+            }
         }
         return options;
     }
@@ -92,13 +100,18 @@ class RolesPanel extends Component {
         const {props, state} = this;
         return (
             <div className="language-roles-list-container">
-                <div className="translator-sectionTitle">{resx.get("Translators")}</div>
-                {this.props.roleGroups &&
+                <div className="translator-sectionTitle">
+                    <Label
+                        tooltipMessage={resx.get("translatorsLabel.Help")}
+                        label={resx.get("Translators")}
+                        />
+                </div>
+                {this.props.roleGroups && this.props.roleGroups.length > 0 &&
                     <div className="group-filter">
                         <DropDown
                             value={this.state.groupId}
                             fixedHeight={200}
-                            style={{ width: "auto" }}
+                            style={{ width: "150px" }}
                             options={this.getRoleGroupOptions()}
                             withBorder={false}
                             onSelect={this.onRoleGroupChanged.bind(this)}
@@ -117,7 +130,9 @@ class RolesPanel extends Component {
 RolesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     rolesList: PropTypes.array,
-    roleGroups: PropTypes.array
+    roleGroups: PropTypes.array,
+    cultureCode: PropTypes.string,
+    onSelectChange: PropTypes.func
 };
 
 function mapStateToProps(state) {

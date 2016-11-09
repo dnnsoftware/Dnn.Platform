@@ -1747,7 +1747,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         language.Code,
                         language.Fallback,
                         Enabled = IsLanguageEnabled(pid, language.Code),
-                        IsDefault = language.Code == portalSettings.DefaultLanguage
+                        IsDefault = language.Code == portalSettings.DefaultLanguage,
+                        Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators")
                     } : new
                     {
                         PortalId = pid,
@@ -1757,10 +1758,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Code = "",
                         Fallback = "",
                         Enabled = false,
-                        IsDefault = false
+                        IsDefault = false,
+                        Roles = ""
                     },
                     SupportedFallbacks = fallbacks
-                });
+            });
             }
             catch (Exception exc)
             {
@@ -1844,6 +1846,111 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(PortalId, string.Format("DefaultTranslatorRoles-{0}", language.Code), roles);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateLanguageRoles
+        /// <summary>
+        /// Updates language security
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateLanguageRoles(UpdateLanguageRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+
+                PortalController.UpdatePortalSetting(pid, string.Format("DefaultTranslatorRoles-{0}", request.Code), request.Roles);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateLanguage
+        /// <summary>
+        /// Updates language
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage UpdateLanguage(UpdateLanguageRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+
+                var language = LocaleController.Instance.GetLocale(request.LanguageId.Value);
+                if (language == null)
+                {
+                    language = LocaleController.Instance.GetLocale(request.Code);
+                    if (language == null)
+                    {
+                        language = new Locale();
+                        language.Code = request.Code;
+                    }
+                }
+                language.Fallback = request.Fallback;
+                language.Text = CultureInfo.GetCultureInfo(language.Code).NativeName;
+                Localization.SaveLanguage(language);
+
+                Dictionary<string, Locale> enabledLanguages = LocaleController.Instance.GetLocales(pid);
+                var localizedTabs = PortalSettings.ContentLocalizationEnabled ?
+                        TabController.Instance.GetTabsByPortal(PortalId).WithCulture(request.Code, false).AsList() : new List<TabInfo>();
+                Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(pid);
+                string redirectUrl = string.Empty;
+
+                if (request.Enabled)
+                {
+                    if (!enabledLanguages.ContainsKey(request.Code))
+                    {
+                        //Add language to portal
+                        Localization.AddLanguageToPortal(PortalId, language.LanguageId, true);
+                    }
+
+                    //restore the tabs and modules
+                    foreach (var tab in localizedTabs)
+                    {
+                        TabController.Instance.RestoreTab(tab, PortalSettings);
+                        ModuleController.Instance.GetTabModules(tab.TabID).Values.ToList().ForEach(ModuleController.Instance.RestoreModule);
+                    }
+                }
+                else
+                {
+                    //remove language from portal
+                    Localization.RemoveLanguageFromPortal(PortalId, language.LanguageId);
+
+                    //if the disable language is current language, should redirect to default language.
+                    if (request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        redirectUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID,
+                                                            PortalSettings.ActiveTab.IsSuperTab,
+                                                            PortalSettings, "", defaultLocale.Code);
+                    }
+
+                    //delete the tabs in this language
+                    foreach (var tab in localizedTabs)
+                    {
+                        tab.DefaultLanguageGuid = Guid.Empty;
+                        TabController.Instance.SoftDeleteTab(tab.TabID, PortalSettings);
+                    }
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, RedirectUrl = redirectUrl });
             }
             catch (Exception exc)
             {
@@ -2148,24 +2255,29 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        /// GET: api/SiteSettings/GetRoles
+        /// GET: api/SiteSettings/GetTranslatorRoles
         /// <summary>
         /// Gets roles
         /// </summary>
-        /// <returns>list of roles</returns>
+        /// <returns>list of translator roles</returns>
         [HttpGet]
-        public HttpResponseMessage GetRoles([FromUri]int? portalId, int groupId)
+        public HttpResponseMessage GetTranslatorRoles([FromUri]int? portalId, int groupId, string cultureCode)
         {
             try
             {
                 var pid = portalId ?? PortalId;
+
+                string defaultRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{cultureCode}", pid, "Administrators");
+                var selectedRoleNames = new ArrayList(defaultRoles.Split(';'));
+
                 var roles = (groupId < Null.NullInteger
                                     ? RoleController.Instance.GetRoles(pid, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
                                     : RoleController.Instance.GetRoles(pid, r => r.RoleGroupID == groupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved))
                                     .Select(r => new
                                     {
                                         r.RoleID,
-                                        r.RoleName
+                                        r.RoleName,
+                                        Selected = selectedRoleNames.Contains(r.RoleName)
                                     });
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
@@ -2180,13 +2292,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        /// GET: api/SiteSettings/GetRoleGroups
+        /// GET: api/SiteSettings/GetTranslatorRoleGroups
         /// <summary>
         /// Gets role groups
         /// </summary>
-        /// <returns>list of role groups</returns>
+        /// <returns>list of translator role groups</returns>
         [HttpGet]
-        public HttpResponseMessage GetRoleGroups([FromUri]int? portalId)
+        public HttpResponseMessage GetTranslatorRoleGroups([FromUri]int? portalId)
         {
             try
             {

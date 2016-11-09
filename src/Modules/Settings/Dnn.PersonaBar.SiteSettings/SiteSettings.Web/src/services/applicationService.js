@@ -223,6 +223,16 @@ class ApplicationService {
         sf.post("AddLanguage", payload, callback, failureCallback);
     }
 
+    updateLanguage(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateLanguage", payload, callback, failureCallback);
+    }
+
+    updateLanguageRoles(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateLanguageRoles", payload, callback, failureCallback);
+    }
+
     verifyLanguageResourceFiles(callback) {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("VerifyLanguageResourceFiles", {}, callback);
@@ -245,12 +255,12 @@ class ApplicationService {
 
     getRoleGroups(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetRoleGroups?portalId=" + portalId, {}, callback);
+        sf.get("GetTranslatorRoleGroups?portalId=" + portalId, {}, callback);
     } 
 
-    getRoles(portalId, groupId, callback) {
+    getRoles(portalId, groupId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");        
-        sf.get("GetRoles?portalId=" + portalId + "&groupId=" + groupId, {}, callback);
+        sf.get("GetTranslatorRoles?portalId=" + portalId + "&groupId=" + groupId + "&cultureCode=" + cultureCode, {}, callback);
     } 
 }
 const applicationService = new ApplicationService();
