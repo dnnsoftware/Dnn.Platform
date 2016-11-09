@@ -25,9 +25,9 @@ using DotNetNuke.Services.Exceptions;
 namespace Dnn.PersonaBar.UI.Services
 {
     [ServiceScope(Scope = ServiceScope.Common)]
-    public class ExtensionsController : PersonaBarApiController
+    public class MenuExtensionsController : PersonaBarApiController
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(ExtensionsController));
+        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuExtensionsController));
 
         #region Public API methods
 

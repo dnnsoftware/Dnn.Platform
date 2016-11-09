@@ -489,7 +489,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// </summary>
         /// <returns>Various forms of the URL and any messages when they exist</returns>
         /// <example>
-        /// GET /API/PersonaBar/Admin/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page
+        /// GET /API/PersonaBar/SEO/TestUrl?pageId=53&amp;queryString=ab%3Dcd&amp;customPageName=test-page
         /// </example>
         [HttpGet]
         public HttpResponseMessage TestUrl(int pageId, string queryString, string customPageName)
@@ -526,7 +526,7 @@ namespace Dnn.PersonaBar.Seo.Services
         /// </summary>
         /// <returns>Rewitten URL and few other information about the URL ( language, redirection result and reason, messages)</returns>
         /// <example>
-        /// GET /API/PersonaBar/Admin/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page
+        /// GET /API/PersonaBar/SEO/TestUrlRewrite?uri=http%3A%2F%2Fmysite.com%2Ftest-page
         /// </example>
         [HttpGet]
         public HttpResponseMessage TestUrlRewrite(string uri)

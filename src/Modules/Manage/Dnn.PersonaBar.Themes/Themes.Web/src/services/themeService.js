@@ -12,7 +12,7 @@ class ThemeService {
     getServiceFramework(controller) {
         let sf = window.dnn.initThemes().utility.sf;
 
-        sf.moduleRoot = "PersonaBar/Admin";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

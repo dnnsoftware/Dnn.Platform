@@ -34,7 +34,7 @@ class ExtensionService {
     getServiceFramework(controller) {
         let sf = utilities.utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/AdminHost";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Sites.Services
         /// <param name="pageSize"></param>
         /// <returns>List of portals</returns>
         /// <example>
-        /// GET /api/personabar/host/evoqsites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10
+        /// GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10
         /// </example>
         [HttpGet]
         public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)

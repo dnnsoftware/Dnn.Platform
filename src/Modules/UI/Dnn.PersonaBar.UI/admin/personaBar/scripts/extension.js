@@ -51,8 +51,8 @@ define(['jquery'], function () {
 
     function getExtensionsList(menuIdentifier, callback) {
         var service = utility.sf;
-        service.moduleRoot = 'personaBar/common';
-        service.controller = 'Extensions';
+        service.moduleRoot = 'personaBar';
+        service.controller = 'MenuExtensions';
         service.getsilence('GetExtensions', { menu: menuIdentifier }, function (data) {
             if (data && data.length && typeof callback === "function") {
                 callback.call(self, data);

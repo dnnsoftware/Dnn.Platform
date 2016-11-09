@@ -8,7 +8,7 @@ class ModuleDefinitionService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/AdminHost";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

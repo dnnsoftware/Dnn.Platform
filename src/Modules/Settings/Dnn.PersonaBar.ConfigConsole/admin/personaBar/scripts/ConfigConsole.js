@@ -23,7 +23,7 @@ define(['jquery',
         var isMobile, identifier, utility, $panel, viewModel, configEditor, mergeEditor, curConfigName;
 
         var requestService = function (type, method, params, callback, failure) {
-            utility.sf.moduleRoot = "personaBar/Host";
+            utility.sf.moduleRoot = "personaBar";
             utility.sf.controller = "ConfigConsole";
 
             utility.sf[type].call(utility.sf, method, params, callback, failure);

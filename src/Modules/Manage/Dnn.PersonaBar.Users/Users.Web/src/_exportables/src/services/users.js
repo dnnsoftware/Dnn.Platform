@@ -12,7 +12,7 @@ class UserService {
     getServiceFramework(controller) {
         let sf = utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/Admin";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

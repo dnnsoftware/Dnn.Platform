@@ -27,7 +27,7 @@ class Api {
 
     constructor(controller) {
         this.controller = controller;
-        this.moduleRoot = "PersonaBar/Admin";
+        this.moduleRoot = "PersonaBar";
     }
 
     getServiceFramework() {

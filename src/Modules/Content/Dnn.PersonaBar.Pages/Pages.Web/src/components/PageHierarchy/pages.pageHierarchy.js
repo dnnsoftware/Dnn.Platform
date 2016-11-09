@@ -1153,7 +1153,7 @@
         },
 
         _getService: function () {
-            this.utility.sf.moduleRoot = "PersonaBar/Admin";
+            this.utility.sf.moduleRoot = "PersonaBar";
             this.utility.sf.controller = window.dnn.pages.apiController;
 
             return this.utility.sf;
