@@ -432,4 +432,7 @@
   <data name="BackToPages.Text" xml:space="preserve">
     <value>Back to pages</value>
   </data>
+  <data name="ChangesNotSaved.Text" xml:space="preserve">
+    <value>Changes have not been saved</value>
+  </data>
 </root>

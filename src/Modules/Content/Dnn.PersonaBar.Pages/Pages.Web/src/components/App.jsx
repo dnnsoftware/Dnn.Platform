@@ -88,7 +88,8 @@ class App extends Component {
                         workSpaceTray={backToPages}
                         workSpaceTrayVisible={true}>
                         <PageSettings selectedPage={props.selectedPage}
-                                      selectedPageErrors={props.selectedPageErrors} 
+                                      selectedPageErrors={props.selectedPageErrors}
+                                      selectedPageDirty={props.selectedPageDirty} 
                                       onCancel={() => props.onNavigate(0)} 
                                       onSave={this.onSavePage.bind(this)}
                                       onChangeField={props.onChangePageField}
@@ -127,6 +128,7 @@ App.propTypes = {
     selectedView: PropTypes.number,
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
+    selectedPageDirty: PropTypes.boolean,
     editingSettingModuleId: PropTypes.number,
     onNavigate: PropTypes.func,
     onSavePage: PropTypes.func,
@@ -146,6 +148,7 @@ function mapStateToProps(state) {
         selectedView: state.visiblePanel.selectedPage,
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
+        selectedPageDirty: state.pages.dirtyPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error
     };

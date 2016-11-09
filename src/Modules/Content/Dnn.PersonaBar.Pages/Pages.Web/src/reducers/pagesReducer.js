@@ -5,9 +5,9 @@ export default function pagesReducer(state = {
     selectedPage: null,
     errors: {},
     cacheProviderList: null,
-    doingOperation: false,
     editingSettingModuleId: null,
-    urlChanged: false
+    urlChanged: false,
+    dirtyPage: false
 }, action) {    
 
     const changeField = function changeField(field, value) {
@@ -26,37 +26,16 @@ export default function pagesReducer(state = {
     switch (action.type) {
         case ActionTypes.LOAD_PAGE:
             return { ...state,                
-                doingOperation: true,
                 selectedPage: null,
                 editingSettingModuleId: null
             };
 
         case ActionTypes.LOADED_PAGE:
             return { ...state,
-                doingOperation: false,
                 selectedPage: action.data.page,
                 errors: {},
-                urlChanged: false
-            };
-
-        case ActionTypes.ERROR_LOADING_PAGE:
-            return { ...state,
-                doingOperation: false           
-            };
-        
-        case ActionTypes.SAVE_PAGE:
-            return { ...state,                
-                doingOperation: true
-            };
-
-        case ActionTypes.SAVED_PAGE:
-            return { ...state,
-                doingOperation: false
-            };
-            
-        case ActionTypes.ERROR_SAVING_PAGE:
-            return { ...state,
-                doingOperation: false           
+                urlChanged: false,
+                dirtyPage: false
             };
         
         case ActionTypes.CHANGE_FIELD_VALUE:
@@ -66,14 +45,16 @@ export default function pagesReducer(state = {
                     ...(state.errors),
                     ...validateFields(action.field, action.value)
                 },
-                urlChanged: hasChangeUrl(action)           
+                urlChanged: hasChangeUrl(action),
+                dirtyPage: true           
             };
 
         case ActionTypes.CHANGE_PERMISSIONS:
             return { ...state,
                 selectedPage: { ...state.selectedPage,
                     permissions: action.permissions
-                }           
+                },
+                dirtyPage: true           
             };
 
         case ActionTypes.FETCH_CACHE_PROVIDER_LIST:

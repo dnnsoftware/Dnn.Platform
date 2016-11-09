@@ -32,6 +32,20 @@ class PageSettings extends Component {
                 </Button>];
     }
 
+    getPageFooter(buttons) {
+        const {selectedPageDirty} = this.props;
+        return (
+            <div className="buttons-box">
+                {buttons}
+                {selectedPageDirty && 
+                    <div className="dirty-info">
+                        {Localization.get("ChangesNotSaved")}
+                    </div>
+                }
+            </div>
+        );
+    }
+
     copyAppearanceToDescendantPages() {
         this.props.onCopyAppearanceToDescendantPages();
     }
@@ -62,6 +76,9 @@ class PageSettings extends Component {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
         }
 
+        const footer = this.getPageFooter(buttons);
+        const appearanceFooter = this.getPageFooter(buttons);
+
         return (
             <Tabs 
                 tabHeaders={[Localization.get("Details"), 
@@ -76,15 +93,13 @@ class PageSettings extends Component {
                         page={selectedPage}
                         errors={selectedPageErrors} 
                         onChangeField={onChangeField} />
-                    <div className="buttons-box">
-                        {buttons}
-                    </div>
+                    {footer}
                 </div>
                 <div className="dnn-simple-tab-item">                
                     <PermissionGrid
                         permissions={selectedPage.permissions} 
                         onPermissionsChanged={this.props.onPermissionsChanged} />
-                    {buttons}
+                    {footer}
                 </div>
                 <div>
                     <Tabs 
@@ -105,23 +120,17 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <Appearance page={selectedPage}
                                 onChangeField={onChangeField} />
-                            <div className="buttons-box">
-                                {appearanceButtons}
-                            </div>
+                            {appearanceFooter}
                         </div>
                         <div className="dnn-simple-tab-item">
                             <Seo page={selectedPage}
                                 onChangeField={onChangeField} />
-                            <div className="buttons-box">
-                                {buttons}
-                            </div>
+                            {footer}
                         </div>
                         <div className="dnn-simple-tab-item">
                             <More page={selectedPage}
                                 onChangeField={onChangeField} />
-                            <div className="buttons-box">
-                                {buttons}
-                            </div>
+                            {footer}
                         </div>
                     </Tabs>
                 </div>
@@ -133,6 +142,7 @@ class PageSettings extends Component {
 PageSettings.propTypes = {
     selectedPage: PropTypes.object.isRequired,
     selectedPageErrors: PropTypes.object.isRequired,
+    selectedPageDirty: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
