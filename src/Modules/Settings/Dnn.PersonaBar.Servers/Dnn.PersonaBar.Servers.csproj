@@ -110,7 +110,6 @@
     <Compile Include="Components\PerformanceSettings\PerformanceController.cs" />
     <Compile Include="Components\ServersMenuController.cs" />
     <Compile Include="Components\WebServer\ServerInfo.cs" />
-    <Compile Include="Components\WebServer\WebServersController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateCachingSettingsRequest.cs" />

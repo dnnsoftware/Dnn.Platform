@@ -439,7 +439,7 @@
     <value>Save</value>
   </data>
   <data name="SiteSmtpHostSetting.Text" xml:space="preserve">
-    <value>My Website {0}</value>
+    <value>{0}</value>
   </data>
   <data name="SMTPAnonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
