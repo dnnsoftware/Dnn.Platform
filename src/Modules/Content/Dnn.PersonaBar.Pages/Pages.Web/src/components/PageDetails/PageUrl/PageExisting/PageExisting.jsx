@@ -21,12 +21,13 @@ const PageToTestParameters = {
 
 class PageExisting extends Component {
 
-    onChangeField(key) {
+    onChangePage(value) {
         const {onChangeField} = this.props;
-        onChangeField(key, event.target.value);
+        onChangeField("existingTabRedirection", value);
     }
 
     render() {
+        const {page} = this.props;
         const serviceFramework = utils.getServiceFramework(); 
         const noneSpecifiedText = "<" + Localization.get("NoneSpecified") + ">";
 
@@ -39,11 +40,12 @@ class PageExisting extends Component {
                     <PagePicker 
                         serviceFramework={serviceFramework}
                         style={{ width: "100%", zIndex: 2 }}
-                        OnSelect={this.onChangeField.bind(this, "internalUrl")}
+                        OnSelect={this.onChangePage.bind(this)}
                         defaultLabel={noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
-                        PortalTabsParameters={PageToTestParameters} />
+                        PortalTabsParameters={PageToTestParameters}
+                        selectedTabId={page.existingTabRedirection || -1} />
                 </InputGroup>
                 <PageUrlCommons {...this.props} />
                 <div style={{clear: "both"}}></div>

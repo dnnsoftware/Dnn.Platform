@@ -84,7 +84,10 @@ const pageActions = {
                 value
             });
 
-            if (key === "name" && pages.selectedPage.tabId === 0 && !pages.urlChanged) {
+            if (key === "name" && 
+                pages.selectedPage.tabId === 0 && 
+                !pages.urlChanged &&
+                pages.selectedPage.pageType === "normal") {
                 debouncedUpdateUrlPreview(value, dispatch);    
             }
         };
