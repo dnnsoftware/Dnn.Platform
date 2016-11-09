@@ -9,9 +9,11 @@ import RadioButtonBlock from "../common/RadioButtonBlock";
 import DropdownBlock from "../common/DropdownBlock";
 import InfoBlock from "../common/InfoBlock";
 import SwitchBlock from "../common/SwitchBlock";
+import WarningBlock from "../common/WarningBlock";
 import localization from "../../localization";
 import PerformanceTabActions from "../../actions/performanceTab";
 import utils from "../../utils";
+
 
 class Performance extends Component {
     componentWillMount() {
@@ -111,7 +113,7 @@ class Performance extends Component {
         }
                                         
         return <div className="dnn-servers-info-panel-big performanceSettingTab">
-            <div className="clear" />
+            <WarningBlock label={localization.get("PerformanceTab_AjaxWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <div className="tooltipAdjustment">
@@ -188,6 +190,7 @@ class Performance extends Component {
             <div className="dnn-servers-grid-panel newSection" style={{marginLeft: 0}}>
                 <Label className="header-title" label={localization.get("PerformanceTab_ClientResourceManagementTitle")} />
             </div>
+            <WarningBlock label={localization.get("PerformanceTab_MinifactionWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <InputGroup>

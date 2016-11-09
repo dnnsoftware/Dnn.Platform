@@ -4,6 +4,7 @@ module.exports = [
     "auth",
     "unauth",
     "minify",
+    "ajax",
     "cacheability",
     "syncrhonization",
     "incrementing",
