@@ -40,7 +40,7 @@ class Seo extends Component {
             <div className={styles.seoContainer}>
                 <div className="AddItemRow">
                     <div className="link-icon" dangerouslySetInnerHTML={{ __html: LinkIcon }} />
-                    <div className="sectionTitle">{Localization.get("UrlsForthisPage")}</div>
+                    <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
                     <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                         <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                         </div> {Localization.get("AddUrl")}

@@ -5,7 +5,7 @@ import GridCell from "dnn-grid-cell";
 import SearchBox from "dnn-search-box";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
-import "./PageList.less";
+import styles from "./PageList.less";
 import Localization from "../../localization";
 
 class PageList extends Component {
@@ -15,17 +15,18 @@ class PageList extends Component {
 
     render() {
         return (
-            <SocialPanelBody>                        
-                <GridCell columnSize={65} >
-                    <div>&nbsp; </div></GridCell>
-                <GridCell columnSize={35} >
-                    <div className="search-filter">                                
-                        <SearchBox placeholder={Localization.get("Search")} 
-                            onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
-                        <div className="clear"></div>
-                    </div>
-                </GridCell>
-
+            <SocialPanelBody className={styles.pageListBody}>                  
+                <div className="search-container">      
+                    <GridCell columnSize={65} >
+                        <div>&nbsp; </div></GridCell>
+                    <GridCell columnSize={35} >
+                        <div className="search-filter">                                
+                            <SearchBox placeholder={Localization.get("Search")} 
+                                onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
+                            <div className="clear"></div>
+                        </div>
+                    </GridCell>
+                </div>
                 <PageHierarchy
                     itemTemplate={this.props.itemTemplate}
                     searchKeyword={this.props.searchKeyword} 

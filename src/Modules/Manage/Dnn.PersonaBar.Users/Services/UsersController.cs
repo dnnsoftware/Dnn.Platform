@@ -58,11 +58,6 @@ namespace Dnn.PersonaBar.Users.Services
                     Notify = contract.Notify,
                     Authorize = contract.Authorize,
                     RandomPassword = contract.RandomPassword,
-
-                    // For Community Manager, he can always add user
-                    // whatever registration mode is set
-                    // Please check below issue for this property
-                    // https://dnntracker.atlassian.net/browse/SOCIAL-3158
                     IgnoreRegistrationMode = true
                 };
                 string message;

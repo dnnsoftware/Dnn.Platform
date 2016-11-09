@@ -84,8 +84,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 SiteMapPriority = tab.SiteMapPriority,
                 PermanentRedirect = tab.PermanentRedirect,
                 LinkNewWindow = LinkNewWindow(tab),
-                PageStylesheet = (string)tab.TabSettings["CustomStylesheet"],
-                Theme = GetTabTheme(tab)
+                PageStyleSheet = (string)tab.TabSettings["CustomStylesheet"],
+                SkinSrc = tab.SkinSrc,
+                ContainerSrc = tab.ContainerSrc
             };
         }
 
@@ -118,15 +119,6 @@ namespace Dnn.PersonaBar.Pages.Components
         private static int? MaxVaryByCount(TabInfo tab)
         {
             return tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null;
-        }
-
-        private static Theme GetTabTheme(TabInfo tab)
-        {
-            return new Theme
-            {
-                SkinSrc = tab.SkinSrc,
-                ContainerSrc = tab.ContainerSrc
-            };
         }
 
         private static bool AllowIndex(TabInfo tab)

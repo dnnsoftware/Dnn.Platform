@@ -55,6 +55,8 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual bool Visible => true;
 
+        public virtual IList<string> EditorRoles => new List<string>(); 
+
         public virtual void Initialize(UserControl personaBarControl)
         {
             

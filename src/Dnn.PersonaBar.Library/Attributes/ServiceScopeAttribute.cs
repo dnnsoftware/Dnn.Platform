@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.PersonaBar.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
 using Dnn.PersonaBar.Library.PersonaBar.Repository;
@@ -14,13 +15,6 @@ namespace Dnn.PersonaBar.Library.Attributes
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ServiceScopeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        static readonly IList<string> RegularRoles = new List<string>()
-        {
-            Constants.ContentManagerRoleName, 
-            Constants.ContentEditorRoleName,
-            Constants.CommunityManagerRoleName
-        };
-
         public ServiceScope Scope { get; set; }
 
         public string Identifier { get; set; }
@@ -49,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Attributes
 
             var isHost = currentUser.IsSuperUser;
             var isAdmin = currentUser.IsInRole(administratorRoleName);
-            var isRegular = RegularRoles.Any(r => currentUser.IsInRole(r));
+            var isRegular = PersonaBarContainer.Instance.EditorRoles.Any(r => currentUser.IsInRole(r));
 
             if (isHost)
             {

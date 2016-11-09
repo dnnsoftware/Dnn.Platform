@@ -27,7 +27,7 @@ define(['jquery',
         var pagesCount = 7;
 
         var requestService = function (type, method, params, callback, error) {
-            utility.sf.moduleRoot = "personaBar/host";
+            utility.sf.moduleRoot = "personaBar";
             utility.sf.controller = "SqlConsole";
 
             utility.sf[type].call(utility.sf, method, params, callback, error);

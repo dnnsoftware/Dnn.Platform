@@ -22,7 +22,7 @@ define(['jquery',
         var isMobile, identifier, utility, $panel, viewModel, cssEditor, curPortalId;
 
         var requestService = function (type, method, params, callback, failure) {
-            utility.sf.moduleRoot = "personaBar/AdminHost";
+            utility.sf.moduleRoot = "personaBar";
             utility.sf.controller = "CssEditor";
 
             utility.sf[type].call(utility.sf, method, params, callback, failure);

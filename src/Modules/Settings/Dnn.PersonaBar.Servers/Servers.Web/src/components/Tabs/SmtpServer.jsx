@@ -111,7 +111,7 @@ class SmtpServer extends Component {
             value: "h"
         },
         {
-            label: localization.get("SiteSmtpHostSetting").replace("{0}", "Test site"),
+            label: localization.get("SiteSmtpHostSetting").replace("{0}", this.props.smtpServerInfo.portalName || ""),
             value: "p"
         }
         ];

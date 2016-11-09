@@ -17,19 +17,26 @@ using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using Dnn.PersonaBar.Themes.Components;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {
-        private static readonly IPagesController _pagesController = Components.PagesController.Instance;
+        private readonly IPagesController _pagesController;
+        private readonly IThemesController _themesController;
+
+        public PagesController()
+        {
+            _pagesController = Components.PagesController.Instance;
+            _themesController = ThemesController.Instance;
+        }
 
         /// GET: api/Pages/GetPageDetails
         /// <summary>
@@ -129,7 +136,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 _pagesController.DeleteTabModule(module.PageId, module.ModuleId);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
             }
             catch (PageModuleNotFoundException)
             {
@@ -142,7 +149,7 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage CopyThemeToDescendantPages(CopyThemeRequest copyTheme)
         {
             _pagesController.CopyThemeToDescendantPages(copyTheme.PageId, copyTheme.Theme);
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
         }
 
         // TODO: This should be a POST
@@ -160,7 +167,8 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 var tab = _pagesController.SavePageDetails(pageSettings);
-                var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false, true);
+                var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false,
+                    true);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -177,14 +185,14 @@ namespace Dnn.PersonaBar.Pages.Services
                 return Request.CreateResponse(HttpStatusCode.OK, new {Status = 1, ex.Field, ex.Message});
             }
         }
-        
+
         [HttpGet]
         public HttpResponseMessage GetDefaultPermissions()
         {
             var permissions = _pagesController.GetPermissionsData(0);
             return Request.CreateResponse(HttpStatusCode.OK, permissions);
         }
-        
+
         [HttpGet]
         public HttpResponseMessage GetCacheProviderList()
         {
@@ -195,21 +203,38 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageUrlPreview(string url)
         {
-            try
+            if (string.IsNullOrEmpty(url))
             {
-                if (string.IsNullOrEmpty(url))
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Url = string.Empty });
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, new {Url = string.Empty});
+            }
 
-                var cleanedUrl = _pagesController.CleanTabUrl(url);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Url = cleanedUrl });
-            }
-            catch (Exception ex)
+            var cleanedUrl = _pagesController.CleanTabUrl(url);
+            return Request.CreateResponse(HttpStatusCode.OK, new {Url = cleanedUrl});
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetThemes()
+        {
+            var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site);
+            return Request.CreateResponse(HttpStatusCode.OK, new { themes });
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetThemeFiles(string themeName)
+        {
+            const ThemeLevel level = ThemeLevel.Global | ThemeLevel.Site;
+            var themeLayout = _themesController.GetLayouts(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+            var themeContainer = _themesController.GetContainers(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (themeLayout == null || themeContainer == null)
             {
-                Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
             }
+
+            return Request.CreateResponse(HttpStatusCode.OK, new {
+                layouts = _themesController.GetThemeFiles(PortalSettings, themeLayout),
+                containers = _themesController.GetThemeFiles(PortalSettings, themeContainer)
+            });
         }
     }
 }

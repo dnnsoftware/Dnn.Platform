@@ -33,24 +33,9 @@ namespace Dnn.PersonaBar.Library
         public const string DisallowedCharacters = "%?*&;:'\\";
 
         public const string AdminsRoleName = "Administrators";
-        public const string CommunityManagerRoleName = "Community Manager";
-        public const string ContentEditorRoleName = "Content Editors";
-        public const string ContentManagerRoleName = "Content Managers";
-        public const string ModeratorsRoleName = "Moderators";
-        public const string ManagerRoles = "Content Managers,Community Manager, Administrators";
-        public const string AllMajorRoles = "Content Managers,Community Manager,Content Editors, Administrators";
-
-        public const string PlatformBasicSku = "DNN";
-        public const string EvoqContentBasicSku = "DNNPRO";
-        public const string EvoqContentSku = "DNNENT";
-        public const string EvoqEngageSku = "DNNSOCIAL";
 
         // Js resources
 
         public static readonly string[] DefaultDocumentExtensions = { "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", "txt" };
-
-        public const string PageTagsVocabulary = "PageTags";
-
-        public const string TemplatesTabName = "ContentPageTemplates";
     }
 }

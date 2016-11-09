@@ -12,12 +12,35 @@ const themeActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_THEMES,
                     data: {
-                        themes: response
+                        themes: response.themes
                     }
                 });  
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_RETRIEVING_THEMES,
+                    data: {error}
+                });
+            });     
+        };
+    },
+
+    retrieveThemeFiles(themeName) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.RETRIEVING_THEME_FILES
+            });    
+
+            ThemeService.getThemeFiles(themeName).then(response => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_THEME_FILES,
+                    data: {
+                        layouts: response.layouts,
+                        containers: response.containers
+                    }
+                });  
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_RETRIEVING_THEME_FILES,
                     data: {error}
                 });
             });     

@@ -6,7 +6,7 @@
     public enum ServiceScope
     {
         /// <summary>
-        /// the service available for all users, but namespace is personaBar/common.
+        /// the service available for all users.
         /// </summary>
         Common,
         /// <summary>

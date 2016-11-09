@@ -75,7 +75,8 @@ namespace Dnn.PersonaBar.Servers.Services
                         enableSmtpSsl = PortalController.GetPortalSetting("SMTPEnableSSL", portalId, string.Empty) == "Y",
                         smtpUserName = PortalController.GetPortalSetting("SMTPUsername", portalId, string.Empty),
                         smtpPassword = PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey())
-                    }
+                    },
+                    portalName = PortalSettings.Current.PortalName
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, smtpSettings);
             }

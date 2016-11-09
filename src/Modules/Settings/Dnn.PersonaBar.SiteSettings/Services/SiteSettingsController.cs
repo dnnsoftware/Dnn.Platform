@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -2139,6 +2140,69 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("LanguagePackCreateFailure", LocalResourcesFile));
                 }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetRoles
+        /// <summary>
+        /// Gets roles
+        /// </summary>
+        /// <returns>list of roles</returns>
+        [HttpGet]
+        public HttpResponseMessage GetRoles([FromUri]int? portalId, int groupId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var roles = (groupId < Null.NullInteger
+                                    ? RoleController.Instance.GetRoles(pid, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                                    : RoleController.Instance.GetRoles(pid, r => r.RoleGroupID == groupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved))
+                                    .Select(r => new
+                                    {
+                                        r.RoleID,
+                                        r.RoleName
+                                    });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Roles = roles
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetRoleGroups
+        /// <summary>
+        /// Gets role groups
+        /// </summary>
+        /// <returns>list of role groups</returns>
+        [HttpGet]
+        public HttpResponseMessage GetRoleGroups([FromUri]int? portalId)
+        {
+            try
+            {
+                var pid = portalId ?? PortalId;
+                var groups = RoleController.GetRoleGroups(pid)
+                                .Cast<RoleGroupInfo>()
+                                .Select(g => new
+                                {
+                                    g.RoleGroupID,
+                                    g.RoleGroupName
+                                });
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Groups = groups
+                });
             }
             catch (Exception exc)
             {

@@ -439,7 +439,7 @@
     <value>Save</value>
   </data>
   <data name="SiteSmtpHostSetting.Text" xml:space="preserve">
-    <value>My Website {0}</value>
+    <value>{0}</value>
   </data>
   <data name="SMTPAnonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
@@ -590,5 +590,29 @@
   </data>
   <data name="PerformanceTab_CurrentPortalVersion.Text" xml:space="preserve">
     <value>Site Version:</value>
+  </data>
+  <data name="errorMessageIncrementingVersion.Text" xml:space="preserve">
+    <value>Error incrementing the version number.</value>
+  </data>
+  <data name="errorMessageSavingPerformanceSettingsTab.Text" xml:space="preserve">
+    <value>Error saving performance settings</value>
+  </data>
+  <data name="PerformanceTab_AjaxWarning.Text" xml:space="preserve">
+    <value>Warning: Memory page state persistence can cause Ajax issues.</value>
+  </data>
+  <data name="PerformanceTab_MinifactionWarning.Text" xml:space="preserve">
+    <value>Important note regarding minification settings.&lt;br/&gt;
+If minification settings are changed when composite files are enabled, you must first save the minification settings by clicking Save and then increment the version number. This will issue new composite files using the new minification settings.</value>
+  </data>
+  <data name="PerformanceTab_PortalVersionConfirmMessage.Text" xml:space="preserve">
+    <value>This action will force all site visitors to download new versions of CSS and JavaScript files. You should only do this if you are certain that the files have changed and you want those changes to be reflected on the client's browser.
+
+Are you sure you want to increment the version number for your site?</value>
+  </data>
+  <data name="PerformanceTab_PortalVersionConfirmNo.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="PerformanceTab_PortalVersionConfirmYes.Text" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

@@ -192,7 +192,7 @@
   <data name="AddUrl.Text" xml:space="preserve">
     <value>Add URL</value>
   </data>
-  <data name="UrlsForthisPage.Text" xml:space="preserve">
+  <data name="UrlsForThisPage.Text" xml:space="preserve">
     <value>URLs for this page</value>
   </data>
   <data name="Url.Text" xml:space="preserve">
@@ -300,7 +300,7 @@
   <data name="PreviewThemeLayoutAndContainer.Text" xml:space="preserve">
     <value>Preview Theme Layout and Container</value>
   </data>
-    <data name="NotEmptyNameError.Text" xml:space="preserve">
+  <data name="NotEmptyNameError.Text" xml:space="preserve">
     <value>This field is required</value>
   </data>
   <data name="AddPage.Text" xml:space="preserve">
@@ -345,9 +345,6 @@
   <data name="Tags.Text" xml:space="preserve">
     <value>Tags</value>
   </data>
-  <data name="Url.Text" xml:space="preserve">
-    <value>URL</value>
-  </data>
   <data name="ExistingPage.Text" xml:space="preserve">
     <value>Existing Page</value>
   </data>
@@ -364,7 +361,7 @@
     <value>Permanent Redirect</value>
   </data>
   <data name="PermanentRedirectTooltip.Text" xml:space="preserve">
-    <value></value>
+    <value>Check this box if you want to notify the client that this page should be considered as permanently moved. This would allow SearchEngines to modify their URLs to directly link to the resource. This is ignored if the LinkType is None.</value>
   </data>
   <data name="OpenLinkInNewWindow.Text" xml:space="preserve">
     <value>Open Link In New Window</value>
@@ -381,14 +378,8 @@
   <data name="Permissions.Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
-  <data name="Advanced.Text" xml:space="preserve">
-    <value>Advanced</value>
-  </data>
   <data name="Modules.Text" xml:space="preserve">
     <value>Modules</value>
-  </data>
-  <data name="Appearance.Text" xml:space="preserve">
-    <value>Appearance</value>
   </data>
   <data name="SEO.Text" xml:space="preserve">
     <value>S.E.O.</value>
@@ -419,5 +410,26 @@
   </data>
   <data name="File.Text" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="PageContainerTooltip.text" xml:space="preserve">
+    <value>The selected container will be applied to all modules on this page.</value>
+  </data>
+  <data name="PageLayoutTooltip.text" xml:space="preserve">
+    <value>The selected theme will be applied to this page.</value>
+  </data>
+  <data name="PageStyleSheetTooltip.Text" xml:space="preserve">
+    <value>A stylesheet that will only be loaded for this page. The file must be located in the home directory or a sub folder of the current website.</value>
+  </data>
+  <data name="SetPageContainer.Text" xml:space="preserve">
+    <value>set page container</value>
+  </data>
+  <data name="SetPageLayout.Text" xml:space="preserve">
+    <value>set page layout</value>
+  </data>
+  <data name="SetPageTheme.Text" xml:space="preserve">
+    <value>set page theme</value>
+  </data>
+  <data name="BackToPages.Text" xml:space="preserve">
+    <value>Back to pages</value>
   </data>
 </root>

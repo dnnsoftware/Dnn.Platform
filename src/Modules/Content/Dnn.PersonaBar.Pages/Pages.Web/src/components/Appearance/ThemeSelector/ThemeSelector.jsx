@@ -1,10 +1,35 @@
 import React, {Component, PropTypes} from "react";
 import Label from "dnn-label";
 import localization from "../../../localization";
-import { Scrollbars } from "react-custom-scrollbars";
-import GridCell from "dnn-grid-cell";
+import Card from "../Card/Card";
+import Gallery from "../Gallery/Gallery";
 
 class ThemeSelector extends Component {
+
+    onThemeClick(packageName) {
+        const theme = this.props.themes.find(t => t.packageName === packageName);
+        this.props.onSelectTheme(theme);
+    }
+
+    isSelected(theme) {
+        const { selectedTheme } = this.props;
+        if (!selectedTheme) {
+            return false;
+        }
+        return selectedTheme.packageName === theme.packageName;
+    }
+
+    getThemeCards() {
+        return this.props.themes.map(theme => {
+            return <Card 
+                cardId={theme.packageName}
+                onClick={this.onThemeClick.bind(this)}
+                hoverText={localization.get("SetPageTheme")}
+                label={theme.packageName}
+                selected={this.isSelected(theme)}
+                image={theme.thumbnail} />;
+        });
+    }
 
     render() {        
         return (
@@ -12,26 +37,18 @@ class ThemeSelector extends Component {
                 <Label 
                     label={localization.get("PageTheme")} 
                     tooltipMessage={localization.get("PageThemeTooltip")} />
-                <div>
-                    <Scrollbars
-                        className="theme-list"
-                        autoHeight
-                        autoHeightMin={0}
-                        autoHeightMax={480}>
-                        <GridCell>
-                           
-                           
-                        </GridCell>
-                    </Scrollbars>
-                </div>
+                <Gallery>
+                    {this.getThemeCards()}
+                </Gallery>
             </div>
         );
     }
 }
 
 ThemeSelector.propTypes = {
-    currentTheme: PropTypes.object.isRequired,
-    themes: PropTypes.array.isRequired
+    selectedTheme: PropTypes.object,
+    themes: PropTypes.array.isRequired,
+    onSelectTheme: PropTypes.func.isRequired
 };
 
 export default ThemeSelector;

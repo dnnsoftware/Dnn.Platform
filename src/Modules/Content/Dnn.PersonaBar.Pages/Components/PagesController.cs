@@ -47,6 +47,7 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         private readonly ITabController _tabController;
         private readonly IModuleController _moduleController;
+        public const string PageTagsVocabulary = "PageTags";
 
         public PagesController()
         {
@@ -429,7 +430,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var vocabularyController = Util.GetVocabularyController();
                 var vocabulary = (vocabularyController.GetVocabularies()
                                     .Cast<Vocabulary>()
-                                    .Where(v => v.Name == Constants.PageTagsVocabulary))
+                                    .Where(v => v.Name == PageTagsVocabulary))
                                     .SingleOrDefault();
 
                 var vocabularyId = Null.NullInteger;
@@ -442,7 +443,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
 
                     vocabularyId = vocabularyController.AddVocabulary(
-                        new Vocabulary(Constants.PageTagsVocabulary, string.Empty, VocabularyType.Simple)
+                        new Vocabulary(PageTagsVocabulary, string.Empty, VocabularyType.Simple)
                         {
                             ScopeTypeId = scopeType.ScopeTypeId,
                             ScopeId = tab.PortalID
@@ -480,17 +481,29 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        private string GetInternalUrl(PageSettings pageSettings) {
-            switch (pageSettings.PageType) {
+        private string GetInternalUrl(PageSettings pageSettings)
+        {
+            switch (pageSettings.PageType)
+            {
                 case "tab":
                     return pageSettings.ExistingTabRedirection;
                 case "url":
-                    return pageSettings.ExternalRedirection;
+                    return GetExternalUrlRedirection(pageSettings.ExternalRedirection);
                 case "file":
                     return "FileId=" + pageSettings.FileRedirection;
                 default:
                     return null;
             }
+        }
+
+        private static string GetExternalUrlRedirection(string url)
+        {
+            if (url == null)
+            {
+                return null;
+            }
+
+            return url.ToLower() == "http://" ? "" : Globals.AddHTTP(url);
         }
 
         /// <summary>

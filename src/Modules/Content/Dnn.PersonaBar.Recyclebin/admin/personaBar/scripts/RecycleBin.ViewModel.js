@@ -785,7 +785,7 @@ define(['jquery', 'knockout',
             };
 
             getService = function () {
-                _utility.sf.moduleRoot = "personaBar/regular";
+                _utility.sf.moduleRoot = "personaBar";
                 _utility.sf.controller = "PageManagement";
 
                 return _utility.sf;

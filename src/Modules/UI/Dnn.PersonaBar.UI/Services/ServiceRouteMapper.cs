@@ -19,86 +19,32 @@ namespace Dnn.PersonaBar.UI.Services
     {
         public void RegisterRoutes(IMapRoute routeManager)
         {
-            var commonServices = new List<string>();
-            var regularServices = new List<string>();
-            var adminServices = new List<string>();
-            var hostServices = new List<string>();
-            var adminHostServices = new List<string>();
-
             //get all persona bar services from persona bar modules.
-            FindPersonaBarServices(ref commonServices, ref regularServices, ref adminServices, ref hostServices, ref adminHostServices);
+            var services = FindPersonaBarServices();
 
-            if (commonServices.Count > 0)
+            if (services.Count > 0)
             {
-                routeManager.MapHttpRoute("PersonaBar/Common", "default", "{controller}/{action}", commonServices.ToArray());
+                routeManager.MapHttpRoute("PersonaBar", "default", "{controller}/{action}", services.ToArray());
             }
-
-            if (regularServices.Count > 0)
-            {
-                routeManager.MapHttpRoute("PersonaBar/Regular", "default", "{controller}/{action}", regularServices.ToArray());
-            }
-
-            if (adminServices.Count > 0)
-            { 
-                routeManager.MapHttpRoute("PersonaBar/Admin", "default", "{controller}/{action}", adminServices.ToArray());
-            }
-
-            if (hostServices.Count > 0)
-            {
-                routeManager.MapHttpRoute("PersonaBar/Host", "default", "{controller}/{action}", hostServices.ToArray());
-            }
-
-            if (adminHostServices.Count > 0)
-            {
-                routeManager.MapHttpRoute("PersonaBar/AdminHost", "default", "{controller}/{action}", adminHostServices.ToArray());
-            }
-
         }
 
-        private void FindPersonaBarServices(ref List<string> commonServices, ref List<string> regularServices, ref List<string> adminServices, ref List<string> hostServices, ref List<string> adminHostServices)
+        private IList<string> FindPersonaBarServices()
         {
             var controllerTypes = GetAllApiControllers();
+            var namespaces = new List<string>();
             foreach (var type in controllerTypes)
             {
                 var scopeAttr = (ServiceScopeAttribute)type.GetCustomAttributes(false).Cast<Attribute>().FirstOrDefault(a => a is ServiceScopeAttribute);
                 if (scopeAttr != null)
                 {
-                    var typeNamespace = type.Namespace;
-                    switch (scopeAttr.Scope)
+                    if (!namespaces.Contains(type.Namespace))
                     {
-                        case ServiceScope.Admin:
-                            if (!adminServices.Contains(typeNamespace))
-                            {
-                                adminServices.Add(typeNamespace);
-                            }
-                            break;
-                        case ServiceScope.AdminHost:
-                            if (!adminHostServices.Contains(typeNamespace))
-                            {
-                                adminHostServices.Add(typeNamespace);
-                            }
-                            break;
-                        case ServiceScope.Host:
-                            if (!hostServices.Contains(typeNamespace))
-                            {
-                                hostServices.Add(typeNamespace);
-                            }
-                            break;
-                        case ServiceScope.Regular:
-                            if (!regularServices.Contains(typeNamespace))
-                            {
-                                regularServices.Add(typeNamespace);
-                            }
-                            break;
-                        default:
-                            if (!commonServices.Contains(typeNamespace))
-                            {
-                                commonServices.Add(typeNamespace);
-                            }
-                            break;
+                        namespaces.Add(type.Namespace);
                     }
                 }
             }
+
+            return namespaces;
         }
 
         private static IEnumerable<Type> GetAllApiControllers()

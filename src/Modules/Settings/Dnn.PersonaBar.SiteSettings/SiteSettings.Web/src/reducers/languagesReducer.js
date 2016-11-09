@@ -57,6 +57,14 @@ export default function languages(state = {
             return { ...state,
                 modules: action.data.modules
             };
+        case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLE_GROUPS:
+            return { ...state,
+                roleGroups: action.data.roleGroups
+            };
+        case ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLES:
+            return { ...state,
+                rolesList: action.data.rolesList
+            };
         default:
             return state;
     }

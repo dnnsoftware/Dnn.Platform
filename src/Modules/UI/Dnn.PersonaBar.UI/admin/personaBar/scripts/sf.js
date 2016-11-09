@@ -4,7 +4,7 @@ define(['jquery', '../scripts/loader'], function ($, loader) {
 	return {
 		init: function (siteRoot, tabId, antiForgeryToken) {
 			return {
-				moduleRoot: 'personaBar/common',
+				moduleRoot: 'personaBar',
 				controller: '',
 				antiForgeryToken: antiForgeryToken,
 				setHeaders: function (xhr) {
@@ -94,7 +94,7 @@ define(['jquery', '../scripts/loader'], function ($, loader) {
 					var url = self.getServiceRoot() + self.controller + '/' + method;
 
 					// Reset url default values
-					self.moduleRoot = 'personaBar/common';
+					self.moduleRoot = 'personaBar';
 					self.controller = '';
 
 					return this.rawCall(httpMethod, url, params, success, failure, loading, beforeSend, sync, silence, postFile);

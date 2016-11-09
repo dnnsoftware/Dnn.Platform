@@ -109,11 +109,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "linkNewWindow")]
         public bool LinkNewWindow { get; set; }
 
-        [DataMember(Name = "pageStylesheet")]
-        public string PageStylesheet { get; set; }
+        [DataMember(Name = "pageStyleSheet")]
+        public string PageStyleSheet { get; set; }
 
-        [DataMember(Name = "theme")]
-        public Theme Theme { get; set; }
+        [DataMember(Name = "skinSrc")]
+        public string SkinSrc { get; set; }
+
+        [DataMember(Name = "containerSrc")]
+        public string ContainerSrc { get; set; }
 
         [DataMember(Name = "externalRedirection")]
         public string ExternalRedirection { get; set; }

@@ -9,9 +9,11 @@ import RadioButtonBlock from "../common/RadioButtonBlock";
 import DropdownBlock from "../common/DropdownBlock";
 import InfoBlock from "../common/InfoBlock";
 import SwitchBlock from "../common/SwitchBlock";
+import WarningBlock from "../common/WarningBlock";
 import localization from "../../localization";
 import PerformanceTabActions from "../../actions/performanceTab";
 import utils from "../../utils";
+
 
 class Performance extends Component {
     componentWillMount() {
@@ -31,14 +33,37 @@ class Performance extends Component {
                 value: "h"
             },
             {
-                label: localization.get("PerformanceTab_SiteClientResourcesManagementMode").replace("{0}", "Test site"),
+                label: this.props.performanceSettings.portalName,
                 value: "p"
             }
         ];
     }
     
     onSave() {
+        const {props} = this;
         
+        props.onSave(props.performanceSettings);
+    }
+    
+    confirmHandler() {
+        const {props} = this;
+        const isGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
+        if (isGlobalSettings) {
+            props.onIncrementVersion(props.performanceSettings.currentHostVersion, isGlobalSettings);
+        } else {
+            props.onIncrementVersion(props.performanceSettings.currentPortalVersion, isGlobalSettings);
+        }
+    }
+    
+    cancelHandler() {
+        
+    }
+    
+    onIncrementVersion() {
+        utils.confirm(localization.get("PerformanceTab_PortalVersionConfirmMessage"), 
+            localization.get("PerformanceTab_PortalVersionConfirmYes"), 
+            localization.get("PerformanceTab_PortalVersionConfirmNo"), 
+            this.confirmHandler.bind(this), this.cancelHandler.bind(this));
     }
     
     onChangeField(key, event) {
@@ -54,37 +79,41 @@ class Performance extends Component {
     
     render() {
         const {props} = this;
+        if (props.isLoading) {
+            return null;
+        }
+        
         const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
         let enableCompositeFiles;
-        let minifyCcs;
+        let minifyCss;
         let minifyJs;
         let enableCompositeFilesKey;
-        let minifyCcsKey;
+        let minifyCssKey;
         let minifyJsKey;
         let version;
         let versionLocalizationKey;
-        if (areGlobalSettings){
+        if (areGlobalSettings) {
             enableCompositeFiles = props.performanceSettings.hostEnableCompositeFiles;
-            minifyCcs = props.performanceSettings.hostMinifyCcs;
+            minifyCss = props.performanceSettings.hostMinifyCss;
             minifyJs = props.performanceSettings.hostMinifyJs;
             enableCompositeFilesKey = "hostEnableCompositeFiles";
-            minifyCcsKey = "hostMinifyCcs";
+            minifyCssKey = "hostMinifyCss";
             minifyJsKey = "hostMinifyJs";
             version = props.performanceSettings.currentHostVersion;
             versionLocalizationKey = "PerformanceTab_CurrentHostVersion";
         } else {
             enableCompositeFiles = props.performanceSettings.portalEnableCompositeFiles;
-            minifyCcs = props.performanceSettings.portalMinifyCcs;
+            minifyCss = props.performanceSettings.portalMinifyCss;
             minifyJs = props.performanceSettings.portalMinifyJs;
             enableCompositeFilesKey = "portalEnableCompositeFiles";
-            minifyCcsKey = "portalMinifyCcs";
+            minifyCssKey = "portalMinifyCss";
             minifyJsKey = "portalMinifyJs";
             version = props.performanceSettings.currentPortalVersion;
             versionLocalizationKey = "PerformanceTab_CurrentPortalVersion";
         }
                                         
         return <div className="dnn-servers-info-panel-big performanceSettingTab">
-            <div className="clear" />
+            <WarningBlock label={localization.get("PerformanceTab_AjaxWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <div className="tooltipAdjustment">
@@ -161,6 +190,7 @@ class Performance extends Component {
             <div className="dnn-servers-grid-panel newSection" style={{marginLeft: 0}}>
                 <Label className="header-title" label={localization.get("PerformanceTab_ClientResourceManagementTitle")} />
             </div>
+            <WarningBlock label={localization.get("PerformanceTab_MinifactionWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <InputGroup>
@@ -172,8 +202,8 @@ class Performance extends Component {
                         <InfoBlock label={localization.get(versionLocalizationKey)}
                             text={version}/>
                     </div>
-                    <Button type="secondary" style={{marginBottom: "75px"}}
-                        onClick={props.onIncrementVersion}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
+                    <Button type="secondary" style={{marginBottom: "75px"}} disable={props.incrementingVersion}
+                        onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane">
                     <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
@@ -188,9 +218,9 @@ class Performance extends Component {
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
                             tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
-                            value={enableCompositeFiles ? minifyCcs : false}
+                            value={enableCompositeFiles ? minifyCss : false}
                             readOnly={!enableCompositeFiles}
-                            onChange={this.onChangeField.bind(this, minifyCcsKey)}
+                            onChange={this.onChangeField.bind(this, minifyCssKey)}
                             isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
                             tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
@@ -202,7 +232,7 @@ class Performance extends Component {
             </GridSystem>
             <div className="clear" />
             <div className="buttons-panel">
-                 <Button type="primary" 
+                 <Button type="primary" disabled={props.isSaving}
                     onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;
@@ -211,16 +241,22 @@ class Performance extends Component {
 
 Performance.propTypes = {   
     performanceSettings: PropTypes.object.isRequired,
+    loading: PropTypes.bool,
+    isSaving: PropTypes.bool,
+    incrementingVersion: PropTypes.bool,
     errorMessage: PropTypes.string,
     onRetrievePerformanceSettings: PropTypes.func.isRequired,
     onChangePerformanceSettingsValue: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
     onIncrementVersion: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {    
     return {
         performanceSettings: state.performanceTab.performanceSettings,
-        pageStatePersistenceMode: state.pageStatePersistenceMode,
+        loading: state.performanceTab.saving,
+        isSaving: state.performanceTab.saving,
+        incrementingVersion: state.performanceTab.incrementingVersion,
         errorMessage: state.logsTab.errorMessage
     };
 }
@@ -229,7 +265,9 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRetrievePerformanceSettings: PerformanceTabActions.loadPerformanceSettings,
-            onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue
+            onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue,
+            onSave: PerformanceTabActions.save,
+            onIncrementVersion: PerformanceTabActions.incrementVersion
         }, dispatch)
     };
 }

@@ -12,7 +12,7 @@ class PortalService {
     getServiceFramework(controller) {
         let sf = utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/Host";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

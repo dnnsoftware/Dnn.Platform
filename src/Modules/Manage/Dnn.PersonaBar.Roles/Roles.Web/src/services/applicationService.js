@@ -24,7 +24,7 @@ class ApplicationService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/Admin";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;

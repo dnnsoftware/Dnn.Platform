@@ -2,8 +2,12 @@ import Api from "./api";
 
 const themeService = {
     getThemes() {
-        const api = new Api("Themes");
-        return api.get("GetThemes", { level: 3});
+        const api = new Api("Pages");
+        return api.get("GetThemes");
+    },
+    getThemeFiles(themeName) {
+        const api = new Api("Pages");
+        return api.get("GetThemeFiles", {themeName});
     }
 };
 export default themeService;

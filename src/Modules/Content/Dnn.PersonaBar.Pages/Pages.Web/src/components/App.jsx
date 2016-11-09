@@ -16,6 +16,15 @@ import utils from "../utils";
 
 class App extends Component {
 
+    componentDidMount() {
+        const {props} = this;
+        const viewName = utils.getViewName();
+        if (viewName === "edit") {
+            props.onNavigate(1);
+            props.onLoadPage(utils.getCurrentPageId());
+        }
+    }
+
     componentWillReceiveProps(newProps) {
         this.notifyErrorIfNeeded(newProps);
     }
@@ -49,14 +58,35 @@ class App extends Component {
         
     }
 
+    getBackToPages() {
+        const {onNavigate} = this.props;
+
+        return (
+            <div className="pages-back" onClick={() => onNavigate(0)}>
+                {Localization.get("BackToPages")}
+            </div>
+        );
+    }
+
+    getPageTitle() {
+        const {selectedPage} = this.props;
+        return selectedPage.tabId === 0 ? 
+                Localization.get("AddPage") : 
+                Localization.get("PageSettings") + ": " + selectedPage.name;
+    }
+
     getSettingsPage() {
         const {props} = this;
-        const titleSettings = props.selectedPage.tabId === 0 ? Localization.get("AddPage") : Localization.get("PageSettings") + ": " + props.selectedPage.name;
+        const titleSettings = this.getPageTitle();
+        const backToPages = this.getBackToPages();
 
         return (<PersonaBarPage isOpen={props.selectedView === 1}>
                     <SocialPanelHeader title={titleSettings}>
                     </SocialPanelHeader>
-                    <SocialPanelBody>
+                    <SocialPanelBody
+                        workSpaceTrayOutside={true}
+                        workSpaceTray={backToPages}
+                        workSpaceTrayVisible={true}>
                         <PageSettings selectedPage={props.selectedPage}
                                       selectedPageErrors={props.selectedPageErrors} 
                                       onCancel={() => props.onNavigate(0)} 
@@ -66,7 +96,8 @@ class App extends Component {
                                       onChangePageType={props.onChangePageType}
                                       onDeletePageModule={props.onDeletePageModule}
                                       onToggleEditPageModule={props.onToggleEditPageModule}
-                                      editingSettingModuleId={props.editingSettingModuleId} />
+                                      editingSettingModuleId={props.editingSettingModuleId}
+                                      onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -74,7 +105,6 @@ class App extends Component {
     render() {
         const {props} = this;
         
-
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedView === 0}>
@@ -107,6 +137,7 @@ App.propTypes = {
     onPermissionsChanged: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
     onToggleEditPageModule: PropTypes.func.isRequired,
+    onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     error: PropTypes.object
 };
 
@@ -130,7 +161,8 @@ function mapDispatchToProps(dispatch) {
         onChangePageType: PageActions.changePageType,
         onPermissionsChanged: PageActions.changePermissions,
         onDeletePageModule: PageActions.deletePageModule,
-        onToggleEditPageModule: PageActions.toggleEditPageModule
+        onToggleEditPageModule: PageActions.toggleEditPageModule,
+        onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages
     }, dispatch);
 }
 

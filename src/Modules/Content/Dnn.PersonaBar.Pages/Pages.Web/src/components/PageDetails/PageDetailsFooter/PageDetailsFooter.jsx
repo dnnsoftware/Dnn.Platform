@@ -21,7 +21,7 @@ class PageDetailsFooter extends Component {
     }
 
     render() {
-        const {page} = this.props;
+        const {page, errors} = this.props;
         const normalPage = page.pageType === "normal";
 
         return (
@@ -29,8 +29,10 @@ class PageDetailsFooter extends Component {
                 {!normalPage &&
                     <GridCell className="left-column">
                         <SingleLineInputWithError
-                            label={Localization.get("Name")}
+                            label={Localization.get("Name") + "*"}
                             tooltipMessage={Localization.get("NameTooltip")}
+                            error={!!errors.name}
+                            errorMessage={errors.name}
                             value={page.name} 
                             onChange={this.onChangeField.bind(this, "name")} />
                     </GridCell>
@@ -92,6 +94,7 @@ class PageDetailsFooter extends Component {
 
 PageDetailsFooter.propTypes = {
     page: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
 };
 

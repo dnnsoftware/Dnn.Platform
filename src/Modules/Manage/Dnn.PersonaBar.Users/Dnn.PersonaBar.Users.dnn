@@ -59,7 +59,7 @@
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
                         <order>10</order>
-                        <defaultRoles>Administrators,Content Managers,Community Manager</defaultRoles>
+                        <defaultRoles>Administrators</defaultRoles>
                     </menu>
                 </component>
             </components>

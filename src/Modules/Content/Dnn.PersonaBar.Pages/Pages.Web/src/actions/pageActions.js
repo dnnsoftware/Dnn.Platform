@@ -84,7 +84,10 @@ const pageActions = {
                 value
             });
 
-            if (key === "name" && pages.selectedPage.tabId === 0 && !pages.urlChanged) {
+            if (key === "name" && 
+                pages.selectedPage.tabId === 0 && 
+                !pages.urlChanged &&
+                pages.selectedPage.pageType === "normal") {
                 debouncedUpdateUrlPreview(value, dispatch);    
             }
         };
@@ -158,6 +161,31 @@ const pageActions = {
         return {
             type: ActionTypes.TOGGLE_EDIT_PAGE_MODULE,
             data: {module}
+        };
+    },
+
+    copyAppearanceToDescendantPages() {
+        return (dispatch, getState) => {            
+            dispatch({
+                type: ActionTypes.COPYING_APPEARANCE_TO_DESCENDANT_PAGES
+            });
+
+            const page = getState().pages.selectedPage;
+            const theme = {
+                skinSrc: page.skinSrc, 
+                containerSrc: page.containerSrc
+            };
+            PagesService.copyAppearanceToDescendantPages(page.tabId, theme).then(() => {
+                dispatch({
+                    type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
+                    data: { }
+                });  
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_COPYING_APPEARANCE_TO_DESCENDANT_PAGES,
+                    data: {error}
+                });
+            });      
         };
     }
 };

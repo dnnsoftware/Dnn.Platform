@@ -12,7 +12,7 @@ class ApplicationService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
 
-        sf.moduleRoot = "PersonaBar/Admin";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
 
         return sf;
@@ -242,6 +242,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("GetCultureList?portalId=" + portalId, {}, callback);
     }
+
+    getRoleGroups(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetRoleGroups?portalId=" + portalId, {}, callback);
+    } 
+
+    getRoles(portalId, groupId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetRoles?portalId=" + portalId + "&groupId=" + groupId, {}, callback);
+    } 
 }
 const applicationService = new ApplicationService();
 export default applicationService;

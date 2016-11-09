@@ -129,11 +129,11 @@
         },
 
         setItemTemplate: function (template) {
-            var viewModel = this._getViewModel();
-            ko.cleanNode(this.panel[0]);
-            viewModel.itemTemplate(template);
-            ko.applyBindings(viewModel, this.panel[0]);
             if (template != "pages-list-item-template") {
+                var viewModel = this._getViewModel();
+                ko.cleanNode(this.panel[0]);
+                viewModel.itemTemplate(template);
+                ko.applyBindings(viewModel, this.panel[0]);
                 viewModel.inDrag(false);
             }
         },
@@ -514,16 +514,11 @@
         },
 
         _resizeContentContainer: function(resetContainer) {
+            var $body = this.panel.closest(".dnn-social-panel-body");             
+            var pageHierarchyContainer = $body.find(".pagehierarchy-container");
+            var restHeight = pageHierarchyContainer.position().top;
 
-            var $body = this.panel.closest(".dnn-social-panel-body");
-            var bodyHeight = parseInt($body.css("margin-top")) 
-                + parseInt($body.css("padding-top")) + parseInt($body.css("padding-bottom"));
-            var innerMargin = parseInt($body.find(".pagehierarchy-container").css("margin-top"));
-            var breadcrumbContainerHeight = this.panel.find(".breadcrumbs-container").outerHeight();
-
-            var restHeight = bodyHeight + breadcrumbContainerHeight + innerMargin + 3;
-
-            this.container.css('height', $(window).height() - restHeight);
+            this.container.css('height', $(window).height() - restHeight - 20);
 
             this._initScrollView(resetContainer);
         },
@@ -1153,7 +1148,7 @@
         },
 
         _getService: function () {
-            this.utility.sf.moduleRoot = "PersonaBar/Admin";
+            this.utility.sf.moduleRoot = "PersonaBar";
             this.utility.sf.controller = window.dnn.pages.apiController;
 
             return this.utility.sf;
