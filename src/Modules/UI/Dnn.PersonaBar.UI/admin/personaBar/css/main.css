@@ -1410,11 +1410,11 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .socialpanelbody > div.breadcrumbs-container {
     padding: 0;    
     transition: 0.3s;
-    background-color: #eee;
-    
     white-space: nowrap;
     overflow: hidden;
     height: 32px;
+    font-weight: bold;
+    color: #686868;   
 }
 
 .socialpanelbody > div.breadcrumbs-container.shadow {
@@ -1425,6 +1425,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 .breadcrumbs-container {	
 	font-size: 0;
 	line-height: 0;
+    text-transform: uppercase;
 }
 .breadcrumbs-container div {
 	display: inline-block;	
@@ -1436,61 +1437,30 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 .breadcrumbs-container > div:first-child:last-child {	
 	width: 150px;
-	background-image: url('../images/icon-home-on-state.png');
-	background-repeat: no-repeat;
-	background-position: 30px center;
 	margin-left: 0;
-	padding-left: 50px;
+	padding-left: 30px;
 }
 .breadcrumbs-container > div:first-child:not(:last-child) {
-	background-color: #99aebc;
-	color: #FFF;
-	padding-left: 50px;
+	padding-left: 30px;
 	padding-right: 10px;
 	position: relative;
-	background-image: url('../images/icon-home.png');
 	display: inline-block;
-	background-repeat: no-repeat;
-	background-position: 30px center;
 	cursor: pointer;
 }
 
 .breadcrumbs-container > div:not(:last-child)::after {
     content: '';
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 16px 5px 16px 13px;
-    border-color: #fff #fff #fff #99aebc;
     position: absolute;
-    right: -18px;
+    right: -15px;
     top: 0;
-    -webkit-transform: rotate(360deg);
-}
-
-.breadcrumbs-container > div::before {
-    content: '';
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 16px 0 16px 13px;
-    border-color: #99aebc transparent #99aebc transparent;
-    position: absolute;
-    left: -13px;
-    -webkit-transform: rotate(360deg);
-}
-
-.breadcrumbs-container > div:last-child::before {
-    border-color: #eee transparent #eee transparent;
+    width: 20px;
+    height: 32px;
+    background-image: url(../images/arrow_forward.svg);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .breadcrumbs-container > div:not(:first-child):not(:last-child) {
-	background-color: #99aebc;
-	padding-left: 37px;
-	background-image: url(../images/icon-folder.png);
-	background-repeat: no-repeat;
-	background-position: 15px center;
-	color: #FFF;
 	padding-right: 10px;
 	position: relative;
 	margin-left: 18px;
@@ -1499,17 +1469,12 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 }
 
 .breadcrumbs-container > div:last-child {
-	padding-left: 37px;
-	background-image: url(../images/icon-folder-on.png);
-	background-repeat: no-repeat;
-	background-position: 15px center;
+    color: #2fa6eb;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-decoration: none;
 	font-size: 14px;
-	color: #99aebc;
 	padding-right: 10px;
 	position: relative;
-	background-color: #eee;
 	margin-left: 18px;
 }
 

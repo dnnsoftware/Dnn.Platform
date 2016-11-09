@@ -192,7 +192,7 @@
   <data name="AddUrl.Text" xml:space="preserve">
     <value>Add URL</value>
   </data>
-  <data name="UrlsForthisPage.Text" xml:space="preserve">
+  <data name="UrlsForThisPage.Text" xml:space="preserve">
     <value>URLs for this page</value>
   </data>
   <data name="Url.Text" xml:space="preserve">

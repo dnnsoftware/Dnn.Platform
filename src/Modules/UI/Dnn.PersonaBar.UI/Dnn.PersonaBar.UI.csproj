@@ -178,6 +178,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="admin\personaBar\data\adminpages.resources" />
+    <Content Include="admin\personaBar\images\arrow_forward.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\personaBar\images\icon-exclamation.png" />
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />

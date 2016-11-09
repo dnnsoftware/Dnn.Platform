@@ -129,11 +129,11 @@
         },
 
         setItemTemplate: function (template) {
-            var viewModel = this._getViewModel();
-            ko.cleanNode(this.panel[0]);
-            viewModel.itemTemplate(template);
-            ko.applyBindings(viewModel, this.panel[0]);
             if (template != "pages-list-item-template") {
+                var viewModel = this._getViewModel();
+                ko.cleanNode(this.panel[0]);
+                viewModel.itemTemplate(template);
+                ko.applyBindings(viewModel, this.panel[0]);
                 viewModel.inDrag(false);
             }
         },
