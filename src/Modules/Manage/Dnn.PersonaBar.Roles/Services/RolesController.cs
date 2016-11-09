@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -36,9 +37,12 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             try
             {
+                var isAdmin = IsAdmin();
+
                 var roles = (groupId < Null.NullInteger
                                     ? RoleController.Instance.GetRoles(PortalId)
                                     : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == groupId))
+                                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
                                     .Select(RoleDto.FromRoleInfo);
 
                 if (!string.IsNullOrEmpty(keyword))
@@ -120,6 +124,11 @@ namespace Dnn.PersonaBar.Roles.Services
             if (role == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "RoleNotFound");
+            }
+
+            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidRequest");
             }
 
             RoleController.Instance.DeleteRole(role);
@@ -265,6 +274,11 @@ namespace Dnn.PersonaBar.Roles.Services
                     return Request.CreateResponse(HttpStatusCode.NotFound, new { });
                 }
 
+                if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidRequest");
+                }
+
                 var users = RoleController.Instance.GetUserRoles(PortalId, Null.NullString, role.RoleName);
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -364,6 +378,11 @@ namespace Dnn.PersonaBar.Roles.Services
         private void Validate(RoleDto role)
         {
             Requires.NotNullOrEmpty("Name", role.Name);
+
+            if (!IsAdmin() && role.Id == PortalSettings.AdministratorRoleId)
+            {
+                throw new SecurityException("InvalidRequest");
+            }
         }
 
         private void Validate(RoleGroupDto role)
@@ -375,6 +394,11 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             Requires.NotNegative("UserId", userRoleDto.UserId);
             Requires.NotNegative("RoleId", userRoleDto.RoleId);
+
+            if (!IsAdmin() && userRoleDto.RoleId == PortalSettings.AdministratorRoleId)
+            {
+                throw new SecurityException("InvalidRequest");
+            }
         }
 
         private bool AllowExpired(int userId, int roleId)
@@ -385,6 +409,12 @@ namespace Dnn.PersonaBar.Roles.Services
         private RoleDto GetRole(int roleId)
         {
             return RoleDto.FromRoleInfo(RoleController.Instance.GetRoleById(PortalId, roleId));
+        }
+
+        private bool IsAdmin()
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
         }
 
         #endregion
