@@ -710,7 +710,7 @@ PagePicker.defaultProps = {
         marginTop: 0,
         border: "1px solid #c8c8c8"
     },
-    moduleRoot: "PersonaBar/Admin",
+    moduleRoot: "PersonaBar",
     controller: "Tabs",
     PortalTabsParameters: {
         portalId: -2,

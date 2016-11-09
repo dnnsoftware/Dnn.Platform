@@ -15,7 +15,7 @@ class Service {
     }
 
     getSuggestions(actionName, parameters, callback, errorCallback) {
-        sf.moduleRoot = "PersonaBar/Common";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = "Components";
 
         sf.get(actionName, parameters, callback, errorCallback);

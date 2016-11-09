@@ -15,7 +15,7 @@ class Service {
     }
 
     getRoleGroups(callback, errorCallback) {
-        sf.moduleRoot = "PersonaBar/Common";
+        sf.moduleRoot = "PersonaBar";
         sf.controller = "Components";
 
         sf.get("GetRoleGroups", {}, callback, errorCallback);
