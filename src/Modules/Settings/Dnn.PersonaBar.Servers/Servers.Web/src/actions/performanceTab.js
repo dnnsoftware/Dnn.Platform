@@ -40,8 +40,28 @@ const performanceTabActions = {
     incrementVersion() {
         
     },
-    save() {
-        
+    save(performanceSettings) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SAVE_PERFORMANCE_SETTINGS               
+            });        
+            
+            performanceTabService.save(performanceSettings).then(response => {
+                dispatch({
+                    type: ActionTypes.SAVED_PERFORMANCE_SETTINGS,
+                    payload: {
+                        success: response.success
+                    }
+                });  
+            }).catch(() => {
+                dispatch({
+                    type: ActionTypes.ERROR_SAVING_PERFORMANCE_SETTINGS,
+                    payload: {
+                        errorMessage: localization.get("errorMessageSavingPerformanceSettingsTab")
+                    }
+                });
+            });        
+        };
     }
 };
 

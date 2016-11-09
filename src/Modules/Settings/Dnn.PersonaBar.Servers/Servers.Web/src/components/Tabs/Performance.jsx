@@ -38,7 +38,9 @@ class Performance extends Component {
     }
     
     onSave() {
+        const {props} = this;
         
+        props.onSave(props.performanceSettings);
     }
     
     onChangeField(key, event) {
@@ -63,7 +65,7 @@ class Performance extends Component {
         let minifyJsKey;
         let version;
         let versionLocalizationKey;
-        if (areGlobalSettings){
+        if (areGlobalSettings) {
             enableCompositeFiles = props.performanceSettings.hostEnableCompositeFiles;
             minifyCcs = props.performanceSettings.hostMinifyCcs;
             minifyJs = props.performanceSettings.hostMinifyJs;
@@ -202,7 +204,7 @@ class Performance extends Component {
             </GridSystem>
             <div className="clear" />
             <div className="buttons-panel">
-                 <Button type="primary" 
+                 <Button type="primary" disabled={props.isSaving}
                     onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;
@@ -220,7 +222,7 @@ Performance.propTypes = {
 function mapStateToProps(state) {    
     return {
         performanceSettings: state.performanceTab.performanceSettings,
-        pageStatePersistenceMode: state.pageStatePersistenceMode,
+        isSaving: state.performanceTab.saving,
         errorMessage: state.logsTab.errorMessage
     };
 }
@@ -229,7 +231,8 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onRetrievePerformanceSettings: PerformanceTabActions.loadPerformanceSettings,
-            onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue
+            onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue,
+            onSave: PerformanceTabActions.save
         }, dispatch)
     };
 }

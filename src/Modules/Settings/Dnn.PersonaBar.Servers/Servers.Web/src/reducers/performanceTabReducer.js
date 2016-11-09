@@ -3,7 +3,8 @@ import {performanceTab as ActionTypes}  from "../constants/actionTypes";
 export default function webTabReducer(state = {
     performanceSettings: {},
     pageStatePersistenceMode: "",
-    errorMessage: ""
+    errorMessage: "",
+    saving: false
 }, action) {
     switch (action.type) {
         case ActionTypes.LOAD_PERFORMANCE_TAB:
@@ -31,6 +32,19 @@ export default function webTabReducer(state = {
             performanceSettings[field] = value;
             return { ...state, performanceSettings};
         }
+        case ActionTypes.SAVE_PERFORMANCE_SETTINGS:
+            return { ...state,
+                saving: true
+            }; 
+        case ActionTypes.SAVED_PERFORMANCE_SETTINGS: 
+            return { ...state,
+                saving: false
+            };
+        case ActionTypes.ERROR_SAVING_PERFORMANCE_SETTINGS:
+            return { ...state,
+                saving: false,
+                errorMessage: action.payload.errorMessage
+            };
         default:
             return state;     
     }

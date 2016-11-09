@@ -45,6 +45,7 @@ namespace Dnn.PersonaBar.Servers.Services
     [ServiceScope(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
+        private const string UseSSLKey = "UseSSLForCacheSync";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
         private readonly PerformanceController _performanceController = new PerformanceController();
 
@@ -127,8 +128,8 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                HostController.Instance.Update("AuthenticatedCacheability", request.AuthCacheability, false);
-                HostController.Instance.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
+                var portalId = PortalSettings.Current.PortalId;
+                SaveCachingProvider(request.CachingProvider);
                 HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
                 HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
                 if (_performanceController.GetPageCacheProviders().Any())
@@ -137,6 +138,29 @@ namespace Dnn.PersonaBar.Servers.Services
                 }
                 HostController.Instance.Update("PerformanceSetting", request.CacheSetting, false);
                 Host.PerformanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), request.CacheSetting);
+
+                HostController.Instance.Update("AuthenticatedCacheability", request.AuthCacheability, false);
+                HostController.Instance.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
+
+                HostController.Instance.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
+
+                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", request.ClientResourcesManagementMode, false);
+
+                if (request.ClientResourcesManagementMode == "h")
+                {
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
+                    HostController.Instance.Update(ClientResourceSettings.EnableCompositeFilesKey, request.HostEnableCompositeFiles.ToString(CultureInfo.InvariantCulture));
+                    HostController.Instance.Update(ClientResourceSettings.MinifyCssKey, request.HostMinifyCss.ToString(CultureInfo.InvariantCulture));
+                    HostController.Instance.Update(ClientResourceSettings.MinifyJsKey, request.HostMinifyJs.ToString(CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.EnableCompositeFilesKey, request.PortalEnableCompositeFiles.ToString(CultureInfo.InvariantCulture), false);
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyCssKey, request.PortalMinifyCss.ToString(CultureInfo.InvariantCulture), false);
+                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyJsKey, request.PortalMinifyJs.ToString(CultureInfo.InvariantCulture), false);
+                }
+
                 DataCache.ClearCache();
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -145,6 +169,19 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private void SaveCachingProvider(string cachingProvider)
+        {
+            if (!string.IsNullOrEmpty(cachingProvider))
+            {
+                var xmlConfig = Config.Load();
+
+                var xmlCaching = xmlConfig.SelectSingleNode("configuration/dotnetnuke/caching");
+                XmlUtils.UpdateAttribute(xmlCaching, "defaultProvider", cachingProvider);
+
+                Config.Save(xmlConfig);
             }
         }
     }

@@ -26,7 +26,7 @@ const getPerformanceSettings = function () {
                 currentHostVersion: response.CurrentHostVersion,
                 hostEnableCompositeFiles: response.HostEnableCompositeFiles,
                 hostMinifyCss: response.HostMinifyCss,
-                HostMinifyJs: response.HostMinifyJs,
+                hostMinifyJs: response.HostMinifyJs,
                 
                 currentPortalVersion: response.CurrentPortalVersion,
                 portalEnableCompositeFiles: response.PortalEnableCompositeFiles,
@@ -45,8 +45,39 @@ const getPerformanceSettings = function () {
     );
 };
 
+const save = function (performanceSettings) {
+    const request = {
+        CachingProvider: performanceSettings.cachingProvider, 
+        PageStatePersistence: performanceSettings.pageStatePersistence, 
+        ModuleCacheProvider: performanceSettings.moduleCacheProvider, 
+        PageCacheProvider: performanceSettings.pageCacheProvider, 
+        CacheSetting: performanceSettings.cacheSetting, 
+        AuthCacheability: performanceSettings.authCacheability, 
+        UnauthCacheability: performanceSettings.unauthCacheability, 
+        SslForCacheSynchronization: performanceSettings.sslForCacheSynchronization, 
+        ClientResourcesManagementMode: performanceSettings.clientResourcesManagementMode
+    };
+    
+    if (performanceSettings.clientResourcesManagementMode === "h") {
+        request.CurrentHostVersion = performanceSettings.currentHostVersion; 
+        request.HostEnableCompositeFiles = performanceSettings.hostEnableCompositeFiles; 
+        request.HostMinifyCss = performanceSettings.hostMinifyCss; 
+        request.HostMinifyJs = performanceSettings.hostMinifyJs; 
+        
+    } else {
+        request.CurrentPortalVersion = performanceSettings.currentPortalVersion; 
+        request.PortalEnableCompositeFiles = performanceSettings.portalEnableCompositeFiles; 
+        request.PortalMinifyCss = performanceSettings.portalMinifyCss; 
+        request.PortalMinifyJs = performanceSettings.portalMinifyJs;
+    }
+    
+    return serviceFramework.post("ServerSettingsPerformance", "UpdatePerformanceSettings", 
+                request);
+};
+
 const performanceTabService = {
-    getPerformanceSettings: getPerformanceSettings
+    getPerformanceSettings: getPerformanceSettings,
+    save: save
 };
 
 export default performanceTabService; 
