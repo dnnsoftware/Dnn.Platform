@@ -1021,7 +1021,7 @@
     <value>Current Site Default:</value>
   </data>
   <data name="CurrentSiteDefault.Help" xml:space="preserve">
-    <value>The SystemDefault Language is the language that the application uses if no other language is available.  It is the ultimate fallback.</value>
+    <value>Once localized content is enabled the default site culture will be permanently set and cannot be changed. Click Cancel now if you want to change the current site default.</value>
   </data>
   <data name="AllPAgesTranslatable.Text" xml:space="preserve">
     <value>Make All Pages Translatable: </value>
@@ -1033,7 +1033,7 @@
      <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-     <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and cannot be changed.</value>
+     <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
      <value>Click Cancel now if you want to change the current site default.</value>
