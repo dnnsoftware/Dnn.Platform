@@ -44,6 +44,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -288,7 +289,11 @@ namespace Dnn.PersonaBar.Sites.Components
                 writer.Close();
             }
 
-            CreateThumbnailFromOriginal(filename, request.CopyFromThumbnail);
+            EventManager.Instance.OnPortalTemplateCreated(new PortalTemplateEventArgs()
+            {
+                PortalId = request.PortalId,
+                TemplatePath = filename
+            });
 
             success = true;
             return string.Format(Localization.GetString("ExportedMessage", LocalResourcesFile), filename);

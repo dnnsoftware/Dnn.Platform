@@ -72,9 +72,5 @@ namespace Dnn.PersonaBar.Sites.Services.Dto
 
         [DataMember(Name = "includeModules")]
         public bool IncludeModules { get; set; }
-
-        // thumbnail url of the theme we are copying from
-        [DataMember(Name = "copuyFromThumbnail")]
-        public string CopyFromThumbnail { get; set; }
     }
 }
