@@ -202,7 +202,7 @@ class IgnoreWordsPanel extends Component {
                                 </div> Add Word
                         </div>
                         }
-                        {this.props.cultures &&
+                        {this.props.cultures && this.props.cultures.length > 1 &&
                             <div className="synonyms-filter">
                                 <DropDown
                                     value={this.state.culture}
