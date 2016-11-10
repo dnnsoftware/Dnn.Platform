@@ -1,4 +1,5 @@
 import utils from "../utils";
+import Promise from "es6-promise";
 
 function serializeQueryStringParameters(obj) {
     const s = [];
