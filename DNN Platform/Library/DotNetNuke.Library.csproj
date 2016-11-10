@@ -208,6 +208,8 @@
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
     <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
