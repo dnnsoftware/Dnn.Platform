@@ -235,8 +235,8 @@
                 return;
             }
             
-            if (typeof handler.options.onUnload === "function") {
-                handler.options.onUnload(handler.panel);            
+            if (typeof this.options.onUnload === "function") {
+                this.options.onUnload(this.panel);            
             }
         },
 
@@ -721,7 +721,7 @@
 
                                 if (data.Status > 0) {
                                     // Error: inform
-                                    handler.utility.notifyError(handler.resx['pagesettings_Errors_' + data.Message]);
+                                    handler.utility.notifyError(handler.resx['Error_' + data.Message]);
 
                                     // TODO test if elment is restored
                                     viewModel.pagesList()[sourceFind.level].pages.splice(sourceFind.index, 0, sourceData);
@@ -944,7 +944,7 @@
                             var pageData, sourceParentFindB, sourceParentData, targetId, targetFind, targetFindB;
                         
                             if (data.Status > 0) {
-                                handler.utility.notifyError(handler.resx['pagesettings_Errors_' + data.Message]);
+                                handler.utility.notifyError(handler.resx['Error_' + data.Message]);
                                 $self.sortable('cancel');
 
                                 // After call cancel method, refresh page data to let ko populate DOM tree.
