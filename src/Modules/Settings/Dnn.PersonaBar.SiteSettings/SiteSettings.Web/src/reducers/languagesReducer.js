@@ -50,6 +50,7 @@ export default function languages(state = {
                 languageClientModified: action.data.languageClientModified
             };
         case ActionTypes.UPDATED_SITESETTINGS_LANGUAGE:
+        case ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_ROLES:
             return { ...state,
                 languageClientModified: action.data.languageClientModified
             };

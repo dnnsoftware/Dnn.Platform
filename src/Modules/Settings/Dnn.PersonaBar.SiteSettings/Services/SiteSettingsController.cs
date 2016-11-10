@@ -686,10 +686,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = portalId ?? PortalId;
-                var propertyDefinition = new ProfilePropertyDefinition(pid)
-                {
-                    PropertyDefinitionId = propertyId
-                };
+                var propertyDefinition = ProfileController.GetPropertyDefinition(propertyId, pid);
 
                 if (!CanDeleteProperty(propertyDefinition))
                 {

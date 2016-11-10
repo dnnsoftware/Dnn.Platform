@@ -53,7 +53,7 @@ class LanguageRow extends Component {
         if (props.openId !== "" && props.id === this.props.openId) {
             if (props.openId !== "add") {
                 if (state.openedMode === 1) {
-                    name = "translator-icon-disable";
+                    name = "translator-icon";
                 }
                 else {
                     name = "translator-icon-active";
@@ -72,7 +72,7 @@ class LanguageRow extends Component {
         if (this.props.openId !== "" && this.props.id === this.props.openId) {
             if (props.openId !== "add") {
                 if (state.openedMode === 2) {
-                    name = "edit-icon-disable";
+                    name = "edit-icon";
                 }
                 else {
                     name = "edit-icon-active";
@@ -90,7 +90,7 @@ class LanguageRow extends Component {
         let name = "editor-icon";
         if (this.props.openId !== "" && this.props.id === this.props.openId) {
             if (props.openId !== "add") {
-                name = "editor-icon-disable";
+                name = "editor-icon";
             }
             else {
                 name = "editor-icon-hidden";

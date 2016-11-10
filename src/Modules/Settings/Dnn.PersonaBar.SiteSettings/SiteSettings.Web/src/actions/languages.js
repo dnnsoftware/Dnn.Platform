@@ -163,7 +163,7 @@ const languagesActions = {
                 dispatch({
                     type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_ROLES,
                     data: {
-
+                        languageClientModified: false
                     }
                 });
                 if (callback) {

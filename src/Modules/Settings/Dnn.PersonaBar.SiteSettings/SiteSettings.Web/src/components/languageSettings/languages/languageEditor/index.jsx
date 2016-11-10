@@ -41,7 +41,7 @@ class LanguageEditor extends Component {
             if (props.id === "add" && !props.fullLanguageList) {
                 props.dispatch(LanguagesActions.getAllLanguages());
             }
-        }        
+        }
         else {
             this.setState({
                 languageDetail: Object.assign({}, props.languageDetail)
@@ -210,6 +210,8 @@ class LanguageEditor extends Component {
         this.setState({
             languageDetail: languageDetail
         });
+
+        props.dispatch(LanguagesActions.languageClientModified(languageDetail));
     }
 
     renderNewForm() {
@@ -320,7 +322,7 @@ class LanguageEditor extends Component {
                 </div>
             </div>
         );
-    }    
+    }
 
     renderRoleForm() {
         let {state, props} = this;
@@ -337,6 +339,7 @@ class LanguageEditor extends Component {
                         {resx.get("Cancel")}
                     </Button>
                     <Button
+                        disabled={!this.props.languageClientModified}
                         type="primary"
                         onClick={this.onSaveRoles.bind(this)}>
                         {resx.get("Save")}

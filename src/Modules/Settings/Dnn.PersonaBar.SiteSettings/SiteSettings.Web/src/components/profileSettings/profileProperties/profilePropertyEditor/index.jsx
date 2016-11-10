@@ -26,7 +26,15 @@ class ProfilePropertyEditor extends Component {
         super();
 
         this.state = {
-            profileProperty: undefined,
+            profileProperty: {
+                PropertyName: "",
+                PropertyCategory: "",
+                DataType: "",
+                DefaultVisibility: 2,
+                Length: 0,
+                DefaultValue: "",
+                PropertyValidation: ""
+            },
             propertyLocalization: undefined,
             error: {
                 name: true,
@@ -219,10 +227,12 @@ class ProfilePropertyEditor extends Component {
 
     getProfileDataTypeOptions() {
         let options = [];
+        const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
         if (this.props.dataTypeOptions !== undefined) {
             options = this.props.dataTypeOptions.map((item) => {
                 return { label: resx.get(item.Value), value: item.EntryID };
             });
+            options.unshift({ label: noneSpecifiedText, value: "" });
         }
         return options;
     }
