@@ -358,7 +358,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "False");
                 DataCache.ClearPortalCache(PortalId, true);
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
