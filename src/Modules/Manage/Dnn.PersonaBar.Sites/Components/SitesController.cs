@@ -1116,7 +1116,11 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
             }
 
-            return imagePath;
+            imagePath = "~/" + imagePath.Replace(Globals.ApplicationMapPath, string.Empty)
+                            .TrimStart('\\')
+                            .Replace("\\", "/");
+
+            return Globals.ResolveUrl(imagePath);
         }
 
         private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
