@@ -23,6 +23,16 @@ class Appearance extends Component {
         }
     }
 
+    getPagePreviewUrl() {
+        const { page } = this.props;
+        // if is new page take current page loaded behind the persona bar for preview
+        const pageUrl = page.tabId !== 0 ? page.absoluteUrl : window.parent.location.href;
+        const skinSrc = this.trimAscxExtension(page.skinSrc);
+        const containerSrc = this.trimAscxExtension(page.containerSrc);
+        const queryStringSeparator = pageUrl.indexOf("?") === -1 ? "?" : "&";
+        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrc + "&ContainerSrc=" + containerSrc;        
+    }
+
     previewPage() {
         const { page } = this.props;
 
@@ -31,9 +41,7 @@ class Appearance extends Component {
             return;
         }
 
-        const skinSrc = this.trimAscxExtension(page.skinSrc);
-        const containerSrc = this.trimAscxExtension(page.containerSrc);
-        const previewUrl = page.absoluteUrl + "?SkinSrc=" + skinSrc + "&ContainerSrc=" + containerSrc;
+        const previewUrl = this.getPagePreviewUrl();
         window.open(previewUrl);
     }
 

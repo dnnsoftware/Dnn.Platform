@@ -137,4 +137,5 @@ module.exports = [
     "seo",
     "sitemap",
     "ascx",
+    "href",
 ]
