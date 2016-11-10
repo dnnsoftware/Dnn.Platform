@@ -131,6 +131,7 @@ class LanguageRow extends Component {
 LanguageRow.propTypes = {
     languageId: PropTypes.number,
     name: PropTypes.string,
+    code: PropTypes.string,
     icon: PropTypes.string,
     enabled: PropTypes.bool,
     isDefault: PropTypes.bool,

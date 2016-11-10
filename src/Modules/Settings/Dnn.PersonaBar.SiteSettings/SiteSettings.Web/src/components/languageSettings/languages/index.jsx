@@ -106,7 +106,12 @@ class LanguagesPanel extends Component {
             props.dispatch(LanguagesActions.updateLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageUpdateSuccess"));
                 this.collapse();
-                props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
+                if (data.RedirectUrl) {
+                    window.parent.location = data.RedirectUrl;
+                }
+                else {
+                    props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
+                }
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -125,6 +130,17 @@ class LanguagesPanel extends Component {
         }
     }
 
+    onUpdateLanguageRoles(roles) {
+        const {props, state} = this;
+        props.dispatch(LanguagesActions.updateLanguageRoles(roles, (data) => {
+            util.utilities.notify(resx.get("LanguageUpdateSuccess"));
+            this.collapse();
+        }, (error) => {
+            const errorMessage = JSON.parse(error.responseText);
+            util.utilities.notifyError(errorMessage.Message);
+        }));
+    }
+
     onOpenEditor(language) {
         this.props.dispatch(VisiblePanelActions.selectPanel(3));
         this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
@@ -140,6 +156,7 @@ class LanguagesPanel extends Component {
                     <LanguageRow
                         languageId={item.LanguageId}
                         name={this.props.languageDisplayMode === "NATIVE" ? item.NativeName : item.EnglishName}
+                        code={item.Code}
                         icon={item.Icon}
                         enabled={item.Enabled}
                         isDefault={item.IsDefault}
@@ -153,10 +170,12 @@ class LanguagesPanel extends Component {
                         id={id}>
                         <LanguageEditor
                             languageId={item.LanguageId}
+                            code={item.Code}
                             languageDisplayMode={this.props.languageDisplayMode}
                             portalId={this.props.portalId}
                             Collapse={this.collapse.bind(this)}
                             onUpdate={this.onUpdateLanguage.bind(this)}
+                            onUpdateRoles={this.onUpdateLanguageRoles.bind(this)}
                             id={id}
                             openId={this.state.openId}
                             openMode={this.state.openMode}
@@ -184,6 +203,7 @@ class LanguagesPanel extends Component {
                         <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
                             <LanguageRow
                                 name={"-"}
+                                code={""}
                                 enabled={false}
                                 isDefault={false}
                                 index={"add"}

@@ -4,6 +4,10 @@ import "./style.less";
 import Collapse from "react-collapse";
 import GridCell from "dnn-grid-cell";
 import Checkbox from "dnn-checkbox";
+import { connect } from "react-redux";
+import {
+    languages as LanguagesActions
+} from "actions";
 
 class RoleRow extends Component {
     constructor() {
@@ -18,16 +22,26 @@ class RoleRow extends Component {
         const {props} = this;
 
         this.setState({
-            selected: Object.assign({}, props.selected)
+            selected: props.selected
         });
     }
 
-    onSelectionChange(id, event) {
+    componentWillReceiveProps(props) {
+        this.setState({
+            selected: props.selected
+        });
+    }
+
+    onChange(role, event) {
         let {state, props} = this;
 
         this.setState({
             selected: event
         });
+
+        props.dispatch(LanguagesActions.SelectLanguageRoles(props.rolesList, role, event));
+
+        props.onSelectChange(role, event);
     }
 
     render() {
@@ -41,20 +55,28 @@ class RoleRow extends Component {
                     <GridCell columnSize={40} >
                         <Checkbox
                             style={{ float: "left" }}
-                            value={state.selected}
-                            onChange={this.onSelectionChange.bind(this, props.roleId)} /></GridCell>
+                            value={props.selected}
+                            onChange={this.onChange.bind(this, props.roleName)} /></GridCell>
                 </div>
             </div>
         );
-
     }
 }
 
 RoleRow.propTypes = {
+    dispatch: PropTypes.func.isRequired,
     roleName: PropTypes.string,
     roleId: PropTypes.number,
     selected: PropTypes.bool,
-    id: PropTypes.string
+    onSelectChange: PropTypes.func,
+    id: PropTypes.string,
+    rolesList: PropTypes.array
 };
 
-export default (RoleRow);
+function mapStateToProps(state) {
+    return {
+        rolesList: state.languages.rolesList
+    };
+}
+
+export default connect(mapStateToProps)(RoleRow);

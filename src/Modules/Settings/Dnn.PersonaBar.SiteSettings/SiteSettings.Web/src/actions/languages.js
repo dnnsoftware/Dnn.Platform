@@ -2,7 +2,7 @@ import { languages as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
-const languagesActions = {    
+const languagesActions = {
     getLanguageSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
             ApplicationService.getLanguageSettings(portalId, cultureCode, data => {
@@ -138,6 +138,44 @@ const languagesActions = {
             });
         };
     },
+    updateLanguage(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateLanguage(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE,
+                    data: {
+                        languageClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    updateLanguageRoles(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateLanguageRoles(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_ROLES,
+                    data: {
+
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
     verifyLanguageResourceFiles(callback) {
         return (dispatch) => {
             ApplicationService.verifyLanguageResourceFiles(data => {
@@ -174,7 +212,7 @@ const languagesActions = {
                 dispatch({
                     type: ActionTypes.CREATED_SITESETTINGS_LANGUAGE_PACK,
                     data: {
-                        
+
                     }
                 });
                 if (callback) {
@@ -202,9 +240,9 @@ const languagesActions = {
             });
         };
     },
-    getRoles(portalId, groupId, callback) {
+    getRoles(portalId, groupId, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getRoles(portalId, groupId, data => {
+            ApplicationService.getRoles(portalId, groupId, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_ROLES,
                     data: {
@@ -215,6 +253,26 @@ const languagesActions = {
                     callback(data);
                 }
             });
+        };
+    },
+    SelectLanguageRoles(roles, role, selected) {
+        return (dispatch) => {
+            let list = roles.map((item, index) => { 
+                if(item.RoleName === role){
+                    return {RoleID: item.RoleID, RoleName: item.RoleName, Selected: selected};
+                }
+                else{
+                    return item;
+                }
+            });
+
+            dispatch({
+                type: ActionTypes.UPDATED_SITESETTINGS_LANGUAGE_ROLE_SELECTION,
+                data: {
+                    rolesList: list
+                }
+            });
+
         };
     }
 };

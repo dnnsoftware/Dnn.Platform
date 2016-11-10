@@ -13,9 +13,9 @@
         padding: 15px 0 10px 0;
         box-sizing: border-box;
         cursor: auto;
-        .row {    
+        .row {
             float: left;
-            width: 100%;      
+            width: 100%;
             .item-row-name {
                 width: 25%;
                 float: left;
@@ -29,8 +29,7 @@
                 width: 20%;
                 float: left;
             }
-            .item-row-required, 
-            .item-row-visible {
+            .item-row-required, .item-row-visible {
                 width: 10%;
                 float: left;
                 text-align: center;
@@ -49,13 +48,14 @@
                 float: right;
                 margin-right: 5px;
                 &:not(:last-child) {
-                   float: left; 
-                   margin-right: 0px;                  
+                    float: left;
+                    margin-right: 0px;
                 }
-                .delete-icon,
-                .edit-icon {
+                .delete-icon, .edit-icon, .drag-icon {
                     display: block;
                     cursor: pointer;
+                    float: right;
+                    margin-left: 5px;
                     > svg {
                         width: 16px;
                         float: left;
@@ -66,18 +66,20 @@
                         fill: @alto;
                     }
                 }
-                .delete-icon-hidden{
+                .delete-icon-hidden,
+                .drag-icon-hidden {
                     display: none;
                 }
-                .edit-icon-active {
+                .edit-icon-active, .drag-icon-active {
                     > svg {
+                        float: right;
+                        margin-left: 5px;
                         width: 16px;
-                        float: left;
-                        height: 16px;                        
+                        height: 16px;
                         fill: @curiousBlue;
                     }
                 }
-            }            
+            }
             .item-row-wrapper {
                 padding: 0 5px 0 5px;
             }

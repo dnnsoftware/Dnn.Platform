@@ -44,6 +44,7 @@ class ResourceList extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const { props } = this;
+        console.log(props.list);
         return (
             <GridCell className="resource-list">
                 <GridCell className="resource-controls">
@@ -69,16 +70,16 @@ class ResourceList extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell className="resource-rows">
-                    {this.state.resources.map((resource, index) => {
+                    {Object.keys(this.props.list).map((key, index) => {
                         return <GridCell className="resource-row">
                             <GridCell className="row-detail" columnSize={rowSizes[0]}>
-                                <p>{resource.resourceName}</p>
+                                <p>{key}</p>
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[1]}>
-                                <SingleLineInput value={resource.defaultValue} enabled={false} />
+                                <SingleLineInput value={this.props.list[key].Second} enabled={false} />
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[2]}>
-                                <SingleLineInput value={resource.localizedValue} onChange={this.onChange.bind(this, "localizedValue", index)} />
+                                <SingleLineInput value={this.props.list[key].First} onChange={this.onChange.bind(this, "First", index)} />
                             </GridCell>
                         </GridCell>;
                     })}
