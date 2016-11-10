@@ -13,7 +13,7 @@ export default class FilesGrid extends Component {
                     <GridCell columnSize={30}><OverflowText text={field.name} /></GridCell>
                     <GridCell columnSize={15}>{util.formatNumeric2Decimals(field.size)} Mb</GridCell>
                     <GridCell columnSize={15}>{field.fileType}</GridCell>
-                    <GridCell columnSize={40}>{field.fileName}</GridCell>
+                    <GridCell columnSize={40}><OverflowText text={field.fileName} maxWidth={290} /></GridCell>
                 </div>;
             });
             return rows;
