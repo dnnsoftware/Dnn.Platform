@@ -197,6 +197,7 @@ a.plainbtn {
     display: none;
     position: fixed;
     top: 30%;
+    word-break: break-word;
 }
 
     #confirmation-dialog > p {
