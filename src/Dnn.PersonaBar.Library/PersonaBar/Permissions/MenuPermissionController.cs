@@ -47,28 +47,17 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
         private static IDataService _dataService = new DataService();
         private static object _threadLocker = new object();
+        private static object _defaultPermissionLocker = new object();
 
         private const string PersonaBarMenuPermissionsCacheKey = "PersonaBarMenuPermissions{0}";
         private const string PermissionInitializedKey = "PersonaBarMenuPermissionsInitialized";
 
         private const string PersonaBarMenuViewPermissionKey = "VIEW";
-        private const string PersonaBarMenuEditPermissionKey = "EDIT";
-        private const string PersonaBarMenuAdminPermissionKey = "ADMIN";
         private const string PersonaBarMenuPermissionCode = "PERSONABAR_MENU";
 
         #endregion
 
         #region Public Methods
-
-        public static bool CanAdmin(int portalId, MenuItem menu)
-        {
-            return HasMenuPermission(GetMenuPermissions(portalId, menu.MenuId), PersonaBarMenuAdminPermissionKey);
-        }
-
-        public static bool CanEdit(int portalId, MenuItem menu)
-        {
-            return HasMenuPermission(GetMenuPermissions(portalId, menu.MenuId), PersonaBarMenuEditPermissionKey);
-        }
 
         public static bool CanView(int portalId, MenuItem menu)
         {
@@ -164,8 +153,6 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
             var permissions = new List<PermissionInfo>();
             var permissionController = new PermissionController();
             permissions.AddRange(permissionController.GetPermissionByCodeAndKey(PersonaBarMenuPermissionCode, PersonaBarMenuViewPermissionKey).Cast<PermissionInfo>());
-            permissions.AddRange(permissionController.GetPermissionByCodeAndKey(PersonaBarMenuPermissionCode, PersonaBarMenuEditPermissionKey).Cast<PermissionInfo>());
-            permissions.AddRange(permissionController.GetPermissionByCodeAndKey(PersonaBarMenuPermissionCode, PersonaBarMenuAdminPermissionKey).Cast<PermissionInfo>());
 
             return permissions;
         }
@@ -186,23 +173,30 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
                 var permissionInitialized = PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
                 if (!permissionInitialized)
                 {
-                    var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
-                    foreach (var menuItem in menuItems)
+                    lock (_defaultPermissionLocker)
                     {
-                        var defaultRoles = PersonaBarRepository.Instance.GetMenuDefaultRoles(menuItem.MenuId);
-                        if (!string.IsNullOrEmpty(defaultRoles))
+                        permissionInitialized = PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
+                        if (!permissionInitialized)
                         {
-                            foreach (var roleName in defaultRoles.Split(','))
+                            var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
+                            foreach (var menuItem in menuItems)
                             {
-                                if (!string.IsNullOrEmpty(roleName.Trim()))
+                                var defaultRoles = PersonaBarRepository.Instance.GetMenuDefaultRoles(menuItem.MenuId);
+                                if (!string.IsNullOrEmpty(defaultRoles))
                                 {
-                                    SaveMenuDefaultPermissions(portalId, menuItem, roleName.Trim(), true);
+                                    foreach (var roleName in defaultRoles.Split(','))
+                                    {
+                                        if (!string.IsNullOrEmpty(roleName.Trim()))
+                                        {
+                                            SaveMenuDefaultPermissions(portalId, menuItem, roleName.Trim(), true);
+                                        }
+                                    }
                                 }
                             }
+
+                            PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
                         }
                     }
-
-                    PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
                 }
             }
             catch (Exception ex)

@@ -516,26 +516,6 @@ EXEC {databaseOwner}{objectQualifier}AddPermission @ModuleDefID = -1,
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'PERSONABAR_MENU' AND PermissionKey = 'EDIT')
-BEGIN
-EXEC {databaseOwner}{objectQualifier}AddPermission @ModuleDefID = -1,
-    @PermissionCode = 'PERSONABAR_MENU',
-    @PermissionKey = 'EDIT',
-    @PermissionName = 'Edit Menu',
-    @CreatedByUserID = -1
-END
-GO
-
-IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Permission] WHERE PermissionCode = N'PERSONABAR_MENU' AND PermissionKey = 'ADMIN')
-BEGIN
-EXEC {databaseOwner}{objectQualifier}AddPermission @ModuleDefID = -1,
-    @PermissionCode = 'PERSONABAR_MENU',
-    @PermissionKey = 'ADMIN',
-    @PermissionName = 'Admin Menu',
-    @CreatedByUserID = -1
-END
-GO
-
 IF NOT EXISTS(SELECT PackageType FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = N'PersonaBar')
 BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'PersonaBar', N'PersonaBar', 3, NULL, 0)
