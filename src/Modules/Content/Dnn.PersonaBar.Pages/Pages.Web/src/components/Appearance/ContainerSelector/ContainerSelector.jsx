@@ -19,6 +19,14 @@ class ContainerSelector extends Component {
         return selectedContainer.name === container.name;
     }
 
+    getSelectedIndex() {
+        const { selectedContainer, containers } = this.props;
+        if (!selectedContainer) {
+            return -1;
+        }
+        return containers.findIndex(c => c.name === selectedContainer.name);
+    }
+
     getContainerCards() {
         const { containers, noThemeSelected } = this.props;
 
@@ -41,12 +49,13 @@ class ContainerSelector extends Component {
     }
 
     render() {        
+        const selectedIndex = this.getSelectedIndex();
         return (
             <div>
                 <Label 
                     label={localization.get("PageContainer")} 
                     tooltipMessage={localization.get("PageContainerTooltip")} />
-                <Gallery size="small">
+                <Gallery size="small" scrollToIndex={selectedIndex}>
                     {this.getContainerCards()}
                 </Gallery>
             </div>
