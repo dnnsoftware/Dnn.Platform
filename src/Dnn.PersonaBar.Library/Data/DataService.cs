@@ -26,10 +26,10 @@ namespace Dnn.PersonaBar.Library.Data
             DataProvider.ExecuteNonQuery("DeletePersonaBarMenuByIdentifier", identifier);
         }
 
-        public int SavePersonaBarExtension(int extensionId, string identifier, int menuId, string controller, string container,
+        public int SavePersonaBarExtension(string identifier, int menuId, string controller, string container,
             string path, int order, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarExtension", extensionId, identifier, menuId,
+            return DataProvider.ExecuteScalar<int>("SavePersonaBarExtension", identifier, menuId,
                 controller, container, path, order, enabled, currentUserId);
         }
 

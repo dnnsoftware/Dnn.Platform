@@ -42,7 +42,6 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Repository
         public void SaveExtension(PersonaBarExtension extension)
         {
             _dataService.SavePersonaBarExtension(
-                extension.ExtensionId,
                 extension.Identifier,
                 extension.MenuId,
                 extension.Controller,

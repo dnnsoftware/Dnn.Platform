@@ -223,7 +223,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{o
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarExtension]
-    @ExtensionId                INT,
     @Identifier                 NVARCHAR(50),
     @MenuId                     INT,
     @Controller                 NVARCHAR(260),
@@ -234,7 +233,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarExtension]
     @CurrentUserId              INT
 AS
 BEGIN
-    IF EXISTS(SELECT ExtensionId FROM {databaseOwner}[{objectQualifier}PersonaBarExtensions] WHERE ExtensionId = @ExtensionId)
+    IF EXISTS(SELECT ExtensionId FROM {databaseOwner}[{objectQualifier}PersonaBarExtensions] WHERE Identifier = @Identifier)
     BEGIN
         UPDATE {databaseOwner}[{objectQualifier}PersonaBarExtensions]
             SET 
@@ -244,9 +243,9 @@ BEGIN
                 Path = @Path,
                 [Order] = @Order,
                 Enabled = @Enabled
-            WHERE ExtensionId = @ExtensionId
+            WHERE Identifier = @Identifier
 
-            SELECT ExtensionId FROM {databaseOwner}[{objectQualifier}PersonaBarExtensions] WHERE ExtensionId = @ExtensionId
+            SELECT ExtensionId FROM {databaseOwner}[{objectQualifier}PersonaBarExtensions] WHERE Identifier = @Identifier
     END
     ELSE
     BEGIN

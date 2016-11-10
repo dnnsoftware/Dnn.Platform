@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Library.Data
         void DeletePersonaBarMenuByIdentifier(string identifier);
 
 
-        int SavePersonaBarExtension(int extensionId, string identifier, int menuId, string controller, string container, string path,
+        int SavePersonaBarExtension(string identifier, int menuId, string controller, string container, string path,
             int order, bool enabled, int currentUserId);
 
         void DeletePersonaBarExtension(string identifier);
