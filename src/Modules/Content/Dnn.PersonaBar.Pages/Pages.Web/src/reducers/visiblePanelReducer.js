@@ -7,7 +7,7 @@ export default function visiblePanel(state = {
     
     switch (action.type) {
 
-        case ActionTypes.PAGE_SAVED:
+        case ActionTypes.SAVED_PAGE:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
             };
