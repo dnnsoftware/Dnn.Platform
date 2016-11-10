@@ -20,7 +20,11 @@ class ContainerSelector extends Component {
     }
 
     getContainerCards() {
-        return this.props.containers.map(container => {
+        const { containers } = this.props;
+        if (containers.length === 0) {
+            return <div className="no-appearance-items">{localization.get("NoContainers")}</div>;
+        }
+        return containers.map(container => {
             return <Card 
                 cardId={container.name}
                 onClick={this.onContainerClick.bind(this)}

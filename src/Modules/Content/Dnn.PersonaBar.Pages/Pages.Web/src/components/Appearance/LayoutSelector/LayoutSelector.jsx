@@ -20,7 +20,11 @@ class LayoutSelector extends Component {
     }
 
     getLayoutCards() {
-        return this.props.layouts.map(layout => {
+        const { layouts } = this.props;
+        if (layouts.length === 0) {
+            return <div className="no-appearance-items">{localization.get("NoLayouts")}</div>;
+        }
+        return layouts.map(layout => {
             return <Card 
                 cardId={layout.name}
                 onClick={this.onClickLayout.bind(this)}

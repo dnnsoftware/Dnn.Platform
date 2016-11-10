@@ -450,4 +450,13 @@
   <data name="AddPages.Text" xml:space="preserve">
     <value>Add Pages</value>
   </data>
+  <data name="NoContainers.Text" xml:space="preserve">
+    <value>This Theme does not have any Containers</value>
+  </data>
+  <data name="NoLayouts.Text" xml:space="preserve">
+    <value>This Theme does not have any Layouts</value>
+  </data>
+  <data name="NoThemes.Text" xml:space="preserve">
+    <value>Your site does not have any Themes</value>
+  </data>
 </root>

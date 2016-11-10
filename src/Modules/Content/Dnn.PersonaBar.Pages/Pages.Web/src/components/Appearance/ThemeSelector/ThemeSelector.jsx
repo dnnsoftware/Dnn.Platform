@@ -20,7 +20,11 @@ class ThemeSelector extends Component {
     }
 
     getThemeCards() {
-        return this.props.themes.map(theme => {
+        const { themes } = this.props;
+        if (themes.length === 0) {
+            return <div className="no-appearance-items">{localization.get("NoThemes")}</div>;
+        }
+        return themes.map(theme => {
             return <Card 
                 cardId={theme.packageName}
                 onClick={this.onThemeClick.bind(this)}
