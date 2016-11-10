@@ -16,6 +16,7 @@ import "./style.less";
 import util from "../../../utils";
 import resx from "../../../resources";
 import styles from "./style.less";
+import MessageBox from "../../messageBox";
 
 class LanguagePackPanelBody extends Component {
     constructor() {
@@ -31,7 +32,9 @@ class LanguagePackPanelBody extends Component {
                 name: false,
                 module: true
             },
-            triedToSubmit: false
+            triedToSubmit: false,
+            showMessageBox: false,
+            message: ""
         };
     }
 
@@ -159,11 +162,21 @@ class LanguagePackPanelBody extends Component {
         }
 
         props.dispatch(LanguagesActions.createLanguagePack(state.languagePack, (data) => {
-            util.utilities.notify(data.Message);
+            //util.utilities.notify(data.Message);
+            this.setState({
+                showMessageBox: true,
+                message: data.Message
+            });
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
             util.utilities.notifyError(errorMessage.Message);
         }));
+    }
+
+    closeMessageBox() {
+        this.setState({
+            showMessageBox: false
+        });
     }
 
     /* eslint-disable react/no-danger */
@@ -245,6 +258,13 @@ class LanguagePackPanelBody extends Component {
                             </Button>
                         </div>
                     </div>
+                    <MessageBox
+                        message={state.message}
+                        fixedHeight={500}
+                        isOpened={state.showMessageBox}
+                        onClose={this.closeMessageBox.bind(this)}
+                        collapsibleWidth={485}
+                        />
                 </SocialPanelBody>
             </div>
         );
