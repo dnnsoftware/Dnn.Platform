@@ -32,15 +32,18 @@ class LanguageEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
+        if (!props.languageDetail || (props.code !== props.languageDetail.Code)) {
+            props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
 
-        if (!props.fullLanguageList) {
-            props.dispatch(LanguagesActions.getAllLanguages());
+            if (props.id === "add" && !props.fullLanguageList) {
+                props.dispatch(LanguagesActions.getAllLanguages());
+            }
+        }        
+        else {
+            this.setState({
+                languageDetail: Object.assign({}, props.languageDetail)
+            });
         }
-
-        this.setState({
-            languageDetail: Object.assign({}, props.languageDetail)
-        });
     }
 
     componentWillReceiveProps(props) {
@@ -178,6 +181,34 @@ class LanguageEditor extends Component {
         }
     }
 
+    onRoleSelectChange(roleName, selected) {
+        let {state, props} = this;
+        let languageDetail = Object.assign({}, state.languageDetail);
+
+        let roles = languageDetail.Roles.split(';');
+        if (!roles) {
+            roles = [];
+        }
+
+        let index = roles.indexOf(roleName);
+        if (selected) {
+            if (index === -1) {
+                roles.push(roleName);
+            }
+        }
+        else {
+            if (index > -1) {
+                roles.splice(index, 1);
+            }
+        }
+
+        languageDetail.Roles = roles.join(';');
+
+        this.setState({
+            languageDetail: languageDetail
+        });
+    }
+
     renderNewForm() {
         let {state, props} = this;
         const columnOne = <div className="left-column">
@@ -286,43 +317,15 @@ class LanguageEditor extends Component {
                 </div>
             </div>
         );
-    }
-
-    onSelectChange(roleName, selected) {
-        let {state, props} = this;
-        let languageDetail = Object.assign({}, state.languageDetail);
-
-        let roles = languageDetail.Roles.split(';');
-        if (!roles) {
-            roles = [];
-        }
-
-        let index = roles.indexOf(roleName);
-        if (selected) {
-            if (index === -1) {
-                roles.push(roleName);
-            }
-        }
-        else {
-            if (index > -1) {
-                roles.splice(index, 1);
-            }
-        }
-
-        languageDetail.Roles = roles.join(';');
-
-        this.setState({
-            languageDetail: languageDetail
-        });
-    }
+    }    
 
     renderRoleForm() {
         let {state, props} = this;
         return (
             <div className="language-editor">
                 {props.code &&
-                    <Roles cultureCode={props.code} 
-                    onSelectChange={this.onSelectChange.bind(this)} />
+                    <Roles cultureCode={props.code}
+                        onSelectChange={this.onRoleSelectChange.bind(this)} />
                 }
                 <div className="editor-buttons-box-roles">
                     <Button
