@@ -77,6 +77,7 @@ class Appearance extends Component {
     render() {   
         const { page, themes, layouts, containers } = this.props;
         const selectedTheme = themes.find(t => t.packageName === page.themeName);
+        const noThemeSelected = !selectedTheme;
         const selectedLayout = layouts.find(l => this.addAscxExtension(l.path) === page.skinSrc);
         const selectedContainer = containers.find(c => this.addAscxExtension(c.path) === page.containerSrc);     
         return (
@@ -89,12 +90,14 @@ class Appearance extends Component {
                 </GridCell>
                 <GridCell>
                     <LayoutSelector 
+                        noThemeSelected={noThemeSelected}
                         layouts={layouts}
                         selectedLayout={selectedLayout}
                         onSelectLayout={this.onSelectLayout.bind(this)} />
                 </GridCell>
                 <GridCell>
                     <ContainerSelector 
+                        noThemeSelected={noThemeSelected}
                         containers={containers}
                         selectedContainer={selectedContainer}
                         onSelectContainer={this.onSelectContainer.bind(this)} />

@@ -20,7 +20,11 @@ class LayoutSelector extends Component {
     }
 
     getLayoutCards() {
-        const { layouts } = this.props;
+        const { layouts, noThemeSelected } = this.props;
+                 
+        if (noThemeSelected) {
+            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForLayouts")}</div>;
+        }
         if (layouts.length === 0) {
             return <div className="no-appearance-items">{localization.get("NoLayouts")}</div>;
         }
@@ -51,6 +55,7 @@ class LayoutSelector extends Component {
 }
 
 LayoutSelector.propTypes = {
+    noThemeSelected: PropTypes.bool.isRequired,
     selectedLayout: PropTypes.object,
     layouts: PropTypes.array.isRequired,
     onSelectLayout: PropTypes.func.isRequired

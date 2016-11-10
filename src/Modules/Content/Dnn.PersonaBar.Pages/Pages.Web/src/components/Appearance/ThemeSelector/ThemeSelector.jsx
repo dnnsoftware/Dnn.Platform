@@ -21,6 +21,7 @@ class ThemeSelector extends Component {
 
     getThemeCards() {
         const { themes } = this.props;
+        
         if (themes.length === 0) {
             return <div className="no-appearance-items">{localization.get("NoThemes")}</div>;
         }

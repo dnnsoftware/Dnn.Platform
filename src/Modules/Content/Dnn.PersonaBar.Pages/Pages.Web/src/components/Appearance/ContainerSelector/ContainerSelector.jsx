@@ -20,7 +20,11 @@ class ContainerSelector extends Component {
     }
 
     getContainerCards() {
-        const { containers } = this.props;
+        const { containers, noThemeSelected } = this.props;
+
+        if (noThemeSelected) {
+            return <div className="no-appearance-items">{localization.get("NoThemeSelectedForContainers")}</div>;
+        }
         if (containers.length === 0) {
             return <div className="no-appearance-items">{localization.get("NoContainers")}</div>;
         }
@@ -51,6 +55,7 @@ class ContainerSelector extends Component {
 }
 
 ContainerSelector.propTypes = {
+    noThemeSelected: PropTypes.bool.isRequired,
     selectedContainer: PropTypes.object,
     containers: PropTypes.array.isRequired,
     onSelectContainer: PropTypes.func.isRequired
