@@ -2,6 +2,8 @@
 /* eslint-disable spellcheck/spell-checker, no-unused-vars, space-before-function-paren, indent, eqeqeq */ // warnings
 /* global $, jQuery, ko */
 
+window.dnn.pages = window.dnn.pages || {};
+
     var OVER_TIME_TO_OPEN_PAGE_CHILDS;
     var pageHierarchyManager, pageHierarchyDefaultOptions;
     var draggingJqObj, pageDropped, dropOnDroppable, uiOnDragStart;
@@ -1147,6 +1149,16 @@
                 this._viewModel.doSelectPage = $.proxy(this._selectPage, this);
 
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
+
+                if (window.dnn.pages.viewModelExtension) {
+                    for (var prop in window.dnn.pages.viewModelExtension) {
+                        if (typeof window.dnn.pages.viewModelExtension[prop] === 'function') {
+                            this._viewModel[prop] = $.proxy(window.dnn.pages.viewModelExtension[prop], this);
+                        } else {
+                            this._viewModel[prop] = window.dnn.pages.viewModelExtension[prop];
+                        }
+                    }                
+                }
             }
             return this._viewModel;
         },
@@ -1165,8 +1177,6 @@
         requestTimeout: 4000
     };
 
-
-var options = window.dnn.pages && window.dnn.pages.pageHierarchyManagerOptions;
 module.exports = {
-    pageHierarchyManager: new pageHierarchyManager(options)
+    pageHierarchyManager: new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions)
 };
