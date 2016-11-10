@@ -1008,6 +1008,27 @@
   <data name="translatorsLabel.Help" xml:space="preserve">
     <value>The selected roles will be granted explicit Edit Rights to all new pages and localized modules for this language.</value>
   </data>
+  <data name="GlobalResources.Text" xml:space="preserve">
+    <value>Global Resources</value>
+  </data>
+  <data name="LocalResources.Text" xml:space="preserve">
+    <value>Local Resources</value>
+  </data>
+  <data name="SiteTemplates.Text" xml:space="preserve">
+    <value>Site Templates</value>
+  </data>
+  <data name="Exceptions.Text" xml:space="preserve">
+    <value>Exceptions</value>
+  </data>
+  <data name="HostSkins.Text" xml:space="preserve">
+    <value>Host Themes</value>
+  </data>
+  <data name="PortalSkins.Text" xml:space="preserve">
+    <value>Site Themes</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
   <data name="MicroServices.Text" xml:space="preserve">
     <value>MicroServices</value>
   </data>
@@ -1030,15 +1051,14 @@
     <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
   </data>
   <data name="EnableLocalizedContent.Text" xml:space="preserve">
-     <value>Enable Localized Content</value>
+    <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
      <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
-     <value>Click Cancel now if you want to change the current site default.</value>
+    <value>Click Cancel now if you want to change the current site default.</value>
   </data>
-
   <data name="TranslationProgressBarText.Text" xml:space="preserve">
      <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
   </data>
@@ -1054,7 +1074,4 @@
   <data name="ElapsedTime.Text" xml:space="preserve">
      <value>Elapsed Time: </value>
   </data>
-  
-
-
 </root>

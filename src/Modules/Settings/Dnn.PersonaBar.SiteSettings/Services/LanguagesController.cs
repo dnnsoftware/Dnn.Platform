@@ -35,8 +35,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
         private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
 
+        // sample formats:
+        // MyResources.ascx.en-US.resx
+        // MyResources.ascx.en-US.Host.resx
+        // MyResources.ascx.en-US.Portal-123.resx
         protected static readonly Regex FileInfoRegex = new Regex(
-            @"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+            @"\.(\w\w\-\w\w\w?)(\.Host)?(\.Portal-(\d+))?\.resx$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private string _selectedResourceFile;
 
@@ -55,6 +59,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Enum.TryParse(mode ?? "", false, out resourceMode);
 
                 var folders = new List<KeyValuePair<string, string>>();
+                var files = new List<KeyValuePair<string, string>>();
                 var server = HttpContext.Current.Server;
 
                 switch (resourceMode)
@@ -87,12 +92,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         break;
                     }
                     case LanguageResourceMode.Host:
-                        folders.AddRange(GetResxFiles(server.MapPath("~/App_GlobalResources")));
+                        folders.Add(new KeyValuePair<string, string>(
+                            LocalizeString("GlobalResources"), server.MapPath("~/App_GlobalResources")));
+                        files.AddRange(GetResxFiles(server.MapPath("~/App_GlobalResources")));
                         break;
                     case LanguageResourceMode.System:
-                        folders.AddRange(GetResxFiles(server.MapPath("~/Portals/_default")));
+                        folders.Add(new KeyValuePair<string, string>(
+                            LocalizeString("SiteTemplates"), server.MapPath("~/Portals/_default")));
+                        files.AddRange(GetResxFiles(server.MapPath("~/Portals/_default")));
                         break;
                     default:
+                        // old system uses "Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId)));"
+                        // value for this but it is not maintained in PersonaBar pages
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "MissingParams");
                 }
 
@@ -100,7 +111,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     new
                     {
                         Folders = folders.MapEntries(),
-                        Files = new string[0],
+                        Files = files.MapEntries(),
                     });
             }
             catch (Exception ex)
@@ -144,7 +155,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         // GET /api/personabar/languages/GetResxEntries?mode=Portal&locale=de-DE&resourceFile=App_GlobalResources%2fFileUpload.resx
         [HttpGet]
-        public HttpResponseMessage GetResxEntries(string mode, string locale, string resourceFile)
+        public HttpResponseMessage GetResxEntries(string mode, string locale, string resourceFile, bool highlight = false)
         {
             try
             {
@@ -156,7 +167,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     case LanguageResourceMode.System:
                     case LanguageResourceMode.Host:
                     case LanguageResourceMode.Portal:
+                    {
+                        //this old behaviour is not maintained in the PersonaBar pages
+
+                        //var dbMode = Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId));
+                        //if (dbMode != resourceMode.ToString())
+                        //    Personalization.SetProfile("LanguageEditor", "Mode" + PortalId, resourceMode.ToString());
+                        //
+                        //var dbHighlight = Convert.ToString(Personalization.GetProfile("LanguageEditor", "HighLight" + PortalId));
+                        //if (dbHighlight != highlight.ToString())
+                        //    Personalization.SetProfile("LanguageEditor", "HighLight" + PortalId, highlight.ToString());
                         break;
+                    }
                     default:
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
                 }
@@ -313,6 +335,23 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        // POST /api/personabar/languages/EnableLocalizedContent?translatePages=true
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DiableLocalizedContent()
+        {
+            try
+            {
+                //TODO
+                return Request.CreateResponse(HttpStatusCode.OK, new { failed = true});
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
         #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [L] to expand source code folding
@@ -333,12 +372,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private static IEnumerable<KeyValuePair<string, string>> GetResxFiles(string path)
         {
+            var sysLocale = Localization.SystemLocale.ToLowerInvariant();
             return
                 from file in Directory.GetFiles(path, "*.resx")
-                select new FileInfo(file)
-                into fileInfo
+                select new FileInfo(file) into fileInfo
                 let match = FileInfoRegex.Match(fileInfo.Name)
-                where !match.Success || match.Groups[1].Value.ToLowerInvariant() == Localization.SystemLocale
+                where !match.Success || match.Groups[1].Value.ToLowerInvariant() == sysLocale
                 select new KeyValuePair<string, string>(Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName);
         }
 
