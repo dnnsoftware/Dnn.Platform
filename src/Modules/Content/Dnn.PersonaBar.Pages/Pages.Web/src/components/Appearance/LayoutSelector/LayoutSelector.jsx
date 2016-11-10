@@ -18,6 +18,14 @@ class LayoutSelector extends Component {
         }
         return selectedLayout.name === layout.name;
     }
+    
+    getSelectedIndex() {
+        const { selectedLayout, layouts } = this.props;
+        if (!selectedLayout) {
+            return -1;
+        }
+        return layouts.findIndex(c => c.name === selectedLayout.name);
+    }
 
     getLayoutCards() {
         const { layouts, noThemeSelected } = this.props;
@@ -40,13 +48,14 @@ class LayoutSelector extends Component {
         });
     }
 
-    render() {        
+    render() {    
+        const selectedIndex = this.getSelectedIndex();    
         return (
             <div>
                 <Label 
                     label={localization.get("Layout")} 
                     tooltipMessage={localization.get("PageLayoutTooltip")} />
-                <Gallery size="small">
+                <Gallery size="small" scrollToIndex={selectedIndex}>
                     {this.getLayoutCards()}
                 </Gallery>
             </div>

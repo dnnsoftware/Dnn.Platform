@@ -3,9 +3,10 @@
 namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
     [JsonObject]
-    public class NameValueEntry
+    public class LocalizationEntry
     {
         public string Name { get; set; }
-        public string Value { get; set; }
+        public string DefaultValue { get; set; }
+        public string NewValue { get; set; }
     }
 }

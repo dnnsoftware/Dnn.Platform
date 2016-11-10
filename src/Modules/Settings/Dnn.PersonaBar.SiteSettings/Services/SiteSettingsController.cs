@@ -16,7 +16,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
@@ -51,9 +50,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
-        private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx");
-        private static readonly string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
-        private static readonly Regex FileInfoRegex = new Regex(@"\.(\w\w\-\w\w)(\.Host)?(\.Portal-(0|[1-9]\d*))?\.resx", RegexOptions.Compiled);
+        private const string LocalResourcesFile = "~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
+        private const string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -686,10 +684,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = portalId ?? PortalId;
-                var propertyDefinition = new ProfilePropertyDefinition(pid)
-                {
-                    PropertyDefinitionId = propertyId
-                };
+                var propertyDefinition = ProfileController.GetPropertyDefinition(propertyId, pid);
 
                 if (!CanDeleteProperty(propertyDefinition))
                 {
@@ -1928,6 +1923,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         TabController.Instance.RestoreTab(tab, PortalSettings);
                         ModuleController.Instance.GetTabModules(tab.TabID).Values.ToList().ForEach(ModuleController.Instance.RestoreModule);
                     }
+
+                    if (LocaleController.Instance.GetLocales(pid).Count == 2)
+                    {
+                        redirectUrl = Globals.NavigateURL();
+                    }
                 }
                 else
                 {
@@ -1935,7 +1935,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Localization.RemoveLanguageFromPortal(PortalId, language.LanguageId);
 
                     //if the disable language is current language, should redirect to default language.
-                    if (request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                    if (request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(), StringComparison.InvariantCultureIgnoreCase) || LocaleController.Instance.GetLocales(pid).Count == 1)
                     {
                         redirectUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID,
                                                             PortalSettings.ActiveTab.IsSuperTab,
@@ -2344,8 +2344,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private string GetAbsoluteServerPath()
         {
             var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            string strServerPath = string.Empty;
-            strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
+            var strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
             if (!strServerPath.EndsWith("\\"))
             {
                 strServerPath += "\\";
@@ -2418,11 +2417,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static void GetResourceFiles(SortedList fileList, string path)
         {
             var folders = Directory.GetDirectories(path);
-            DirectoryInfo objFolder;
 
             foreach (var folder in folders)
             {
-                objFolder = new DirectoryInfo(folder);
+                var objFolder = new DirectoryInfo(folder);
 
                 bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
                                           (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", "").ToLowerInvariant()) ||
@@ -2430,12 +2428,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (resxFilesDirectory)
                 {
-                    foreach (string file in Directory.GetFiles(objFolder.FullName, "*.resx"))
+                    var sysLocale = Localization.SystemLocale.ToLowerInvariant();
+                    foreach (var file in Directory.GetFiles(objFolder.FullName, "*.resx"))
                     {
                         var fileInfo = new FileInfo(file);
-                        var match = FileInfoRegex.Match(fileInfo.Name);
+                        var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
 
-                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
+                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
                         {
                             continue;
                         }

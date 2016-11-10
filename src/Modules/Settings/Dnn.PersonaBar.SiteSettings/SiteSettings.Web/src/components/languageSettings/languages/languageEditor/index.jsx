@@ -20,6 +20,8 @@ import {
 import util from "../../../../utils";
 import resx from "../../../../resources";
 
+let isHost = false;
+
 class LanguageEditor extends Component {
     constructor() {
         super();
@@ -28,19 +30,23 @@ class LanguageEditor extends Component {
             languageDetail: {
             }
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
+        if (!props.languageDetail || (props.code !== props.languageDetail.Code)) {
+            props.dispatch(LanguagesActions.getLanguage(props.portalId, props.languageId));
 
-        if (!props.fullLanguageList) {
-            props.dispatch(LanguagesActions.getAllLanguages());
+            if (props.id === "add" && !props.fullLanguageList) {
+                props.dispatch(LanguagesActions.getAllLanguages());
+            }
         }
-
-        this.setState({
-            languageDetail: Object.assign({}, props.languageDetail)
-        });
+        else {
+            this.setState({
+                languageDetail: Object.assign({}, props.languageDetail)
+            });
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -178,6 +184,36 @@ class LanguageEditor extends Component {
         }
     }
 
+    onRoleSelectChange(roleName, selected) {
+        let {state, props} = this;
+        let languageDetail = Object.assign({}, state.languageDetail);
+
+        let roles = languageDetail.Roles.split(';');
+        if (!roles) {
+            roles = [];
+        }
+
+        let index = roles.indexOf(roleName);
+        if (selected) {
+            if (index === -1) {
+                roles.push(roleName);
+            }
+        }
+        else {
+            if (index > -1) {
+                roles.splice(index, 1);
+            }
+        }
+
+        languageDetail.Roles = roles.join(';');
+
+        this.setState({
+            languageDetail: languageDetail
+        });
+
+        props.dispatch(LanguagesActions.languageClientModified(languageDetail));
+    }
+
     renderNewForm() {
         let {state, props} = this;
         const columnOne = <div className="left-column">
@@ -239,7 +275,7 @@ class LanguageEditor extends Component {
                     options={this.getFallbackOptions()}
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
-                    enabled={true}
+                    enabled={isHost}
                     />
             </InputGroup>
         </div>;
@@ -288,41 +324,13 @@ class LanguageEditor extends Component {
         );
     }
 
-    onSelectChange(roleName, selected) {
-        let {state, props} = this;
-        let languageDetail = Object.assign({}, state.languageDetail);
-
-        let roles = languageDetail.Roles.split(';');
-        if (!roles) {
-            roles = [];
-        }
-
-        let index = roles.indexOf(roleName);
-        if (selected) {
-            if (index === -1) {
-                roles.push(roleName);
-            }
-        }
-        else {
-            if (index > -1) {
-                roles.splice(index, 1);
-            }
-        }
-
-        languageDetail.Roles = roles.join(';');
-
-        this.setState({
-            languageDetail: languageDetail
-        });
-    }
-
     renderRoleForm() {
         let {state, props} = this;
         return (
             <div className="language-editor">
                 {props.code &&
-                    <Roles cultureCode={props.code} 
-                    onSelectChange={this.onSelectChange.bind(this)} />
+                    <Roles cultureCode={props.code}
+                        onSelectChange={this.onRoleSelectChange.bind(this)} />
                 }
                 <div className="editor-buttons-box-roles">
                     <Button
@@ -331,6 +339,7 @@ class LanguageEditor extends Component {
                         {resx.get("Cancel")}
                     </Button>
                     <Button
+                        disabled={!this.props.languageClientModified}
                         type="primary"
                         onClick={this.onSaveRoles.bind(this)}>
                         {resx.get("Save")}

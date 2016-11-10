@@ -1068,23 +1068,26 @@
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
      <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
   </data>
-  <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
-    <value>Click Cancel now if you want to change the current site default.</value>
+  <data name="ProcessingPage.Text" xml:space="preserve">
+    <value>{0}: Page {1} of {2} - {3}</value>
   </data>
-  <data name="TranslationProgressBarText.Text" xml:space="preserve">
-     <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
+  <data name="MessageCompactIndexWarning.Text" xml:space="preserve">
+    <value>Compacting of Index reclaims space from deleted items in the Index Store. Compacting is recommended only when there are many 'Deleted Documents' in Index Store. Compacting may require twice the size of current Index Store during processing.</value>
   </data>
-  <data name="TotalProgress.Text" xml:space="preserve">
-     <value>Total Progress [number]%</value>
+  <data name="cmdCreateLanguage.Text" xml:space="preserve">
+    <value>Add New Language</value>
   </data>
-    <data name="TotalLanguages.Text" xml:space="preserve">
-     <value>Total Languages [number]</value>
+  <data name="cmdAddWord.Text" xml:space="preserve">
+    <value>Add Word</value>
   </data>
-  <data name="Progress.Text" xml:space="preserve">
-     <value>Progress [number]%</value>
+  <data name="cmdAddField.Text" xml:space="preserve">
+    <value>Add Field</value>
   </data>
-  <data name="ElapsedTime.Text" xml:space="preserve">
-     <value>Elapsed Time: </value>
+  <data name="cmdAddAlias.Text" xml:space="preserve">
+    <value>Add Alias</value>
+  </data>
+  <data name="cmdAddGroup.Text" xml:space="preserve">
+    <value>Add Group</value>
   </data>
   <data name="ProcessingPage.Text" xml:space="preserve">
     <value>{0}: Page {1} of {2} - {3}</value>

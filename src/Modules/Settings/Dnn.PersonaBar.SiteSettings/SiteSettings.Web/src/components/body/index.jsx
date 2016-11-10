@@ -54,11 +54,9 @@ export class Body extends Component {
         else {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabDefaultPages"),
-                resx.get("TabMessaging"),
                 resx.get("TabUserProfiles")]}
                 type="secondary">
-                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
-                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode}/>                
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
             </Tabs>;
         }

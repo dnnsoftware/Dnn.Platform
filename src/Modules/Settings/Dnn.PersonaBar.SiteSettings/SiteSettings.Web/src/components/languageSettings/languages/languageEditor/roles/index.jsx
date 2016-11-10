@@ -27,7 +27,10 @@ class RolesPanel extends Component {
 
     componentWillMount() {
         const {props, state} = this;
-        props.dispatch(LanguagesActions.getRoleGroups(props.portalId));
+
+        if (!props.roleGroups) {
+            props.dispatch(LanguagesActions.getRoleGroups(props.portalId));
+        }
         props.dispatch(LanguagesActions.getRoles(props.portalId, state.groupId, props.cultureCode));
     }
 

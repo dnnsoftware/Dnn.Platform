@@ -17,6 +17,8 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
+let isHost = false;
+
 class DefaultPagesSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -24,6 +26,7 @@ class DefaultPagesSettingsPanelBody extends Component {
             defaultPagesSettings: undefined,
             resetPagePicker: false
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
@@ -121,14 +124,14 @@ class DefaultPagesSettingsPanelBody extends Component {
             const columnOne = <div className="left-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plSplashTabId.Help") }
-                        label={resx.get("plSplashTabId") }
+                        tooltipMessage={resx.get("plSplashTabId.Help")}
+                        label={resx.get("plSplashTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 5 }}
                         selectedTabId={state.defaultPagesSettings.SplashTabId}
-                        OnSelect={this.onSettingChange.bind(this, "SplashTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "SplashTabId")}
                         defaultLabel={state.defaultPagesSettings.SplashTabName !== "" ? state.defaultPagesSettings.SplashTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -138,14 +141,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plHomeTabId.Help") }
-                        label={resx.get("plHomeTabId") }
+                        tooltipMessage={resx.get("plHomeTabId.Help")}
+                        label={resx.get("plHomeTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 4 }}
                         selectedTabId={state.defaultPagesSettings.HomeTabId}
-                        OnSelect={this.onSettingChange.bind(this, "HomeTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "HomeTabId")}
                         defaultLabel={state.defaultPagesSettings.HomeTabName !== "" ? state.defaultPagesSettings.HomeTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -155,14 +158,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plLoginTabId.Help") }
-                        label={resx.get("plLoginTabId") }
+                        tooltipMessage={resx.get("plLoginTabId.Help")}
+                        label={resx.get("plLoginTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 3 }}
                         selectedTabId={state.defaultPagesSettings.LoginTabId}
-                        OnSelect={this.onSettingChange.bind(this, "LoginTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "LoginTabId")}
                         defaultLabel={state.defaultPagesSettings.LoginTabName !== "" ? state.defaultPagesSettings.LoginTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -172,14 +175,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plRegisterTabId.Help") }
-                        label={resx.get("plRegisterTabId") }
+                        tooltipMessage={resx.get("plRegisterTabId.Help")}
+                        label={resx.get("plRegisterTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 2 }}
                         selectedTabId={state.defaultPagesSettings.RegisterTabId}
-                        OnSelect={this.onSettingChange.bind(this, "RegisterTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "RegisterTabId")}
                         defaultLabel={state.defaultPagesSettings.RegisterTabName !== "" ? state.defaultPagesSettings.RegisterTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -191,14 +194,14 @@ class DefaultPagesSettingsPanelBody extends Component {
             const columnTwo = <div className="right-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plUserTabId.Help") }
-                        label={resx.get("plUserTabId") }
+                        tooltipMessage={resx.get("plUserTabId.Help")}
+                        label={resx.get("plUserTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 5 }}
                         selectedTabId={state.defaultPagesSettings.UserTabId}
-                        OnSelect={this.onSettingChange.bind(this, "UserTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "UserTabId")}
                         defaultLabel={state.defaultPagesSettings.UserTabName !== "" ? state.defaultPagesSettings.UserTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -208,14 +211,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plSearchTabId.Help") }
-                        label={resx.get("plSearchTabId") }
+                        tooltipMessage={resx.get("plSearchTabId.Help")}
+                        label={resx.get("plSearchTabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 4 }}
                         selectedTabId={state.defaultPagesSettings.SearchTabId}
-                        OnSelect={this.onSettingChange.bind(this, "SearchTabId") }
+                        OnSelect={this.onSettingChange.bind(this, "SearchTabId")}
                         defaultLabel={state.defaultPagesSettings.SearchTabName !== "" ? state.defaultPagesSettings.SearchTabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -225,14 +228,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("pl404TabId.Help") }
-                        label={resx.get("pl404TabId") }
+                        tooltipMessage={resx.get("pl404TabId.Help")}
+                        label={resx.get("pl404TabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 3 }}
                         selectedTabId={state.defaultPagesSettings.Custom404TabId}
-                        OnSelect={this.onSettingChange.bind(this, "Custom404TabId") }
+                        OnSelect={this.onSettingChange.bind(this, "Custom404TabId")}
                         defaultLabel={state.defaultPagesSettings.Custom404TabName !== "" ? state.defaultPagesSettings.Custom404TabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -242,14 +245,14 @@ class DefaultPagesSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("pl500TabId.Help") }
-                        label={resx.get("pl500TabId") }
+                        tooltipMessage={resx.get("pl500TabId.Help")}
+                        label={resx.get("pl500TabId")}
                         />
                     <PagePicker
                         serviceFramework={util.utilities.sf}
                         style={{ width: "100%", zIndex: 2 }}
                         selectedTabId={state.defaultPagesSettings.Custom500TabId}
-                        OnSelect={this.onSettingChange.bind(this, "Custom500TabId") }
+                        OnSelect={this.onSettingChange.bind(this, "Custom500TabId")}
                         defaultLabel={state.defaultPagesSettings.Custom500TabName !== "" ? state.defaultPagesSettings.Custom500TabName : noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -262,29 +265,33 @@ class DefaultPagesSettingsPanelBody extends Component {
             return (
                 <div className={styles.defaultPagesSettings}>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
-                    <div className="sectionTitle">{resx.get("PageOutputSettings") }</div>
-                    <InputGroup style={{ paddingTop: "10px" }}>
-                        <Label
-                            tooltipMessage={resx.get("plPageHeadText.Help") }
-                            label={resx.get("plPageHeadText") }
-                            />
-                        <MultiLineInput
-                            value={state.defaultPagesSettings.PageHeadText}
-                            onChange={this.onSettingChange.bind(this, "PageHeadText") }
-                            />
-                    </InputGroup>
+                    {isHost &&
+                        <div className="sectionTitle">{resx.get("PageOutputSettings")}</div>}
+                    {isHost &&
+                        <InputGroup style={{ paddingTop: "10px" }}>
+                            <Label
+                                tooltipMessage={resx.get("plPageHeadText.Help")}
+                                label={resx.get("plPageHeadText")}
+                                />
+                            <MultiLineInput
+                                value={state.defaultPagesSettings.PageHeadText}
+                                onChange={this.onSettingChange.bind(this, "PageHeadText")}
+                                />
+                        </InputGroup>
+                    }
+
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.defaultPagesSettingsClientModified}
                             type="secondary"
-                            onClick={this.onCancel.bind(this) }>
-                            {resx.get("Cancel") }
+                            onClick={this.onCancel.bind(this)}>
+                            {resx.get("Cancel")}
                         </Button>
                         <Button
                             disabled={!this.props.defaultPagesSettingsClientModified}
                             type="primary"
-                            onClick={this.onUpdate.bind(this) }>
-                            {resx.get("Save") }
+                            onClick={this.onUpdate.bind(this)}>
+                            {resx.get("Save")}
                         </Button>
                     </div>
                 </div>

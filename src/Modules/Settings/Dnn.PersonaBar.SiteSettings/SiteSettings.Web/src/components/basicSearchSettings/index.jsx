@@ -31,7 +31,7 @@ class BasicSearchSettingsPanelBody extends Component {
                 maxlength: false
             },
             triedToSubmit: false
-        };        
+        };
     }
 
     componentWillMount() {
@@ -322,6 +322,8 @@ class BasicSearchSettingsPanelBody extends Component {
                         <div className="sectionTitle">{resx.get("SearchIndex")}</div>
                         <div className="searchIndexWrapper">
                             <div className="searchIndexWrapper-left">
+                                <div className="searchReIndexWarning">{resx.get("MessageReIndexWarning")}</div>
+                                <div className="searchCompactIndexWarning">{resx.get("MessageCompactIndexWarning")}</div>
                                 <InputGroup>
                                     <Label
                                         labelType="inline"
@@ -377,6 +379,7 @@ class BasicSearchSettingsPanelBody extends Component {
                                         label={state.basicSearchSettings.SearchIndexLastModifedOn}
                                         />
                                 </InputGroup>
+                                <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>
                             </div>
                             <div className="searchIndexWrapper-right">
                                 <Button
@@ -395,7 +398,6 @@ class BasicSearchSettingsPanelBody extends Component {
                                     {resx.get("ReindexHostContent")}
                                 </Button>
                             </div>
-                            <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>
                         </div>
                         <div className="buttons-box">
                             <Button
@@ -421,7 +423,8 @@ class BasicSearchSettingsPanelBody extends Component {
                 <div className="sectionTitle">{resx.get("SearchIndex")}</div>
                 <div className="searchIndexWrapper">
                     <div className="searchIndexWrapper-left">
-
+                        <div className="searchReIndexWarning">{resx.get("MessageReIndexWarning")}</div>
+                        <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>
                     </div>
                     <div className="searchIndexWrapper-right">
                         <Button
@@ -430,7 +433,6 @@ class BasicSearchSettingsPanelBody extends Component {
                             {resx.get("ReindexContent")}
                         </Button>
                     </div>
-                    <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>
                 </div>
             </div>);
         }

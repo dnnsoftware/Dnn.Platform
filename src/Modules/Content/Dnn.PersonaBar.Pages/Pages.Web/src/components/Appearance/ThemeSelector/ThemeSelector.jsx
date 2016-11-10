@@ -19,9 +19,17 @@ class ThemeSelector extends Component {
         return selectedTheme.packageName === theme.packageName;
     }
 
+    getSelectedIndex() {
+        const { selectedTheme, themes } = this.props;
+        if (!selectedTheme) {
+            return -1;
+        }
+        return themes.findIndex(c => c.packageName === selectedTheme.packageName);
+    }
+
     getThemeCards() {
         const { themes } = this.props;
-        
+
         if (themes.length === 0) {
             return <div className="no-appearance-items">{localization.get("NoThemes")}</div>;
         }
@@ -37,12 +45,13 @@ class ThemeSelector extends Component {
     }
 
     render() {        
+        const selectedIndex = this.getSelectedIndex();    
         return (
             <div>
                 <Label 
                     label={localization.get("PageTheme")} 
                     tooltipMessage={localization.get("PageThemeTooltip")} />
-                <Gallery>
+                <Gallery scrollToIndex={selectedIndex}>
                     {this.getThemeCards()}
                 </Gallery>
             </div>

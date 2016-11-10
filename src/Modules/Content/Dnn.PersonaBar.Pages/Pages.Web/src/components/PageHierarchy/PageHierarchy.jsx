@@ -13,7 +13,8 @@ class PageHierarchy extends Component {
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
         pageHierarchyManager.setItemTemplate(this.props.itemTemplate);
-        pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);        
+        pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);   
+        pageHierarchyManager.setCurrentTabIdAndSiteRoot(utils.getCurrentPageId(), utils.getSiteRoot());
     }
 
     componentWillReceiveProps(nextProps) {

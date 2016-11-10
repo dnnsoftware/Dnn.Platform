@@ -5,9 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Xml;
@@ -20,10 +18,11 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using System.Web.UI;
+using Dnn.PersonaBar.SiteSettings.Components;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -31,22 +30,21 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     public class LanguagesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
+        private const string LocalResourcesFile = "~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
 
-        private const string LocalResourceFile = "~/DesktopModules/Admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
-        private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
-
-        // sample formats:
+        // Sample matches:
         // MyResources.ascx.en-US.resx
         // MyResources.ascx.en-US.Host.resx
         // MyResources.ascx.en-US.Portal-123.resx
-        protected static readonly Regex FileInfoRegex = new Regex(
-            @"\.(\w\w\-\w\w\w?)(\.Host)?(\.Portal-(\d+))?\.resx$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+        internal static readonly Regex FileInfoRegex = new Regex(
+            @"\.([A-Z]{2}\-[A-Z]{2})((\.Host)?|(\.Portal-\d+)?)\.resx$",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
         private string _selectedResourceFile;
 
         #region -------------------------------- PUBLIC API METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
-        // From inside Visual Studio editor press [CTRL]+[M] then [L] to expand source code folding
+        // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
         #endregion
 
         // GET /api/personabar/languages/GetRootResourcesFolders?mode=Site
@@ -65,9 +63,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 switch (resourceMode)
                 {
                     case LanguageResourceMode.Portal:
-                    {
-                        folders.AddRange(new[]
                         {
+                            folders.AddRange(new[]
+                            {
                             "Admin",
                             "Controls",
                             "DesktopModules",
@@ -75,22 +73,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             "Providers"
                         }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + s))));
 
-                        const string skins = "Skins";
-                        var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);
+                            const string skins = "Skins";
+                            var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);
 
-                        if (Directory.Exists(skinsPath) && HasLocalResources(skinsPath))
-                        {
-                            folders.Add(new KeyValuePair<string, string>(LocalizeString("HostSkins"), skinsPath));
-                        }
+                            if (Directory.Exists(skinsPath) && HasLocalResources(skinsPath))
+                            {
+                                folders.Add(new KeyValuePair<string, string>(LocalizeString("HostSkins"), skinsPath));
+                            }
 
-                        var portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins);
-                        if (Directory.Exists(portalSkinFolder) && PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId)
-                        {
-                            folders.Add(new KeyValuePair<string, string>(
-                                LocalizeString("PortalSkins"), Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins)));
+                            var portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins);
+                            if (Directory.Exists(portalSkinFolder) && PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId)
+                            {
+                                folders.Add(new KeyValuePair<string, string>(
+                                    LocalizeString("PortalSkins"), Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins)));
+                            }
+                            break;
                         }
-                        break;
-                    }
                     case LanguageResourceMode.Host:
                         folders.Add(new KeyValuePair<string, string>(
                             LocalizeString("GlobalResources"), server.MapPath("~/App_GlobalResources")));
@@ -133,7 +131,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (string.IsNullOrEmpty(currentFolder))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "MissingParams");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "MissingResourcesFolder");
                 }
 
                 folders.AddRange(GetResxDirectories(server.MapPath("~/" + currentFolder)));
@@ -167,18 +165,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     case LanguageResourceMode.System:
                     case LanguageResourceMode.Host:
                     case LanguageResourceMode.Portal:
-                    {
-                        //this old behaviour is not maintained in the PersonaBar pages
+                        {
+                            //this old behaviour is not maintained in the PersonaBar pages
 
-                        //var dbMode = Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId));
-                        //if (dbMode != resourceMode.ToString())
-                        //    Personalization.SetProfile("LanguageEditor", "Mode" + PortalId, resourceMode.ToString());
-                        //
-                        //var dbHighlight = Convert.ToString(Personalization.GetProfile("LanguageEditor", "HighLight" + PortalId));
-                        //if (dbHighlight != highlight.ToString())
-                        //    Personalization.SetProfile("LanguageEditor", "HighLight" + PortalId, highlight.ToString());
-                        break;
-                    }
+                            //var dbMode = Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId));
+                            //if (dbMode != resourceMode.ToString())
+                            //    Personalization.SetProfile("LanguageEditor", "Mode" + PortalId, resourceMode.ToString());
+                            //
+                            //var dbHighlight = Convert.ToString(Personalization.GetProfile("LanguageEditor", "HighLight" + PortalId));
+                            //if (dbHighlight != highlight.ToString())
+                            //    Personalization.SetProfile("LanguageEditor", "HighLight" + PortalId, highlight.ToString());
+                            break;
+                        }
                     default:
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
                 }
@@ -187,7 +185,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourceFile), locale));
+                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), locale));
                 }
 
                 _selectedResourceFile = !string.IsNullOrEmpty(resourceFile)
@@ -218,7 +216,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }
                     if (toBeDeleted.Count > 0)
                     {
-                        Logger.Warn(Localization.GetString("Obsolete", LocalResourceFile));
+                        Logger.Warn(LocalizeString("Obsolete"));
                         foreach (string key in toBeDeleted)
                         {
                             editTable.Remove(key);
@@ -281,17 +279,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourceFile), request.Locale));
+                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
                 }
 
                 if (string.IsNullOrEmpty(request.ResourceFile))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourceFile), request.Locale));
+                        string.Format(LocalizeString("MissingResourceFileName"), request.Locale));
                 }
 
-                //TODO
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "TODO; NotImplemented");
+                _selectedResourceFile = HttpContext.Current.Server.MapPath("~/" + request.ResourceFile);
+                var message = SaveResourceFileFile(resourceMode, request.Locale, request.Entries);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Message = message });
             }
             catch (Exception ex)
             {
@@ -309,7 +308,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 var progress = new LocalizationProgress { InProgress = true, };
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                LocalizeSitePages(progress, PortalId, translatePages, portalSettings.DefaultLanguage);
+                LanguagesControllerTasks.LocalizeSitePages(
+                    progress, PortalId, translatePages, portalSettings.DefaultLanguage ?? Localization.SystemLocale);
                 return Request.CreateResponse(HttpStatusCode.OK, progress);
             }
             catch (Exception ex)
@@ -325,7 +325,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                var progress = ReadProgressFile();
+                var progress = LanguagesControllerTasks.ReadProgressFile();
                 return Request.CreateResponse(HttpStatusCode.OK, progress);
             }
             catch (Exception ex)
@@ -335,15 +335,30 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        // POST /api/personabar/languages/EnableLocalizedContent?translatePages=true
+        // POST /api/personabar/languages/DisableLocalizedContent
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DiableLocalizedContent()
+        public HttpResponseMessage DisableLocalizedContent()
         {
             try
             {
-                //TODO
-                return Request.CreateResponse(HttpStatusCode.OK, new { failed = true});
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalDefault = portalSettings.DefaultLanguage;
+                foreach (var locale in LocaleController.Instance.GetLocales(PortalId).Values)
+                {
+                    if (locale.Code != portalDefault)
+                    {
+                        LocaleController.Instance.PublishLanguage(PortalId, locale.Code, false);
+                        TabController.Instance.DeleteTranslatedTabs(PortalId, locale.Code, false);
+                        PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
+                    }
+                }
+
+                TabController.Instance.EnsureNeutralLanguage(PortalId, portalDefault, false);
+                PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "False");
+                DataCache.ClearPortalCache(PortalId, true);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -354,7 +369,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
-        // From inside Visual Studio editor press [CTRL]+[M] then [L] to expand source code folding
+        // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
         #endregion
 
         private static IEnumerable<KeyValuePair<string, string>> GetResxDirectories(string path)
@@ -410,7 +425,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, LocalResourcesFile);
         }
 
         /// -----------------------------------------------------------------------------
@@ -544,21 +559,146 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="language">Language Name.</param>
         /// <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
         /// <returns>Localized File Name</returns>
-        /// <remarks>
-        /// </remarks>
         /// -----------------------------------------------------------------------------
         private string ResourceFile(string language, LanguageResourceMode mode)
         {
             return Localization.GetResourceFileName(_selectedResourceFile, language, mode.ToString(), PortalId);
         }
 
-        /*
-        private string GetResourceKeyXPath(string resourceKeyName)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Updates all values from the datagrid
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private string SaveResourceFileFile(LanguageResourceMode mode, string locale, IEnumerable<LocalizationEntry> entries)
+        {
+            var resDoc = new XmlDocument();
+            var defDoc = new XmlDocument();
+
+            var filename = ResourceFile(locale, mode);
+            resDoc.Load(File.Exists(filename)
+                ? filename :
+                ResourceFile(Localization.SystemLocale, LanguageResourceMode.System));
+
+            defDoc.Load(ResourceFile(Localization.SystemLocale, LanguageResourceMode.System));
+
+            //store all changed resources
+            var changedResources = new Dictionary<string, string>();
+
+            // only items different from default will be saved
+            foreach (var entry in entries)
+            {
+                var resourceKey = entry.Name;
+                var txtValue = entry.NewValue;
+
+                var node = resDoc.SelectSingleNode(GetResourceKeyXPath(resourceKey) + "/value");
+                switch (mode)
+                {
+                    case LanguageResourceMode.System:
+                        // this will save all items
+                        if (node == null)
+                        {
+                            node = AddResourceKey(resDoc, resourceKey);
+                        }
+                        node.InnerXml = HttpUtility.HtmlEncode(txtValue);
+                        if (txtValue != entry.DefaultValue)
+                            changedResources.Add(resourceKey, txtValue);
+                        break;
+                    case LanguageResourceMode.Host:
+                    case LanguageResourceMode.Portal:
+                        // only items different from default will be saved
+                        if (txtValue != entry.DefaultValue)
+                        {
+                            if (node == null)
+                            {
+                                node = AddResourceKey(resDoc, resourceKey);
+                            }
+                            node.InnerXml = HttpUtility.HtmlEncode(txtValue);
+                            changedResources.Add(resourceKey, txtValue);
+                        }
+                        else
+                        {
+                            // remove item = default
+                            var parent = node?.ParentNode;
+                            if (parent != null)
+                            {
+                                resDoc.SelectSingleNode("//root")?.RemoveChild(parent);
+                            }
+                        }
+                        break;
+                }
+            }
+
+            // remove obsolete keys
+            var nodeLoopVariables = resDoc.SelectNodes("//root/data");
+            if (nodeLoopVariables != null)
+            {
+                foreach (XmlNode node in nodeLoopVariables)
+                {
+                    if (node.Attributes != null &&
+                        defDoc.SelectSingleNode(GetResourceKeyXPath(node.Attributes["name"].Value)) == null)
+                    {
+                        node.ParentNode?.RemoveChild(node);
+                    }
+                }
+            }
+
+            // remove duplicate keys
+            nodeLoopVariables = resDoc.SelectNodes("//root/data");
+            if (nodeLoopVariables != null)
+            {
+                foreach (XmlNode node in nodeLoopVariables)
+                {
+                    if (node.Attributes != null)
+                    {
+                        var xmlNodeList = resDoc.SelectNodes(GetResourceKeyXPath(node.Attributes["name"].Value));
+                        if (xmlNodeList != null && xmlNodeList.Count > 1)
+                        {
+                            node.ParentNode?.RemoveChild(node);
+                        }
+                    }
+                }
+            }
+
+            switch (mode)
+            {
+                case LanguageResourceMode.System:
+                    resDoc.Save(filename);
+                    break;
+                case LanguageResourceMode.Host:
+                case LanguageResourceMode.Portal:
+                    var xmlNodeList = resDoc.SelectNodes("//root/data");
+                    if (xmlNodeList != null && xmlNodeList.Count > 0)
+                    {
+                        // there's something to save
+                        resDoc.Save(filename);
+                    }
+                    else if (File.Exists(filename))
+                    {
+                        // nothing to be saved, if file exists delete
+                        File.Delete(filename);
+                    }
+                    break;
+            }
+
+            if (changedResources.Count > 0)
+            {
+                var values = string.Join("; ", changedResources.Select(x => x.Key + "=" + x.Value));
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo(LocalizeString("ResourceUpdated"), ResourceFile(locale, mode)));
+                log.LogProperties.Add(new LogDetailInfo("Updated Values", values));
+                LogController.Instance.AddLog(log);
+            }
+
+            return string.Format(LocalizeString("Updated"), ResourceFile(locale, mode));
+        }
+
+        private static string GetResourceKeyXPath(string resourceKeyName)
         {
             return "//root/data[@name=" + XmlUtils.XPathLiteral(resourceKeyName) + "]";
         }
 
-        private XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
+        private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
         {
             // missing entry
             XmlNode nodeData = resourceDoc.CreateElement("data");
@@ -569,182 +709,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             selectSingleNode?.AppendChild(nodeData);
             return nodeData.AppendChild(resourceDoc.CreateElement("value"));
         }
-        */
-
-        private static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLocale)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    var languageCount = LocaleController.Instance.GetLocales(portalId).Count;
-                    var pageList = GetPages(portalId);
-                    var languageCounter = 0;
-
-                    if (translatePages)
-                    {
-                        ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLocale),
-                            defaultLocale, languageCounter, languageCount, progress);
-                    }
-
-                    PublishLanguage(defaultLocale, portalId, true);
-
-                    PortalController.UpdatePortalSetting(portalId, "ContentLocalizationEnabled", "True");
-
-                    // populate other languages
-                    var defaultLanguage = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
-                    foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
-                    {
-                        if (locale.Code != defaultLocale)
-                        {
-                            languageCounter++;
-                            pageList = GetPages(portalId).Where(p => p.CultureCode == defaultLanguage).ToList();
-
-                            //add translator role
-                            Localization.AddTranslatorRole(portalId, locale);
-
-                            //populate pages
-                            ProcessLanguage(pageList, locale, defaultLocale, languageCounter, languageCount, progress);
-
-                            //Map special pages
-                            PortalController.Instance.MapLocalizedSpecialPages(portalId, locale.Code);
-                        }
-                    }
-
-                    //clear portal cache
-                    DataCache.ClearPortalCache(portalId, true);
-                    progress.Reset();
-                    SaveProgressToFile(progress);
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        Logger.Error(ex);
-                        progress.Reset().CurrentOperationText = ex.Message;
-                        SaveProgressToFile(progress);
-                    }
-                    catch (Exception)
-                    {
-                        //ignore
-                    }
-                }
-            });
-        }
-
-        private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale,
-            string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
-        {
-            progress.PrimaryTotal = totalLanguages;
-            progress.PrimaryValue = languageCount;
-
-            var total = pageList.Count;
-            if (total == 0)
-            {
-                progress.SecondaryTotal = 0;
-                progress.SecondaryValue = 0;
-                progress.SecondaryPercent = 100;
-            }
-
-            for (var i = 0; i < total; i++)
-            {
-                var currentTab = pageList.ElementAt(i);
-                var stepNo = i + 1;
-
-                progress.SecondaryTotal = total;
-                progress.SecondaryValue = stepNo;
-                progress.SecondaryPercent = Convert.ToInt32((float)stepNo / total * 100);
-                progress.PrimaryPercent =
-                    Convert.ToInt32((languageCount + (float)stepNo / total) / totalLanguages * 100);
-
-                progress.CurrentOperationText = string.Format(Localization.GetString(
-                    "ProcessingPage", LocalResourceFile), locale.Code, stepNo, total, currentTab.TabName);
-
-                progress.TimeEstimated = (total - stepNo) * 100;
-
-                SaveProgressToFile(progress);
-
-                if (locale.Code == defaultLocale)
-                {
-                    TabController.Instance.LocalizeTab(currentTab, locale, true);
-                }
-                else
-                {
-                    TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
-                }
-            }
-        }
-
-        private static void SaveProgressToFile(LocalizationProgress progress)
-        {
-            var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-            var text = JsonConvert.SerializeObject(progress);
-#if false
-            // this could have file locking issues from multiple threads
-            File.WriteAllText(path, text);
-#else
-            using (var file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 256))
-            {
-                var bytes = Encoding.UTF8.GetBytes(text);
-                file.Write(bytes, 0, bytes.Length);
-                file.Flush();
-            }
-#endif
-        }
-
-        private static LocalizationProgress ReadProgressFile()
-        {
-            var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-#if true
-            var text = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
-#else
-            using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
-            {
-                var bytes = new byte[file.Length];
-                file.Read(bytes, 0, bytes.Length);
-                var text = Encoding.UTF8.GetString(bytes);
-                return JsonConvert.DeserializeObject<LocalizationProgress>(text);
-            }
-#endif
-        }
-
-        private static IList<TabInfo> GetPages(int portalId)
-        {
-            return (
-                from kvp in TabController.Instance.GetTabsByPortal(portalId)
-                where !kvp.Value.TabPath.StartsWith("//Admin")
-                      && !kvp.Value.IsDeleted
-                      && !kvp.Value.IsSystem
-                select kvp.Value
-                ).ToList();
-        }
-
-        private static void PublishLanguage(string cultureCode, int portalId, bool publish)
-        {
-            var enabledLanguages = LocaleController.Instance.GetLocales(portalId);
-            Locale enabledlanguage;
-            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
-            {
-                enabledlanguage.IsPublished = publish;
-                LocaleController.Instance.UpdatePortalLocale(enabledlanguage);
-            }
-        }
-
     }
 
     public static class KpvExtension
     {
-        public static IEnumerable<NameValueEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
+        public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
         {
             var appPath = Globals.ApplicationMapPath;
             var appPathLen = appPath.Length;
             if (!appPath.EndsWith(@"\")) appPathLen++;
 
-            return list.Select(kpv => new NameValueEntry
+            return list.Select(kpv => new LocalizationEntry
             {
                 Name = kpv.Key,
-                Value = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/")
+                NewValue = (kpv.Value.StartsWith(appPath) ? kpv.Value.Substring(appPathLen) : kpv.Value).Replace(@"\", @"/")
             });
         }
     }
