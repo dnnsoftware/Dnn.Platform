@@ -14,7 +14,9 @@ window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
 window.dnn.pages.setItemTemplate = application.setItemTemplate;
 
 const appContainer = document.getElementById("pages-container");
-application.init(appContainer.dataset.initCallback);
+const initCallback = appContainer.getAttribute("data-init-callback");
+application.init(initCallback);
+
 render(
     <Provider store={store}>
         <App />
