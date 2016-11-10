@@ -169,6 +169,7 @@ a.plainbtn {
     border-radius: 3px;
     color: #fff;
     display: none;
+    word-break: break-word;
 }
 
     #notification-dialog > p {
