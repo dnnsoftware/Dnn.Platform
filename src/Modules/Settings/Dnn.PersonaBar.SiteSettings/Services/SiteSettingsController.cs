@@ -1923,6 +1923,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         TabController.Instance.RestoreTab(tab, PortalSettings);
                         ModuleController.Instance.GetTabModules(tab.TabID).Values.ToList().ForEach(ModuleController.Instance.RestoreModule);
                     }
+
+                    if (LocaleController.Instance.GetLocales(pid).Count == 2)
+                    {
+                        redirectUrl = Globals.NavigateURL();
+                    }
                 }
                 else
                 {
@@ -1930,7 +1935,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Localization.RemoveLanguageFromPortal(PortalId, language.LanguageId);
 
                     //if the disable language is current language, should redirect to default language.
-                    if (request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                    if (request.Code.Equals(Thread.CurrentThread.CurrentUICulture.ToString(), StringComparison.InvariantCultureIgnoreCase) || LocaleController.Instance.GetLocales(pid).Count == 1)
                     {
                         redirectUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID,
                                                             PortalSettings.ActiveTab.IsSuperTab,

@@ -32,9 +32,7 @@ class SynonymsGroupsPanel extends Component {
             tableFields.push({ "name": resx.get("SynonymsGroup.Header"), "id": "Synonyms" });
         }
 
-        if (!props.cultures) {
-            props.dispatch(SearchActions.getCultureList(props.portalId));
-        }
+        props.dispatch(SearchActions.getCultureList(props.portalId));
 
         if (props.synonymsGroups) {
             this.setState({
