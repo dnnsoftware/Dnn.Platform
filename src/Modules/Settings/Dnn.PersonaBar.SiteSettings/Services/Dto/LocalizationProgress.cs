@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public int SecondaryValue { get; set; }
         public int SecondaryPercent { get; set; }
         public int TimeEstimated { get; set; }
+        public string Error { get; set; }
 
         public LocalizationProgress Reset()
         {

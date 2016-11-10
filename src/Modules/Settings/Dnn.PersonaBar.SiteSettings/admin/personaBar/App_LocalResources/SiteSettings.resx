@@ -1008,6 +1008,36 @@
   <data name="translatorsLabel.Help" xml:space="preserve">
     <value>The selected roles will be granted explicit Edit Rights to all new pages and localized modules for this language.</value>
   </data>
+  <data name="GlobalResources.Text" xml:space="preserve">
+    <value>Global Resources</value>
+  </data>
+  <data name="LocalResources.Text" xml:space="preserve">
+    <value>Local Resources</value>
+  </data>
+  <data name="SiteTemplates.Text" xml:space="preserve">
+    <value>Site Templates</value>
+  </data>
+  <data name="Exceptions.Text" xml:space="preserve">
+    <value>Exceptions</value>
+  </data>
+  <data name="HostSkins.Text" xml:space="preserve">
+    <value>Host Themes</value>
+  </data>
+  <data name="PortalSkins.Text" xml:space="preserve">
+    <value>Site Themes</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="Updated.Text" xml:space="preserve">
+    <value>File {0} has been saved.</value>
+  </data>
+  <data name="ResourceUpdated.Text" xml:space="preserve">
+    <value>Resource file has been updated.</value>
+  </data>
+  <data name="InvalidLocale.ErrorMessage" xml:space="preserve">
+    <value>Current site does not support this locale ({0}).</value>
+  </data>
   <data name="MicroServices.Text" xml:space="preserve">
     <value>MicroServices</value>
   </data>
@@ -1019,6 +1049,27 @@
   </data>
   <data name="MessageReIndexWarning.Text" xml:space="preserve">
     <value>Re-Index deletes existing content from the Index Store and then re-indexes everything. Re-Indexing is done as part of search crawler(s) scheduled task. To re-index immediately, the Search Crawler should be run manually from the scheduler.</value>
+  </data>
+  <data name="CurrentSiteDefault.Text" xml:space="preserve">
+    <value>Current Site Default:</value>
+  </data>
+  <data name="CurrentSiteDefault.Help" xml:space="preserve">
+    <value>Once localized content is enabled the default site culture will be permanently set and cannot be changed. Click Cancel now if you want to change the current site default.</value>
+  </data>
+  <data name="AllPagesTranslatable.Text" xml:space="preserve">
+    <value>Make All Pages Translatable: </value>
+  </data>
+  <data name="AllPagesTranslatable.Help" xml:space="preserve">
+    <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
+  </data>
+  <data name="EnableLocalizedContent.Text" xml:space="preserve">
+    <value>Enable Localized Content</value>
+  </data>
+  <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
+     <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
+  </data>
+  <data name="ProcessingPage.Text" xml:space="preserve">
+    <value>{0}: Page {1} of {2} - {3}</value>
   </data>
   <data name="MessageCompactIndexWarning.Text" xml:space="preserve">
     <value>Compacting of Index reclaims space from deleted items in the Index Store. Compacting is recommended only when there are many 'Deleted Documents' in Index Store. Compacting may require twice the size of current Index Store during processing.</value>
