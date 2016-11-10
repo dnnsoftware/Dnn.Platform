@@ -77,7 +77,7 @@ class PageSettings extends Component {
         }
 
         const footer = this.getPageFooter(buttons);
-        const appearanceFooter = this.getPageFooter(buttons);
+        const appearanceFooter = this.getPageFooter(appearanceButtons);
 
         return (
             <Tabs 

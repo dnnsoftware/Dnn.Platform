@@ -67,7 +67,7 @@ class Appearance extends Component {
 
     render() {   
         const { page, themes, layouts, containers } = this.props;
-        const selectedTheme = selectedLayout ? themes.find(t => t.packageName === page.themeName) : null;
+        const selectedTheme = themes.find(t => t.packageName === page.themeName);
         const selectedLayout = layouts.find(l => this.addAscxExtension(l.path) === page.skinSrc);
         const selectedContainer = containers.find(c => this.addAscxExtension(c.path) === page.containerSrc);     
         return (
