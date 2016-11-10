@@ -435,8 +435,8 @@
   <data name="ChangesNotSaved.Text" xml:space="preserve">
     <value>Changes have not been saved</value>
   </data>
-  <data name="CopyAppearanceToDescenantPagesSuccess.Text" xml:space="preserve">
-    <value>Appearance has been copy to descenant pages successfully</value>
+  <data name="CopyAppearanceToDescendantPagesSuccess.Text" xml:space="preserve">
+    <value>Appearance has been copy to descendant pages successfully</value>
   </data>
   <data name="DeletePageModuleSuccess.Text" xml:space="preserve">
     <value>Module "[MODULETITLE]" has been deleted successfully</value>

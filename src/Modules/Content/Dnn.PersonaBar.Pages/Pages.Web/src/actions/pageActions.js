@@ -179,7 +179,7 @@ const pageActions = {
                 containerSrc: page.containerSrc
             };
             PagesService.copyAppearanceToDescendantPages(page.tabId, theme).then(() => {
-                utils.notify(Localization.get("CopyAppearanceToDescenantPagesSuccess"));
+                utils.notify(Localization.get("CopyAppearanceToDescendantPagesSuccess"));
                 dispatch({
                     type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
                     data: { }
