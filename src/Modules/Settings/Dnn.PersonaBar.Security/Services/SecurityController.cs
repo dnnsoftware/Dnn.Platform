@@ -62,12 +62,12 @@ namespace Dnn.PersonaBar.Security.Services
                 dynamic settings = new ExpandoObject();
                 settings.DefaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
                 settings.PrimaryAdministratorId = PortalSettings.Current.AdministratorId;
-                settings.RedirectAfterLoginTabId = PortalSettings.Registration.RedirectAfterLogin;
-                settings.RedirectAfterLoginTabName = PortalSettings.Registration.RedirectAfterLogin != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterLogin, PortalId).TabName : string.Empty;
-                settings.RedirectAfterLoginTabPath = PortalSettings.Registration.RedirectAfterLogin != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterLogin, PortalId).TabPath : string.Empty;
-                settings.RedirectAfterLogoutTabId = PortalSettings.Registration.RedirectAfterLogout;
-                settings.RedirectAfterLogoutTabName = PortalSettings.Registration.RedirectAfterLogout != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterLogout, PortalId).TabName : string.Empty;
-                settings.RedirectAfterLogoutTabPath = PortalSettings.Registration.RedirectAfterLogout != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterLogout, PortalId).TabPath : string.Empty;
+                settings.RedirectAfterLoginTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabName = GetTabName(PortalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLogoutTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabName = GetTabName(PortalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterLogout);
                 settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", PortalId, true);
                 settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", PortalId, false);
                 settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", PortalId, false);
@@ -420,9 +420,9 @@ namespace Dnn.PersonaBar.Security.Services
                             RequirePasswordConfirmation = PortalController.GetPortalSettingAsBoolean("Registration_RequireConfirmPassword", PortalId, true),
                             RequireValidProfile = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfile", PortalId, false),
                             UseCaptchaRegister = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRegister", PortalId, false),
-                            RedirectAfterRegistrationTabId = PortalSettings.Registration.RedirectAfterRegistration,
-                            RedirectAfterRegistrationTabName = PortalSettings.Registration.RedirectAfterRegistration != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterRegistration, PortalId).TabName : string.Empty,
-                            RedirectAfterRegistrationTabPath = PortalSettings.Registration.RedirectAfterRegistration != Null.NullInteger ? TabController.Instance.GetTab(PortalSettings.Registration.RedirectAfterRegistration, PortalId).TabPath : string.Empty,
+                            RedirectAfterRegistrationTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterRegistration),
+                            RedirectAfterRegistrationTabName = GetTabName(PortalSettings.Registration.RedirectAfterRegistration),
+                            RedirectAfterRegistrationTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterRegistration),
                             RequiresUniqueEmail = MembershipProviderConfig.RequiresUniqueEmail.ToString(CultureInfo.InvariantCulture),
                             PasswordFormat = MembershipProviderConfig.PasswordFormat.ToString(),
                             PasswordRetrievalEnabled = MembershipProviderConfig.PasswordRetrievalEnabled.ToString(CultureInfo.InvariantCulture),
@@ -445,6 +445,38 @@ namespace Dnn.PersonaBar.Security.Services
             {
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private int ValidateTabId(int tabId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, PortalId);
+            return tab?.TabID ?? Null.NullInteger;
+        }
+
+        private string GetTabName(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, PortalId);
+                return tab != null ? tab.TabName : "";
+            }
+        }
+
+        private string GetTabPath(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, PortalId);
+                return tab != null ? tab.TabPath : "";
             }
         }
 
