@@ -25,7 +25,6 @@ class TranslationProgressBars extends Component {
             elapsedTime: ""
         };
         this.currentTime = Date.now();
-        this.update();
     }
 
     normalizeTime(time) {
@@ -44,41 +43,20 @@ class TranslationProgressBars extends Component {
     }
 
 
-    updateStates() {
-        let {progress, totalProgress} = this.state;
-        totalProgress+=5;
-        progress+=5;
-        if (progress > 100) {
-            progress=100;
-        }
-        if (totalProgress > 100) {
-            totalProgress = 100;
-        }
-        this.setState({progress, totalProgress});
-    }
-
-    update() {
-        this.updateStates();
-        if (this.state.progress >= 100 && this.state.totalProgress >= 100) {
-            return;
-        }
-        setTimeout(this.update.bind(this), 500);
-    }
-
     /* eslint-disable react/no-danger */
     render() {
         const {state, props} = this;
         const totalProgressText = 
-            resx.get("TotalProgress").replace("[number]", state.totalProgress) + " - " +
-            resx.get("TotalLanguages").replace("[number]", state.totalLanguages);
-        const progressText = resx.get("Progress").replace("[number]", state.progress);
+            resx.get("TotalProgress").replace("[number]", props.PrimaryPercent) + " - " +
+            resx.get("TotalLanguages").replace("[number]", props.PrimaryTotal);
+        const progressText = resx.get("Progress").replace("[number]",  props.SecondaryPercent);
 
-        return <div className="translation-progress-bars">
+        return <div className={"translation-progress-bars" + props.Error ? " error" : ""}>
             <div className="text">
-                <span>{resx.get("TranslationProgressBarText").replace("[number]", state.totalPages)}</span>
+                <span>{resx.get("TranslationProgressBarText").replace("[number]", props.SecondaryTotal)}</span>
             </div>
-            <ProgressBar text={totalProgressText} procentageValue={state.totalProgress}/>
-            <ProgressBar text={progressText} procentageValue={state.progress}/>
+            <ProgressBar text={totalProgressText} procentageValue={props.PrimaryPercent}/>
+            <ProgressBar text={progressText} rightText={props.CurrentOperationText} procentageValue={props.SecondaryPercent}/>
             <div className="text time">
                 {resx.get("ElapsedTime")}
                 <span>{this.getTime()}</span>
@@ -91,7 +69,17 @@ TranslationProgressBars.propTypes = {
     dispatch: PropTypes.func.isRequired,
     closePersonaBarPage: PropTypes.func,
     languages: PropTypes.array,
-    languageSettings: PropTypes.obj
+    languageSettings: PropTypes.obj,
+    InProgress: PropTypes.bool,
+    PrimaryPercent: PropTypes.number,
+    PrimaryTotal: PropTypes.number,
+    PrimaryValue: PropTypes.number,
+    SecondaryPercent: PropTypes.number,
+    SecondaryTotal: PropTypes.number,
+    SecondaryValue: PropTypes.number,
+    TimeEstimated: PropTypes.number,
+    CurrentOperationText: PropTypes.strings,
+    Error: PropTypes.strings
 };
 
 function mapStateToProps(state) {

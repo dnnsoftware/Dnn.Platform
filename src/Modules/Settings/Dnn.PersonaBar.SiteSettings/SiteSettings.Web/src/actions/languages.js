@@ -1,5 +1,6 @@
 import { languages as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
+import LanguageEditorService from "services/languageEditorService";
 import util from "../utils";
 
 const languagesActions = {
@@ -221,6 +222,53 @@ const languagesActions = {
             }, data => {
                 if (failureCallback) {
                     failureCallback(data);
+                }
+            });
+        };
+    },
+    disableLocalizedContent(callback, failureCallback) {
+        return (dispatch) => {
+           LanguageEditorService.disableLocalizedContent(data => {
+                dispatch({
+                    type: ActionTypes.DISABLED_LOCALIZED_CONTENT,
+                    data: {
+
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    enableLocalizedContent(payload, callback, failureCallback) {
+        return (dispatch) => {
+           LanguageEditorService.enableLocalizedContent(payload, data => {
+                dispatch({
+                    type: ActionTypes.ENABLED_LOCALIZED_CONTENT,
+                    data: {
+
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    getLocalizationProgress(callback) {
+        return (dispatch) => {
+           LanguageEditorService.getLocalizationProgress(data => {
+                if (callback) {
+                    callback(data);
                 }
             });
         };

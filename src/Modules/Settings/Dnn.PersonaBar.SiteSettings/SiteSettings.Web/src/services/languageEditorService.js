@@ -11,27 +11,39 @@ function serializeQueryStringParameters(obj) {
 class ApplicationService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
-
         sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
-
         return sf;
     }
-    getRootResourcesFolder(mode, callback) {
-        let sf = this.getServiceFramework("Languages");
 
+    getRootResourcesFolder(mode, callback) {
+        const sf = this.getServiceFramework("Languages");
         sf.get("GetRootResourcesFolders?mode=" + mode, {}, callback);
     }
-    getSubRootResources(folder, callback) {
-        let sf = this.getServiceFramework("Languages");
 
+    getSubRootResources(folder, callback) {
+        const sf = this.getServiceFramework("Languages");
         sf.get("GetSubRootResources?currentFolder=" + folder, {}, callback);
     }
+
     getResxEntries(parameters, callback) {
-
-        let sf = this.getServiceFramework("Languages");
-
+        const sf = this.getServiceFramework("Languages");
         sf.get("GetResxEntries?" + serializeQueryStringParameters(parameters), {}, callback);
+    }
+
+    enableLocalizedContent(parameters, callback, failureCallback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post("EnableLocalizedContent?"  + serializeQueryStringParameters(parameters), {}, callback, failureCallback);
+    }
+
+    disableLocalizedContent(parameters, callback, failureCallback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post("DisableLocalizedContent", {}, callback, failureCallback);
+    }
+
+    getLocalizationProgress(callback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.get("GetLocalizationProgress", {}, callback);
     }
 }
 const applicationService = new ApplicationService();

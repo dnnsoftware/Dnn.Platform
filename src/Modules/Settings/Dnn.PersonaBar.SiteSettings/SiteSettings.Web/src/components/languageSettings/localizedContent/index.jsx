@@ -9,6 +9,7 @@ import Label from "dnn-label";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
 import resx from "../../../resources";
+import util from "../../../utils";
 import TranslationProgressBars from "../TranslationProgressBars";
 import "./style.less";
 
@@ -16,13 +17,46 @@ class LocalizedContent extends Component {
     constructor() {
         super();
         this.state = {
-            makeAllPagesTranslatable: false,
-            triedToSubmit: false
+            triedToSubmit: false,
+            allPagesTranslatable: false,
+            InProgress: false,
+            showProgressBars: false
         };
+        this.counter = 0;
+        this.getProgressData = this.getProgressData.bind(this);
     }
 
     onEnable(event) {
+        const {props, state} = this;
+        props.dispatch(LanguagesActions.enableLocalizedContent({translatePages: state.allPagesTranslatable}, (data) => {
+            this.setState(data);
+            const newState = Object.assign(data, {showProgressBars: true});
+            this.setState(newState);
+            setTimeout(this.getProgressData, 500);
+            
+        }, (error) => {
+            const errorMessage = JSON.parse(error.responseText);
+            util.utilities.notifyError(errorMessage.Message);
+        }));
+    }
 
+    getProgressData() {
+        const {props, state} = this;
+        props.dispatch(LanguagesActions.getLocalizationProgress((data) => {
+            this.setState(data);
+            if (data.InProgress && !data.Error) {
+                return setTimeout(this.getProgressData, 500);
+            }
+            if (data.Error) {
+                return;
+            }
+            this.doneProgress(); 
+        }));
+    }
+
+    doneProgress() {
+        setTimeout(this.props.closePersonaBarPage, 2000);
+        props.dispatch(LanguagesActions.disableLocalizedContent());
     }
 
     getDefaultLanguage() {
@@ -33,11 +67,10 @@ class LocalizedContent extends Component {
         return languages.find(l => l.Code === languageSettings.SiteDefaultLanguage);
     }
 
-    onSettingChange(key, event) {
+    onChange(event) {
         let {state, props} = this;
-        let languageSettings = Object.assign({}, props.languageSettings);
-        languageSettings[key] = typeof (event) === "object" ? event.target.value : event;
-        props.dispatch(LanguagesActions.languageSettingsClientModified(languageSettings));
+        const allPagesTranslatable = typeof (event) === "object" ? event.target.value : event;
+        this.setState({allPagesTranslatable});
     }
 
     /* eslint-disable react/no-danger */
@@ -48,7 +81,7 @@ class LocalizedContent extends Component {
             <SocialPanelBody
                 className="create-language-pack-panel enable-localized-content-panel"
                 workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage.bind(this) }>
+                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage }>
                     {resx.get("BackToLanguages") }
                 </div>}
                 workSpaceTrayVisible={true}>
@@ -69,12 +102,12 @@ class LocalizedContent extends Component {
                             <div className="language-flag">
                                 <img src={defaultLanguage.Icon} />
                             </div>
-                            <div className="language-name">{defaultLanguage.EnglishName }</div>
+                            <div className="language-name">{defaultLanguage.EnglishName}</div>
                         </div>
-                        {props.languageSettings && <Switch
-                            value={props.languageSettings.AllPagesTranslatable}
-                            onChange={this.onSettingChange.bind(this, "AllPagesTranslatable") }
-                            />}
+                        <Switch
+                            value={state.allPagesTranslatable}
+                            onChange={this.onChange.bind(this) }
+                            />
                         <Label
                             className="float-right"
                             tooltipMessage={resx.get("AllPAgesTranslatable.Help") }
@@ -82,7 +115,7 @@ class LocalizedContent extends Component {
                             />
                     </InputGroup>
 
-                    <div className="buttons-box">
+                    {!state.showProgressBars && <div className="buttons-box">
                         <Button
                             type="secondary"
                             onClick={props.closePersonaBarPage.bind(this) }>
@@ -93,8 +126,20 @@ class LocalizedContent extends Component {
                             onClick={this.onEnable.bind(this) }>
                             {resx.get("EnableLocalizedContent") }
                         </Button>
-                    </div>
-                    <TranslationProgressBars />
+                    </div>}
+                    {this.state.showProgressBars && <TranslationProgressBars
+                        InProgress={this.state.InProgress}
+                        PrimaryPercent={this.state.PrimaryPercent}
+                        PrimaryTotal={this.state.PrimaryTotal}
+                        PrimaryValue={this.state.PrimaryValue}
+                        SecondaryPercent={this.state.SecondaryPercent}
+                        SecondaryTotal={this.state.SecondaryTotal}
+                        SecondaryValue={this.state.SecondaryValue}
+                        TimeEstimated={this.state.TimeEstimated}
+                        Error={this.state.Error}
+                        CurrentOperationText={this.state.CurrentOperationText}
+                        closePersonaBarPage={props.closePersonaBarPage}
+                    />}
                 </div>
             </SocialPanelBody>
         );
