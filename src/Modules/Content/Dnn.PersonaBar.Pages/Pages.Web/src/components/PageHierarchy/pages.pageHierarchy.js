@@ -120,7 +120,7 @@
         },
 
         handlePendingChanges: function (e) {
-            this.utility.notify(this.resx.pages_Pending);
+            this.utility.notify(this.resx.Pending);
 
             if (e) {
                 e.stopImmediatePropagation();
@@ -276,10 +276,10 @@
 
             handler = this;
             viewModel = this._getViewModel();
-            confirmText = this.resx.pages_DeletePageConfirm;
+            confirmText = this.resx.DeletePageConfirm;
             confirmText = confirmText.replace('[NAME]', pageData.name);
-            deleteText = this.resx.pages_Delete;
-            cancelText = this.resx.pages_Cancel;
+            deleteText = this.resx.Delete;
+            cancelText = this.resx.Cancel;
 
             this.utility.confirm(confirmText, deleteText, cancelText, function () {
                 handler._getService().post('DeletePage', { id: pageData.id }, function () {
@@ -687,7 +687,7 @@
 
                             allowDrop = handler._allowDrop(sourcePageId, targetFind.level);
                             if (!allowDrop) {
-                                handler.utility.notifyError(handler.resx.pages_DragInvalid);
+                                handler.utility.notifyError(handler.resx.DragInvalid);
                                 sourceUl.sortable('cancel');
 
                                 // After call cancel method, refresh page data to let ko populate DOM tree.
@@ -891,7 +891,7 @@
 
                         allowDrop = handler._allowDrop(pageId, level);
                         if (!allowDrop) {
-                            handler.utility.notifyError(handler.resx.pages_DragInvalid);
+                            handler.utility.notifyError(handler.resx.DragInvalid);
                             $self.sortable('cancel');
 
                             // After call cancel method, refresh page data to let ko populate DOM tree.

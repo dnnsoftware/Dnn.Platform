@@ -34,14 +34,14 @@
             <span class="summary">
                 <span class="child-count" data-bind="html: childCount, style: {visibility: childCount > 0 ? 'visible' : 'hidden'}"></span>
                 <span class="subtitle field-name" data-bind="html: name"></span>
-                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.pages_Hidden : status) }"><label></label></span>
+                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.Hidden : status) }"><label></label></span>
 
                 <span class="actions">
                     <span class="buttons">
-                        <span class="view-page" data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.pages_View }"></span>
-                        <span class="edit-page" data-bind="click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.pages_Edit }"></span>
-                        <span class="settings" data-bind="click: $root.settingsPageClick, clickBubble: false, attr: { title: $root.resx.pages_Settings }"></span>
-                        <span class="delete-page" data-bind="click: (isspecial ? null : $root.deletePageClick), clickBubble: false, attr: { title: $root.resx.pages_Delete }, css: { 'action-disabled': isspecial }"></span>
+                        <span class="view-page" data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.View }"></span>
+                        <span class="edit-page" data-bind="click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.Edit }"></span>
+                        <span class="settings" data-bind="click: $root.settingsPageClick, clickBubble: false, attr: { title: $root.resx.Settings }"></span>
+                        <span class="delete-page" data-bind="click: (isspecial ? null : $root.deletePageClick), clickBubble: false, attr: { title: $root.resx.Delete }, css: { 'action-disabled': isspecial }"></span>
                     </span>
                 </span>
             </span>
@@ -56,7 +56,7 @@
         <div class="page-item drag-item">
             <span class="summary">
                 <span class="subtitle field-name" data-bind="html: name"></span>
-                <span class="drag-area" data-bind="html: $root.resx.pages_DragPageTooltip"></span>
+                <span class="drag-area" data-bind="html: $root.resx.DragPageTooltip"></span>
             </span>
         </div>
     </li>
