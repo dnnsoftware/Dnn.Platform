@@ -18,6 +18,7 @@ import ReduxThunk from "redux-thunk";
 import Moment from "moment";
 import ReactWidgets from "react-widgets";
 import ThrottleDebounce from "throttle-debounce";
+import Promise from "es6-promise";
 
 /** Polyfills */
 require("es6-object-assign").polyfill();
@@ -50,6 +51,7 @@ window.dnn.nodeModules.ReduxDevToolsLogMonitor = ReduxDevToolsLogMonitor;
 window.dnn.nodeModules.ReduxImmutableStateInvariant = ReduxImmutableStateInvariant;
 window.dnn.nodeModules.ReduxThunk = ReduxThunk;
 window.dnn.nodeModules.Moment = Moment;
+window.dnn.nodeModules.Es6Promise = Promise;
 
 // import accumulate from "react/lib/accumulate";
 // import accumulateInto from "react/lib/accumulateInto";
