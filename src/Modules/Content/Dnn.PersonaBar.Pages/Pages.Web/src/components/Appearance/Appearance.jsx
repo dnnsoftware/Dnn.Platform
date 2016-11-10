@@ -53,10 +53,12 @@ class Appearance extends Component {
     }
 
     trimAscxExtension(value) {
+        if (!value) return value;
         return value.replace(".ascx", "");
     }
 
     addAscxExtension(value) {
+        if (!value) return value;
         return value + ".ascx";
     }
 
