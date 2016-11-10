@@ -80,7 +80,7 @@ function getCurrentPageId() {
     return parseInt(config.tabId);
 }
 
-function getViewName(){
+function getViewName() {
     checkInit();
     return viewName;
 }

@@ -1,4 +1,5 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
+import responseStatus from "../constants/responseStatus";
 import PagesService from "../services/pageService";
 import utils from "../utils";
 import Localization from "../localization";
@@ -73,6 +74,12 @@ const pageActions = {
             });    
 
             PagesService.savePage(page).then(response => {
+
+                if (response.Status === responseStatus.ERROR) {
+                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    return;
+                }
+
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {

@@ -295,7 +295,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return false;
             }
 
-            var parentId = tab != null ? tab.ParentId : Null.NullInteger;
+            var parentId = tab?.ParentId ?? Null.NullInteger;
             if (pageSettings.PageType == "template")
             {
                 parentId = GetTemplateParentId(tab?.PortalID ?? PortalSettings.PortalId);
@@ -345,7 +345,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //Validate for uniqueness
-            urlPath = FriendlyUrlController.ValidateUrl(urlPath, tab != null ? tab.TabID : Null.NullInteger, PortalSettings, out modified);
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, tab?.TabID ?? Null.NullInteger, PortalSettings, out modified);
             if (modified)
             {
                 errorMessage = "UrlPathNotUnique";
