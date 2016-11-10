@@ -168,7 +168,7 @@ class SiteAliasesPanel extends Component {
                         <div className="sectionTitle">{resx.get("SiteAliases")}</div>
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> Add Alias
+                            </div> {resx.get("cmdAddAlias")}
                         </div>
                     </div>
                     <div className="alias-items-grid">

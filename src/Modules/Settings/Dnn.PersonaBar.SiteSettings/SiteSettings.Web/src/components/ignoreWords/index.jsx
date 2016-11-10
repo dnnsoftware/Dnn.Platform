@@ -199,7 +199,7 @@ class IgnoreWordsPanel extends Component {
                         {!props.ignoreWords &&
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                                 <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                                </div> Add Word
+                                </div> {resx.get("cmdAddWord")}
                         </div>
                         }
                         {this.props.cultures && this.props.cultures.length > 1 &&

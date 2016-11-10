@@ -1026,4 +1026,16 @@
   <data name="cmdCreateLanguage.Text" xml:space="preserve">
     <value>Add New Language</value>
   </data>
+  <data name="cmdAddWord.Text" xml:space="preserve">
+    <value>Add Word</value>
+  </data>
+  <data name="cmdAddField.Text" xml:space="preserve">
+    <value>Add Field</value>
+  </data>
+  <data name="cmdAddAlias.Text" xml:space="preserve">
+    <value>Add Alias</value>
+  </data>
+  <data name="cmdAddGroup.Text" xml:space="preserve">
+    <value>Add Group</value>
+  </data>
 </root>
