@@ -35,7 +35,7 @@
             this.panel = $(panel);
             this.container = $('.pagehierarchy-container', this.panel);
             this.dragContainer = this.container.find('.pages-drag-container');
-			this.mobile = window.parent.document.getElementById('personaBar-mobi-iframe') !== null;
+            this.mobile = window.parent.document.getElementById('personaBar-mobi-iframe') !== null;
 
             this._selectPageInHierarchyHandler = $.proxy(this._selectPageInHierarchy, this);
 
@@ -52,17 +52,6 @@
             this._loadRootPageList();            
         },
 
-        hide: function () {
-            this.panel.hide();
-        },
-
-        show: function () {
-            this.panel.show();
-        },
-
-        load: function () {
-        },
-
         getElement: function() {
             return this.container;
         },
@@ -75,13 +64,17 @@
             this._initScrollView();
 
             if (!this.mobile) {
-				// Floating the new pag item
-				pageItem = $('li[data-page-id="' + newPage.id + '"] > div');
-		        pageItem.hide();
-		        viewModel.inDrag(true);
-		        viewModel.isNew(true);
-		        viewModel.dragPage(newPage);
-	        }
+                // Floating the new pag item
+                pageItem = $('li[data-page-id="' + newPage.id + '"] > div');
+                pageItem.hide();
+                viewModel.inDrag(true);
+                viewModel.isNew(true);
+                viewModel.dragPage(newPage);
+            }
+
+            if (typeof this.options.onRefresh === "function") {			
+                this.options.onRefresh(this.panel);
+            }
         },
         
         editPage: function(newPage) {
@@ -131,9 +124,7 @@
         setItemTemplate: function (template) {
             if (template != "pages-list-item-template") {
                 var viewModel = this._getViewModel();
-                ko.cleanNode(this.panel[0]);
                 viewModel.itemTemplate(template);
-                ko.applyBindings(viewModel, this.panel[0]);
                 viewModel.inDrag(false);
             }
         },
@@ -166,6 +157,9 @@
 
                 handler._resizeContentContainer(true);
                 handler._initDrag();
+                if (typeof handler.options.onRefresh === "function") {				
+                    handler.options.onRefresh(handler.panel);
+                }
 
                 if (typeof handler._initCallback === 'function') {
                     handler._initCallback.call(handler);
@@ -229,6 +223,9 @@
 
                     handler._initDrag();
                     handler.getElement().trigger('childpagesloaded');
+                    if (typeof handler.options.onRefresh === "function") {			
+                        handler.options.onRefresh(handler.panel);
+                    }
                 });
             }, 0);
         },
@@ -236,6 +233,10 @@
         _leavePanelClickHandler: function (e) {
             if ($(e.target).hasClass('btn_pages')) {
                 return;
+            }
+            
+            if (typeof handler.options.onUnload === "function") {
+                handler.options.onUnload(handler.panel);            
             }
         },
 
@@ -255,7 +256,10 @@
 
         _enterEditMode: function (pageData) {
             var handler = this;
-            setTimeout(function () {
+            setTimeout(function () {            
+                if (typeof handler.options.onUnload === "function") {
+                    handler.options.onUnload(handler.panel);            
+                }
                 handler._getService().get('EditModeForPage', { id: pageData.id }, function() {
                     handler.utility.closePersonaBar(function() {
                         window.top.location.href = pageData.url;
@@ -1016,7 +1020,7 @@
                             $(this).sortable('refresh');
                         });
 
-	                    $self.data('ui-sortable').options.placeholder = $self.data('ui-sa-ph');
+                        $self.data('ui-sortable').options.placeholder = $self.data('ui-sa-ph');
                     }, 0);
                 }
 
@@ -1163,5 +1167,5 @@
 
 
 module.exports = {
-    pageHierarchyManager: new pageHierarchyManager()
+    pageHierarchyManager: new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions)
 };
