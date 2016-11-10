@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
@@ -47,12 +46,14 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         private readonly ITabController _tabController;
         private readonly IModuleController _moduleController;
+        private readonly IPageUrlsController _pageUrlsController;
         public const string PageTagsVocabulary = "PageTags";
 
         public PagesController()
         {
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
+            _pageUrlsController = PageUrlsController.Instance;
         }
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
@@ -658,6 +659,14 @@ namespace Dnn.PersonaBar.Pages.Components
 
             TabController.CopyDesignToChildren(tab, theme.SkinSrc, theme.ContainerSrc);
         }
+
+        public IEnumerable<Url> GetPageUrls(int tabId)
+        {
+            var tab = GetPageDetails(tabId);
+            var portalId = PortalSettings.PortalId;
+            return _pageUrlsController.GetPageUrls(tab, portalId);
+        }
+
 
         public void CreateOrUpdateContentItem(TabInfo tab)
         {

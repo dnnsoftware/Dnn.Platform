@@ -435,6 +435,9 @@
   <data name="ChangesNotSaved.Text" xml:space="preserve">
     <value>Changes have not been saved</value>
   </data>
+  <data name="Pages_Seo_GeneratedByAutomatic.Text" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
   <data name="CopyAppearanceToDescendantPagesSuccess.Text" xml:space="preserve">
     <value>Appearance has been copy to descendant pages successfully</value>
   </data>

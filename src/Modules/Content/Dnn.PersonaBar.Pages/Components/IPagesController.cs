@@ -42,5 +42,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <param name="pageId">page identifier</param>
         /// <param name="theme">Theme</param>
         void CopyThemeToDescendantPages(int pageId, Theme theme);
+
+        IEnumerable<Url> GetPageUrls(int tabId);
     }
 }

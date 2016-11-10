@@ -73,6 +73,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "modules")]
         public IEnumerable<ModuleItem> Modules { get; set; }
 
+        [DataMember(Name = "pageUrls")]
+        public IEnumerable<Url> PageUrls { get; set; }
+
         [DataMember(Name = "isSecure")]
         public bool IsSecure { get; set; }
 

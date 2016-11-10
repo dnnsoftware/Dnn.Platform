@@ -5,9 +5,8 @@ import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
 import Dropdown from "dnn-dropdown";
 import Localization from "../../localization";
+import PageUrls from "./PageUrls/PageUrls";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import { AddIcon, LinkIcon } from "dnn-svg-icons";
-/* eslint-disable react/no-danger */
 
 class Seo extends Component {
 
@@ -18,9 +17,6 @@ class Seo extends Component {
 
     onSitemapPrioritySelected(option) {
 
-    }
-
-    toggle(openId) {
     }
 
     getSitemapPriorityOptions() {
@@ -35,32 +31,11 @@ class Seo extends Component {
 
     render() {
         const {page} = this.props;
-        const opened = false;
+        
         return (
             <div className={styles.seoContainer}>
-                <div className="AddItemRow">
-                    <div className="link-icon" dangerouslySetInnerHTML={{ __html: LinkIcon }} />
-                    <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
-                    <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                        <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                        </div> {Localization.get("AddUrl")}
-                    </div>
-                </div>
-
-                <div className="url-table">
-                    <div className="header-row">
-                        <GridCell columnSize={50} >
-                            {Localization.get("Url")}
-                        </GridCell>
-                        <GridCell  columnSize={20} >
-                            {Localization.get("UrlType")}
-                        </GridCell>
-                        <GridCell  columnSize={30} >
-                            {Localization.get("GeneratedBy")}
-                        </GridCell>
-                    </div>
-                </div>
-
+                <PageUrls pageUrls={page.pageUrls} /> 
+            
                 <GridSystem>
                     <GridCell className="left-column">
                         <MultiLineInputWithError

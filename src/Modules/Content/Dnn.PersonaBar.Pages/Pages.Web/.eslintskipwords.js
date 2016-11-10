@@ -124,6 +124,7 @@ module.exports = [
     "middleware",
     "dev",
     "util",
+    "urls",
     "searchpanel",
     "uncollapse",
     "dev",
