@@ -1166,6 +1166,7 @@
     };
 
 
+var options = window.dnn.pages && window.dnn.pages.pageHierarchyManagerOptions;
 module.exports = {
-    pageHierarchyManager: new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions)
+    pageHierarchyManager: new pageHierarchyManager(options)
 };
