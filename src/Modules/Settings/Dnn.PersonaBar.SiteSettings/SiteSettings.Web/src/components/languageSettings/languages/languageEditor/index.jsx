@@ -20,6 +20,8 @@ import {
 import util from "../../../../utils";
 import resx from "../../../../resources";
 
+let isHost = false;
+
 class LanguageEditor extends Component {
     constructor() {
         super();
@@ -28,6 +30,7 @@ class LanguageEditor extends Component {
             languageDetail: {
             }
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
@@ -270,7 +273,7 @@ class LanguageEditor extends Component {
                     options={this.getFallbackOptions()}
                     value={state.languageDetail.Fallback}
                     onSelect={this.onSettingChange.bind(this, "Fallback")}
-                    enabled={true}
+                    enabled={isHost}
                     />
             </InputGroup>
         </div>;

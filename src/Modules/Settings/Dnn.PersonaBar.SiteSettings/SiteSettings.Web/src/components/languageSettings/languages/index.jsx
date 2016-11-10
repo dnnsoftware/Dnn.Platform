@@ -16,6 +16,7 @@ import util from "../../../utils";
 import resx from "../../../resources";
 
 let tableFields = [];
+let isHost = false;
 
 class LanguagesPanel extends Component {
     constructor() {
@@ -25,6 +26,7 @@ class LanguagesPanel extends Component {
             openId: "",
             openMode: 1
         };
+        isHost = util.settings.isHost;
     }
 
     componentWillMount() {
@@ -193,10 +195,12 @@ class LanguagesPanel extends Component {
                 <div className="language-items">
                     <div className="AddItemRow">
                         <div className="sectionTitle-languages">{resx.get("Languages")}</div>
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add", 1)}>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> Add Language
-                        </div>
+                        {isHost &&
+                            <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add", 1)}>
+                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                </div> {resx.get("cmdCreateLanguage")}
+                            </div>
+                        }
                     </div>
                     <div className="language-items-grid">
                         {this.renderHeader()}
