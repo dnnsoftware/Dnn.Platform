@@ -14,6 +14,7 @@ import Localization from "../localization";
 import PageList from "./PageList/PageList";
 import Button from "dnn-button";
 import utils from "../utils";
+import BackToMain from "./common/BackToMain/BackToMain";
 
 class App extends Component {
 
@@ -59,20 +60,28 @@ class App extends Component {
 
     }
 
+    onCancelSettings() {
+        if (this.props.selectedPageDirty) {
+            this.showCancelWithoutSavingDialog();
+        }
+        else {
+            this.props.onNavigate(0);
+        }
+    }
+
+    showCancelWithoutSavingDialog() {
+        const onConfirm = () =>  this.props.onNavigate(0);
+        utils.confirm(
+            Localization.get("CancelWithoutSaving"),
+            Localization.get("Close"),
+            Localization.get("Cancel"),
+            onConfirm);
+    }
+
     onAddMultiplePage() {
         const {props} = this;
         props.onNavigate(2);
         // TODO: open add pages action
-    }
-
-    getBackToPages() {
-        const {onNavigate} = this.props;
-
-        return (
-            <div className="pages-back" onClick={() => onNavigate(0)}>
-                {Localization.get("BackToPages")}
-            </div>
-        );
     }
 
     getPageTitle() {
@@ -85,8 +94,9 @@ class App extends Component {
     getSettingsPage() {
         const {props} = this;
         const titleSettings = this.getPageTitle();
-        const backToPages = this.getBackToPages();
-
+        const cancelAction = this.onCancelSettings.bind(this);
+        const backToPages = <BackToMain onClick={cancelAction}/>;
+        
         return (<PersonaBarPage isOpen={props.selectedView === 1}>
                     <SocialPanelHeader title={titleSettings}>
                     </SocialPanelHeader>
@@ -97,7 +107,7 @@ class App extends Component {
                         <PageSettings selectedPage={props.selectedPage}
                                       selectedPageErrors={props.selectedPageErrors}
                                       selectedPageDirty={props.selectedPageDirty} 
-                                      onCancel={() => props.onNavigate(0)} 
+                                      onCancel={cancelAction} 
                                       onSave={this.onSavePage.bind(this)}
                                       onChangeField={props.onChangePageField}
                                       onPermissionsChanged={props.onPermissionsChanged}
@@ -112,7 +122,7 @@ class App extends Component {
 
     getAddPages() {
         const {props} = this;
-        const backToPages = this.getBackToPages();
+        const backToPages = <BackToMain onClick={() => props.onNavigate(0)}/>;
 
         return (<PersonaBarPage isOpen={props.selectedView === 2}>
                     <SocialPanelHeader title={Localization.get("AddMultiplePages")}>

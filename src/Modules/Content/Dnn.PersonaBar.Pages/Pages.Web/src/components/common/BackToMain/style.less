@@ -1,0 +1,14 @@
+@import "~dnn-global-styles/index";
+:local(.backToMain) {
+    float: left;
+    font-weight: bolder;
+    color: @thunder;
+    cursor: pointer;
+    text-transform: uppercase;
+    &:hover {
+        color: @curiousBlue;
+    }
+    &::before { 
+        content: "< ";
+    }
+}
