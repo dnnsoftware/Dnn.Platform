@@ -51,6 +51,8 @@ window.dnn.pages = window.dnn.pages || {};
             ko.applyBindings(viewModel, this.panel[0]);
 
             this._initCallback = initCallback;
+            this._currentTabId = null;
+            this._siteRoot = null;
             this._loadRootPageList();            
         },
 
@@ -134,6 +136,11 @@ window.dnn.pages = window.dnn.pages || {};
         setSearchKeyword: function (searchKeyword) {
             this._getViewModel().searchKeyword(searchKeyword);
             this._searchKeywordsChangedHandler();
+        },
+
+        setCurrentTabIdAndSiteRoot: function (currentTabId, siteRoot) {
+            this._currentTabId = currentTabId;
+            this._siteRoot = siteRoot;
         },
 
         _loadRootPageList: function() {
@@ -289,11 +296,10 @@ window.dnn.pages = window.dnn.pages || {};
 
             this.utility.confirm(confirmText, deleteText, cancelText, function () {
                 handler._getService().post('DeletePage', { id: pageData.id }, function () {
-                    // TODO: Redirect to home if deleting current page
-                    // if (pageData.id == config.tabId) {
-                    //     window.top.location.href = config.siteRoot;
-                    //     return;
-                    // }
+                    if (pageData.id === handler._currentTabId) {
+                         window.top.location.href = handler._siteRoot;
+                         return;
+                     }
 
                     var position, level, parentId;
 

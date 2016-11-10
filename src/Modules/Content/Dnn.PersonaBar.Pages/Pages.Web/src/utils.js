@@ -90,6 +90,11 @@ function getResx(moduleName, key) {
     return utilities.getResx(moduleName, key);
 }
 
+function getSiteRoot() {
+    checkInit();
+    return config.siteRoot;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -103,7 +108,8 @@ const utils = {
     getModuleName,
     getCurrentPageId,
     getViewName,
-    getResx
+    getResx,
+    getSiteRoot
 };
 
 export default utils;
