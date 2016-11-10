@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using Dnn.PersonaBar.Themes.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -85,9 +86,21 @@ namespace Dnn.PersonaBar.Pages.Components
                 PermanentRedirect = tab.PermanentRedirect,
                 LinkNewWindow = LinkNewWindow(tab),
                 PageStyleSheet = (string)tab.TabSettings["CustomStylesheet"],
+                ThemeName = GetThemeNameFromSkinSrc(tab.SkinSrc),
                 SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc
             };
+        }
+
+        private static string GetThemeNameFromSkinSrc(string skinSrc)
+        {
+            if (string.IsNullOrWhiteSpace(skinSrc))
+            {
+                return null;
+            }
+            var themeController = ThemesController.Instance;
+            var layout = themeController.GetThemeFile(PortalSettings.Current, skinSrc, ThemeType.Skin);
+            return layout?.ThemeName;
         }
 
         private static string GetFileRedirectionId(string tabUrl)

@@ -414,7 +414,11 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
             tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
             tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow;
+            tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
+            // Tab Skin
+            tab.SkinSrc = pageSettings.SkinSrc;
+            tab.ContainerSrc = pageSettings.ContainerSrc;
 
             if (pageSettings.PageType == "template")
             {

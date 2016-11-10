@@ -15,7 +15,11 @@ class Appearance extends Component {
 
     componentWillMount() {
         this.props.onRetrieveThemes();
-        this.props.onRetrieveThemeFiles("Xcillion");
+
+        const { page } = this.props;
+        if (page.themeName) {
+            this.props.onRetrieveThemeFiles(page.themeName);
+        }
     }
 
     previewPage() {
@@ -27,8 +31,9 @@ class Appearance extends Component {
     }
 
     onSelectTheme(theme) {
-        this.props.onRetrieveThemeFiles(theme.packageName);
+        this.props.onChangeField("themeName", theme.packageName);
         this.props.onChangeField("skinSrc", theme.defaultThemeFile);
+        this.props.onRetrieveThemeFiles(theme.packageName);
     }
 
     onSelectLayout(layout) {
@@ -62,8 +67,8 @@ class Appearance extends Component {
 
     render() {   
         const { page, themes, layouts, containers } = this.props;
+        const selectedTheme = selectedLayout ? themes.find(t => t.packageName === page.themeName) : null;
         const selectedLayout = layouts.find(l => this.addAscxExtension(l.path) === page.skinSrc);
-        const selectedTheme = selectedLayout ? themes.find(t => t.packageName === selectedLayout.themeName) : null;
         const selectedContainer = containers.find(c => this.addAscxExtension(c.path) === page.containerSrc);     
         return (
             <div className={style.moduleContainer}>

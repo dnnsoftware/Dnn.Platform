@@ -111,10 +111,13 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "pageStyleSheet")]
         public string PageStyleSheet { get; set; }
+        
+        [DataMember(Name = "themeName")]
+        public string ThemeName { get; set; }
 
         [DataMember(Name = "skinSrc")]
         public string SkinSrc { get; set; }
-
+        
         [DataMember(Name = "containerSrc")]
         public string ContainerSrc { get; set; }
 
