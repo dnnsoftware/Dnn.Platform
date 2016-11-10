@@ -16,13 +16,14 @@ class Seo extends Component {
     }
 
     onSitemapPrioritySelected(option) {
-
+        const {onChangeField} = this.props;
+        onChangeField("sitemapPriority", option.value);
     }
 
     getSitemapPriorityOptions() {
         const options = [];
         for (let i = 0; i <= 1; i += 0.1) {
-            const v = i.toFixed(1);
+            const v = i.toFixed(1)/1;
             options.push({value: v, label: v});
         } 
 
