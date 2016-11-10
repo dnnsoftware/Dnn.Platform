@@ -132,7 +132,6 @@ class App extends Component {
 
     render() {
         const {props} = this;
-        const addPages = this.getAddPages();
         
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -143,10 +142,12 @@ class App extends Component {
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
-                {props.selectedPage && 
+                {props.selectedView === 1 && props.selectedPage && 
                     this.getSettingsPage()
                 }
-                {addPages}
+                {props.selectedView === 2 && 
+                    this.getAddPages()
+                }
             </div>
         );
     }
