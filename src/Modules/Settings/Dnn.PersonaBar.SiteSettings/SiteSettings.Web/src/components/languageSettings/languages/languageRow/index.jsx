@@ -14,7 +14,12 @@ class LanguageRow extends Component {
 
     toggle(mode) {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            //this.props.Collapse();
+            if (mode !== this.state.openedMode) {
+                this.props.OpenCollapse(this.props.id, mode);
+                this.setState({
+                    openedMode: mode
+                });
+            }
         }
         else {
             this.props.OpenCollapse(this.props.id, mode);
