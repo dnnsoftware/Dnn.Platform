@@ -441,4 +441,13 @@
   <data name="DeletePageModuleSuccess.Text" xml:space="preserve">
     <value>Module "[MODULETITLE]" has been deleted successfully</value>
   </data>
+  <data name="BulkPageSettings.Text" xml:space="preserve">
+    <value>Bulk page settings</value>
+  </data>
+  <data name="BulkPagesToAdd.Text" xml:space="preserve">
+    <value>Bulk pages to add</value>
+  </data>
+  <data name="AddPages.Text" xml:space="preserve">
+    <value>Add Pages</value>
+  </data>
 </root>

@@ -9,6 +9,7 @@ import {
     pageActions as PageActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
+import AddPages from "./AddPages/AddPages";
 import Localization from "../localization";
 import PageList from "./PageList/PageList";
 import Button from "dnn-button";
@@ -54,8 +55,14 @@ class App extends Component {
         props.onAddPage();
     }
 
+    onSavePages() {
+
+    }
+
     onAddMultiplePage() {
-        
+        const {props} = this;
+        props.onNavigate(2);
+        // TODO: open add pages action
     }
 
     getBackToPages() {
@@ -103,8 +110,29 @@ class App extends Component {
                 </PersonaBarPage>);
     }
 
+    getAddPages() {
+        const {props} = this;
+        const backToPages = this.getBackToPages();
+
+        return (<PersonaBarPage isOpen={props.selectedView === 2}>
+                    <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
+                    </SocialPanelHeader>
+                    <SocialPanelBody
+                        workSpaceTrayOutside={true}
+                        workSpaceTray={backToPages}
+                        workSpaceTrayVisible={true}>
+                        <AddPages  
+                            addPagesData={{}}
+                            onCancel={() => props.onNavigate(0)} 
+                            onSave={this.onSavePages.bind(this)}
+                            onChangeField={() => {}} />
+                    </SocialPanelBody>
+                </PersonaBarPage>);
+    }
+
     render() {
         const {props} = this;
+        const addPages = this.getAddPages();
         
         return (
             <div className="pages-app personaBar-mainContainer">
@@ -118,6 +146,7 @@ class App extends Component {
                 {props.selectedPage && 
                     this.getSettingsPage()
                 }
+                {addPages}
             </div>
         );
     }
