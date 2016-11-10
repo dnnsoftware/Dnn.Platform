@@ -459,4 +459,7 @@
   <data name="NoThemes.Text" xml:space="preserve">
     <value>Your site does not have any Themes</value>
   </data>
+  <data name="PleaseSelectLayoutContainer.Text" xml:space="preserve">
+    <value>Please, you must select a layout and a container to perform this operation.</value>
+  </data>
 </root>

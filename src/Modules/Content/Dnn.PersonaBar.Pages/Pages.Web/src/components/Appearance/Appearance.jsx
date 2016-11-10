@@ -5,6 +5,7 @@ import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 import Localization from "../../localization";
+import utils from "../../utils";
 import ThemeSelector from "./ThemeSelector/ThemeSelector";
 import LayoutSelector from "./LayoutSelector/LayoutSelector";
 import ContainerSelector from "./ContainerSelector/ContainerSelector";
@@ -24,6 +25,12 @@ class Appearance extends Component {
 
     previewPage() {
         const { page } = this.props;
+
+        if (!page.skinSrc || !page.containerSrc) {
+            utils.notify(Localization.get("PleaseSelectLayoutContainer"));
+            return;
+        }
+
         const skinSrc = this.trimAscxExtension(page.skinSrc);
         const containerSrc = this.trimAscxExtension(page.containerSrc);
         const previewUrl = page.absoluteUrl + "?SkinSrc=" + skinSrc + "&ContainerSrc=" + containerSrc;

@@ -1,4 +1,6 @@
 import ActionTypes  from "../constants/actionTypes/themeActionTypes";
+import PagesActionTypes  from "../constants/actionTypes/pageActionTypes";
+
 export default function themeReducer(state = {
     themes: [],
     layouts: [],
@@ -40,6 +42,12 @@ export default function themeReducer(state = {
         case ActionTypes.ERROR_RETRIEVING_THEME_FILES:
             return { ...state,
                 retrievingThemeFiles: false
+            };
+
+        case PagesActionTypes.LOAD_PAGE:
+            return { ...state,
+                layouts: [],
+                containers: []
             };
 
         default:

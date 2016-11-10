@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import Localization from "../../localization";
+import utils from "../../utils";
 import PageDetails from "../PageDetails/PageDetails";
 import PermissionGrid from "./PermissionGrid";
 import Button from "dnn-button";
@@ -46,7 +47,13 @@ class PageSettings extends Component {
         );
     }
 
-    copyAppearanceToDescendantPages() {
+    copyAppearanceToDescendantPages() {        
+        const {selectedPage} = this.props;
+
+        if (!selectedPage.skinSrc || !selectedPage.containerSrc) {
+            utils.notify(Localization.get("PleaseSelectLayoutContainer"));
+            return;
+        }
         this.props.onCopyAppearanceToDescendantPages();
     }
 

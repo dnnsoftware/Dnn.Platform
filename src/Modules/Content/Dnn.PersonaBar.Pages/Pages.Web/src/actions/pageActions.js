@@ -46,6 +46,10 @@ const pageActions = {
 
     addPage() {
         return (dispatch) => {
+            dispatch({
+                type: ActionTypes.LOAD_PAGE
+            }); 
+            
             PagesService.getNewPage().then(page => {
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
