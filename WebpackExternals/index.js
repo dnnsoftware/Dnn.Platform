@@ -18,6 +18,7 @@ module.exports = {
 	"react-widgets": "window.dnn.nodeModules.ReactWidgets",
 	"throttle-debounce": "window.dnn.nodeModules.ThrottleDebounce",
         "moment": "window.dnn.nodeModules.Moment",
+        "es6-promise": "window.dnn.nodeModules.Es6Promise",
         "dnn-button": "dnn.nodeModules.CommonComponents.Button",
         "dnn-checkbox": "dnn.nodeModules.CommonComponents.Checkbox",
         "dnn-collapsible-row": "dnn.nodeModules.CommonComponents.CollapsibleRow",
