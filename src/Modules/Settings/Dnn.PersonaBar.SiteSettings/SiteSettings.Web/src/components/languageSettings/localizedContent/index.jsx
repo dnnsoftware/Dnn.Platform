@@ -9,9 +9,10 @@ import Label from "dnn-label";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
 import resx from "../../../resources";
+import TranslationProgressBars from "../TranslationProgressBars";
 import "./style.less";
 
-class LanguagePackPanelBody extends Component {
+class LocalizedContent extends Component {
     constructor() {
         super();
         this.state = {
@@ -21,6 +22,7 @@ class LanguagePackPanelBody extends Component {
     }
 
     onEnable(event) {
+
     }
 
     getDefaultLanguage() {
@@ -53,7 +55,7 @@ class LanguagePackPanelBody extends Component {
                 <div className="languagePack-wrapper">
                     <InputGroup>
                         <div className="help-text-with-background">
-                            <p>{resx.get("EnableLocalizedContentHelpText") }</p>
+                            <p dangerouslySetInnerHTML={{__html: resx.get("EnableLocalizedContentHelpText") }}></p>
                             <p>{resx.get("EnableLocalizedContentClickCancel") }</p>
                         </div>
                     </InputGroup>
@@ -92,13 +94,14 @@ class LanguagePackPanelBody extends Component {
                             {resx.get("EnableLocalizedContent") }
                         </Button>
                     </div>
+                    <TranslationProgressBars />
                 </div>
             </SocialPanelBody>
         );
     }
 }
 
-LanguagePackPanelBody.propTypes = {
+LocalizedContent.propTypes = {
     dispatch: PropTypes.func.isRequired,
     closePersonaBarPage: PropTypes.func,
     languages: PropTypes.array,
@@ -114,4 +117,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(LanguagePackPanelBody);
+export default connect(mapStateToProps)(LocalizedContent);

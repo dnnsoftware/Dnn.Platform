@@ -1027,16 +1027,34 @@
     <value>Make All Pages Translatable: </value>
   </data>
   <data name="AllPAgesTranslatable.Help" xml:space="preserve">
-    <value>Check this box to allow site users to select a different language for the interface than the one used for content.</value>
+    <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
   </data>
   <data name="EnableLocalizedContent.Text" xml:space="preserve">
      <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-     <value>Check this box to make all pages within the default language translatable and created a copy of all translatable pages for each enabled language.</value>
+     <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
      <value>Click Cancel now if you want to change the current site default.</value>
   </data>
+
+  <data name="TranslationProgressBarText.Text" xml:space="preserve">
+     <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
+  </data>
+  <data name="TotalProgress.Text" xml:space="preserve">
+     <value>Total Progress [number]%</value>
+  </data>
+    <data name="TotalLanguages.Text" xml:space="preserve">
+     <value>Total Languages [number]</value>
+  </data>
+  <data name="Progress.Text" xml:space="preserve">
+     <value>Progress [number]%</value>
+  </data>
+  <data name="ElapsedTime.Text" xml:space="preserve">
+     <value>Elapsed Time: </value>
+  </data>
   
+
+
 </root>
