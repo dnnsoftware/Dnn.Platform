@@ -14,7 +14,9 @@ window.dnn.server =  {
 };
 
 const appContainer = document.getElementById("servers-container");
-application.init(appContainer.dataset.initCallback);
+const initCallback = appContainer.getAttribute("data-init-callback");
+application.init(initCallback);
+
 render(
     <Provider store={store}>
         <App />
