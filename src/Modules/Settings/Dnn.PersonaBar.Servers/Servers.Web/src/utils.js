@@ -75,6 +75,13 @@ function isHostUser() {
     return settings.isHost;
 }
 
+function getServiceFramework() {
+    if (!initialized) {
+        throw new Error("Utils have not been initialized");
+    }
+    return utilities.sf;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -84,7 +91,8 @@ const utils = {
     notifyError,
     getResx,
     isHostUser,
-    confirm
+    confirm,
+    getServiceFramework
 };
 
 export default utils;

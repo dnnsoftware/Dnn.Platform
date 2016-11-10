@@ -1,3 +1,5 @@
+import utils from "../utils";
+
 function serializeQueryStringParameters(obj) {
     const s = [];
     for (let p in obj) {
@@ -9,7 +11,7 @@ function serializeQueryStringParameters(obj) {
 }
 
 function getServiceFramework(controllerName) {
-    const sf = window.dnn.initServers().utilities.sf;
+    const sf = utils.getServiceFramework();
 
     sf.moduleRoot = "PersonaBar";
     sf.controller = controllerName;
