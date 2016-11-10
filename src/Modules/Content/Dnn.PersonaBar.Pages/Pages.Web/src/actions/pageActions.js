@@ -1,5 +1,7 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
 import PagesService from "../services/pageService";
+import utils from "../utils";
+import Localization from "../localization";
 import debounce from "lodash/debounce";
 
 function updateUrlPreview(value, dispatch) {
@@ -144,6 +146,7 @@ const pageActions = {
                 pageId
             };
             PagesService.deletePageModule(moduleToDelete).then(() => {
+                utils.notify(Localization.get("DeletePageModuleSuccess").replace("[MODULETITLE]", module.title));
                 dispatch({
                     type: ActionTypes.DELETED_PAGE_MODULE,
                     data: { module }
@@ -176,6 +179,7 @@ const pageActions = {
                 containerSrc: page.containerSrc
             };
             PagesService.copyAppearanceToDescendantPages(page.tabId, theme).then(() => {
+                utils.notify(Localization.get("CopyAppearanceToDescenantPagesSuccess"));
                 dispatch({
                     type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
                     data: { }
