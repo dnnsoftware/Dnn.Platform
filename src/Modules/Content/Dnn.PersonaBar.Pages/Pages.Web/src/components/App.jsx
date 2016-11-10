@@ -5,7 +5,6 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
-    visiblePanel as VisiblePanelActions,
     pageActions as PageActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
@@ -15,6 +14,7 @@ import PageList from "./PageList/PageList";
 import Button from "dnn-button";
 import utils from "../utils";
 import BackToMain from "./common/BackToMain/BackToMain";
+import panels from "../constants/panels";
 
 class App extends Component {
 
@@ -22,7 +22,6 @@ class App extends Component {
         const {props} = this;
         const viewName = utils.getViewName();
         if (viewName === "edit") {
-            props.onNavigate(1);
             props.onLoadPage(utils.getCurrentPageId());
         }
     }
@@ -40,19 +39,16 @@ class App extends Component {
 
     onPageSettings(pageId) {
         const {props} = this;
-        props.onNavigate(1);
         props.onLoadPage(pageId);
     }
 
     onSavePage() {
         const {props} = this;
-        props.onNavigate(0);
         props.onSavePage(props.selectedPage);
     }
 
     onAddPage() {
         const {props} = this;
-        props.onNavigate(1);
         props.onAddPage();
     }
 
@@ -65,12 +61,16 @@ class App extends Component {
             this.showCancelWithoutSavingDialog();
         }
         else {
-            this.props.onNavigate(0);
+            this.props.onCancelPage();
         }
     }
 
+    onCancelAddPages() {
+        this.props.onCancelAddMultiplePages();
+    }
+
     showCancelWithoutSavingDialog() {
-        const onConfirm = () =>  this.props.onNavigate(0);
+        const onConfirm = () =>  this.props.onCancelPage();
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -79,9 +79,7 @@ class App extends Component {
     }
 
     onAddMultiplePage() {
-        const {props} = this;
-        props.onNavigate(2);
-        // TODO: open add pages action
+        this.props.onLoadAddMultiplePages();
     }
 
     getPageTitle() {
@@ -97,7 +95,7 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const backToPages = <BackToMain onClick={cancelAction}/>;
         
-        return (<PersonaBarPage isOpen={props.selectedView === 1}>
+        return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
                     </SocialPanelHeader>
                     <SocialPanelBody
@@ -122,7 +120,7 @@ class App extends Component {
 
     getAddPages() {
         const {props} = this;
-        const backToPages = <BackToMain onClick={() => props.onNavigate(0)}/>;
+        const backToPages = <BackToMain onClick={this.onCancelAddPages.bind(this)}/>;
 
         return (<PersonaBarPage isOpen={props.selectedView === 2}>
                     <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
@@ -133,7 +131,7 @@ class App extends Component {
                         workSpaceTrayVisible={true}>
                         <AddPages  
                             addPagesData={{}}
-                            onCancel={() => props.onNavigate(0)} 
+                            onCancel={this.onCancelAddPages.bind(this)} 
                             onSave={this.onSavePages.bind(this)}
                             onChangeField={() => {}} />
                     </SocialPanelBody>
@@ -152,10 +150,10 @@ class App extends Component {
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
-                {props.selectedView === 1 && props.selectedPage && 
+                {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage && 
                     this.getSettingsPage()
                 }
-                {props.selectedView === 2 && 
+                {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL && 
                     this.getAddPages()
                 }
             </div>
@@ -170,12 +168,14 @@ App.propTypes = {
     selectedPageErrors: PropTypes.object,
     selectedPageDirty: PropTypes.boolean,
     editingSettingModuleId: PropTypes.number,
-    onNavigate: PropTypes.func,
-    onSavePage: PropTypes.func,
-    onLoadPage: PropTypes.func,
-    onAddPage: PropTypes.func,
-    onChangePageField: PropTypes.func,
-    onChangePageType: PropTypes.func,
+    onCancelPage: PropTypes.func.isRequired,
+    onSavePage: PropTypes.func.isRequired,
+    onLoadPage: PropTypes.func.isRequired,
+    onAddPage: PropTypes.func.isRequired,
+    onCancelAddMultiplePages: PropTypes.func.isRequired,
+    onLoadAddMultiplePages: PropTypes.func.isRequired,
+    onChangePageField: PropTypes.func.isRequired,
+    onChangePageType: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
     onToggleEditPageModule: PropTypes.func.isRequired,
@@ -196,10 +196,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators ({
-        onNavigate: VisiblePanelActions.selectPanel,
+        onCancelPage: PageActions.cancelPage,
         onSavePage: PageActions.savePage,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
+        onCancelAddMultiplePages: PageActions.cancelAddMultiplePages,
+        onLoadAddMultiplePages: PageActions.loadAddMultiplePages,
         onChangePageField: PageActions.changePageField,
         onChangePageType: PageActions.changePageType,
         onPermissionsChanged: PageActions.changePermissions,

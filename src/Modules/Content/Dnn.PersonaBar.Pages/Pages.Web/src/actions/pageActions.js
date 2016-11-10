@@ -59,6 +59,13 @@ const pageActions = {
         };
     },
 
+    cancelPage() {
+        return {
+            type: ActionTypes.CANCEL_PAGE,
+            data: {}
+        };
+    },
+
     savePage(page) {
         return (dispatch) => {
             dispatch({
@@ -100,12 +107,10 @@ const pageActions = {
     },
 
     changePageType(value) {
-        return (dispatch) => {
-            dispatch({
-                type: ActionTypes.CHANGE_FIELD_VALUE,
-                field: "pageType",
-                value
-            });  
+        return {
+            type: ActionTypes.CHANGE_FIELD_VALUE,
+            field: "pageType",
+            value
         };
     },
 
@@ -194,6 +199,20 @@ const pageActions = {
                     data: {error}
                 });
             });      
+        };
+    },
+
+    loadAddMultiplePages() {
+        return {
+            type: ActionTypes.LOAD_ADD_MULTIPLE_PAGES,
+            data: {}
+        };
+    },
+
+    cancelAddMultiplePages() {
+        return {
+            type: ActionTypes.CANCEL_ADD_MULTIPLE_PAGES,
+            data: {}
         };
     }
 };
