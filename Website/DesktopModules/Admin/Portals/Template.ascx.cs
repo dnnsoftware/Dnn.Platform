@@ -48,6 +48,7 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using System.Web.UI.WebControls;
 using Telerik.Web.UI;
 using System.Globalization;
+using DotNetNuke.Entities;
 
 #endregion
 
@@ -921,6 +922,12 @@ namespace DotNetNuke.Modules.Admin.Portals
                     writer.WriteEndElement();
 
                     writer.Close();
+
+                    EventManager.Instance.OnPortalTemplateCreated(new PortalTemplateEventArgs()
+                    {
+                        PortalId = portal.PortalID,
+                        TemplatePath = filename
+                    });
                 }
 
                 UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.GreenSuccess);
