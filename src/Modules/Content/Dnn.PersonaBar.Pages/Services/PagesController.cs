@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
-                var page = Converters.ConvertToPageSettings(_pagesController.GetPageDetails(pageId));
+                var page = Converters.ConvertToPageSettings<PageSettings>(_pagesController.GetPageDetails(pageId));
                 page.Modules = _pagesController.GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
                 page.PageUrls = _pagesController.GetPageUrls(page.TabId);
                 page.Permissions = _pagesController.GetPermissionsData(pageId);

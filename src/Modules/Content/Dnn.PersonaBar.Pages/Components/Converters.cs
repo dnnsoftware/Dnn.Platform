@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", "ModuleId=" + module.ModuleID);
         }
 
-        public static PageSettings ConvertToPageSettings(TabInfo tab)
+        public static T ConvertToPageSettings<T>(TabInfo tab) where T: PageSettings, new()
         {
             if (tab == null)
             {
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var pageManagementController = PageManagementController.Instance;
 
-            return new PageSettings
+            return new T
             {
                 TabId = tab.TabID,
                 Name = tab.TabName,
