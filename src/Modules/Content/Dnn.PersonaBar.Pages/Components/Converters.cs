@@ -25,8 +25,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 ParentId = tab.ParentId,
                 Level = tab.Level,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
-                TabPath = tab.TabPath.Replace("//", "/")
-            };
+                TabPath = tab.TabPath.Replace("//", "/"),
+                PageType = GetPageType(tab.Url)
+        };
         }
         
         public static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem

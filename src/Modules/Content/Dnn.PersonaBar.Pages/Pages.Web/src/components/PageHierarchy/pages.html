@@ -39,7 +39,7 @@
                 <span class="actions">
                     <span class="buttons">
                         <span class="view-page" data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.View }"></span>
-                        <span class="edit-page" data-bind="click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.Edit }"></span>
+                        <span class="edit-page" data-bind="visible: pageType === 'normal', click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.Edit }"></span>
                         <span class="settings" data-bind="click: $root.settingsPageClick, clickBubble: false, attr: { title: $root.resx.Settings }"></span>
                         <span class="delete-page" data-bind="click: (isspecial ? null : $root.deletePageClick), clickBubble: false, attr: { title: $root.resx.Delete }, css: { 'action-disabled': isspecial }"></span>
                     </span>

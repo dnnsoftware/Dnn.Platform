@@ -995,8 +995,6 @@ window.dnn.pages = window.dnn.pages || {};
                             }
 
                             if (isDragItem) {
-                                viewModel.inDrag(false);
-
                                 handler._needScrollToSelectedPage = true;
                                 viewModel.selectedPage(pageData);
                                 viewModel.dragPage(handler._getEmptyPageData());
@@ -1018,7 +1016,7 @@ window.dnn.pages = window.dnn.pages || {};
                             }, 0);
 
                             // enter into Edit mode
-                            if (viewModel.isNew()) {
+                            if (viewModel.isNew() && data.Page.pageType === "normal") {
                                 viewModel.isNew(false);
                                 handler._enterEditMode(pageData);
                             }
