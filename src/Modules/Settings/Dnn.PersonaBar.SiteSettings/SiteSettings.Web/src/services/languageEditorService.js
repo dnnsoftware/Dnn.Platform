@@ -36,7 +36,7 @@ class ApplicationService {
         sf.post("EnableLocalizedContent?"  + serializeQueryStringParameters(parameters), {}, callback, failureCallback);
     }
 
-    disableLocalizedContent(parameters, callback, failureCallback) {
+    disableLocalizedContent(callback, failureCallback) {
         const sf = this.getServiceFramework("Languages");
         sf.post("DisableLocalizedContent", {}, callback, failureCallback);
     }

@@ -3,11 +3,6 @@ import { connect } from "react-redux";
 import {
     languages as LanguagesActions
 } from "../../../actions";
-import SocialPanelBody from "dnn-social-panel-body";
-import InputGroup from "dnn-input-group";
-import Label from "dnn-label";
-import Button from "dnn-button";
-import Switch from "dnn-switch";
 import resx from "../../../resources";
 import ProgressBar from "./progressBar";
 import "./style.less";
@@ -15,15 +10,6 @@ import "./style.less";
 class TranslationProgressBars extends Component {
     constructor() {
         super();
-        this.state = {
-            totalProgress: 0,
-            totalLanguages: 2,
-            currentLanguage: "",
-            currentPage: "",
-            progress: 30,
-            totalPages: 35,
-            elapsedTime: ""
-        };
         this.currentTime = Date.now();
     }
 
@@ -42,7 +28,6 @@ class TranslationProgressBars extends Component {
         return `${hours}:${minutes}:${seconds}s`;
     }
 
-
     /* eslint-disable react/no-danger */
     render() {
         const {state, props} = this;
@@ -51,12 +36,12 @@ class TranslationProgressBars extends Component {
             resx.get("TotalLanguages").replace("[number]", props.PrimaryTotal);
         const progressText = resx.get("Progress").replace("[number]",  props.SecondaryPercent);
 
-        return <div className={"translation-progress-bars" + props.Error ? " error" : ""}>
+        return <div className={"translation-progress-bars" + (props.Error ? " error" : "")}>
             <div className="text">
                 <span>{resx.get("TranslationProgressBarText").replace("[number]", props.SecondaryTotal)}</span>
             </div>
-            <ProgressBar text={totalProgressText} procentageValue={props.PrimaryPercent}/>
-            <ProgressBar text={progressText} rightText={props.CurrentOperationText} procentageValue={props.SecondaryPercent}/>
+            <ProgressBar text={totalProgressText} percentageValue={props.PrimaryPercent}/>
+            <ProgressBar text={progressText} rightText={props.CurrentOperationText} percentageValue={props.SecondaryPercent}/>
             <div className="text time">
                 {resx.get("ElapsedTime")}
                 <span>{this.getTime()}</span>

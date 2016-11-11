@@ -226,23 +226,9 @@ const languagesActions = {
             });
         };
     },
-    disableLocalizedContent(callback, failureCallback) {
+    disableLocalizedContent(callback) {
         return (dispatch) => {
-           LanguageEditorService.disableLocalizedContent(data => {
-                dispatch({
-                    type: ActionTypes.DISABLED_LOCALIZED_CONTENT,
-                    data: {
-
-                    }
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+           LanguageEditorService.disableLocalizedContent(callback);
         };
     },
     enableLocalizedContent(payload, callback, failureCallback) {

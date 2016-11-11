@@ -28,16 +28,26 @@ class LocalizedContent extends Component {
 
     onEnable(event) {
         const {props, state} = this;
+        props.dispatch(LanguagesActions.disableLocalizedContent());
         props.dispatch(LanguagesActions.enableLocalizedContent({translatePages: state.allPagesTranslatable}, (data) => {
             this.setState(data);
             const newState = Object.assign(data, {showProgressBars: true});
             this.setState(newState);
             setTimeout(this.getProgressData, 500);
+            this.onUpdateSettings();
+            
             
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
             util.utilities.notifyError(errorMessage.Message);
         }));
+    }
+
+    onUpdateSettings() {
+        const {props} = this;
+        let {languageSettings} = props;
+        languageSettings.ContentLocalizationEnabled = true;
+        props.dispatch(LanguagesActions.languageSettingsClientModified(languageSettings));
     }
 
     getProgressData() {
@@ -56,13 +66,12 @@ class LocalizedContent extends Component {
 
     doneProgress() {
         setTimeout(this.props.closePersonaBarPage, 2000);
-        props.dispatch(LanguagesActions.disableLocalizedContent());
     }
 
     getDefaultLanguage() {
         const {languages, languageSettings} = this.props;
         if (!languages || !languageSettings) {
-            return {};
+            return;
         }
         return languages.find(l => l.Code === languageSettings.SiteDefaultLanguage);
     }
@@ -75,8 +84,10 @@ class LocalizedContent extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const defaultLanguage = this.getDefaultLanguage();
+        const defaultLanguage = this.getDefaultLanguage() || {};
         const {props, state} = this;
+        console.log('SETTINGS: ', props.languageSettings);
+        
         return (
             <SocialPanelBody
                 className="create-language-pack-panel enable-localized-content-panel"
@@ -110,8 +121,8 @@ class LocalizedContent extends Component {
                             />
                         <Label
                             className="float-right"
-                            tooltipMessage={resx.get("AllPAgesTranslatable.Help") }
-                            label={resx.get("AllPAgesTranslatable") }
+                            tooltipMessage={resx.get("AllPagesTranslatable.Help") }
+                            label={resx.get("AllPagesTranslatable") }
                             />
                     </InputGroup>
 

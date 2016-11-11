@@ -1,17 +1,15 @@
 import React, { Component, PropTypes } from "react";
 import "./progressBar.less";
 
-
-
 class ProgressBar extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
-        let style = {width: 0};
-        if (props.procentageValue) {
-            style.width = props.procentageValue + "%";
-        } else if (props.currentValue && props.totalValue){
-            style.width = ((props.currentValue * 100)/props.totalValue) + "%";
+        let style = { width: 0 };
+        if (props.percentageValue) {
+            style.width = props.percentageValue + "%";
+        } else if (props.currentValue && props.totalValue) {
+            style.width = ((props.currentValue * 100) / props.totalValue) + "%";
         }
         return <div className="dnn-progress-bar">
             <span className="float-left">{props.text}</span>
@@ -23,10 +21,10 @@ class ProgressBar extends Component {
     }
 }
 
-ProgressBar.protoTypes = {
+ProgressBar.propTypes = {
     currentValue: PropTypes.number,
     totalValue: PropTypes.number,
-    procentageValue: PropTypes.number,
+    percentageValue: PropTypes.number,
     text: PropTypes.string,
     rightText: PropTypes.string
 };

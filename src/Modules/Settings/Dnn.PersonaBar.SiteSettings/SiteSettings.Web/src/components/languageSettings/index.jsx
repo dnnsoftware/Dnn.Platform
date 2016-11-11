@@ -49,7 +49,6 @@ class LanguageSettingsPanelBody extends Component {
 
     componentWillReceiveProps(props) {
         let {state} = this;
-
         this.setState({
             languageSettings: Object.assign({}, props.languageSettings)
         });
@@ -123,6 +122,12 @@ class LanguageSettingsPanelBody extends Component {
             });
         }
         return options;
+    }
+    
+    disableLocalizedContent() {
+        this.props.dispatch(LanguagesActions.disableLocalizedContent(()=>{
+            this.onSettingChange("ContentLocalizationEnabled", false);
+        }));
     }
 
     /* eslint-disable react/no-danger */
@@ -229,12 +234,19 @@ class LanguageSettingsPanelBody extends Component {
                     </InputGroup>
                 }
                 {isHost && <div className={"collapsible-button" + (state.languageSettings.EnableContentLocalization ? " open" : "")}>
-                    <Button
+                    {!state.languageSettings.ContentLocalizationEnabled && <Button
                         disabled={!state.languageSettings.EnableContentLocalization}
                         type="secondary"
                         onClick={this.props.openLocalizedContent}>
                         {resx.get("EnableLocalizedContent") }
-                    </Button>
+                    </Button>}
+                    {state.languageSettings.ContentLocalizationEnabled && <Button
+                        disabled={!state.languageSettings.EnableContentLocalization}
+                        type="secondary"
+                        onClick={this.disableLocalizedContent.bind(this)}>
+                        {resx.get("DisableLocalizedContent") }
+                    </Button>}
+
                 </div>}
             </div>;
 
