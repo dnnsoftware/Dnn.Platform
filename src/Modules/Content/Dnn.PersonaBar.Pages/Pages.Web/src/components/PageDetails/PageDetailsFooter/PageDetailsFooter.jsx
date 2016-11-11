@@ -42,10 +42,13 @@ class PageDetailsFooter extends Component {
     insertElementsInArray(array, elements, propertyNameHasIndex, propertyNameHasValue) {
         for (let i = 0; i < elements.length; i++) {
             let index = this.getInteger(elements[i][propertyNameHasIndex]);
-            
+            const Component = elements[i][propertyNameHasValue];
+            Component.props.page = this.props.page;
+            Component.props.onChange = this.onChangeValue.bind(this);
+
             if (index || index === 0) {
                 index = Math.min(array.length, Math.max(0, index));
-                array.splice(index, 0, elements[i][propertyNameHasValue]);
+                array.splice(index, 0, [Component, <div style={{ clear: "both" }}></div>]);
             }            
         }
     }
