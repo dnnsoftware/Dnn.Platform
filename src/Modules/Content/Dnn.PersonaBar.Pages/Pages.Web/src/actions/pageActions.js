@@ -207,20 +207,6 @@ const pageActions = {
                 });
             });      
         };
-    },
-
-    loadAddMultiplePages() {
-        return {
-            type: ActionTypes.LOAD_ADD_MULTIPLE_PAGES,
-            data: {}
-        };
-    },
-
-    cancelAddMultiplePages() {
-        return {
-            type: ActionTypes.CANCEL_ADD_MULTIPLE_PAGES,
-            data: {}
-        };
     }
 };
 

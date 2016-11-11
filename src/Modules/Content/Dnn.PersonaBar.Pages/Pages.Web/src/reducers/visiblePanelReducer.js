@@ -1,4 +1,7 @@
-import ActionTypes  from "../constants/actionTypes/pageActionTypes";
+import {
+    pageActionTypes as PageActionTypes,
+    addPagesActionTypes as AddPagesActionTypes
+} from "../constants/actionTypes";
 import panels  from "../constants/panels";
 
 export default function visiblePanel(state = {
@@ -7,27 +10,27 @@ export default function visiblePanel(state = {
     
     switch (action.type) {
 
-        case ActionTypes.SAVED_PAGE:
+        case PageActionTypes.SAVED_PAGE:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
             };
         
-        case ActionTypes.CANCEL_PAGE:
+        case PageActionTypes.CANCEL_PAGE:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
             };
         
-        case ActionTypes.LOAD_PAGE:
+        case PageActionTypes.LOAD_PAGE:
             return { ...state,
                 selectedPage: panels.PAGE_SETTINGS_PANEL
             };
 
-        case ActionTypes.LOAD_ADD_MULTIPLE_PAGES:
+        case AddPagesActionTypes.LOAD_ADD_MULTIPLE_PAGES:
             return { ...state,
                 selectedPage: panels.ADD_MULTIPLE_PAGES_PANEL
             };
 
-        case ActionTypes.CANCEL_ADD_MULTIPLE_PAGES:
+        case AddPagesActionTypes.CANCEL_ADD_MULTIPLE_PAGES:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
             };

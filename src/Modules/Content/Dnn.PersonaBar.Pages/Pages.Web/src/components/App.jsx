@@ -5,7 +5,8 @@ import SocialPanelHeader from "dnn-social-panel-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
-    pageActions as PageActions
+    pageActions as PageActions,
+    addPagesActions as AddPagesActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -130,10 +131,10 @@ class App extends Component {
                         workSpaceTray={backToPages}
                         workSpaceTrayVisible={true}>
                         <AddPages  
-                            addPagesData={{}}
+                            bulkPage={props.bulkPage}
                             onCancel={this.onCancelAddPages.bind(this)} 
                             onSave={this.onSavePages.bind(this)}
-                            onChangeField={() => {}} />
+                            onChangeField={props.onChangeAddMultiplePagesField} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -167,6 +168,7 @@ App.propTypes = {
     selectedPage: PropTypes.object,
     selectedPageErrors: PropTypes.object,
     selectedPageDirty: PropTypes.boolean,
+    bulkPage: PropTypes.object,
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
     onSavePage: PropTypes.func.isRequired,
@@ -174,6 +176,7 @@ App.propTypes = {
     onAddPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
     onLoadAddMultiplePages: PropTypes.func.isRequired,
+    onChangeAddMultiplePagesField: PropTypes.func.isRequired,
     onChangePageField: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
@@ -189,6 +192,7 @@ function mapStateToProps(state) {
         selectedPage: state.pages.selectedPage,
         selectedPageErrors: state.pages.errors,
         selectedPageDirty: state.pages.dirtyPage,
+        bulkPage: state.addPages.bulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error
     };
@@ -200,8 +204,9 @@ function mapDispatchToProps(dispatch) {
         onSavePage: PageActions.savePage,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
-        onCancelAddMultiplePages: PageActions.cancelAddMultiplePages,
-        onLoadAddMultiplePages: PageActions.loadAddMultiplePages,
+        onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
+        onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,
+        onChangeAddMultiplePagesField: AddPagesActions.changeAddMultiplePagesField, 
         onChangePageField: PageActions.changePageField,
         onChangePageType: PageActions.changePageType,
         onPermissionsChanged: PageActions.changePermissions,

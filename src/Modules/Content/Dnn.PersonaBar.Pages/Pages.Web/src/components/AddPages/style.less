@@ -1,4 +1,48 @@
 @import "~dnn-global-styles/index";
 :local(.addPages) {
+    padding: 30px;
+    .left-column,
+    .right-column {
+        width: 50%;
+        float: left;
+        .dnn-label{
+            margin-bottom: 5px;
+        }
+        .column-heading {
+            font-weight: bolder;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+    }
 
+    .left-column{
+        padding-right: 25px;
+        border-right: 1px solid #c8c8c8;
+    }
+
+    .right-column{
+        padding-left: 25px;
+    }
+
+    .bulk-page-input {
+        padding: 8px 16px 50px;
+        min-height: 360px;
+    }
+
+    .keywords-field {
+        display: block;
+        textarea {
+            margin-bottom: 0px !important;
+        }
+    }
+
+    .buttons-box {
+        clear: both;
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
 }
