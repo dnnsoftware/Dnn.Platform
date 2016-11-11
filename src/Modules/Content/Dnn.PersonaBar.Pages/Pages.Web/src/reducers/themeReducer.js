@@ -3,6 +3,9 @@ import PagesActionTypes  from "../constants/actionTypes/pageActionTypes";
 
 export default function themeReducer(state = {
     themes: [],
+    defaultPortalThemeName: null,
+    defaultPortalLayout: null,
+    defaultPortalContainer: null,
     layouts: [],
     containers: [],
     retrievedThemes: false,
@@ -18,6 +21,9 @@ export default function themeReducer(state = {
         case ActionTypes.RETRIEVED_THEMES:
             return { ...state,
                 themes: action.data.themes,
+                defaultPortalLayout: action.data.defaultPortalLayout,
+                defaultPortalContainer: action.data.defaultPortalContainer,
+                defaultPortalThemeName: action.data.defaultPortalThemeName,
                 retrievedThemes: true,
                 retrievingThemes: false
             };

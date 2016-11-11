@@ -15,11 +15,25 @@ import style from "./style.less";
 class Appearance extends Component {
 
     componentWillMount() {
-        this.props.onRetrieveThemes();
+        const { page, defaultPortalThemeName, onRetrieveThemes, onRetrieveThemeFiles } = this.props;
 
-        const { page } = this.props;
+        onRetrieveThemes();
+
+        const selectedThemeName = page.themeName || defaultPortalThemeName;
+        if (selectedThemeName) {
+            onRetrieveThemeFiles(selectedThemeName);
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        const { page, defaultPortalThemeName, onRetrieveThemeFiles } = this.props;
+        
         if (page.themeName) {
-            this.props.onRetrieveThemeFiles(page.themeName);
+            return;
+        }
+
+        if (defaultPortalThemeName !== newProps.defaultPortalThemeName && newProps.defaultPortalThemeName !== null) {
+            onRetrieveThemeFiles(newProps.defaultPortalThemeName);
         }
     }
 
@@ -87,11 +101,14 @@ class Appearance extends Component {
     }
 
     render() {   
-        const { page, themes, layouts, containers } = this.props;
-        const selectedTheme = themes.find(t => t.packageName === page.themeName);
+        const { page, themes, layouts, containers, defaultPortalThemeName, defaultPortalLayout, defaultPortalContainer } = this.props;
+        const selectedThemeName = page.themeName || defaultPortalThemeName;
+        const selectedTheme = themes.find(t => t.packageName === selectedThemeName);
         const noThemeSelected = !selectedTheme;
-        const selectedLayout = layouts.find(this.findByPath(page.skinSrc));
-        const selectedContainer = containers.find(this.findByPath(page.containerSrc));     
+        const selectedLayoutPath = page.skinSrc || defaultPortalLayout;
+        const selectedLayout = layouts.find(this.findByPath(selectedLayoutPath));
+        const selectedContainerPath = page.containerSrc || defaultPortalContainer;
+        const selectedContainer = containers.find(this.findByPath(selectedContainerPath));     
         return (
             <div className={style.moduleContainer}>
                 <GridCell>
@@ -140,12 +157,18 @@ Appearance.propTypes = {
     onRetrieveThemeFiles: PropTypes.func.isRequired,
     themes: PropTypes.array.isRequired,
     layouts: PropTypes.array.isRequired,
-    containers: PropTypes.array.isRequired
+    containers: PropTypes.array.isRequired,
+    defaultPortalLayout: PropTypes.string,
+    defaultPortalContainer: PropTypes.string,
+    defaultPortalThemeName: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         themes: state.theme.themes,
+        defaultPortalThemeName: state.theme.defaultPortalThemeName,
+        defaultPortalLayout: state.theme.defaultPortalLayout,
+        defaultPortalContainer: state.theme.defaultPortalContainer,
         layouts: state.theme.layouts,
         containers: state.theme.containers
     };

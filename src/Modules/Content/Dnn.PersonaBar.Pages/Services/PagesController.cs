@@ -19,6 +19,8 @@ using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
@@ -219,7 +221,38 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetThemes()
         {
             var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site);
-            return Request.CreateResponse(HttpStatusCode.OK, new { themes });
+            var defaultPortalThemeName = GetDefaultPortalTheme();
+            var defaultPortalLayout = GetDefaultPortalLayout();
+            var defaultPortalContainer = GetDefaultPortalContainer();
+
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
+                themes,
+                defaultPortalThemeName,
+                defaultPortalLayout,
+                defaultPortalContainer
+            });
+        }
+
+        private string GetDefaultPortalTheme()
+        {
+            var layoutSrc = GetDefaultPortalLayout();
+            if (string.IsNullOrWhiteSpace(layoutSrc))
+            {
+                return null;
+            }
+            var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
+            return layout?.ThemeName;
+        }
+
+        private string GetDefaultPortalContainer()
+        {
+            return PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
+        }
+
+        private string GetDefaultPortalLayout()
+        {
+            return PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
         }
 
         [HttpGet]

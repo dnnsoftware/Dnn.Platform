@@ -12,7 +12,10 @@ const themeActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_THEMES,
                     data: {
-                        themes: response.themes
+                        themes: response.themes,
+                        defaultPortalThemeName: response.defaultPortalThemeName,
+                        defaultPortalLayout: response.defaultPortalLayout,
+                        defaultPortalContainer: response.defaultPortalContainer
                     }
                 });  
             }).catch((error) => {
