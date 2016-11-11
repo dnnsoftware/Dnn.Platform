@@ -30,12 +30,14 @@ namespace Dnn.PersonaBar.Pages.Services
     public class PagesController : PersonaBarApiController
     {
         private readonly IPagesController _pagesController;
+        private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
 
         public PagesController()
         {
             _pagesController = Components.PagesController.Instance;
             _themesController = ThemesController.Instance;
+            _bulkPagesController = BulkPagesController.Instance;
         }
 
         /// GET: api/Pages/GetPageDetails
@@ -236,6 +238,26 @@ namespace Dnn.PersonaBar.Pages.Services
                 layouts = _themesController.GetThemeFiles(PortalSettings, themeLayout),
                 containers = _themesController.GetThemeFiles(PortalSettings, themeContainer)
             });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SaveBulkPages(BulkPage bulkPage)
+        {
+            try
+            {
+                var bulkPageResponse = _bulkPagesController.AddBulkPages(bulkPage);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Status = 0,
+                    Response = bulkPageResponse
+                });
+            }
+            catch (PageValidationException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Field, ex.Message });
+            }
         }
     }
 }

@@ -100,7 +100,9 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\BulkPagesController.cs" />
     <Compile Include="Components\Exceptions\PageModuleNotFoundException.cs" />
+    <Compile Include="Components\IBulkPagesController.cs" />
     <Compile Include="Components\IPageManagementController.cs" />
     <Compile Include="Components\IPagesController.cs" />
     <Compile Include="Components\Exceptions\PageException.cs" />
@@ -111,7 +113,11 @@
     <Compile Include="Components\PagesController.cs" />
     <Compile Include="Components\Exceptions\PageValidationException.cs" />
     <Compile Include="Components\PageUrlsController.cs" />
+    <Compile Include="Components\TermHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Dto\BulkPage.cs" />
+    <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
+    <Compile Include="Services\Dto\BulkPageResponse.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
     <Compile Include="Services\Dto\PageModuleItem.cs" />
