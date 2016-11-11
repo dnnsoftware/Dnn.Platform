@@ -279,7 +279,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return tabModules.Values.Where(m => !m.IsDeleted && !m.AllTabs);
         }
 
-        public bool ValidatePageSettingsData(PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage)
+        protected virtual bool ValidatePageSettingsData(PageSettings pageSettings, TabInfo tab, out string invalidField, out string errorMessage)
         {
             errorMessage = string.Empty;
             invalidField = string.Empty;
@@ -319,7 +319,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return ValidatePageUrlSettings(pageSettings, tab, ref invalidField, ref errorMessage);
         }
 
-        protected int GetTemplateParentId(int tabId)
+        protected virtual int GetTemplateParentId(int tabId)
         {
             return Null.NullInteger;
         }
@@ -371,9 +371,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var tabId = _tabController.AddTab(tab);
             tab = _tabController.GetTab(tabId, portalId);
-            
-            AddTabExtension(tab, pageSettings);
-
+                        
             CreateOrUpdateContentItem(tab);
             
             SaveTabUrl(tab, pageSettings);
@@ -382,12 +380,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return tab.TabID;
         }
 
-        protected void AddTabExtension(TabInfo tab, PageSettings pageSettings)
-        {
-            
-        }
-
-        private void UpdateTabInfoFromPageSettings(TabInfo tab, PageSettings pageSettings)
+        protected virtual void UpdateTabInfoFromPageSettings(TabInfo tab, PageSettings pageSettings)
         {
             tab.TabName = pageSettings.Name;
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
@@ -697,7 +690,6 @@ namespace Dnn.PersonaBar.Pages.Components
         public int UpdateTab(TabInfo tab, PageSettings pageSettings)
         {
             UpdateTabInfoFromPageSettings(tab, pageSettings);
-            UpdateTabExtension(tab, pageSettings);
             SavePagePermissions(tab, pageSettings.Permissions);
 
             _tabController.UpdateTab(tab);
@@ -772,12 +764,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
-        }
-
-
-        protected void UpdateTabExtension(TabInfo tab, PageSettings pageSettings)
-        {
-            
         }
 
         public PagePermissions GetPermissionsData(int pageId)
