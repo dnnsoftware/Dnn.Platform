@@ -8,6 +8,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -55,6 +56,9 @@ namespace Dnn.PersonaBar.Pages.Components
             var pageType = GetPageType(tab.Url);
 
             var pageManagementController = PageManagementController.Instance;
+            
+            var fileId = GetFileIdRedirection(tab.Url);
+            string fileUrl = GetFileUrlRedirection(fileId);
 
             return new T
             {
@@ -69,7 +73,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 Alias = PortalSettings.Current.PortalAlias.HTTPAlias,
                 Url = pageManagementController.GetTabUrl(tab),
                 ExternalRedirection = pageType == "url" ? tab.Url : null,
-                FileRedirection = pageType == "file" ? GetFileRedirectionId(tab.Url) : null,
+                FileIdRedirection = pageType == "file" ? fileId : null,
+                FileUrlRedirection = pageType == "file" ? fileUrl : null,
                 ExistingTabRedirection = pageType == "tab" ? tab.Url : null,
                 Created = pageManagementController.GetCreatedInfo(tab),
                 Hierarchy = pageManagementController.GetTabHierarchy(tab),
@@ -98,7 +103,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ContainerSrc = tab.ContainerSrc
             };
         }
-
+        
         private static string GetThemeNameFromSkinSrc(string skinSrc)
         {
             if (string.IsNullOrWhiteSpace(skinSrc))
@@ -110,15 +115,29 @@ namespace Dnn.PersonaBar.Pages.Components
             return layout?.ThemeName;
         }
 
-        private static string GetFileRedirectionId(string tabUrl)
+        private static int? GetFileIdRedirection(string tabUrl)
         {
-            var fileRedirectionId = tabUrl;
-            if (tabUrl != null && tabUrl.StartsWith("FileId="))
+            if (tabUrl == null || !tabUrl.StartsWith("FileId="))
             {
-                fileRedirectionId = tabUrl.Substring(7);
+                return null;
             }
 
-            return fileRedirectionId;
+            int fileRedirectionId;
+            if (int.TryParse(tabUrl.Substring(7), out fileRedirectionId))
+            {
+                return fileRedirectionId;
+            }
+            return null;
+        }
+
+        private static string GetFileUrlRedirection(int? fileId)
+        {
+            if (!fileId.HasValue)
+            {
+                return null;
+            }
+            var file = FileManager.Instance.GetFile(fileId.Value);
+            return file != null ? FileManager.Instance.GetUrl(file) : null;
         }
 
         private static int? CacheDuration(TabInfo tab)

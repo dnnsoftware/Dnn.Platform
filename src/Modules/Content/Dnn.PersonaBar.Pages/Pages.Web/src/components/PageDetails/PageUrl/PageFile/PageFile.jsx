@@ -9,22 +9,24 @@ import PageUrlCommons from "../PageUrlCommons/PageUrlCommons";
 class PageFile extends Component {
 
     onFileSelect(value) {
-        this.props.onChangeField("internalUrl", "FileId=" + value.fileId);
-        this.props.onChangeField("filePath", value.path);
+        this.props.onChangeField("fileIdRedirection", value.fileId);
+        this.props.onChangeField("fileUrlRedirection", value.path);
     }
 
     render() {
         const {page} = this.props;
-        const filePath = page.filePath;
-
+        const fileUrlRedirection = page.fileUrlRedirection;
+        const utilities = {
+            utilities: utils.getUtilities()
+        };
         return (
             <div className={styles.pageFile}>
                 <GridSystem>
                     <GridCell className="left-column">
                         <FileUpload
-                            utils={utils}
+                            utils={utilities}
                             portalId={-1}
-                            imagePath={filePath}
+                            imagePath={fileUrlRedirection}
                             onImageSelect={this.onFileSelect.bind(this)} />
                     </GridCell>
                     <GridCell className="right-column">

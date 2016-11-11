@@ -495,7 +495,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 case "url":
                     return GetExternalUrlRedirection(pageSettings.ExternalRedirection);
                 case "file":
-                    return "FileId=" + pageSettings.FileRedirection;
+                    return "FileId=" + pageSettings.FileIdRedirection;
                 default:
                     return null;
             }

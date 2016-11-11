@@ -127,8 +127,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "externalRedirection")]
         public string ExternalRedirection { get; set; }
 
-        [DataMember(Name = "fileRedirection")]
-        public string FileRedirection { get; set; }
+        [DataMember(Name = "fileIdRedirection")]
+        public int? FileIdRedirection { get; set; }
+
+        [DataMember(Name = "fileUrlRedirection")]
+        public string FileUrlRedirection { get; set; }
 
         [DataMember(Name = "existingTabRedirection")]
         public string ExistingTabRedirection { get; set; }
