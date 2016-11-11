@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 
-const moduleControlPath = "/ctl/Module/ModuleId/";
 const queryString = "?popUp=true&HideCancel=true&HideDelete=true&NoRedirectOnUpdate=true";
 
 const iFrameStyle = { 
@@ -11,7 +10,7 @@ const iFrameStyle = {
 
 class ModuleEdit extends Component {
     render() {
-        const moduleSettingControlPath = this.props.absolutePageUrl + moduleControlPath + this.props.module.id + queryString;
+        const moduleSettingControlPath = this.props.module.editSettingUrl + queryString;
         return (
             <iframe src={moduleSettingControlPath} style={iFrameStyle} frameBorder={0}></iframe>
         );
@@ -19,8 +18,7 @@ class ModuleEdit extends Component {
 }
 
 ModuleEdit.propTypes = {
-    module: PropTypes.object.isRequired,
-    absolutePageUrl: PropTypes.string.isRequired
+    module: PropTypes.object.isRequired
 };
 
 export default ModuleEdit;

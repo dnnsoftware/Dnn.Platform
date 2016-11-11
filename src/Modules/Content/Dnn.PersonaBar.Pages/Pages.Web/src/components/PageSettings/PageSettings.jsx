@@ -119,7 +119,6 @@ class PageSettings extends Component {
                         <div className="dnn-simple-tab-item">
                             <Modules 
                                 modules={selectedPage.modules} 
-                                absolutePageUrl={selectedPage.absoluteUrl}
                                 onDeleteModule={onDeletePageModule}
                                 onToggleEditModule={onToggleEditPageModule}
                                 editingSettingModuleId={editingSettingModuleId} />

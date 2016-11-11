@@ -8,7 +8,7 @@ import ModuleEdit from "./ModuleEdit/ModuleEdit";
 class ModuleRow extends Component {
 
     render() {
-        const { module, onDelete, onToggleEditing, absolutePageUrl, isEditingModule} = this.props;
+        const { module, onDelete, onToggleEditing, isEditingModule} = this.props;
         const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
         return (
             /* eslint-disable react/no-danger */
@@ -25,7 +25,7 @@ class ModuleRow extends Component {
                 </GridCell>
                 <Collapse accordion={true} isOpened={isEditingModule} keepCollapsedContent={true} className="module-settings">
                     {isEditingModule && 
-                        <ModuleEdit absolutePageUrl={absolutePageUrl} module={module} />}
+                        <ModuleEdit module={module} />}
                 </Collapse>
             </div>
             /* eslint-enable react/no-danger */
@@ -36,7 +36,6 @@ class ModuleRow extends Component {
 ModuleRow.propTypes = {
     module: PropTypes.object.isRequired,
     isEditingModule: PropTypes.bool.isRequired,
-    absolutePageUrl: PropTypes.string.isRequired,
     onDelete: PropTypes.func.isRequired,
     onToggleEditing: PropTypes.func.isRequired
 };

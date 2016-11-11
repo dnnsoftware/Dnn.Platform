@@ -29,12 +29,18 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
         
-        public static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem()
+        public static ModuleItem ConvertToModuleItem(ModuleInfo module) => new ModuleItem
         {
             Id = module.ModuleID,
             Title = module.ModuleTitle,
-            FriendlyName = module.DesktopModule.FriendlyName
+            FriendlyName = module.DesktopModule.FriendlyName,
+            EditSettingUrl = GetModuleEditSettingUrl(module)
         };
+
+        private static string GetModuleEditSettingUrl(ModuleInfo module)
+        {
+            return Globals.NavigateURL(module.TabID, PortalSettings.Current, "Module", "ModuleId=" + module.ModuleID);
+        }
 
         public static PageSettings ConvertToPageSettings(TabInfo tab)
         {

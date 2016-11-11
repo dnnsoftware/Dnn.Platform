@@ -20,7 +20,7 @@ class Modules extends Component {
     }
 
     getModules() {
-        const {modules, absolutePageUrl, onToggleEditModule, editingSettingModuleId} = this.props;
+        const {modules, onToggleEditModule, editingSettingModuleId} = this.props;
 
         if (modules.length === 0) {
             return <GridCell className="no-modules" columnSize={100} >
@@ -34,7 +34,6 @@ class Modules extends Component {
                 <ModulesRow 
                     key={index}
                     module={module} 
-                    absolutePageUrl={absolutePageUrl}
                     onDelete={this.onDeleteModule.bind(this)}
                     onToggleEditing={onToggleEditModule}
                     isEditingModule={isEditingModule} />
@@ -70,7 +69,6 @@ class Modules extends Component {
 
 Modules.propTypes = {
     modules: PropTypes.array.isRequired,
-    absolutePageUrl: PropTypes.string.isRequired,
     onDeleteModule: PropTypes.func.isRequired,
     onToggleEditModule: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number
