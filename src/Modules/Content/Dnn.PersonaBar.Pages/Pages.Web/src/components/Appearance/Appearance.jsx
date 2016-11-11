@@ -82,12 +82,16 @@ class Appearance extends Component {
         this.props.onChangeField("pageStyleSheet", value);
     }
 
+    findByPath(componentSrc) {
+        return (c) => utils.areEqualInvariantCase(this.addAscxExtension(c.path), componentSrc);
+    }
+
     render() {   
         const { page, themes, layouts, containers } = this.props;
         const selectedTheme = themes.find(t => t.packageName === page.themeName);
         const noThemeSelected = !selectedTheme;
-        const selectedLayout = layouts.find(l => this.addAscxExtension(l.path) === page.skinSrc);
-        const selectedContainer = containers.find(c => this.addAscxExtension(c.path) === page.containerSrc);     
+        const selectedLayout = layouts.find(this.findByPath(page.skinSrc));
+        const selectedContainer = containers.find(this.findByPath(page.containerSrc));     
         return (
             <div className={style.moduleContainer}>
                 <GridCell>

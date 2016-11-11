@@ -45,6 +45,13 @@ function formatNumeric2Decimals(value) {
     return parseFloat(Math.round(value * 100) / 100).toFixed(2);
 }
 
+function areEqualInvariantCase(a, b) {
+    if (!a || !b) {
+        return a === b;
+    }
+    return a.toLowerCase() === b.toLowerCase();
+}
+
 function notify(message) {
     checkInit();
     return utilities.notify(message);
@@ -109,7 +116,8 @@ const utils = {
     getCurrentPageId,
     getViewName,
     getResx,
-    getSiteRoot
+    getSiteRoot,
+    areEqualInvariantCase
 };
 
 export default utils;
