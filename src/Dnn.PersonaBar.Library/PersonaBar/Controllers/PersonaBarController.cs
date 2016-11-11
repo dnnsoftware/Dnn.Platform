@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Permissions;
 using Dnn.PersonaBar.Library.PersonaBar.Repository;
@@ -37,6 +38,7 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
                 var filteredMenu = new PersonaBarMenu();
                 GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, personaBarMenu.MenuItems);
 
+                PersonaBarContainer.Instance.FilterMenu(filteredMenu);
                 return filteredMenu;
             }
             catch (Exception e)

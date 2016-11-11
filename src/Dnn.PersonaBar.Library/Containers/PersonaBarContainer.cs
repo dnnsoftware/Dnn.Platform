@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Library.PersonaBar.Controllers;
+using Dnn.PersonaBar.Library.PersonaBar.Model;
 using DotNetNuke.Application;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -55,8 +56,6 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual bool Visible => true;
 
-        public virtual IList<string> EditorRoles => new List<string>(); 
-
         public virtual void Initialize(UserControl personaBarControl)
         {
             
@@ -67,6 +66,11 @@ namespace Dnn.PersonaBar.Library.Containers
             var portalSettings = PortalSettings.Current;
 
             return GetConfigration(portalSettings);
+        }
+
+        public virtual void FilterMenu(PersonaBarMenu menu)
+        {
+            
         }
 
         #endregion
