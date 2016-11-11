@@ -295,6 +295,27 @@ namespace Dnn.PersonaBar.Pages.Services
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteCustomUrl(UrlIdDto dto)
+        {
+            var tab = PortalSettings.ActiveTab;
+            var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == dto.Id);
+
+            TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
+
+            // Delete Custom Url
+            var response = new
+            {
+                Success = true
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+        public class UrlIdDto
+        {
+            public int Id { get; set; }
+        }
+
         protected IOrderedEnumerable<KeyValuePair<int, string>> Locales
         {
             get

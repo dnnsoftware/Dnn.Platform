@@ -49,9 +49,16 @@ const PageService = function () {
         const api = getApi();
         return api.post("UpdateCustomUrl", toBackEndUrl(url, primaryAliasId));
     };
+    
+    const deleteUrl = function (url) {
+        const api = getApi();
+        return api.post("DeleteCustomUrl", {id: url.id});
+    };
+    
     return {
         add: add,
-        save: save
+        save: save,
+        delete: deleteUrl
     };
 };
 

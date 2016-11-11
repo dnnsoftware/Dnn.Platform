@@ -5,16 +5,12 @@ import UrlRow from "./UrlRow";
 
 class Table extends Component {
     
-    onDelete(url) {
-        
-    }
-    
     getUrlRows(pageUrls) {
         if (!pageUrls || pageUrls.length === 0) {
             return null;
         }
         
-        const {siteAliases, primaryAliasId, onSave, onCancel, onChange, editedUrl,
+        const {siteAliases, primaryAliasId, onSave, onCancel, onDelete, onChange, editedUrl,
                 pageHasParent, editingUrl, onOpenEditForm} = this.props;
         return pageUrls.map(url => {
             return <UrlRow url={url}
@@ -27,12 +23,12 @@ class Table extends Component {
                         onSave={onSave}
                         onCancel={onCancel}
                         saving={editingUrl}
-                        onDelete={this.onDelete.bind(this)} />;
+                        onDelete={onDelete} />;
         });
     }
     
     render() {
-        const {pageUrls, onDelete} = this.props;
+        const {pageUrls} = this.props;
         const urlRows = this.getUrlRows(pageUrls);
         
         return (

@@ -17,7 +17,7 @@ class PageUrls extends Component {
     }
     
     render() {
-        const {pageHasParent, addingNewUrl, editingUrl, onOpenEditForm,
+        const {pageHasParent, addingNewUrl, editingUrl, onOpenEditForm, onDeleteUrl,
             editedUrl, onCloseEditUrl, onOpenNewForm, onCloseNewUrl, newFormOpened, siteAliases, primaryAliasId, 
             pageUrls, onChange} = this.props;
         
@@ -37,6 +37,7 @@ class PageUrls extends Component {
                     pageHasParent={pageHasParent}
                     onChange={onChange}
                     onSave={this.onSaveUrl.bind(this)}  
+                    onDelete={onDeleteUrl}
                     onCancel={onCloseEditUrl}
                     editingUrl={editingUrl}
                     editedUrl={editedUrl}
@@ -51,6 +52,7 @@ PageUrls.propTypes = {
     newFormOpened: PropTypes.bool,
     onAddNewUrl: PropTypes.func.isRequired,
     onSaveUrl: PropTypes.func.isRequired,
+    onDeleteUrl: PropTypes.func.isRequired,
     onOpenNewForm: PropTypes.func.isRequired,
     onOpenEditForm: PropTypes.func.isRequired,
     onCloseNewUrl: PropTypes.func.isRequired,
@@ -83,7 +85,8 @@ function mapDispatchToProps(dispatch) {
             onCloseEditUrl: SeoActions.closeEditForm,
             onChange: SeoActions.change,
             onAddNewUrl: SeoActions.addUrl,
-            onSaveUrl: SeoActions.saveUrl
+            onSaveUrl: SeoActions.saveUrl,
+            onDeleteUrl: SeoActions.deleteUrl
         }, dispatch)
     };
 }

@@ -110,6 +110,38 @@ const pageSeoActions = {
                 });
             }); 
         };
+    },
+    deleteUrl(url) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_DELETE_URL
+            });
+
+            PageSeoService.delete(url).then((response) => {
+                if (!response.Success) {
+                    dispatch({
+                        type: ActionTypes.ERROR_SEO_DELETING_URL,
+                        data: {error: response.ErrorMessage}
+                    });
+                    return;
+                }
+                
+                dispatch({
+                    type: ActionTypes.SEO_DELETED_URL
+                });
+                dispatch({
+                    type: pageActionTypes.DELETE_CUSTOM_URL,
+                    payload: {
+                        id: url.id
+                    }
+                });                           
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_SEO_DELETING_URL,
+                    data: {error}
+                });
+            }); 
+        };
     }
 };
 

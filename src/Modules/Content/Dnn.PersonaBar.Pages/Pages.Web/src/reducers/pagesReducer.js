@@ -115,6 +115,16 @@ export default function pagesReducer(state = {
                 }
             };
         }
+        case ActionTypes.DELETE_CUSTOM_URL: {
+            const pageUrls = [...state.selectedPage.pageUrls.filter(f => f.id !== action.payload.id)];
+            
+            return { ...state,
+                selectedPage: {
+                    ...state.selectedPage, 
+                    pageUrls
+                }
+            };
+        }
 
         default:
             return state;
