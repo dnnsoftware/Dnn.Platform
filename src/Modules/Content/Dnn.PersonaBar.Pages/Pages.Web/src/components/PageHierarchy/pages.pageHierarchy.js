@@ -134,6 +134,9 @@ window.dnn.pages = window.dnn.pages || {};
         },
 
         setSearchKeyword: function (searchKeyword) {
+            if (searchKeyword === this._getViewModel().searchKeyword()) {
+                return;
+            }
             this._getViewModel().searchKeyword(searchKeyword);
             this._searchKeywordsChangedHandler();
         },
