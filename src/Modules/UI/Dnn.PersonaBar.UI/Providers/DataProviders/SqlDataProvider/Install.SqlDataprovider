@@ -490,16 +490,16 @@ BEGIN
         WHERE Identifier = 'Edit'
     
     DECLARE @ParentId INT
-    SELECT @ParentId = MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] WHERE Identifier = 'Content'
+    SELECT @ParentId = MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] WHERE Identifier = 'Manage'
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET [Order] = 10,
+        SET [Order] = 22,
         ParentId = @ParentId,
         Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
         Path = 'LinkMenu?path=//Admin//FileManagement&sku=DNN'
         WHERE Identifier = 'SiteAssets'
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET [Order] = 12,
+        SET [Order] = 24,
         ParentId = @ParentId,
         Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
         Path = 'LinkMenu?portalId=-1&path=//Host//FileManagement&sku=DNN'
