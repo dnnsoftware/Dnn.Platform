@@ -17,7 +17,7 @@ BEGIN
 	    [ModuleName] NVARCHAR(50) NOT NULL,
 	    [Controller] NVARCHAR(260) NULL,
 	    [ResourceKey] NVARCHAR(50) NOT NULL,
-	    [Path] NVARCHAR(50) NOT NULL,
+	    [Path] NVARCHAR(260) NOT NULL,
 	    [Link] NVARCHAR(260) NULL,
 	    [CssClass] NVARCHAR(50) NULL,
 	    [MobileSupport] BIT NOT NULL DEFAULT(0) ,
@@ -45,8 +45,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenu]
     @ModuleName                 NVARCHAR(50),
     @Controller                 NVARCHAR(260),
     @ResourceKey                NVARCHAR(50),
-    @Path                       NVARCHAR(50),
-    @Link                       NVARCHAR(50),
+    @Path                       NVARCHAR(260),
+    @Link                       NVARCHAR(260),
     @CssClass                   NVARCHAR(50),
     @MobileSupport              BIT,
     @ParentId                   INT,
@@ -204,7 +204,7 @@ BEGIN
 	    [MenuId] INT NOT NULL,
         [Controller] NVARCHAR(260) NULL,
         [Container] NVARCHAR(50) NOT NULL,
-        [Path] NVARCHAR(50) NOT NULL,
+        [Path] NVARCHAR(260) NOT NULL,
         [Order] INT NOT NULL DEFAULT(0),
         [Enabled] BIT NOT NULL DEFAULT(1),
 	    [CreatedByUserId] INT NULL,
@@ -227,7 +227,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarExtension]
     @MenuId                     INT,
     @Controller                 NVARCHAR(260),
     @Container                  NVARCHAR(50),
-    @Path                       NVARCHAR(50),
+    @Path                       NVARCHAR(260),
     @Order                      INT,
     @Enabled                    BIT,
     @CurrentUserId              INT
@@ -479,7 +479,7 @@ BEGIN
             [LastModifiedOnDate]
         )
         SELECT Item, Item, '', 'nav_' + Item, '', 1, NULL, ROW_NUMBER() OVER (ORDER BY (SELECT 1)) * 5, 1, 1, -1, GETDATE(), -1, GETDATE() 
-            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Content,Manage,Settings,Logout,Edit,Assets', ',')
+            FROM {databaseOwner}{objectQualifier}SplitStrings_CTE('Content,Manage,Settings,Logout,Edit,SiteAssets,GlobalAssets', ',')
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
         SET Controller = 'Dnn.PersonaBar.UI.MenuControllers.PlatformMenuController, Dnn.PersonaBar.UI'
@@ -497,7 +497,13 @@ BEGIN
         ParentId = @ParentId,
         Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
         Path = 'LinkMenu?path=//Admin//FileManagement&sku=DNN'
-        WHERE Identifier = 'Assets'
+        WHERE Identifier = 'SiteAssets'
+    UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
+        SET [Order] = 12,
+        ParentId = @ParentId,
+        Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
+        Path = 'LinkMenu?portalId=-1&path=//Host//FileManagement&sku=DNN'
+        WHERE Identifier = 'GlobalAssets'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators' 

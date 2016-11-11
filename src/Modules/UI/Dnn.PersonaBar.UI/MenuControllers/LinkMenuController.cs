@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                 int tabId, portalId;
                 if (query.ContainsKey("path"))
                 {
-                    portalId = PortalSettings.Current.PortalId;
+                    portalId = query.ContainsKey("portalId") ? Convert.ToInt32(query["portalId"]) : PortalSettings.Current.PortalId;
                     tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
                 }
                 else
@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             int tabId, portalId;
             if (query.ContainsKey("path") && !string.IsNullOrEmpty(query["path"]))
             {
-                portalId = PortalSettings.Current.PortalId;
+                portalId = query.ContainsKey("portalId") ? Convert.ToInt32(query["portalId"]) : PortalSettings.Current.PortalId;
                 tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
 
                 if (tabId == Null.NullInteger)
