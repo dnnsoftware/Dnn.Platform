@@ -12,6 +12,7 @@
     outline: none;
     padding: 0;
     margin: 10px 30px 0 30px;
+    width: calc(100% - 60px) !important;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
