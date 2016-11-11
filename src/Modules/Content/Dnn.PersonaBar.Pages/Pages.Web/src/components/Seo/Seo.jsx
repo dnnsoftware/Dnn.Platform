@@ -29,13 +29,16 @@ class Seo extends Component {
 
         return options;
     }
-
+    
     render() {
         const {page} = this.props;
         
         return (
             <div className={styles.seoContainer}>
-                <PageUrls pageUrls={page.pageUrls} /> 
+                <PageUrls pageUrls={page.pageUrls} 
+                    siteAliases={page.siteAliases} 
+                    pageHasParent={page.hasParent}
+                    primaryAliasId={page.primaryAliasId} /> 
             
                 <GridSystem>
                     <GridCell className="left-column">
@@ -65,5 +68,6 @@ Seo.propTypes = {
     page: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired
 };
+
 
 export default Seo;

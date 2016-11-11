@@ -1,40 +1,72 @@
 import React, {Component, PropTypes} from "react";
-import { AddIcon, LinkIcon } from "dnn-svg-icons";
-import Localization from "../../../localization";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Table from "./Table";
+import NewUrl from "./NewUrl";
+import {
+    pageSeoActions as SeoActions
+} from "../../../actions";
 
 class PageUrls extends Component {
-    toggle (openId) {
+    
+    onAddNewUrl(){
+        this.props.onAddNewUrl(this.props.editedUrl, this.props.primaryAliasId);
     }
     
     render() {
-        const {pageUrls, onEdit, onDelete} = this.props;
-        
-        const opened = false;
+        const {pageHasParent, addingNewUrl, 
+            editedUrl, onAddNewUrl, onOpenNewForm, onCloseNewUrl, newFormOpened, siteAliases, primaryAliasId, 
+            pageUrls, onChange} = this.props;
         
         return (
-            /* eslint-disable react/no-danger */
             <div>
-                <div className="AddItemRow">
-                    <div className="link-icon" dangerouslySetInnerHTML={{ __html: LinkIcon }} />
-                    <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
-                    <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                        <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                        </div> {Localization.get("AddUrl")}
-                    </div>
-                </div>
-
-                <Table pageUrls={pageUrls} onEdit={onEdit} onDelete={onDelete} />
+                <NewUrl onOpenNewForm={onOpenNewForm}
+                    opened={newFormOpened}
+                    pageHasParent={pageHasParent}
+                    onChange={onChange}
+                    onAdd={this.onAddNewUrl.bind(this)}  
+                    onCancel={onCloseNewUrl}
+                    addingNewUrl={addingNewUrl}
+                    url={editedUrl}
+                    siteAliases={siteAliases} primaryAliasId={primaryAliasId} />
+                <Table pageUrls={pageUrls} />
             </div>
-            /* eslint-enable react/no-danger */
         );
     }
 }
 
 PageUrls.propTypes = {
+    editedUrl: PropTypes.object,
+    newFormOpened: PropTypes.bool,
+    onAddNewUrl: PropTypes.func.isRequired,
+    onOpenNewForm: PropTypes.func.isRequired,
+    onCloseNewUrl: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    openedNewForm: PropTypes.bool.isRequired,
+    siteAliases: PropTypes.arrayOf(PropTypes.object).isRequired,
+    primaryAliasId: PropTypes.number,
     pageUrls: PropTypes.arrayOf(PropTypes.object),
-    onEdit: PropTypes.func,
-    onDelete: PropTypes.func
+    addingNewUrl: PropTypes.bool,
+    pageHasParent: PropTypes.bool
 };
 
-export default PageUrls;
+function mapStateToProps(state) {
+    return {
+        newFormOpened: state.pageSeo.newFormOpened,
+        editedUrl: state.pageSeo.editedUrl,
+        addingNewUrl: state.pageSeo.addingNewUrl
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators ({
+            onOpenNewForm: SeoActions.openNewForm,
+            onCloseNewUrl: SeoActions.closeNewForm,
+            onChange: SeoActions.change,
+            onAddNewUrl: SeoActions.addUrl
+        }, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageUrls);

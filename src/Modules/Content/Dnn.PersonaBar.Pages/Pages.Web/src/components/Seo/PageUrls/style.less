@@ -34,3 +34,40 @@
         height: 450px;
     }
 }
+:local(.AddItemRow){
+    width: 100%;
+    margin: 0 0 15px 0;
+    font-weight: bolder;
+    border-bottom: 1px solid @alto;
+    overflow: hidden;
+    .sectionTitle {
+        font-weight: bolder;
+        float: left;
+        line-height: 25px;
+    }                            
+    .AddItemBox {
+        width: auto;
+        float: right;
+        color: @thunder;
+        cursor: pointer;
+        line-height: 25px;
+        .add-icon {
+            margin-left: 20px;
+            margin-right: 5px;
+            margin-top: 4px;
+            float: left;
+            cursor: pointer;
+            svg {
+                width: 16px;
+                float: left;
+                height: 16px;
+                fill: @thunder;
+            }
+        }
+    }
+    
+    .newUrlContainer {
+        width: 100%;
+        clear: both;
+    }
+}

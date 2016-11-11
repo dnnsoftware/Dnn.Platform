@@ -1,0 +1,10 @@
+const pageSeoActionTypes =  {
+    SEO_OPEN_NEW_FORM: "SEO_OPEN_NEW_FORM",
+    SEO_CLOSE_NEW_FORM: "SEO_CLOSE_NEW_FORM",
+    SEO_CHANGE_URL: "SEO_CHANGE_URL",
+    SEO_ADD_URL: "SEO_ADD_URL",
+    SEO_ADDED_URL: "SEO_ADDED_URL",
+    ERROR_SEO_ADDING_URL: "ERROR_SEO_ADDING_URL"
+};
+
+export default pageSeoActionTypes;

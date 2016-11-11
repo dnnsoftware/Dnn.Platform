@@ -519,4 +519,55 @@
   <data name="InvalidTabName.Text" xml:space="preserve">
     <value>{0} is an invalid Page Title.</value>
   </data>
+  <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
+    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the Update button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
+  </data>
+  <data name="DuplicateUrl.Error" xml:space="preserve">
+    <value>The URL is a duplicate of an existing URL.</value>
+  </data>
+  <data name="InvalidRequest.Error" xml:space="preserve">
+    <value>The request is invalid</value>
+  </data>
+  <data name="Pages_Seo_QueryString.Help" xml:space="preserve">
+    <value>Add an optional Querystring to the Redirect URL to match on a URL with a Path and any matching Querystring parameters. The Querystring is the segment of the URL to the right of the first ? in the URL. e.g. example.com/url-to-redirect?id=123</value>
+  </data>
+  <data name="Pages_Seo_QueryString.Text" xml:space="preserve">
+    <value>Query String</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsage.Help" xml:space="preserve">
+    <value>If the selected site alias is different from the primary site alias, select the usage option.</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsage.Text" xml:space="preserve">
+    <value>Selected Site Alias Usage</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionPageAndChildPages.Text" xml:space="preserve">
+    <value>Page and Child Pages</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionSameAsParent.Text" xml:space="preserve">
+    <value>Same as Parent Page</value>
+  </data>
+  <data name="Pages_Seo_SelectedAliasUsageOptionThisPageOnly.Text" xml:space="preserve">
+    <value>This page only</value>
+  </data>
+  <data name="Pages_Seo_SiteAlias.Help" xml:space="preserve">
+    <value>Select the alias for the page to use a specific alias.</value>
+  </data>
+  <data name="Pages_Seo_SiteAlias.Text" xml:space="preserve">
+    <value>Site Alias</value>
+  </data>
+  <data name="Pages_Seo_UrlPath.Help" xml:space="preserve">
+    <value>Specify the path for the URL. Do not enter http:// or the site alias.</value>
+  </data>
+  <data name="Pages_Seo_UrlPath.Text" xml:space="preserve">
+    <value>URL Path</value>
+  </data>
+  <data name="Pages_Seo_UrlType.Help" xml:space="preserve">
+    <value>Select 'Active' or 'Redirect'. Active means the URL will be used as the URL for the page, and will return a HTTP status code of 200. 'Redirect' means the entered URL will be redirected to the Active URL for the current page.</value>
+  </data>
+  <data name="Pages_Seo_UrlType.Text" xml:space="preserve">
+    <value>URL Type</value>
+  </data>
+  <data name="UrlPathNotUnique.Error" xml:space="preserve">
+    <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
+import SeoActionTypes from "../constants/actionTypes/pageSeoTypes";
 import validateFields from "../validation";
 
 export default function pagesReducer(state = {
@@ -83,7 +84,19 @@ export default function pagesReducer(state = {
                     modules
                 }
             };
-        }        
+        }      
+        
+        case ActionTypes.ADD_CUSTOM_URL: {
+            const pageUrls = [...state.selectedPage.pageUrls];
+            pageUrls.push(action.payload.newUrl);
+            
+            return { ...state,
+                selectedPage: {
+                    ...state.selectedPage, 
+                    pageUrls
+                }
+            };
+        }
 
         default:
             return state;

@@ -17,8 +17,13 @@ class Table extends Component {
             return null;
         }
         
+        const {siteAliases, primaryAliasId, onChange} = this.props;
         return pageUrls.map(url => {
             return <UrlRow url={url}
+                        isEditingModule={false}
+                        siteAliases={siteAliases}
+                        primaryAliasId={primaryAliasId}
+                        onChange={onChange}
                         onEdit={this.onEdit.bind(this)}
                         onDelete={this.onDelete.bind(this)} />;
         });
@@ -49,7 +54,10 @@ class Table extends Component {
 
 Table.propTypes = {
     pageUrls: PropTypes.arrayOf(PropTypes.object),
+    siteAliases: PropTypes.arrayOf(PropTypes.object).isRequired,
+    primaryAliasId: PropTypes.number,
     onEdit: PropTypes.func,
+    onChange: PropTypes.func,
     onDelete: PropTypes.func
 };
 

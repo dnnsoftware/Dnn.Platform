@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
@@ -135,5 +136,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "existingTabRedirection")]
         public string ExistingTabRedirection { get; set; }
+
+        [DataMember(Name = "siteAliases")]
+        public IEnumerable<KeyValuePair<int, string>> SiteAliases { get; set; }
+        [DataMember(Name = "primaryAliasId")]
+        public int? PrimaryAliasId { get; set; }
+        [DataMember(Name = "locales")]
+        public IOrderedEnumerable<KeyValuePair<int, string>> Locales { get; set; }
+        [DataMember(Name = "hasParent")]
+        public bool HasParent { get; set; }
     }
 }
