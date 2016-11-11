@@ -1,5 +1,6 @@
 import utilities from "../utils";
 import { pageHierarchyActions as PageHierarchyActions } from "../actions";
+const pageDetailsFooterComponents = [];
 
 const application = {
     init(initCallback) {
@@ -20,6 +21,12 @@ const application = {
     },
     setItemTemplate(template) {
         application.dispatch(PageHierarchyActions.setItemTemplate(template));
+    },
+    registerPageDetailFooterComponent(component) {
+        pageDetailsFooterComponents.push(component);
+    },
+    getPageDetailFooterComponents() {
+        return pageDetailsFooterComponents;
     }
 };
 

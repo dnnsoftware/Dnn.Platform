@@ -12,6 +12,7 @@ application.dispatch = store.dispatch;
 window.dnn.pages = window.dnn.pages || {};
 window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
 window.dnn.pages.setItemTemplate = application.setItemTemplate;
+window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDetailFooterComponent;
 
 const appContainer = document.getElementById("pages-container");
 const initCallback = appContainer.getAttribute("data-init-callback");

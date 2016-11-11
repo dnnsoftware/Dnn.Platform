@@ -1,12 +1,11 @@
 import React, {Component, PropTypes} from "react";
-import Localization from "../../../localization";
 import styles from "./style.less";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Switch from "dnn-switch";
-import Label from "dnn-label";
-import DatePicker from "dnn-date-picker";
+import PageNameInput from "./PageNameInput";
+import DisplayInMenu from "./DisplayInMenu";
+import EnableScheduling from "./EnableScheduling";
+import application from "../../../globals/application";
 
 class PageDetailsFooter extends Component {
 
@@ -20,70 +19,89 @@ class PageDetailsFooter extends Component {
         onChangeField(key, value);
     }
 
-    render() {
+    getLeftColumnComponents(normalPage, pageType) {
         const {page, errors} = this.props;
+        const defaultLeftColumnComponents = !normalPage ?
+            [<PageNameInput pageName={page.name}
+                errors={errors}
+                onChangePageName={this.onChangeField.bind(this, "name")} />,
+            <div style={{ clear: "both" }}></div>] :
+            [<DisplayInMenu includeInMenu={page.includeInMenu}
+                onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />,
+                <div style={{ clear: "both" }}></div>];
+
+        const additionalLeftComponents = application.getPageDetailFooterComponents().filter(
+            function (component) {
+                return component.leftSide && (component.pageType === pageType || component.pageType === "all");
+            });
+
+        this.insertElementsInArray(defaultLeftColumnComponents, additionalLeftComponents, "order", "component");
+        return defaultLeftColumnComponents;
+    }
+
+    insertElementsInArray(array, elements, propertyNameHasIndex, propertyNameHasValue) {
+        for (let i = 0; i < elements.length; i++) {
+            let index = this.getInteger(elements[i][propertyNameHasIndex]);
+            
+            if (index || index === 0) {
+                index = Math.min(array.length, Math.max(0, index));
+                array.splice(index, 0, elements[i][propertyNameHasValue]);
+            }            
+        }
+    }
+
+    getInteger(value) {
+        if (value === 0) {
+            return 0;
+        }
+        if (value) {
+            return parseInt(value.toString());
+        }
+        return value;
+    }  
+
+    getRightColumnComponents(normalPage, pageType) {
+        const {page} = this.props;
+        const defaultRightColumnComponents = !normalPage ? 
+            [<DisplayInMenu includeInMenu={page.includeInMenu}
+                onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />,
+                <div style={{ clear: "both" }}></div>,
+            <EnableScheduling schedulingEnabled={page.schedulingEnabled}
+                onChangeSchedulingEnabled={this.onChangeValue.bind(this, "schedulingEnabled")}
+                startDate={page.startDate}
+                endDate={page.endDate}
+                onChangeStartDate={this.onChangeValue.bind(this, "startDate")}
+                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />,
+                <div style={{ clear: "both" }}></div>] :
+            [<EnableScheduling schedulingEnabled={page.schedulingEnabled}
+                onChangeSchedulingEnabled={this.onChangeValue.bind(this, "schedulingEnabled")}
+                startDate={page.startDate}
+                endDate={page.endDate}
+                onChangeStartDate={this.onChangeValue.bind(this, "startDate")}
+                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />,
+                <div style={{ clear: "both" }}></div>];
+        
+        const additionalRightComponents = application.getPageDetailFooterComponents().filter(
+            function (component) {
+                return !component.leftSide && (component.pageType === pageType || component.pageType === "all");
+            });
+
+        this.insertElementsInArray(defaultRightColumnComponents, additionalRightComponents, "order", "component");
+        return defaultRightColumnComponents;
+    }
+
+    render() {
+        const {page} = this.props;
         const normalPage = page.pageType === "normal";
 
         return (
-            <div className={styles.pageDetailsFooter}>
-                {!normalPage &&
-                    <GridCell className="left-column">
-                        <SingleLineInputWithError
-                            label={Localization.get("Name") + "*"}
-                            tooltipMessage={Localization.get("NameTooltip")}
-                            error={!!errors.name}
-                            errorMessage={errors.name}
-                            value={page.name} 
-                            onChange={this.onChangeField.bind(this, "name")} />
-                    </GridCell>
-                }
+            <div className={styles.pageDetailsFooter}>                
                 <GridSystem>
-                    <GridCell className="left-column">
-                        <Label
-                            labelType="inline"
-                            tooltipMessage={Localization.get("DisplayInMenuTooltip")}
-                            label={Localization.get("DisplayInMenu")}
-                            />
-                        <Switch
-                            labelHidden={true}
-                            value={page.includeInMenu}
-                            onChange={this.onChangeValue.bind(this, "includeInMenu")} />
+                    <GridCell className="left-column">                        
+                        {this.getLeftColumnComponents(normalPage, page.pageType)}
                     </GridCell>
-                    <GridCell className="right-column">
-                        <Label
-                            labelType="inline"
-                            tooltipMessage={Localization.get("EnableSchedulingTooltip")}
-                            label={Localization.get("EnableScheduling")}
-                            />
-                        <Switch
-                            labelHidden={true}
-                            value={page.schedulingEnabled}
-                            onChange={this.onChangeValue.bind(this, "schedulingEnabled")} />
-                        <div style={{clear: "both"}}></div>
-                        {page.schedulingEnabled &&
-                            <div className="scheduler-date-box">
-                                <div className="scheduler-date-row">
-                                    <Label
-                                        label={Localization.get("StartDate")} />
-                                    <DatePicker
-                                        date={page.startDate}
-                                        updateDate={this.onChangeValue.bind(this, "startDate")}
-                                        isDateRange={false}
-                                        hasTimePicker={true}
-                                        showClearDateButton={false} />
-                                </div>
-                                <div className="scheduler-date-row">
-                                    <Label
-                                        label={Localization.get("EndDate")} />
-                                    <DatePicker
-                                        date={page.endDate}
-                                        updateDate={this.onChangeValue.bind(this, "endDate")}
-                                        isDateRange={false}
-                                        hasTimePicker={true}
-                                        showClearDateButton={false} />
-                                </div>
-                            </div>
-                        }
+                    <GridCell className="right-column">                       
+                        {this.getRightColumnComponents(normalPage, page.pageType)}                       
                     </GridCell>
                 </GridSystem>
                 <div style={{clear: "both"}}></div>
