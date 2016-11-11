@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from "react";
-import styles from "./style.less";
 import Localization from "../../../localization";
 import Collapse from "react-collapse";
 import GridCell from "dnn-grid-cell";
@@ -67,9 +66,8 @@ class EditUrl extends Component {
     }
     
     render() {
-        const {url, saving, pageHasParent, siteAliases, primaryAliasId, isOpened, className, onSave, onCancel} = this.props;
+        const {url, saving, pageHasParent, siteAliases, primaryAliasId, isOpened, onSave, onCancel} = this.props;
         const aliases = this.getOptions(siteAliases);
-        const finalClassName = "editForm " + className;
         const siteAliasUsageOptions = this.getSiteAliasUsageOptions(pageHasParent);
         return (
             <Collapse accordion={true} isOpened={isOpened} keepCollapsedContent={true} className="editUrl">

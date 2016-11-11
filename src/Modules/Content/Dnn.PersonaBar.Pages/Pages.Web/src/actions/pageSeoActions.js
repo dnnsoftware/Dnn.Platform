@@ -16,6 +16,23 @@ const pageSeoActions = {
             });
         };
     },
+    openEditForm(url) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_OPEN_EDIT_FORM,
+                payload: {
+                    url
+                }
+            });
+        };
+    },
+    closeEditForm() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_CLOSE_EDIT_FORM
+            });
+        };
+    },
     change(key, value) {
         return (dispatch) => {
             dispatch({
@@ -44,12 +61,9 @@ const pageSeoActions = {
                     });
                     return;
                 }
-                newUrl.Id = response.Id;
+                newUrl.id = response.Id;
                 dispatch({
-                    type: ActionTypes.SEO_ADDED_URL,
-                    payload: {
-                        newUrl
-                    }
+                    type: ActionTypes.SEO_ADDED_URL
                 });
                 dispatch({
                     type: pageActionTypes.ADD_CUSTOM_URL,
@@ -60,6 +74,38 @@ const pageSeoActions = {
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_ADDING_URL,
+                    data: {error}
+                });
+            }); 
+        };
+    },
+    saveUrl(url, primaryAliasId) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SEO_SAVE_URL
+            });
+
+            PageSeoService.save(url, primaryAliasId).then((response) => {
+                if (!response.Success) {
+                    dispatch({
+                        type: ActionTypes.ERROR_SEO_SAVING_URL,
+                        data: {error: response.ErrorMessage}
+                    });
+                    return;
+                }
+                
+                dispatch({
+                    type: ActionTypes.SEO_SAVED_URL
+                });
+                dispatch({
+                    type: pageActionTypes.REPLACE_CUSTOM_URL,
+                    payload: {
+                        url
+                    }
+                });                           
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_SEO_SAVING_URL,
                     data: {error}
                 });
             }); 

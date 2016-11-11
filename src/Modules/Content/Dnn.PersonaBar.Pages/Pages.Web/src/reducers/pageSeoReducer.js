@@ -14,6 +14,7 @@ const statusCodes = [
 export default function  pageSeoReducer(state = {
     newFormOpened: false,
     addingNewUrl: false,
+    editingUrl: false,
     editedUrl: null
 }, action) {
     const changeField = function changeField(key, value) {
@@ -81,6 +82,27 @@ export default function  pageSeoReducer(state = {
         case ActionTypes.ERROR_SEO_ADDING_URL:
             return { ...state,
                 addingNewUrl: false
+            };
+        case ActionTypes.SEO_OPEN_EDIT_FORM:
+            return { ...state,
+                editedUrl: action.payload.url
+            };
+        case ActionTypes.SEO_CLOSE_EDIT_FORM:
+            return { ...state,
+                editedUrl: null
+            };
+        case ActionTypes.SEO_SAVE_URL:
+            return { ...state,
+                addingNewUrl: true
+            };
+        case ActionTypes.SEO_SAVED_URL:
+            return { ...state,
+                editingUrl: false,
+                editedUrl: null
+            };
+        case ActionTypes.ERROR_SEO_SAVING_URL:
+            return { ...state,
+                editingUrl: false
             };
             
         default:

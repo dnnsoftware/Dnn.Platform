@@ -4,9 +4,6 @@ import Localization from "../../../localization";
 import UrlRow from "./UrlRow";
 
 class Table extends Component {
-    onEdit(url) {
-        
-    }
     
     onDelete(url) {
         
@@ -17,20 +14,25 @@ class Table extends Component {
             return null;
         }
         
-        const {siteAliases, primaryAliasId, onChange} = this.props;
+        const {siteAliases, primaryAliasId, onSave, onCancel, onChange, editedUrl,
+                pageHasParent, editingUrl, onOpenEditForm} = this.props;
         return pageUrls.map(url => {
             return <UrlRow url={url}
-                        isEditingModule={false}
+                        editedUrl={editedUrl}
+                        onOpenEditForm={onOpenEditForm}
+                        pageHasParent={pageHasParent}
                         siteAliases={siteAliases}
                         primaryAliasId={primaryAliasId}
                         onChange={onChange}
-                        onEdit={this.onEdit.bind(this)}
+                        onSave={onSave}
+                        onCancel={onCancel}
+                        saving={editingUrl}
                         onDelete={this.onDelete.bind(this)} />;
         });
     }
     
     render() {
-        const {pageUrls, onEdit, onDelete} = this.props;
+        const {pageUrls, onDelete} = this.props;
         const urlRows = this.getUrlRows(pageUrls);
         
         return (
@@ -56,9 +58,14 @@ Table.propTypes = {
     pageUrls: PropTypes.arrayOf(PropTypes.object),
     siteAliases: PropTypes.arrayOf(PropTypes.object).isRequired,
     primaryAliasId: PropTypes.number,
-    onEdit: PropTypes.func,
+    onSave: PropTypes.func.isRequired,
     onChange: PropTypes.func,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    pageHasParent: PropTypes.bool,
+    onOpenEditForm: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    editingUrl: PropTypes.bool,
+    editedUrl: PropTypes.object
 };
 
 export default Table;

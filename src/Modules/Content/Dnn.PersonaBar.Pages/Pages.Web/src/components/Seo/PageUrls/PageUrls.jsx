@@ -9,13 +9,16 @@ import {
 
 class PageUrls extends Component {
     
-    onAddNewUrl(){
+    onAddNewUrl() {
         this.props.onAddNewUrl(this.props.editedUrl, this.props.primaryAliasId);
+    }
+    onSaveUrl() {
+        this.props.onSaveUrl(this.props.editedUrl, this.props.primaryAliasId);
     }
     
     render() {
-        const {pageHasParent, addingNewUrl, 
-            editedUrl, onAddNewUrl, onOpenNewForm, onCloseNewUrl, newFormOpened, siteAliases, primaryAliasId, 
+        const {pageHasParent, addingNewUrl, editingUrl, onOpenEditForm,
+            editedUrl, onCloseEditUrl, onOpenNewForm, onCloseNewUrl, newFormOpened, siteAliases, primaryAliasId, 
             pageUrls, onChange} = this.props;
         
         return (
@@ -29,7 +32,15 @@ class PageUrls extends Component {
                     addingNewUrl={addingNewUrl}
                     url={editedUrl}
                     siteAliases={siteAliases} primaryAliasId={primaryAliasId} />
-                <Table pageUrls={pageUrls} />
+                <Table pageUrls={pageUrls} 
+                    onOpenEditForm={onOpenEditForm}
+                    pageHasParent={pageHasParent}
+                    onChange={onChange}
+                    onSave={this.onSaveUrl.bind(this)}  
+                    onCancel={onCloseEditUrl}
+                    editingUrl={editingUrl}
+                    editedUrl={editedUrl}
+                    siteAliases={siteAliases} primaryAliasId={primaryAliasId} />
             </div>
         );
     }
@@ -39,14 +50,18 @@ PageUrls.propTypes = {
     editedUrl: PropTypes.object,
     newFormOpened: PropTypes.bool,
     onAddNewUrl: PropTypes.func.isRequired,
+    onSaveUrl: PropTypes.func.isRequired,
     onOpenNewForm: PropTypes.func.isRequired,
+    onOpenEditForm: PropTypes.func.isRequired,
     onCloseNewUrl: PropTypes.func.isRequired,
+    onCloseEditUrl: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     openedNewForm: PropTypes.bool.isRequired,
     siteAliases: PropTypes.arrayOf(PropTypes.object).isRequired,
     primaryAliasId: PropTypes.number,
     pageUrls: PropTypes.arrayOf(PropTypes.object),
     addingNewUrl: PropTypes.bool,
+    editingUrl: PropTypes.bool,
     pageHasParent: PropTypes.bool
 };
 
@@ -54,7 +69,8 @@ function mapStateToProps(state) {
     return {
         newFormOpened: state.pageSeo.newFormOpened,
         editedUrl: state.pageSeo.editedUrl,
-        addingNewUrl: state.pageSeo.addingNewUrl
+        addingNewUrl: state.pageSeo.addingNewUrl,
+        editingUrl: state.pageSeo.editingUrl
     };
 }
 
@@ -62,9 +78,12 @@ function mapDispatchToProps(dispatch) {
     return {
         ...bindActionCreators ({
             onOpenNewForm: SeoActions.openNewForm,
+            onOpenEditForm: SeoActions.openEditForm,
             onCloseNewUrl: SeoActions.closeNewForm,
+            onCloseEditUrl: SeoActions.closeEditForm,
             onChange: SeoActions.change,
-            onAddNewUrl: SeoActions.addUrl
+            onAddNewUrl: SeoActions.addUrl,
+            onSaveUrl: SeoActions.saveUrl
         }, dispatch)
     };
 }

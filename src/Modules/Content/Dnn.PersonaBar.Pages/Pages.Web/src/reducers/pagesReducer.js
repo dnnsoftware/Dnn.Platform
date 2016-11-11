@@ -1,5 +1,4 @@
 import ActionTypes from "../constants/actionTypes/pageActionTypes";
-import SeoActionTypes from "../constants/actionTypes/pageSeoTypes";
 import validateFields from "../validation";
 
 export default function pagesReducer(state = {
@@ -23,6 +22,10 @@ export default function pagesReducer(state = {
     const hasChangeUrl = function hasChangeUrl(action) {
         return state.urlChanged || (!action.urlPreviewChange && action.field === "url");
     };
+    
+    function getIndexById(items, id) {
+        return items.findIndex((ct) => ct.id === id);
+    }
 
     switch (action.type) {
         case ActionTypes.LOAD_PAGE:
@@ -89,6 +92,21 @@ export default function pagesReducer(state = {
         case ActionTypes.ADD_CUSTOM_URL: {
             const pageUrls = [...state.selectedPage.pageUrls];
             pageUrls.push(action.payload.newUrl);
+            
+            return { ...state,
+                selectedPage: {
+                    ...state.selectedPage, 
+                    pageUrls
+                }
+            };
+        }
+        
+        case ActionTypes.REPLACE_CUSTOM_URL: {
+            const pageUrls = [...state.selectedPage.pageUrls];
+            const index = getIndexById(pageUrls, action.payload.url.id);
+            if (index > -1) {
+                pageUrls[index] = action.payload.url;
+            }            
             
             return { ...state,
                 selectedPage: {

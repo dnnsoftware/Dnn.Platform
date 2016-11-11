@@ -13,8 +13,10 @@ const toBackEndUrl = function (url, primaryAliasId) {
         siteAliasUsage = portalAliasUsageType.Default;
     } else if (url.siteAliasUsage === portalAliasUsageType.Default) {
         siteAliasUsage = portalAliasUsageType.ChildPagesDoNotInherit;
-    } else {
+    } else if (url.siteAliasUsage) {
         siteAliasUsage = url.siteAliasUsage;
+    } else {
+        siteAliasUsage = portalAliasUsageType.ChildPagesDoNotInherit;
     }
     
     return {
@@ -30,7 +32,6 @@ const toBackEndUrl = function (url, primaryAliasId) {
 };
 
 const PageService = function () {
-
     let api = null;
     function getApi() {
         if (api === null) {
@@ -44,8 +45,13 @@ const PageService = function () {
         return api.post("CreateCustomUrl", toBackEndUrl(url, primaryAliasId));
     };
 
+    const save = function (url, primaryAliasId) {
+        const api = getApi();
+        return api.post("UpdateCustomUrl", toBackEndUrl(url, primaryAliasId));
+    };
     return {
-        add: add
+        add: add,
+        save: save
     };
 };
 
