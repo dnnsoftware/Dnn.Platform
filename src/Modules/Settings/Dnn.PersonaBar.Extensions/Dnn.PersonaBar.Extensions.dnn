@@ -38,7 +38,7 @@
           <menu>
             <identifier>Extensions</identifier>
             <moduleName>Extensions</moduleName>
-            <controller>Dnn.PersonaBar.Extensions.Components.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
+            <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
             <resourceKey>nav_Extensions</resourceKey>
             <path>extensions</path>
             <mobileSupport>true</mobileSupport>

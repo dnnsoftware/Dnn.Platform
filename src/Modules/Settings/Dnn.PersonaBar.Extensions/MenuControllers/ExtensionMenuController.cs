@@ -5,7 +5,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Extensions.Components
+namespace Dnn.PersonaBar.Extensions.MenuControllers
 {
     public class ExtensionMenuController : IMenuItemController
     {
@@ -15,7 +15,8 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         public bool Visible(MenuItem menuItem)
         {
-            return true;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)

@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 namespace Dnn.PersonaBar.Users.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "Users")]
+    [ServiceScope(Identifier = "Users")]
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));

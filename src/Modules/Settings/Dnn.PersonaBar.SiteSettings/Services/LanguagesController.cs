@@ -26,7 +26,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "Languages")]
+    [ServiceScope(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));

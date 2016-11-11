@@ -34,7 +34,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
-    [ServiceScope(Scope = ServiceScope.AdminHost)]
+    [ServiceScope(Scope = ServiceScope.Admin)]
     public class SystemInfoApplicationController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));

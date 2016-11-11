@@ -99,6 +99,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\TaskSchedulerController.cs" />
+    <Compile Include="MenuControllers\HostMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\ScheduleDto.cs" />
     <Compile Include="Services\Dto\UpdateSettingsRequest.cs" />

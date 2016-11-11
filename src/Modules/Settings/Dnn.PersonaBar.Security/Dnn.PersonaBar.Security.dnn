@@ -53,7 +53,7 @@
           <menu>
             <identifier>Security</identifier>
             <moduleName>Security</moduleName>
-            <controller>Dnn.PersonaBar.Security.Components.ExtensionMenuController, Dnn.PersonaBar.Security</controller>
+            <controller>Dnn.PersonaBar.Security.MenuControllers.SecurityMenuController, Dnn.PersonaBar.Security</controller>
             <resourceKey>nav_Security</resourceKey>
             <path>Security</path>
             <mobileSupport>true</mobileSupport>

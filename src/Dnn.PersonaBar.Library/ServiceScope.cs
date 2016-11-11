@@ -8,10 +8,6 @@
         /// <summary>
         /// the service available for all users.
         /// </summary>
-        Common,
-        /// <summary>
-        /// the service available for all users.
-        /// </summary>
         Regular,
         /// <summary>
         /// the service only available for admin users.
@@ -20,10 +16,6 @@
         /// <summary>
         /// the service only available for host users.
         /// </summary>
-        Host,
-        /// <summary>
-        /// the service avaiable for both admin and host users.
-        /// </summary>
-        AdminHost
+        Host
     }
 }

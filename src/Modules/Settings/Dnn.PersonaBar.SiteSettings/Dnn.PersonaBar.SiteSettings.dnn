@@ -38,7 +38,7 @@
                     <menu>
                         <identifier>SiteSettings</identifier>
                         <moduleName>SiteSettings</moduleName>
-                        <controller>Dnn.PersonaBar.SiteSettings.Components.ExtensionMenuController, Dnn.PersonaBar.SiteSettings</controller>
+                        <controller>Dnn.PersonaBar.SiteSettings.MenuControllers.SiteSettingsMenuController, Dnn.PersonaBar.SiteSettings</controller>
                         <resourceKey>nav_SiteSettings</resourceKey>
                         <path>SiteSettings</path>
                         <mobileSupport>true</mobileSupport>

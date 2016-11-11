@@ -25,7 +25,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "Pages")]
+    [ServiceScope(Identifier = "Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {

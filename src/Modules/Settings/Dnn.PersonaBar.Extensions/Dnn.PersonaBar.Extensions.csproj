@@ -139,7 +139,7 @@
     <Compile Include="Components\Editors\AuthSystemPackageEditor.cs" />
     <Compile Include="Components\Editors\ModulePackageEditor.cs" />
     <Compile Include="Components\Editors\PackageEditorFactory.cs" />
-    <Compile Include="Components\ExtensionMenuController.cs" />
+    <Compile Include="MenuControllers\ExtensionMenuController.cs" />
     <Compile Include="Components\ExtensionsController.cs" />
     <Compile Include="Components\ICreateModuleController.cs" />
     <Compile Include="Components\IInstallController.cs" />

@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>Licensing</identifier>
                         <moduleName>Licensing</moduleName>
+                        <controller>Dnn.PersonaBar.Licensing.MenuControllers.HostMenuController, Dnn.PersonaBar.Licensing</controller>
                         <resourceKey>nav_Licensing</resourceKey>
                         <path>Licensing</path>
                         <mobileSupport>true</mobileSupport>

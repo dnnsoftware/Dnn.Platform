@@ -21,9 +21,10 @@
 using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Servers.Components
+namespace Dnn.PersonaBar.Servers.MenuControllers
 {
     public class ServersMenuController : IMenuItemController
     {
@@ -34,7 +35,8 @@ namespace Dnn.PersonaBar.Servers.Components
 
         public bool Visible(MenuItem menuItem)
         {
-            return true;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)

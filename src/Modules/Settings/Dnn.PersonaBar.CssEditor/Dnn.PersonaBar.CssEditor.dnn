@@ -38,6 +38,7 @@
           <menu>
             <identifier>CssEditor</identifier>
             <moduleName>CssEditor</moduleName>
+            <controller>Dnn.PersonaBar.CssEditor.MenuControllers.AdminMenuController, Dnn.PersonaBar.CssEditor</controller>
             <resourceKey>nav_CssEditor</resourceKey>
             <path>CssEditor</path>
             <mobileSupport>true</mobileSupport>

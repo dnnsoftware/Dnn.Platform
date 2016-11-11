@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.SiteSettings.Components
+namespace Dnn.PersonaBar.SiteSettings.MenuControllers
 {
-    public class ExtensionMenuController : IMenuItemController
+    public class SiteSettingsMenuController : IMenuItemController
     {
         public void UpdateParameters(MenuItem menuItem)
         {
@@ -13,7 +14,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
         public bool Visible(MenuItem menuItem)
         {
-            return true;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)

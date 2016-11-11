@@ -39,7 +39,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Security.Services
 {
-    [ServiceScope(Scope = ServiceScope.AdminHost)]
+    [ServiceScope(Scope = ServiceScope.Admin)]
     public class SecurityController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));

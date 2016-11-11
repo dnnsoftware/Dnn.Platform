@@ -24,7 +24,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.AdminLogs.Services
 {
-    [ServiceScope(Scope = ServiceScope.AdminHost)]
+    [ServiceScope(Scope = ServiceScope.Admin)]
     public class AdminLogsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AdminLogsController));

@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.UI.Services
     /// <summary>
     /// Services used for common components.
     /// </summary>
-    [ServiceScope(Scope = ServiceScope.Common)]
+    [ServiceScope(Scope = ServiceScope.Regular)]
     public class ComponentsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ComponentsController));

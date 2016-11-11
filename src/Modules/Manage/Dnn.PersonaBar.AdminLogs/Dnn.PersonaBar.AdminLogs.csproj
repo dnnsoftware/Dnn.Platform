@@ -98,6 +98,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\AdminLogsController.cs" />
+    <Compile Include="MenuControllers\AdminMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminLogsController.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />

@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>AdminLogs</identifier>
                         <moduleName>AdminLogs</moduleName>
+                        <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminMenuController, Dnn.PersonaBar.AdminLogs</controller>
                         <resourceKey>nav_AdminLogs</resourceKey>
                         <path>AdminLogs</path>
                         <mobileSupport>true</mobileSupport>

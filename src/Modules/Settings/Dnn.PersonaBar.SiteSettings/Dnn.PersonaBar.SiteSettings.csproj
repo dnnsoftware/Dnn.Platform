@@ -99,7 +99,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Constants\LanguageResourceEnums.cs" />
-    <Compile Include="Components\ExtensionMenuController.cs" />
+    <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
     <Compile Include="Components\LanguagesControllerTasks.cs" />
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

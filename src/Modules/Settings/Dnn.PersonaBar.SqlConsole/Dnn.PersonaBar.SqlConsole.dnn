@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>SqlConsole</identifier>
                         <moduleName>SqlConsole</moduleName>
+                        <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.SqlConsole</controller>
                         <resourceKey>nav_SqlConsole</resourceKey>
                         <path>SqlConsole</path>
                         <mobileSupport>true</mobileSupport>

@@ -45,7 +45,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin, Identifier = "SiteSettings")]
+    [ServiceScope(Scope = ServiceScope.Admin)]
     public class SiteSettingsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));

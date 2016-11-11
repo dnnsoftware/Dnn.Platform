@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Attributes
 
             var isHost = currentUser.IsSuperUser;
             var isAdmin = currentUser.IsInRole(administratorRoleName);
-            var isRegular = PersonaBarContainer.Instance.EditorRoles.Any(r => currentUser.IsInRole(r));
+            var isRegular = currentUser.UserID > 0;
 
             if (isHost)
             {
@@ -76,10 +76,8 @@ namespace Dnn.PersonaBar.Library.Attributes
             switch (Scope)
             {
                 case ServiceScope.Admin:
-                case ServiceScope.AdminHost:
                     return isAdmin;
                 case ServiceScope.Regular:
-                case ServiceScope.Common:
                     if (portalSettings != null)
                     {
                         return PersonaBarController.Instance.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;

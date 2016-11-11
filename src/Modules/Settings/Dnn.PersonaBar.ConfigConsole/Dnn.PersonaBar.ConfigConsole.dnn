@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>ConfigConsole</identifier>
                         <moduleName>ConfigConsole</moduleName>
+                        <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.ConfigConsole</controller>
                         <resourceKey>nav_ConfigConsole</resourceKey>
                         <path>ConfigConsole</path>
                         <mobileSupport>true</mobileSupport>

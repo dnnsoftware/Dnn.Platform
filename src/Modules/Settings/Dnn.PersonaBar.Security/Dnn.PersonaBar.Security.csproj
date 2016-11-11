@@ -115,7 +115,7 @@
     <Compile Include="Components\Checks\CheckTracing.cs" />
     <Compile Include="Components\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Checks\CheckViewstatemac.cs" />
-    <Compile Include="Components\ExtensionMenuController.cs" />
+    <Compile Include="MenuControllers\SecurityMenuController.cs" />
     <Compile Include="Components\IAuditCheck.cs" />
     <Compile Include="Components\SecurityController.cs" />
     <Compile Include="Components\SeverityEnum.cs" />

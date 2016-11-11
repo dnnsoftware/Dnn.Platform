@@ -38,6 +38,7 @@
                     <menu>
                         <identifier>TaskScheduler</identifier>
                         <moduleName>TaskScheduler</moduleName>
+                        <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.TaskScheduler</controller>
                         <resourceKey>nav_TaskScheduler</resourceKey>
                         <path>TaskScheduler</path>
                         <mobileSupport>true</mobileSupport>

@@ -103,6 +103,7 @@
     <Compile Include="Components\ISqlQueryController.cs" />
     <Compile Include="Components\SqlConsoleQuery.cs" />
     <Compile Include="Components\SqlConsoleController.cs" />
+    <Compile Include="MenuControllers\HostMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SqlConsoleController.cs" />
   </ItemGroup>

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
-using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Themes.MenuControllers
+namespace Dnn.PersonaBar.CssEditor.MenuControllers
 {
-    public class ThemeMenuController : IMenuItemController
+    public class AdminMenuController : IMenuItemController
     {
         public void UpdateParameters(MenuItem menuItem)
         {
+            
         }
 
         public bool Visible(MenuItem menuItem)
@@ -24,11 +25,7 @@ namespace Dnn.PersonaBar.Themes.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
-            return new Dictionary<string, object>
-            {
-                {"previewUrl", Globals.NavigateURL()},
-                {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser}
-            };
+            return null;
         }
     }
 }

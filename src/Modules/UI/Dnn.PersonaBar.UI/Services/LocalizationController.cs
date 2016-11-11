@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.UI.Services
 {
-    [ServiceScope(Scope = ServiceScope.Common)]
+    [ServiceScope(Scope = ServiceScope.Regular)]
     public class LocalizationController : PersonaBarApiController
     {
         private static object _threadLocker = new object();
