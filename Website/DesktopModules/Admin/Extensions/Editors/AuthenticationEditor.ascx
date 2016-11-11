@@ -4,7 +4,9 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
-<h2 class="dnnFormSectionHead"><a href="" class="dnnLabelExpanded"><%=LocalizeString("AuthenticationSettings")%></a></h2>
+<h2  id="AuthEditorHead" runat="server" class="dnnFormSectionHead">
+    <a href="" class="dnnLabelExpanded"><%=LocalizeString("AuthenticationSettings")%></a>
+</h2>
 <fieldset>
     <div class="dnnFormMessage dnnFormInfo"><asp:Label ID="lblHelp" runat="server" /></div>
     <dnn:DnnFormEditor id="authenticationForm" runat="Server" FormMode="Short">

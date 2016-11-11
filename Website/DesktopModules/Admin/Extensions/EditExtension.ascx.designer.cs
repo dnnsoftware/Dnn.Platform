@@ -31,6 +31,15 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         protected global::System.Web.UI.WebControls.PlaceHolder phEditor;
         
         /// <summary>
+        /// packageSettingsSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl packageSettingsSection;
+        
+        /// <summary>
         /// lblHelp control.
         /// </summary>
         /// <remarks>

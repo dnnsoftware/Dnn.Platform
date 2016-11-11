@@ -51,13 +51,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 #endif
 
-        private const string LoginQuery = "/DesktopModules/JwtAuth/API/mobile/login";
-        private const string LogoutQuery = "/DesktopModules/JwtAuth/API/mobile/logout";
-        public const string ExtendTokenQuery = "/DesktopModules/JwtAuth/API/mobile/extendtoken";
-        private const string TestGetQuery = "/DesktopModules/JwtAuth/API/mobile/testget";
-        private const string TestPostQuery = "/DesktopModules/JwtAuth/API/mobile/testpost";
-        private const string GetMonikerQuery = "/DesktopModules/web/API/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/DesktopModules/web/API/mobilehelper/moduledetails?moduleList=";
+        private const string LoginQuery = "/API/JwtAuth/mobile/login";
+        private const string LogoutQuery = "/API/JwtAuth/mobile/logout";
+        public const string ExtendTokenQuery = "/API/JwtAuth/mobile/extendtoken";
+        private const string TestGetQuery = "/API/JwtAuth/mobile/testget";
+        private const string TestPostQuery = "/API/JwtAuth/mobile/testpost";
+        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
 
         public JwtAuthTest()
         {
@@ -101,6 +101,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         public void ValidUserLoginShouldPass()
         {
             var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            Assert.IsNotNull(token.UserId);
             Assert.IsNotNull(token.AccessToken);
             Assert.IsNotNull(token.DisplayName);
             Assert.IsNotNull(token.RenewalToken);
@@ -375,7 +376,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
             // These will set a moniker for the Activity Feed module of the user profile
             DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
-            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}AddTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}UpdateTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
             WebApiTestHelper.ClearHostCache();
 
             // Act
@@ -384,7 +385,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetMonikerHeader("myjournal");
             var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = _httpClient.PostAsJsonAsync(
-                "/DesktopModules/Journal/API/Services/GetListForProfile", postItem).Result;
+                "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -411,7 +412,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             SetMonikerHeader("myjournal");
             var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = _httpClient.PostAsJsonAsync(
-                "/DesktopModules/Journal/API/Services/GetListForProfile", postItem).Result;
+                "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             ShowInfo(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -494,6 +495,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [JsonObject]
         public class LoginResultData
         {
+            [JsonProperty("userId")]
+            public int UserId { get; set; }
+
             [JsonProperty("displayName")]
             public string DisplayName { get; set; }
 

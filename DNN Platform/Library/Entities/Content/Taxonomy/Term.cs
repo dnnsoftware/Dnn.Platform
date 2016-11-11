@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
 
 #endregion
 
@@ -67,6 +68,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class Term : BaseEntityInfo, IHydratable
     {
+        private static readonly PortalSecurity Security = new PortalSecurity();
+
         private List<Term> _childTerms;
         private string _description;
         private int _left;
@@ -172,7 +175,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
             set
             {
-                _name = value;
+                _name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 

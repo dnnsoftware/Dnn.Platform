@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -402,7 +402,7 @@ namespace DotNetNuke.Common
                         shutdownDetail = "The AppDomain shut down because of a call to UnloadAppDomain.";
                         break;
                     default:
-                        shutdownDetail = "No shutdown reason provided.";
+                        shutdownDetail = "Shutdown reason: " + shutdownReason;
                         break;
                 }
                 var log = new LogInfo
@@ -484,11 +484,16 @@ namespace DotNetNuke.Common
         /// <summary>
         /// StartScheduler starts the Scheduler
         /// </summary>
+        /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static void StartScheduler()
+        public static void StartScheduler(bool resetAppStartElapseTime = false)
         {
+            if (resetAppStartElapseTime)
+            {
+                Globals.ResetAppStartElapseTime();
+            }
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 

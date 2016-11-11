@@ -205,11 +205,11 @@ namespace DotNetNuke.Modules.Journal.Components {
 
                 if ((objWebRequest.HaveResponse == true) & objWebResponse.StatusCode == HttpStatusCode.OK) {
                     objWebResponse.Cookies = objWebRequest.CookieContainer.GetCookies(objWebRequest.RequestUri);
-                    using (Stream objStream = objWebResponse.GetResponseStream()) {
-                        using (StreamReader objStreamReader = new StreamReader(objStream, enc)) {
-                            sHTML = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                        }
+                    using (Stream objStream = objWebResponse.GetResponseStream())
+                    using (StreamReader objStreamReader = new StreamReader(objStream, enc))
+                    {
+                        sHTML = objStreamReader.ReadToEnd();
+                        objStreamReader.Close();
                         objStream.Close();
                     }
                 }

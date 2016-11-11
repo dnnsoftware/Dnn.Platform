@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -82,7 +82,16 @@ namespace DotNetNuke.Web.Api.Internal
                 string routeUrl = _portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 Route route = MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 routes.Add(route);
-                Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+                if (Logger.IsTraceEnabled)
+                    Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+
+                //compatible with old service path: DesktopModules/{namespace}/API/{controller}/{action}.
+                var oldRouteName = $"{fullRouteName}-old";
+                var oldRouteUrl = PortalAliasRouteManager.GetOldRouteUrl(moduleFolderName, url, count);
+                var oldRoute = MapHttpRouteWithNamespace(oldRouteName, oldRouteUrl, defaults, constraints, namespaces);
+                routes.Add(oldRoute);
+                if (Logger.IsTraceEnabled)
+                    Logger.Trace("Mapping route: " + oldRouteName + " @ " + oldRouteUrl);
             }
 
             return routes;

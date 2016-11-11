@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -421,6 +421,19 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetBoolean("DebugMode", false);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether the installation participates in the improvements program.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static bool ParticipateInImprovementProg
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("DnnImprovementProgram", true);
             }
         }
 

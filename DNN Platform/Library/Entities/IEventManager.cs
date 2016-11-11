@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,6 +42,8 @@ namespace DotNetNuke.Entities
 
         void OnFileRenamed(FileRenamedEventArgs args);
 
+        void OnFileDownloaded(FileDownloadedEventArgs e);
+
         void OnFolderAdded(FolderChangedEventArgs args);
 
         void OnFolderDeleted(FolderDeletedEventArgs args);
@@ -67,6 +69,8 @@ namespace DotNetNuke.Entities
         void OnModuleUpdated(ModuleEventArgs args);
 
         void OnPortalCreated(PortalCreatedEventArgs args);
+
+        void OnPortalTemplateCreated(PortalTemplateEventArgs args);
 
         void OnProfileUpdated(ProfileEventArgs args);
 
@@ -105,6 +109,8 @@ namespace DotNetNuke.Entities
         void OnUserDeleted(UserEventArgs args);
 
         void OnUserRemoved(UserEventArgs args);
+
+        void OnUserUpdated(UpdateUserEventArgs args);
 
         void RefreshTabSyncHandlers();
     }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -209,8 +210,9 @@ namespace DotNetNuke.Services.Cache
             // here so we remove them using a prefix
             var folderUserCachePrefix = GetCacheKey(string.Format("Folders|{0}|", portalId));
             ClearCacheInternal(folderUserCachePrefix, clearRuntime);
-            
-            RemoveFormattedCacheKey(DataCache.FolderPermissionCacheKey, clearRuntime, portalId);
+
+            PermissionProvider.ResetCacheDependency(portalId,
+                () => RemoveFormattedCacheKey(DataCache.FolderPermissionCacheKey, clearRuntime, portalId));
         }
 
         private void ClearHostCacheInternal(bool clearRuntime)

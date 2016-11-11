@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
                                                                "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "YU", "ZA", "ZM", "ZR", "ZW", "A1", "A2"
                                                            };
 
-        public MemoryStream m_MemoryStream;
+        public MemoryStream m_MemoryStream { get; }
 
         public CountryLookup(MemoryStream ms)
         {
@@ -96,17 +96,20 @@ namespace DotNetNuke.UI.WebControls
 
         public CountryLookup(string FileLocation)
         {
-			//------------------------------------------------------------------------------------------------
+            //------------------------------------------------------------------------------------------------
             //Load the passed in GeoIP Data file to the memorystream
             //------------------------------------------------------------------------------------------------
-            var _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read);
-            m_MemoryStream = new MemoryStream();
-            var _Byte = new byte[256];
-            while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+            using (var _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
             {
-                m_MemoryStream.Write(_Byte, 0, _Byte.Length);
+                m_MemoryStream = new MemoryStream();
+                var _Byte = new byte[256];
+                while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+                {
+                    m_MemoryStream.Write(_Byte, 0, _Byte.Length);
+                }
+                _FileStream.Close();
+
             }
-            _FileStream.Close();
         }
 
         private long ConvertIPAddressToNumber(IPAddress _IPAddress)
@@ -136,17 +139,19 @@ namespace DotNetNuke.UI.WebControls
         public static MemoryStream FileToMemory(string FileLocation)
         {
             //Read a given file into a Memory Stream to return as the result
-            FileStream _FileStream;
             var _MemStream = new MemoryStream();
             var _Byte = new byte[256];
             try
             {
-                _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read);
-                while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+                FileStream _FileStream;
+                using (_FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
                 {
-                    _MemStream.Write(_Byte, 0, _Byte.Length);
+                    while (_FileStream.Read(_Byte, 0, _Byte.Length) != 0)
+                    {
+                        _MemStream.Write(_Byte, 0, _Byte.Length);
+                    }
+                    _FileStream.Close();
                 }
-                _FileStream.Close();
             }
             catch (FileNotFoundException exc)
             {

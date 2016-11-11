@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -215,7 +215,7 @@ namespace DotNetNuke.Security
                 if (roleName.StartsWith("!"))
                 {
                     //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                    if (settings != null && !(settings.PortalId == user.PortalID && settings.AdministratorId == user.UserID))
+                    if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
                     {
                         string denyRole = roleName.Replace("!", "");
                         if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
@@ -281,7 +281,7 @@ namespace DotNetNuke.Security
             const string replacement = " ";
 
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (tempInput.Contains("&gt;") && tempInput.Contains("&lt;"))
+            if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
@@ -400,10 +400,12 @@ namespace DotNetNuke.Security
         /// </remarks>
         public string CreateKey(int numBytes)
         {
-            var rng = new RNGCryptoServiceProvider();
-            var buff = new byte[numBytes];
-            rng.GetBytes(buff);
-            return BytesToHexString(buff);
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var buff = new byte[numBytes];
+                rng.GetBytes(buff);
+                return BytesToHexString(buff);
+            }
         }
 
         public string Decrypt(string strKey, string strData)
@@ -850,7 +852,7 @@ namespace DotNetNuke.Security
                         if (role.StartsWith("!"))
                         {
                             //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
+                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
                             {
                                 string denyRole = role.Replace("!", "");
                                 if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))

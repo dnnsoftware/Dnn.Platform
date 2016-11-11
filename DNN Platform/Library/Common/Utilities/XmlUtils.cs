@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -147,10 +147,12 @@ namespace DotNetNuke.Common.Utilities
                 return obj;
             }
             var serializer = new XmlSerializer(type);
-            TextReader tr = new StreamReader(objStream);
-            obj = serializer.Deserialize(tr);
-            tr.Close();
-            return obj;
+            using (TextReader tr = new StreamReader(objStream))
+            {
+                obj = serializer.Deserialize(tr);
+                tr.Close();
+                return obj;
+            }
         }
 
         public static Dictionary<int, TValue> DeSerializeDictionary<TValue>(Stream objStream, string rootname)

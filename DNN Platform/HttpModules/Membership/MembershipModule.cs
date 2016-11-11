@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -244,7 +244,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+                if (request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
                     Localization.SetLanguage(user.Profile.PreferredLocale);
                 }

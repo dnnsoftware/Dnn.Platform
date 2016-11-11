@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1564,8 +1564,10 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("Deprecated in DNN 6.0.")]
         public static string GetHash(byte[] bytes)
         {
-            var stream = new MemoryStream(bytes);
-            return ((FileManager)FileManager.Instance).GetHash(stream);
+            using (var stream = new MemoryStream(bytes))
+            {
+                return ((FileManager) FileManager.Instance).GetHash(stream);
+            }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

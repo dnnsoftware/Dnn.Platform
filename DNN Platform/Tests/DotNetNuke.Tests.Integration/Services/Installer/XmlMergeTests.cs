@@ -115,10 +115,15 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             if (OutputXml)
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                var writer = new StreamWriter(new MemoryStream());
-                targetDoc.Save(writer);
-                writer.BaseStream.Seek(0, SeekOrigin.Begin);
-                Debug.WriteLine(new StreamReader(writer.BaseStream).ReadToEnd());
+                using (var writer = new StreamWriter(new MemoryStream()))
+                {
+                    targetDoc.Save(writer);
+                    writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                    using (var sr = new StreamReader(writer.BaseStream))
+                    {
+                        Debug.WriteLine("{0}", sr.ReadToEnd());
+                    }
+                }
             }
         }
 

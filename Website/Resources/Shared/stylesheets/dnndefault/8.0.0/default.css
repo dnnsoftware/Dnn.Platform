@@ -1158,6 +1158,10 @@ a.pinHelp {
     background-position: -51px 0px;
 }
 
+.dnnCheckbox-disabled {
+    cursor: not-allowed;
+}
+
 .dnnCheckbox-disabled img {
     opacity: .5;
 }

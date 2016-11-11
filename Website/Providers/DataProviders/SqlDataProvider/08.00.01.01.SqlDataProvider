@@ -1615,113 +1615,23 @@ AS
 
 GO
 
-/***** DNN-7208 *****/
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+/* DNN-8327: Add GetUserByPasswordResetToken Procedure. */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
-	@TypeFullName varchar(200)
-	,@TimeLapse int
-	,@TimeLapseMeasurement varchar(2)
-	,@RetryTimeLapse int
-	,@RetryTimeLapseMeasurement varchar(2)
-	,@RetainHistoryNum int
-	,@AttachToEvent varchar(50)
-	,@CatchUpEnabled bit
-	,@Enabled bit
-	,@ObjectDependencies varchar(300)
-	,@Servers varchar(150)
-	,@CreatedByUserID	int
-	,@FriendlyName varchar(200)
-	,@ScheduleStartDate datetime
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUserByPasswordResetToken]
+	@PortalID int,
+	@PasswordResetToken UNIQUEIDENTIFIER
+
 AS
-	SELECT @TypeFullName = STUFF((SELECT ',' + LTRIM(RTRIM(Item)) FROM (SELECT Item FROM {databaseOwner}[{objectQualifier}SplitStrings_CTE](@TypeFullName, ',')) tmp FOR XML PATH('')), 1, 1, '')
+	SELECT * FROM {databaseOwner}{objectQualifier}vw_Users
+	WHERE  PasswordResetToken = @PasswordResetToken
+		AND  ((@PortalId IS NULL) OR (PortalId = @PortalID) OR IsSuperUser = 1)
 
-	INSERT INTO  {databaseOwner}{objectQualifier}Schedule(
-		 TypeFullName
-		,TimeLapse
-		,TimeLapseMeasurement
-		,RetryTimeLapse
-		,RetryTimeLapseMeasurement
-		,RetainHistoryNum
-		,AttachToEvent
-		,CatchUpEnabled
-		,Enabled
-		,ObjectDependencies
-		,Servers
-		,FriendlyName
-		,[CreatedByUserID]
-		,[CreatedOnDate]
-		,[LastModifiedByUserID]
-		,[LastModifiedOnDate]
-		,ScheduleStartDate
-		)
-	VALUES
-		(@TypeFullName
-		,@TimeLapse
-		,@TimeLapseMeasurement
-		,@RetryTimeLapse
-		,@RetryTimeLapseMeasurement
-		,@RetainHistoryNum
-		,@AttachToEvent
-		,@CatchUpEnabled
-		,@Enabled
-		,@ObjectDependencies
-		,@Servers
-		,@FriendlyName
-		,@CreatedByUserID
-		,getdate()
-		,@CreatedByUserID
-		,getdate()
-		,@ScheduleStartDate
-		)
-		select SCOPE_IDENTITY()
 GO
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSchedule]
-GO
-
-CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
-	@ScheduleID int
-	,@TypeFullName varchar(200)
-	,@TimeLapse int
-	,@TimeLapseMeasurement varchar(2)
-	,@RetryTimeLapse int
-	,@RetryTimeLapseMeasurement varchar(2)
-	,@RetainHistoryNum int
-	,@AttachToEvent varchar(50)
-	,@CatchUpEnabled bit
-	,@Enabled bit
-	,@ObjectDependencies varchar(300)
-	,@Servers varchar(150)
-	,@LastModifiedByUserID	int
-	,@FriendlyName varchar(200)
-	,@ScheduleStartDate datetime
-AS
-SELECT @TypeFullName = STUFF((SELECT ',' + LTRIM(RTRIM(Item)) FROM (SELECT Item FROM {databaseOwner}[{objectQualifier}SplitStrings_CTE](@TypeFullName, ',')) tmp FOR XML PATH('')), 1, 1, '')
-
-UPDATE {databaseOwner}{objectQualifier}Schedule
-	SET 
-	TypeFullName = @TypeFullName
-	,FriendlyName = @FriendlyName
-	,TimeLapse = @TimeLapse
-	,TimeLapseMeasurement = @TimeLapseMeasurement
-	,RetryTimeLapse = @RetryTimeLapse
-	,RetryTimeLapseMeasurement = @RetryTimeLapseMeasurement
-	,RetainHistoryNum = @RetainHistoryNum
-	,AttachToEvent = @AttachToEvent
-	,CatchUpEnabled = @CatchUpEnabled
-	,Enabled = @Enabled
-	,ObjectDependencies = @ObjectDependencies
-	,Servers = @Servers,
-	[LastModifiedByUserID] = @LastModifiedByUserID,	
-	[LastModifiedOnDate] = getdate(),
-	ScheduleStartDate = @ScheduleStartDate
-	WHERE ScheduleID = @ScheduleID
-GO
-
 
 /* Add New OutputCacheGetKeys  */
 /*******************************/
@@ -1758,4 +1668,40 @@ WHERE  ModuleId = @ModuleId
 GO
 
 /***** DNN-8474 ENDS *****/
+
+/***** DNN-8502: get registered users role id from portals table. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    DECLARE @RegisteredRoleId INT
+	SELECT @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+    SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+                j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+                "JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+                "JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+                "JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+                 jt.Icon, jt.JournalType,
+                "Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+                jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+    FROM        {databaseOwner}[{objectQualifier}Journal] AS j
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId, @RegisteredRoleId) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE       ((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+                OR 
+                ((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -538,7 +538,7 @@ namespace DotNetNuke.Common.Utilities
 			//close datareader
             if (dr != null && closeReader)
             {
-                dr.Close();
+                using (dr) { dr.Close(); }
             }
         }
 
@@ -1026,10 +1026,13 @@ namespace DotNetNuke.Common.Utilities
         public static void SerializeObject(object objObject, XmlDocument document)
         {
             var sb = new StringBuilder();
-            //Serialize the object
-            SerializeObject(objObject, XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)));
-            //Load XmlDocument
-            document.LoadXml(sb.ToString());
+            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
+            {
+                //Serialize the object
+                SerializeObject(objObject, writer);
+                //Load XmlDocument
+                document.LoadXml(sb.ToString());
+            }
         }
 
         /// -----------------------------------------------------------------------------

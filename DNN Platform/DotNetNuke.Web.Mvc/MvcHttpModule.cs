@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,9 +24,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Xml;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Web.Mvc.Framework;
@@ -38,16 +41,21 @@ namespace DotNetNuke.Web.Mvc
     {
         public static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
 
+        static MvcHttpModule()
+        {
+            var engines = ViewEngines.Engines;
+            engines.Clear();
+            engines.Add(new ModuleDelegatingViewEngine());
+            engines.Add(new RazorViewEngine());
+        }
+
         public void Init(HttpApplication context)
         {
+            SuppressXFrameOptionsHeaderIfPresentInConfig();
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
-
-            ViewEngines.Engines.Clear();
-            ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
-            ViewEngines.Engines.Add(new RazorViewEngine());
-
             context.BeginRequest += InitDnn;
         }
+
         private static void InitDnn(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
@@ -58,6 +66,29 @@ namespace DotNetNuke.Web.Mvc
         }
         public void Dispose()
         {
+        }
+
+        /// <summary>
+        /// Suppress X-Frame-Options Header if there is configuration specified in web.config for it.
+        /// </summary>
+        private static void SuppressXFrameOptionsHeaderIfPresentInConfig()
+        {
+            var xmlConfig = Config.Load();
+            var xmlCustomHeaders =
+                xmlConfig.SelectSingleNode("configuration/system.webServer/httpProtocol/customHeaders") ??
+                xmlConfig.SelectSingleNode("configuration/location/system.webServer/httpProtocol/customHeaders");
+
+            if (xmlCustomHeaders?.ChildNodes != null)
+            {
+                foreach (XmlNode header in xmlCustomHeaders.ChildNodes)
+                {
+                    if (header.Attributes != null && header.Attributes["name"].Value == "X-Frame-Options")
+                    {
+                        AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

@@ -184,7 +184,7 @@
         dialogClass: 'dnnFormPopup fileManagerPopup',
         width: '700px', // dialog width
         minHeight: '400px', // dialog height
-        getItemsServiceUrl: '/DesktopModules/Journal/API/UserFile/GetItems',
+        getItemsServiceUrl: '/API/Journal/UserFile/GetItems',
         attachCallback: function (file) {
             // available properties .id, .modified, .name, .parentId, .size, .thumb_url, .type
             alert(file.name + ' attached.');

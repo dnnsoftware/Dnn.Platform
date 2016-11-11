@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.Journal
                     UserId = UserInfo.UserID,
                     SocialGroupId = postData.GroupId,
                     ProfileId = postData.ProfileId,
-                    Summary = postData.Text,
+                    Summary = postData.Text ?? "",
                     SecuritySet = postData.SecuritySet
                 };
                 ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.Journal
                 ji.Summary = Utilities.RemoveHTML(ji.Summary);
                 ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
 
-				//parse the mentions context in post data
+                //parse the mentions context in post data
                 var originalSummary = ji.Summary;
                 IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
                 ji.Summary = ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
@@ -452,7 +452,8 @@ namespace DotNetNuke.Modules.Journal
         {
             try
             {
-                var comment = HttpUtility.UrlDecode(postData.Comment);
+                var comment = Utilities.RemoveHTML(HttpUtility.UrlDecode(postData.Comment));
+
                 IDictionary<string, UserInfo> mentionedUsers = new Dictionary<string, UserInfo>();
                 var originalComment = comment;
                 comment = ParseMentions(comment, postData.Mentions, ref mentionedUsers);

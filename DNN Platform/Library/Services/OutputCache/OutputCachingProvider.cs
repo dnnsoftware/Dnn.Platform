@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,9 +52,11 @@ namespace DotNetNuke.Services.OutputCache
         protected string GenerateCacheKeyHash(int tabId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            var sha256 = new SHA256CryptoServiceProvider();
-            hash = sha256.ComputeHash(hash);
-            return string.Concat(tabId.ToString(), "_", ByteArrayToString(hash));
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return string.Concat(tabId.ToString(), "_", ByteArrayToString(hash));
+            }
         }
 
         protected void WriteStreamAsText(HttpContext context, Stream stream, long offset, long length)

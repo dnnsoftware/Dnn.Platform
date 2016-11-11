@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -237,9 +237,16 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (users.All(u => u.UserID != sender.UserID))
             {
-                //add sender as a recipient of the message
-                var recipientId = _dataService.SaveMessageRecipient(new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger }, UserController.Instance.GetCurrentUserInfo().UserID);
-                InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, recipientId);
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, sender.UserID);
+
+                if(recipient == null)
+                { 
+                    //add sender as a recipient of the message
+                    recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };
+                    recipient.RecipientID = _dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
+                }
+
+                InternalMessagingController.Instance.MarkMessageAsDispatched(message.MessageID, recipient.RecipientID);
             }
 
             // Mark the conversation as read by the sender of the message.

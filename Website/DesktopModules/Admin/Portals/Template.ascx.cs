@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,6 +48,7 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using System.Web.UI.WebControls;
 using Telerik.Web.UI;
 using System.Globalization;
+using DotNetNuke.Entities;
 
 #endregion
 
@@ -234,9 +235,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                     {
                         // check if default culture page is selected or default page doesn't exist in tree(which should always export).
                         TabInfo defaultTab = tab.DefaultLanguageTab;
-                        var tabId = defaultTab.TabID.ToString(CultureInfo.InvariantCulture);
                         if (defaultTab == null
-                            || ctlPages.FindNodeByValue(tabId) == null
+                            || ctlPages.FindNodeByValue(defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) == null
                             || ctlPages.CheckedNodes.Count(p => p.Value == defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) > 0)
                         {
                             tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent.Checked);
@@ -869,58 +869,66 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     filename += ".template";
                 }
-                XmlWriter writer = XmlWriter.Create(filename, settings);
 
-                writer.WriteStartElement("portal");
-                writer.WriteAttributeString("version", "5.0");
-
-                //Add template description
-                writer.WriteElementString("description", Server.HtmlEncode(txtDescription.Text));
-
-                //Serialize portal settings
-                var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
-
-                SerializePortalSettings(writer, portal);
-                SerializeEnabledLocales(writer, portal);
-                SerializeExtensionUrlProviders(writer, portal.PortalID);
-
-                if (chkProfile.Checked)
+                using (XmlWriter writer = XmlWriter.Create(filename, settings))
                 {
-                    //Serialize Profile Definitions
-                    SerializeProfileDefinitions(writer, portal);
+                    writer.WriteStartElement("portal");
+                    writer.WriteAttributeString("version", "5.0");
+
+                    //Add template description
+                    writer.WriteElementString("description", Server.HtmlEncode(txtDescription.Text));
+
+                    //Serialize portal settings
+                    var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
+
+                    SerializePortalSettings(writer, portal);
+                    SerializeEnabledLocales(writer, portal);
+                    SerializeExtensionUrlProviders(writer, portal.PortalID);
+
+                    if (chkProfile.Checked)
+                    {
+                        //Serialize Profile Definitions
+                        SerializeProfileDefinitions(writer, portal);
+                    }
+
+                    if (chkModules.Checked)
+                    {
+                        //Serialize Portal Desktop Modules
+                        DesktopModuleController.SerializePortalDesktopModules(writer, portal.PortalID);
+                    }
+
+                    if (chkRoles.Checked)
+                    {
+                        //Serialize Roles
+                        RoleController.SerializeRoleGroups(writer, portal.PortalID);
+                    }
+
+                    //Serialize tabs
+                    SerializeTabs(writer, portal);
+
+                    if (chkFiles.Checked)
+                    {
+                        //Create Zip File to hold files
+                        var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
+                        resourcesFile.SetLevel(6);
+
+                        //Serialize folders (while adding files to zip file)
+                        SerializeFolders(writer, portal, ref resourcesFile);
+
+                        //Finish and Close Zip file
+                        resourcesFile.Finish();
+                        resourcesFile.Close();
+                    }
+                    writer.WriteEndElement();
+
+                    writer.Close();
+
+                    EventManager.Instance.OnPortalTemplateCreated(new PortalTemplateEventArgs()
+                    {
+                        PortalId = portal.PortalID,
+                        TemplatePath = filename
+                    });
                 }
-
-                if (chkModules.Checked)
-                {
-                    //Serialize Portal Desktop Modules
-                    DesktopModuleController.SerializePortalDesktopModules(writer, portal.PortalID);
-                }
-
-                if (chkRoles.Checked)
-                {
-                    //Serialize Roles
-                    RoleController.SerializeRoleGroups(writer, portal.PortalID);
-                }
-
-                //Serialize tabs
-                SerializeTabs(writer, portal);
-
-                if (chkFiles.Checked)
-                {
-                    //Create Zip File to hold files
-                    var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
-                    resourcesFile.SetLevel(6);
-
-                    //Serialize folders (while adding files to zip file)
-                    SerializeFolders(writer, portal, ref resourcesFile);
-
-                    //Finish and Close Zip file
-                    resourcesFile.Finish();
-                    resourcesFile.Close();
-                }
-                writer.WriteEndElement();
-
-                writer.Close();
 
                 UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.GreenSuccess);
             }

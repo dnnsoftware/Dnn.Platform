@@ -430,7 +430,7 @@
 					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" ControlName="txtSitemapPriority" />
                     <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="10" />
                     <asp:RequiredFieldValidator ID="val2" runat="server" ControlToValidate="txtSitemapPriority"
-                        Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
+                        Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" ValidationGroup="Page" />
                 </div>
 
 				<div class="dnnFormItem">

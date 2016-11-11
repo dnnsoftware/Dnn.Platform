@@ -208,6 +208,9 @@
     <Compile Include="Entities\Modules\Settings\PortalSettingAttribute.cs" />
     <Compile Include="Entities\Modules\Settings\SettingsRepository.cs" />
     <Compile Include="Entities\Modules\Settings\TabModuleSettingAttribute.cs" />
+    <Compile Include="Entities\Portals\IPortalTemplateEventHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalTemplateEventArgs.cs" />
+    <Compile Include="Entities\Users\UpdateUserEventArgs.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -690,6 +693,7 @@
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
     <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
+    <Compile Include="Services\FileSystem\EventArgs\FileDownloadedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileAddedEventArgs.cs" />
@@ -749,6 +753,9 @@
     <Compile Include="Services\GeneratedImage\StartTransform\PlaceHolderTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\SecureFileTransform.cs" />
     <Compile Include="Services\GeneratedImage\StartTransform\UserProfilePicTransform.cs" />
+    <Compile Include="Services\ImprovementsProgram\BeaconService.cs" />
+    <Compile Include="Services\ImprovementsProgram\IBeaconService.cs" />
+    <Compile Include="Services\ImprovementsProgram\RolesEnum.cs" />
     <Compile Include="Services\Installer\Blocker\IInstallBlocker.cs" />
     <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />

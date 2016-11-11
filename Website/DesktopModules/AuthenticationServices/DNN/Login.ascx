@@ -21,7 +21,7 @@
     </div>
     <div class="dnnFormItem">
         <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
-        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" />
+        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" CausesValidation="false" />
 		<asp:HyperLink id="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" />
         
     </div>
@@ -43,7 +43,7 @@
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
 		function setUpLogin() {
-			var actionLinks = $("a#dnn_ctr<%#ModuleId%>_Login_Login_DNN_cmdLogin");
+			var actionLinks = $("a#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin");
 			actionLinks.click(function () {
 				if ($(this).hasClass("dnnDisabledAction")) {
 					return false;
@@ -57,7 +57,7 @@
 
 			$('.dnnLoginService').on('keydown', function(e) {
 				if (e.keyCode === 13) {
-					var $loginButton = $('#dnn_ctr<%#ModuleId%>_Login_Login_DNN_cmdLogin');
+					var $loginButton = $('#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
 					if ($loginButton.hasClass("dnnDisabledAction")) {
 						return false;
 					}

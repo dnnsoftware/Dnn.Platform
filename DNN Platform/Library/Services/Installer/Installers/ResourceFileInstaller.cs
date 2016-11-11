@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -274,25 +274,27 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile insFile)
         {
-            var unzip = new ZipInputStream(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open));
-            ZipEntry entry = unzip.GetNextEntry();
-            while (entry != null)
+            using (var unzip = new ZipInputStream(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
             {
-                if (!entry.IsDirectory)
+                ZipEntry entry = unzip.GetNextEntry();
+                while (entry != null)
                 {
-					//Check for Backups
-                    if (File.Exists(insFile.BackupPath + entry.Name))
+                    if (!entry.IsDirectory)
                     {
-						//Restore File
-                        Util.RestoreFile(new InstallFile(unzip, entry, Package.InstallerInfo), PhysicalBasePath, Log);
+                        //Check for Backups
+                        if (File.Exists(insFile.BackupPath + entry.Name))
+                        {
+                            //Restore File
+                            Util.RestoreFile(new InstallFile(unzip, entry, Package.InstallerInfo), PhysicalBasePath, Log);
+                        }
+                        else
+                        {
+                            //Delete File
+                            Util.DeleteFile(entry.Name, PhysicalBasePath, Log);
+                        }
                     }
-                    else
-                    {
-						//Delete File
-                        Util.DeleteFile(entry.Name, PhysicalBasePath, Log);
-                    }
+                    entry = unzip.GetNextEntry();
                 }
-                entry = unzip.GetNextEntry();
             }
         }
 

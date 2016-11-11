@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -212,6 +212,10 @@ namespace DotNetNuke.Services.Localization
             {
                 return new Dictionary<string, string>();
             }
+
+            //clone the dictionart so that when merge values into dictionart, it won't
+            //affect the cache data.
+            res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
             if (defaultLanguage != systemLanguage)
             {

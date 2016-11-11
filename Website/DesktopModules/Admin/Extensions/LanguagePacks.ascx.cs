@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -81,9 +81,8 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
             {
                 if (file.ToLower().EndsWith(".zip") || file.ToLower().EndsWith(".resources"))
                 {
-                    Stream inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-                    var unzip = new ZipInputStream(inputStream);
-
+                    var unzip = new ZipInputStream(new FileStream(file, FileMode.Open, FileAccess.Read));
+                    var manifestReader = new StreamReader(unzip);
                     try
                     {
                         ZipEntry entry = unzip.GetNextEntry();
@@ -97,7 +96,6 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
                                 if (extension.ToLower() == ".dnn" || extension.ToLower() == ".dnn5")
                                 {
                                     //Manifest
-                                    var manifestReader = new StreamReader(unzip);
                                     string manifest = manifestReader.ReadToEnd();
 
                                     var package = new PackageInfo();
@@ -158,6 +156,7 @@ namespace DotNetNuke.Website.DesktopModules.Admin.Extensions
                     }
                     finally
                     {
+                        manifestReader.Dispose();
                         unzip.Close();
                         unzip.Dispose();
                     }

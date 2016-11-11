@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -156,10 +156,11 @@ namespace DotNetNuke.Services.Journal
             int thumbnailHeight = 400;
             GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
             var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
-            var result = new MemoryStream();
-            thumbnail.Save(result, image.RawFormat);
-
-            return result;
+            using (var result = new MemoryStream())
+            {
+                thumbnail.Save(result, image.RawFormat);
+                return result;
+            }
         }
 
         private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
@@ -317,11 +318,11 @@ namespace DotNetNuke.Services.Journal
             }
             if (!String.IsNullOrEmpty(journalItem.Summary))
             {
-                journalItem.Summary = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                journalItem.Body = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
 
             if (!String.IsNullOrEmpty(journalItem.Body))
@@ -349,7 +350,7 @@ namespace DotNetNuke.Services.Journal
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
-                    journalItem.ItemData.Description = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
+                    journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
@@ -433,11 +434,11 @@ namespace DotNetNuke.Services.Journal
             }
             if (!String.IsNullOrEmpty(journalItem.Summary))
             {
-                journalItem.Summary = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
-                journalItem.Body = HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting));
+                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
             if (!String.IsNullOrEmpty(journalItem.Body))
             {
@@ -465,7 +466,7 @@ namespace DotNetNuke.Services.Journal
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description =
-                        HttpUtility.HtmlDecode(portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting));
+                        portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
                 if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
@@ -698,8 +699,7 @@ namespace DotNetNuke.Services.Journal
             if (!String.IsNullOrEmpty(comment.Comment))
             {
                 comment.Comment =
-                    HttpUtility.HtmlDecode(portalSecurity.InputFilter(comment.Comment,
-                                                                      PortalSecurity.FilterFlag.NoScripting));
+                    portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
             }
             //TODO: enable once the profanity filter is working properly.
             //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);

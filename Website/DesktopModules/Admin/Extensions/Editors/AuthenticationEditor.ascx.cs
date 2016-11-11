@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.IO;
+using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
@@ -45,10 +46,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
+        
+        #endregion
 
-		#endregion
-
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         protected AuthenticationInfo AuthSystem
         {
@@ -170,16 +171,20 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             base.OnLoad(e);
             cmdUpdate.Click += cmdUpdate_Click;
+            var displayMode = DisplayMode;
+            if (displayMode == "editor" || displayMode == "settings")
+            {
+                AuthEditorHead.Visible = AuthEditorHead.EnableViewState = false;
+            }
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
-            if (SettingsControl != null)
-            {
-                SettingsControl.UpdateSettings();
-            }
+            SettingsControl?.UpdateSettings();
 
-            Response.Redirect(Globals.NavigateURL(), true);
+            var displayMode = DisplayMode;
+            if (displayMode != "editor" && displayMode != "settings")
+                Response.Redirect(Globals.NavigateURL(), true);
         }
 		
 		#endregion

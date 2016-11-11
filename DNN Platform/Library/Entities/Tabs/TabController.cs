@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -626,27 +626,28 @@ namespace DotNetNuke.Entities.Tabs
                         c =>
                         {
                             var tabSettings = new Dictionary<int, Hashtable>();
-                            IDataReader dr = _dataProvider.GetTabSettings(portalId);
-                            while (dr.Read())
+                            using (var dr = _dataProvider.GetTabSettings(portalId))
                             {
-                                int tabId = dr.GetInt32(0);
-                                Hashtable settings;
-                                if (!tabSettings.TryGetValue(tabId, out settings))
+                                while (dr.Read())
                                 {
-                                    settings = new Hashtable();
-                                    tabSettings[tabId] = settings;
-                                }
+                                    int tabId = dr.GetInt32(0);
+                                    Hashtable settings;
+                                    if (!tabSettings.TryGetValue(tabId, out settings))
+                                    {
+                                        settings = new Hashtable();
+                                        tabSettings[tabId] = settings;
+                                    }
 
-                                if (!dr.IsDBNull(2))
-                                {
-                                    settings[dr.GetString(1)] = dr.GetString(2);
-                                }
-                                else
-                                {
-                                    settings[dr.GetString(1)] = "";
+                                    if (!dr.IsDBNull(2))
+                                    {
+                                        settings[dr.GetString(1)] = dr.GetString(2);
+                                    }
+                                    else
+                                    {
+                                        settings[dr.GetString(1)] = "";
+                                    }
                                 }
                             }
-                            CBO.CloseDataReader(dr, true);
                             return tabSettings;
                         });
         }
@@ -734,6 +735,13 @@ namespace DotNetNuke.Entities.Tabs
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
+            //Remove the Content Item
+            if (tab != null && tab.ContentItemId > Null.NullInteger)
+            {
+                IContentController contentController = Util.GetContentController();
+                contentController.DeleteContentItem(tab);
+            }
+
             EventManager.Instance.OnTabDeleted(new TabEventArgs { Tab = tab });
         }
 
@@ -753,11 +761,16 @@ namespace DotNetNuke.Entities.Tabs
 
         private bool SoftDeleteTabInternal(TabInfo tabToDelete, PortalSettings portalSettings)
         {
-            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID, tabToDelete.TabID);
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            Dto.ChangeControlState changeControlStateForTab = null;
+            if (tabToDelete.PortalID > -1)
             {
-                TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
-                TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+                changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID,
+                    tabToDelete.TabID);
+                if (changeControlStateForTab.IsChangeControlEnabledForTab)
+                {
+                    TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
+                    TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+                }
             }
 
             var deleted = false;
@@ -781,7 +794,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            if (changeControlStateForTab != null && changeControlStateForTab.IsChangeControlEnabledForTab)
             {
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
@@ -792,26 +805,29 @@ namespace DotNetNuke.Entities.Tabs
 
         private void UpdateTabSettingInternal(int tabId, string settingName, string settingValue, bool clearCache)
         {
-            IDataReader dr = _dataProvider.GetTabSetting(tabId, settingName);
-            if (dr.Read())
+            using (var dr = _dataProvider.GetTabSetting(tabId, settingName))
             {
-                if (dr.GetString(0) != settingValue)
+                if (dr.Read())
+                {
+                    if (dr.GetString(0) != settingValue)
+                    {
+                        _dataProvider.UpdateTabSetting(tabId, settingName, settingValue,
+                            UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
+                            "TabId", tabId, settingName, settingValue,
+                            UserController.Instance.GetCurrentUserInfo().UserID);
+                    }
+                }
+                else
                 {
                     _dataProvider.UpdateTabSetting(tabId, settingName, settingValue,
-                                              UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
-                                                     "TabId", tabId, settingName, settingValue,
-                                                     UserController.Instance.GetCurrentUserInfo().UserID);
+                        UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
+                        "TabId", tabId, settingName, settingValue,
+                        UserController.Instance.GetCurrentUserInfo().UserID);
                 }
+                dr.Close();
             }
-            else
-            {
-                _dataProvider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
-                                                 "TabId", tabId, settingName, settingValue,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
-            }
-            dr.Close();
 
             UpdateTabVersion(tabId);
             if (clearCache)
@@ -1805,9 +1821,13 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
 
             ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
             foreach (ModuleInfo objModule in allTabsModules)
             {
-                ModuleController.Instance.CopyModule(objModule, tab, Null.NullString, true);
+                if (!tabModules.ContainsKey(objModule.ModuleID))
+                {
+                    ModuleController.Instance.CopyModule(objModule, tab, Null.NullString, true);
+                }
             }
 
             ClearCache(tab.PortalID);
@@ -2172,9 +2192,14 @@ namespace DotNetNuke.Entities.Tabs
             //If Mode is Replace remove all the modules already on this Tab
             if (mergeTabs == PortalTemplateModuleAction.Replace)
             {
-                foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules.Where(kvp => !kvp.Value.AllTabs))
+                foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
-                    ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    var module = kvp.Value;
+                    //when the modules show on all pages are included by the same import process, it need removed.
+                    if (!module.AllTabs || hModules.ContainsValue(module.ModuleID))
+                    {
+                        ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    }
                 }
             }
 
@@ -2729,7 +2754,10 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    if (tempTab != null)
+                    {
+                        urlNode.InnerXml = tempTab.TabPath;
+                    }
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));

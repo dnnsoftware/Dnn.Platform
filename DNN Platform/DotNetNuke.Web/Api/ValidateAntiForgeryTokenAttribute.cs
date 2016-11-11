@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,21 +33,27 @@ namespace DotNetNuke.Web.Api
 
         internal static void AppendToBypassAuthTypes(string authType)
         {
-            if (!string.IsNullOrEmpty(authType))
+            var text = (authType ?? "").Trim();
+            if (text.Length > 0)
             {
-                BypassedAuthTypes.Add(authType.Trim());
+                BypassedAuthTypes.Add(text);
             }
+        }
+
+        private static bool BypassTokenCheck()
+        {
+            // bypass anti-forgery for those handllers that request so.
+            var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
+            return !string.IsNullOrEmpty(authType) && BypassedAuthTypes.Contains(authType);
         }
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
             try
             {
-                var headers = context.ActionContext.Request.Headers;
-                // bypass anti-forgery for those who request so.
-                var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
-                if (string.IsNullOrEmpty(authType) && !BypassedAuthTypes.Contains(authType))
+                if (!BypassTokenCheck())
                 {
+                    var headers = context.ActionContext.Request.Headers;
                     var token = headers.GetValues("RequestVerificationToken").FirstOrDefault();
                     var cookieValue = GetAntiForgeryCookieValue(context);
                     AntiForgery.Instance.Validate(cookieValue, token);

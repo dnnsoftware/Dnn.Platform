@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -468,7 +468,7 @@ namespace DotNetNuke.UI.ControlPanel
                 ModuleInfo newModule = moduleInfo.Clone();
 
                 newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
-
+                newModule.TabModuleID = Null.NullInteger;
                 newModule.TabID = PortalSettings.Current.ActiveTab.TabID;
                 newModule.ModuleOrder = position;
                 newModule.PaneName = paneName;
@@ -477,6 +477,20 @@ namespace DotNetNuke.UI.ControlPanel
                 if ((cloneModule))
                 {
                     newModule.ModuleID = Null.NullInteger;
+                    
+                    //copy module settings and tab module settings
+                    newModule.ModuleSettings.Clear();
+                    foreach (var key in moduleInfo.ModuleSettings.Keys)
+                    {
+                        newModule.ModuleSettings.Add(key, moduleInfo.ModuleSettings[key]);
+                    }
+
+                    newModule.TabModuleSettings.Clear();
+                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
+                    {
+                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
+                    }
+
                     //reset the module id
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
@@ -495,6 +509,13 @@ namespace DotNetNuke.UI.ControlPanel
                 }
                 else
                 {
+                    //copy tab module settings
+                    newModule.TabModuleSettings.Clear();
+                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
+                    {
+                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
+                    }
+
                     ModuleController.Instance.AddModule(newModule);
                 }
 

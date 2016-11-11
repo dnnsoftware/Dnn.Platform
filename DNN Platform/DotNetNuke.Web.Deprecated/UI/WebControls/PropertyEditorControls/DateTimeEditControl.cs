@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -145,7 +145,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 				{
 					//Try and cast the value to an DateTime
 					var dteString = OldValue as string;
-					dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
+				    if (!string.IsNullOrEmpty(dteString))
+				    {
+				        dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
+				    }
 				}
 				catch (Exception exc)
 				{
@@ -225,7 +228,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 		{
 			if (DateValue != Null.NullDate)
 			{
-				DateControl.SelectedDate = DateValue.Date;
+				DateControl.SelectedDate = DateValue;
 			}
 		}
 
@@ -237,13 +240,21 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 			string postedValue = postCollection[postDataKey + "_control"];
 			if (!presentValue.Equals(postedValue))
 			{
-				DateTime value;
-				if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd-HH-mm-ss", CultureInfo.InvariantCulture,
-										   DateTimeStyles.None, out value))
-				{
-					Value = value;
-					dataChanged = true;
-				}
+			    if (string.IsNullOrEmpty(postedValue))
+			    {
+			        Value = Null.NullDate;
+			        dataChanged = true;
+			    }
+			    else
+			    {
+			        DateTime value;
+			        if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd-HH-mm-ss", CultureInfo.InvariantCulture,
+			            DateTimeStyles.None, out value))
+			        {
+			            Value = value;
+			            dataChanged = true;
+			        }
+			    }
 			}
             LoadDateControls();
 			return dataChanged;

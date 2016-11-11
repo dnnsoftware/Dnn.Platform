@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -287,7 +287,7 @@ namespace DesktopModules.Admin.Portals
 
             if (portal.UserTabId > 0)
             {
-                listTabs = TabController.GetPortalTabs(portal.PortalID, Null.NullInteger, false, true);
+                listTabs = TabController.GetPortalTabs(portal.PortalID, Null.NullInteger, false, true, false, true);
                 cboUserTabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.UserTabId);
             }
 

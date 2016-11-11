@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.FileSystem
     public class FileUrlHelper
     {
         private static readonly Regex RegexStandardFile =
-            new Regex(@"^/portals/(?<portal>[0-9]+|_default)/(?<filePath>.*\.[a-z0-9]*)$".ToLower(), RegexOptions.Compiled);
+            new Regex(@"^/portals/(?<portal>[0-9]+|_default)/(?<filePath>.*\.[a-z0-9]*)$", RegexOptions.Compiled);
 
         public static bool IsStandardFileURLFormat(string requestPath, out IFileInfo fileRequested)
         {

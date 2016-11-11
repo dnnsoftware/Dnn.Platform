@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -278,9 +278,11 @@ namespace DotNetNuke.Services.Install
             try
             {
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
-                var sw = new StreamWriter(StatusFile, true);
-                sw.WriteLine(obj.ToJson());
-                sw.Close();
+                using (var sw = new StreamWriter(StatusFile, true))
+                {
+                    sw.WriteLine(obj.ToJson());
+                    sw.Close();
+                }
             }
             catch (Exception)
             {
@@ -443,11 +445,13 @@ namespace DotNetNuke.Services.Install
             string errorMsg;
             var result = VerifyHostUser(accountInfo, out errorMsg);
 
-           if (result==true)
-           {
-            _upgradeRunning = false;
-            LaunchUpgrade();
-           }
+            if (result == true)
+            {
+                _upgradeRunning = false;
+                LaunchUpgrade();
+                // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
+                HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+            }
         }
 
         [System.Web.Services.WebMethod()]

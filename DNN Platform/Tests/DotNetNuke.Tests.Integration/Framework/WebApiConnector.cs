@@ -51,8 +51,8 @@ namespace DotNetNuke.Tests.Integration.Framework
         //private const string LogoffPath = "/Logoff.aspx");
         //private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
 
-        const string UploadFileRequestPath = "DesktopModules/internalservices/API/fileupload/postfile";
-        const string ActivityStreamUploadFilePath = "DesktopModules/DNNCorp/ActivityStream/API/FileUpload/UploadFile";
+        const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
+        const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
 
         private int _userId;
 

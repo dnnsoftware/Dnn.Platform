@@ -1,5 +1,5 @@
 
-IF EXISTS (SELECT * FROM {databaseOwner}sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddException]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddException]') AND type in (N'P', N'PC'))
   DROP PROCEDURE {databaseOwner}{objectQualifier}AddException
 GO
 

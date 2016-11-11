@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Web.UI.HtmlControls;
 
 using DotNetNuke.Common.Utilities;
@@ -51,7 +50,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         public Logger()
         {
-            _logs = new LoggedCollection();
+            _logs = new List<LogEntry>();
             
             _valid = true;
             _hasWarnings = Null.NullBoolean;
@@ -169,6 +168,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddFailure(string failure)
         {
             _logs.Add(new LogEntry(LogType.Failure, failure));
+            DnnLogger.Error(failure);
             _valid = false;
         }
 
@@ -212,6 +212,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void EndJob(string job)
         {
             _logs.Add(new LogEntry(LogType.EndJob, job));
+            DnnLogger.Info(job);
         }
 
         /// -----------------------------------------------------------------------------
@@ -273,21 +274,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void StartJob(string job)
         {
             _logs.Add(new LogEntry(LogType.StartJob, job));
-        }
-
-        class LoggedCollection : Collection<LogEntry>
-        {
-            protected override void InsertItem(int index, LogEntry item)
-            {
-				DnnLogger.Debug(item.ToString());
-                base.InsertItem(index, item);
-            }
-
-            protected override void SetItem(int index, LogEntry item)
-            {
-				DnnLogger.Debug(item.ToString());
-                base.InsertItem(index, item);
-            }
+            DnnLogger.Info(job);
         }
     }
 }

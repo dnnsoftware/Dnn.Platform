@@ -1,7 +1,7 @@
 ; if (typeof dnn === "undefined") { dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // All Rights Reserved
 

@@ -406,9 +406,9 @@
         yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
         noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
         titleText: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-        deleteText: '<%= Localization.GetSafeJSString(GetButtonConfirmMessage("DeletePage"))%>',
-        publishConfirmHeader: '<%= Localization.GetSafeJSString(GetPublishConfirmHeader())%>',
-        publishConfirmText: '<%= Localization.GetSafeJSString(GetPublishConfirmText())%>',
+        deleteText: '<%= GetButtonConfirmMessage("DeletePage")%>',
+        publishConfirmHeader: '<%= GetPublishConfirmHeader()%>',
+        publishConfirmText: '<%= GetPublishConfirmText()%>',
         publishedPage: '<%= Localization.GetSafeJSString(GetTabPublishing())%>',
         copyPermissionsToChildrenText: '<%= Localization.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
 
@@ -435,6 +435,10 @@
         $('a#ControlBar_ViewInPreview').click(function() {
             <%=PreviewPopup() %>;
         });
+
+        <% if (IsBeaconEnabled) { %>
+        (new Image()).src = "<%= GetBeaconUrl() %>";
+        <% } %>
     });
 
     function openFileUploader() {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -115,6 +115,31 @@ namespace DotNetNuke.Modules.Admin.Security
 			txtPassword.Attributes.Add("data-default", LocalizeString("Password"));
 			txtConfirmPassword.Attributes.Add("data-default", LocalizeString("Confirm"));
             txtAnswer.Attributes.Add("data-default", LocalizeString("Answer"));
+
+            if (!Page.IsPostBack)
+            {
+                LoadUserInfo();
+            }
+        }
+
+        private void LoadUserInfo()
+        {
+            var user = UserController.GetUserByPasswordResetToken(PortalId, ResetToken);
+
+            if (user == null)
+            {
+                divPassword.Visible = false;
+                resetMessages.Visible = true;
+                lblHelp.Text = Localization.GetString("ResetLinkExpired", LocalResourceFile);
+                return;
+            }
+
+            txtUsername.Text = user.Username;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                lblQuestion.Text = user.Membership.PasswordQuestion;
+                divQA.Visible = true;
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -165,14 +190,8 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             string username = txtUsername.Text;
 
-            if (MembershipProviderConfig.RequiresQuestionAndAnswer && String.IsNullOrEmpty(txtAnswer.Text))
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer && string.IsNullOrEmpty(txtAnswer.Text))
             {
-                var user = UserController.GetUserByName(username);
-                if (user != null)
-                {
-                    lblQuestion.Text = user.Membership.PasswordQuestion;
-                }
-                divQA.Visible = true;
                 return;
             }
 
@@ -301,18 +320,19 @@ namespace DotNetNuke.Modules.Admin.Security
 
 			AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 	        resetMessages.Visible = divPassword.Visible = false;
+            lblHelp.Text = lblInfo.Text = string.Empty;
 
-			//redirect page after 5 seconds
-	        var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
-			if (ScriptManager.GetCurrent(Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
-			}
-			else
-			{
-				Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
-			}
+            //redirect page after 5 seconds
+            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+            if (ScriptManager.GetCurrent(Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(Page, GetType(), "ChangePasswordSuccessful", script, true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "ChangePasswordSuccessful", script, true);
+            }
         }
 
         private void LogSuccess()

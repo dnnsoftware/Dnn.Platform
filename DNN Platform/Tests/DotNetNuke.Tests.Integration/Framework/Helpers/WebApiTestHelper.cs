@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2015, DNN Corp.
+// Copyright (c) 2002-2016, DNN Corp.
 // All Rights Reserved
 
 using System;
@@ -210,7 +210,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            connector.PostJson("DesktopModules/internalservices/API/controlbar/ClearHostCache", null);
+            connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
             return connector;
         }
 
@@ -221,7 +221,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Helpers
         public static void RecycleApplication()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            connector.PostJson("DesktopModules/internalservices/API/controlbar/RecycleApplicationPool ", null);
+            connector.PostJson("API/internalservices/controlbar/RecycleApplicationPool ", null);
         }
 
         /// <summary>

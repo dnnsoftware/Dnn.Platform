@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,10 +28,12 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -190,6 +192,13 @@ namespace DotNetNuke.Services.FileSystem
                                 {
                                     var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                                     var directUrl = fileManager.GetUrl(file);
+
+                                    EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
+                                    {
+                                        FileInfo = file,
+                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                    });
+
                                     if (directUrl.Contains("LinkClick") || (blnForceDownload && folderMapping.FolderProviderType == "StandardFolderProvider"))
                                     {
                                         fileManager.WriteFileToResponse(file, contentDisposition);

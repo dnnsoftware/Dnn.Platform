@@ -219,6 +219,17 @@
 
                     </div>
                 </div>
+                <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
+                    <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
+                    <div class="dnnFormItem">
+                        <dnn:Label ID="Label2" runat="server"/>
+                        <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
+                    </div>
+                    <div class="dnnFormItem information-checkbox">
+                        <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
+                        <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
+                    </div>
+                </div>
                 <hr/>
                 <ul class="dnnActions dnnClear">
                     <li><asp:LinkButton id="continueLink" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdContinue" /></li>
@@ -666,7 +677,8 @@
                             databaseSecurity: "",
                             databaseUsername: "",
                             databasePassword: "",
-                            databaseRunAsOwner: null
+                            databaseRunAsOwner: null,
+                            dnnImprovementProgram: $('#<%= chkImprovementProgram.ClientID %>').is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');
                         var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val();
@@ -680,7 +692,7 @@
                             installWizard.installInfo.databaseUsername = $('#<%= txtDatabaseUsername.ClientID %>')[0].value;
                             installWizard.installInfo.databasePassword = $('#<%= txtDatabasePassword.ClientID %>')[0].value;
                             installWizard.installInfo.databaseRunAsOwner = $('#<%= databaseRunAs.ClientID %>')[0].value;
-                        }
+                       }
 
                         PageMethods.ValidateInput(installWizard.installInfo, function(result) {
                             if (result.Item1) {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -302,6 +302,10 @@ namespace DotNetNuke.Services.Mail
                 case MessageType.PasswordReminderUserIsNotApproved:
                     subject = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT";
                     body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY";
+                    break;
+                case MessageType.UserAuthorized:
+                    subject = "EMAIL_USER_AUTHORIZED_SUBJECT";
+                    body = "EMAIL_USER_AUTHORIZED_BODY";
                     break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";

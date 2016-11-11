@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -239,14 +239,47 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = portalRoot + "/";
             }
-            var exp = RegexUtils.GetCachedRegex(portalRoot, RegexOptions.IgnoreCase);
-            return exp.Replace(content, PortalRootToken);
+
+            // Portal Root regular expression
+            var regex = @"(?<url>
+                        (?<host>
+                        (?<protocol>[A-Za-z]{3,9}:(?:\/\/)?)
+                        (?<domain>(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+))?
+                        (?<portalRoot>" + portalRoot + "))";
+
+            var matchEvaluator = new MatchEvaluator(ReplaceWithRootToken);
+            var exp = RegexUtils.GetCachedRegex(regex, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+            return exp.Replace(content, matchEvaluator);
+        }
+
+        public string ReplaceWithRootToken(Match m)
+        {
+            var domain = m.Groups["domain"].Value;
+
+            // Relative url
+            if (string.IsNullOrEmpty(domain))
+            {
+                return PortalRootToken;
+            }
+
+            var aliases = PortalAliasController.Instance.GetPortalAliases();
+            if (!aliases.Contains(domain))
+            {
+                // this is no not a portal url so even if it contains /portals/.. 
+                // we do not need to replace it with a token
+                return m.ToString();
+            }
+
+            // full qualified portal url that needs to be tokenized
+            var result = domain + PortalRootToken;
+            var protocol = m.Groups["protocol"].Value;
+            return string.IsNullOrEmpty(protocol) ? result : protocol + result;
         }
 
         #endregion
 
         #region Public Methods
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item

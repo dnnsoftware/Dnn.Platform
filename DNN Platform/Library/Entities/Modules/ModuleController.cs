@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -546,27 +546,28 @@ namespace DotNetNuke.Entities.Modules
                             c =>
                             {
                                 var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
-                                IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId);
-                                while (dr.Read())
+                                using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
                                 {
-                                    int tMId = dr.GetInt32(0);
-                                    Hashtable settings;
-                                    if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                    while (dr.Read())
                                     {
-                                        settings = new Hashtable();
-                                        tabModuleSettingsDic[tMId] = settings;
-                                    }
+                                        int tMId = dr.GetInt32(0);
+                                        Hashtable settings;
+                                        if (!tabModuleSettingsDic.TryGetValue(tMId, out settings))
+                                        {
+                                            settings = new Hashtable();
+                                            tabModuleSettingsDic[tMId] = settings;
+                                        }
 
-                                    if (!dr.IsDBNull(2))
-                                    {
-                                        settings[dr.GetString(1)] = dr.GetString(2);
-                                    }
-                                    else
-                                    {
-                                        settings[dr.GetString(1)] = "";
+                                        if (!dr.IsDBNull(2))
+                                        {
+                                            settings[dr.GetString(1)] = dr.GetString(2);
+                                        }
+                                        else
+                                        {
+                                            settings[dr.GetString(1)] = "";
+                                        }
                                     }
                                 }
-                                CBO.CloseDataReader(dr, true);
                                 return tabModuleSettingsDic;
                             });
 
@@ -717,7 +718,7 @@ namespace DotNetNuke.Entities.Modules
 
 				dr.Close();
 
-				if (settingExist && existValue != settingValue)
+				if (existValue != settingValue)
 	            {
 					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
@@ -726,7 +727,7 @@ namespace DotNetNuke.Entities.Modules
 				}
 				else if (!settingExist)
 				{
-					dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
 													"ModuleId", moduleId, settingName, settingValue,
 													currentUser.UserID);
@@ -1798,6 +1799,8 @@ namespace DotNetNuke.Entities.Modules
         public void RestoreModule(ModuleInfo objModule)
         {
             dataProvider.RestoreTabModule(objModule.TabID, objModule.ModuleID);
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            TabChangeTracker.Instance.TrackModuleCopy(objModule, 1, objModule.TabID, userId);
             ClearCache(objModule.TabID);
         }
 
@@ -2092,11 +2095,10 @@ namespace DotNetNuke.Entities.Modules
         /// <remarks>empty SettingValue will relove the setting</remarks>
         public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
         {
-            IDataReader dr = null;
+            IDataReader dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
             try
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
                 if (dr.Read())
                 {
                     if (dr.GetString(1) != settingValue)
@@ -2105,16 +2107,17 @@ namespace DotNetNuke.Entities.Modules
                         EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "TabModuleId", tabModuleId, settingName, settingValue,
                                                         currentUser.UserID);
+                        UpdateTabModuleVersion(tabModuleId);
                     }
                 }
                 else
                 {
-                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
+                    dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
                                                     "TabModuleId", tabModuleId, settingName, settingValue,
                                                     currentUser.UserID);
+                    UpdateTabModuleVersion(tabModuleId);
                 }
-                UpdateTabModuleVersion(tabModuleId);
             }
             catch (Exception ex)
             {

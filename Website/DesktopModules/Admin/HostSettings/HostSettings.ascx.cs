@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -380,6 +380,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkAutoSync.Checked = Entities.Host.Host.EnableFileAutoSync;
             chkEnableContentLocalization.Checked = Entities.Host.Host.EnableContentLocalization;
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
+            chkImprovementProgram.Checked = Entities.Host.Host.ParticipateInImprovementProg;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
             txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
@@ -863,7 +864,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HelpURL", txtHelpURL.Text, false);
                     HostController.Instance.Update("EnableContentLocalization", chkEnableContentLocalization.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "True" : "False", false);
-                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
+                    HostController.Instance.Update("DnnImprovementProgram", chkImprovementProgram.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
                     HostController.Instance.Update("UpgradeForceSSL", chkUpgradeForceSSL.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("SSLDomain", txtSSLDomain.Text, false);
@@ -920,7 +922,8 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
                 finally
                 {
-                    //TODO: this is temporary until the AUM Caching is moved into the core.                    
+                    //TODO: this is temporary until the AUM Caching is moved into the core.
+                    //TODO: when removed mist set the last call with true => HostController.Instance.Update(..., true)
                     DataCache.ClearCache();
                 }
             }

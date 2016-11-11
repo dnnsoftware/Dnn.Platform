@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -75,8 +74,6 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
-        private const string DefaultUsersFoldersPath = "Users";
-
         protected override Func<IUserController> GetFactory()
         {
             return () => new UserController();
@@ -203,13 +200,6 @@ namespace DotNetNuke.Entities.Users
             {
                 user.PortalID = portalId;
             }
-        }
-
-        private static object GetCachedUserByPortalCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            var username = (string)cacheItemArgs.ParamList[1];
-            return MembershipProvider.Instance().GetUserByUserName(portalId, username);
         }
 
         private static UserInfo GetCurrentUserInternal()
@@ -1090,10 +1080,9 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static UserInfo GetCachedUser(int portalId, string username)
         {
-            //Get the User cache key
             var masterPortalId = GetEffectivePortalId(portalId);
-            var cacheKey = string.Format(DataCache.UserCacheKey, masterPortalId, username);
-            var user = CBO.GetCachedObject<UserInfo>(new CacheItemArgs(cacheKey, DataCache.UserCacheTimeOut, DataCache.UserCachePriority, masterPortalId, username), GetCachedUserByPortalCallBack);
+            // user is cached inside the MembershipProvider.Instance().GetUserByUserName method
+            var user = MembershipProvider.Instance().GetUserByUserName(masterPortalId, username);
             FixMemberPortalId(user, portalId);
 
             if (user!= null)
@@ -1238,6 +1227,11 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByVanityUrl(portalId, vanityUrl);
         }
 
+        public static UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
+        {
+            return MembershipProvider.Instance().GetUserByPasswordResetToken(portalId, resetToken);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserCountByPortal gets the number of users in the portal
@@ -1349,9 +1343,15 @@ namespace DotNetNuke.Entities.Users
         public static Hashtable GetUserSettings(int portalId)
         {
             var settings = GetDefaultUserSettings();
+            var masterPortalId = GetEffectivePortalId(portalId);
             Dictionary<string, string> settingsDictionary = (portalId == Null.NullInteger)
                                                             ? HostController.Instance.GetSettingsDictionary()
-                                                            : PortalController.Instance.GetPortalSettings(GetEffectivePortalId(portalId));
+                                                            : PortalController.Instance.GetPortalSettings(masterPortalId);
+            Dictionary<string, string> currentPortalSettings = null;
+            if (portalId != Null.NullInteger && masterPortalId != portalId)
+            {
+                currentPortalSettings = PortalController.Instance.GetPortalSettings(portalId);
+            }
             if (settingsDictionary != null)
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
@@ -1389,6 +1389,14 @@ namespace DotNetNuke.Entities.Users
                                 break;
                         }
                     }
+                }
+            }
+
+            if (currentPortalSettings != null)
+            {
+                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_")))
+                {
+                    settings[kvp.Key] = kvp.Value;
                 }
             }
             return settings;
@@ -1906,8 +1914,10 @@ namespace DotNetNuke.Entities.Users
 			portalId = GetEffectivePortalId(portalId);
 			user.PortalID = portalId;
 
-			//Update the User
-			MembershipProvider.Instance().UpdateUser(user);
+            var oldUser = Instance.GetUser(user.PortalID, user.UserID);
+
+            //Update the User
+            MembershipProvider.Instance().UpdateUser(user);
 			if (loggedAction)
 			{
                 //if the httpcontext is null, then get portal settings by portal id.
@@ -1924,11 +1934,13 @@ namespace DotNetNuke.Entities.Users
                 EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 
+            EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
+
             //Reset PortalId
             FixMemberPortalId(user, originalPortalId);
 
-			//Remove the UserInfo from the Cache, as it has been modified
-			if (clearCache)
+            //Remove the UserInfo from the Cache, as it has been modified
+            if (clearCache)
 			{
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
@@ -1993,9 +2005,12 @@ namespace DotNetNuke.Entities.Users
 
             AddEventLog(portalId, user.Username, user.UserID, portalName, ip, user.IsSuperUser ? UserLoginStatus.LOGIN_SUPERUSER : UserLoginStatus.LOGIN_SUCCESS);
 
-            //Update User in Database with Last IP used
-            user.LastIPAddress = ip;
-            DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
+            if (user.LastIPAddress != ip)
+            {
+                //Update User in Database with Last IP used
+                user.LastIPAddress = ip;
+                DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
+            }
 
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();

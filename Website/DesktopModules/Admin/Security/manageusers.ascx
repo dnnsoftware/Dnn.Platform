@@ -13,7 +13,9 @@
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
     function setUpDnnManageUsers() {
-        $('#dnnManageUsers').dnnTabs().dnnPanels();
+        if ($('#<%=adminTabNav.ClientID%>').length) {
+            $('#dnnManageUsers').dnnTabs().dnnPanels();
+        }
     }
 
     $(document).ready(function () {
@@ -30,12 +32,12 @@
 </script>
 <div class="dnnForm dnnManageUsers dnnClear" id="dnnManageUsers" runat="server" ClientIDMode="Static">
     <ul class="dnnAdminTabNav dnnClear" id="adminTabNav" runat="server">
-        <li><a href="#dnnUserDetails"><%=LocalizeString("cmdUser")%></a></li>
+        <li><a href="#<%=dnnUserDetails.ClientID %>"><%=LocalizeString("cmdUser")%></a></li>
         <li id="rolesTab" runat="server"><a href="#<%=dnnRoleDetails.ClientID%>"><%=LocalizeString("cmdRoles")%></a></li>
         <li id="passwordTab" runat="server"><a href="#<%=dnnPasswordDetails.ClientID%>"><%=LocalizeString("cmdPassword")%></a></li>
         <li><a href="#<%=dnnProfileDetails.ClientID%>"><%=LocalizeString("cmdProfile")%></a></li>
     </ul>
-    <div id="dnnUserDetails" class="dnnUserDetails dnnClear">
+    <div id="dnnUserDetails" runat="server" class="dnnUserDetails dnnClear">
         <div class="udContent dnnClear">
             <fieldset>
                 <div id="titleRow" runat="server" class="dnnFormItem">
@@ -73,4 +75,4 @@
         <li><asp:LinkButton id="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
         <li><asp:Hyperlink id="loginLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdLogin" Visible="false" /></li>
     </ul>
-</div>	    
+</div>

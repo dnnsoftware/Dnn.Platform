@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
+        private event EventHandler<FileDownloadedEventArgs> FileDownloaded; 
 
         private event EventHandler<FolderChangedEventArgs> FolderAdded;
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
@@ -61,6 +62,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
 
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+        private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
 
         private event EventHandler<ProfileEventArgs> ProfileUpdated;
 
@@ -84,6 +86,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<UserEventArgs> UserCreated;
         private event EventHandler<UserEventArgs> UserDeleted;
         private event EventHandler<UserEventArgs> UserRemoved;
+        private event EventHandler<UpdateUserEventArgs> UserUpdated;
 
 
         public EventManager()
@@ -97,6 +100,7 @@ namespace DotNetNuke.Entities
                 FileAdded += handler.Value.FileAdded;
                 FileOverwritten += handler.Value.FileOverwritten;
                 FileMetadataChanged += handler.Value.FileMetadataChanged;
+                FileDownloaded += handler.Value.FileDownloaded;
 
                 FolderAdded += handler.Value.FolderAdded;
                 FolderDeleted += handler.Value.FolderDeleted;
@@ -128,6 +132,11 @@ namespace DotNetNuke.Entities
             foreach (var handler in EventHandlersContainer<IPortalEventHandlers>.Instance.EventHandlers)
             {
                 PortalCreated += handler.Value.PortalCreated;
+            }
+
+            foreach (var handler in EventHandlersContainer<IPortalTemplateEventHandlers>.Instance.EventHandlers)
+            {
+                PortalTemplateCreated += handler.Value.TemplateCreated;
             }
 
             foreach (var handler in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
@@ -166,6 +175,7 @@ namespace DotNetNuke.Entities
                 UserDeleted += handler.Value.UserDeleted;
                 UserRemoved += handler.Value.UserRemoved;
                 UserApproved += handler.Value.UserApproved;
+                UserUpdated += handler.Value.UserUpdated;
             }
 
         }
@@ -204,6 +214,14 @@ namespace DotNetNuke.Entities
             if (FileMetadataChanged != null)
             {
                 FileMetadataChanged(this, args);
+            }
+        }
+
+        public virtual void OnFileDownloaded(FileDownloadedEventArgs args)
+        {
+            if (FileDownloaded != null)
+            {
+                FileDownloaded(this, args);
             }
         }
 
@@ -332,6 +350,14 @@ namespace DotNetNuke.Entities
             if (PortalCreated != null)
             {
                 PortalCreated(this, args);
+            }
+        }
+
+        public virtual void OnPortalTemplateCreated(PortalTemplateEventArgs args)
+        {
+            if (PortalTemplateCreated != null)
+            {
+                PortalTemplateCreated(this, args);
             }
         }
 
@@ -484,6 +510,14 @@ namespace DotNetNuke.Entities
             if (UserRemoved != null)
             {
                 UserRemoved(this, args);
+            }
+        }
+
+        public virtual void OnUserUpdated(UpdateUserEventArgs args)
+        {
+            if (UserUpdated != null)
+            {
+                UserUpdated(this, args);
             }
         }
 

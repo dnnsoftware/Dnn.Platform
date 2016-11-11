@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -194,6 +194,29 @@ namespace Dnn.Modules.Tabs
             else
             {
                 ShowPermissions(true);
+            }
+
+            if (parentTab != null && PortalSettings.ContentLocalizationEnabled)
+            {
+                var defaultCultureCode = LocaleController.Instance.GetDefaultLocale(PortalId).Code;
+                if (!parentTab.IsNeutralCulture
+                    && (
+                            (!parentTab.CultureCode.Equals(defaultCultureCode, StringComparison.InvariantCultureIgnoreCase)
+                                && parentTab.DefaultLanguageTab == null)
+                             || (parentTab.CultureCode.Equals(defaultCultureCode, StringComparison.InvariantCultureIgnoreCase)
+                                    && parentTab.LocalizedTabs.Count == 0)
+                       ))
+                {
+                    cultureTypeList.Items[0].Enabled = cultureTypeList.Items[2].Enabled = false;
+                    cultureTypeList.Items[1].Enabled = true;
+                    cultureTypeList.SelectedValue = "Culture";
+                }
+                else
+                {
+                    cultureTypeList.Items[0].Enabled = 
+                        cultureTypeList.Items[1].Enabled = cultureTypeList.Items[2].Enabled = true;
+                    cultureTypeList.SelectedValue = PortalController.GetPortalSetting("CreateNewPageCultureType", PortalId, "Localized");
+                }
             }
         }
 
@@ -2010,6 +2033,29 @@ namespace Dnn.Modules.Tabs
          
         }
 
+        protected void grdModules_OnItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var optNew = (RadioButton) e.Item.FindControl("optNew");
+            var optCopy = (RadioButton) e.Item.FindControl("optCopy");
+            var optReference = (RadioButton) e.Item.FindControl("optReference");
+
+            var moduleInfo = e.Item.DataItem as ModuleInfo;
+            if (optNew != null && moduleInfo != null)
+            {
+                optCopy.Enabled = moduleInfo.DesktopModule.IsPortable;
+                optReference.Enabled = moduleInfo.ModuleID > Null.NullInteger 
+                    && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "CONTENT", moduleInfo);
+
+                if (optCopy.Enabled)
+                {
+                    optCopy.Checked = true;
+                }
+                else
+                {
+                    optNew.Checked = true;
+                }
+            }
+        }
 
         #endregion
     }

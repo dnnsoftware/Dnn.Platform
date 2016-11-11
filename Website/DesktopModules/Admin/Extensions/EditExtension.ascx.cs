@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -77,6 +77,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 return Convert.ToString(ModuleContext.Settings["Extensions_Mode"]);
             }
         }
+
+        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected PackageInfo Package
         {
@@ -274,8 +276,24 @@ namespace DotNetNuke.Modules.Admin.Extensions
             if (!IsPostBack)
             {
                 ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
+                switch (DisplayMode)
+                {
+                    case "editor":
+                        packageSettingsSection.Visible = false;
+                        break;
+                    case "settings":
+                        extensionSection.Visible = false;
+                        break;
+                }
             }
 
+            switch (DisplayMode)
+            {
+                case "editor":
+                case "settings":
+                    cmdCancel.Visible = cmdCancel.Enabled = false;
+                    break;
+            }
         }
 
         protected void OnCancelClick(object sender, EventArgs e)

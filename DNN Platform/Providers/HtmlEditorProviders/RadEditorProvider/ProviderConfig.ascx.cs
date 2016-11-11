@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -1353,10 +1353,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                 if (File.Exists(toolspath))
                 {
-                    var tr = new StreamReader(toolspath);
-                    this.txtTools.Text = tr.ReadToEnd();
-                    tr.Close();
-                    tr.Dispose();
+                    using (var tr = new StreamReader(toolspath))
+                    {
+                        this.txtTools.Text = tr.ReadToEnd();
+                        tr.Close();
+                    }
                 }
                 else
                 {
@@ -1369,10 +1370,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                     if (File.Exists(toolspath))
                     {
-                        var tr = new StreamReader(toolspath);
-                        this.txtTools.Text = tr.ReadToEnd();
-                        tr.Close();
-                        tr.Dispose();
+                        using (var tr = new StreamReader(toolspath))
+                        {
+                            this.txtTools.Text = tr.ReadToEnd();
+                            tr.Close();
+                        }
                     }
                     else
                     {

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -163,32 +163,33 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected string GetFormattedLink(object dataItem)
         {
             var returnValue = new StringBuilder();
-            if ((dataItem is TabInfo))
+            var tab = dataItem as TabInfo;
+            if (tab != null)
             {
-                var tab = (TabInfo) dataItem;
-                if ((tab != null))
+                int index = 0;
+                TabController.Instance.PopulateBreadCrumbs(ref tab);
+                foreach (TabInfo t in tab.BreadCrumbs)
                 {
-                    int index = 0;
-                    TabController.Instance.PopulateBreadCrumbs(ref tab);
-                    foreach (TabInfo t in tab.BreadCrumbs)
+                    if (index > 0)
                     {
-                        if ((index > 0))
-                        {
-                            returnValue.Append(" > ");
-                        }
-                        if ((tab.BreadCrumbs.Count - 1 == index))
-                        {
-                            string url;
-                            //use the current portal alias for host tabs
-                            url = Globals.AddHTTP(t.PortalID == Null.NullInteger? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList()[0].HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
-                            returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
-                        }
-                        else
-                        {
-                            returnValue.AppendFormat("{0}", t.LocalizedTabName);
-                        }
-                        index = index + 1;
+                        returnValue.Append(" &gt; ");
                     }
+                    if (index < tab.BreadCrumbs.Count - 1)
+                    {
+                        returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                    }
+                    else
+                    {
+                        //use the current portal alias for host tabs
+                        var alias = t.PortalID == Null.NullInteger || t.PortalID == this.PortalId
+                                        ? this.PortalSettings.PortalAlias
+                                        : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
+                                                                .OrderBy(pa => pa.IsPrimary ? 0 : 1)
+                                                                .First();
+                        var url = Globals.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
+                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                    }
+                    index = index + 1;
                 }
             }
             return returnValue.ToString();
@@ -208,8 +209,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     FilterUsageList.DataBind();
 
                     FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionHost", LocalResourceFile), Null.NullInteger.ToString());
-                    FilterUsageList.InsertItem(0, Localization.GetString("FilterOptionSelect", LocalResourceFile), "-2");
-                    FilterUsageList.Items[0].Selected = true;
+                    FilterUsageList.SelectedValue = this.PortalId.ToString();
                 }
             }
         }
@@ -240,15 +240,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if (IsSuperTab)
                 {
-                    if (selectedPortalID == -2)
-                    {
-                        portalName = string.Empty;
-                    }
-                    else
-                    {
-                        tabs = BuildData(selectedPortalID);
-                        portalName = selectedPortalName;
-                    }
+                    tabs = BuildData(selectedPortalID);
+                    portalName = selectedPortalName;
                 }
                 else
                 {

@@ -4,7 +4,7 @@
     <script name="Schema">DotNetNuke.Schema</script>
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
-  <version>07.00.00</version>
+  <version>08.00.04</version>
   <installCulture>en-US</installCulture>
   <superuser>
     <firstname>SuperUser</firstname>
@@ -33,14 +33,16 @@
     <DemoPeriod></DemoPeriod>
     <DemoSignup>N</DemoSignup>
     <DisplayBetaNotice>Y</DisplayBetaNotice>
+    <DnnImprovementProgram>Y</DnnImprovementProgram>
     <EnableFileAutoSync>Y</EnableFileAutoSync>
     <EnableContentLocalization>N</EnableContentLocalization>
     <EnableModuleOnLineHelp>Y</EnableModuleOnLineHelp>
     <EnableRequestFilters>N</EnableRequestFilters>
+    <EnableStrengthMeter>Y</EnableStrengthMeter>
     <EncryptionKey Secure="True"></EncryptionKey>
     <EventLogBuffer>N</EventLogBuffer>
     <FileExtensions>jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,xml,xsl,xsd,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav</FileExtensions>
-    <HelpURL>http://help.dotnetnuke.com/070300/default.htm?showToc=true</HelpURL>
+    <HelpURL>http://www.dnnsoftware.com/help</HelpURL>
     <HostCurrency>USD</HostCurrency>
     <HostEmail></HostEmail>
     <HostFee></HostFee>

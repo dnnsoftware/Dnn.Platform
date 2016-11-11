@@ -207,13 +207,6 @@
     <None Include="module.css" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Create.ascx" />
@@ -228,6 +221,7 @@
     <Content Include="List.ascx" />
     <Content Include="ListSettings.ascx" />
     <Content Include="Loader.ascx" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.00.00.SqlDataProvider" />
     <Content Include="Setup.ascx" />
     <Content Include="View.ascx" />
   </ItemGroup>
@@ -248,9 +242,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="App_LocalResources\CreateSettings.ascx.resx" />
   </ItemGroup>

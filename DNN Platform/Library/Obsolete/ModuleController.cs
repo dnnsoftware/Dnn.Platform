@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -136,21 +136,21 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3.  Use an alternate overload")]
+        [Obsolete("Deprecated in DNN 7.3.  Use an alternate overload")]
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs)
         {
             DeleteAllModules(moduleId, tabId, fromTabs, true, false, false);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 5.1.  Use an alternate overload")]
+        [Obsolete("Deprecated in DNN 5.1.  Use an alternate overload")]
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool includeCurrent, bool deleteBaseModule)
         {
             DeleteAllModules(moduleId, tabId, fromTabs, true, includeCurrent, deleteBaseModule);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 5.1.  Use an alternate overload")]
+        [Obsolete("Deprecated in DNN 5.1.  Use an alternate overload")]
         public void DeleteAllModules(int moduleId, int tabId, ArrayList fromTabs, bool includeCurrent, bool deleteBaseModule)
         {
             var listTabs = fromTabs.Cast<TabInfo>().ToList();
@@ -158,7 +158,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3.")]
+        [Obsolete("Deprecated in DNN 7.3.")]
         public void DeleteModuleSettings(int moduleId)
         {
             dataProvider.DeleteModuleSettings(moduleId);
@@ -170,14 +170,14 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 5.1. Replaced by DeleteTabModule(Integer, integer, boolean)")]
+        [Obsolete("Deprecated in DNN 5.1. Replaced by DeleteTabModule(Integer, integer, boolean)")]
         public void DeleteTabModule(int tabId, int moduleId)
         {
             DeleteTabModule(tabId, moduleId, true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3.")]
+        [Obsolete("Deprecated in DNN 7.3.")]
         public void DeleteTabModuleSettings(int tabModuleId)
         {
             dataProvider.DeleteTabModuleSettings(tabModuleId);
@@ -243,14 +243,14 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3. Replaced by GetTabModulesByModule(moduleID)")]
+        [Obsolete("Deprecated in DNN 7.3. Replaced by GetTabModulesByModule(moduleID)")]
         public ArrayList GetModuleTabs(int moduleID)
         {
             return new ArrayList(GetTabModulesByModule(moduleID).ToArray());
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3. Replaced by GetModules(portalId)")]
+        [Obsolete("Deprecated in DNN 7.3. Replaced by GetModules(portalId)")]
         public ArrayList GetRecycleModules(int portalID)
         {
             return GetModules(portalID);

@@ -173,7 +173,7 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plUserTabId" runat="server" controlname="cboUserTabId" />
-                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True"/>
+                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True" IncludeAllTabTypes="True" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />
@@ -181,11 +181,11 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="pl404TabId" runat="server" controlname="cbo404TabId" />
-                        <dnn:DnnPageDropDownList ID="cbo404TabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cbo404TabId" runat="server" IncludeDisabledTabs="True" DisabledNotSelectable="true" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="pl500TabId" runat="server" controlname="cbo500TabId" />
-                        <dnn:DnnPageDropDownList ID="cbo500TabId" runat="server" />
+                        <dnn:DnnPageDropDownList ID="cbo500TabId" runat="server" IncludeDisabledTabs="True" DisabledNotSelectable="true" />
                     </div>
                 </fieldset>
                 <h2 id="dnnSitePanel-SecuritySettings" class="dnnFormSectionHead">

@@ -284,8 +284,8 @@
 		    notificationTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Notifications")) %>',
 		    archiveTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MarkArchive")) %>',
 		    sentTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Sent")) %>',
-		    currentUserText: '<%= UserController.Instance.GetCurrentUserInfo().DisplayName %>',
-            portalText: '<%= PortalSettings.PortalName %>'
+		    currentUserText: '<%= ClientAPI.GetSafeJSString(UserController.Instance.GetCurrentUserInfo().DisplayName) %>',
+            portalText: '<%= ClientAPI.GetSafeJSString(PortalSettings.PortalName) %>'
 	}, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',

@@ -63,6 +63,10 @@ namespace ClientDependency.Core.Module
             _http = http;
         }
 
+        ~ResponseFilterStream()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// Determines whether the stream is captured
@@ -311,6 +315,13 @@ namespace ClientDependency.Core.Module
         {
             _stream.Close();
             _cacheStream.Close();
+        }
+
+        public new void Dispose()
+        {
+            base.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected override void Dispose(bool disposing)

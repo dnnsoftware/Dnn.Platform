@@ -57,10 +57,12 @@ namespace Dnn.Module.ModuleCreator
             if (File.Exists(readMePath))
             {
                 var readMe = Null.NullString;
-                TextReader tr = new StreamReader(readMePath);
-                readMe = tr.ReadToEnd();
-                tr.Close();
-                lblDescription.Text = readMe.Replace("\n", "<br/>");
+                using (TextReader tr = new StreamReader(readMePath))
+                {
+                    readMe = tr.ReadToEnd();
+                    tr.Close();
+                    lblDescription.Text = readMe.Replace("\n", "<br/>");
+                }
             }
             else
             {
@@ -133,9 +135,11 @@ namespace Dnn.Module.ModuleCreator
                 modulePath = Server.MapPath("DesktopModules/" + GetFolderName() + "/");
 
                 //open file
-                TextReader tr = new StreamReader(filePath);
-                sourceCode = tr.ReadToEnd();
-                tr.Close();
+                using (TextReader tr = new StreamReader(filePath))
+                {
+                    sourceCode = tr.ReadToEnd();
+                    tr.Close();
+                }
 
                 //replace tokens
                 sourceCode = sourceCode.Replace("_OWNER_", GetOwner());
@@ -191,9 +195,11 @@ namespace Dnn.Module.ModuleCreator
                 if (!File.Exists(modulePath + fileName))
                 {
                     //create file
-                    TextWriter tw = new StreamWriter(modulePath + fileName);
-                    tw.WriteLine(sourceCode);
-                    tw.Close();
+                    using (TextWriter tw = new StreamWriter(modulePath + fileName))
+                    {
+                        tw.WriteLine(sourceCode);
+                        tw.Close();
+                    }
 
                     EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
@@ -347,7 +353,10 @@ namespace Dnn.Module.ModuleCreator
                         objModule.ModuleTitle = txtModule.Text;
 
                         //HACK - need core enhancement to be able to update ModuleDefID
-                        DotNetNuke.Data.DataProvider.Instance().ExecuteSQL("Update dbo.Modules set ModuleDefID = " + objModule.ModuleDefID.ToString() + " where ModuleID = " + ModuleId.ToString());
+                        using (DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(
+                            "UPDATE {databaseOwner}{objectQualifier}Modules SET ModuleDefID=" + objModule.ModuleDefID + " WHERE ModuleID=" + ModuleId))
+                        {
+                        }
 
                         ModuleController.Instance.UpdateModule(objModule);
 

@@ -118,5 +118,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 ViewEngineCollection = ViewEngineCollection
             };
         }
+
+        public ViewEngineCollection ViewEngineCollectionEx { get; set; }
     }
 }
