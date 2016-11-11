@@ -41,8 +41,11 @@ window.dnn.pages = window.dnn.pages || {};
 
             this._selectPageInHierarchyHandler = $.proxy(this._selectPageInHierarchy, this);
 
-            $(window).resize(function() {
-                handler._resizeContentContainer(true);
+            $(window).resize(function onResizeWindow() {
+                var RESIZE_CONTAINER_DELAY = 400;
+                setTimeout(function onResizeContainer() {
+                    handler._resizeContentContainer(true);
+                }, RESIZE_CONTAINER_DELAY);
             });
 
             $('#showsite, .btn_panel').click($.proxy(this._leavePanelClickHandler, this));
