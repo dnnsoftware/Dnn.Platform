@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
@@ -81,10 +82,13 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
             UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
             PackageIcon = ExtensionsController.GetPackageIcon(package);
-            CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
+            CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
-            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-            ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+            if (package.PackageID != Null.NullInteger)
+            {
+                var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
+                ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+            }
         }
     }
 }

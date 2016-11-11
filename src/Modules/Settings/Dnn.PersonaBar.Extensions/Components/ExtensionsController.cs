@@ -23,9 +23,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -33,7 +35,9 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade;
+using DotNetNuke.Services.Upgrade.Internals;
 
 #endregion
 
@@ -41,6 +45,8 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     public class ExtensionsController
     {
+        private const string OwnerUpdateService = "DotNetNuke Update Service";
+
         public IDictionary<string, PackageType> GetPackageTypes()
         {
             IDictionary<string, PackageType> installedPackageTypes = new Dictionary<string, PackageType>();
@@ -69,6 +75,9 @@ namespace Dnn.PersonaBar.Extensions.Components
                     type = PackageTypes.Language.ToString();
                     rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
                     break;
+                case "corelanguagepack":
+                    rootPath = Globals.ApplicationMapPath + "\\Install\\Language";
+                    return true; //core languages should always marked as have available packages.
                 case "module":
                 case "skin":
                 case "container":
@@ -137,6 +146,11 @@ namespace Dnn.PersonaBar.Extensions.Components
                     }
                 }
 
+                if (packageType.ToLowerInvariant() == "corelanguagepack")
+                {
+                    GetAvaialableLanguagePacks(validpackages);
+                }
+
                 packages.Add(new AvailablePackagesDto()
                 {
                     PackageType = packageType,
@@ -145,6 +159,81 @@ namespace Dnn.PersonaBar.Extensions.Components
                 });
             }
             return packages;
+        }
+
+        private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
+        {
+            try
+            {
+                StreamReader myResponseReader = UpdateService.GetLanguageList();
+                var xmlDoc = new XmlDocument();
+                xmlDoc.Load(myResponseReader);
+                XmlNodeList languages = xmlDoc.SelectNodes("available/language");
+
+                if (languages != null)
+                {
+                    var installedPackages = PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "CoreLanguagePack");
+                    var installedLanguages = installedPackages.Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID)).ToList();
+                    foreach (XmlNode language in languages)
+                    {
+                        string cultureCode = "";
+                        string version = "";
+                        foreach (XmlNode child in language.ChildNodes)
+                        {
+                            if (child.Name == "culturecode")
+                            {
+                                cultureCode = child.InnerText;
+                            }
+
+                            if (child.Name == "version")
+                            {
+                                version = child.InnerText;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(cultureCode) && !string.IsNullOrEmpty(version) && version.Length == 6)
+                        {
+                            var myCIintl = new CultureInfo(cultureCode, true);
+                            version = version.Insert(4, ".").Insert(2, ".");
+                            var package = new PackageInfo { Owner = OwnerUpdateService, Name = "LanguagePack-" + myCIintl.Name, FriendlyName = myCIintl.NativeName };
+                            package.Name = myCIintl.NativeName;
+                            package.PackageType = "CoreLanguagePack";
+                            package.Description = cultureCode;
+                            Version ver = null;
+                            Version.TryParse(version, out ver);
+                            package.Version = ver;
+
+                            if (
+                                installedLanguages.Any(
+                                    l =>
+                                    LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
+                                    && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
+                            {
+                                continue;
+                            }
+
+                            if (validPackages.Values.Any(p => p.Name == package.Name))
+                            {
+                                var existPackage = validPackages.Values.First(p => p.Name == package.Name);
+                                if (package.Version > existPackage.Version)
+                                {
+                                    validPackages.Values.Remove(existPackage);
+                                    validPackages.Add(cultureCode, package);
+                                }
+                            }
+                            else
+                            {
+                                validPackages.Add(cultureCode, package);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                //suppress for now - need to decide what to do when webservice is unreachable
+                //throw;
+                //same problem happens in InstallWizard.aspx.cs in BindLanguageList method
+            }
         }
 
         public List<TabInfo> GetPackageUsage(int portalId, int packageId)
@@ -204,6 +293,11 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         internal static string IsPackageInUse(PackageInfo packageInfo, int portalId)
         {
+            if (packageInfo.PackageID == Null.NullInteger)
+            {
+                return string.Empty;
+            }
+
             if ((packageInfo.PackageType.ToUpper() == "MODULE"))
             {
                 if (portalId == Null.NullInteger)
