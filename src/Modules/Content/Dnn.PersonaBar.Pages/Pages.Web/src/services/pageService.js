@@ -21,6 +21,11 @@ const PageService = function () {
         return api.post("SavePageDetails", toBackEndPage(page));
     };
 
+    const addPages = function (bulkPage) {
+        const api = getApi();
+        return api.post("SaveBulkPages", bulkPage);
+    };
+
     const deletePageModule = function (module) {
         const api = getApi();
         return api.post("DeletePageModule", module);
@@ -104,6 +109,7 @@ const PageService = function () {
     return {
         getPage,
         savePage,
+        addPages,
         getNewPage,
         getCacheProviderList,
         deletePageModule,

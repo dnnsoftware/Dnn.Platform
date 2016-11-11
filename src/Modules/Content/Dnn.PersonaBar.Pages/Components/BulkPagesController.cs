@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
         private static PortalSettings PortalSettings => PortalSettings.Current;
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "Pages.resx");
+        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources/Pages.resx");
         private const string DefaultPageTemplate = "Default.page.template";
 
         public BulkPageResponse AddBulkPages(BulkPage page)

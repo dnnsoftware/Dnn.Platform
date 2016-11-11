@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         #region Properties
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "Pages.resx");
+        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources/Pages.resx");
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
 

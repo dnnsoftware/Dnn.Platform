@@ -53,10 +53,6 @@ class App extends Component {
         props.onAddPage();
     }
 
-    onSavePages() {
-
-    }
-
     onCancelSettings() {
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
@@ -133,7 +129,7 @@ class App extends Component {
                         <AddPages  
                             bulkPage={props.bulkPage}
                             onCancel={this.onCancelAddPages.bind(this)} 
-                            onSave={this.onSavePages.bind(this)}
+                            onSave={props.onSaveMultiplePages}
                             onChangeField={props.onChangeAddMultiplePagesField} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
@@ -175,6 +171,7 @@ App.propTypes = {
     onLoadPage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
+    onSaveMultiplePages: PropTypes.func.isRequired,
     onLoadAddMultiplePages: PropTypes.func.isRequired,
     onChangeAddMultiplePagesField: PropTypes.func.isRequired,
     onChangePageField: PropTypes.func.isRequired,
@@ -204,6 +201,7 @@ function mapDispatchToProps(dispatch) {
         onSavePage: PageActions.savePage,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
+        onSaveMultiplePages: AddPagesActions.addPages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
         onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,
         onChangeAddMultiplePagesField: AddPagesActions.changeAddMultiplePagesField, 

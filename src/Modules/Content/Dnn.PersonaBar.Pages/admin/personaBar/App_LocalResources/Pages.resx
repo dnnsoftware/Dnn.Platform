@@ -504,4 +504,19 @@
   <data name="TabRecycled.Text" xml:space="preserve">
     <value>A page with this name exists in the Recycle Bin.  To restore this page use the Recycle Bin.</value>
   </data>
+  <data name="BulkPagesLabel.Text" xml:space="preserve">
+    <value>One page per line, prepended with "&gt;" to create hierarchy</value>
+  </data>
+  <data name="BulkPageResponseTotalMessage.Text" xml:space="preserve">
+    <value>[PAGES_CREATED] of [PAGES_TOTAL] pages were created.</value>
+  </data>
+  <data name="System.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="EmptyTabName.Text" xml:space="preserve">
+    <value>Tab Name is Empty</value>
+  </data>
+  <data name="InvalidTabName.Text" xml:space="preserve">
+    <value>{0} is an invalid Page Title.</value>
+  </data>
 </root>
