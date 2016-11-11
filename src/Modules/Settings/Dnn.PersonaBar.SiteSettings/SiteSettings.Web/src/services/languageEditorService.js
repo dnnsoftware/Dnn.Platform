@@ -43,7 +43,7 @@ class ApplicationService {
 
     getLocalizationProgress(callback) {
         const sf = this.getServiceFramework("Languages");
-        sf.get("GetLocalizationProgress", {}, callback);
+        sf.getsilence("GetLocalizationProgress", {}, callback);
     }
 }
 const applicationService = new ApplicationService();
