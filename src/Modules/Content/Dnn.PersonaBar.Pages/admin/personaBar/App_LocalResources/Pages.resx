@@ -585,4 +585,7 @@
   <data name="CannotCopyPermissionsToDescendantPages.Text" xml:space="preserve">
     <value>You do not have permission to copy permissions to descendant pages</value>
   </data>
+  <data name="SaveAsTemplate.Text" xml:space="preserve">
+    <value>Save as Template</value>
+  </data>
 </root>

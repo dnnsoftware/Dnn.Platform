@@ -53,6 +53,10 @@ class App extends Component {
         props.onAddPage();
     }
 
+    onSaveAsTemplate() {
+
+    }
+
     onCancelSettings() {
         if (this.props.selectedPageDirty) {
             this.showCancelWithoutSavingDialog();
@@ -79,9 +83,14 @@ class App extends Component {
         this.props.onLoadAddMultiplePages();
     }
 
+    isNewPage() {
+        const {selectedPage} = this.props;
+        return selectedPage.tabId === 0;
+    }
+
     getPageTitle() {
         const {selectedPage} = this.props;
-        return selectedPage.tabId === 0 ? 
+        return this.isNewPage() ? 
                 Localization.get("AddPage") : 
                 Localization.get("PageSettings") + ": " + selectedPage.name;
     }
@@ -94,6 +103,8 @@ class App extends Component {
         
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
+                        {!this.isNewPage() && 
+                            <Button type="secondary" size="large" onClick={this.onSaveAsTemplate.bind(this)}>{Localization.get("SaveAsTemplate") }</Button> }
                     </SocialPanelHeader>
                     <SocialPanelBody
                         workSpaceTrayOutside={true}
