@@ -175,8 +175,9 @@ class LanguagesPanel extends Component {
                         icon={item.Icon}
                         enabled={item.Enabled}
                         localizablePages={item.LocalizablePages}
-                        translatedStatus={item.TranslatedStatus}
+                        translatedPages={item.TranslatedPages}
                         active={item.Active}
+                        isLocalized={item.IsLocalized}
                         contentLocalizationEnabled={this.props.contentLocalizationEnabled}
                         isDefault={item.IsDefault}
                         index={index}

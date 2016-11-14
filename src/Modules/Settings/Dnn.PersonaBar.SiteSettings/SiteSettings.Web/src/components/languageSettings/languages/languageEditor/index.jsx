@@ -84,7 +84,7 @@ class LanguageEditor extends Component {
                 options.unshift({ label: state.languageDetail.EnglishName, value: state.languageDetail.Code });
             }
         }
-        return options.sort(function(a, b) {
+        return options.sort(function (a, b) {
             let nameA = a.label.toUpperCase();
             let nameB = b.label.toUpperCase();
             if (nameA < nameB) {
@@ -301,6 +301,21 @@ class LanguageEditor extends Component {
                         labelType="inline"
                         label={resx.get("DefaultLanguage")}
                         />
+                </InputGroup>
+            }
+            {state.languageDetail.Enabled &&
+                <InputGroup>
+                    <div className="languageDetailSettings-row_switch">
+                        <Label
+                            labelType="inline"
+                            label={resx.get("publishLanguageLabel")}
+                            />
+                        <Switch
+                            labelHidden={true}
+                            value={state.languageDetail.Active}
+                            onChange={this.onSettingChange.bind(this, "Active")}
+                            />
+                    </div>
                 </InputGroup>
             }
         </div>;
