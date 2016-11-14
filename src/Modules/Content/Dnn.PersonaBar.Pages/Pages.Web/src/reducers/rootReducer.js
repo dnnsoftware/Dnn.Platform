@@ -7,6 +7,7 @@ import theme from "./themeReducer";
 import pageHierarchy from "./pageHierarchyReducer";
 import errors from "./errorsReducer";
 import pageSeo from "./pageSeoReducer";
+import extensions from "./extensionsReducer";
 
 const rootReducer = combineReducers({
     pagination,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     theme,
     pageHierarchy,
     errors,
-    pageSeo
+    pageSeo,
+    extensions
 });
 
 export default rootReducer;

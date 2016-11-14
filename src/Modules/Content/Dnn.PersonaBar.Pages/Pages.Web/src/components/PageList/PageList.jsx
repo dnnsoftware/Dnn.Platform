@@ -17,8 +17,9 @@ class PageList extends Component {
         return (
             <SocialPanelBody className={styles.pageListBody}>                  
                 <div className="search-container">      
-                    <GridCell columnSize={65} >
-                        <div>&nbsp; </div></GridCell>
+                    <GridCell columnSize={65}>
+                        <div>{this.props.toolbarComponents}</div>
+                    </GridCell>
                     <GridCell columnSize={35} >
                         <div className="search-filter">                                
                             <SearchBox placeholder={Localization.get("Search")} 
@@ -44,7 +45,8 @@ PageList.propTypes = {
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
     createdPage: PropTypes.object,
-    createdPages: PropTypes.array
+    createdPages: PropTypes.array,
+    toolbarComponents: PropTypes.array
 };
 
 function mapStateToProps(state) {
@@ -52,7 +54,8 @@ function mapStateToProps(state) {
         searchKeyword: state.pageHierarchy.searchKeyword,
         itemTemplate: state.pageHierarchy.itemTemplate,
         createdPage: state.pageHierarchy.createdPage,
-        createdPages: state.addPages.createdPages
+        createdPages: state.addPages.createdPages,
+        toolbarComponents: state.extensions.toolbarComponents
     };
 }
 

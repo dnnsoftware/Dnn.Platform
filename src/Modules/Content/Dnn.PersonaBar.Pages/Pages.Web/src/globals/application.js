@@ -1,5 +1,6 @@
 import utilities from "../utils";
-import { pageHierarchyActions as PageHierarchyActions } from "../actions";
+import PageHierarchyActions from "../actions/pageHierarchyActions";
+import ExtensionsActions from "../actions/extensionsActions";
 const pageDetailsFooterComponents = [];
 
 const application = {
@@ -21,6 +22,9 @@ const application = {
     },
     setItemTemplate(template) {
         application.dispatch(PageHierarchyActions.setItemTemplate(template));
+    },
+    registerToolbarComponent(component) {        
+        application.dispatch(ExtensionsActions.registerToolbarComponent(component));
     },
     registerPageDetailFooterComponent(component) {
         pageDetailsFooterComponents.push(component);
