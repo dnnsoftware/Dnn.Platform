@@ -72,15 +72,15 @@ export class Body extends Component {
                     resx.get("TabLanguage"),
                     resx.get("TabSearch")]}
                     type="primary">
-                    <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
-                    {this.renderSiteBehaviorTab()}
-                    <LanguageSettings
+                    {this.props.showing && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>}
+                    {this.props.showing && this.renderSiteBehaviorTab()}
+                    {this.props.showing && <LanguageSettings
                         portalId={this.props.portalId}
                         openLanguageVerifier={this.props.openLanguageVerifier}
                         openLanguagePack={this.props.openLanguagePack}
                         openLocalizedContent={this.props.openLocalizedContent}
                         cultureCode={this.props.cultureCode}
-                        />
+                        />}
                     <Tabs onSelect={this.handleSelect.bind(this)}
                         tabHeaders={[resx.get("TabBasicSettings"),
                         resx.get("TabSynonyms"),
@@ -104,7 +104,8 @@ Body.propTypes = {
     openHtmlEditorManager: PropTypes.func,
     openLanguageVerifier: PropTypes.func,
     openLanguagePack: PropTypes.func,
-    openLocalizedContent: PropTypes.func
+    openLocalizedContent: PropTypes.func,
+    showing: PropTypes.bool
 };
 
 function mapStateToProps(state) {

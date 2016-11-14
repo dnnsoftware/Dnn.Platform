@@ -29,7 +29,25 @@ class ListView extends Component {
             });
     }
     onSetting(portal /*, index*/) {
-        alert("Not yet implemented!");
+        let event = document.createEvent("Event");
+
+        event.initEvent("portalIdChanged", true, true);
+
+        event.portalId = portal.PortalID;
+        document.dispatchEvent(event);
+
+        utilities.loadPanel("SiteSettings", {
+            identifier: "SiteSettings",
+            moduleName: "SiteSettings",
+            path: "SiteSettings",
+            query: "",
+            settings: {
+                isHost: true,
+                PortalID: portal.PortalID
+            }
+        });
+        
+        document.dispatchEvent(event);
     }
     onPreview(portal /*, index*/) {
         if (portal.PortalAliases && portal.PortalAliases.length > 0) {

@@ -105,7 +105,7 @@ class EditLanguagePanel extends Component {
                     NewValue: props.translations[key].First
                 };
             })
-        }
+        };
 
         props.dispatch(LanguageEditorActions.saveTranslations(payload, (data)=>{
             utilities.utilities.notify(data.Message);

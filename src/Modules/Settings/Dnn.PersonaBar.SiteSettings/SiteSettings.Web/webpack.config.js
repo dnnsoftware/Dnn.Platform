@@ -19,7 +19,7 @@ module.exports = {
     output: {
         path: "../admin/personaBar/scripts/bundles/",
         filename: "site-settings-bundle.js",
-        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
+        publicPath: isProduction ? "" : "http://localhost:8085/dist/"
     },
 
     module: {

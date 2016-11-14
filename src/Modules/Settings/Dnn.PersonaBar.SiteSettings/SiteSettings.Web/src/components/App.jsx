@@ -12,6 +12,7 @@ import LanguageVerifier from "./languageSettings/languageVerifier";
 import LanguagePack from "./languageSettings/languagePack";
 import LocalizedContent from "./languageSettings/localizedContent";
 import EditLanguagePanel from "./editLanguagePanel";
+import utilities from "utils";
 import resx from "../resources";
 require('es6-object-assign').polyfill();
 require('array.prototype.find').shim();
@@ -27,6 +28,33 @@ const Pages = {
 };
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            portalId: utilities.settings.PortalID,
+            bodyShowing: true
+        };
+        this.changePortalId = this.changePortalId.bind(this);
+    }
+    changePortalId(portalId) {
+        this.setState({
+            bodyShowing: false
+        }, () => {
+            this.setState({
+                bodyShowing: true,
+                portalId
+            });
+        });
+    }
+
+    componentWillMount() {
+        // // Listen for the event.
+        document.addEventListener('portalIdChanged', (e) => {
+            if (this.state.portalId !== e.portalId) {
+                this.changePortalId(e.portalId);
+            }
+        }, false);
+    }
 
     openPersonaBarPage(pageNumber) {
         const {props} = this;
@@ -39,14 +67,15 @@ class App extends Component {
     }
 
     render() {
-        const {props} = this;
+        const {props, state} = this;
         return (
             <div className="siteSettings-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
                     </SocialPanelHeader>
                     <Body
-                        portalId={props.portalId}
+                        portalId={state.portalId}
+                        showing={state.bodyShowing}
                         openLanguagePack={this.openPersonaBarPage.bind(this, Pages.LanguagePack)}
                         openLanguageVerifier={this.openPersonaBarPage.bind(this, Pages.LanguageVerifier)}
                         openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager)}
@@ -73,8 +102,8 @@ class App extends Component {
                     <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LocalizedContent}>
-                    <SocialPanelHeader title={resx.get("EnableLocalizedContent") }/>
-                    {props.selectedPage === Pages.LocalizedContent && <LocalizedContent closePersonaBarPage={this.closePersonaBarPage.bind(this) } />}
+                    <SocialPanelHeader title={resx.get("EnableLocalizedContent")} />
+                    {props.selectedPage === Pages.LocalizedContent && <LocalizedContent closePersonaBarPage={this.closePersonaBarPage.bind(this)} />}
                 </PersonaBarPage>
             </div>
         );

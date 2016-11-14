@@ -27,7 +27,8 @@ class ResourceList extends Component {
     constructor() {
         super();
         this.state = {
-            resources: []
+            resources: [],
+            searchText: ""
         };
     }
     componentWillMount() {
@@ -37,27 +38,39 @@ class ResourceList extends Component {
     }
     onChange(key, keyToChange, event) {
         let value = typeof (event) === "object" ? event.target.value : event;
-        console.log(arguments);
         let resources = utilities.utilities.getObjectCopy(this.props.list);
-        console.log(resources);
         resources[key][keyToChange] = value;
 
         this.props.onResxChange(resources);
     }
+    filterListFromSearchText(list){
+        return list.filter((key)=>{
+            return key.toLowerCase().indexOf(this.state.searchText.toLowerCase()) > -1;
+        });
+    }
+    onSearch(searchText){
+        this.setState({
+            searchText
+        });
+    }
     /* eslint-disable react/no-danger */
     render() {
         const { props } = this;
+        const pendingTranslations = Object.keys(this.props.list).filter((key)=>{
+            return this.props.list[key].First === this.props.list[key].Second;
+        });
+        const searchedList = this.filterListFromSearchText(Object.keys(this.props.list));
         return (
             <GridCell className="resource-list">
                 <GridCell className="resource-controls">
                     <GridCell columnSize={33}>
-                        <p className="pending-translations">[Pending Translations: 35]</p>
+                        <p className="pending-translations">[Pending Translations: {pendingTranslations.length}]</p>
                     </GridCell>
                     <GridCell columnSize={33}>
-                        <p className="clear-pending-translations">[Clear Pending Translations]</p>
+                        
                     </GridCell>
                     <GridCell columnSize={33} className="search-box-container">
-                        <SearchBox style={searchBoxStyle} iconStyle={searchIconStyle} />
+                        <SearchBox style={searchBoxStyle} iconStyle={searchIconStyle} onSearch={this.onSearch.bind(this)}/>
                     </GridCell>
                 </GridCell>
                 <GridCell className="row-headers">
@@ -72,7 +85,7 @@ class ResourceList extends Component {
                     </GridCell>
                 </GridCell>
                 <GridCell className="resource-rows">
-                    {Object.keys(this.props.list).map((key, index) => {
+                    {searchedList.map((key, index) => {
                         const shouldBeHighlighted = (props.highlightPendingTranslations && this.props.list[key].First === this.props.list[key].Second);
                         return <GridCell className="resource-row">
                             <GridCell className="row-detail" columnSize={rowSizes[0]}>
@@ -93,6 +106,7 @@ class ResourceList extends Component {
 }
 
 ResourceList.propTypes = {
-    list: PropTypes.array
+    list: PropTypes.array,
+    onResxChange: PropTypes.func
 };
 export default ResourceList;

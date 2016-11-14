@@ -32,12 +32,12 @@ class BasicSettingsPanelBody extends Component {
 
     componentWillMount() {
         const {state, props} = this;
-        if (props.basicSettings) {
-            this.setState({
-                basicSettings: props.basicSettings
-            });
-            return;
-        }
+        // if (props.basicSettings) {
+        //     this.setState({
+        //         basicSettings: props.basicSettings
+        //     });
+        //     return;
+        // }
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 basicSettings: Object.assign({}, data.Settings)
