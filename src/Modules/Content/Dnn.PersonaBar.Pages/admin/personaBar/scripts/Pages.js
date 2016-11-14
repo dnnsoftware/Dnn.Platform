@@ -21,7 +21,8 @@
                 utilities: util,
                 moduleName: "Pages",
                 config: config,
-                viewName: (params && params.viewName) ? params.viewName : null
+                viewName: (params && params.viewName) ? params.viewName : null,
+                settings: params.settings
             };
         };
 
