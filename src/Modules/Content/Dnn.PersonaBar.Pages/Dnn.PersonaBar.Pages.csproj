@@ -110,6 +110,7 @@
     <Compile Include="Components\Exceptions\PageNotFoundException.cs" />
     <Compile Include="Components\IPageUrlsController.cs" />
     <Compile Include="Components\PageManagementController.cs" />
+    <Compile Include="Components\PagesControllerImpl.cs" />
     <Compile Include="Components\PagesController.cs" />
     <Compile Include="Components\Exceptions\PageValidationException.cs" />
     <Compile Include="Components\PageUrlsController.cs" />
