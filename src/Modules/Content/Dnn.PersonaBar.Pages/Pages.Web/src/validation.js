@@ -5,7 +5,7 @@ export default function validateFields(field, value) {
 
     if (field === "name") {
         if (!value) {
-            errors[field] = Localization.get("NotEmptyNameError.Text");
+            errors[field] = Localization.get("NotEmptyNameError");
         }
         else {
             errors[field] = undefined;
