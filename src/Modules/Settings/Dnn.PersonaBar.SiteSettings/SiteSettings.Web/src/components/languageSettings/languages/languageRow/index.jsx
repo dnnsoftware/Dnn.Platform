@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon } from "dnn-svg-icons";
 
 class LanguageRow extends Component {
     componentWillMount() {
@@ -104,6 +104,20 @@ class LanguageRow extends Component {
         return name;
     }
 
+    getPageEditorBtnClassName() {
+        const {props, state} = this;
+        let name = "page-editor-icon";
+        if (this.props.openId !== "" && this.props.id === this.props.openId) {
+            if (props.openId !== "add") {
+                name = "page-editor-icon";
+            }
+            else {
+                name = "page-editor-icon-hidden";
+            }
+        }
+        return name;
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -119,6 +133,9 @@ class LanguageRow extends Component {
                             {this.getBooleanDisplay(props.enabled)}
                         </div>
                         <div className="language-item item-row-actionButtons">
+                            {props.contentLocalizationEnabled &&
+                                <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onLocalizePages.bind(this)}></div>
+                            }
                             <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor.bind(this)}></div>
                             {!props.isDefault &&
                                 <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
@@ -139,12 +156,14 @@ LanguageRow.propTypes = {
     code: PropTypes.string,
     icon: PropTypes.string,
     enabled: PropTypes.bool,
+    contentLocalizationEnabled: PropTypes.bool,
     isDefault: PropTypes.bool,
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    onOpenEditor: PropTypes.func
+    onOpenEditor: PropTypes.func,
+    onLocalizePages: PropTypes.func
 };
 
 LanguageRow.defaultProps = {

@@ -59,18 +59,20 @@ class LanguagePackPanelBody extends Component {
     }
 
     renderModuleSelection() {
-        const {props, state} = this;
-        return props.modules.map((item, index) => {
-            return (
-                <div className="languagePack-module">
-                    <Checkbox
-                        style={{ float: "left" }}
-                        value={this.isModuleSelected(item.Value)}
-                        onChange={this.onModuleSelectionChange.bind(this, item.Value)} />
-                    <div>{item.Key}</div>
-                </div>
-            );
-        });
+        const {props} = this;
+        if (props.modules) {
+            return props.modules.map((item) => {
+                return (
+                    <div className="languagePack-module">
+                        <Checkbox
+                            style={{ float: "left" }}
+                            value={this.isModuleSelected(item.Value)}
+                            onChange={this.onModuleSelectionChange.bind(this, item.Value)} />
+                        <div>{item.Key}</div>
+                    </div>
+                );
+            });
+        }
     }
 
     isModuleSelected(id) {
@@ -162,11 +164,7 @@ class LanguagePackPanelBody extends Component {
         }
 
         props.dispatch(LanguagesActions.createLanguagePack(state.languagePack, (data) => {
-            //util.utilities.notify(data.Message);
-            this.setState({
-                showMessageBox: true,
-                message: data.Message
-            });
+            util.utilities.notify(data.Message);
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
             util.utilities.notifyError(errorMessage.Message);

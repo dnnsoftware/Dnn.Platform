@@ -148,6 +148,10 @@ class LanguagesPanel extends Component {
         this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
     }
 
+    onLocalizePages(language) {
+        //
+    }
+
     /* eslint-disable react/no-danger */
     renderedLanguages() {
         let i = 0;
@@ -161,6 +165,7 @@ class LanguagesPanel extends Component {
                         code={item.Code}
                         icon={item.Icon}
                         enabled={item.Enabled}
+                        contentLocalizationEnabled={this.props.contentLocalizationEnabled}
                         isDefault={item.IsDefault}
                         index={index}
                         key={"languageItem-" + index}
@@ -168,6 +173,7 @@ class LanguagesPanel extends Component {
                         openId={this.state.openId}
                         OpenCollapse={this.toggle.bind(this)}
                         onOpenEditor={this.onOpenEditor.bind(this, item)}
+                        onLocalizePages={this.onLocalizePages.bind(this, item)}
                         Collapse={this.collapse.bind(this)}
                         id={id}>
                         <LanguageEditor
@@ -209,6 +215,7 @@ class LanguagesPanel extends Component {
                                 name={"-"}
                                 code={""}
                                 enabled={false}
+                                contentLocalizationEnabled={this.props.contentLocalizationEnabled}
                                 isDefault={false}
                                 index={"add"}
                                 key={"languageItem-add"}
@@ -216,6 +223,7 @@ class LanguagesPanel extends Component {
                                 openId={this.state.openId}
                                 OpenCollapse={this.toggle.bind(this)}
                                 onOpenEditor={this.onOpenEditor.bind(this)}
+                                onLocalizePages={this.onLocalizePages.bind(this)}
                                 Collapse={this.collapse.bind(this)}
                                 id={"add"}>
                                 <LanguageEditor
@@ -245,7 +253,8 @@ LanguagesPanel.propTypes = {
     portalId: PropTypes.number,
     cultureCode: PropTypes.string,
     languageDisplayMode: PropTypes.string,
-    languageClientModified: PropTypes.bool
+    languageClientModified: PropTypes.bool,
+    contentLocalizationEnabled: PropTypes.bool
 };
 
 function mapStateToProps(state) {
