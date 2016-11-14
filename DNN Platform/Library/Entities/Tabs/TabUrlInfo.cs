@@ -27,6 +27,9 @@ namespace DotNetNuke.Entities.Tabs
         public string QueryString { get; set; }
         public int SeqNum { get; set; }
         public int TabId { get; set; }
+        public int? CreatedByUserId { get; set; }
+        public int? LastModifiedByUserId { get; set; }
+
         public string Url { get; set; }
 
         #endregion
