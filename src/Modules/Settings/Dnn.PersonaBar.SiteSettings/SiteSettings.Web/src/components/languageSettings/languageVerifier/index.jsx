@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
+    pagination as PaginationActions,
     languages as LanguagesActions
 } from "../../../actions";
 import LanguageVerifierGrid from "./languageVerifierGrid";
@@ -17,19 +18,24 @@ class LanguageVerifierPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {props} = this;
 
-        if (props.verificationResults) {
-            this.setState({
-                verificationResults: props.verificationResults
-            });
-            return;
+    }
+
+    componentWillReceiveProps(props) {
+        let {state} = this;
+        if (props.selectedPage === 2) {
+            if (props.verificationResults) {
+                this.setState({
+                    verificationResults: props.verificationResults
+                });
+                return;
+            }
+            props.dispatch(LanguagesActions.verifyLanguageResourceFiles((data) => {
+                this.setState({
+                    verificationResults: Object.assign({}, data.Results)
+                });
+            }));
         }
-        props.dispatch(LanguagesActions.verifyLanguageResourceFiles((data) => {
-            this.setState({
-                verificationResults: Object.assign({}, data.Results)
-            });
-        }));
     }
 
     renderedResults() {
@@ -38,14 +44,14 @@ class LanguageVerifierPanelBody extends Component {
             return this.props.verificationResults.map((item, index) => {
                 return (
                     <LanguageVerifierGrid
-                        language={item.Language}      
-                        icon={item.Icon}                        
+                        language={item.Language}
+                        icon={item.Icon}
                         missingFiles={item.MissingFiles}
                         filesWithDuplicateEntries={item.FilesWithDuplicateEntries}
                         filesWithMissingEntries={item.FilesWithMissingEntries}
                         filesWithObsoleteEntries={item.FilesWithObsoleteEntries}
                         oldFiles={item.OldFiles}
-                        malformedFiles={item.MalformedFiles}>                        
+                        malformedFiles={item.MalformedFiles}>
                     </LanguageVerifierGrid>
                 );
             });
@@ -69,12 +75,14 @@ LanguageVerifierPanelBody.propTypes = {
     tabIndex: PropTypes.number,
     portalId: PropTypes.number,
     closeLanguageVerifier: PropTypes.func,
-    verificationResults: PropTypes.array
+    verificationResults: PropTypes.array,
+    selectedPage: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
+        selectedPage: state.visiblePanel.selectedPage,
         verificationResults: state.languages.verificationResults
     };
 }
