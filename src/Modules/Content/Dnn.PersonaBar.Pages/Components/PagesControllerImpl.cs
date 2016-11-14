@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -35,6 +36,8 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Personalization;
@@ -47,6 +50,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IModuleController _moduleController;
         private readonly IPageUrlsController _pageUrlsController;
         public const string PageTagsVocabulary = "PageTags";
+        private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
 
         public PagesControllerImpl()
         {
@@ -381,7 +385,12 @@ namespace Dnn.PersonaBar.Pages.Components
             tab = _tabController.GetTab(tabId, portalId);
                         
             CreateOrUpdateContentItem(tab);
-            
+
+            if (pageSettings.TemplateTabId > 0)
+            {
+                CopyContentFromSourceTab(tab, pageSettings.TemplateTabId);
+            }
+
             SaveTabUrl(tab, pageSettings);
 
             _tabController.ClearCache(portalId);
@@ -854,6 +863,109 @@ namespace Dnn.PersonaBar.Pages.Components
 
             _moduleController.DeleteTabModule(pageId, moduleId, true);
             _moduleController.ClearCache(pageId);
+        }
+
+
+        public void CopyContentFromSourceTab(TabInfo tab, int sourceTabId)
+        {
+            var sourceTab = _tabController.GetTab(sourceTabId, tab.PortalID);
+            if (sourceTab == null || sourceTab.IsDeleted)
+            {
+                return;
+            }
+            //Copy Properties
+            CopySourceTabProperties(tab, sourceTab);
+
+            //Copy Modules
+            CopyModulesFromSourceTab(tab, sourceTab);
+        }
+
+        private void CopySourceTabProperties(TabInfo tab, TabInfo sourceTab)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            tab.SkinSrc = sourceTab.SkinSrc.Equals(portalSettings.DefaultPortalSkin, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : sourceTab.SkinSrc;
+            tab.ContainerSrc = sourceTab.ContainerSrc;
+            tab.IconFile = sourceTab.IconFile;
+            tab.IconFileLarge = sourceTab.IconFileLarge;
+            tab.PageHeadText = sourceTab.PageHeadText;
+            tab.RefreshInterval = sourceTab.RefreshInterval;
+
+            _tabController.UpdateTab(tab);
+
+            //update need tab settings.
+            foreach (var key in TabSettingKeys)
+            {
+                if (sourceTab.TabSettings.ContainsKey(key))
+                {
+                    _tabController.UpdateTabSetting(tab.TabID, key, Convert.ToString(sourceTab.TabSettings[key]));
+                }
+            }
+        }
+
+        private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab)
+        {
+            foreach (var module in sourceTab.ChildModules.Values)
+            {
+                if (module.IsDeleted || module.AllTabs)
+                {
+                    continue;
+                }
+
+                var newModule = module.Clone();
+
+                newModule.TabID = tab.TabID;
+                newModule.DefaultLanguageGuid = Null.NullGuid;
+                newModule.CultureCode = tab.CultureCode;
+                newModule.VersionGuid = Guid.NewGuid();
+                newModule.LocalizedVersionGuid = Guid.NewGuid();
+
+                newModule.ModuleID = Null.NullInteger;
+                _moduleController.InitialModulePermission(newModule, newModule.TabID, 0);
+                newModule.InheritViewPermissions = module.InheritViewPermissions;
+
+                newModule.ModuleID = _moduleController.AddModule(newModule);
+
+                //Copy each setting to the new TabModule instance
+                foreach (DictionaryEntry setting in module.ModuleSettings)
+                {
+                    _moduleController.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                }
+
+                foreach (DictionaryEntry setting in module.TabModuleSettings)
+                {
+                    _moduleController.UpdateTabModuleSetting(newModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                }
+
+                //copy permissions from source module
+                foreach (ModulePermissionInfo permission in module.ModulePermissions)
+                {
+                    newModule.ModulePermissions.Add(new ModulePermissionInfo
+                    {
+                        ModuleID = newModule.ModuleID,
+                        PermissionID = permission.PermissionID,
+                        RoleID = permission.RoleID,
+                        UserID = permission.UserID,
+                        PermissionKey = permission.PermissionKey,
+                        AllowAccess = permission.AllowAccess
+                    }, true);
+                }
+
+                ModulePermissionController.SaveModulePermissions(newModule);
+
+                if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                {
+                    var moduleBizClass = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass) as IPortable;
+                    if (moduleBizClass != null)
+                    {
+                        var content = Convert.ToString(moduleBizClass.ExportModule(module.ModuleID));
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            content = XmlUtils.RemoveInvalidXmlCharacters(content);
+                            moduleBizClass.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                        }
+                    }
+                }
+            }
         }
     }
 }

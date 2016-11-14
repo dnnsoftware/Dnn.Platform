@@ -145,5 +145,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public IOrderedEnumerable<KeyValuePair<int, string>> Locales { get; set; }
         [DataMember(Name = "hasParent")]
         public bool HasParent { get; set; }
+
+        [DataMember(Name = "referenceTabId")]
+        public int TemplateTabId { get; set; }
     }
 }

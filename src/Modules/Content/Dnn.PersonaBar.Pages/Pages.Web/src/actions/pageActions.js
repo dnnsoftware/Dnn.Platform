@@ -4,6 +4,7 @@ import PagesService from "../services/pageService";
 import utils from "../utils";
 import Localization from "../localization";
 import debounce from "lodash/debounce";
+import cloneDeep from "lodash/cloneDeep";
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -42,6 +43,29 @@ const pageActions = {
                     data: {error}
                 });
             });     
+        };
+    },
+
+    duplicatePage(){
+        return (dispatch, getState) => {
+            const {pages} = getState();
+            const duplicatedPage = cloneDeep(pages.selectedPage);
+
+            dispatch({
+                type: ActionTypes.LOAD_PAGE
+            }); 
+
+            duplicatedPage.templateTabId = duplicatedPage.tabId;
+            duplicatedPage.tabId = 0;
+            duplicatedPage.name = "";
+            duplicatedPage.url = "";
+
+            dispatch({
+                type: ActionTypes.LOADED_PAGE,
+                data: {
+                    page: duplicatedPage
+                }
+            });    
         };
     },
 

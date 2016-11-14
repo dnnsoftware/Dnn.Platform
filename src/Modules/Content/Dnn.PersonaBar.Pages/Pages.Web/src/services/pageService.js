@@ -72,7 +72,8 @@ const PageService = function () {
                     permissions: permissions,
                     schedulingEnabled: false,
                     permanentRedirect: false,
-                    linkNewWindow: false
+                    linkNewWindow: false,
+                    templateTabId: null
                 };
             });
     };

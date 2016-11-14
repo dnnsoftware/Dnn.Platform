@@ -63,10 +63,6 @@ class App extends Component {
         }
     }
 
-    onCancelAddPages() {
-        this.props.onCancelAddMultiplePages();
-    }
-
     showCancelWithoutSavingDialog() {
         const onConfirm = () =>  this.props.onCancelPage();
         utils.confirm(
@@ -74,10 +70,6 @@ class App extends Component {
             Localization.get("Close"),
             Localization.get("Cancel"),
             onConfirm);
-    }
-
-    onAddMultiplePage() {
-        this.props.onLoadAddMultiplePages();
     }
 
     isNewPage() {
@@ -101,7 +93,16 @@ class App extends Component {
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
                         {!this.isNewPage() && 
-                            <Button type="secondary" size="large" onClick={props.onLoadSavePageAsTemplate}>{Localization.get("SaveAsTemplate") }</Button> }
+                            <div className="heading-buttons">
+                                <Button type="secondary" size="large" onClick={props.onLoadSavePageAsTemplate}>{Localization.get("SaveAsTemplate") }</Button>
+                                <Button 
+                                    type="secondary" 
+                                    size="large" 
+                                    onClick={props.onDuplicatePage}>
+                                    {Localization.get("DuplicatePage") }
+                                </Button>
+                            </div>
+                         }
                     </SocialPanelHeader>
                     <SocialPanelBody
                         workSpaceTrayOutside={true}
@@ -126,7 +127,7 @@ class App extends Component {
 
     getAddPages() {
         const {props} = this;
-        const backToPages = <BackTo onClick={this.onCancelAddPages.bind(this)} label={Localization.get("BackToPages")} />;
+        const backToPages = <BackTo onClick={props.onCancelAddMultiplePages} label={Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
                     <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
@@ -137,7 +138,7 @@ class App extends Component {
                         workSpaceTrayVisible={true}>
                         <AddPages  
                             bulkPage={props.bulkPage}
-                            onCancel={this.onCancelAddPages.bind(this)} 
+                            onCancel={props.onCancelAddMultiplePages} 
                             onSave={props.onSaveMultiplePages}
                             onChangeField={props.onChangeAddMultiplePagesField} />
                     </SocialPanelBody>
@@ -170,7 +171,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
                         <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage") }</Button>
-                        <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages") }</Button>
+                        <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages") }</Button>
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
@@ -213,6 +214,7 @@ App.propTypes = {
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     onLoadSavePageAsTemplate: PropTypes.func.isRequired,
     onCancelSavePageAsTemplate: PropTypes.func.isRequired,
+    onDuplicatePage: PropTypes.func.isRequired,
     error: PropTypes.object
 };
 
@@ -246,7 +248,8 @@ function mapDispatchToProps(dispatch) {
         onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages,
         onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages,
         onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,
-        onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate
+        onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate,
+        onDuplicatePage: PageActions.duplicatePage
     }, dispatch);
 }
 
