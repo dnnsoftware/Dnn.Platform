@@ -507,4 +507,7 @@
   <data name="ShowLabel.Text" xml:space="preserve">
     <value>Show: </value>
   </data>
+  <data name="DemoteToRegularUser.Text" xml:space="preserve">
+    <value>Make Regular User</value>
+  </data>
 </root>

@@ -97,7 +97,13 @@ class UserMenu extends Component {
                 break;
             case "PromoteToSuperUser":
                 if (this.props.appSettings.applicationSettings.settings.isHost){
-                    this.PromoteToSuperUser();
+                    this.updateSuperUserStatus(true);
+                }
+                this.props.onClose();
+                break;
+            case "DemoteToRegularUser":
+                if (this.props.appSettings.applicationSettings.settings.isHost){
+                    this.updateSuperUserStatus(false);
                 }
                 this.props.onClose();
                 break;
@@ -194,11 +200,14 @@ class UserMenu extends Component {
             }));
         }
     }
-    PromoteToSuperUser() {
-         if (this.props.appSettings.applicationSettings.settings.isHost && !this.state.userDetails.isSuperUser){
-            this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: true }, (data) => {
-                if (!data.Success)
+    updateSuperUserStatus(setSuperUser) {
+         if (this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, (data) => {
+                if (!data.Success){
                     utilities.notify(data.Message, 10000);
+                }else{
+                    this.reload();
+                }
             }));
          }
     }
@@ -217,8 +226,14 @@ class UserMenu extends Component {
         if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
             visibleMenus = [{ key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }].concat(visibleMenus);
         }
-        if (this.props.appSettings.applicationSettings.settings.isHost && !this.state.userDetails.isSuperUser){
-            visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
+        if(this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            if (!this.state.userDetails.isSuperUser){
+                visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
+            }
+            else if(this.state.userDetails.isSuperUser)
+            {
+                visibleMenus = [{ key:"DemoteToRegularUser", title:  Localization.get("DemoteToRegularUser"), index: 80 }].concat(visibleMenus);
+            }
         }
         if (!this.state.userDetails.needUpdatePassword && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
             visibleMenus = [{ key:"ForceChangePassword", title:  Localization.get("ForceChangePassword"), index: 40 }].concat(visibleMenus);
