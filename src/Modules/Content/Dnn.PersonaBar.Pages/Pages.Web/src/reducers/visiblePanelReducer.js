@@ -1,6 +1,7 @@
 import {
     pageActionTypes as PageActionTypes,
-    addPagesActionTypes as AddPagesActionTypes
+    addPagesActionTypes as AddPagesActionTypes,
+    templateActionTypes as TemplateActionTypes
 } from "../constants/actionTypes";
 import panels  from "../constants/panels";
 
@@ -38,6 +39,16 @@ export default function visiblePanel(state = {
         case AddPagesActionTypes.SAVED_MULTIPLE_PAGES:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
+            };
+
+        case TemplateActionTypes.LOAD_SAVE_AS_TEMPLATE:
+            return { ...state,
+                selectedPage: panels.SAVE_AS_TEMPLATE_PANEL
+            };
+
+        case TemplateActionTypes.CANCEL_SAVE_AS_TEMPLATE:
+            return { ...state,
+                selectedPage: panels.PAGE_SETTINGS_PANEL
             };
         
         default:

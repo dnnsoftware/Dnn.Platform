@@ -6,7 +6,8 @@ import SocialPanelBody from "dnn-social-panel-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     pageActions as PageActions,
-    addPagesActions as AddPagesActions
+    addPagesActions as AddPagesActions,
+    templateActions as TemplateActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -51,10 +52,6 @@ class App extends Component {
     onAddPage() {
         const {props} = this;
         props.onAddPage();
-    }
-
-    onSaveAsTemplate() {
-
     }
 
     onCancelSettings() {
@@ -104,7 +101,7 @@ class App extends Component {
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
                         {!this.isNewPage() && 
-                            <Button type="secondary" size="large" onClick={this.onSaveAsTemplate.bind(this)}>{Localization.get("SaveAsTemplate") }</Button> }
+                            <Button type="secondary" size="large" onClick={props.onLoadSavePageAsTemplate}>{Localization.get("SaveAsTemplate") }</Button> }
                     </SocialPanelHeader>
                     <SocialPanelBody
                         workSpaceTrayOutside={true}
@@ -131,7 +128,7 @@ class App extends Component {
         const {props} = this;
         const backToPages = <BackToMain onClick={this.onCancelAddPages.bind(this)}/>;
 
-        return (<PersonaBarPage isOpen={props.selectedView === 2}>
+        return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
                     <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
                     </SocialPanelHeader>
                     <SocialPanelBody
@@ -147,12 +144,28 @@ class App extends Component {
                 </PersonaBarPage>);
     }
 
+    getSaveAsTemplatePage() {
+        const {props} = this;
+        const backToPages = <BackToMain onClick={props.onCancelSavePageAsTemplate}/>;
+
+        return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
+                    <SocialPanelHeader title={Localization.get("SaveAsTemplate")}>
+                    </SocialPanelHeader>
+                    <SocialPanelBody
+                        workSpaceTrayOutside={true}
+                        workSpaceTray={backToPages}
+                        workSpaceTrayVisible={true}>
+                        Work in progress
+                    </SocialPanelBody>
+                </PersonaBarPage>);
+    }
+
     render() {
         const {props} = this;
         
         return (
             <div className="pages-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={props.selectedView === 0}>
+                <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
                         <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage") }</Button>
                         <Button type="secondary" size="large" onClick={this.onAddMultiplePage.bind(this)}>{Localization.get("AddMultiplePages") }</Button>
@@ -164,6 +177,9 @@ class App extends Component {
                 }
                 {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL && 
                     this.getAddPages()
+                }
+                {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL && 
+                    this.getSaveAsTemplatePage()
                 }
             </div>
         );
@@ -193,6 +209,8 @@ App.propTypes = {
     onToggleEditPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
+    onLoadSavePageAsTemplate: PropTypes.func.isRequired,
+    onCancelSavePageAsTemplate: PropTypes.func.isRequired,
     error: PropTypes.object
 };
 
@@ -224,7 +242,9 @@ function mapDispatchToProps(dispatch) {
         onDeletePageModule: PageActions.deletePageModule,
         onToggleEditPageModule: PageActions.toggleEditPageModule,
         onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages,
-        onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages
+        onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages,
+        onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,
+        onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate
     }, dispatch);
 }
 
