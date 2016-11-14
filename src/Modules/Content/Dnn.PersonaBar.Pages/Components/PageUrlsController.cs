@@ -6,6 +6,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
@@ -80,7 +81,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     //AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
                     //27139 : only show primary aliases in the tab grid (gets too confusing otherwise)
                     if (alias.IsPrimary) //alias was provided to FriendlyUrlCall, so will always get the correct canonical Url back
-                        AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings);
+                        AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings, null);
 
                     //Add url with diacritics
                     isRedirected = friendlyUrlSettings.RedirectUnfriendly;
@@ -95,7 +96,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                 path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             }
                             path = path.Replace(asciiTabPath, tab.TabPath.Replace("//", "/"));
-                            AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings);
+                            AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                         }
                     }
                     else
@@ -106,7 +107,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             if (customPath != null && string.Compare(customPath, path, StringComparison.InvariantCultureIgnoreCase) != 0)
                             {
-                                AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings);
+                                AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                             }
                         }
 
@@ -131,7 +132,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     if (alias != null)
                     {
                         var urlLocale = locales.Value.Values.FirstOrDefault(local => local.Code == alias.CultureCode);
-                        AddUrlToList(tabs, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings);
+                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                     }
                 }
                 else
@@ -140,7 +141,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId)
                         .SingleOrDefault(p => p.PortalAliasID == url.PortalAliasId);
 
-                    AddUrlToList(tabs, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings);
+                    AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                 }
             }
 
@@ -167,8 +168,14 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        private void AddUrlToList(List<Url> tabs, int id, PortalAliasInfo alias, Locale urlLocale, string path, string queryString, int statusCode, bool isSystem, FriendlyUrlSettings friendlyUrlSettings)
+        private void AddUrlToList(List<Url> tabs, int portalId, int id, PortalAliasInfo alias, Locale urlLocale, string path, string queryString, int statusCode, bool isSystem, FriendlyUrlSettings friendlyUrlSettings, int? lastModifiedByUserId)
         {
+            var userName = "";
+            if (lastModifiedByUserId.HasValue)
+            {
+                userName = UserController.Instance.GetUser(portalId, lastModifiedByUserId.Value)?.DisplayName;
+            }
+
             tabs.Add(new Url
             {
                 Id = id,
@@ -180,7 +187,8 @@ namespace Dnn.PersonaBar.Pages.Components
                                              : new KeyValuePair<int, string>(-1, ""),
                 StatusCode = StatusCodes.SingleOrDefault(kv => kv.Key == statusCode),
                 SiteAliasUsage = (int)PortalAliasUsageType.ChildPagesInherit,
-                IsSystem = isSystem
+                IsSystem = isSystem,
+                UserName = userName
             });
         }
 
