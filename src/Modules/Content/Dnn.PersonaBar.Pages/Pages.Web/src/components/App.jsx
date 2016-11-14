@@ -15,7 +15,7 @@ import Localization from "../localization";
 import PageList from "./PageList/PageList";
 import Button from "dnn-button";
 import utils from "../utils";
-import BackToMain from "./common/BackToMain/BackToMain";
+import BackTo from "./common/BackTo/BackTo";
 import panels from "../constants/panels";
 
 class App extends Component {
@@ -96,7 +96,7 @@ class App extends Component {
         const {props} = this;
         const titleSettings = this.getPageTitle();
         const cancelAction = this.onCancelSettings.bind(this);
-        const backToPages = <BackToMain onClick={cancelAction}/>;
+        const backToPages = <BackTo onClick={cancelAction} label={Localization.get("BackToPages")} />;
         
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
@@ -126,7 +126,7 @@ class App extends Component {
 
     getAddPages() {
         const {props} = this;
-        const backToPages = <BackToMain onClick={this.onCancelAddPages.bind(this)}/>;
+        const backToPages = <BackTo onClick={this.onCancelAddPages.bind(this)} label={Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
                     <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
@@ -146,14 +146,16 @@ class App extends Component {
 
     getSaveAsTemplatePage() {
         const {props} = this;
-        const backToPages = <BackToMain onClick={props.onCancelSavePageAsTemplate}/>;
+        const pageName = props.selectedPage && props.selectedPage.name;
+        const backToLabel = Localization.get("BackToPageSettings") + ": " + pageName;
+        const backToPageSettings = <BackTo onClick={props.onCancelSavePageAsTemplate} label={backToLabel} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
                     <SocialPanelHeader title={Localization.get("SaveAsTemplate")}>
                     </SocialPanelHeader>
                     <SocialPanelBody
                         workSpaceTrayOutside={true}
-                        workSpaceTray={backToPages}
+                        workSpaceTray={backToPageSettings}
                         workSpaceTrayVisible={true}>
                         Work in progress
                     </SocialPanelBody>

@@ -588,4 +588,7 @@
   <data name="SaveAsTemplate.Text" xml:space="preserve">
     <value>Save as Template</value>
   </data>
+  <data name="BackToPageSettings.Text" xml:space="preserve">
+    <value>Back to page settings</value>
+  </data>
 </root>

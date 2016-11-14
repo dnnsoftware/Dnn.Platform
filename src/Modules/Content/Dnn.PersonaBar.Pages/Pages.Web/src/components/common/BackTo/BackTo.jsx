@@ -1,18 +1,18 @@
 import React, {PropTypes} from "react";
-import Localization from "../../../localization";
 import styles from "./style.less";
 
-const BackToMain = ({onClick}) => {
+const BackToMain = ({onClick, label}) => {
     return (
         <div 
-            className={styles.backToMain} 
+            className={styles.backTo} 
             onClick={onClick}>
-            {Localization.get("BackToPages")}
+            {label}
         </div>
     );
 };
 
 BackToMain.propTypes = {
+    label: PropTypes.string.isRequired,
     onClick: PropTypes.func
 };
 
