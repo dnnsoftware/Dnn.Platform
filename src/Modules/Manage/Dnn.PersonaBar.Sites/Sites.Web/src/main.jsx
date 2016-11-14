@@ -10,7 +10,7 @@ let store = configureStore();
 application.dispatch = store.dispatch;
 
 const appContainer = document.getElementById("sites-container");
-application.init(appContainer.dataset.initCallback);
+application.init("initSites");
 render(
     <Provider store={store}>
         <App />

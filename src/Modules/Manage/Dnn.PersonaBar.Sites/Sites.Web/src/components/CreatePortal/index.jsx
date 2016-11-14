@@ -117,7 +117,7 @@ class CreatePortal extends Component {
     }
 
     resolvePasswordError(value) {
-        if (value !== this.state.newPortal.Password || value === "") {
+        if (value !== this.state.newPortal.Password || value === "" || value.length < 7) {
             return true;
         }
         return false;
