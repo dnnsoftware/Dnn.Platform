@@ -95,11 +95,51 @@ class PageSettings extends Component {
             if (selectedPage.hasChild) {
                 permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
             }
-        }
+        }        
 
         const footer = this.getPageFooter(buttons);
         const appearanceFooter = this.getPageFooter(appearanceButtons);
         const permissionFooter = this.getPageFooter(permissionsButtons);
+
+        const advancedTabs = [
+            {
+                label: Localization.get("Appearance"),
+                component: <div className="dnn-simple-tab-item">
+                                <Appearance page={selectedPage}
+                                    onChangeField={onChangeField} />
+                                {appearanceFooter}
+                            </div>
+            },
+            {
+                label: Localization.get("SEO"),
+                component: <div className="dnn-simple-tab-item">
+                                <Seo page={selectedPage}
+                                    onChangeField={onChangeField} />
+                                {footer}
+                            </div>
+            },
+            {
+                label: Localization.get("More"),
+                component: <div className="dnn-simple-tab-item">
+                                <More page={selectedPage}
+                                    onChangeField={onChangeField} />
+                                {footer}
+                            </div>
+            }
+        ];
+
+        if (isEditingExistingPage) {
+            advancedTabs.unshift({
+                label: Localization.get("Modules"),
+                component: <div className="dnn-simple-tab-item">
+                                <Modules 
+                                    modules={selectedPage.modules} 
+                                    onDeleteModule={onDeletePageModule}
+                                    onToggleEditModule={onToggleEditPageModule}
+                                    editingSettingModuleId={editingSettingModuleId} />
+                            </div>
+            });
+        }
 
         return (
             <Tabs 
@@ -125,34 +165,9 @@ class PageSettings extends Component {
                 </div>
                 <div>
                     <Tabs 
-                        tabHeaders={[Localization.get("Modules"), 
-                                     Localization.get("Appearance"), 
-                                     Localization.get("SEO"), 
-                                     Localization.get("More")]}
-                        
+                        tabHeaders={advancedTabs.map(tab => tab.label)}                        
                         type="secondary">
-                        <div className="dnn-simple-tab-item">
-                            <Modules 
-                                modules={selectedPage.modules} 
-                                onDeleteModule={onDeletePageModule}
-                                onToggleEditModule={onToggleEditPageModule}
-                                editingSettingModuleId={editingSettingModuleId} />
-                        </div>
-                        <div className="dnn-simple-tab-item">
-                            <Appearance page={selectedPage}
-                                onChangeField={onChangeField} />
-                            {appearanceFooter}
-                        </div>
-                        <div className="dnn-simple-tab-item">
-                            <Seo page={selectedPage}
-                                onChangeField={onChangeField} />
-                            {footer}
-                        </div>
-                        <div className="dnn-simple-tab-item">
-                            <More page={selectedPage}
-                                onChangeField={onChangeField} />
-                            {footer}
-                        </div>
+                        {advancedTabs.map(tab => tab.component)}
                     </Tabs>
                 </div>
             </Tabs>
