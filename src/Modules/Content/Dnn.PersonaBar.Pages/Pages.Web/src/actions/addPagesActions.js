@@ -11,10 +11,19 @@ function processResponse(response) {
         .replace("[PAGES_CREATED]", totalCreated)
         .replace("[PAGES_TOTAL]", totalCount) + "<br/><br/>";
     const errors = response.pages
-        .filter(p => p.created !== 0)
+        .filter(p => p.created !== 0 && p.errorMessage !== null)
         .map(p => "<strong>" + p.pageName + "</strong>: " + p.errorMessage + "<br/>");
 
     return mainMessage + errors;
+}
+
+function confirmSaveMultiplePages(response, dispatch) {
+    dispatch({
+        type: ActionTypes.SAVED_MULTIPLE_PAGES,
+        data: {
+            response 
+        }
+    });
 }
 
 const addPagesActions = {
@@ -41,14 +50,9 @@ const addPagesActions = {
 
                 utils.confirm(processResponse(response.Response), 
                     Localization.get("Confirm"),
-                    Localization.get("Cancel"));
+                    Localization.get("Cancel"), 
+                    () => confirmSaveMultiplePages(response.Response, dispatch));
 
-                dispatch({
-                    type: ActionTypes.SAVED_MULTIPLE_PAGES,
-                    data: {
-                        response: response.Response 
-                    }
-                });  
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_MULTIPLE_PAGES,

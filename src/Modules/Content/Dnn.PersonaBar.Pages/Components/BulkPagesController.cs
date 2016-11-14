@@ -98,13 +98,13 @@ namespace Dnn.PersonaBar.Pages.Components
             return response;
         }
 
-        private BulkPageResponseItem ToBulkPageResponseItem(TabInfo tab, string error)
+        private static BulkPageResponseItem ToBulkPageResponseItem(TabInfo tab, string error)
         {
             return new BulkPageResponseItem()
             {
                 TabId = tab.TabID,
                 ErrorMessage = error,
-                Status = error == null ? 0 : 1,
+                Status = (error == null && tab.TabID > 0) ? 0 : 1,
                 PageName = tab.TabName
             };
         }
@@ -136,7 +136,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (objRoot != null)
             {
-                tab.IsVisible = objRoot.IsVisible;
+                // TODO: To be retrieved once the parent tab  is selected?
+                //tab.IsVisible = objRoot.IsVisible;
                 tab.DisableLink = objRoot.DisableLink;
                 tab.SkinSrc = objRoot.SkinSrc;
                 tab.ContainerSrc = objRoot.ContainerSrc;
@@ -206,9 +207,10 @@ namespace Dnn.PersonaBar.Pages.Components
             //Inherit other information from Parent
             if (objRoot != null)
             {
-                tab.Terms.Clear();
-                tab.StartDate = objRoot.StartDate;
-                tab.EndDate = objRoot.EndDate;
+                // TODO: To be retrieved once the parent tab  is selected?
+                //tab.Terms.Clear();
+                //tab.StartDate = objRoot.StartDate;
+                //tab.EndDate = objRoot.EndDate;
                 tab.RefreshInterval = objRoot.RefreshInterval;
                 tab.SiteMapPriority = objRoot.SiteMapPriority;
                 tab.PageHeadText = objRoot.PageHeadText;

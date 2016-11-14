@@ -35,6 +35,11 @@ export default function visiblePanel(state = {
                 selectedPage: panels.MAIN_PANEL
             };
         
+        case AddPagesActionTypes.SAVED_MULTIPLE_PAGES:
+            return { ...state,
+                selectedPage: panels.MAIN_PANEL
+            };
+        
         default:
             return state;
     }
