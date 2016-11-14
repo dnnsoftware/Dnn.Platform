@@ -1110,4 +1110,13 @@
   <data name="DisableLocalizedContent.Text" xml:space="preserve">
     <value>Disable Localized Content</value>
   </data>
+  <data name="Active.Header" xml:space="preserve">
+    <value>ACTIVE</value>
+  </data>
+  <data name="Pages.Header" xml:space="preserve">
+    <value>PAGES</value>
+  </data>
+  <data name="Translated.Header" xml:space="preserve">
+    <value>TRANSLATED</value>
+  </data>
 </root>

@@ -122,31 +122,64 @@ class LanguageRow extends Component {
     render() {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
-        return (
-            <div className={"collapsible-component-language"}>
-                <div className={"collapsible-header-language " + !opened} >
-                    <div className={"row"}>
-                        <div className="language-item item-row-name">
-                            {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
-                        </div>
-                        <div className="language-item item-row-enabled">
-                            {this.getBooleanDisplay(props.enabled)}
-                        </div>
-                        <div className="language-item item-row-actionButtons">
-                            {props.contentLocalizationEnabled &&
+        if (props.contentLocalizationEnabled) {
+            return (
+                <div className={"collapsible-component-language"}>
+                    <div className={"collapsible-header-language " + !opened} >
+                        <div className={"row"}>
+                            <div className="language-item item-row-name-adv">
+                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
+                            </div>
+                            <div className="language-item item-row-pages">
+                                {props.localizablePages}&nbsp;
+                            </div>
+                            <div className="language-item item-row-translated">
+                                {props.translatedStatus}&nbsp;
+                            </div>
+                            <div className="language-item item-row-active">
+                                {this.getBooleanDisplay(props.active)}
+                            </div>
+                            <div className="language-item item-row-enabled-adv">
+                                {this.getBooleanDisplay(props.enabled)}
+                            </div>
+                            <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
                                 <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onLocalizePages.bind(this)}></div>
-                            }
-                            <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor.bind(this)}></div>
-                            {!props.isDefault &&
-                                <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
-                            }
-                            <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
+                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor.bind(this)}></div>
+                                {!props.isDefault &&
+                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
+                                }
+                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
+                            </div>
                         </div>
                     </div>
+                    <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
                 </div>
-                <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
-            </div>
-        );
+            );
+        }
+        else {
+            return (
+                <div className={"collapsible-component-language"}>
+                    <div className={"collapsible-header-language " + !opened} >
+                        <div className={"row"}>
+                            <div className="language-item item-row-name">
+                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
+                            </div>
+                            <div className="language-item item-row-enabled">
+                                {this.getBooleanDisplay(props.enabled)}
+                            </div>
+                            <div className="language-item item-row-actionButtons">
+                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor.bind(this)}></div>
+                                {!props.isDefault &&
+                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
+                                }
+                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
+                            </div>
+                        </div>
+                    </div>
+                    <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                </div>
+            );
+        }
     }
 }
 
@@ -156,6 +189,9 @@ LanguageRow.propTypes = {
     code: PropTypes.string,
     icon: PropTypes.string,
     enabled: PropTypes.bool,
+    localizablePages: PropTypes.number,
+    translatedStatus: PropTypes.string,
+    active: PropTypes.bool,
     contentLocalizationEnabled: PropTypes.bool,
     isDefault: PropTypes.bool,
     OpenCollapse: PropTypes.func,

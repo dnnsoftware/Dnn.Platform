@@ -47,7 +47,16 @@ class LanguagesPanel extends Component {
 
     componentWillReceiveProps(props) {
         let {state} = this;
-        if (tableFields.length === 0) {
+        tableFields = [];
+        if (props.contentLocalizationEnabled) {
+            tableFields.push({ "name": resx.get("Culture.Header"), "id": "adv-Culture" });
+            tableFields.push({ "name": resx.get("Pages.Header"), "id": "adv-Pages" });
+            tableFields.push({ "name": resx.get("Translated.Header"), "id": "adv-Translated" });
+            tableFields.push({ "name": resx.get("Active.Header"), "id": "adv-Active" });
+            tableFields.push({ "name": resx.get("Enabled.Header"), "id": "adv-Enabled" });
+            tableFields.push({ "name": "", "id": "adv-Actions" });
+        }
+        else {
             tableFields.push({ "name": resx.get("Culture.Header"), "id": "Culture" });
             tableFields.push({ "name": resx.get("Enabled.Header"), "id": "Enabled" });
         }
@@ -165,6 +174,9 @@ class LanguagesPanel extends Component {
                         code={item.Code}
                         icon={item.Icon}
                         enabled={item.Enabled}
+                        localizablePages={item.LocalizablePages}
+                        translatedStatus={item.TranslatedStatus}
+                        active={item.Active}
                         contentLocalizationEnabled={this.props.contentLocalizationEnabled}
                         isDefault={item.IsDefault}
                         index={index}
