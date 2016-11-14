@@ -570,4 +570,7 @@
   <data name="UrlPathNotUnique.Error" xml:space="preserve">
     <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>
   </data>
+  <data name="Pages_Seo_DeleteWarningMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this URL?</value>
+  </data>
 </root>
