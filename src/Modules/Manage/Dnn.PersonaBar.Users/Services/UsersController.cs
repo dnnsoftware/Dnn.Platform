@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Users.Services
                     Success = string.IsNullOrEmpty(message) && userInfo != null,
                     Results =
                         userInfo != null
-                            ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(PortalSettings.PortalId,
+                            ? UserBasicDto.FromUserDetails(Components.UsersController.Instance.GetUserDetail(PortalId,
                                 userInfo.UserId))
                             : null,
                     Message =
@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Users.Services
                     PageSize = pageSize,
                     SortColumn = sortColumn,
                     SortAscending = sortAscending,
-                    PortalId = PortalSettings.PortalId,
+                    PortalId = PortalId,
                     Filter = filter
                 };
 
@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var userDetail = Components.UsersController.Instance.GetUserDetail(PortalSettings.PortalId, userId);
+                var userDetail = Components.UsersController.Instance.GetUserDetail(PortalId, userId);
                 if (userDetail == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -188,7 +188,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var userId = changePasswordDto.UserId;
                 var password = changePasswordDto.Password;
                 var controller = Components.UsersController.Instance;
-                var passwordChanged = controller.ChangePassword(PortalSettings.PortalId, userId, password, out errorMessage);
+                var passwordChanged = controller.ChangePassword(PortalId, userId, password, out errorMessage);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = passwordChanged, Message = errorMessage});
             }
@@ -205,7 +205,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -221,7 +221,7 @@ namespace Dnn.PersonaBar.Users.Services
                     user.Membership.UpdatePassword = true;
 
                     //Update User
-                    UserController.UpdateUser(PortalSettings.PortalId, user);
+                    UserController.UpdateUser(PortalId, user);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
 
@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -295,7 +295,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -304,7 +304,7 @@ namespace Dnn.PersonaBar.Users.Services
                 user.Membership.Approved = authorized;
 
                 //Update User
-                UserController.UpdateUser(PortalSettings.PortalId, user);
+                UserController.UpdateUser(PortalId, user);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -321,7 +321,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -349,7 +349,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -378,7 +378,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -407,7 +407,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                UserController.DeleteUnauthorizedUsers(PortalSettings.PortalId);
+                UserController.DeleteUnauthorizedUsers(PortalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -425,7 +425,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -434,7 +434,7 @@ namespace Dnn.PersonaBar.Users.Services
                 user.IsSuperUser = setSuperUser;
 
                 //Update User
-                UserController.UpdateUser(PortalSettings.PortalId, user);
+                UserController.UpdateUser(PortalId, user);
                 DataCache.ClearCache();
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -483,7 +483,7 @@ namespace Dnn.PersonaBar.Users.Services
                     return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
                 }
 
-                var roles = RoleController.Instance.GetRoles(PortalSettings.PortalId, x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
+                var roles = RoleController.Instance.GetRoles(PortalId, x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
                 var matchedRoles = roles.ToList().Take(count).Select(u => new UserRoleInfo
                 {
                     RoleID = u.RoleID,
@@ -505,7 +505,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
@@ -547,14 +547,14 @@ namespace Dnn.PersonaBar.Users.Services
                     userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
                 }
 
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userRoleDto.UserId);
-                var role = RoleController.Instance.GetRoleById(PortalSettings.PortalId, userRoleDto.RoleId);
+                var user = UserController.Instance.GetUserById(PortalId, userRoleDto.UserId);
+                var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
                     isOwner = false;
 
                 RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
-                var addedRole = RoleController.Instance.GetUserRole(PortalSettings.PortalId, userRoleDto.UserId, userRoleDto.RoleId);
+                var addedRole = RoleController.Instance.GetUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new UserRoleDto
                 {
@@ -583,7 +583,7 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 Validate(userRoleDto);
 
-                RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
+                RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -602,7 +602,7 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpGet]
         public HttpResponseMessage GetProfileDefinitions()
         {
-            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalSettings.PortalId)
+            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
                 .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
 
             return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
