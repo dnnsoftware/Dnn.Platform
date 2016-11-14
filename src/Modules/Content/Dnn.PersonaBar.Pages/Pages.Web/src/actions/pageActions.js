@@ -207,6 +207,28 @@ const pageActions = {
                 });
             });      
         };
+    },
+
+    copyPermissionsToDescendantPages() {
+        return (dispatch, getState) => {            
+            dispatch({
+                type: ActionTypes.COPYING_PERMISSIONS_TO_DESCENDANT_PAGES
+            });
+
+            const page = getState().pages.selectedPage;
+            PagesService.copyPermissionsToDescendantPages(page.tabId).then(() => {
+                utils.notify(Localization.get("CopyPermissionsToDescendantPagesSuccess"));
+                dispatch({
+                    type: ActionTypes.COPIED_PERMISSIONS_TO_DESCENDANT_PAGES,
+                    data: { }
+                });  
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
+                    data: {error}
+                });
+            });      
+        };
     }
 };
 

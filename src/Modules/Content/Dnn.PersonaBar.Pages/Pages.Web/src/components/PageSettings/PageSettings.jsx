@@ -65,6 +65,14 @@ class PageSettings extends Component {
             </Button>;
     }
 
+    getCopyPermissionsToDescendantPagesButton() {
+        return <Button 
+                type="secondary"
+                onClick={this.props.onCopyPermissionsToDescendantPages}> 
+                {Localization.get("CopyPermissionsToDescendantPages")}
+            </Button>;
+    }
+
     render() {
         const {
             selectedPage, 
@@ -75,16 +83,23 @@ class PageSettings extends Component {
             onToggleEditPageModule,
             editingSettingModuleId
         } = this.props;
-        const buttons = this.getButtons();
 
-        const isNewPage = selectedPage.tabId === 0;
+        const buttons = this.getButtons();
+        const isEditingExistingPage = selectedPage.tabId !== 0;
         const appearanceButtons = [...buttons];
-        if (!isNewPage) {
+        const permissionsButtons = [...buttons];
+
+        if (isEditingExistingPage) {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
+            
+            if (selectedPage.hasChild) {
+                permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
+            }
         }
 
         const footer = this.getPageFooter(buttons);
         const appearanceFooter = this.getPageFooter(appearanceButtons);
+        const permissionFooter = this.getPageFooter(permissionsButtons);
 
         return (
             <Tabs 
@@ -106,7 +121,7 @@ class PageSettings extends Component {
                     <PermissionGrid
                         permissions={selectedPage.permissions} 
                         onPermissionsChanged={this.props.onPermissionsChanged} />
-                    {footer}
+                    {permissionFooter}
                 </div>
                 <div>
                     <Tabs 
@@ -157,6 +172,7 @@ PageSettings.propTypes = {
     onDeletePageModule: PropTypes.func.isRequired,
     onToggleEditPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
+    onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number
 };
 

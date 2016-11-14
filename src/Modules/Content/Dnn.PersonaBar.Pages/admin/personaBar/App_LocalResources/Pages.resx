@@ -282,6 +282,9 @@
   <data name="CopyAppearanceToDescendantPages.Text" xml:space="preserve">
     <value>Copy Appearance to Descendant Pages</value>
   </data>
+  <data name="CopyPermissionsToDescendantPages.Text" xml:space="preserve">
+    <value>Copy Permissions to Descendant Pages</value>
+  </data>
   <data name="Layout.Text" xml:space="preserve">
     <value>Layout</value>
   </data>
@@ -441,6 +444,9 @@
   <data name="CopyAppearanceToDescendantPagesSuccess.Text" xml:space="preserve">
     <value>Appearance has been copy to descendant pages successfully</value>
   </data>
+  <data name="CopyPermissionsToDescendantPagesSuccess.Text" xml:space="preserve">
+    <value>Permissions have been copy to descendant pages successfully</value>
+  </data>
   <data name="DeletePageModuleSuccess.Text" xml:space="preserve">
     <value>Module "[MODULETITLE]" has been deleted successfully</value>
   </data>
@@ -578,5 +584,8 @@
   </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>None Specified</value>
+  </data>
+  <data name="CannotCopyPermissionsToDescendantPages.Text" xml:space="preserve">
+    <value>You do not have permission to copy permissions to descendant pages</value>
   </data>
 </root>

@@ -20,49 +20,33 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Linq;
-using Dnn.PersonaBar.Library;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
     public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
-
-        #region Fields
         private readonly ITabController _tabController;
-        #endregion
 
         public PageManagementController()
         {
             _tabController = TabController.Instance;
         }
-
-        #region Properties
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources/Pages.resx");
-
-        private static PortalSettings PortalSettings => PortalSettings.Current;
-
-        #endregion
-
+        
+        
         #region Public Methods
-        public string LocalizeString(string key)
-        {
-            return Localization.GetString(key, LocalResourcesFile);
-        }
 
         public string GetCreatedInfo(TabInfo tab)
         {
-            var createdBy = tab.CreatedByUser(PortalSettings.PortalId);
-            var displayName = LocalizeString("System");
+            var createdBy = tab.CreatedByUser(PortalSettings.Current.PortalId);
+            var displayName = Localization.GetString("System");
             if (createdBy != null)
             {
                 displayName = createdBy.DisplayName;
@@ -71,16 +55,16 @@ namespace Dnn.PersonaBar.Pages.Components
             return displayName;
         }
 
+        public bool TabHasChildren(TabInfo tabInfo)
+        {
+            var children = TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID);
+            return children != null && children.Count >= 1;
+        }
+
         public string GetTabHierarchy(TabInfo tab)
         {
             _tabController.PopulateBreadCrumbs(ref tab);
             return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
-        }
-        #endregion
-
-        protected override Func<IPageManagementController> GetFactory()
-        {
-            return () => new PageManagementController();
         }
 
         public string GetTabUrl(TabInfo tab)
@@ -102,22 +86,28 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
 
-            if (String.IsNullOrEmpty(url) && tab.TabID > -1 && !tab.IsSuperTab)
+            if (string.IsNullOrEmpty(url) && tab.TabID > -1 && !tab.IsSuperTab)
             {
-                var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.PortalId);
-                var baseUrl = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
+                var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.Current.PortalId);
+                var baseUrl = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
                 var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
                                                                             baseUrl,
                                                                             Globals.glbDefaultPage,
-                                                                            PortalSettings.PortalAlias.HTTPAlias,
+                                                                            PortalSettings.Current.PortalAlias.HTTPAlias,
                                                                             false, //dnndev-27493 :we want any custom Urls that apply
                                                                             friendlyUrlSettings,
                                                                             Guid.Empty);
 
-                url = path.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), "");
+                url = path.Replace(Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias), "");
             }
 
             return url;
+        }
+        #endregion
+
+        protected override Func<IPageManagementController> GetFactory()
+        {
+            return () => new PageManagementController();
         }
     }
 }

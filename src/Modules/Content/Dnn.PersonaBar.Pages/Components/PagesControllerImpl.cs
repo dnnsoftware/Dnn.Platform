@@ -652,6 +652,23 @@ namespace Dnn.PersonaBar.Pages.Components
             TabController.CopyDesignToChildren(tab, theme.SkinSrc, theme.ContainerSrc);
         }
 
+        public void CopyPermissionsToDescendantPages(int pageId)
+        {
+            var portalId = PortalSettings.PortalId;
+            var tab = _tabController.GetTab(pageId, portalId, false);
+            if (tab == null)
+            {
+                throw new PageNotFoundException();
+            }
+
+            if (!TabPermissionController.CanManagePage(tab) || tab.IsSuperTab)
+            {
+                throw new PermissionsNotMetException(tab.TabID, Localization.GetString("CannotCopyPermissionsToDescendantPages"));
+            }
+
+            TabController.CopyPermissionsToChildren(tab, tab.TabPermissions);
+        }
+
         public IEnumerable<Url> GetPageUrls(int tabId)
         {
             var tab = GetPageDetails(tabId);

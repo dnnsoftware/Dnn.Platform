@@ -29,6 +29,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
+using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
@@ -40,7 +41,6 @@ namespace Dnn.PersonaBar.Pages.Services
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "Pages.resx");
 
         public PagesController()
         {
@@ -48,11 +48,6 @@ namespace Dnn.PersonaBar.Pages.Services
             _pagesController = Components.PagesController.Instance;
             _themesController = ThemesController.Instance;
             _bulkPagesController = BulkPagesController.Instance;
-        }
-
-        public string LocalizeString(string key)
-        {
-            return Localization.GetString(key, LocalResourcesFile);
         }
 
         /// GET: api/Pages/GetPageDetails
@@ -100,7 +95,7 @@ namespace Dnn.PersonaBar.Pages.Services
                                                 new
                                                 {
                                                     Success = false,
-                                                    ErrorMessage = LocalizeString("CustomUrlPathCleaned.Error"),
+                                                    ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
                                                     SuggestedUrlPath = "/" + urlPath
                                                 });
             }
@@ -113,7 +108,7 @@ namespace Dnn.PersonaBar.Pages.Services
                                                 new
                                                 {
                                                     Success = false,
-                                                    ErrorMessage = LocalizeString("UrlPathNotUnique.Error"),
+                                                    ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
                                                     SuggestedUrlPath = "/" + urlPath
                                                 });
             }
@@ -126,7 +121,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = false,
-                    ErrorMessage = LocalizeString("DuplicateUrl.Error")
+                    ErrorMessage = Localization.GetString("DuplicateUrl.Error")
                 });
             }
 
@@ -147,7 +142,7 @@ namespace Dnn.PersonaBar.Pages.Services
                     return Request.CreateResponse(HttpStatusCode.OK, new
                     {
                         Success = false,
-                        ErrorMessage = LocalizeString("InvalidRequest.Error")
+                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
                     });
                 }
             }
@@ -161,7 +156,7 @@ namespace Dnn.PersonaBar.Pages.Services
                     return Request.CreateResponse(HttpStatusCode.OK, new
                     {
                         Success = false,
-                        ErrorMessage = LocalizeString("InvalidRequest.Error")
+                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
                     });
                 }
             }
@@ -208,7 +203,7 @@ namespace Dnn.PersonaBar.Pages.Services
                     new
                     {
                         Success = false,
-                        ErrorMessage = LocalizeString("CustomUrlPathCleaned.Error"),
+                        ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
                         SuggestedUrlPath = "/" + urlPath
                     });
             }
@@ -221,7 +216,7 @@ namespace Dnn.PersonaBar.Pages.Services
                     new
                     {
                         Success = false,
-                        ErrorMessage = LocalizeString("UrlPathNotUnique.Error"),
+                        ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
                         SuggestedUrlPath = "/" + urlPath
                     });
             }
@@ -434,6 +429,25 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             _pagesController.CopyThemeToDescendantPages(copyTheme.PageId, copyTheme.Theme);
             return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CopyPermissionsToDescendantPages(CopyPermissionsRequest copyPermissions)
+        {
+            try
+            {
+                _pagesController.CopyPermissionsToDescendantPages(copyPermissions.PageId);
+                return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+            }
+            catch (PageNotFoundException)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (PermissionsNotMetException)
+            {
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
+            }
         }
 
         // TODO: This should be a POST

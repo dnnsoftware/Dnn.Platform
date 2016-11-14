@@ -21,15 +21,15 @@ namespace Dnn.PersonaBar.Pages.Components
     public class BulkPagesController : ServiceLocator<IBulkPagesController, BulkPagesController>, IBulkPagesController
     {
         private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
-        private static PortalSettings PortalSettings => PortalSettings.Current;
-        private static string LocalResourcesFile => Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources/Pages.resx");
         private const string DefaultPageTemplate = "Default.page.template";
 
         public BulkPageResponse AddBulkPages(BulkPage page)
         {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalId = portalSettings.PortalId;
             var response = new BulkPageResponse();
             var parentId = page.ParentId;
-            var rootTab = TabController.Instance.GetTab(parentId, PortalSettings.PortalId, true);
+            var rootTab = TabController.Instance.GetTab(parentId, portalId, true);
 
             var strValue = page.BulkPages;
             strValue = strValue.Replace("\r", "\n");
@@ -39,12 +39,12 @@ namespace Dnn.PersonaBar.Pages.Components
             string invalidType;
             if (!TabController.IsValidTabName(strValue, out invalidType))
             {
-                throw new PageValidationException("bulkPages", string.Format(Localization.GetString(invalidType, LocalResourcesFile), strValue));
+                throw new PageValidationException("bulkPages", string.Format(Localization.GetString(invalidType), strValue));
             }
 
             if (page.StartDate.HasValue && page.EndDate.HasValue && page.StartDate > page.EndDate)
             {
-                throw new PageValidationException("endDate", Localization.GetString("StartDateAfterEndDate", LocalResourcesFile));
+                throw new PageValidationException("endDate", Localization.GetString("StartDateAfterEndDate"));
             }
 
             var pages = strValue.Split(char.Parse("\n"));
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         EndDate = page.EndDate ?? Null.NullDate,
                         IsVisible = page.IncludeInMenu
                 };
-                tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, PortalSettings.PortalId));
+                tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, portalId));
                 tabs.Add(tab);
             }
 
@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static BulkPageResponseItem ToBulkPageResponseItem(TabInfo tab, string error)
         {
-            return new BulkPageResponseItem()
+            return new BulkPageResponseItem
             {
                 TabId = tab.TabID,
                 ErrorMessage = error,
@@ -111,9 +111,10 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private int CreateTabFromParent(TabInfo objRoot, TabInfo oTab, int parentId, out string errorMessage)
         {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = new TabInfo
             {
-                PortalID = PortalSettings.PortalId,
+                PortalID = portalSettings.PortalId,
                 TabName = oTab.TabName,
                 ParentId = parentId,
                 Title = "",
@@ -143,7 +144,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.ContainerSrc = objRoot.ContainerSrc;
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings.ContentLocalizationEnabled)
             {
                 tab.CultureCode = LocaleController.Instance.GetDefaultLocale(tab.PortalID).Code;
@@ -159,7 +159,7 @@ namespace Dnn.PersonaBar.Pages.Components
             else
             {
                 //return Null.NullInteger;
-                tab.PortalID = PortalSettings.PortalId;
+                tab.PortalID = portalSettings.PortalId;
                 tab.ParentId = Null.NullInteger;
             }
 
@@ -169,7 +169,7 @@ namespace Dnn.PersonaBar.Pages.Components
             string invalidType;
             if (!TabController.IsValidTabName(tab.TabName, out invalidType))
             {
-                errorMessage = string.Format(Localization.GetString(invalidType, LocalResourcesFile), tab.TabName);
+                errorMessage = string.Format(Localization.GetString(invalidType), tab.TabName);
                 return Null.NullInteger;
             }
 
@@ -198,7 +198,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         PermissionKey = permission.PermissionKey,
                         PermissionName = permission.PermissionName,
                         AllowAccess = true,
-                        RoleID = PortalSettings.Current.AdministratorRoleId
+                        RoleID = portalSettings.AdministratorRoleId
                     };
                     tab.TabPermissions.Add(newTabPermission);
                 }
@@ -251,19 +251,23 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void ApplyDefaultTabTemplate(TabInfo tab)
         {
-            var templateFile = Path.Combine(PortalSettings.HomeDirectoryMapPath, "Templates\\" + DefaultPageTemplate);
-            if (File.Exists(templateFile))
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var templateFile = Path.Combine(portalSettings.HomeDirectoryMapPath, "Templates\\" + DefaultPageTemplate);
+
+            if (!File.Exists(templateFile))
             {
-                var xmlDoc = new XmlDocument();
-                try
-                {
-                    xmlDoc.Load(templateFile);
-                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
-                }
-                catch (Exception ex)
-                {
-                    throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
-                }
+                return;
+            }
+
+            var xmlDoc = new XmlDocument();
+            try
+            {
+                xmlDoc.Load(templateFile);
+                TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+            }
+            catch (Exception ex)
+            {
+                throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
             }
         }
 
@@ -276,7 +280,8 @@ namespace Dnn.PersonaBar.Pages.Components
             var cultureCode = tab.CultureCode;
             if (string.IsNullOrEmpty(cultureCode))
             {
-                cultureCode = PortalSettings.DefaultLanguage;
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                cultureCode = portalSettings.DefaultLanguage;
             }
 
             //Validate Tab Path
@@ -285,9 +290,9 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
                 if (existingTab != null && existingTab.IsDeleted)
-                    errorMessage = Localization.GetString("TabRecycled", LocalResourcesFile);
+                    errorMessage = Localization.GetString("TabRecycled");
                 else
-                    errorMessage = Localization.GetString("TabExists", LocalResourcesFile);
+                    errorMessage = Localization.GetString("TabExists");
 
                 valid = false;
             }
@@ -295,7 +300,7 @@ namespace Dnn.PersonaBar.Pages.Components
             //check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
             {
-                errorMessage = Localization.GetString("PathDuplicateWithAlias", LocalResourcesFile);
+                errorMessage = Localization.GetString("PathDuplicateWithAlias");
                 valid = false;
             }
 

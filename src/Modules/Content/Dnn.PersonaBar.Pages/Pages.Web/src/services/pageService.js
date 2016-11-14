@@ -88,6 +88,13 @@ const PageService = function () {
             pageId, theme
         });
     };
+
+    const copyPermissionsToDescendantPages = function (pageId) {
+        const api = getApi();
+        return api.post("CopyPermissionsToDescendantPages", {
+            pageId
+        });
+    };
     
     const toFrontEndPage = function (page) {
         return {
@@ -114,7 +121,8 @@ const PageService = function () {
         getCacheProviderList,
         deletePageModule,
         getPageUrlPreview,
-        copyAppearanceToDescendantPages
+        copyAppearanceToDescendantPages,
+        copyPermissionsToDescendantPages
     };
 };
 

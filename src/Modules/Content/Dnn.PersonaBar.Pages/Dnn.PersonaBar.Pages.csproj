@@ -109,6 +109,7 @@
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\Exceptions\PageNotFoundException.cs" />
     <Compile Include="Components\IPageUrlsController.cs" />
+    <Compile Include="Components\Localization.cs" />
     <Compile Include="Components\PageManagementController.cs" />
     <Compile Include="Components\PagesControllerImpl.cs" />
     <Compile Include="Components\PagesController.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Services\Dto\BulkPage.cs" />
     <Compile Include="Services\Dto\BulkPageResponseItem.cs" />
     <Compile Include="Services\Dto\BulkPageResponse.cs" />
+    <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
     <Compile Include="Services\Dto\PageModuleItem.cs" />

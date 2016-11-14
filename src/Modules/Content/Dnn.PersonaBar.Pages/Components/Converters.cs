@@ -51,14 +51,14 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
+            var pageManagementController = PageManagementController.Instance;
+
             var description = !string.IsNullOrEmpty(tab.Description) ? tab.Description : PortalSettings.Current.Description;
             var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
             var pageType = GetPageType(tab.Url);
-
-            var pageManagementController = PageManagementController.Instance;
             
             var fileId = GetFileIdRedirection(tab.Url);
-            string fileUrl = GetFileUrlRedirection(fileId);
+            var fileUrl = GetFileUrlRedirection(fileId);
 
             return new T
             {
@@ -100,7 +100,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 PageStyleSheet = (string)tab.TabSettings["CustomStylesheet"],
                 ThemeName = GetThemeNameFromSkinSrc(tab.SkinSrc),
                 SkinSrc = tab.SkinSrc,
-                ContainerSrc = tab.ContainerSrc
+                ContainerSrc = tab.ContainerSrc,
+                HasChild = pageManagementController.TabHasChildren(tab)
             };
         }
         

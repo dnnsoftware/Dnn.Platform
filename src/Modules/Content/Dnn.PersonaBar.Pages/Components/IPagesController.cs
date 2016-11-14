@@ -43,6 +43,12 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <param name="theme">Theme</param>
         void CopyThemeToDescendantPages(int pageId, Theme theme);
 
+        /// <summary>
+        /// Copy the current page permissions to all descendant pages
+        /// </summary>
+        /// <param name="pageId">page identifier</param>
+        void CopyPermissionsToDescendantPages(int pageId);
+
         IEnumerable<Url> GetPageUrls(int tabId);
     }
 }

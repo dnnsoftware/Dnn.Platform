@@ -110,7 +110,8 @@ class App extends Component {
                                       onDeletePageModule={props.onDeletePageModule}
                                       onToggleEditPageModule={props.onToggleEditPageModule}
                                       editingSettingModuleId={props.editingSettingModuleId}
-                                      onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages} />
+                                      onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
+                                      onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}  />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -180,6 +181,7 @@ App.propTypes = {
     onDeletePageModule: PropTypes.func.isRequired,
     onToggleEditPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
+    onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     error: PropTypes.object
 };
 
@@ -210,7 +212,8 @@ function mapDispatchToProps(dispatch) {
         onPermissionsChanged: PageActions.changePermissions,
         onDeletePageModule: PageActions.deletePageModule,
         onToggleEditPageModule: PageActions.toggleEditPageModule,
-        onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages
+        onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages,
+        onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages
     }, dispatch);
 }
 
