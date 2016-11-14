@@ -46,7 +46,7 @@ class PageDetailsFooter extends Component {
 
             if (index || index === 0) {
                 index = Math.min(array.length, Math.max(0, index));
-                array.splice(index, 0, [Component, <div style={{ clear: "both" }}></div>]);
+                array.splice(index, 0, Component);
             }            
         }
     }

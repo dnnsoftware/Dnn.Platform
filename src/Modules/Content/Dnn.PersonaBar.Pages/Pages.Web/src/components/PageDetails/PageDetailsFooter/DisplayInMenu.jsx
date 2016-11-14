@@ -14,7 +14,7 @@ class DisplayInMenu extends Component {
                 label={Localization.get("DisplayInMenu")}
                 />
             <Switch
-                labelHidden={true}
+                labelHidden={false}
                 value={props.includeInMenu}
                 onChange={props.onChangeIncludeInMenu} />
              <div style={{ clear: "both" }}></div>
