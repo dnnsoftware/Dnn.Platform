@@ -3,7 +3,7 @@ import Tabs from "dnn-tabs";
 import Localization from "../../localization";
 import utils from "../../utils";
 import PageDetails from "../PageDetails/PageDetails";
-import PermissionGrid from "./PermissionGrid";
+import PermissionGrid from "../PermissionGrid/PermissionGrid";
 import Button from "dnn-button";
 import styles from "./style.less";
 import Modules from "../Modules/Modules";
