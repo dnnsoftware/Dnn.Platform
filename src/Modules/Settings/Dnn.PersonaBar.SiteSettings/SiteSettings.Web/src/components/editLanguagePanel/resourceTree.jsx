@@ -18,13 +18,13 @@ const parentTermTreeStyle = {
 /*eslint-disable react/no-danger*/
 function mapChildFolders(folders, getChildFolders, getResxEntries, resxBeingEdited) {
     return folders.map((folder) => {
-        const isResxFile = folder.Value.indexOf(".resx") !== -1;
+        const isResxFile = folder.NewValue.indexOf(".resx") !== -1;
 
         return <Folder
             onClick={(!isResxFile ? getChildFolders.bind(this) : getResxEntries.bind(this))}
             folder={folder}
             ChildFolders={folder.ChildFolders}
-            isSelected={resxBeingEdited === folder.Value}>
+            isSelected={resxBeingEdited === folder.NewValue}>
             {(folder.ChildFolders && folder.ChildFolders.length > 0) && mapChildFolders(folder.ChildFolders, getChildFolders, getResxEntries, resxBeingEdited)}
         </Folder>;
     });

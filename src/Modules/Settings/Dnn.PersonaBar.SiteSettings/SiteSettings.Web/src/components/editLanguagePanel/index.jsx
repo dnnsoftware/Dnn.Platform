@@ -12,7 +12,7 @@ import "./style.less";
 function alreadyAChildTerm(childFolders, compareValue) {
     return childFolders.find((cf) => {
         console.log(cf, compareValue);
-        return cf.Value === compareValue;
+        return cf.NewValue === compareValue;
     });
 }
 
@@ -20,12 +20,12 @@ function findParent(parentList, item) {
     if (!parentList || !item) {
         return;
     }
-    let compareValue = item.Value.substring(0, item.Value.lastIndexOf("/"));
+    let compareValue = item.NewValue.substring(0, item.NewValue.lastIndexOf("/"));
     parentList.forEach(function (listItem) {
         if (!listItem.ChildFolders) {
             listItem.ChildFolders = [];
         }
-        if (listItem.Value === compareValue && !alreadyAChildTerm(listItem.ChildFolders, compareValue)) {
+        if (listItem.NewValue === compareValue && !alreadyAChildTerm(listItem.ChildFolders, compareValue)) {
             listItem.ChildFolders.push(item);
         } else {
             findParent(listItem.ChildFolders, item);
@@ -39,7 +39,7 @@ function generateList(list, isGlobalMode) {
         return;
     }
     utilities.utilities.getObjectCopy(list).forEach(function (item, index) {
-        let splitValue = item.Value.split("/");
+        let splitValue = item.NewValue.split("/");
         if (splitValue.length === 1 || isGlobalMode) {
             _list.push(item);
         } else {
@@ -53,7 +53,8 @@ class EditLanguagePanel extends Component {
     constructor() {
         super();
         this.state = {
-            selectedMode: "Host"
+            selectedMode: "Host",
+            highlightPendingTranslations: false
         };
     }
     refreshFileList() {
@@ -88,8 +89,32 @@ class EditLanguagePanel extends Component {
             this.refreshFileList();
         });
     }
-    onResxChange(){
-        
+    onResxChange(updatedList){
+        this.props.dispatch(LanguageEditorActions.updateResxEntry(updatedList));
+    }
+    onSaveTranslations(){
+        const {props} = this;
+        const payload = {
+            Mode: this.state.selectedMode,
+            Locale: props.languageBeingEdited.Code,
+            ResourceFile: props.resxBeingEdited,
+            Entries: Object.keys(props.translations).map((key)=>{
+                return {
+                    Name: key,
+                    DefaultValue: props.translations[key].Second,
+                    NewValue: props.translations[key].First
+                };
+            })
+        }
+
+        props.dispatch(LanguageEditorActions.saveTranslations(payload, (data)=>{
+            utilities.utilities.notify(data.Message);
+        }));
+    }
+    onHighlightPendingTranslations(){
+        this.setState({
+            highlightPendingTranslations: !this.state.highlightPendingTranslations
+        });
     }
     /* eslint-disable react/no-danger */
     render() {
@@ -104,7 +129,8 @@ class EditLanguagePanel extends Component {
                 value: "Portal"
             }
         ];
-        const { languageBeingEdited } = props;
+        const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host");
+        console.log(languageFolders);
         return (
             <SocialPanelBody
                 className="edit-language-panel"
@@ -114,7 +140,7 @@ class EditLanguagePanel extends Component {
                 <LanguageInfoView
                     languageBeingEdited={languageBeingEdited}
                     ModeOptions={ModeOptions}
-                    languageFolders={generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host")}
+                    languageFolders={languageFolders}
                     languageFiles={props.languageFiles}
                     getResxEntries={this.getResxEntries.bind(this)}
                     getChildFolders={this.getChildFolders.bind(this)}
@@ -122,8 +148,11 @@ class EditLanguagePanel extends Component {
                     resxBeingEditedDisplay={props.resxBeingEditedDisplay}
                     selectedMode={this.state.selectedMode}
                     onSelectMode={this.onSelectMode.bind(this)} 
-                    onCancel={this.backToSiteSettings.bind(this)}/>
-                <ResourceList list={props.translations} />
+                    onCancel={this.backToSiteSettings.bind(this)}
+                    onSaveTranslations={this.onSaveTranslations.bind(this)}
+                    onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this)}
+                    highlightPendingTranslations={this.state.highlightPendingTranslations}/>
+                <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this)}/>
             </SocialPanelBody>
         );
     }

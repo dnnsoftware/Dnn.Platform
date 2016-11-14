@@ -24,7 +24,10 @@ class LanguageInfoView extends Component {
             resxBeingEditedDisplay,
             selectedMode,
             onSelectMode,
-            onCancel
+            onCancel,
+            onSaveTranslations,
+            onHighlightPendingTranslations,
+            highlightPendingTranslations
         } = this.props;
         return (
             <GridCell className="edit-language-info">
@@ -45,11 +48,11 @@ class LanguageInfoView extends Component {
                         resxBeingEdited={resxBeingEdited}
                         resxBeingEditedDisplay={resxBeingEditedDisplay} />
                     <GridCell columnSize={50}>
-                        <Switch label={resx.get("HighlightPendingTranslations")} value={false} onChange={() => { } } />
+                        <Switch label={resx.get("HighlightPendingTranslations")} value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
                     </GridCell>
                     <GridCell columnSize={100} className="translation-action-buttons">
                         <Button type="secondary" onClick={onCancel}>{resx.get("Cancel")}</Button>
-                        <Button type="primary">{resx.get("SaveTranslationsToFile")}</Button>
+                        <Button type="primary" onClick={onSaveTranslations} disabled={!resxBeingEdited}>{resx.get("SaveTranslationsToFile")}</Button>
                     </GridCell>
                 </GridCell>
             </GridCell>
@@ -69,7 +72,10 @@ LanguageInfoView.propTypes = {
     resxBeingEditedDisplay: PropTypes.func,
     selectedMode: PropTypes.string,
     onSelectMode: PropTypes.func,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    onSaveTranslations: PropTypes.func,
+    onHighlightPendingTranslations: PropTypes.func,
+    highlightPendingTranslations: PropTypes.bool
 };
 
 export default LanguageInfoView;

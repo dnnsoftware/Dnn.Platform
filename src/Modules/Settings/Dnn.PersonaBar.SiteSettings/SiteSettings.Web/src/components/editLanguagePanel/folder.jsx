@@ -14,7 +14,7 @@ class Folder extends Component {
             isOpen: !this.state.isOpen
         });
         if (!props.children) {
-            props.onClick(props.folder.Value, () => {
+            props.onClick(props.folder.NewValue, () => {
                 setTimeout(() => {
                     this.setState({ isOpen: true });
                 }, 1000);
@@ -24,7 +24,7 @@ class Folder extends Component {
     /*eslint-disable react/no-danger*/
     render() {
         const { props } = this;
-        const isFolder = props.folder.Value.indexOf(".resx") === -1;
+        const isFolder = props.folder.NewValue.indexOf(".resx") === -1;
         const svgIcon = isFolder ? FolderIcon : PagesIcon;
         const isOpenIcon = this.state.isOpen ? ArrowDownIcon : ArrowRightIcon;
         return (

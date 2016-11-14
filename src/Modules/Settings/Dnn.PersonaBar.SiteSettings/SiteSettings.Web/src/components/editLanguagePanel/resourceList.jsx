@@ -7,6 +7,7 @@ import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
 import SearchBox from "dnn-search-box";
 import GridCell from "dnn-grid-cell";
+import utilities from "utils";
 
 const rowSizes = [30, 35, 35];
 
@@ -34,17 +35,18 @@ class ResourceList extends Component {
             resources: this.props.list
         });
     }
-    onChange(key, index, event) {
+    onChange(key, keyToChange, event) {
         let value = typeof (event) === "object" ? event.target.value : event;
+        console.log(arguments);
+        let resources = utilities.utilities.getObjectCopy(this.props.list);
+        console.log(resources);
+        resources[key][keyToChange] = value;
 
-        let {resources} = this.state;
-        resources[index][key] = value;
-        this.setState({ resources });
+        this.props.onResxChange(resources);
     }
     /* eslint-disable react/no-danger */
     render() {
         const { props } = this;
-        console.log(props.list);
         return (
             <GridCell className="resource-list">
                 <GridCell className="resource-controls">
@@ -71,6 +73,7 @@ class ResourceList extends Component {
                 </GridCell>
                 <GridCell className="resource-rows">
                     {Object.keys(this.props.list).map((key, index) => {
+                        const shouldBeHighlighted = (props.highlightPendingTranslations && this.props.list[key].First === this.props.list[key].Second);
                         return <GridCell className="resource-row">
                             <GridCell className="row-detail" columnSize={rowSizes[0]}>
                                 <p>{key}</p>
@@ -79,7 +82,7 @@ class ResourceList extends Component {
                                 <SingleLineInput value={this.props.list[key].Second} enabled={false} />
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[2]}>
-                                <SingleLineInput value={this.props.list[key].First} onChange={this.onChange.bind(this, "First", index)} />
+                                <SingleLineInput className={(shouldBeHighlighted ? "highlight" : "")} value={this.props.list[key].First} onChange={this.onChange.bind(this, key, "First")} />
                             </GridCell>
                         </GridCell>;
                     })}

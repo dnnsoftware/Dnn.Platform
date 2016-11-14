@@ -1,10 +1,11 @@
 import { languageEditor as ActionTypes } from "../constants/actionTypes";
 import utilities from "utils";
+
 function insertRecords(folders, newFolders, clearArray) {
     let newFolderList = !clearArray ? utilities.utilities.getObjectCopy(folders) : [];
     newFolders.forEach((folder) => {
         let alreadyThere = folders.find((_folder) => {
-            return _folder.Value === folder.Value;
+            return _folder.NewValue === folder.NewValue;
         });
         if (!alreadyThere) {
             newFolderList.push(folder);
@@ -24,11 +25,11 @@ export default function languageEditor(state = {
 }, action) {
     switch (action.type) {
         case ActionTypes.SET_LANGUAGE_BEING_EDITED:
-            return { ...state,
+            return {...state,
                 languageBeingEdited: action.payload
             };
         case ActionTypes.RETRIEVED_ROOT_RESOURCES_FOLDER:
-            return { ...state,
+            return {...state,
                 languageFolders: insertRecords(state.languageFolders, action.payload.Folders, true),
                 languageFiles: insertRecords(state.languageFiles, action.payload.Files, true),
                 resxBeingEdited: "",
@@ -36,18 +37,22 @@ export default function languageEditor(state = {
                 translations: []
             };
         case ActionTypes.RETRIEVED_SUBROOT_RESOURCES_FOLDER:
-            return { ...state,
+            return {...state,
                 languageFolders: insertRecords(state.languageFolders, action.payload.Folders),
                 languageFiles: insertRecords(state.languageFiles, action.payload.Files)
             };
         case ActionTypes.RETRIEVED_RESX_ENTRIES:
-            return { ...state,
+            return {...state,
                 translations: action.payload.Translations,
                 resxBeingEdited: action.payload.resourceFile,
                 resxBeingEditedDisplay: action.payload.File
             };
+        case ActionTypes.UPDATED_RESX_ENTRIES:
+            return {...state,
+                translations: action.payload
+            };
         default:
-            return { ...state
+            return {...state
             };
     }
 }

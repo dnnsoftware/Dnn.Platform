@@ -1,4 +1,5 @@
 import util from "../utils";
+
 function serializeQueryStringParameters(obj) {
     let s = [];
     for (let p in obj) {
@@ -33,7 +34,7 @@ class ApplicationService {
 
     enableLocalizedContent(parameters, callback, failureCallback) {
         const sf = this.getServiceFramework("Languages");
-        sf.post("EnableLocalizedContent?"  + serializeQueryStringParameters(parameters), {}, callback, failureCallback);
+        sf.post("EnableLocalizedContent?" + serializeQueryStringParameters(parameters), {}, callback, failureCallback);
     }
 
     disableLocalizedContent(callback, failureCallback) {
@@ -44,6 +45,11 @@ class ApplicationService {
     getLocalizationProgress(callback) {
         const sf = this.getServiceFramework("Languages");
         sf.getsilence("GetLocalizationProgress", {}, callback);
+    }
+
+    saveTranslations(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post("SaveResxEntries", payload, callback, failureCallback);
     }
 }
 const applicationService = new ApplicationService();

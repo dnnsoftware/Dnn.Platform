@@ -47,6 +47,26 @@ const languageEditorActions = {
                 }
             });
         };
+    },
+    updateResxEntry(updatedList, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_RESX_ENTRIES,
+                payload: updatedList
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+    saveTranslations(payload, callback) {
+        return (dispatch) => {
+            LanguageEditorService.saveTranslations(payload, (data) => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 
