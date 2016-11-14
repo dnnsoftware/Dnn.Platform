@@ -14,6 +14,7 @@ class PageNameInput extends Component {
                 errorMessage={props.errors.name}
                 value={props.pageName}
                 onChange={props.onChangePageName} />
+            <div style={{ clear: "both" }}></div>
         </div>;
     }
 }

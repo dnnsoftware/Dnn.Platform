@@ -24,11 +24,9 @@ class PageDetailsFooter extends Component {
         const defaultLeftColumnComponents = !normalPage ?
             [<PageNameInput pageName={page.name}
                 errors={errors}
-                onChangePageName={this.onChangeField.bind(this, "name")} />,
-            <div style={{ clear: "both" }}></div>] :
+                onChangePageName={this.onChangeField.bind(this, "name")} />] :
             [<DisplayInMenu includeInMenu={page.includeInMenu}
-                onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />,
-                <div style={{ clear: "both" }}></div>];
+                onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />];
 
         const additionalLeftComponents = application.getPageDetailFooterComponents().filter(
             function (component) {
@@ -68,21 +66,18 @@ class PageDetailsFooter extends Component {
         const defaultRightColumnComponents = !normalPage ? 
             [<DisplayInMenu includeInMenu={page.includeInMenu}
                 onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />,
-                <div style={{ clear: "both" }}></div>,
             <EnableScheduling schedulingEnabled={page.schedulingEnabled}
                 onChangeSchedulingEnabled={this.onChangeValue.bind(this, "schedulingEnabled")}
                 startDate={page.startDate}
                 endDate={page.endDate}
                 onChangeStartDate={this.onChangeValue.bind(this, "startDate")}
-                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />,
-                <div style={{ clear: "both" }}></div>] :
+                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />] :
             [<EnableScheduling schedulingEnabled={page.schedulingEnabled}
                 onChangeSchedulingEnabled={this.onChangeValue.bind(this, "schedulingEnabled")}
                 startDate={page.startDate}
                 endDate={page.endDate}
                 onChangeStartDate={this.onChangeValue.bind(this, "startDate")}
-                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />,
-                <div style={{ clear: "both" }}></div>];
+                onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />];
         
         const additionalRightComponents = application.getPageDetailFooterComponents().filter(
             function (component) {

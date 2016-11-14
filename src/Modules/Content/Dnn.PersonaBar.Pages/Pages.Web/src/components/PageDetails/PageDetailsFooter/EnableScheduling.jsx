@@ -41,6 +41,7 @@ class EnableScheduling extends Component {
                             hasTimePicker={true}
                             showClearDateButton={false} />
                     </div>
+                    <div style={{ clear: "both" }}></div>
                 </div>
             }
         </div>;

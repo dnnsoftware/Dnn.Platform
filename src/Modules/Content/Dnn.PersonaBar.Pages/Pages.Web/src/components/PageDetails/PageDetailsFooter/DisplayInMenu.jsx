@@ -17,6 +17,7 @@ class DisplayInMenu extends Component {
                 labelHidden={true}
                 value={props.includeInMenu}
                 onChange={props.onChangeIncludeInMenu} />
+             <div style={{ clear: "both" }}></div>
         </div>;
     }
 }
