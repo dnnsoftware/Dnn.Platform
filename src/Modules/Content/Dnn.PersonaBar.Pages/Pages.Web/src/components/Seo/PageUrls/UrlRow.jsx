@@ -19,8 +19,18 @@ class UrlRow extends Component {
         );
     }
     
+    onOpenEditForm(url) {
+        const {editedUrl, onOpenEditForm, onCancel} = this.props;
+        const opened = editedUrl && editedUrl.id === url.id;
+        if (opened) {
+            onCancel();
+        } else {
+            onOpenEditForm(url);
+        }
+    }
+    
     render() {
-        const {url, siteAliases, primaryAliasId, editedUrl, saving, onChange, pageHasParent, onOpenEditForm, 
+        const {url, siteAliases, primaryAliasId, editedUrl, saving, onChange, pageHasParent, 
             onSave, onCancel} = this.props;
         let generatedBy = Localization.get("Pages_Seo_GeneratedByAutomatic");
         
@@ -46,7 +56,7 @@ class UrlRow extends Component {
                         <div className="extension-action" 
                             onClick={this.onDelete.bind(this, url)} dangerouslySetInnerHTML={{ __html: TrashIcon }}></div>
                         <div className="extension-action" 
-                            onClick={onOpenEditForm.bind(this, url)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
+                            onClick={this.onOpenEditForm.bind(this, url)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
                     </GridCell>
                 }
                 {opened &&
