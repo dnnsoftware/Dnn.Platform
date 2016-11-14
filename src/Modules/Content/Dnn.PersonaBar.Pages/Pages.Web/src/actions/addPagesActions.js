@@ -17,15 +17,6 @@ function processResponse(response) {
     return mainMessage + errors;
 }
 
-function confirmSaveMultiplePages(response, dispatch) {
-    dispatch({
-        type: ActionTypes.SAVED_MULTIPLE_PAGES,
-        data: {
-            response 
-        }
-    });
-}
-
 const addPagesActions = {
 
     loadAddMultiplePages() {
@@ -48,10 +39,14 @@ const addPagesActions = {
                     return;
                 }
 
-                utils.confirm(processResponse(response.Response), 
-                    Localization.get("Confirm"),
-                    Localization.get("Cancel"), 
-                    () => confirmSaveMultiplePages(response.Response, dispatch));
+                utils.notify(processResponse(response.Response), 5000);
+
+                dispatch({
+                    type: ActionTypes.SAVED_MULTIPLE_PAGES,
+                    data: {
+                        response 
+                    }
+                });
 
             }).catch((error) => {
                 dispatch({

@@ -39,7 +39,7 @@ class AddPages extends Component {
  
     render() {
         const {bulkPage, onCancel, onSave} = this.props;
-        const noneSpecifiedText = "<" + Localization.get("NoneSpecified") + ">";
+        const noneSpecifiedText = Localization.get("MyWebsite");
         const tags = bulkPage.tags ? bulkPage.tags.split(",") : [];
 
         return (
@@ -68,12 +68,14 @@ class AddPages extends Component {
                                 label={Localization.get("Keywords")}
                                 value={bulkPage.keywords} 
                                 onChange={(value) => this.onChangeEvent("keywords", value)} />
+                            <div style={{clear: "both"}}></div>
                         </div>
                         <div className="input-group">
                             <Label label={Localization.get("Tags")}/>
                             <Tags 
                                 tags={tags} 
                                 onUpdateTags={(tags) => this.onChangeTags(tags)}/>
+                            <div style={{clear: "both"}}></div>
                         </div>
                         <div className="input-group">
                             <Label
@@ -85,12 +87,14 @@ class AddPages extends Component {
                                 labelHidden={true}
                                 value={bulkPage.includeInMenu}
                                 onChange={(value) => this.onChangeValue("includeInMenu", value)} />
+                            <div style={{clear: "both"}}></div>
                         </div>
                         <div className="input-group">
                             <Scheduler 
                                 startDate={bulkPage.startDate} 
                                 endDate={bulkPage.endDate}
                                 onChange={(key, value) => this.onChangeValue(key, value)} />
+                            <div style={{clear: "both"}}></div>
                         </div>
                     </div>
                     <div className="right-column">
