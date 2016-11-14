@@ -33,12 +33,15 @@ class Seo extends Component {
     render() {
         const {page} = this.props;
         
+        const editing = page.tabId !== 0;
+        
         return (
             <div className={styles.seoContainer}>
+                {editing &&
                 <PageUrls pageUrls={page.pageUrls} 
                     siteAliases={page.siteAliases} 
                     pageHasParent={page.hasParent}
-                    primaryAliasId={page.primaryAliasId} /> 
+                    primaryAliasId={page.primaryAliasId} />} 
             
                 <GridSystem>
                     <GridCell className="left-column">
