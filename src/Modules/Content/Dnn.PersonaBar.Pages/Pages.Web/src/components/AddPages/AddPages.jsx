@@ -39,7 +39,7 @@ class AddPages extends Component {
  
     render() {
         const {bulkPage, onCancel, onSave} = this.props;
-        const noneSpecifiedText = Localization.get("MyWebsite");
+        const noneSpecifiedText = utils.getPortalName();
         const tags = bulkPage.tags ? bulkPage.tags.split(",") : [];
 
         return (

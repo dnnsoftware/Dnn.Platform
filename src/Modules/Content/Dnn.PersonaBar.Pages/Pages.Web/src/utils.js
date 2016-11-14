@@ -3,6 +3,7 @@ let config = null;
 let moduleName = null;
 let viewName = null;
 let initialized = false;
+let settings = null;
 
 function init(options) {
     if (!options) {
@@ -22,6 +23,7 @@ function init(options) {
     moduleName = options.moduleName;
     viewName = options.viewName;
     initialized = true;   
+    settings = options.settings;
 }
 
 function checkInit() {
@@ -102,6 +104,11 @@ function getSiteRoot() {
     return config.siteRoot;
 }
 
+function getPortalName() {
+    checkInit();
+    return settings.portalName;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -117,7 +124,8 @@ const utils = {
     getViewName,
     getResx,
     getSiteRoot,
-    areEqualInvariantCase
+    areEqualInvariantCase,
+    getPortalName
 };
 
 export default utils;

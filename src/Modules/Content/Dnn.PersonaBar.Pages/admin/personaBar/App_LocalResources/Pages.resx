@@ -579,9 +579,6 @@
   <data name="Pages_Seo_DeleteWarningMessage.Text" xml:space="preserve">
     <value>Are you sure you want to remove this URL?</value>
   </data>
-  <data name="MyWebsite.Text" xml:space="preserve">
-    <value>My Website</value>
-  </data>
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>None Specified</value>
   </data>
