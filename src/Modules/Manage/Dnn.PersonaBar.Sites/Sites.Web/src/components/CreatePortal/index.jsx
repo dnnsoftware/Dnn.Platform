@@ -243,7 +243,7 @@ class CreatePortal extends Component {
                                 label={Localization.get("Title.Label") + "*"}
                                 inputId="add-new-site-title"
                                 value={state.newPortal.SiteName}
-                                errorMessage={Localization.getFromPlatform("SiteTitleRequired.Error")}
+                                errorMessage={Localization.get("SiteTitleRequired.Error")}
                                 onChange={this.onChange.bind(this, "SiteName")}
                                 error={state.error.SiteName && state.triedToSave}
                                 />
@@ -305,7 +305,7 @@ class CreatePortal extends Component {
                                     inputId="site-url"
                                     value={state.newPortal.SiteAlias}
                                     onChange={this.onChange.bind(this, "SiteAlias")}
-                                    errorMessage={Localization.getFromPlatform("SiteAliasRequired.Error")}
+                                    errorMessage={Localization.get("SiteAliasRequired.Error")}
                                     error={state.error.SiteAlias && state.triedToSave}
                                     />
                             </GridCell>
@@ -320,54 +320,54 @@ class CreatePortal extends Component {
                                 <GridSystem className="with-right-border top-half">
                                     <GridCell>
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminUserName.Label")}
+                                            label={Localization.get("CreateSite_AdminUserName.Label")}
                                             inputId="admin-user-name"
                                             value={state.newPortal.Username}
                                             onChange={this.onChange.bind(this, "Username")}
-                                            errorMessage={Localization.getFromPlatform("UsernameRequired.Error")}
+                                            errorMessage={Localization.get("UsernameRequired.Error")}
                                             error={state.error.Username && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminFirstName.Label")}
+                                            label={Localization.get("CreateSite_AdminFirstName.Label")}
                                             inputId="admin-first-name"
                                             value={state.newPortal.Firstname}
                                             onChange={this.onChange.bind(this, "Firstname")}
-                                            errorMessage={Localization.getFromPlatform("FirstNameRequired.Error")}
+                                            errorMessage={Localization.get("FirstNameRequired.Error")}
                                             error={state.error.Firstname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminLastName.Label")}
+                                            label={Localization.get("CreateSite_AdminLastName.Label")}
                                             inputId="admin-last-name"
                                             value={state.newPortal.Lastname}
                                             onChange={this.onChange.bind(this, "Lastname")}
-                                            errorMessage={Localization.getFromPlatform("LastNameRequired.Error")}
+                                            errorMessage={Localization.get("LastNameRequired.Error")}
                                             error={state.error.Lastname && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                     </GridCell>
                                     <GridCell>
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminEmail.Label")}
+                                            label={Localization.get("CreateSite_AdminEmail.Label")}
                                             inputId="admin-email"
                                             value={state.newPortal.Email}
                                             onChange={this.onChange.bind(this, "Email")}
-                                            errorMessage={Localization.getFromPlatform("EmailRequired.Error")}
+                                            errorMessage={Localization.get("EmailRequired.Error")}
                                             error={state.error.Email && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminPassword.Label")}
+                                            label={Localization.get("CreateSite_AdminPassword.Label")}
                                             inputId="admin-password"
                                             value={state.newPortal.Password}
                                             type="password"
                                             onChange={this.onChange.bind(this, "Password")}
-                                            errorMessage={Localization.getFromPlatform("PasswordRequired.Error")}
+                                            errorMessage={Localization.get("PasswordRequired.Error")}
                                             error={state.error.Password && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
                                         <SingleLineInputWithError
-                                            label={Localization.getFromPlatform("CreateSite_AdminPasswordConfirm.Label")}
+                                            label={Localization.get("CreateSite_AdminPasswordConfirm.Label")}
                                             inputId="admin-password-confirm"
                                             type="password"
                                             value={state.newPortal.PasswordConfirm}
-                                            errorMessage={Localization.getFromPlatform("PasswordConfirmRequired.Error")}
+                                            errorMessage={Localization.get("PasswordConfirmRequired.Error")}
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
                                             error={state.error.PasswordConfirm && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
                                             />
