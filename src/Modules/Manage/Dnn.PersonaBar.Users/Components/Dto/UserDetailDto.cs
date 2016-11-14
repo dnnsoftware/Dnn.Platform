@@ -73,6 +73,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             IsOnline = user.Membership.IsOnLine;
             IsLocked = user.Membership.LockedOut;
             NeedUpdatePassword = user.Membership.UpdatePassword;
+            PortalId = user.PortalID;
             UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
             var userFolder = FolderManager.Instance.GetUserFolder(user);
             if (userFolder != null)

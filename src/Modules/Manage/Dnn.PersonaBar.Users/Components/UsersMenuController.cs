@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components
 {
     public class UsersMenuController : IMenuItemController
     {
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+
         public void UpdateParameters(MenuItem menuItem)
         {
         }
@@ -20,6 +24,8 @@ namespace Dnn.PersonaBar.Users.Components
         {
             var settings = new Dictionary<string, object>();
             settings.Add("isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser);
+            settings.Add("isAdmin", UserController.Instance.GetCurrentUserInfo().Roles.Contains(PortalSettings.AdministratorRoleName));
+            settings.Add("userId", UserController.Instance.GetCurrentUserInfo().UserID);
             return settings;
         }
     }

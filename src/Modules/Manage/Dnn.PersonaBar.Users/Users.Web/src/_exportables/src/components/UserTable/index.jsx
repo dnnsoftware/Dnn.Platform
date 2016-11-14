@@ -50,18 +50,25 @@ class UserTable extends Component {
     getChildren(user) {
         let children = [
             {
-                index: 5,
-                content: <UsersRoles userDetails={user} />
-            },
-            {
-                index: 10,
-                content: <EditProfile  userId={user.userId} />
-            },
-            {
                 index: 15,
-                content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) }/>
+                content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } appSettings={this.props.appSettings}/>
             }
         ].concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
+        
+        if (!user.isSuperUser)
+        {
+            children = children.concat([{
+                index: 5,
+                content: <UsersRoles userDetails={user} />
+            }]);
+        }
+
+        if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin) {
+            children = children.concat([{
+                    index: 10,
+                    content: <EditProfile  userId={user.userId} />
+                }]);
+        }
         return sort(children, "index").map((child) => {
             return child.content;
         });

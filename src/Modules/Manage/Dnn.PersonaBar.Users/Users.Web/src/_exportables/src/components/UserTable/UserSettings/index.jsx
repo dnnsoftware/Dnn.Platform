@@ -207,14 +207,16 @@ class UserSettings extends Component {
                             <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
                             </div>
                             </GridCell>
-                        {!state.userDetails.needUpdatePassword && <GridCell className="link">
+                        {!state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
                             <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
                             </div>
                             </GridCell>}
-                        <GridCell className="link">
-                            <div onClick={this.onSendPasswordLink.bind(this) }>[ {Localization.get("ResetPassword")} ]
-                            </div>
+                        {state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId &&
+                            <GridCell className="link">
+                                <div onClick={this.onSendPasswordLink.bind(this) }>[ {Localization.get("ResetPassword")} ]
+                                </div>
                             </GridCell>
+                        }
                     </GridCell>
                 </GridCell>
                 <GridCell className="outer-box right" columnSize={50}>
@@ -326,7 +328,8 @@ UserSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
     userId: PropTypes.array.isRequired,
     collapse: PropTypes.func.isRequired,
-    userDetails: PropTypes.object
+    userDetails: PropTypes.object,
+    appSettings: PropTypes.object
 };
 function mapStateToProps(state) {
     return {
