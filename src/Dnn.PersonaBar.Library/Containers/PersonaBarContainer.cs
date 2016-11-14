@@ -11,8 +11,10 @@ using Dnn.PersonaBar.Library.PersonaBar.Model;
 using DotNetNuke.Application;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.ImprovementsProgram;
 using Newtonsoft.Json.Linq;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -100,8 +102,18 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
             settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalSettings.PortalId);
-
+            if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
+            {
+                settings.Add("beaconUrl", GetBeaconUrl());
+            }
             return settings;
+        }
+
+        private static string GetBeaconUrl()
+        {
+            var beaconService = BeaconService.Instance;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
 
         #endregion
