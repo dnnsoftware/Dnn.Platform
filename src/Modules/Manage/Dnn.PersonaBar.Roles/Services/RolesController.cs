@@ -40,8 +40,8 @@ namespace Dnn.PersonaBar.Roles.Services
                 var isAdmin = IsAdmin();
 
                 var roles = (groupId < Null.NullInteger
-                                    ? RoleController.Instance.GetRoles(PortalSettings.PortalId)
-                                    : RoleController.Instance.GetRoles(PortalSettings.PortalId, r => r.RoleGroupID == groupId))
+                                    ? RoleController.Instance.GetRoles(PortalId)
+                                    : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == groupId))
                                     .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
                                     .Select(RoleDto.FromRoleInfo);
 
@@ -73,13 +73,13 @@ namespace Dnn.PersonaBar.Roles.Services
                 Validate(roleDto);
 
                 var role = roleDto.ToRoleInfo();
-                role.PortalID = PortalSettings.PortalId;
+                role.PortalID = PortalId;
                 var rolename = role.RoleName.ToUpperInvariant();
 
                 if (roleDto.Id == Null.NullInteger)
                 {
                     
-                    if (RoleController.Instance.GetRole(PortalSettings.PortalId,
+                    if (RoleController.Instance.GetRole(PortalId,
                         r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
                     {
                         RoleController.Instance.AddRole(role, assignExistUsers);
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 }
                 else
                 {
-                    if (RoleController.Instance.GetRole(PortalSettings.PortalId,
+                    if (RoleController.Instance.GetRole(PortalId,
                         r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) && r.RoleID != roleDto.Id) == null)
                     {
                         RoleController.Instance.UpdateRole(role, assignExistUsers);
@@ -120,7 +120,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
-            var role = RoleController.Instance.GetRoleById(PortalSettings.PortalId, roleDto.Id);
+            var role = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
             if (role == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "RoleNotFound");
@@ -150,7 +150,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 {
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, PortalId));
                 }
-                var groups = RoleController.GetRoleGroups(PortalSettings.PortalId)
+                var groups = RoleController.GetRoleGroups(PortalId)
                                 .Cast<RoleGroupInfo>()
                                 .Select(RoleGroupDto.FromRoleGroupInfo);
 
@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 Validate(roleGroupDto);
 
                 var roleGroup = roleGroupDto.ToRoleGroupInfo();
-                roleGroup.PortalID = PortalSettings.PortalId;
+                roleGroup.PortalID = PortalId;
 
                 if (roleGroup.RoleGroupID < Null.NullInteger)
                 {
@@ -197,7 +197,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                 }
 
-                roleGroup = RoleController.GetRoleGroups(PortalSettings.PortalId).Cast<RoleGroupInfo>()
+                roleGroup = RoleController.GetRoleGroups(PortalId).Cast<RoleGroupInfo>()
                     .FirstOrDefault(r => r.RoleGroupName == roleGroupDto.Name?.Trim());
 
                 return Request.CreateResponse(HttpStatusCode.OK, RoleGroupDto.FromRoleGroupInfo(roleGroup));
@@ -217,7 +217,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteRoleGroup(RoleGroupDto roleGroupDto)
         {
-            var roleGroup = RoleController.GetRoleGroup(PortalSettings.PortalId, roleGroupDto.Id);
+            var roleGroup = RoleController.GetRoleGroup(PortalId, roleGroupDto.Id);
             if (roleGroup == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "RoleGroupNotFound");
@@ -244,7 +244,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
-                var matchedUsers = UserController.GetUsersByDisplayName(PortalSettings.PortalId, displayMatch, 0, count,
+                var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
                     ref totalRecords, false, false)
                     .Cast<UserInfo>()
                     .Select(u => new UserRoleDto()
@@ -268,7 +268,7 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             try
             {
-                var role = RoleController.Instance.GetRoleById(PortalSettings.PortalId, roleId);
+                var role = RoleController.Instance.GetRoleById(PortalId, roleId);
                 if (role == null)
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound, new { });
@@ -279,7 +279,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidRequest");
                 }
 
-                var users = RoleController.Instance.GetUserRoles(PortalSettings.PortalId, Null.NullString, role.RoleName);
+                var users = RoleController.Instance.GetUserRoles(PortalId, Null.NullString, role.RoleName);
                 if (!string.IsNullOrEmpty(keyword))
                 {
                     users = users.Where(u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
@@ -288,7 +288,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 var totalRecords = users.Count;
                 var startIndex = pageIndex*pageSize;
-                var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                var portal = PortalController.Instance.GetPortal(PortalId);
                 var pagedData = users.Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
                     {
                         UserId = u.UserID,
@@ -321,16 +321,16 @@ namespace Dnn.PersonaBar.Roles.Services
                 {
                     userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
                 }
-                var user = UserController.Instance.GetUserById(PortalSettings.PortalId, userRoleDto.UserId);
-                var role = RoleController.Instance.GetRoleById(PortalSettings.PortalId, userRoleDto.RoleId);
+                var user = UserController.Instance.GetUserById(PortalId, userRoleDto.UserId);
+                var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
                     isOwner = false;
 
                 RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
 
-                var addedUser = RoleController.Instance.GetUserRole(PortalSettings.PortalId, userRoleDto.UserId, userRoleDto.RoleId);
-                var portal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                var addedUser = RoleController.Instance.GetUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId);
+                var portal = PortalController.Instance.GetPortal(PortalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     new UserRoleDto
@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Roles.Services
             {
                 Validate(userRoleDto);
 
-                RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, userRoleDto.UserId, userRoleDto.RoleId,
+                RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new {userRoleDto.UserId, userRoleDto.RoleId});
@@ -408,7 +408,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
         private RoleDto GetRole(int roleId)
         {
-            return RoleDto.FromRoleInfo(RoleController.Instance.GetRoleById(PortalSettings.PortalId, roleId));
+            return RoleDto.FromRoleInfo(RoleController.Instance.GetRoleById(PortalId, roleId));
         }
 
         private bool IsAdmin()
