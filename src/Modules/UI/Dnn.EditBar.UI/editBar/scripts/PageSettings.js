@@ -26,7 +26,7 @@
     var onClick = function () {
         var personaBar = window.parent.dnn ? window.parent.dnn.PersonaBar : null;
         if (personaBar) {
-            personaBar.openPanel('pages', { viewName: 'edit', viewParams: null });
+            personaBar.openPanel('Pages', { viewName: 'edit', viewParams: null });
             personaBar.onPanelClose(pageEditComplete);
         }
     }
