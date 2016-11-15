@@ -24,31 +24,48 @@ class LanguagesPanel extends Component {
         this.state = {
             languageList: [],
             openId: "",
-            openMode: 1
+            openMode: 1,
+            contentLocalizationEnabled: false
         };
         isHost = util.settings.isHost;
     }
 
     componentWillMount() {
-        const {props} = this;
+        const {props, state} = this;
+
+        this.getHeaderColumns(props.contentLocalizationEnabled);
 
         if (props.languageList) {
             this.setState({
-                languageList: props.languageList
+                languageList: props.languageList,
+                contentLocalizationEnabled: props.contentLocalizationEnabled
             });
             return;
         }
         props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
             this.setState({
-                languageList: Object.assign({}, data.Languages)
+                languageList: Object.assign({}, data.Languages),
+                contentLocalizationEnabled: props.contentLocalizationEnabled
             });
         }));
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
+        let {state} = this;        
+
+        if (state.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
+            props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
+                this.getHeaderColumns(props.contentLocalizationEnabled);
+                this.setState({
+                    contentLocalizationEnabled: props.contentLocalizationEnabled
+                });
+            }));
+        }
+    }
+
+    getHeaderColumns(contentLocalizationEnabled) {
         tableFields = [];
-        if (props.contentLocalizationEnabled) {
+        if (contentLocalizationEnabled) {
             tableFields.push({ "name": resx.get("Culture.Header"), "id": "adv-Culture" });
             tableFields.push({ "name": resx.get("Pages.Header"), "id": "adv-Pages" });
             tableFields.push({ "name": resx.get("Translated.Header"), "id": "adv-Translated" });
@@ -60,12 +77,6 @@ class LanguagesPanel extends Component {
             tableFields.push({ "name": resx.get("Culture.Header"), "id": "Culture" });
             tableFields.push({ "name": resx.get("Enabled.Header"), "id": "Enabled" });
         }
-
-        props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
-            this.setState({
-                languageList: Object.assign({}, data.Languages)
-            });
-        }));
     }
 
     renderHeader() {
