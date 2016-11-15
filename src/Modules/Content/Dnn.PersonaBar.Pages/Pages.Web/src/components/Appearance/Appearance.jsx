@@ -37,25 +37,27 @@ class Appearance extends Component {
         }
     }
 
-    getPagePreviewUrl() {
+    getPagePreviewUrl(skinSrc, containerSrc) {
         const { page } = this.props;
         // if is new page take current page loaded behind the persona bar for preview
         const pageUrl = page.tabId !== 0 ? page.absoluteUrl : window.parent.location.href;
-        const skinSrc = this.trimAscxExtension(page.skinSrc);
-        const containerSrc = this.trimAscxExtension(page.containerSrc);
+        const skinSrcQueryString = encodeURI(this.trimAscxExtension(skinSrc));
+        const containerSrcQueryString = encodeURI(this.trimAscxExtension(containerSrc));
         const queryStringSeparator = pageUrl.indexOf("?") === -1 ? "?" : "&";
-        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrc + "&ContainerSrc=" + containerSrc;        
+        return pageUrl + queryStringSeparator + "SkinSrc=" + skinSrcQueryString + "&ContainerSrc=" + containerSrcQueryString;        
     }
 
     previewPage() {
-        const { page } = this.props;
+        const { page, defaultPortalLayout, defaultPortalContainer } = this.props;
+        const skinSrc = page.skinSrc || defaultPortalLayout;
+        const containerSrc = page.containerSrc || defaultPortalContainer;
 
-        if (!page.skinSrc || !page.containerSrc) {
+        if (!skinSrc || !containerSrc) {
             utils.notify(Localization.get("PleaseSelectLayoutContainer"));
             return;
         }
 
-        const previewUrl = this.getPagePreviewUrl();
+        const previewUrl = this.getPagePreviewUrl(skinSrc, containerSrc);
         window.open(previewUrl);
     }
 
