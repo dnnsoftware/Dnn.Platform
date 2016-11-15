@@ -37,6 +37,14 @@ const templateActions = {
                 });
             });     
         };
+    },
+
+    changeTemplateField(key, value) {
+        return {
+            type: ActionTypes.CHANGE_TEMPLATE_FIELD_VALUE,
+            field: key,
+            value
+        };
     }
 };
 export default templateActions;

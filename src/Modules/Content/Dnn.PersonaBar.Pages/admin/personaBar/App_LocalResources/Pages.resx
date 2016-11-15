@@ -600,4 +600,7 @@
   <data name="ModuleSettings.Text" xml:space="preserve">
     <value>Module Settings</value>
   </data>
+  <data name="TopPage.Text" xml:space="preserve">
+    <value>Top Page</value>
+  </data>
 </root>

@@ -13,6 +13,7 @@ import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
 import Localization from "../localization";
 import PageList from "./PageList/PageList";
+import SaveAsTemplate from "./SaveAsTemplate/SaveAsTemplate";
 import Button from "dnn-button";
 import utils from "../utils";
 import BackTo from "./common/BackTo/BackTo";
@@ -159,7 +160,7 @@ class App extends Component {
                         workSpaceTrayOutside={true}
                         workSpaceTray={backToPageSettings}
                         workSpaceTrayVisible={true}>
-                        Work in progress
+                        <SaveAsTemplate/>
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
