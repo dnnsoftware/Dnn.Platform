@@ -62,13 +62,19 @@ class LanguageRow extends Component {
         else return <span>-</span>;
     }
 
-    getPagesDisplay(prop) {
+    getPagesDisplay(pages, status) {
         if (this.props.id !== "add") {
-            if (prop && this.props.isLocalized) {
-                return this.props.isLocalized ? prop : "";
+            if (pages && this.props.isLocalized) {
+                return this.props.isLocalized ? <div className="pages-number-status">
+                    <div className="pages-number">{pages}</div>
+                    <div className="pages-status">{status ? "(" + status + ")" : ""}</div>
+                </div> : "";
             }
-            else if(this.props.isDefault) {
-                return prop;
+            else if (this.props.isDefault) {
+                return <div className="pages-number-status">
+                    <div className="pages-number">{pages}</div>
+                    <div className="pages-status">{status ? "(" + status + ")" : ""}</div>
+                </div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -154,10 +160,10 @@ class LanguageRow extends Component {
                                 {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-pages">
-                                {this.getPagesDisplay(props.localizablePages)}&nbsp;
+                                {this.getPagesDisplay(props.localizablePages, props.localizedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-translated">
-                                {this.getPagesDisplay(props.translatedPages)}&nbsp;
+                                {this.getPagesDisplay(props.translatedPages, props.translatedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
                                 {this.getActiveDisplay(props.active)}
@@ -213,7 +219,9 @@ LanguageRow.propTypes = {
     icon: PropTypes.string,
     enabled: PropTypes.bool,
     localizablePages: PropTypes.number,
-    translatedPages: PropTypes.string,
+    localizedStatus: PropTypes.string,
+    translatedPages: PropTypes.number,
+    translatedStatus: PropTypes.string,
     active: PropTypes.bool,
     isLocalized: PropTypes.bool,
     contentLocalizationEnabled: PropTypes.bool,

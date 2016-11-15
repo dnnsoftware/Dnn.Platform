@@ -1678,8 +1678,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             l.EnglishName,
                             Enabled = IsLanguageEnabled(pid, l.Code),
                             IsDefault = l.Code == portalSettings.DefaultLanguage,
-                            LocalizablePages = string.IsNullOrEmpty(GetLocalizedStatus(l.Code)) ? $"{GetLocalizablePages(l.Code)}" : $"{GetLocalizablePages(l.Code)} ({GetLocalizedStatus(l.Code)})",
-                            TranslatedPages = string.IsNullOrEmpty(GetTranslatedStatus(l.Code)) ? $"{GetTranslatedPages(l.Code)}": $"{GetTranslatedPages(l.Code)} ({GetTranslatedStatus(l.Code)})",
+                            LocalizablePages = GetLocalizablePages(l.Code),
+                            LocalizedStatus = GetLocalizedStatus(l.Code),
+                            TranslatedPages = GetTranslatedPages(l.Code),
+                            TranslatedStatus = GetTranslatedStatus(l.Code),
                             Active = IsLanguagePublished(pid, l.Code),
                             IsLocalized = IsLocalized(l.Code)
                         })
