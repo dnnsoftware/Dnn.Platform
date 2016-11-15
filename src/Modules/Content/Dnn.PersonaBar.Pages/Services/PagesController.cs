@@ -8,15 +8,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
@@ -27,10 +23,8 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
-using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
@@ -101,21 +95,14 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteCustomUrl(UrlIdDto dto)
         {
-            var tab = PortalSettings.ActiveTab;
-            var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == dto.Id);
+            _pagesController.DeleteCustomUrl(dto, PortalSettings);
 
-            TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
-
-            // Delete Custom Url
             var response = new
             {
                 Success = true
             };
+
             return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
-        public class UrlIdDto
-        {
-            public int Id { get; set; }
         }
 
         /// GET: api/Pages/GetPageList

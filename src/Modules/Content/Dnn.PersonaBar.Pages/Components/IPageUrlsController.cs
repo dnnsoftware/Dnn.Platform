@@ -12,5 +12,6 @@ namespace Dnn.PersonaBar.Pages.Components
         IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId);
         PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
         PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
+        PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings);
     }
 }

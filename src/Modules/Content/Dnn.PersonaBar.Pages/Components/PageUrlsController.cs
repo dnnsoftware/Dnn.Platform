@@ -227,6 +227,19 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
+        public PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings)
+        {
+            var tab = portalSettings.ActiveTab;
+            var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == dto.Id);
+
+            TabController.Instance.DeleteTabUrl(tabUrl, portalSettings.PortalId, true);
+
+            return new PageUrlResult
+            {
+                Success = true
+            };
+        }
+
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)
         {
             var friendlyUrlSettings = new FriendlyUrlSettings(tab.PortalID);

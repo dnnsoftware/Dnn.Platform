@@ -54,5 +54,6 @@ namespace Dnn.PersonaBar.Pages.Components
         PageSettings GetPageSettings(int pageId);
         PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
         PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
+        PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings);
     }
 }

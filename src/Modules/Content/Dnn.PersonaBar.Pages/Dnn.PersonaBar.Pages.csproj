@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="Components\BulkPagesController.cs" />
     <Compile Include="Components\Dto\PageUrlResult.cs" />
+    <Compile Include="Components\Dto\UrlIdDto.cs" />
     <Compile Include="Components\Exceptions\PageModuleNotFoundException.cs" />
     <Compile Include="Components\IBulkPagesController.cs" />
     <Compile Include="Components\IPageManagementController.cs" />
