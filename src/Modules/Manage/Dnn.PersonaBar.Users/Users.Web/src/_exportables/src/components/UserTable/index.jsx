@@ -110,6 +110,8 @@ class UserTable extends Component {
                     currentIndex={this.state.renderIndex}
                     openId={this.state.openId }
                     key={"user-add"}
+                    appSettings={props.appSettings}
+                    columnSizes={props.columnSizes}
                     id={"add"}>
                     <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
                 </DetailRow>
