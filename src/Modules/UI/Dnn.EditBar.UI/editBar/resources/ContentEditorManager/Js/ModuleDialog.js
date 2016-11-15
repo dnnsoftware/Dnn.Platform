@@ -40,6 +40,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             this._inputDelay = 400;
             this._lastVal = '';
             this._supportCategory = true;
+            this._callFromExistingModule = false;
 
             this._syncCompleteHandler = $.proxy(this._syncComplete, this);
             this._refreshCompleteHandler = $.proxy(this._refreshComplete, this);
@@ -47,9 +48,9 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             this._attachEvents();
         },
 
-        apply: function (moduleManager) {
+        apply: function (moduleManager, callFromExistingModule) {
             this._moduleManager = moduleManager;
-
+            this._callFromExistingModule = callFromExistingModule;
             this.options = $.extend({}, this.options, {
                 paneName: moduleManager.options.pane
             });
@@ -907,14 +908,16 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
 
             //hide related modules
             var relatedModules = [];
-            $('div.DnnModule').each(function() {
-                var id = handler.getModuleManager()._findModuleId($(this));
-                if (id > moduleId) {
-                    $(this).hide();
-                    $('#moduleActions-' + id).hide();
-                    relatedModules.push(id);
-                }
-            });
+            if (!this._callFromExistingModule) {
+                $('div.DnnModule').each(function() {
+                    var id = handler.getModuleManager()._findModuleId($(this));
+                    if (id > moduleId) {
+                        $(this).hide();
+                        $('#moduleActions-' + id).hide();
+                        relatedModules.push(id);
+                    }
+                });
+            }
             module.data('relatedModules', relatedModules);
 
             module.addClass('floating');

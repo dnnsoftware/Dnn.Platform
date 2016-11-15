@@ -33,7 +33,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         },
 
         apply: function (moduleManager) {
-            this._moduleDialog.apply(moduleManager);
+            this._moduleDialog.apply(moduleManager, true);
             return this;
         },
 
