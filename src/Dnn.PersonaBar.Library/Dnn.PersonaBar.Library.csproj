@@ -88,6 +88,12 @@
     <Compile Include="Controllers\TabsController.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Data\IDataService.cs" />
+    <Compile Include="DTO\Tabs\DnnModuleDto.cs" />
+    <Compile Include="DTO\Tabs\DnnModulesDto.cs" />
+    <Compile Include="DTO\Tabs\DnnPageDto.cs" />
+    <Compile Include="DTO\Tabs\DnnPagesDto.cs" />
+    <Compile Include="DTO\Tabs\LanguageTabDto.cs" />
+    <Compile Include="DTO\Tabs\LocaleInfoDto.cs" />
     <Compile Include="DTO\Tabs\NodeCheckedState.cs" />
     <Compile Include="DTO\Permission.cs" />
     <Compile Include="DTO\Permissions.cs" />
