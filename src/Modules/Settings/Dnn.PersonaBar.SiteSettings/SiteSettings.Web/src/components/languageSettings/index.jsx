@@ -233,15 +233,13 @@ class LanguageSettingsPanelBody extends Component {
                         </div>
                     </InputGroup>
                 }
-                <div className={"collapsible-button" + (state.languageSettings.AllowContentLocalization ? " open" : "")}>
-                    {!state.languageSettings.ContentLocalizationEnabled && <Button
-                        disabled={!state.languageSettings.AllowContentLocalization}
+                <div className={"collapsible-button" + (state.languageSettings.AllowContentLocalization || state.languageSettings.ContentLocalizationEnabled ? " open" : "")}>
+                    {!state.languageSettings.ContentLocalizationEnabled && <Button                        
                         type="secondary"
                         onClick={this.props.openLocalizedContent}>
                         {resx.get("EnableLocalizedContent")}
                     </Button>}
-                    {state.languageSettings.ContentLocalizationEnabled && <Button
-                        disabled={!state.languageSettings.AllowContentLocalization}
+                    {state.languageSettings.ContentLocalizationEnabled && <Button                        
                         type="secondary"
                         onClick={this.disableLocalizedContent.bind(this)}>
                         {resx.get("DisableLocalizedContent")}
