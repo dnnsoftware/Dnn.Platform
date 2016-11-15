@@ -50,11 +50,17 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
 
         public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
         {
-            var menuController = GetMenuItemController(menuItem);
-            return menuItem.Enabled
+            var visible = menuItem.Enabled
                    && !(user.IsSuperUser && !menuItem.AllowHost)
-                   && MenuPermissionController.CanView(portalSettings.PortalId, menuItem)
-                   && (menuController == null || menuController.Visible(menuItem));
+                   && MenuPermissionController.CanView(portalSettings.PortalId, menuItem);
+
+            if (visible)
+            {
+                var menuController = GetMenuItemController(menuItem);
+                visible = menuController == null || menuController.Visible(menuItem);
+            }
+
+            return visible;
         }
 
         private bool GetPersonaBarMenuWithPermissionCheck(PortalSettings portalSettings, UserInfo user, IList<MenuItem> filterItems, IList<MenuItem> menuItems)

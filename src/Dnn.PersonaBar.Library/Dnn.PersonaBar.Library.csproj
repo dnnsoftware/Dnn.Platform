@@ -118,6 +118,7 @@
     <Compile Include="PersonaBar\Permissions\CompareMenuPermissions.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionCollection.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionController.cs" />
+    <Compile Include="PersonaBar\Permissions\PermissionInfo.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionInfo.cs" />
     <Compile Include="PersonaBar\Repository\IPersonaBarExtensionRepository.cs" />
     <Compile Include="PersonaBar\Repository\IPersonaBarRepository.cs" />

@@ -52,11 +52,27 @@ IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{o
     DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultRoles
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarPermissions
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarPermission
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarPermission
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    DROP TABLE {databaseOwner}{objectQualifier}PersonaBarPermission
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuDefaultRoles') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     DROP TABLE {databaseOwner}{objectQualifier}PersonaBarMenuDefaultRoles
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
     DROP TABLE {databaseOwner}{objectQualifier}PersonaBarMenuPermission
 GO
 
