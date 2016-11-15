@@ -147,7 +147,7 @@ class LanguageRow extends Component {
                                 {this.getPagesDisplay(props.localizablePages)}&nbsp;
                             </div>
                             <div className="language-item item-row-translated">
-                                {props.isLocalized ? props.translatedPages : ""}&nbsp;
+                                {this.getPagesDisplay(props.translatedPages)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
                                 {this.getBooleanDisplay(props.active)}
