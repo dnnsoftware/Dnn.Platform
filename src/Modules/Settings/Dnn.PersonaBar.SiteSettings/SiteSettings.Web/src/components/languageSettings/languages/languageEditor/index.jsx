@@ -290,7 +290,7 @@ class LanguageEditor extends Component {
                         labelHidden={true}
                         value={state.languageDetail.Enabled}
                         onChange={this.onSettingChange.bind(this, "Enabled")}
-                        readOnly={state.languageDetail.IsDefault}
+                        readOnly={!state.languageDetail.CanEnableDisable}
                         />
                 </div>
             </InputGroup>
@@ -302,22 +302,7 @@ class LanguageEditor extends Component {
                         label={resx.get("DefaultLanguage")}
                         />
                 </InputGroup>
-            }
-            {state.languageDetail.Enabled &&
-                <InputGroup>
-                    <div className="languageDetailSettings-row_switch">
-                        <Label
-                            labelType="inline"
-                            label={resx.get("publishLanguageLabel")}
-                            />
-                        <Switch
-                            labelHidden={true}
-                            value={state.languageDetail.Active}
-                            onChange={this.onSettingChange.bind(this, "Active")}
-                            />
-                    </div>
-                </InputGroup>
-            }
+            }            
         </div>;
         return (
             <div className="language-editor">

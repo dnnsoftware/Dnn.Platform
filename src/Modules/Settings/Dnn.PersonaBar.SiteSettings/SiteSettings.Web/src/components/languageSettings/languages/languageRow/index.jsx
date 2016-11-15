@@ -42,9 +42,19 @@ class LanguageRow extends Component {
     }
 
     /* eslint-disable react/no-danger */
-    getBooleanDisplay(prop) {
+    getActiveDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop && this.props.isLocalized) {
+                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
+            }
+            else return <span>&nbsp; </span>;
+        }
+        else return <span>-</span>;
+    }
+
+    getEnabledDisplay(prop) {
+        if (this.props.id !== "add") {
+            if (prop) {
                 return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
             }
             else return <span>&nbsp; </span>;
@@ -150,10 +160,10 @@ class LanguageRow extends Component {
                                 {this.getPagesDisplay(props.translatedPages)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
-                                {this.getBooleanDisplay(props.active)}
+                                {this.getActiveDisplay(props.active)}
                             </div>
                             <div className="language-item item-row-enabled-adv">
-                                {this.getBooleanDisplay(props.enabled)}
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
                                 <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>
@@ -178,7 +188,7 @@ class LanguageRow extends Component {
                                 {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-enabled">
-                                {this.getBooleanDisplay(props.enabled)}
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons">
                                 <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
