@@ -46,7 +46,7 @@ const pageActions = {
         };
     },
 
-    duplicatePage(){
+    duplicatePage() {
         return (dispatch, getState) => {
             const {pages} = getState();
             const duplicatedPage = cloneDeep(pages.selectedPage);
