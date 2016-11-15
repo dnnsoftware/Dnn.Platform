@@ -93,7 +93,7 @@ export default function  pageSeoReducer(state = {
             };
         case ActionTypes.SEO_SAVE_URL:
             return { ...state,
-                addingNewUrl: true
+                editingUrl: true
             };
         case ActionTypes.SEO_SAVED_URL:
             return { ...state,
