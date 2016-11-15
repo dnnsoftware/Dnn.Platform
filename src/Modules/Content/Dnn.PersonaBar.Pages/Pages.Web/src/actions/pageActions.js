@@ -213,11 +213,19 @@ const pageActions = {
                 type: ActionTypes.COPYING_APPEARANCE_TO_DESCENDANT_PAGES
             });
 
-            const page = getState().pages.selectedPage;
+            const state = getState();
+            const page = state.pages.selectedPage;
+            const { defaultPortalLayout, defaultPortalContainer } = state.theme;
             const theme = {
-                skinSrc: page.skinSrc, 
-                containerSrc: page.containerSrc
+                skinSrc: page.skinSrc  || defaultPortalLayout, 
+                containerSrc: page.containerSrc || defaultPortalContainer
             };
+
+            if (!theme.skinSrc || !theme.containerSrc) {
+                utils.notifyError(Localization.get("PleaseSelectLayoutContainer"));
+                return;
+            }
+
             PagesService.copyAppearanceToDescendantPages(page.tabId, theme).then(() => {
                 utils.notify(Localization.get("CopyAppearanceToDescendantPagesSuccess"));
                 dispatch({
