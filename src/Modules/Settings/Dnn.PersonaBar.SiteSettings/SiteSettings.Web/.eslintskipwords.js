@@ -129,5 +129,6 @@ module.exports = [
     "dev",
     "devtools",
     "ctrl",
+    "resx",
     "getsilence"
 ]

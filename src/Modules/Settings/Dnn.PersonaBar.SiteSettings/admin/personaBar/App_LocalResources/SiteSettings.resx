@@ -1152,4 +1152,25 @@
   <data name="ModuleInfoForNonAdmins.Text" xml:space="preserve">
     <value>You do not have enough permissions to edit the title of this module.</value>
   </data>
+  <data name="ActivatePages.Text" xml:space="preserve">
+    <value>Activate Pages in This Language: </value>
+  </data>
+  <data name="ActivatePages.Help" xml:space="preserve">
+    <value>A language must be enabled before it can be activated and it must be deactivated before it can be disabled.</value>
+  </data>
+  <data name="MarkAllPagesAsTranslated.Text" xml:space="preserve">
+    <value>Mark All Pages As Translated</value>
+  </data>
+  <data name="EraseAllLocalizedPages.Text" xml:space="preserve">
+    <value>Erase All Localized Pages</value>
+  </data>
+  <data name="PublishTranslatedPages.Text" xml:space="preserve">
+    <value>Publish Translated Pages</value>
+  </data>
+  <data name="PagesToTranslate.Text" xml:space="preserve">
+    <value>Pages To Translate:</value>
+  </data>
+    <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
+    <value>Add All Unlocalized Pages</value>
+  </data>
 </root>

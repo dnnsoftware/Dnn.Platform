@@ -116,7 +116,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === Pages.TranslatePageContent}>
                     <SocialPanelHeader title={resx.get("TranslatePageContent")} />
                     {props.selectedPage === Pages.TranslatePageContent &&
-                        <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)}/> 
+                        <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId}/> 
                     }
                 </PersonaBarPage>
 
