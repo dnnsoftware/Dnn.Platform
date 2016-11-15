@@ -50,5 +50,6 @@ namespace Dnn.PersonaBar.Pages.Components
         void CopyPermissionsToDescendantPages(int pageId);
 
         IEnumerable<Url> GetPageUrls(int tabId);
+        PageSettings GetPageSettings(int pageId);
     }
 }

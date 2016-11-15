@@ -270,7 +270,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return pages;
         }
 
-        public TabInfo GetPageDetails(int pageId)
+        private TabInfo GetPageDetails(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = TabController.Instance.GetTab(pageId, portalSettings.PortalId);
@@ -724,6 +724,21 @@ namespace Dnn.PersonaBar.Pages.Components
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var portalId = portalSettings.PortalId;
             return _pageUrlsController.GetPageUrls(tab, portalId);
+        }
+
+        public PageSettings GetPageSettings(int pageId)
+        {
+            var tab = GetPageDetails(pageId);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var page = Converters.ConvertToPageSettings<PageSettings>(tab);
+            page.Modules = GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
+            page.PageUrls = GetPageUrls(page.TabId);
+            page.Permissions = GetPermissionsData(pageId);
+            page.SiteAliases = GetSiteAliases(portalSettings.PortalId);
+            page.PrimaryAliasId = GetPrimaryAliasId(portalSettings.PortalId, portalSettings.CultureCode);
+            page.Locales = GetLocales(portalSettings.PortalId);
+            page.HasParent = tab.ParentId > -1;
+            return page;
         }
 
 

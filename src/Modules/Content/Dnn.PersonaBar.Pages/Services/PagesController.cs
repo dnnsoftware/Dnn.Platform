@@ -61,16 +61,7 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
-                var tab = _pagesController.GetPageDetails(pageId);
-                var page = Converters.ConvertToPageSettings<PageSettings>(tab);
-                page.Modules = _pagesController.GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
-                page.PageUrls = _pagesController.GetPageUrls(page.TabId);
-                page.Permissions = _pagesController.GetPermissionsData(pageId);
-                page.SiteAliases = SiteAliases;
-                page.PrimaryAliasId = PrimaryAliasId;
-                page.Locales = Locales;
-                page.HasParent = tab.ParentId > -1;
-
+                var page = _pagesController.GetPageSettings(pageId);
                 return Request.CreateResponse(HttpStatusCode.OK, page);
             }
             catch (PageNotFoundException)
