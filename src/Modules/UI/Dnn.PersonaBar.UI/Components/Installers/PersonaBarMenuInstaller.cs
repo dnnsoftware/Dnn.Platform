@@ -8,6 +8,7 @@ using System.Xml.XPath;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
 using Dnn.PersonaBar.Library.PersonaBar.Permissions;
 using Dnn.PersonaBar.Library.PersonaBar.Repository;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
@@ -162,11 +163,15 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 PersonaBarRepository.Instance.SaveMenuDefaultRoles(menuItem, _menuRoles[menuItem.Identifier]);
 
-                foreach (var roleName in defaultRoles)
+                //don't save menu permissions during install process
+                if (Globals.Status != Globals.UpgradeStatus.Install)
                 {
-                    if (!string.IsNullOrEmpty(roleName.Trim()))
+                    foreach (var roleName in defaultRoles)
                     {
-                        SaveMenuPermission(menuItem, roleName.Trim());
+                        if (!string.IsNullOrEmpty(roleName.Trim()))
+                        {
+                            SaveMenuPermission(menuItem, roleName.Trim());
+                        }
                     }
                 }
             }
