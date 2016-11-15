@@ -23,8 +23,11 @@ class More extends Component {
         onChangeField(key, event.target.value);
     }
 
-    onCacheProviderSelected(option) {        
+    onCacheProviderSelected(option) {
         this.props.onChangeField("cacheProvider", option.value);
+        if (!this.props.page.cacheProvider && option.value) {
+            this.props.onChangeField("cacheIncludeExclude", true);
+        }        
     }
 
     onChangeIncludeExclude(value) {
@@ -111,18 +114,21 @@ class More extends Component {
                                 <SingleLineInputWithError
                                     label={Localization.get("IncludeParamsInCacheValidation")}
                                     tooltipMessage={Localization.get("IncludeParamsInCacheValidation_tooltip")} 
-                                    value={page.cacheIncludeVaryBy} />}
+                                    value={page.cacheIncludeVaryBy} 
+                                    onChange={this.onChangeField.bind(this, "cacheIncludeVaryBy")} />}
 
                             {page.cacheIncludeExclude &&
                                 <SingleLineInputWithError
                                     label={Localization.get("ExcludeParamsInCacheValidation")}
                                     tooltipMessage={Localization.get("ExcludeParamsInCacheValidation_tooltip")} 
-                                    value={page.cacheExcludeVaryBy} /> }
+                                    value={page.cacheExcludeVaryBy} 
+                                    onChange={this.onChangeField.bind(this, "cacheExcludeVaryBy")}/> }
 
                             <SingleLineInputWithError                                 
                                 label={Localization.get("VaryByLimit")}
                                 tooltipMessage={Localization.get("VaryByLimit_tooltip")}
-                                value={page.cacheMaxVaryByCount} />
+                                value={page.cacheMaxVaryByCount}
+                                onChange={this.onChangeField.bind(this, "cacheMaxVaryByCount")} />
                             
                         </GridCell>       
                     } 

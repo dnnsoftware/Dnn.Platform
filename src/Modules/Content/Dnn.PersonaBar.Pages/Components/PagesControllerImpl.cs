@@ -419,11 +419,36 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.Url = GetInternalUrl(pageSettings);
             
             tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
-            tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
-            tab.TabSettings["CacheIncludeExclude"] = pageSettings.CacheIncludeExclude;
-            tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
-            tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
-            tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
+            if (pageSettings.CacheProvider != null)
+            {
+                tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
+                if (pageSettings.CacheIncludeExclude.HasValue)
+                {
+                    if (pageSettings.CacheIncludeExclude.Value)
+                    {
+                        tab.TabSettings["CacheIncludeExclude"] = "1";
+                        tab.TabSettings["IncludeVaryBy"] = null;
+                        tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
+                    }
+                    else
+                    {
+                        tab.TabSettings["CacheIncludeExclude"] = "0";
+                        tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
+                        tab.TabSettings["ExcludeVaryBy"] = null;
+                    }
+                    tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;               
+                }                
+            }
+
+            else
+            {
+                tab.TabSettings["CacheDuration"] = null;
+                tab.TabSettings["CacheIncludeExclude"] = null;
+                tab.TabSettings["IncludeVaryBy"] = null;
+                tab.TabSettings["ExcludeVaryBy"] = null;
+                tab.TabSettings["MaxVaryByCount"] = null;
+            }
+
             tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow;
             tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
