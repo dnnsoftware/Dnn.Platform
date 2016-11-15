@@ -25,6 +25,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
+using Dnn.PersonaBar.Library.Attributes;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
