@@ -748,6 +748,11 @@ namespace Dnn.PersonaBar.Pages.Components
             return _pageUrlsController.CreateCustomUrl(dto, portalSettings);
         }
 
+        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            return _pageUrlsController.UpdateCustomUrl(dto, portalSettings);
+        }
+
         protected IOrderedEnumerable<KeyValuePair<int, string>> GetLocales(int portalId)
         {
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));

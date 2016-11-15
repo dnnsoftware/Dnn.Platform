@@ -127,6 +127,106 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
+        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
+            bool modified;
+            //Clean Url
+            var options =
+                UrlRewriterUtils.ExtendOptionsForCustomURLs(
+                    UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(portalSettings.PortalId)));
+
+            //now clean the path
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            if (modified)
+            {
+                return new PageUrlResult
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
+                        SuggestedUrlPath = "/" + urlPath
+                    };
+            }
+
+            //Validate for uniqueness
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, portalSettings, out modified);
+            if (modified)
+            {
+                return new PageUrlResult
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
+                        SuggestedUrlPath = "/" + urlPath
+                    };
+            }
+
+            var tab = portalSettings.ActiveTab;
+            var cultureCode = LocaleController.Instance.GetLocales(portalSettings.PortalId)
+                .Where(l => l.Value.KeyID == dto.LocaleKey)
+                .Select(l => l.Value.Code)
+                .SingleOrDefault();
+
+            if (dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture) == "200")
+            {
+                //We need to check if we are updating a current url or creating a new 200
+                var tabUrl = tab.TabUrls.SingleOrDefault(t => t.SeqNum == dto.Id
+                                                              && t.HttpStatus == "200");
+                if (tabUrl == null)
+                {
+                    //Just create Url
+                    tabUrl = new TabUrlInfo
+                    {
+                        TabId = tab.TabID,
+                        SeqNum = dto.Id,
+                        PortalAliasId = dto.SiteAliasKey,
+                        PortalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage,
+                        QueryString = dto.QueryString.ValueOrEmpty(),
+                        Url = dto.Path.ValueOrEmpty(),
+                        CultureCode = cultureCode,
+                        HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
+                        IsSystem = dto.IsSystem // false
+                    };
+                    TabController.Instance.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
+                }
+                else
+                {
+                    //Change the original 200 url to a redirect
+                    tabUrl.HttpStatus = "301";
+                    tabUrl.SeqNum = dto.Id;
+                    TabController.Instance.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
+
+                    //Add new custom url
+                    tabUrl.Url = dto.Path.ValueOrEmpty();
+                    tabUrl.HttpStatus = "200";
+                    tabUrl.SeqNum = tab.TabUrls.Max(t => t.SeqNum) + 1;
+                    TabController.Instance.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
+                }
+            }
+            else
+            {
+                //Just update the url
+                var tabUrl = new TabUrlInfo
+                {
+                    TabId = tab.TabID,
+                    SeqNum = dto.Id,
+                    PortalAliasId = dto.SiteAliasKey,
+                    PortalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage,
+                    QueryString = dto.QueryString.ValueOrEmpty(),
+                    Url = dto.Path.ValueOrEmpty(),
+                    CultureCode = cultureCode,
+                    HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
+                    IsSystem = dto.IsSystem // false
+                };
+                TabController.Instance.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
+            }
+
+
+            return new PageUrlResult
+            {
+                Success = true
+            };
+        }
+
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)
         {
             var friendlyUrlSettings = new FriendlyUrlSettings(tab.PortalID);
