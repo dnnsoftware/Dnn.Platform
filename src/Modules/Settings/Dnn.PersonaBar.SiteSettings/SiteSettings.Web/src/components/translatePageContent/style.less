@@ -1,0 +1,25 @@
+@import "../../less/globals.less";
+@import "~dnn-global-styles/index";
+
+.language-settings-page-list {
+    .page-list {
+        border: 1px solid @alto;
+        .page-list-item {
+            padding: 10px;
+            border-bottom: 1px solid @alto;
+            &:last-of-type {
+                border-bottom: none;
+            }
+            a, a:visited, a:active, a:hover {
+                color: @curiousBlue !important;
+                font-weight: 600;
+                margin-left: 10px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
+    }
+    .float-rigth {
+        float: right;
+    }
+}

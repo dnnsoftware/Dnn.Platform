@@ -51,6 +51,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("Languages");
         sf.post("SaveResxEntries", payload, callback, failureCallback);
     }
+
+    getPageList (cultureCode, callback) {
+        const sf = this.getServiceFramework("Languages");        
+        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters({cultureCode}), {}, callback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

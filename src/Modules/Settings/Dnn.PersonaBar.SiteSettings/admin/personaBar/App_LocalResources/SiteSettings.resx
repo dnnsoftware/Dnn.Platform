@@ -1054,7 +1054,7 @@
     <value>Current Site Default:</value>
   </data>
   <data name="CurrentSiteDefault.Help" xml:space="preserve">
-    <value>Once localized content is enabled the default site culture will be permanently set and cannot be changed. Click Cancel now if you want to change the current site default.</value>
+    <value>Once localized content is enabled, the default site culture will be permanently set and cannot be changed. Click Cancel now if you want to change the current site default.</value>
   </data>
   <data name="AllPagesTranslatable.Text" xml:space="preserve">
     <value>Make All Pages Translatable: </value>
@@ -1110,13 +1110,16 @@
   <data name="DisableLocalizedContent.Text" xml:space="preserve">
     <value>Disable Localized Content</value>
   </data>
-  <data name="Active.Header" xml:space="preserve">
-    <value>ACTIVE</value>
+  <data name="TranslatePageContent.Text" xml:space="preserve">
+    <value>Translate Page Content</value>
   </data>
-  <data name="Pages.Header" xml:space="preserve">
-    <value>PAGES</value>
+  <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
+    <value>Add All Unlocalized Pages</value>
   </data>
-  <data name="Translated.Header" xml:space="preserve">
-    <value>TRANSLATED</value>
+  <data name="ViewPage.Text" xml:space="preserve">
+    <value>[ View Page ]</value>
+  </data>
+  <data name="EditPageSettings.Text" xml:space="preserve">
+    <value>[ Edit Page Settings ]</value>
   </data>
 </root>

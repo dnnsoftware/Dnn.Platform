@@ -228,12 +228,12 @@ const languagesActions = {
     },
     disableLocalizedContent(callback) {
         return (dispatch) => {
-           LanguageEditorService.disableLocalizedContent(callback);
+            LanguageEditorService.disableLocalizedContent(callback);
         };
     },
     enableLocalizedContent(payload, callback, failureCallback) {
         return (dispatch) => {
-           LanguageEditorService.enableLocalizedContent(payload, data => {
+            LanguageEditorService.enableLocalizedContent(payload, data => {
                 dispatch({
                     type: ActionTypes.ENABLED_LOCALIZED_CONTENT,
                     data: {
@@ -252,7 +252,7 @@ const languagesActions = {
     },
     getLocalizationProgress(callback) {
         return (dispatch) => {
-           LanguageEditorService.getLocalizationProgress(data => {
+            LanguageEditorService.getLocalizationProgress(data => {
                 if (callback) {
                     callback(data);
                 }
@@ -289,13 +289,29 @@ const languagesActions = {
             });
         };
     },
+    getPageList(cultureCode, callback) {
+        return (dispatch) => {
+            LanguageEditorService.getPageList(cultureCode, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_PAGES,
+                    data: {
+                        pageList: data
+                    }
+                });
+                console.log(22222222222);
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
     SelectLanguageRoles(roles, role, selected) {
         return (dispatch) => {
-            let list = roles.map((item, index) => { 
-                if(item.RoleName === role){
-                    return {RoleID: item.RoleID, RoleName: item.RoleName, Selected: selected};
+            let list = roles.map((item, index) => {
+                if (item.RoleName === role) {
+                    return { RoleID: item.RoleID, RoleName: item.RoleName, Selected: selected };
                 }
-                else{
+                else {
                     return item;
                 }
             });

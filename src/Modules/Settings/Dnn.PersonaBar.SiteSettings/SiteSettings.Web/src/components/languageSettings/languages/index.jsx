@@ -157,6 +157,11 @@ class LanguagesPanel extends Component {
         this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
     }
 
+    onOpenPageList(language) {
+        this.props.dispatch(VisiblePanelActions.selectPanel(6));
+        this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
+    }
+
     onLocalizePages(language) {
         //
     }
@@ -185,6 +190,7 @@ class LanguagesPanel extends Component {
                         openId={this.state.openId}
                         OpenCollapse={this.toggle.bind(this)}
                         onOpenEditor={this.onOpenEditor.bind(this, item)}
+                        onOpenPageList={this.onOpenPageList.bind(this, item)}
                         onLocalizePages={this.onLocalizePages.bind(this, item)}
                         Collapse={this.collapse.bind(this)}
                         id={id}>

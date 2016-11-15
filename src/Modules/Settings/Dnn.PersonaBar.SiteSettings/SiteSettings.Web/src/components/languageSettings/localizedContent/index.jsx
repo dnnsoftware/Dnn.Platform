@@ -29,14 +29,14 @@ class LocalizedContent extends Component {
     onEnable(event) {
         const {props, state} = this;
         props.dispatch(LanguagesActions.disableLocalizedContent());
-        props.dispatch(LanguagesActions.enableLocalizedContent({translatePages: state.allPagesTranslatable}, (data) => {
+        props.dispatch(LanguagesActions.enableLocalizedContent({ translatePages: state.allPagesTranslatable }, (data) => {
             this.setState(data);
-            const newState = Object.assign(data, {showProgressBars: true});
+            const newState = Object.assign(data, { showProgressBars: true });
             this.setState(newState);
             setTimeout(this.getProgressData, 500);
             this.onUpdateSettings();
-            
-            
+
+
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
             util.utilities.notifyError(errorMessage.Message);
@@ -60,12 +60,20 @@ class LocalizedContent extends Component {
             if (data.Error) {
                 return;
             }
-            this.doneProgress(); 
+            this.doneProgress();
         }));
     }
 
     doneProgress() {
-        setTimeout(this.props.closePersonaBarPage, 2000);
+        setTimeout(() => {
+            if (this.props.isOpen) {
+                this.props.closePersonaBarPage();
+
+            }
+            setTimeout(() => {
+                this.setState({ showProgressBars: false });
+            }, 1000);
+        }, 2000);
     }
 
     getDefaultLanguage() {
@@ -79,15 +87,13 @@ class LocalizedContent extends Component {
     onChange(event) {
         let {state, props} = this;
         const allPagesTranslatable = typeof (event) === "object" ? event.target.value : event;
-        this.setState({allPagesTranslatable});
+        this.setState({ allPagesTranslatable });
     }
 
     /* eslint-disable react/no-danger */
     render() {
         const defaultLanguage = this.getDefaultLanguage() || {};
         const {props, state} = this;
-        console.log('SETTINGS: ', props.languageSettings);
-        
         return (
             <SocialPanelBody
                 className="create-language-pack-panel enable-localized-content-panel"
@@ -99,7 +105,7 @@ class LocalizedContent extends Component {
                 <div className="languagePack-wrapper">
                     <InputGroup>
                         <div className="help-text-with-background">
-                            <p dangerouslySetInnerHTML={{__html: resx.get("EnableLocalizedContentHelpText") }}></p>
+                            <p dangerouslySetInnerHTML={{ __html: resx.get("EnableLocalizedContentHelpText") }}></p>
                             <p>{resx.get("EnableLocalizedContentClickCancel") }</p>
                         </div>
                     </InputGroup>
@@ -150,7 +156,7 @@ class LocalizedContent extends Component {
                         Error={this.state.Error}
                         CurrentOperationText={this.state.CurrentOperationText}
                         closePersonaBarPage={props.closePersonaBarPage}
-                    />}
+                        />}
                 </div>
             </SocialPanelBody>
         );
@@ -161,6 +167,7 @@ LocalizedContent.propTypes = {
     dispatch: PropTypes.func.isRequired,
     closePersonaBarPage: PropTypes.func,
     languages: PropTypes.array,
+    isOpen: PropTypes.bool,
     languageSettings: PropTypes.obj
 };
 
