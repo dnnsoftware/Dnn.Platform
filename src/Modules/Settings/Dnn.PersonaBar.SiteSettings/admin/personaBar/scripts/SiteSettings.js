@@ -8,7 +8,7 @@ define(['jquery',
 
         function loadScript() {
             var url = "scripts/bundles/site-settings-bundle.js";
-            //var url = "http://localhost:8080/dist/site-settings-bundle.js";
+            //var url = "http://localhost:8085/dist/site-settings-bundle.js";
             
             $.ajax({
                 dataType: "script",

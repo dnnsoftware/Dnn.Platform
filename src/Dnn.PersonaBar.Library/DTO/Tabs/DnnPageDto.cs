@@ -9,7 +9,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
     [JsonObject]
     public class DnnPageDto
     {
-        public int? TabId { get; set; }
+        public int TabId { get; set; }
         public string TabName { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

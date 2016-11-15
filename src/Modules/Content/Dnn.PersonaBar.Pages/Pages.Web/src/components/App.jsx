@@ -160,7 +160,8 @@ class App extends Component {
                         workSpaceTrayOutside={true}
                         workSpaceTray={backToPageSettings}
                         workSpaceTrayVisible={true}>
-                        <SaveAsTemplate/>
+                        <SaveAsTemplate 
+                            onCancel={props.onCancelSavePageAsTemplate} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }

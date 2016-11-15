@@ -372,6 +372,29 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        // POST /api/personabar/languages/PublishPages?languageId=5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage PublishPage(int languageId)
+        {
+            try
+            {
+                var locale = new LocaleController().GetLocale(languageId);
+                if (locale == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidLanguageID");
+                }
+
+                LocaleController.Instance.PublishLanguage(PortalId, locale.Code, true);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
         // GET /api/personabar/languages/GetTabsForTranslation?cultureCode=fr-FR
         [HttpGet]
         public HttpResponseMessage GetTabsForTranslation(string cultureCode)
@@ -390,12 +413,35 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         }
 
         // GET /api/personabar/languages/GetTabLocalization?tabId=123
+        /// <summary>
+        /// Gets the view data that used to be in the old ControlBar's localization tab
+        /// under Page Settings ( /{page}/ctl/Tab/action/edit/activeTab/settingTab ).
+        /// </summary>
+        /// <param name="tabId">The ID of the tab to get localization for.</param>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetTabLocalization(int tabId)
         {
             try
             {
                 var pages = GetNonLocalizedPages(tabId);
+                return Request.CreateResponse(HttpStatusCode.OK, pages);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/UpdateTabLocalization
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateTabLocalization(DnnPagesDto pages)
+        {
+            try
+            {
+                SaveNonLocalizedPages(pages);
                 return Request.CreateResponse(HttpStatusCode.OK, pages);
             }
             catch (Exception ex)
@@ -772,7 +818,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             // also, we do not want to add any locales the user has no access to
             var locales = new List<LocaleInfoDto>();
             var localeController = new LocaleController();
-            var localeDict = localeController.GetLocales(PortalSettings.PortalId);
+            var localeDict = localeController.GetLocales(PortalId);
             if (localeDict.Count == 0)
             {
                 locales.Add(new LocaleInfoDto(""));
@@ -846,7 +892,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 dnnPage.Title = localTabInfo.Title;
                 dnnPage.Description = localTabInfo.Description;
                 dnnPage.Path = localTabInfo.TabPath.Substring(0, localTabInfo.TabPath.LastIndexOf("//", StringComparison.Ordinal)).Replace("//", "");
-                dnnPage.HasChildren = (TabController.Instance.GetTabsByPortal(PortalSettings.PortalId).WithParentId(tabInfo.TabID).Count != 0);
+                dnnPage.HasChildren = (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count != 0);
                 dnnPage.CanAdminPage = TabPermissionController.CanAdminPage(tabInfo);
                 dnnPage.CanViewPage = TabPermissionController.CanViewPage(tabInfo);
                 dnnPage.LocalResourceFile = LocalResourcesFile;
@@ -869,7 +915,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 dnnPage.IsTranslated = localTabInfo.IsTranslated;
                 dnnPage.IsPublished = TabController.Instance.IsTabPublished(localTabInfo);
                 // generate modules information
-                foreach (var moduleInfo in ModuleController.Instance.GetTabModules(localTabInfo.TabID).Values)
+                var moduleController = ModuleController.Instance;
+                foreach (var moduleInfo in moduleController.GetTabModules(localTabInfo.TabID).Values)
                 {
                     var guid = moduleInfo.DefaultLanguageGuid == Null.NullGuid ? moduleInfo.UniqueId : moduleInfo.DefaultLanguageGuid;
 
@@ -894,7 +941,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     dnnModule.IsDeleted = moduleInfo.IsDeleted;
                     if (moduleInfo.DefaultLanguageGuid != Null.NullGuid)
                     {
-                        var defaultLanguageModule = ModuleController.Instance.GetModuleByUniqueID(moduleInfo.DefaultLanguageGuid);
+                        var defaultLanguageModule = moduleController.GetModuleByUniqueID(moduleInfo.DefaultLanguageGuid);
                         if (defaultLanguageModule != null)
                         {
                             dnnModule.DefaultModuleId = defaultLanguageModule.ModuleID;
@@ -920,9 +967,147 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
             return dnnPages;
         }
+
+        private void SaveNonLocalizedPages(DnnPagesDto pages)
+        {
+            // check all pages except the default "en-US" one
+            var tabController = TabController.Instance;
+            foreach (var page in pages.Pages)
+            {
+                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                if (tabInfo != null &&
+                    (tabInfo.TabName != page.TabName ||
+                     tabInfo.Title != page.Title ||
+                     tabInfo.Description != page.Description))
+                {
+                    tabInfo.TabName = page.TabName;
+                    tabInfo.Title = page.Title;
+                    tabInfo.Description = page.Description;
+                    tabController.UpdateTab(tabInfo);
+                }
+            }
+
+            var tabsToPublish = new List<TabInfo>();
+            var moduleTranslateOverrides = new Dictionary<int, bool>();
+            var moduleController = ModuleController.Instance;
+
+            // manage all actions we need to take for all modules on all pages
+            foreach (var modulesCollection in pages.Modules)
+            {
+                foreach (var moduleDto in modulesCollection.Modules)
+                {
+                    var tabModule = moduleController.GetTabModule(moduleDto.TabModuleId);
+                    if (tabModule != null)
+                    {
+                        if (tabModule.ModuleTitle != moduleDto.ModuleTitle)
+                        {
+                            tabModule.ModuleTitle = moduleDto.ModuleTitle;
+                            moduleController.UpdateModule(tabModule);
+                        }
+
+                        if (tabModule.DefaultLanguageGuid != Null.NullGuid &&
+                            tabModule.IsLocalized != moduleDto.IsLocalized)
+                        {
+                            var locale = LocaleController.Instance.GetLocale(tabModule.CultureCode);
+                            if (moduleDto.IsLocalized)
+                                moduleController.LocalizeModule(tabModule, locale);
+                            else
+                                moduleController.DeLocalizeModule(tabModule);
+                        }
+
+                        bool moduleTranslateOverride;
+                        moduleTranslateOverrides.TryGetValue(tabModule.TabID, out moduleTranslateOverride);
+
+                        if (!moduleTranslateOverride && tabModule.IsTranslated != moduleDto.IsTranslated)
+                        {
+                            moduleController.UpdateTranslationStatus(tabModule, moduleDto.IsTranslated);
+                        }
+                    }
+#if false
+                    else
+                    {
+                        // There was a logic here in the original ControlBar
+                        // functionality that is not maintained in the new PB.
+                    }
+#endif
+                }
+            }
+
+            foreach (var page in pages.Pages)
+            {
+                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                if (tabInfo != null)
+                {
+                    var moduleTranslateOverride = false;
+                    if (!tabInfo.IsDefaultLanguage)
+                    {
+                        if (tabInfo.IsTranslated != page.IsTranslated)
+                        {
+                            tabController.UpdateTranslationStatus(tabInfo, page.IsTranslated);
+                            if (page.IsTranslated)
+                            {
+                                moduleTranslateOverride = true;
+                                var tabModules = moduleController.GetTabModules(tabInfo.TabID)
+                                    .Where(moduleKvp =>
+                                        moduleKvp.Value.DefaultLanguageModule != null &&
+                                        moduleKvp.Value.LocalizedVersionGuid != moduleKvp.Value.DefaultLanguageModule.LocalizedVersionGuid);
+
+                                foreach (var moduleKvp in tabModules)
+                                {
+                                    moduleController.UpdateTranslationStatus(moduleKvp.Value, true);
+                                }
+                            }
+                        }
+
+                        if (page.IsPublished)
+                        {
+                            tabsToPublish.Add(tabInfo);
+                        }
+                    }
+
+                    moduleTranslateOverrides.Add(page.TabId, moduleTranslateOverride);
+                }
+            }
+
+            // if we have tabs to publish, do it.
+            // marks all modules as translated, marks page as translated
+            foreach (var tabInfo in tabsToPublish)
+            {
+                //First mark all modules as translated
+                foreach (var module in moduleController.GetTabModules(tabInfo.TabID).Values)
+                {
+                    moduleController.UpdateTranslationStatus(module, true);
+                }
+
+                //Second mark tab as translated
+                tabController.UpdateTranslationStatus(tabInfo, true);
+
+                //Third publish Tab (update Permissions)
+                tabController.PublishTab(tabInfo);
+            }
+
+            // manage translated status of tab. In order to do that, we need to check if all modules on the page are translated
+            var tabTranslatedStatus = true;
+            foreach (var page in pages.Pages)
+            {
+                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                if (tabInfo != null)
+                {
+                    if (tabInfo.ChildModules.Any(moduleKvp => !moduleKvp.Value.IsTranslated))
+                    {
+                        tabTranslatedStatus = false;
+                    }
+
+                    if (tabTranslatedStatus && !tabInfo.IsTranslated)
+                    {
+                        tabController.UpdateTranslationStatus(tabInfo, true);
+                    }
+                }
+            }
+        }
     }
 
-    public static class KpvExtension
+    internal static class KpvExtension
     {
         public static IEnumerable<LocalizationEntry> MapEntries(this IEnumerable<KeyValuePair<string, string>> list)
         {

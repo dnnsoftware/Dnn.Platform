@@ -42,7 +42,7 @@ class LanguageRow extends Component {
     }
 
     /* eslint-disable react/no-danger */
-    getBooleanDisplay(prop) {
+    getActiveDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop && this.props.isLocalized) {
                 return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
@@ -52,13 +52,29 @@ class LanguageRow extends Component {
         else return <span>-</span>;
     }
 
-    getPagesDisplay(prop) {
+    getEnabledDisplay(prop) {
         if (this.props.id !== "add") {
-            if (prop && this.props.isLocalized) {
-                return this.props.isLocalized ? prop : "";
+            if (prop) {
+                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
             }
-            else if(this.props.isDefault) {
-                return prop;
+            else return <span>&nbsp; </span>;
+        }
+        else return <span>-</span>;
+    }
+
+    getPagesDisplay(pages, status) {
+        if (this.props.id !== "add") {
+            if (pages && this.props.isLocalized) {
+                return this.props.isLocalized ? <div className="pages-number-status">
+                    <div className="pages-number">{pages}</div>
+                    <div className="pages-status">{status ? "(" + status + ")" : ""}</div>
+                </div> : "";
+            }
+            else if (this.props.isDefault) {
+                return <div className="pages-number-status">
+                    <div className="pages-number">{pages}</div>
+                    <div className="pages-status">{status ? "(" + status + ")" : ""}</div>
+                </div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -144,16 +160,16 @@ class LanguageRow extends Component {
                                 {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-pages">
-                                {this.getPagesDisplay(props.localizablePages)}&nbsp;
+                                {this.getPagesDisplay(props.localizablePages, props.localizedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-translated">
-                                {this.getPagesDisplay(props.translatedPages)}&nbsp;
+                                {this.getPagesDisplay(props.translatedPages, props.translatedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
-                                {this.getBooleanDisplay(props.active)}
+                                {this.getActiveDisplay(props.active)}
                             </div>
                             <div className="language-item item-row-enabled-adv">
-                                {this.getBooleanDisplay(props.enabled)}
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
                                 <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>
@@ -178,7 +194,7 @@ class LanguageRow extends Component {
                                 {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-enabled">
-                                {this.getBooleanDisplay(props.enabled)}
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons">
                                 <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
@@ -203,7 +219,9 @@ LanguageRow.propTypes = {
     icon: PropTypes.string,
     enabled: PropTypes.bool,
     localizablePages: PropTypes.number,
-    translatedPages: PropTypes.string,
+    localizedStatus: PropTypes.string,
+    translatedPages: PropTypes.number,
+    translatedStatus: PropTypes.string,
     active: PropTypes.bool,
     isLocalized: PropTypes.bool,
     contentLocalizationEnabled: PropTypes.bool,

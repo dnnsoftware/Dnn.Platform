@@ -603,4 +603,25 @@
   <data name="TopPage.Text" xml:space="preserve">
     <value>Top Page</value>
   </data>
+  <data name="Folder.Text" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="TemplateName.Text" xml:space="preserve">
+    <value>Template Name</value>
+  </data>
+  <data name="IncludeContent.Text" xml:space="preserve">
+    <value>Include Content</value>
+  </data>
+  <data name="FolderTooltip.Text" xml:space="preserve">
+    <value>Select the export folder where the template will be saved.</value>
+  </data>
+  <data name="TemplateNameTooltip.Text" xml:space="preserve">
+    <value>Enter a name for the page template.</value>
+  </data>
+  <data name="TemplateDescriptionTooltip.Text" xml:space="preserve">
+    <value>Enter a description of this template.</value>
+  </data>
+  <data name="IncludeContentTooltip.Text" xml:space="preserve">
+    <value>Check this box to include the module content.</value>
+  </data>
 </root>

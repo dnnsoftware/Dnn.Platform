@@ -20,8 +20,8 @@ class UserMenu extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick(e) {
-        if (!ReactDOM.findDOMNode(this).contains(e.target) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
+    handleClick(event) {
+        if (!ReactDOM.findDOMNode(this).contains(event.target) && (typeof event.target.className !== "string" || (typeof event.target.className === "string" && event.target.className.indexOf("menu-item") === -1))) {
             this.props.onClose();
         }
     }

@@ -1678,8 +1678,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             l.EnglishName,
                             Enabled = IsLanguageEnabled(pid, l.Code),
                             IsDefault = l.Code == portalSettings.DefaultLanguage,
-                            LocalizablePages = string.IsNullOrEmpty(GetLocalizedStatus(l.Code)) ? $"{GetLocalizablePages(l.Code)}" : $"{GetLocalizablePages(l.Code)} ({GetLocalizedStatus(l.Code)})",
-                            TranslatedPages = string.IsNullOrEmpty(GetTranslatedStatus(l.Code)) ? $"{GetTranslatedPages(l.Code)}": $"{GetTranslatedPages(l.Code)} ({GetTranslatedStatus(l.Code)})",
+                            LocalizablePages = GetLocalizablePages(l.Code),
+                            LocalizedStatus = GetLocalizedStatus(l.Code),
+                            TranslatedPages = GetTranslatedPages(l.Code),
+                            TranslatedStatus = GetTranslatedStatus(l.Code),
                             Active = IsLanguagePublished(pid, l.Code),
                             IsLocalized = IsLocalized(l.Code)
                         })
@@ -1710,80 +1712,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-        }
-
-        private bool IsLanguagePublished(int portalId, string code)
-        {
-            bool isPublished = Null.NullBoolean;
-            Locale enabledLanguage;
-            if (LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage))
-            {
-                isPublished = enabledLanguage.IsPublished;
-            }
-            return isPublished;
-        }
-
-        private string GetTranslatedPages(string code)
-        {
-            string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
-            {
-                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
-                status = translatedCount.ToString(CultureInfo.InvariantCulture);
-            }
-            return status;
-        }
-
-        private string GetLocalizedStatus(string code)
-        {
-            string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
-            {
-                int defaultPageCount = GetLocalizedPages(PortalSettings.DefaultLanguage, false).Count;
-                int currentPageCount = GetLocalizedPages(code, false).Count;
-                status = string.Format("{0:#0%}", currentPageCount / (float)defaultPageCount);
-            }
-            return status;
-        }
-
-        private string GetLocalizablePages(string code)
-        {
-            int count = 0;
-            foreach (KeyValuePair<int, TabInfo> t in GetLocalizedPages(code, false))
-            {
-                if (!t.Value.IsDeleted)
-                {
-                    count++;
-                }
-            }
-            return count.ToString(CultureInfo.CurrentUICulture);
-        }
-
-        private TabCollection GetLocalizedPages(string code, bool includeNeutral)
-        {
-            return TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, includeNeutral);
-        }
-
-        protected string GetTranslatedStatus(string code)
-        {
-            string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
-            {
-                int localizedCount = GetLocalizedPages(code, false).Count;
-                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
-                status = string.Format("{0:#0%}", translatedCount / (float)localizedCount);
-            }
-            return status;
-        }
-
-        protected bool IsDefaultLanguage(string code)
-        {
-            return code == PortalSettings.DefaultLanguage;
-        }
-
-        protected bool IsLocalized(string code)
-        {
-            return (code != PortalSettings.DefaultLanguage && GetLocalizedPages(code, false).Count > 0);
         }
 
         /// GET: api/SiteSettings/GetLanguage
@@ -1845,6 +1773,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         language.Code,
                         language.Fallback,
                         Enabled = IsLanguageEnabled(pid, language.Code),
+                        CanEnableDisable = CanEnableDisable(pid, language.Code),
                         IsDefault = language.Code == portalSettings.DefaultLanguage,
                         Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators")
                     } : new
@@ -1856,6 +1785,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Code = "",
                         Fallback = "",
                         Enabled = false,
+                        CanEnableDisable = false,
                         IsDefault = false,
                         Roles = ""
                     },
@@ -2430,6 +2360,80 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         #region Private Methods
 
+        private bool IsLanguagePublished(int portalId, string code)
+        {
+            bool isPublished = Null.NullBoolean;
+            Locale enabledLanguage;
+            if (LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage))
+            {
+                isPublished = enabledLanguage.IsPublished;
+            }
+            return isPublished;
+        }
+
+        private string GetTranslatedPages(string code)
+        {
+            string status = "";
+            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            {
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
+                status = translatedCount.ToString(CultureInfo.InvariantCulture);
+            }
+            return status;
+        }
+
+        private string GetLocalizedStatus(string code)
+        {
+            string status = "";
+            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            {
+                int defaultPageCount = GetLocalizedPages(PortalSettings.DefaultLanguage, false).Count;
+                int currentPageCount = GetLocalizedPages(code, false).Count;
+                status = string.Format("{0:#0%}", currentPageCount / (float)defaultPageCount);
+            }
+            return status;
+        }
+
+        private string GetLocalizablePages(string code)
+        {
+            int count = 0;
+            foreach (KeyValuePair<int, TabInfo> t in GetLocalizedPages(code, false))
+            {
+                if (!t.Value.IsDeleted)
+                {
+                    count++;
+                }
+            }
+            return count.ToString(CultureInfo.CurrentUICulture);
+        }
+
+        private TabCollection GetLocalizedPages(string code, bool includeNeutral)
+        {
+            return TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, includeNeutral);
+        }
+
+        private string GetTranslatedStatus(string code)
+        {
+            string status = "";
+            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            {
+                int localizedCount = GetLocalizedPages(code, false).Count;
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
+                status = string.Format("{0:#0%}", translatedCount / (float)localizedCount);
+            }
+            return status;
+        }
+
+        private bool IsDefaultLanguage(string code)
+        {
+            return code == PortalSettings.DefaultLanguage;
+        }
+
+        private bool IsLocalized(string code)
+        {
+            return (code != PortalSettings.DefaultLanguage && GetLocalizedPages(code, false).Count > 0);
+        }
+
         private bool CanDeleteProperty(ProfilePropertyDefinition definition)
         {
             switch (definition.PropertyName.ToLowerInvariant())
@@ -2555,6 +2559,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             Locale enabledLanguage;
             return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage);
+        }
+
+        private bool CanEnableDisable(int portalId, string code)
+        {
+            bool canEnable;
+            if (IsLanguageEnabled(portalId, code))
+            {
+                canEnable = !IsDefaultLanguage(code) && !IsLanguagePublished(portalId, code);
+            }
+            else
+            {
+                canEnable = !IsDefaultLanguage(code);
+            }
+            return canEnable;
         }
 
         private CultureDropDownTypes GetCultureDropDownType(int portalId)
