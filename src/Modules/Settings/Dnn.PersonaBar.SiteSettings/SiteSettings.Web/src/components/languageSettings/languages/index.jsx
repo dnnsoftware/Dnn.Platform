@@ -60,6 +60,12 @@ class LanguagesPanel extends Component {
             tableFields.push({ "name": resx.get("Culture.Header"), "id": "Culture" });
             tableFields.push({ "name": resx.get("Enabled.Header"), "id": "Enabled" });
         }
+
+        props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
+            this.setState({
+                languageList: Object.assign({}, data.Languages)
+            });
+        }));
     }
 
     renderHeader() {
