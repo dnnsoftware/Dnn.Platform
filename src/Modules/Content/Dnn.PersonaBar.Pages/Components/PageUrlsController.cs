@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
@@ -25,6 +28,103 @@ namespace Dnn.PersonaBar.Pages.Components
 
             automaticUrls.AddRange(customUrls);
             return automaticUrls;
+        }
+
+        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
+            bool modified;
+            //Clean Url
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(portalSettings.PortalId)));
+
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            if (modified)
+            {
+                return new PageUrlResult {
+                    Success = false,
+                    ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
+                    SuggestedUrlPath = "/" + urlPath
+                };
+            }
+
+            //Validate for uniqueness
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, portalSettings, out modified);
+            if (modified)
+            {
+                return new PageUrlResult {
+                    Success = false,
+                    ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
+                    SuggestedUrlPath = "/" + urlPath
+                };
+            }
+
+            var tab = portalSettings.ActiveTab;
+
+            if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
+                                     && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
+            {
+                return new PageUrlResult {
+                    Success = false,
+                    ErrorMessage = Localization.GetString("DuplicateUrl.Error")
+                };
+            }
+
+            var seqNum = (tab.TabUrls.Count > 0) ? tab.TabUrls.Max(t => t.SeqNum) + 1 : 1;
+            var portalLocales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
+            var cultureCode = portalLocales.Where(l => l.Value.KeyID == dto.LocaleKey)
+                                .Select(l => l.Value.Code)
+                                .SingleOrDefault();
+
+            var portalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage;
+            if (portalAliasUsage == PortalAliasUsageType.Default)
+            {
+                var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalSettings.PortalId)
+                                                        .SingleOrDefault(a => a.PortalAliasID == dto.SiteAliasKey);
+
+                if (string.IsNullOrEmpty(cultureCode) || alias == null)
+                {
+                    return new PageUrlResult
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
+                    };
+                }
+            }
+            else
+            {
+                var cultureAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalSettings.PortalId)
+                                                            .FirstOrDefault(a => a.CultureCode == cultureCode);
+
+                if (portalLocales.Count > 1 && !portalSettings.ContentLocalizationEnabled && (string.IsNullOrEmpty(cultureCode) || cultureAlias == null))
+                {
+                    return new PageUrlResult
+                    {
+                        Success = false,
+                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
+                    };
+                }
+            }
+
+            var tabUrl = new TabUrlInfo
+            {
+                TabId = tab.TabID,
+                SeqNum = seqNum,
+                PortalAliasId = dto.SiteAliasKey,
+                PortalAliasUsage = portalAliasUsage,
+                QueryString = dto.QueryString.ValueOrEmpty(),
+                Url = dto.Path.ValueOrEmpty(),
+                CultureCode = cultureCode,
+                HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
+                IsSystem = false
+            };
+
+            TabController.Instance.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
+
+            return new PageUrlResult
+            {
+                Success = true,
+                Id = seqNum // returns Id of the created Url
+            };
         }
 
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)

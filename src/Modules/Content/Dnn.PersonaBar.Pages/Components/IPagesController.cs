@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -10,9 +13,7 @@ namespace Dnn.PersonaBar.Pages.Components
         bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage);
         
         IEnumerable<TabInfo> GetPageList(int parentId = -1, string searchKey = "");
-
-        TabInfo GetPageDetails(int pageId);
-
+        
         List<int> GetPageHierarchy(int pageId);
 
         TabInfo MovePage(PageMoveRequest request);
@@ -51,5 +52,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
         IEnumerable<Url> GetPageUrls(int tabId);
         PageSettings GetPageSettings(int pageId);
+        PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
     }
 }

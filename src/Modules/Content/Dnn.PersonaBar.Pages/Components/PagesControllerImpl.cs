@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
@@ -40,6 +41,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -741,7 +743,32 @@ namespace Dnn.PersonaBar.Pages.Components
             return page;
         }
 
+        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            return _pageUrlsController.CreateCustomUrl(dto, portalSettings);
+        }
 
+        protected IOrderedEnumerable<KeyValuePair<int, string>> GetLocales(int portalId)
+        {
+            var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
+            return locales.Value.Values.Select(local => new KeyValuePair<int, string>(local.KeyID, local.EnglishName)).OrderBy(x => x.Value);
+        }
+        protected IEnumerable<KeyValuePair<int, string>> GetSiteAliases(int portalId)
+        {
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            return aliases.Select(alias => new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias)).OrderBy(x => x.Value);
+        }
+
+        protected int? GetPrimaryAliasId(int portalId, string cultureCode)
+        {
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            var primary = aliases.Where(a => a.IsPrimary
+                                && (a.CultureCode == cultureCode || String.IsNullOrEmpty(a.CultureCode)))
+                            .OrderByDescending(a => a.CultureCode)
+                            .FirstOrDefault();
+            return primary == null ? (int?)null : primary.KeyID;
+        }
+        
         public void CreateOrUpdateContentItem(TabInfo tab)
         {
             var contentController = Util.GetContentController();

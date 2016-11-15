@@ -18,6 +18,7 @@ using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Pages.Components;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
@@ -37,14 +38,12 @@ namespace Dnn.PersonaBar.Pages.Services
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {
-        private readonly Lazy<Dictionary<string, Locale>> _locales;
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
 
         public PagesController()
         {
-            _locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(PortalId));
             _pagesController = Components.PagesController.Instance;
             _themesController = ThemesController.Instance;
             _bulkPagesController = BulkPagesController.Instance;
@@ -74,105 +73,13 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage CreateCustomUrl(SaveUrlDto dto)
         {
-            var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
-            bool modified;
-            //Clean Url
-            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId)));
+            var result = _pagesController.CreateCustomUrl(dto, PortalSettings);
 
-            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
-            if (modified)
-            {
-                return Request.CreateResponse(HttpStatusCode.OK,
-                                                new
-                                                {
-                                                    Success = false,
-                                                    ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
-                                                    SuggestedUrlPath = "/" + urlPath
-                                                });
-            }
-
-            //Validate for uniqueness
-            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, PortalSettings, out modified);
-            if (modified)
-            {
-                return Request.CreateResponse(HttpStatusCode.OK,
-                                                new
-                                                {
-                                                    Success = false,
-                                                    ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
-                                                    SuggestedUrlPath = "/" + urlPath
-                                                });
-            }
-
-            var tab = PortalSettings.ActiveTab;
-
-            if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
-                                     && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, new
-                {
-                    Success = false,
-                    ErrorMessage = Localization.GetString("DuplicateUrl.Error")
-                });
-            }
-
-            var seqNum = (tab.TabUrls.Count > 0) ? tab.TabUrls.Max(t => t.SeqNum) + 1 : 1;
-            var portalLocales = LocaleController.Instance.GetLocales(PortalId);
-            var cultureCode = portalLocales.Where(l => l.Value.KeyID == dto.LocaleKey)
-                                .Select(l => l.Value.Code)
-                                .SingleOrDefault();
-
-            var portalAliasUsage = (PortalAliasUsageType)dto.SiteAliasUsage;
-            if (portalAliasUsage == PortalAliasUsageType.Default)
-            {
-                var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId)
-                                                        .SingleOrDefault(a => a.PortalAliasID == dto.SiteAliasKey);
-
-                if (string.IsNullOrEmpty(cultureCode) || alias == null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new
-                    {
-                        Success = false,
-                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
-                    });
-                }
-            }
-            else
-            {
-                var cultureAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId)
-                                                            .FirstOrDefault(a => a.CultureCode == cultureCode);
-
-                if (portalLocales.Count > 1 && !PortalSettings.ContentLocalizationEnabled && (string.IsNullOrEmpty(cultureCode) || cultureAlias == null))
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new
-                    {
-                        Success = false,
-                        ErrorMessage = Localization.GetString("InvalidRequest.Error")
-                    });
-                }
-            }
-
-            var tabUrl = new TabUrlInfo
-            {
-                TabId = tab.TabID,
-                SeqNum = seqNum,
-                PortalAliasId = dto.SiteAliasKey,
-                PortalAliasUsage = portalAliasUsage,
-                QueryString = dto.QueryString.ValueOrEmpty(),
-                Url = dto.Path.ValueOrEmpty(),
-                CultureCode = cultureCode,
-                HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
-                IsSystem = false
-            };
-
-            TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
-
-            var response = new
-            {
-                Success = true,
-                Id = seqNum // returns Id of the created Url
-            };
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            return Request.CreateResponse(HttpStatusCode.OK,
+                                new
+                                {
+                                    result.Id, result.Success, result.ErrorMessage, result.SuggestedUrlPath
+                                });
         }
 
         [HttpPost]
@@ -300,34 +207,6 @@ namespace Dnn.PersonaBar.Pages.Services
         public class UrlIdDto
         {
             public int Id { get; set; }
-        }
-
-        protected IOrderedEnumerable<KeyValuePair<int, string>> Locales
-        {
-            get
-            {
-                return _locales.Value.Values.Select(local => new KeyValuePair<int, string>(local.KeyID, local.EnglishName)).OrderBy(x => x.Value);
-            }
-        }
-        protected IEnumerable<KeyValuePair<int, string>> SiteAliases
-        {
-            get
-            {
-                var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId);
-                return aliases.Select(alias => new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias)).OrderBy(x => x.Value);
-            }
-        }
-        protected int? PrimaryAliasId
-        {
-            get
-            {
-                var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId);
-                var primary = aliases.Where(a => a.IsPrimary
-                                    && (a.CultureCode == PortalSettings.CultureCode || String.IsNullOrEmpty(a.CultureCode)))
-                                .OrderByDescending(a => a.CultureCode)
-                                .FirstOrDefault();
-                return primary == null ? (int?)null : primary.KeyID;
-            }
         }
 
         /// GET: api/Pages/GetPageList
