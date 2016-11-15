@@ -7,7 +7,17 @@ import languages from "./languagesReducer";
 import search from "./searchReducer";
 import languageEditor from "./languageEditorReducer";
 
-const rootReducer = combineReducers({
+function getExtraReducers() {
+    let extraReducers = {};
+    if (window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras) {
+        window.dnn.SiteSettings.SiteBehaviorExtras.forEach((extra) => {
+            extraReducers[extra.ReducerKey] = extra.Reducer;
+        });
+    }
+    return extraReducers;
+}
+
+const rootReducer = combineReducers(Object.assign(getExtraReducers(), {
     pagination,
     visiblePanel,
     siteInfo,
@@ -15,6 +25,6 @@ const rootReducer = combineReducers({
     languages,
     search,
     languageEditor
-});
+}));
 
 export default rootReducer;
