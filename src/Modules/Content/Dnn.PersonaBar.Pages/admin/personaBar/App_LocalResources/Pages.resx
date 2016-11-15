@@ -594,4 +594,7 @@
   <data name="DuplicatePage.Text" xml:space="preserve">
     <value>Duplicate Page</value>
   </data>
+  <data name="BranchParent.Text" xml:space="preserve">
+    <value>Branch Parent</value>
+  </data>
 </root>

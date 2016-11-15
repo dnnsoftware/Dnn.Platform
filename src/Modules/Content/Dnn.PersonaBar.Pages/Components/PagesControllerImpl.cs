@@ -837,7 +837,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
                 }
             }
-
+            
             return permissions;
         }
 
