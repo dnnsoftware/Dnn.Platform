@@ -446,12 +446,14 @@ namespace DotNetNuke.Services.Log.EventLog
                         LogQueue.Remove(logQueueItem);
                     }
                 }
+
+                DataProvider.Instance().PurgeLog();
             }
             finally
             {
                 LockQueueLog.ExitWriteLock();
             }
-            DataProvider.Instance().PurgeLog();
+
         }
 
         public override void SendLogNotifications()
