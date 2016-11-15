@@ -736,6 +736,10 @@ transform: rotate(180deg);
         position: absolute;
     }
 }
+.personabarnav > li#Edit.selected {
+    color: #737171;
+    background-color: transparent;
+}
 .hovermenu {
     position: absolute;
     left: 80px;
