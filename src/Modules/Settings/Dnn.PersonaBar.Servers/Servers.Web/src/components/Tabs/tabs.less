@@ -105,6 +105,12 @@
             }       
         }
     }
+
+    .smallLabelSize {
+        label {
+            font-size: 92%;
+        }
+    }
 }
 
 
@@ -142,6 +148,16 @@
         .dnn-servers-grid-panel.newSection {
             padding-top: 20px;
             padding-bottom: 10px;
+        }
+        .borderSeparation { 
+            > div {
+                border-bottom: 1px solid @alto;
+                margin-top: 10px;
+                padding-bottom: 10px;                
+            }
+            :first-child {
+                margin-top: 0;
+            }
         }
     }
 }

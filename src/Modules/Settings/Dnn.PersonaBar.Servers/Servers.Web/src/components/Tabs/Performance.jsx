@@ -181,10 +181,12 @@ class Performance extends Component {
                             onSelect={this.onChangeField.bind(this, "unauthCacheability")}
                             />
                     }
+                    <div className="smallLabelSize">
                     <SwitchBlock label={localization.get("PerformanceTab_SslForCacheSyncrhonization")}
                             tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
                             value={props.performanceSettings.sslForCacheSynchronization}
                             onChange={this.onChangeField.bind(this, "sslForCacheSynchronization")} />
+                    </div>
                 </div>
             </GridSystem>
             <div className="dnn-servers-grid-panel newSection" style={{marginLeft: 0}}>
@@ -205,7 +207,7 @@ class Performance extends Component {
                     <Button type="secondary" style={{marginBottom: "75px"}} disable={props.incrementingVersion}
                         onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
-                <div className="rightPane">
+                <div className="rightPane borderSeparation">
                     <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
                             label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
                             tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
