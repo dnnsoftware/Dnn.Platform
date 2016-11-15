@@ -152,8 +152,9 @@
     <Compile Include="Helpers\PageSecurityHelper.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="HttpModules\EditBarModule.cs" />
+    <Compile Include="Items\AddExistingModuleMenu.cs" />
     <Compile Include="Items\AddModuleMenu.cs" />
-    <Compile Include="Items\EditPageMenu.cs" />
+    <Compile Include="Items\ExitEditModeMenu.cs" />
     <Compile Include="Items\PageSettingsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -170,28 +171,23 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Dnn.EditBar.UI.dnn" />
-    <None Include="editBar\css\ProximaNova-Reg-webfont.eot" />
-    <None Include="editBar\css\ProximaNova-Reg-webfont.ttf" />
-    <None Include="editBar\css\ProximaNova-Reg-webfont.woff" />
-    <None Include="editBar\css\ProximaNova-Sbold-webfont.eot" />
-    <None Include="editBar\css\ProximaNova-Sbold-webfont.ttf" />
-    <None Include="editBar\css\ProximaNova-Sbold-webfont.woff" />
-    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.eot" />
-    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.ttf" />
-    <None Include="editBar\css\ProximaNovaCond-Sbold-webfont.woff" />
+    <None Include="editBar\css\RobotoSlab-Regular.ttf" />
+    <None Include="editBar\css\SourceCodePro-Regular.ttf" />
+    <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
+    <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
+    <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="editBar\css\AddExistingModule.css" />
     <Content Include="editBar\css\PageSettings.css" />
-    <Content Include="editBar\css\EditPage.css" />
+    <Content Include="editBar\css\ExitEditMode.css" />
     <Content Include="editBar\css\editBarContainer.css" />
     <Content Include="editBar\css\main.css" />
-    <Content Include="editBar\css\ProximaNova-Reg-webfont.svg" />
-    <Content Include="editBar\css\ProximaNova-Sbold-webfont.svg" />
-    <Content Include="editBar\css\ProximaNovaCond-Sbold-webfont.svg" />
     <Content Include="editBar\css\AddModule.css" />
+    <Content Include="editBar\images\AddExistingModule_Sprite.png" />
     <Content Include="editBar\images\AddModule_Sprite.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\icon-add-module.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\Icon-AddModule-D-Back.png" />
@@ -221,10 +217,12 @@
     <Content Include="editBar\resources\ContentEditorManager\Images\icon-module-search.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\icon-module-social-groups.png" />
     <Content Include="editBar\resources\ContentEditorManager\Js\ContentEditor.js" />
+    <Content Include="editBar\resources\ContentEditorManager\Js\ExistingModuleDialog.js" />
     <Content Include="editBar\resources\ContentEditorManager\Js\ModuleDialog.js" />
     <Content Include="editBar\resources\ContentEditorManager\Js\ModuleManager.js" />
     <Content Include="editBar\resources\ContentEditorManager\Js\ModuleService.js" />
     <Content Include="editBar\resources\ContentEditorManager\Styles\ContentEditor.css" />
+    <Content Include="editBar\scripts\AddExistingModule.js" />
     <Content Include="editBar\scripts\AddModule.js" />
     <Content Include="editBar\images\bottomArrow.png" />
     <Content Include="editBar\images\icon-non-viewable.png" />
@@ -255,7 +253,7 @@
     <Content Include="editBar\scripts\gateway.js" />
     <Content Include="editBar\scripts\main.js" />
     <Content Include="editBar\scripts\sf.js" />
-    <Content Include="editBar\scripts\EditPage.js" />
+    <Content Include="editBar\scripts\ExitEditMode.js" />
     <Content Include="editBar\scripts\util.js" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />
@@ -268,8 +266,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="editBar\App_LocalResources\AddExistingModule.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\Common.resx" />
-    <EmbeddedResource Include="editBar\App_LocalResources\Preview.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\EditBar.resx" />
     <EmbeddedResource Include="editBar\App_LocalResources\AddModule.resx" />
     <EmbeddedResource Include="editBar\resources\ContentEditorManager\App_LocalResources\SharedResources.resx" />

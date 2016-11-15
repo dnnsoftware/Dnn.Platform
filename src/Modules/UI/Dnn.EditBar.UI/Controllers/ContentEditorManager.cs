@@ -26,6 +26,7 @@ using DotNetNuke.UI;
 using DotNetNuke.UI.Containers;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
@@ -90,6 +91,8 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 throw new Exception("Instance has already initialized");
             }
+
+            AutoSetUserMode();
 
             var user = PortalSettings.UserInfo;
 
@@ -223,8 +226,22 @@ namespace Dnn.EditBar.UI.Controllers
         private void RegisterClientResources()
         {
             ClientResourceManager.EnableAsyncPostBackHandler();
+            //register drop down list required resources
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
+
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+
             ClientResourceManager.RegisterScript(Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleManager.js"));
             ClientResourceManager.RegisterScript(Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleDialog.js"));
+            ClientResourceManager.RegisterScript(Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
             ClientResourceManager.RegisterScript(Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
             ClientResourceManager.RegisterScript(Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
             ClientResourceManager.RegisterStyleSheet(Page,
@@ -346,7 +363,22 @@ namespace Dnn.EditBar.UI.Controllers
                                                                                     cancel: '{9}',
                                                                                     searchPlaceHolder: '{10}',
                                                                                     categoryRecommended: '{11}',
-                                                                                    categoryAll: '{12}'
+                                                                                    categoryAll: '{12}',
+                                                                                    pagePicker_clearButtonTooltip: '{13}',
+                                                                                    pagePicker_loadingResultText: '{14}',
+                                                                                    pagePicker_resultsText: '{15}',
+                                                                                    pagePicker_searchButtonTooltip: '{16}',
+                                                                                    pagePicker_searchInputPlaceHolder: '{17}',
+                                                                                    pagePicker_selectedItemCollapseTooltip: '{18}',
+                                                                                    pagePicker_selectedItemExpandTooltip: '{19}',
+                                                                                    pagePicker_selectItemDefaultText: '{20}',
+                                                                                    pagePicker_sortAscendingButtonTitle: '{21}',
+                                                                                    pagePicker_sortAscendingButtonTooltip: '{22}',
+                                                                                    pagePicker_sortDescendingButtonTooltip: '{23}',
+                                                                                    pagePicker_unsortedOrderButtonTooltip: '{24}',
+                                                                                    site: '{25}',
+                                                                                    page: '{26}',
+                                                                                    addExistingModule: '{27}'
                                                                                 }};";
 
             var script = string.Format(scriptFormat,
@@ -362,7 +394,22 @@ namespace Dnn.EditBar.UI.Controllers
                 Localization.GetSafeJSString("Cancel.Text", LocalResourcesFile),
                 Localization.GetSafeJSString("SearchPlaceHolder.Text", LocalResourcesFile),
                 Localization.GetSafeJSString("Category_Recommended.Text", LocalResourcesFile),
-                Localization.GetSafeJSString("Category_All.Text", LocalResourcesFile)
+                Localization.GetSafeJSString("Category_All.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_clearButtonTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_loadingResultText.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_resultsText.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_searchButtonTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_searchInputPlaceHolder.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectedItemCollapseTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectedItemExpandTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_selectItemDefaultText.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortAscendingButtonTitle.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortAscendingButtonTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_sortDescendingButtonTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("pagePicker_unsortedOrderButtonTooltip.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("Site.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("Page.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("AddExistingModule.Text", LocalResourcesFile)
                 );
 
             if (ScriptManager.GetCurrent(Page) != null)
@@ -523,6 +570,65 @@ namespace Dnn.EditBar.UI.Controllers
             }
 
             return false;
+        }
+
+        private void SetLastPageHistory(string pageId)
+        {
+            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+        }
+
+        private string GetLastPageHistory()
+        {
+            var cookie = Request.Cookies["LastPageId"];
+            if (cookie != null)
+                return cookie.Value;
+
+            return "NEW";
+        }
+
+        private void SetUserMode(string userMode)
+        {
+            Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, userMode.ToUpper());
+        }
+
+        private void AutoSetUserMode()
+        {
+            int tabId = PortalSettings.ActiveTab.TabID;
+            int portalId = PortalSettings.Current.PortalId;
+            string pageId = string.Format("{0}:{1}", portalId, tabId);
+
+            HttpCookie cookie = Request.Cookies["StayInEditMode"];
+            if (cookie != null && cookie.Value == "YES")
+            {
+                if (PortalSettings.Current.UserMode != PortalSettings.Mode.Edit)
+                {
+                    SetUserMode("EDIT");
+                    SetLastPageHistory(pageId);
+                    Response.Redirect(Request.RawUrl, true);
+
+                }
+
+                return;
+            }
+
+            string lastPageId = GetLastPageHistory();
+            var isShowAsCustomError = Request.QueryString.AllKeys.Contains("aspxerrorpath");
+
+            if (lastPageId != pageId && !isShowAsCustomError)
+            {
+                // navigate between pages
+                if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
+                {
+                    SetUserMode("VIEW");
+                    SetLastPageHistory(pageId);
+                    Response.Redirect(Request.RawUrl, true);
+                }
+            }
+
+            if (!isShowAsCustomError)
+            {
+                SetLastPageHistory(pageId);
+            }
         }
 
         #endregion

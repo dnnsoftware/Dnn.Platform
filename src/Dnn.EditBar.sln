@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.EditBar.Library", "Dnn.
 		{5313F690-D9A3-40B1-908C-1F5A3F3EA683} = {5313F690-D9A3-40B1-908C-1F5A3F3EA683}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F9A1E749-F924-4544-908D-023CAA4B7464}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU

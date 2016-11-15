@@ -8,7 +8,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
 
 dnn.ContentEditorManager = $.extend({}, dnn.ContentEditorManager, {
     init: function (options) {
-        if (options.type == "moduleManager" && options.panesClientIds && options.panes) {
+        if (options.type === "moduleManager" && options.panesClientIds && options.panes) {
             var panesClientIds = options.panesClientIds.split(';');
             var panes = options.panes.split(',');
             for (var i = 0; i < panes.length; i++) {

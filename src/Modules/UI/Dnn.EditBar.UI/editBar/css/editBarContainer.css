@@ -1,6 +1,6 @@
 ﻿/* Edit Bar iFrame */
 body {
-    margin-bottom: 85px !important;
+    margin-bottom: 80px !important;
 }
 .editBarFrameContainer {
     position: fixed;
@@ -13,7 +13,7 @@ body {
     left: 80px;
 }
 iframe#editBar-iframe{
-	height: 85px;
+	height: 80px;
     width: 100%;
     vertical-align: top;
 }

@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Close.Text" xml:space="preserve">
+  <data name="ExitEditMode.Text" xml:space="preserve">
     <value>Close</value>
-  </data>
-  <data name="Edit.Text" xml:space="preserve">
-    <value>Edit</value>
   </data>
   <data name="PageSettings.Text" xml:space="preserve">
     <value>Page Settings</value>
   </data>
   <data name="PageSettings.Tooltip" xml:space="preserve">
     <value>Page Settings</value>
-  </data>
-  <data name="PrivatePage.Text" xml:space="preserve">
-    <value>Private Page</value>
   </data>
 </root>

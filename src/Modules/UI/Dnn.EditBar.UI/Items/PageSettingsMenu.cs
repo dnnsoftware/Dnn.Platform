@@ -24,7 +24,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Loader { get; } = "PageSettings";
 
-        public override int Order { get; } = 10;
+        public override int Order { get; } = 15;
 
         public override bool Visible()
         {

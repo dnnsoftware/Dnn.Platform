@@ -15,13 +15,21 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
         return this;
     };
 
-    var dnnModuleDialogInstance;
+    var dnnModuleDialogInstance, dnnExsitingModuleDialogInstance;
     var getModuleDialog = dnn.ContentEditorManager.getModuleDialog = function () {
         if (!dnnModuleDialogInstance) {
             dnnModuleDialogInstance = new dnn.dnnModuleDialog();
         }
 
         return dnnModuleDialogInstance;
+    }
+
+    var getExsitingModuleDialog = dnn.ContentEditorManager.getExsitingModuleDialog = function () {
+        if (!dnnExsitingModuleDialogInstance) {
+            dnnExsitingModuleDialogInstance = new dnn.dnnExistingModuleDialog();
+        }
+
+        return dnnExsitingModuleDialogInstance;
     }
 
     ///dnnModuleManager Plugin
@@ -57,14 +65,18 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
             return this._handler;
         },
 
+        getExistingModuleHandler: function () {
+            this._existingModuleHandler = this.getPane().find('> .addExistingModuleHandler');
+
+            return this._existingModuleHandler;
+        },
+
         getPane: function () {
             return $('#' + this.$pane.attr('id'));
         },
 
         _generateLayout: function () {
-            var handler = this._handler = $('<a href="#" class="addModuleHandler"><span></span></a>');
-
-            return handler;
+            return $('<a href="#" class="addModuleHandler"><span></span></a><a href="#" class="addExistingModuleHandler"><span></span></a>');
         },
         
         _injectVisualEffects: function () {
@@ -180,7 +192,8 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
         },
 
         _handleEvents: function () {
-            this._handler.click($.proxy(this._addModuleHandlerClick, this));
+            this.getHandler().click($.proxy(this._addModuleHandlerClick, this));
+            this.getExistingModuleHandler().click($.proxy(this._addExisingModuleHandlerClick, this));
         },
 
         _addModuleHandlerClick: function (e) {
@@ -191,6 +204,17 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
             } else {
                 dialog.close();
                 this._handler.removeClass('active');
+            }
+            return false;
+        },
+        _addExisingModuleHandlerClick: function (e) {
+            var dialog = getExsitingModuleDialog();
+            if (!this._existingModuleHandler.hasClass('active')) {
+                dialog.apply(this).open();
+                this._existingModuleHandler.addClass('active');
+            } else {
+                dialog.close();
+                this._existingModuleHandler.removeClass('active');
             }
             return false;
         }

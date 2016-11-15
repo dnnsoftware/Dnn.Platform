@@ -12,7 +12,7 @@
     };
 
     var onClick = function () {
-        var mode = menuItem.settings.userMode === "View" ? "Edit" : "View";
+        var mode = "View";
 
         util.sf.moduleRoot = 'internalservices';
         util.sf.controller = "controlBar";

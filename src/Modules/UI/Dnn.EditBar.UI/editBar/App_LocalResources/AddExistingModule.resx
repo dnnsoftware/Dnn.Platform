@@ -117,16 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DesktopMode.Text" xml:space="preserve">
-    <value>Desktop</value>
-  </data>
-  <data name="PhoneMode.Text" xml:space="preserve">
-    <value>Phone</value>
-  </data>
-  <data name="TabletMode.Text" xml:space="preserve">
-    <value>Tablet</value>
-  </data>
-  <data name="ViewSite.Text" xml:space="preserve">
-    <value>View Site:</value>
+  <data name="AddExistingModule.Tooltip" xml:space="preserve">
+    <value>Add Existing Module</value>
   </data>
 </root>

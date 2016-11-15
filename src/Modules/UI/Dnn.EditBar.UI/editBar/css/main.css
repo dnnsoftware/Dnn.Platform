@@ -1,23 +1,6 @@
 ﻿@font-face {
-    font-family: 'proxima_nova';
-    src: url('ProximaNova-Reg-webfont.woff') format('woff'),
-         url('ProximaNova-Reg-webfont.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'proxima_nova_semibold';
-    src: url('ProximaNova-Sbold-webfont.woff') format('woff'),
-         url('ProximaNova-Sbold-webfont.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'proxima_nova_c_semibold';
-    src: url('ProximaNovaCond-Sbold-webfont.woff') format('woff'),
-         url('ProximaNovaCond-Sbold-webfont.ttf') format('truetype');
+    font-family: 'RobotoSlab';
+    src: url('RobotoSlab-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -42,15 +25,15 @@ body {
 
 .editbar {
     visibility: visible;
-    height: 59px;
+    height: 80px;
     display: block;
-    background-color: #0F0F0F;
+    background-color: #2f2f2f;
     color: white;
     min-height: 20px;
     padding: 26px 26px 0;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .editbar > div {
@@ -149,7 +132,7 @@ body {
     width: 98px;
     -ms-border-radius: 3px;
     border-radius: 3px;
-    background-color: #000;
+    background-color: transparent;
     border-color: #fff;
     border-style: solid;
     border-width: 1px;
