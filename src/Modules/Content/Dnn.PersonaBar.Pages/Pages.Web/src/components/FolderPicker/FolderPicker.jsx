@@ -2,11 +2,11 @@ import React, {Component, PropTypes} from "react";
 import FolderPickerContainer from "./FolderPickerContainer";
 
 function findKey(thisObject, id) {
-    /* eslint-disable react/no-danger */
+    /* eslint-disable spellcheck/spell-checker */
     let p, tRet;
     for (p in thisObject) {
-        if (p == "data") {
-            if (thisObject[p].key == id) {
+        if (p === "data") {
+            if (thisObject[p].key === id) {
                 return thisObject;
             }
         } else if (thisObject[p] instanceof Object) {
@@ -17,7 +17,7 @@ function findKey(thisObject, id) {
         }
     }
     return false;
-    /* eslint-enable react/no-danger */
+    /* eslint-enable spellcheck/spell-checker */
 }
 
 export default class FolderPicker extends Component {
@@ -26,15 +26,8 @@ export default class FolderPicker extends Component {
         super(props);
 
         this.state = {
-            showFolderPicker: false,
-            showFilePicker: false,
             folders: null
         };
-    }
-
-    componentWillMount() {
-        const {selectedFolder} = this.props;
-        this.setState({ selectedFolder });
     }
 
     componentDidMount() {
@@ -65,11 +58,6 @@ export default class FolderPicker extends Component {
         this.setState({ folders: result.Tree });
     }
 
-    onFolderClick(selectedFolder) {
-        this.setState({ selectedFolder });
-        this.props.onSelectFolder(selectedFolder);
-    }
-
     addChildFolders(parentId, result) {
         let folders = this.state.folders;
         let parent = findKey(folders, parentId);
@@ -81,12 +69,14 @@ export default class FolderPicker extends Component {
     }
 
     render() {
+        const {selectedFolder, onSelectFolder} = this.props;
+
         return (
             <FolderPickerContainer
-                selectedFolder={this.state.selectedFolder}
+                selectedFolder={selectedFolder}
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
-                onFolderClick={this.onFolderClick.bind(this) }
+                onFolderClick={onSelectFolder}
                 getChildren={this.getChildrenFolders.bind(this) }/>
         );    
     }

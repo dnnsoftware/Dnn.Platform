@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
-const folderIcon = require("!raw!./img/folder.svg");
 import style from "./style.less";
+
+const folderIcon = require("!raw!./img/folder.svg");
 
 export default class Folders extends Component {
 
@@ -43,7 +44,7 @@ export default class Folders extends Component {
         this.props.getChildren(item.data.key);
     }
 
-    onFolderNameClick(folder, e) {
+    onFolderNameClick(folder) {
         this.props.onFolderClick(folder.data);
     }
 
@@ -68,14 +69,15 @@ export default class Folders extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
         const folders = this.getFolders(this.props.folders);
-        return <div className={style.folderPicker}>
-            {folders}
-        </div>;
+
+        return (
+            <div className={style.folderPicker}>
+                {folders}
+            </div>
+        );
     }
 }
-
 
 Folders.propTypes = {
     folders: PropTypes.object.isRequired,
