@@ -30,13 +30,19 @@ namespace Dnn.PersonaBar.Library.Data
         string GetPersonaBarMenuDefaultRoles(int menuId);
 
 
-        int SavePersonaBarPermission(int menuPermissionId, int portalId, int menuId, int permissionId,
+        int SavePersonaBarMenuPermission(int menuPermissionId, int portalId, int menuId, int permissionId,
             int roleId, int userId, bool allowAccees, int currentUserId);
 
-        IDataReader GetPersonbaBarPermissionsByPortal(int portalId);
+        IDataReader GetPersonbaBarMenuPermissionsByPortal(int portalId);
 
-        void DeletePersonbaBarPermissionsByMenuId(int portalId, int menuId);
+        void DeletePersonbaBarMenuPermissionsByMenuId(int portalId, int menuId);
 
-        void DeletePersonbaBarPermissionsById(int menuPermissionId);
+        void DeletePersonbaBarMenuPermissionsById(int menuPermissionId);
+
+        int SavePersonaBarPermission(int menuId, string permissionKey, string permissionName, int currentUserId);
+
+        void DeletePersonaBarPermission(int permissionId);
+
+        IDataReader GetPersonaBarPermissions();
     }
 }

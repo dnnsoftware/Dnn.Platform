@@ -53,26 +53,42 @@ namespace Dnn.PersonaBar.Library.Data
             return DataProvider.ExecuteScalar<string>("GetPersonaBarMenuDefaultRoles", menuId);
         }
 
-        public int SavePersonaBarPermission(int menuPermissionId, int portalId, int menuId, int permissionId, int roleId,
+        public int SavePersonaBarMenuPermission(int menuPermissionId, int portalId, int menuId, int permissionId, int roleId,
             int userId, bool allowAccees, int currentUserId)
         {
             return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuPermission", menuPermissionId, DataProvider.GetNull(portalId), menuId, permissionId,
                 DataProvider.GetNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
         }
 
-        public IDataReader GetPersonbaBarPermissionsByPortal(int portalId)
+        public IDataReader GetPersonbaBarMenuPermissionsByPortal(int portalId)
         {
             return DataProvider.ExecuteReader("GetPersonaBarMenuPermissionsByPortal", portalId);
         }
 
-        public void DeletePersonbaBarPermissionsByMenuId(int portalId, int menuId)
+        public void DeletePersonbaBarMenuPermissionsByMenuId(int portalId, int menuId)
         {
             DataProvider.ExecuteNonQuery("DeletePersonaBarMenuPermissionsByMenuId", portalId, menuId);
         }
 
-        public void DeletePersonbaBarPermissionsById(int menuPermissionId)
+        public void DeletePersonbaBarMenuPermissionsById(int menuPermissionId)
         {
             DataProvider.ExecuteNonQuery("DeletePersonaBarMenuPermissionById", menuPermissionId);
+        }
+
+        public int SavePersonaBarPermission(int menuId, string permissionKey, string permissionName, int currentUserId)
+        {
+            return DataProvider.ExecuteScalar<int>("SavePersonaBarPermission", 
+                Null.GetNull(menuId, DBNull.Value), permissionKey, permissionName, currentUserId);
+        }
+
+        public void DeletePersonaBarPermission(int permissionId)
+        {
+            DataProvider.ExecuteNonQuery("DeletePersonaBarPermission", permissionId);
+        }
+
+        public IDataReader GetPersonaBarPermissions()
+        {
+            return DataProvider.ExecuteReader("GetPersonaBarPermissions");
         }
     }
 }

@@ -146,7 +146,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "hasParent")]
         public bool HasParent { get; set; }
 
-        [DataMember(Name = "referenceTabId")]
+        [DataMember(Name = "templateTabId")]
         public int TemplateTabId { get; set; }
     }
 }

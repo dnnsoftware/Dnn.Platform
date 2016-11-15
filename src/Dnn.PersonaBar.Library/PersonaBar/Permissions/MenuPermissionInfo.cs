@@ -73,9 +73,9 @@ namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
+            ModuleDefID = Null.NullInteger;
+            PermissionCode = "PERSONABAR_MENU";
+            PermissionID = permission.PermissionId;
             PermissionKey = permission.PermissionKey;
             PermissionName = permission.PermissionName;
         }

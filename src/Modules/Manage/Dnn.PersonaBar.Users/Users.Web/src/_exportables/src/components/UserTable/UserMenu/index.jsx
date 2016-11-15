@@ -97,7 +97,13 @@ class UserMenu extends Component {
                 break;
             case "PromoteToSuperUser":
                 if (this.props.appSettings.applicationSettings.settings.isHost){
-                    this.PromoteToSuperUser();
+                    this.updateSuperUserStatus(true);
+                }
+                this.props.onClose();
+                break;
+            case "DemoteToRegularUser":
+                if (this.props.appSettings.applicationSettings.settings.isHost){
+                    this.updateSuperUserStatus(false);
                 }
                 this.props.onClose();
                 break;
@@ -119,45 +125,56 @@ class UserMenu extends Component {
         });
     }
     onSendPasswordLink() {
-        this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
-            if (data.Success)
-                utilities.notify(Localization.get("PasswordSent"), 10000);
-            else {
-                utilities.notify(data.Message, 10000);
-            }
-        }));
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId)
+        {
+            this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
+                if (data.Success)
+                    utilities.notify(Localization.get("PasswordSent"), 10000);
+                else {
+                    utilities.notify(data.Message, 10000);
+                }
+            }));
+        }
     }
     deleteUser() {
-        utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, (data) => {
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId)
+        {
+            utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+                this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, (data) => {
+                    if (data.Success) {
+                        utilities.notify(Localization.get("UserDeleted"), 3000);
+                        this.reload();
+                    }
+                    else {
+                        utilities.notify(data.Message, 10000);
+                    }
+                }));
+            });
+        }
+    }
+    hardDeleteUser() {
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            utilities.confirm(Localization.get("RemoveUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
+                this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }, (data) => {
+                    if (!data.Success)
+                        utilities.notify(data.Message, 10000);
+                }));
+            });
+        }
+    }
+    restoreUser() {
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId)
+        {
+            this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
                 if (data.Success) {
-                    utilities.notify(Localization.get("UserDeleted"), 3000);
+                    utilities.notify(Localization.get("UserRestored"), 3000);
                     this.reload();
                 }
                 else {
                     utilities.notify(data.Message, 10000);
                 }
             }));
-        });
-    }
-    hardDeleteUser() {
-        utilities.confirm(Localization.get("RemoveUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }, (data) => {
-                if (!data.Success)
-                    utilities.notify(data.Message, 10000);
-            }));
-        });
-    }
-    restoreUser() {
-        this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
-            if (data.Success) {
-                utilities.notify(Localization.get("UserRestored"), 3000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
-        }));
+        }
     }
     forcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
@@ -171,21 +188,28 @@ class UserMenu extends Component {
         }));
     }
     updateAuthorizeStatus(authorized) {
-        this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
-            if (data.Success) {
-                utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
-        }));
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
+                if (data.Success) {
+                    utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
+                    this.reload();
+                }
+                else {
+                    utilities.notify(data.Message, 10000);
+                }
+            }));
+        }
     }
-    PromoteToSuperUser() {
-        this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: true }, (data) => {
-            if (!data.Success)
-                utilities.notify(data.Message, 10000);
-        }));
+    updateSuperUserStatus(setSuperUser) {
+         if (this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, (data) => {
+                if (!data.Success){
+                    utilities.notify(data.Message, 10000);
+                }else{
+                    this.reload();
+                }
+            }));
+         }
     }
 
     toggleChangePassword(close) {
@@ -197,24 +221,32 @@ class UserMenu extends Component {
     render() {
 
         let visibleMenus = [{ key:"ViewProfile", title:  Localization.get("ViewProfile"), index: 10 },
-            { key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 },
-            { key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }
+            { key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 }
         ];
-        if (this.props.appSettings.applicationSettings.settings.isHost){
-            visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
+        if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            visibleMenus = [{ key:"ResetPassword", title: Localization.get("ResetPassword"), index: 40 }].concat(visibleMenus);
         }
-        if (!this.state.userDetails.needUpdatePassword) {
+        if(this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            if (!this.state.userDetails.isSuperUser){
+                visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
+            }
+            else if(this.state.userDetails.isSuperUser)
+            {
+                visibleMenus = [{ key:"DemoteToRegularUser", title:  Localization.get("DemoteToRegularUser"), index: 80 }].concat(visibleMenus);
+            }
+        }
+        if (!this.state.userDetails.needUpdatePassword && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
             visibleMenus = [{ key:"ForceChangePassword", title:  Localization.get("ForceChangePassword"), index: 40 }].concat(visibleMenus);
         }
-        if (this.state.userDetails.isDeleted) {
+        if (this.state.userDetails.isDeleted && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
             visibleMenus = [{ key:"RestoreUser", title:  Localization.get("RestoreUser"), index: 70 }].concat(visibleMenus);
             visibleMenus = [{ key:"RemoveUser", title:  Localization.get("RemoveUser"), index: 60 }].concat(visibleMenus);
-        } else {
+        } else if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
             visibleMenus = [{ key:"DeleteUser", title:  Localization.get("DeleteUser"), index: 60 }].concat(visibleMenus);
         }
-        if (this.state.userDetails.authorized) {
+        if (this.state.userDetails.authorized && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
             visibleMenus = [{ key:"cmdUnAuthorize", title:  Localization.get("cmdUnAuthorize"), index: 50 }].concat(visibleMenus);
-        } else {
+        } else if(this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
             visibleMenus = [{ key:"cmdAuthorize", title:  Localization.get("cmdAuthorize"), index: 50 }].concat(visibleMenus);
         }
         visibleMenus = visibleMenus.concat((this.props.getUserMenu && this.props.getUserMenu(this.state.userDetails)) || []);

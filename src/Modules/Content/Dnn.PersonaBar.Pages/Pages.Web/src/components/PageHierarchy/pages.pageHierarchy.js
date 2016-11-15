@@ -1187,6 +1187,7 @@ window.dnn.pages = window.dnn.pages || {};
         requestTimeout: 4000
     };
 
+window.dnn.pages.pageHierarchyManager = new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions);
 module.exports = {
-    pageHierarchyManager: new pageHierarchyManager(window.dnn.pages.pageHierarchyManagerOptions)
+    pageHierarchyManager: window.dnn.pages.pageHierarchyManager
 };

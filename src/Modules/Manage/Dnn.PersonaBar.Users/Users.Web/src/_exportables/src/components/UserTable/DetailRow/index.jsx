@@ -60,21 +60,27 @@ class DetailsRow extends Component {
     getUserActions(user, opened) {
         let actionIcons = [
             {
-                index: 5,
-                icon: ShieldIcon,
-                title: Localization.get("ManageRoles.title")
-            },
-            {
-                index: 10,
-                icon: UserIcon,
-                title: Localization.get("ManageProfile.title")
-            },
-            {
                 index: 15,
                 icon: SettingsIcon,
                 title: Localization.get("ManageSettings.title")
             }
         ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons()) || []);
+        if (!user.isSuperUser) {
+            actionIcons = actionIcons.concat([{
+                index: 5,
+                icon: ShieldIcon,
+                title: Localization.get("ManageRoles.title")
+            }]);
+        }
+
+        if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin) {
+            actionIcons = actionIcons.concat([{
+                    index: 10,
+                    icon: UserIcon,
+                    title: Localization.get("ManageProfile.title")
+                }]);
+        }
+
         let i = 0;
         let userActions = sort(actionIcons, "index").map((actionIcon) => {
             let element = <div title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;

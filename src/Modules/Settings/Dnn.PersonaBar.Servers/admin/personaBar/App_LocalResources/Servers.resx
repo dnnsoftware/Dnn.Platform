@@ -571,7 +571,7 @@
     <value>By default, cache synchronization will happen over http. To use SSL for cache synchronization messages, please check this.</value>
   </data>
   <data name="PerformanceTab_SslForCacheSyncrhonization.Text" xml:space="preserve">
-    <value>Use SSL for Cache Synchronization</value>
+    <value>SSL for Cache Synchronization</value>
   </data>
   <data name="PerformanceTab_UnauthCacheability.Help" xml:space="preserve">
     <value>Sets the Cache-Control HTTP header value for unauthenticated users.</value>

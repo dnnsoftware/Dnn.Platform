@@ -13,6 +13,7 @@ import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
 import Localization from "../localization";
 import PageList from "./PageList/PageList";
+import SaveAsTemplate from "./SaveAsTemplate/SaveAsTemplate";
 import Button from "dnn-button";
 import utils from "../utils";
 import BackTo from "./common/BackTo/BackTo";
@@ -117,7 +118,8 @@ class App extends Component {
                                       onPermissionsChanged={props.onPermissionsChanged}
                                       onChangePageType={props.onChangePageType}
                                       onDeletePageModule={props.onDeletePageModule}
-                                      onToggleEditPageModule={props.onToggleEditPageModule}
+                                      onEditingPageModule={props.onEditingPageModule}
+                                      onCancelEditingPageModule={props.onCancelEditingPageModule}
                                       editingSettingModuleId={props.editingSettingModuleId}
                                       onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
                                       onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}  />
@@ -158,7 +160,7 @@ class App extends Component {
                         workSpaceTrayOutside={true}
                         workSpaceTray={backToPageSettings}
                         workSpaceTrayVisible={true}>
-                        Work in progress
+                        <SaveAsTemplate/>
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -209,7 +211,8 @@ App.propTypes = {
     onChangePageType: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
-    onToggleEditPageModule: PropTypes.func.isRequired,
+    onEditingPageModule: PropTypes.func.isRequired,
+    onCancelEditingPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     onLoadSavePageAsTemplate: PropTypes.func.isRequired,
@@ -244,7 +247,8 @@ function mapDispatchToProps(dispatch) {
         onChangePageType: PageActions.changePageType,
         onPermissionsChanged: PageActions.changePermissions,
         onDeletePageModule: PageActions.deletePageModule,
-        onToggleEditPageModule: PageActions.toggleEditPageModule,
+        onEditingPageModule: PageActions.editingPageModule,
+        onCancelEditingPageModule: PageActions.cancelEditingPageModule,
         onCopyAppearanceToDescendantPages: PageActions.copyAppearanceToDescendantPages,
         onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages,
         onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,

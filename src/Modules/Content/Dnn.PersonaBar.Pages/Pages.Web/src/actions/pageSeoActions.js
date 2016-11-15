@@ -106,7 +106,7 @@ const pageSeoActions = {
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_SAVING_URL,
-                    data: {error}
+                    data: {error: error.ErrorMessage}
                 });
             }); 
         };
@@ -138,7 +138,7 @@ const pageSeoActions = {
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SEO_DELETING_URL,
-                    data: {error}
+                    data: {error: error.ErrorMessage}
                 });
             }); 
         };

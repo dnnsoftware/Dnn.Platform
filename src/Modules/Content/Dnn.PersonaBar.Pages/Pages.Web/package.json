@@ -8,7 +8,7 @@
     "analyze": "set NODE_ENV=production&&webpack -p --json | webpack-bundle-size-analyzer"
   },
   "peerDependencies": {
-    "es6-promise": "4.0.5"    
+    "es6-promise": "4.0.5"
   },
   "devDependencies": {
     "@types/knockout": "3.4.36",
@@ -24,7 +24,7 @@
     "css-loader": "0.23.1",
     "dnn-global-styles": "0.0.3",
     "dnn-permission-grid": "0.0.1",
-    "dnn-webpack-externals": "1.0.2",    
+    "dnn-webpack-externals": "1.0.2",
     "eslint": "2.9.0",
     "eslint-loader": "1.3.0",
     "eslint-plugin-react": "5.1.1",
@@ -36,6 +36,7 @@
     "raw-loader": "0.5.1",
     "react-hot-loader": "1.3.0",
     "react-widgets": "3.4.4",
+    "string.prototype.startswith": "0.2.0",
     "style-loader": "0.13.1",
     "throttle-debounce": "1.0.1",
     "url-loader": "0.5.7",

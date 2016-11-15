@@ -295,7 +295,7 @@
     <value>Locked Out:</value>
   </data>
   <data name="ManageProfile.title" xml:space="preserve">
-    <value>Manager user profile.</value>
+    <value>Manage user profile.</value>
   </data>
   <data name="ManageRoles.title" xml:space="preserve">
     <value>Manage user roles.</value>
@@ -506,5 +506,8 @@
   </data>
   <data name="ShowLabel.Text" xml:space="preserve">
     <value>Show: </value>
+  </data>
+  <data name="DemoteToRegularUser.Text" xml:space="preserve">
+    <value>Make Regular User</value>
   </data>
 </root>

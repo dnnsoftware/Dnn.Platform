@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 
@@ -8,5 +10,8 @@ namespace Dnn.PersonaBar.Pages.Components
     public interface IPageUrlsController
     {
         IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId);
+        PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
+        PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
+        PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings);
     }
 }

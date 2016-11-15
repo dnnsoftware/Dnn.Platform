@@ -1,7 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import Localization from "../../localization";
-import utils from "../../utils";
 import PageDetails from "../PageDetails/PageDetails";
 import PermissionGrid from "../PermissionGrid/PermissionGrid";
 import Button from "dnn-button";
@@ -14,11 +13,18 @@ import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
 class PageSettings extends Component {
 
+    hasPageErrors() {
+        const {selectedPageErrors} = this.props;
+        return Object.keys(selectedPageErrors)
+            .map(key => selectedPageErrors[key])
+            .some(value => value);
+    }
+
     getButtons() {
-        const {selectedPage, selectedPageErrors, onCancel, onSave} = this.props;
+        const {selectedPage, onCancel, onSave} = this.props;
         const saveButtonText = selectedPage.tabId === 0 ? 
             Localization.get("AddPage") : Localization.get("Save");
-        const pageErrors = Object.values(selectedPageErrors).some(value => value);
+        const pageErrors = this.hasPageErrors();
 
         return [<Button
                     type="secondary"
@@ -47,20 +53,10 @@ class PageSettings extends Component {
         );
     }
 
-    copyAppearanceToDescendantPages() {        
-        const {selectedPage} = this.props;
-
-        if (!selectedPage.skinSrc || !selectedPage.containerSrc) {
-            utils.notify(Localization.get("PleaseSelectLayoutContainer"));
-            return;
-        }
-        this.props.onCopyAppearanceToDescendantPages();
-    }
-
     getCopyAppearanceToDescendantPagesButton() {
         return <Button 
                 type="secondary"
-                onClick={this.copyAppearanceToDescendantPages.bind(this)}> 
+                onClick={this.props.onCopyAppearanceToDescendantPages}> 
                 {Localization.get("CopyAppearanceToDescendantPages")}
             </Button>;
     }
@@ -80,7 +76,8 @@ class PageSettings extends Component {
             onChangeField, 
             onChangePageType, 
             onDeletePageModule, 
-            onToggleEditPageModule,
+            onEditingPageModule,
+            onCancelEditingPageModule,
             editingSettingModuleId
         } = this.props;
 
@@ -89,12 +86,9 @@ class PageSettings extends Component {
         const appearanceButtons = [...buttons];
         const permissionsButtons = [...buttons];
 
-        if (isEditingExistingPage) {
+        if (isEditingExistingPage && selectedPage.hasChild) {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
-            
-            if (selectedPage.hasChild) {
-                permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
-            }
+            permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
         }        
 
         const footer = this.getPageFooter(buttons);
@@ -135,7 +129,8 @@ class PageSettings extends Component {
                                 <Modules 
                                     modules={selectedPage.modules} 
                                     onDeleteModule={onDeletePageModule}
-                                    onToggleEditModule={onToggleEditPageModule}
+                                    onEditingModule={onEditingPageModule}
+                                    onCancelEditingModule={onCancelEditingPageModule}
                                     editingSettingModuleId={editingSettingModuleId} />
                             </div>
             });
@@ -185,7 +180,8 @@ PageSettings.propTypes = {
     onPermissionsChanged: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
-    onToggleEditPageModule: PropTypes.func.isRequired,
+    onEditingPageModule: PropTypes.func.isRequired,
+    onCancelEditingPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number

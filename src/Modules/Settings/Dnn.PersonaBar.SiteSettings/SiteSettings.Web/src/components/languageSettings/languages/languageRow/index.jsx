@@ -44,8 +44,21 @@ class LanguageRow extends Component {
     /* eslint-disable react/no-danger */
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
-            if (prop) {
+            if (prop && this.props.isLocalized) {
                 return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>;
+            }
+            else return <span>&nbsp; </span>;
+        }
+        else return <span>-</span>;
+    }
+
+    getPagesDisplay(prop) {
+        if (this.props.id !== "add") {
+            if (prop && this.props.isLocalized) {
+                return this.props.isLocalized ? prop : "";
+            }
+            else if(this.props.isDefault) {
+                return prop;
             }
             else return <span>&nbsp; </span>;
         }
@@ -131,10 +144,10 @@ class LanguageRow extends Component {
                                 {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-pages">
-                                {props.localizablePages}&nbsp;
+                                {this.getPagesDisplay(props.localizablePages)}&nbsp;
                             </div>
                             <div className="language-item item-row-translated">
-                                {props.translatedStatus}&nbsp;
+                                {this.getPagesDisplay(props.translatedPages)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
                                 {this.getBooleanDisplay(props.active)}
@@ -190,8 +203,9 @@ LanguageRow.propTypes = {
     icon: PropTypes.string,
     enabled: PropTypes.bool,
     localizablePages: PropTypes.number,
-    translatedStatus: PropTypes.string,
+    translatedPages: PropTypes.string,
     active: PropTypes.bool,
+    isLocalized: PropTypes.bool,
     contentLocalizationEnabled: PropTypes.bool,
     isDefault: PropTypes.bool,
     OpenCollapse: PropTypes.func,

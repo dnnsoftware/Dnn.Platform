@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Users.Services
                     PageSize = pageSize,
                     SortColumn = sortColumn,
                     SortAscending = sortAscending,
-                    PortalId = PortalSettings.PortalId,
+                    PortalId = PortalId,
                     Filter = filter
                 };
 

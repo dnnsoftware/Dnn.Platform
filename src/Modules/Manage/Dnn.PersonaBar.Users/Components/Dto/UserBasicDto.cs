@@ -34,6 +34,10 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "authorized")]
         public bool Authorized { get; set; }
 
+        [DataMember(Name = "isSuperUser")]
+        public bool IsSuperUser { get; set; }
+        
+
         [DataMember(Name = "avatar")]
         public string AvatarUrl
         {
@@ -57,6 +61,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             CreatedOnDate = user.CreatedOnDate;
             IsDeleted = user.IsDeleted;
             Authorized = user.Membership.Approved;
+            IsSuperUser = user.IsSuperUser;
         }
 
         public static UserBasicDto FromUserInfo(UserInfo user)
@@ -70,8 +75,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Email = user.Email,
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
-                Authorized = user.Membership.Approved
-            };
+                Authorized = user.Membership.Approved,
+                IsSuperUser = user.IsSuperUser
+        };
         }
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
@@ -84,8 +90,9 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Email = user.Email,
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
-                Authorized = user.Authorized
-            };
+                Authorized = user.Authorized,
+                IsSuperUser = user.IsSuperUser
+        };
         }
     }
 }

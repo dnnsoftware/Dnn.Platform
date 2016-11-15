@@ -88,6 +88,12 @@
     <Compile Include="Controllers\TabsController.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Data\IDataService.cs" />
+    <Compile Include="DTO\Tabs\DnnModuleDto.cs" />
+    <Compile Include="DTO\Tabs\DnnModulesDto.cs" />
+    <Compile Include="DTO\Tabs\DnnPageDto.cs" />
+    <Compile Include="DTO\Tabs\DnnPagesDto.cs" />
+    <Compile Include="DTO\Tabs\LanguageTabDto.cs" />
+    <Compile Include="DTO\Tabs\LocaleInfoDto.cs" />
     <Compile Include="DTO\Tabs\NodeCheckedState.cs" />
     <Compile Include="DTO\Permission.cs" />
     <Compile Include="DTO\Permissions.cs" />
@@ -112,6 +118,7 @@
     <Compile Include="PersonaBar\Permissions\CompareMenuPermissions.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionCollection.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionController.cs" />
+    <Compile Include="PersonaBar\Permissions\PermissionInfo.cs" />
     <Compile Include="PersonaBar\Permissions\MenuPermissionInfo.cs" />
     <Compile Include="PersonaBar\Repository\IPersonaBarExtensionRepository.cs" />
     <Compile Include="PersonaBar\Repository\IPersonaBarRepository.cs" />

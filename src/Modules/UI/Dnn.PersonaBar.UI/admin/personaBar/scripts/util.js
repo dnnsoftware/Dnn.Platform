@@ -4,6 +4,7 @@ define(['jquery'], function ($) {
     return {
         init: function (config) {
             var loadTempl;
+            var injectBeacon;
 
             loadTempl = function (template, wrapper, params, self, cb, isMobile) {
                 var callbackInit, templateSuffix, cssSuffix, initMethod, moduleJs, loadMethod;
@@ -39,6 +40,14 @@ define(['jquery'], function ($) {
                     } else {
                         moduleJs[loadMethod].call(moduleJs, params, cb);
                     }
+                }
+                injectBeacon(template);
+            };
+            // Beacon injection
+            injectBeacon = function (template) {
+                var beaconUrl = window.parent['personaBarSettings'] !== undefined ? window.parent['personaBarSettings']['beaconUrl'] : undefined;
+                if (beaconUrl != undefined && beaconUrl !== "" && template !== "tasks") {
+                    (new Image()).src = beaconUrl + "&f=" + encodeURI(template);
                 }
             };
 

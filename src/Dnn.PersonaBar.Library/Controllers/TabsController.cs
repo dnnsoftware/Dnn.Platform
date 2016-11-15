@@ -53,7 +53,6 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
 
-
         public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
             string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
             int selectedTabId = -1, string validateTab = "")
@@ -110,6 +109,27 @@ namespace Dnn.PersonaBar.Library.Controllers
             return selectedTabId > -1
                 ? MarkSelectedTab(rootNode, selectedTabId, portalInfo, cultureCode, isMultiLanguage, validateTab)
                 : rootNode;
+        }
+
+        public IList<LanguageTabDto> GetTabsForTranslation(string cultureCode)
+        {
+            var locale = new LocaleController().GetLocale(cultureCode);
+            var portalSettings = PortalSettings;
+            var pages = new List<LanguageTabDto>();
+            if (locale != null && locale.Code != portalSettings.DefaultLanguage)
+            {
+                var tabController = new TabController();
+                var portalTabs = tabController.GetTabsByPortal(portalSettings.PortalId).WithCulture(locale.Code, false).Values;
+                var nonTranslated = (from t in portalTabs where !t.IsTranslated && !t.IsDeleted select t);
+                pages.AddRange(
+                    nonTranslated.Select(page => new LanguageTabDto()
+                    {
+                        PageId = page.TabID,
+                        PageName = page.TabName,
+                        ViewUrl = Globals.NavigateURL(page.TabID),
+                    }));
+            }
+            return pages;
         }
 
         public TabDto SearchPortalTabs(string searchText, int portalId, string roles="", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "")

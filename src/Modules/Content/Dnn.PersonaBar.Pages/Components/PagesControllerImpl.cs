@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
@@ -40,6 +41,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -270,7 +272,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return pages;
         }
 
-        public TabInfo GetPageDetails(int pageId)
+        private TabInfo GetPageDetails(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tab = TabController.Instance.GetTab(pageId, portalSettings.PortalId);
@@ -419,11 +421,36 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.Url = GetInternalUrl(pageSettings);
             
             tab.TabSettings["CacheProvider"] = pageSettings.CacheProvider;
-            tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
-            tab.TabSettings["CacheIncludeExclude"] = pageSettings.CacheIncludeExclude;
-            tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
-            tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
-            tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;
+            if (pageSettings.CacheProvider != null)
+            {
+                tab.TabSettings["CacheDuration"] = pageSettings.CacheDuration;
+                if (pageSettings.CacheIncludeExclude.HasValue)
+                {
+                    if (pageSettings.CacheIncludeExclude.Value)
+                    {
+                        tab.TabSettings["CacheIncludeExclude"] = "1";
+                        tab.TabSettings["IncludeVaryBy"] = null;
+                        tab.TabSettings["ExcludeVaryBy"] = pageSettings.CacheExcludeVaryBy;
+                    }
+                    else
+                    {
+                        tab.TabSettings["CacheIncludeExclude"] = "0";
+                        tab.TabSettings["IncludeVaryBy"] = pageSettings.CacheIncludeVaryBy;
+                        tab.TabSettings["ExcludeVaryBy"] = null;
+                    }
+                    tab.TabSettings["MaxVaryByCount"] = pageSettings.CacheMaxVaryByCount;               
+                }                
+            }
+
+            else
+            {
+                tab.TabSettings["CacheDuration"] = null;
+                tab.TabSettings["CacheIncludeExclude"] = null;
+                tab.TabSettings["IncludeVaryBy"] = null;
+                tab.TabSettings["ExcludeVaryBy"] = null;
+                tab.TabSettings["MaxVaryByCount"] = null;
+            }
+
             tab.TabSettings["LinkNewWindow"] = pageSettings.LinkNewWindow;
             tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
@@ -701,7 +728,56 @@ namespace Dnn.PersonaBar.Pages.Components
             return _pageUrlsController.GetPageUrls(tab, portalId);
         }
 
+        public PageSettings GetPageSettings(int pageId)
+        {
+            var tab = GetPageDetails(pageId);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var page = Converters.ConvertToPageSettings<PageSettings>(tab);
+            page.Modules = GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
+            page.PageUrls = GetPageUrls(page.TabId);
+            page.Permissions = GetPermissionsData(pageId);
+            page.SiteAliases = GetSiteAliases(portalSettings.PortalId);
+            page.PrimaryAliasId = GetPrimaryAliasId(portalSettings.PortalId, portalSettings.CultureCode);
+            page.Locales = GetLocales(portalSettings.PortalId);
+            page.HasParent = tab.ParentId > -1;
+            return page;
+        }
 
+        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            return _pageUrlsController.CreateCustomUrl(dto, portalSettings);
+        }
+
+        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        {
+            return _pageUrlsController.UpdateCustomUrl(dto, portalSettings);
+        }
+
+        public PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings)
+        {
+            return _pageUrlsController.DeleteCustomUrl(dto, portalSettings);
+        }
+        protected IOrderedEnumerable<KeyValuePair<int, string>> GetLocales(int portalId)
+        {
+            var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
+            return locales.Value.Values.Select(local => new KeyValuePair<int, string>(local.KeyID, local.EnglishName)).OrderBy(x => x.Value);
+        }
+        protected IEnumerable<KeyValuePair<int, string>> GetSiteAliases(int portalId)
+        {
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            return aliases.Select(alias => new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias)).OrderBy(x => x.Value);
+        }
+
+        protected int? GetPrimaryAliasId(int portalId, string cultureCode)
+        {
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            var primary = aliases.Where(a => a.IsPrimary
+                                && (a.CultureCode == cultureCode || String.IsNullOrEmpty(a.CultureCode)))
+                            .OrderByDescending(a => a.CultureCode)
+                            .FirstOrDefault();
+            return primary == null ? (int?)null : primary.KeyID;
+        }
+        
         public void CreateOrUpdateContentItem(TabInfo tab)
         {
             var contentController = Util.GetContentController();
@@ -837,7 +913,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     permissions.UserPermissions = permissions.UserPermissions.OrderBy(p => p.DisplayName).ToList();
                 }
             }
-
+            
             return permissions;
         }
 

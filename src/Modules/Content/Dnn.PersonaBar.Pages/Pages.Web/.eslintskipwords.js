@@ -138,4 +138,9 @@ module.exports = [
     "sitemap",
     "ascx",
     "href",
+    "iframe",
+    "sys",
+    "args",
+    "cmd",
+    "startswith",
 ]

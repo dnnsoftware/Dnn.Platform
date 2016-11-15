@@ -346,7 +346,7 @@
     <value>Password confirmation is required.</value>
   </data>
   <data name="PasswordRequired.Error" xml:space="preserve">
-    <value>Password is required.</value>
+    <value>Password is required. Please enter a minimum of 7 characters.</value>
   </data>
   <data name="SiteAliasRequired.Error" xml:space="preserve">
     <value>Site Alias is required.</value>
