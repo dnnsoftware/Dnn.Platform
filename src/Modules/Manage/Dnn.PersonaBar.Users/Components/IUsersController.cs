@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Users.Components.Contracts;
 using Dnn.PersonaBar.Users.Components.Dto;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components
 {
@@ -11,5 +12,8 @@ namespace Dnn.PersonaBar.Users.Components
         UserDetailDto GetUserDetail(int portalId, int userId);
         bool ChangePassword(int portalId, int userId, string newPassword, out string errorMessage);
         UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto);
+
+        UserRoleDto SaveUserRole(int portalId, UserInfo userInfo, UserRoleDto userRoleDto, bool notifyUser,
+            bool isOwner, out string errorMessage, out bool success);
     }
 }

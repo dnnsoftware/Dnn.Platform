@@ -110,9 +110,11 @@ const switchCase = [
     {
         condition: ActionTypes.SAVE_USER_ROLE,
         functionToRun: (state, action) => {
-            return {
-                userRoles: updateUserRoleList(state.userRoles, action.payload)
-            };
+            if (action.payload.Success) {
+                return {
+                    userRoles: updateUserRoleList(state.userRoles, action.payload.Results)
+                };
+            }
         }
     },
     {

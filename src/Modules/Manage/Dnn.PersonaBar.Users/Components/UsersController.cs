@@ -222,6 +222,46 @@ namespace Dnn.PersonaBar.Users.Components
                 UserBasicDto.FromUserInfo(UserController.Instance.GetUser(PortalSettings.PortalId, userBasicDto.UserId));
         }
 
+        public UserRoleDto SaveUserRole(int portalId, UserInfo userInfo, UserRoleDto userRoleDto, bool notifyUser,
+            bool isOwner, out string errorMessage, out bool success)
+        {
+            errorMessage = string.Empty;
+            success = true;
+            if (!UserRoleDto.AllowExpiredRole(PortalSettings, userRoleDto.UserId, userRoleDto.RoleId))
+            {
+                userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
+            }
+
+            var user = UserController.Instance.GetUserById(portalId, userRoleDto.UserId);
+            var role = RoleController.Instance.GetRoleById(portalId, userRoleDto.RoleId);
+            if (userInfo.IsSuperUser || userInfo.Roles.Contains(PortalSettings.AdministratorRoleName) ||
+                (!userInfo.IsSuperUser && !userInfo.Roles.Contains(PortalSettings.AdministratorRoleName) &&
+                 role.RoleType != RoleType.Administrator))
+            {
+                if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
+                    isOwner = false;
+
+                RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
+                    userRoleDto.ExpiresTime, notifyUser, isOwner);
+                var addedRole = RoleController.Instance.GetUserRole(portalId, userRoleDto.UserId, userRoleDto.RoleId);
+
+                return new UserRoleDto
+                {
+                    UserId = addedRole.UserID,
+                    RoleId = addedRole.RoleID,
+                    DisplayName = addedRole.FullName,
+                    RoleName = addedRole.RoleName,
+                    StartTime = addedRole.EffectiveDate,
+                    ExpiresTime = addedRole.ExpiryDate,
+                    AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
+                    AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
+                };
+            }
+            success = false;
+            errorMessage = Localization.GetString("InSufficientPermissions", LocalResourcesFile);
+            return null;
+        }
+
         #endregion
 
         #region Private Methods

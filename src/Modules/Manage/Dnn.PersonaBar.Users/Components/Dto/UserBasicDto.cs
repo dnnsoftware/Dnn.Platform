@@ -4,8 +4,10 @@
 // All rights reserved.
 
 using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using Dnn.PersonaBar.Library.Common;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Components.Dto
@@ -13,6 +15,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
 
@@ -36,16 +40,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "isSuperUser")]
         public bool IsSuperUser { get; set; }
-        
+
+        [DataMember(Name = "isAdmin")]
+        public bool IsAdmin { get; set; }
+
 
         [DataMember(Name = "avatar")]
-        public string AvatarUrl
-        {
-            get
-            {
-                return Utilities.GetProfileAvatar(UserId);
-            }
-        }
+        public string AvatarUrl => Utilities.GetProfileAvatar(UserId);
 
         public UserBasicDto()
         {
@@ -62,6 +63,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             IsDeleted = user.IsDeleted;
             Authorized = user.Membership.Approved;
             IsSuperUser = user.IsSuperUser;
+            IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
         }
 
         public static UserBasicDto FromUserInfo(UserInfo user)

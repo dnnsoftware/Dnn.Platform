@@ -28,6 +28,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Dnn.PersonaBar.Users.Services
 {
@@ -35,6 +36,7 @@ namespace Dnn.PersonaBar.Users.Services
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
+        private string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
 
         #region Users API
 
@@ -160,7 +162,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var userDetail = Components.UsersController.Instance.GetUserDetail(PortalId, userId);
                 if (userDetail == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, userDetail);
@@ -208,7 +210,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
@@ -224,8 +226,8 @@ namespace Dnn.PersonaBar.Users.Services
                     UserController.UpdateUser(PortalId, user);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
-
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Message = "OptionUnavailable" });
+                
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Message = Localization.GetString("OptionUnavailable", LocalResourcesFile) });
             }
             catch (Exception ex)
             {
@@ -243,13 +245,13 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 string errorMessage = string.Empty;
                 if (MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
-                    errorMessage = "OptionUnavailable";
+                    errorMessage = Localization.GetString("OptionUnavailable", LocalResourcesFile);
                 }
                 else
                 {
@@ -261,18 +263,18 @@ namespace Dnn.PersonaBar.Users.Services
                         bool canSend = Mail.SendMail(user, MessageType.PasswordReminder, PortalSettings) == string.Empty;
                         if (!canSend)
                         {
-                            errorMessage = "OptionUnavailable";
+                            errorMessage = Localization.GetString("OptionUnavailable", LocalResourcesFile);
                         }
                     }
                     catch (ArgumentException exc)
                     {
                         Logger.Error(exc);
-                        errorMessage = "InvalidPasswordAnswer";
+                        errorMessage = Localization.GetString("InvalidPasswordAnswer", LocalResourcesFile);
                     }
                     catch (Exception exc)
                     {
                         Logger.Error(exc);
-                        errorMessage = "PasswordResetFailed";
+                        errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
                     }
                 }
 
@@ -298,7 +300,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 user.Membership.Approved = authorized;
@@ -324,14 +326,14 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 var errorMessage = string.Empty;
                 var deleted = UserController.DeleteUser(ref user, true, false);
                 if (!deleted)
                 {
-                    errorMessage = "UserDeleteError";
+                    errorMessage = Localization.GetString("UserDeleteError", LocalResourcesFile);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = deleted, Message = errorMessage });
@@ -352,7 +354,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 var errorMessage = string.Empty;
@@ -360,7 +362,7 @@ namespace Dnn.PersonaBar.Users.Services
 
                 if (!deleted)
                 {
-                    errorMessage = "UserRemoveError";
+                    errorMessage = Localization.GetString("UserRemoveError", LocalResourcesFile);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = deleted, Message = errorMessage });
@@ -381,7 +383,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 var errorMessage = string.Empty;
@@ -389,7 +391,7 @@ namespace Dnn.PersonaBar.Users.Services
 
                 if (!restored)
                 {
-                    errorMessage = "UserRestoreError";
+                    errorMessage = Localization.GetString("UserRestoreError", LocalResourcesFile);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = restored, Message = errorMessage });
@@ -428,7 +430,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 user.IsSuperUser = setSuperUser;
@@ -460,7 +462,7 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 Logger.Error(ex);
                 return Request.CreateResponse(HttpStatusCode.BadRequest,
-                    new {Success = false, Message = "Username must be unique."});
+                    new {Success = false, Message = Localization.GetString("UsernameNotUnique", LocalResourcesFile)});
             }
             catch (Exception ex)
             {
@@ -484,12 +486,18 @@ namespace Dnn.PersonaBar.Users.Services
                 }
 
                 var roles = RoleController.Instance.GetRoles(PortalId, x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
-                var matchedRoles = roles.ToList().Take(count).Select(u => new UserRoleInfo
-                {
-                    RoleID = u.RoleID,
-                    RoleName = $"{u.RoleName}",
-                    SecurityMode = u.SecurityMode
-                });
+                var matchedRoles = roles
+                    .Where(
+                    x =>
+                        UserInfo.IsSuperUser || UserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) ||
+                        (!UserInfo.IsSuperUser && !UserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) &&
+                         x.RoleType != RoleType.Administrator))
+                    .ToList().Take(count).Select(u => new UserRoleInfo
+                    {
+                        RoleID = u.RoleID,
+                        RoleName = $"{u.RoleName}",
+                        SecurityMode = u.SecurityMode
+                    });
 
                 return Request.CreateResponse(HttpStatusCode.OK, matchedRoles.ToList().Select(r => UserRoleDto.FromRoleInfo(PortalSettings, r)));
             }
@@ -508,7 +516,7 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = UserController.Instance.GetUserById(PortalId, userId);
                 if (user == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "UserNotFound");
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("UserNotFound", LocalResourcesFile));
                 }
 
                 var allUserRoles = RoleController.Instance.GetUserRoles(user, true);
@@ -541,32 +549,13 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userRoleDto);
+                string errorMessage;
+                bool success;
+                var result = Components.UsersController.Instance.SaveUserRole(PortalId, UserInfo, userRoleDto, notifyUser, isOwner,
+                    out errorMessage, out success);
 
-                if (!UserRoleDto.AllowExpiredRole(PortalSettings, userRoleDto.UserId, userRoleDto.RoleId))
-                {
-                    userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
-                }
-
-                var user = UserController.Instance.GetUserById(PortalId, userRoleDto.UserId);
-                var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
-                if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
-                    isOwner = false;
-
-                RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
-                    userRoleDto.ExpiresTime, notifyUser, isOwner);
-                var addedRole = RoleController.Instance.GetUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new UserRoleDto
-                {
-                    UserId = addedRole.UserID,
-                    RoleId = addedRole.RoleID,
-                    DisplayName = addedRole.FullName,
-                    RoleName = addedRole.RoleName,
-                    StartTime = addedRole.EffectiveDate,
-                    ExpiresTime = addedRole.ExpiryDate,
-                    AllowExpired = UserRoleDto.AllowExpiredRole(PortalSettings, user.UserID, role.RoleID),
-                    AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
-                });
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new {Success = success, Message = errorMessage, Results = result});
             }
             catch (Exception ex)
             {

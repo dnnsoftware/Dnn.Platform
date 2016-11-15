@@ -10,7 +10,7 @@ import "./style.less";
 import Pager from "dnn-pager";
 import { AddIcon } from "dnn-svg-icons";
 import { CommonUsersActions } from "../../../actions";
-
+import utilities from "utils";
 
 class UserRoles extends Component {
     constructor(props) {
@@ -87,7 +87,11 @@ class UserRoles extends Component {
         const {props} = this;
 
         let parameter = { roleId: roleId, userId: props.userDetails.userId, startTime: startTime, expiresTime: expiresTime };
-        props.dispatch(CommonUsersActions.saveUserRole(parameter, this.state.sendEmail, this.state.isOwner));
+        props.dispatch(CommonUsersActions.saveUserRole(parameter, this.state.sendEmail, this.state.isOwner, (data)=>{
+            if (!data.Success){
+                utilities.notify(data.Message, 10000);
+            }
+        }));
         this.setState({ sendEmail: true, isOwner: false, allowOwner: false });
     }
 
