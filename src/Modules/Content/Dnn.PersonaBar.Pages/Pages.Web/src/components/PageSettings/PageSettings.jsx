@@ -89,12 +89,9 @@ class PageSettings extends Component {
         const appearanceButtons = [...buttons];
         const permissionsButtons = [...buttons];
 
-        if (isEditingExistingPage) {
+        if (isEditingExistingPage && selectedPage.hasChild) {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
-            
-            if (selectedPage.hasChild) {
-                permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
-            }
+            permissionsButtons.unshift(this.getCopyPermissionsToDescendantPagesButton());
         }        
 
         const footer = this.getPageFooter(buttons);
