@@ -1548,11 +1548,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 settings.AllowUserUICulture = portalSettings.AllowUserUICulture;
                 settings.PortalId = portal.PortalID;
                 settings.CultureCode = portal.CultureCode;
-
-                if (UserInfo.IsSuperUser)
-                {
-                    settings.EnableContentLocalization = Host.EnableContentLocalization;
-                }
+                settings.AllowContentLocalization = Host.EnableContentLocalization;
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -1630,9 +1626,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     personalizationController.SaveProfile(personalization);
                 }
 
-                if (UserInfo.IsSuperUser)
+                if (UserInfo.IsSuperUser && Host.EnableContentLocalization != request.AllowContentLocalization)
                 {
-                    HostController.Instance.Update("EnableContentLocalization", request.EnableContentLocalization.Value ? "Y" : "N", false);
+                    HostController.Instance.Update("EnableContentLocalization", request.AllowContentLocalization ? "Y" : "N", false);
                     DataCache.ClearCache();
                 }
 

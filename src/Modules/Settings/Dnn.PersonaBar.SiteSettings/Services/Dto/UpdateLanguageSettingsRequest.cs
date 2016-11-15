@@ -42,6 +42,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public string LanguageDisplayMode { get; set; }
 
-        public bool? EnableContentLocalization { get; set; }
+        public bool AllowContentLocalization { get; set; }
     }
 }
