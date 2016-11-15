@@ -13,11 +13,18 @@ import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 
 class PageSettings extends Component {
 
+    hasPageErrors() {
+        const {selectedPageErrors} = this.props;
+        return Object.keys(selectedPageErrors)
+            .map(key => selectedPageErrors[key])
+            .some(value => value);
+    }
+
     getButtons() {
-        const {selectedPage, selectedPageErrors, onCancel, onSave} = this.props;
+        const {selectedPage, onCancel, onSave} = this.props;
         const saveButtonText = selectedPage.tabId === 0 ? 
             Localization.get("AddPage") : Localization.get("Save");
-        const pageErrors = Object.values(selectedPageErrors).some(value => value);
+        const pageErrors = this.hasPageErrors();
 
         return [<Button
                     type="secondary"
