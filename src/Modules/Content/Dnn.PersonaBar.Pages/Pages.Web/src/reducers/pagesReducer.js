@@ -72,8 +72,15 @@ export default function pagesReducer(state = {
         case ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST:
             return state;
         
-        case ActionTypes.TOGGLE_EDIT_PAGE_MODULE: {
-            const editingSettingModuleId = state.editingSettingModuleId !== action.data.module.id ? action.data.module.id : null;
+        case ActionTypes.EDITING_PAGE_MODULE: {
+            const editingSettingModuleId = action.data.module.id;
+            return { ...state,
+                editingSettingModuleId
+            };
+        }
+        
+        case ActionTypes.CANCEL_EDITING_PAGE_MODULE: {
+            const editingSettingModuleId = null;
             return { ...state,
                 editingSettingModuleId
             };

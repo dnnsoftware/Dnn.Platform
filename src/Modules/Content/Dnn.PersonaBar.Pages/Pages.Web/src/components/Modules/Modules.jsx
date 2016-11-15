@@ -5,6 +5,8 @@ import GridCell from "dnn-grid-cell";
 import Localization from "../../localization";
 import utils from "../../utils";
 import { ModuleIcon } from "dnn-svg-icons";
+import Modal from "dnn-modal";
+import ModelEdit from "./ModuleEdit/ModuleEdit";
 
 class Modules extends Component {
 
@@ -20,7 +22,7 @@ class Modules extends Component {
     }
 
     getModules() {
-        const {modules, onToggleEditModule, editingSettingModuleId} = this.props;
+        const {modules, onEditingModule, editingSettingModuleId} = this.props;
 
         if (modules.length === 0) {
             return <GridCell className="no-modules" columnSize={100} >
@@ -35,14 +37,16 @@ class Modules extends Component {
                     key={index}
                     module={module} 
                     onDelete={this.onDeleteModule.bind(this)}
-                    onToggleEditing={onToggleEditModule}
+                    onEditing={onEditingModule}
                     isEditingModule={isEditingModule} />
             );
         });
     }
 
     render() {
+        const {modules, onCancelEditingModule, editingSettingModuleId} = this.props;
         const moduleRows = this.getModules();
+        const editingModule = modules.find(m => m.id === editingSettingModuleId);
         return (
             /* eslint-disable react/no-danger */
             <div className={styles.moduleContainer}>
@@ -60,7 +64,10 @@ class Modules extends Component {
                         </GridCell>
                     </div>
                     {moduleRows}
-                </div>      
+                </div>
+                <Modal isOpen={editingModule} header={Localization.get("ModuleSettings")} onRequestClose={onCancelEditingModule}>
+                    {editingModule && <ModelEdit module={editingModule} onUpdatedModuleSettings={onCancelEditingModule} /> }
+                </Modal>      
             </div>      
             /* eslint-enable react/no-danger */
         );
@@ -70,7 +77,8 @@ class Modules extends Component {
 Modules.propTypes = {
     modules: PropTypes.array.isRequired,
     onDeleteModule: PropTypes.func.isRequired,
-    onToggleEditModule: PropTypes.func.isRequired,
+    onEditingModule: PropTypes.func.isRequired,
+    onCancelEditingModule: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number
 };
 

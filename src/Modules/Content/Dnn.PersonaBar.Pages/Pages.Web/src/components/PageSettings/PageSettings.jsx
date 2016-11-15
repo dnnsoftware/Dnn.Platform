@@ -69,7 +69,8 @@ class PageSettings extends Component {
             onChangeField, 
             onChangePageType, 
             onDeletePageModule, 
-            onToggleEditPageModule,
+            onEditingPageModule,
+            onCancelEditingPageModule,
             editingSettingModuleId
         } = this.props;
 
@@ -121,7 +122,8 @@ class PageSettings extends Component {
                                 <Modules 
                                     modules={selectedPage.modules} 
                                     onDeleteModule={onDeletePageModule}
-                                    onToggleEditModule={onToggleEditPageModule}
+                                    onEditingModule={onEditingPageModule}
+                                    onCancelEditingModule={onCancelEditingPageModule}
                                     editingSettingModuleId={editingSettingModuleId} />
                             </div>
             });
@@ -171,7 +173,8 @@ PageSettings.propTypes = {
     onPermissionsChanged: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,
     onDeletePageModule: PropTypes.func.isRequired,
-    onToggleEditPageModule: PropTypes.func.isRequired,
+    onEditingPageModule: PropTypes.func.isRequired,
+    onCancelEditingPageModule: PropTypes.func.isRequired,
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number

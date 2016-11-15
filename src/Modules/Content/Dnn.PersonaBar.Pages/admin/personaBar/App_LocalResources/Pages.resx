@@ -597,4 +597,7 @@
   <data name="BranchParent.Text" xml:space="preserve">
     <value>Branch Parent</value>
   </data>
+  <data name="ModuleSettings.Text" xml:space="preserve">
+    <value>Module Settings</value>
+  </data>
 </root>

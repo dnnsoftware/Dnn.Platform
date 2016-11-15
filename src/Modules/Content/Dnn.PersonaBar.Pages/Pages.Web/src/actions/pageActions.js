@@ -200,10 +200,17 @@ const pageActions = {
         };
     },
 
-    toggleEditPageModule(module) {
+    editingPageModule(module) {
         return {
-            type: ActionTypes.TOGGLE_EDIT_PAGE_MODULE,
+            type: ActionTypes.EDITING_PAGE_MODULE,
             data: {module}
+        };
+    },
+    
+    cancelEditingPageModule() {
+        return {
+            type: ActionTypes.CANCEL_EDITING_PAGE_MODULE,
+            data: {}
         };
     },
 
