@@ -142,4 +142,5 @@ module.exports = [
     "sys",
     "args",
     "cmd",
+    "startswith",
 ]
