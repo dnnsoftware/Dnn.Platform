@@ -105,12 +105,6 @@
             }       
         }
     }
-
-    .smallLabelSize {
-        label {
-            font-size: 92%;
-        }
-    }
 }
 
 
@@ -136,15 +130,15 @@
         .dnn-dropdown {
             width: 50%;
         }
+        .dnn-ui-common-input-group .title label { 
+            text-transform: none;
+        }
     }
     
     &.performanceSettingTab {
         .title.lowerCase label {
             text-transform: none;
-        }
-        .currentHostVersion .dnn-label {
-            width: auto;
-        }
+        }        
         .dnn-servers-grid-panel.newSection {
             padding-top: 20px;
             padding-bottom: 10px;
@@ -158,6 +152,21 @@
             :first-child {
                 margin-top: 0;
             }
+        }
+        .dnn-ui-common-input-group .title label { 
+            text-transform: none;
+        }
+        .currentHostVersion .dnn-label {
+            width: auto;
+            label {
+                text-transform: uppercase;
+            }
+        }
+    }
+
+    &.smtpServerSettingsTab {
+        .dnn-ui-common-input-group .title label { 
+            text-transform: none;
         }
     }
 }

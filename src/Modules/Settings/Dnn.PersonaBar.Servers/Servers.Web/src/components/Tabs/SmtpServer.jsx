@@ -141,7 +141,7 @@ class SmtpServer extends Component {
         const credentialVisible = selectedSmtpSettings.smtpAuthentication === "1";
         const smtpSettingsVisible = utils.isHostUser() || !areGlobalSettings;
 
-        return <div className="dnn-servers-info-panel-big">
+        return <div className="dnn-servers-info-panel-big smtpServerSettingsTab">
             <GridSystem>
                 <div className="leftPane">
                     <div className="tooltipAdjustment border-bottom">
