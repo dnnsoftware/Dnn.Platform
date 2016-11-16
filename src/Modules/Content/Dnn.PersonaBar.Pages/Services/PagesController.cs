@@ -402,22 +402,6 @@ namespace Dnn.PersonaBar.Pages.Services
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
         #endregion
 
-        // GET /api/personabar/pages/GetTabsForTranslation?cultureCode=fr-FR
-        [HttpGet]
-        public HttpResponseMessage GetTabsForTranslation(string cultureCode)
-        {
-            try
-            {
-                var nonTranslatedTabs = GetTabsForTranslationInternal(cultureCode);
-                return Request.CreateResponse(HttpStatusCode.OK, nonTranslatedTabs);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-            }
-        }
-
         // POST /api/personabar/pages/MakePageNeutral?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -517,26 +501,6 @@ namespace Dnn.PersonaBar.Pages.Services
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
-        }
-
-        private IList<LanguageTabDto> GetTabsForTranslationInternal(string cultureCode)
-        {
-            var locale = new LocaleController().GetLocale(cultureCode);
-            var portalSettings = PortalSettings;
-            var pages = new List<LanguageTabDto>();
-            if (locale != null && locale.Code != portalSettings.DefaultLanguage)
-            {
-                var portalTabs = _tabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values;
-                var nonTranslated = (from t in portalTabs where !t.IsTranslated && !t.IsDeleted select t);
-                pages.AddRange(
-                    nonTranslated.Select(page => new LanguageTabDto()
-                    {
-                        PageId = page.TabID,
-                        PageName = page.TabName,
-                        ViewUrl = Globals.NavigateURL(page.TabID),
-                    }));
-            }
-            return pages;
         }
 
         // GET /api/personabar/pages/GetTabLocalization?tabId=123

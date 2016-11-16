@@ -89,7 +89,6 @@
     <Compile Include="Controllers\TabsController.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Data\IDataService.cs" />
-    <Compile Include="Dto\Tabs\LanguageTabDto.cs" />
     <Compile Include="Dto\Tabs\LocaleInfoDto.cs" />
     <Compile Include="Dto\Tabs\NodeCheckedState.cs" />
     <Compile Include="Dto\Permission.cs" />
