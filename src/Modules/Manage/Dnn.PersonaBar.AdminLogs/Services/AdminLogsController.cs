@@ -273,7 +273,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>Option list of Keep Most Recent</returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpGet]
         public HttpResponseMessage GetKeepMostRecentOptions()
         {
@@ -303,7 +303,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>Option list of Occurence Threshold</returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpGet]
         public HttpResponseMessage GetOccurrenceOptions()
         {
@@ -336,7 +336,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param></param>
         /// <returns>List of log settings</returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpGet]
         public HttpResponseMessage GetLogSettings()
         {
@@ -381,7 +381,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="logTypeConfigId"></param>
         /// <returns></returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpGet]
         public HttpResponseMessage GetLogSetting(string logTypeConfigId)
         {
@@ -422,7 +422,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage AddLogSetting([FromBody] UpdateLogSettingsRequest request)
@@ -446,7 +446,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateLogSetting([FromBody] UpdateLogSettingsRequest request)
@@ -470,7 +470,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteLogSetting(DeleteLogSettingsRequest request)

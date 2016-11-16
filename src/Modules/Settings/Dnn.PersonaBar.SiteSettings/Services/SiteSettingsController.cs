@@ -710,7 +710,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="cultureCode"></param>
         /// <returns>Url mapping settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetUrlMappingSettings([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -768,7 +768,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateUrlMappingSettings(UpdateUrlMappingSettingsRequest request)
         {
@@ -799,7 +799,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="cultureCode"></param>
         /// <returns>site aliases</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetSiteAliases([FromUri] int? portalId, [FromUri] string cultureCode)
         {
             try
@@ -852,7 +852,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="portalAliasId"></param>
         /// <returns>site alias</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetSiteAlias([FromUri]int portalAliasId)
         {
             try
@@ -889,7 +889,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage AddSiteAlias(UpdateSiteAliasRequest request)
         {
             try
@@ -946,7 +946,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateSiteAlias(UpdateSiteAliasRequest request)
         {
@@ -998,7 +998,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="portalAliasId"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteSiteAlias(int portalAliasId)
         {
@@ -1031,7 +1031,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="portalAliasId"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SetPrimarySiteAlias([FromUri]int portalAliasId)
         {
@@ -1062,7 +1062,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// </summary>
         /// <returns>basic search settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetBasicSearchSettings()
         {
             try
@@ -1106,7 +1106,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateBasicSearchSettings(UpdateBasicSearchSettingsRequest request)
         {
@@ -1843,7 +1843,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage AddLanguage(UpdateLanguageRequest request)
         {
             try
@@ -1911,7 +1911,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage UpdateLanguage(UpdateLanguageRequest request)
         {
             try
@@ -1994,7 +1994,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// </summary>
         /// <returns>verification results</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage VerifyLanguageResourceFiles()
         {
             try
@@ -2147,7 +2147,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// </summary>
         /// <returns>list of modules</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetModuleList(string type)
         {
             try
@@ -2223,7 +2223,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage CreateLanguagePack(CreateLanguagePackRequest request)
         {
             try
@@ -2358,7 +2358,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// </summary>
         /// <returns>other settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetOtherSettings()
         {
             try
@@ -2386,7 +2386,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateOtherSettings(UpdateOtherSettingsRequest request)
         {

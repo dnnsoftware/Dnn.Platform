@@ -1189,7 +1189,7 @@
     <value>Participate in DNN Improvement Program:</value>
   </data>
   <data name="plUpgrade.Text" xml:space="preserve">
-    <value>Check for Upgrades</value>
+    <value>Check for Software Upgrades</value>
   </data>
   <data name="plUpgrade.Help" xml:space="preserve">
     <value>Check this box to have the application check if there are upgrades available.</value>

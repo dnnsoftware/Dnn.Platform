@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param></param>
         /// <returns>List of IP filters</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetIpFilters()
         {
             try
@@ -190,7 +190,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="filterId"></param>
         /// <returns>IP filter</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetIpFilter(int filterId)
         {
             try
@@ -224,7 +224,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateIpFilter(UpdateIpFilterRequest request)
         {
@@ -270,7 +270,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="filterId"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteIpFilter(int filterId)
         {
@@ -308,7 +308,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's member settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetMemberSettings()
         {
             try
@@ -349,7 +349,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateMemberSettings(UpdateMemberSettingsRequest request)
         {
@@ -487,7 +487,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
@@ -633,7 +633,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Security bulletins</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetSecurityBulletins()
         {
             try
@@ -716,7 +716,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Portal's ssl settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetOtherSettings()
         {
             try
@@ -756,7 +756,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateOtherSettings(UpdateOtherSettingsRequest request)
         {
@@ -797,7 +797,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>audit check results</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetAuditCheckResults()
         {
             try
@@ -825,7 +825,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>audit check results</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetSuperuserActivities()
         {
             try
@@ -866,7 +866,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>Searchs file system and database</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage SearchFileSystemAndDatabase(string term)
         {
             try
@@ -898,7 +898,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>last modified files</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetLastModifiedFiles()
         {
             try
@@ -938,7 +938,7 @@ namespace Dnn.PersonaBar.Security.Services
         /// </summary>
         /// <returns>last modified settings</returns>
         [HttpGet]
-        [DnnAuthorize(StaticRoles = "Superusers")]
+        [RequireHost]
         public HttpResponseMessage GetLastModifiedSettings()
         {
             try
