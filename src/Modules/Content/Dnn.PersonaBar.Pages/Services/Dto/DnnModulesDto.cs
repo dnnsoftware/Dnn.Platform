@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Dnn.PersonaBar.SiteSettings.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     [JsonObject]
     public class DnnModulesDto

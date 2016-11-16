@@ -60,7 +60,6 @@ class Module extends Component {
                 itemsToStay.push(portal);
             }
         });
-        console.log(itemsToStay, itemsToMove);
         if (selectedCount > 0) {
             props.onAssignedPortalsChange("assignedPortals", assignedPortals.concat(itemsToMove), () => {
                 props.onAssignedPortalsChange("unassignedPortals", itemsToStay);

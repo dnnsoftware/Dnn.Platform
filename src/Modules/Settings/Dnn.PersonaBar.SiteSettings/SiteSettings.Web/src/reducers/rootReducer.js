@@ -13,6 +13,11 @@ function getExtraReducers() {
         window.dnn.SiteSettings.SiteBehaviorExtras.forEach((extra) => {
             extraReducers[extra.ReducerKey] = extra.Reducer;
         });
+    }    
+    if (window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras) {
+        window.dnn.SiteSettings.SearchExtras.forEach((extra) => {
+            extraReducers[extra.ReducerKey] = extra.Reducer;
+        });
     }
     return extraReducers;
 }

@@ -36,17 +36,17 @@ class ListView extends Component {
         event.portalId = portal.PortalID;
         document.dispatchEvent(event);
 
-        utilities.loadPanel("SiteSettings", {
-            identifier: "SiteSettings",
-            moduleName: "SiteSettings",
-            path: "SiteSettings",
+        utilities.loadPanel(this.props.siteSettingModule, {
+            identifier: "SiteSettings", // This is always SiteSettings, to call the proper GetExtensions method.
+            moduleName: this.props.siteSettingModule,
+            path: this.props.siteSettingModule,
             query: "",
             settings: {
                 isHost: true,
                 PortalID: portal.PortalID
             }
         });
-        
+
         document.dispatchEvent(event);
     }
     onPreview(portal /*, index*/) {
@@ -86,7 +86,7 @@ class ListView extends Component {
             return <div dangerouslySetInnerHTML={{ __html: _button.icon }} onClick={_button.onClick}></div>;
         });
     }
-    getPortalMapping(portal){
+    getPortalMapping(portal) {
         return [
             {
                 label: Localization.get("SiteDetails_SiteID"),
@@ -139,6 +139,7 @@ class ListView extends Component {
 
 ListView.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    siteSettingModule: PropTypes.string,
     getPortalMapping: PropTypes.func.isRequired,
     portals: PropTypes.array,
     totalCount: PropTypes.number,
@@ -148,6 +149,11 @@ ListView.propTypes = {
     onDeletePortal: PropTypes.func,
     onPreviewPortal: PropTypes.func
 };
+
+ListView.defaultProps = {
+    siteSettingModule: "SiteSettings"
+};
+
 function mapStateToProps(state) {
     return {
         portals: state.portal.portals,

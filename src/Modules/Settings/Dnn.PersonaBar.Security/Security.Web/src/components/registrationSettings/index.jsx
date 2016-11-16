@@ -73,7 +73,12 @@ class RegistrationSettingsPanelBody extends Component {
             registrationSettings[key] = parseInt(event);
         }
         else if (key === "RedirectAfterRegistrationTabId") {
-            registrationSettings[key] = event;
+            if (registrationSettings[key] !== parseInt(event)) {
+                registrationSettings[key] = event;
+            }
+            else {
+                return;
+            }
         }
         else {
             registrationSettings[key] = typeof (event) === "object" ? event.target.value : event;
@@ -471,13 +476,13 @@ class RegistrationSettingsPanelBody extends Component {
                                 {state.registrationSettings.PasswordResetEnabled }
                             </div>
                         </div>
-                    </InputGroup>
+                    </InputGroup>                    
                     <InputGroup>
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordResetEnabledTitle.Help") }
-                                label={resx.get("PasswordResetEnabledTitle") }
+                                tooltipMessage={resx.get("MinPasswordLengthTitle.Help") }
+                                label={resx.get("MinPasswordLengthTitle") }
                                 />
                             <div className="registrationSettings-row-static-text">
                                 {state.registrationSettings.MinPasswordLength }

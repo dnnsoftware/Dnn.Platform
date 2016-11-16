@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         IEnumerable<ModuleInfo> GetModules(int pageId);
 
-        PagePermissions GetPermissionsData(int pageId);
+        PageSettings GetDefaultSettings();
 
         void DeleteTabModule(int pageId, int moduleId);
 
@@ -55,5 +55,7 @@ namespace Dnn.PersonaBar.Pages.Components
         PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
         PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
         PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings);
+
+        PagePermissions GetPermissionsData(int pageId);
     }
 }

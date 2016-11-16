@@ -23,7 +23,7 @@ class EditExtension extends Component {
                 <Scrollbars style={licenseBoxStyle}>
                     <div className="package-installation-report">
                         {props.logs.map((log) => {
-                            return <p>{log}</p>;
+                            return <p className={log.substring(0, log.indexOf(":")).toLowerCase()}>{log}</p>;
                         })}
                     </div>
                 </Scrollbars>

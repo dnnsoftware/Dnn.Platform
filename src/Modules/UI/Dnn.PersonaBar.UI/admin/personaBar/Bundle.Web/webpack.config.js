@@ -16,7 +16,7 @@ module.exports = {
     output: {
         path: "./../scripts/exports/",
         filename: "export-bundle.js",
-        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
+        publicPath: isProduction ? "" : "http://localhost:8070/dist/"
     },
 
     module: {

@@ -12,7 +12,8 @@ class FolderDropdown extends Component {
         super();
         this.state = {
             addNewFolderOpen: false,
-            newFolderValue: ""
+            newFolderValue: "",
+            triedToSave: false
         };
     }
 
@@ -27,22 +28,29 @@ class FolderDropdown extends Component {
         }
     }
 
-    closeAddNewFolderBox() {
+    closeAddNewFolderBox(data) {
         this.setState({
             addNewFolderOpen: false,
             newFolderValue: ""
         });
+        this.props.onAddedNewFolder(data, this.props.type);
     }
 
     onAddNewFolder() {
         const { props, state } = this;
-
+        if (this.state.newFolderValue === "") {
+            this.setState({
+                triedToSave: true
+            });
+            return;
+        }
         props.onAddNewFolder(state.newFolderValue, props.type, this.closeAddNewFolderBox.bind(this));
     }
 
     onFolderNameChange(event) {
         this.setState({
-            newFolderValue: event.target.value
+            newFolderValue: event.target.value,
+            triedToSave: false
         });
     }
 
@@ -69,6 +77,7 @@ class FolderDropdown extends Component {
                                 inputStyle={{ marginBottom: 16 }}
                                 value={state.newFolderValue}
                                 onChange={this.onFolderNameChange.bind(this)}
+                                error={state.newFolderValue === "" && state.triedToSave}
                                 />
                         </GridCell>
                         <GridCell className="new-folder-buttons">
@@ -92,7 +101,7 @@ class FolderDropdown extends Component {
     }
 }
 
-FolderDropdown.PropTypes = {
+FolderDropdown.propTypes = {
     onCancel: PropTypes.func,
     folders: PropTypes.array,
     onFolderSelect: PropTypes.func,
@@ -100,7 +109,8 @@ FolderDropdown.PropTypes = {
     tooltipMessage: PropTypes.string,
     label: PropTypes.string,
     enabled: PropTypes.bool,
-    error: PropTypes.bool
+    error: PropTypes.bool,
+    onAddedNewFolder: PropTypes.func
 };
 
 export default FolderDropdown;

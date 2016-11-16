@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 .extension-install-logs {
     >h6 {
         margin-bottom: 10px;
@@ -8,5 +9,16 @@
     }
     .package-installation-report {
         padding: 25px;
+        p {
+            word-wrap: break-word;
+        }
+        p.failure, p.error {
+            color: @alizarinCrimson;
+            font-weight: bold;
+        }
+        p.startjob, p.endjob {
+            color: #000;
+            font-weight: bold;
+        }
     }
 }

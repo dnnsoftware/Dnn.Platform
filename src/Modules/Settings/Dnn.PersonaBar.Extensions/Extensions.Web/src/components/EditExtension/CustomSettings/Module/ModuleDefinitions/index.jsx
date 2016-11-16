@@ -181,7 +181,6 @@ class ModuleDefinitions extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        console.log("Re-rendering..");
         const moduleDefinitions = props.extensionBeingEdited.moduleDefinitions.value.map((moduleDefinition, index) => {
 
             return <ModuleDefinitionRow

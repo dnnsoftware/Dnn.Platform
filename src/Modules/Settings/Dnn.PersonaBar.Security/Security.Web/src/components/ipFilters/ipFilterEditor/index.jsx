@@ -256,8 +256,7 @@ class IpFilterEditor extends Component {
                     numberOfColumns={1}
                     />
                 <div className="buttons-box">
-                    <Button
-                        disabled={!this.state.formModified}
+                    <Button                        
                         type="secondary"
                         onClick={this.props.Collapse.bind(this) }>
                         {resx.get("Cancel") }

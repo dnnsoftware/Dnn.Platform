@@ -1093,4 +1093,10 @@
   <data name="NoneSpecified.Text" xml:space="preserve">
     <value>None Specified</value>
   </data>
+  <data name="MinPasswordLengthTitle.Help" xml:space="preserve">
+    <value>Specifies the minimum number of characters in the password.  This can only be changed in web.config file.</value>
+  </data>
+  <data name="MinPasswordLengthTitle.Text" xml:space="preserve">
+    <value>Min Password Length</value>
+  </data>
 </root>
