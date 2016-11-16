@@ -57,13 +57,13 @@ class Dropdown extends Component {
     componentDidMount() {
         const {props} = this;
         if (props.closeOnClick) {
-            document.addEventListener("click", this.handleClick);
+            document.addEventListener("mousedown", this.handleClick);
         }
         this._isMounted = true;
     }
 
     componentWillUnmount() {
-        document.removeEventListener("click", this.handleClick);
+        document.removeEventListener("mousedown", this.handleClick);
         this._isMounted = false;
     }
     handleClick(event) {
@@ -130,11 +130,11 @@ class Dropdown extends Component {
             return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""} >{option.label}</li>;
         });
         return (
-            <div className={this.getClassName()} style={props.style} onClick={this.toggleDropdown.bind(this)}>
-                <div className="collapsible-label">
+            <div className={this.getClassName()} style={props.style}>
+                <div className="collapsible-label" onClick={this.toggleDropdown.bind(this)}>
                     {this.getDropdownLabel()}
                 </div>
-                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>}
+                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
                         fixedHeight={state.fixedHeight}

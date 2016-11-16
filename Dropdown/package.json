@@ -1,6 +1,6 @@
 {
   "name": "dnn-dropdown",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "DNN Dropdown Component",
   "main": "index.js",
   "scripts": {
