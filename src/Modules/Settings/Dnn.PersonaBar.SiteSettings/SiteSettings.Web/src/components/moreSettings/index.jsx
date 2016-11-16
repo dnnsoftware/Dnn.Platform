@@ -20,95 +20,11 @@ class MoreSettingsPanelBody extends Component {
     constructor() {
         super();
         this.state = {
-            otherSettings: undefined
+            otherSettings: undefined,
+            siteBehaviorExtrasRendered: true,
+            errorInSave: false
         };
     }
-
-    // getMicroservicesExtensions() {
-    //     let extensions = window.dnn && window.dnn.personaBarExtensions && window.dnn.personaBarExtensions.siteSettings
-    //         ? window.dnn.personaBarExtensions.siteSettings : [];
-    //     console.log(extensions);
-    //     return extensions.filter(e => {
-    //         return e.type === "microservices-settings";
-    //     });
-    // }
-
-    // onCancel() {
-    //     let extensions = this.getMicroservicesExtensions();
-    //     for (let i = 0; i < extensions.length; i++) {
-    //         let ext = extensions[i].name;
-    //         if (this.refs[ext] && typeof this.refs[ext].cancel === "function") {
-    //             this.refs[ext].cancel();
-    //         }
-    //     }
-    // }
-
-    // onSave() {
-    //     util.utilities.confirm(resx.get("SaveConfirm"), resx.get("Save"), resx.get("No"), () => {
-    //         let extensions = this.getMicroservicesExtensions();
-    //         for (let i = 0; i < extensions.length; i++) {
-    //             let ext = extensions[i].name;
-    //             if (this.refs[ext]
-    //                 && typeof this.refs[ext].save === "function"
-    //                 && (typeof this.refs[ext].hasChange !== "function" || this.refs[ext].hasChange())) {
-    //                 this.refs[ext].save();
-    //             }
-    //         }
-    //     });
-    // }
-
-    // renderExtensions() {
-    //     const {props, state} = this;
-
-    //     let extensions = this.getMicroservicesExtensions();
-
-    //     if (!extensions.length) {
-    //         return null;
-    //     }
-
-    //     return <GridCell>
-    //         <div className="sectionTitle">{resx.get("MicroServices")}</div>
-    //         <div className="messageBox">{resx.get("MicroServicesDescription")}</div>
-    //         {
-    //             extensions.map(function (ext, index) {
-    //                 if (typeof ext.init === "function") {
-    //                     ext.init({ utility: util.utilities });
-    //                 }
-
-    //                 let className = index % 2 === 0 ? "left-column" : "right-column";
-    //                 let ExtensionComponent = ext.extension;
-    //                 return <GridCell columnSize="50">
-    //                     <div className={className}>
-    //                         <ExtensionComponent ref={ext.name} />
-    //                     </div>
-    //                 </GridCell>;
-    //             })
-    //         }
-    //     </GridCell>;
-    // }
-
-    // renderActions() {
-    //     const {props, state} = this;
-
-    //     let extensions = this.getMicroservicesExtensions();
-
-    //     if (!extensions.length) {
-    //         return null;
-    //     }
-
-    //     return <div className="buttons-box">
-    //         <Button
-    //             type="secondary"
-    //             onClick={this.onCancel.bind(this)}>
-    //             {resx.get("Cancel")}
-    //         </Button>
-    //         <Button
-    //             type="primary"
-    //             onClick={this.onSave.bind(this)}>
-    //             {resx.get("Save")}
-    //         </Button>
-    //     </div>;
-    // }
 
     componentWillMount() {
         const {props} = this;
@@ -118,6 +34,10 @@ class MoreSettingsPanelBody extends Component {
             });
             return;
         }
+
+        this.setState({
+            siteBehaviorExtrasRendered: true
+        });
 
         props.dispatch(SiteBehaviorActions.getOtherSettings((data) => {
             this.setState({
@@ -146,13 +66,17 @@ class MoreSettingsPanelBody extends Component {
     }
 
     onUpdate(event) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         const {props, state} = this;
 
         props.dispatch(SiteBehaviorActions.updateOtherSettings(state.otherSettings, (data) => {
-            util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+
         }, (error) => {
-            util.utilities.notifyError(resx.get("SettingsError"));
+            this.setState({
+                errorInSave: true
+            });
         }));
     }
 
@@ -164,6 +88,13 @@ class MoreSettingsPanelBody extends Component {
                     otherSettings: Object.assign({}, data.Settings)
                 });
             }));
+            this.setState({
+                siteBehaviorExtrasRendered: false
+            }, () => {
+                this.setState({
+                    siteBehaviorExtrasRendered: true
+                });
+            });
         });
     }
 
@@ -181,7 +112,7 @@ class MoreSettingsPanelBody extends Component {
         });
     }
 
-    onSaveSiteBehaviorExtras() {
+    onSaveMoreSettings() {
         const SiteBehaviorExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
 
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
@@ -189,14 +120,27 @@ class MoreSettingsPanelBody extends Component {
                 if (typeof extra.SaveMethod === "function") {
                     //Call the Save Method of each SiteBehaviorExtra.
                     this.props.dispatch(extra.SaveMethod(
-                        Object.assign({ formDirty: this.props[extra.ReducerKey].formDirty }, this.props[extra.ReducerKey].onSavePayload)
+                        Object.assign({ formDirty: this.props[extra.ReducerKey].formDirty }, this.props[extra.ReducerKey].onSavePayload),
+                        () => { },  //Save Callback
+                        () => { this.setState({ errorInSave: true }); } // Error Callback
                     ));
                 }
             });
         }
+        if (this.props.otherSettingsClientModified) {
+            this.onUpdate();
+        }
+        if (this.state.errorInSave) {
+            util.utilities.notifyError(resx.get("SettingsError"));
+            this.setState({
+                errorInSave: false
+            });
+        } else {
+            util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+        }
     }
 
-    getSiteBehaviorExtensionsDirty() {
+    getOverallFormDirty() {
         let formDirty = false;
         const SiteBehaviorExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
@@ -205,6 +149,9 @@ class MoreSettingsPanelBody extends Component {
                     formDirty = true;
                 }
             });
+        }
+        if (this.props.otherSettingsClientModified) {
+            formDirty = true;
         }
         return formDirty;
     }
@@ -259,7 +206,7 @@ class MoreSettingsPanelBody extends Component {
 
         return (
             <div className={styles.moreSettings}>
-                {this.renderSiteBehaviorExtensions()}
+                {state.siteBehaviorExtrasRendered && this.renderSiteBehaviorExtensions()}
                 <div className="sectionTitle">{resx.get("HtmlEditor")}</div>
                 <div className="htmlEditorWrapper">
                     <div className="htmlEditorWrapper-left">
@@ -278,29 +225,14 @@ class MoreSettingsPanelBody extends Component {
                     <div className="buttons-box">
                         <Button
                             type="secondary"
-                            disabled={!this.getSiteBehaviorExtensionsDirty()}>
-                            {resx.get("Cancel")}
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!this.getSiteBehaviorExtensionsDirty()}
-                            onClick={this.onSaveSiteBehaviorExtras.bind(this)}>
-                            {resx.get("Save")}
-                        </Button>
-                    </div>
-                }
-                {!window.dnn.SiteSettings &&
-                    <div className="buttons-box">
-                        <Button
-                            disabled={!this.props.otherSettingsClientModified}
-                            type="secondary"
+                            disabled={!this.getOverallFormDirty()}
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={!this.props.otherSettingsClientModified}
                             type="primary"
-                            onClick={this.onUpdate.bind(this)}>
+                            disabled={!this.getOverallFormDirty()}
+                            onClick={this.onSaveMoreSettings.bind(this)}>
                             {resx.get("Save")}
                         </Button>
                     </div>
@@ -319,7 +251,7 @@ MoreSettingsPanelBody.propTypes = {
 };
 
 function mapStateToProps(state) {
-    return {
+    return { ...state,
         otherSettings: state.siteBehavior.otherSettings,
         otherSettingsClientModified: state.siteBehavior.otherSettingsClientModified
     };
