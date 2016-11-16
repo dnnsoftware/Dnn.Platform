@@ -159,12 +159,12 @@ class GridRow extends Component {
     }
     
     renderRow(){
-        const {props, state} = this;
-        let actionsWidth = 100 - 20 - props.definitions.length * 10;
+        const {props} = this;
+        const {roleColumnWidth, columnWidth, actionsWidth} = props;
         let self = this;
 
         return  <GridCell className="grid-row">
-                    <GridCell columnSize="20"><span>{this.getHeaderColumnText()}</span></GridCell>
+                    <GridCell columnSize={roleColumnWidth}><span>{this.getHeaderColumnText()}</span></GridCell>
                     {props.definitions.map(function(def){
                         let permission = props.permission.permissions.filter(p =>{
                             return p.permissionId == def.permissionId;
@@ -179,7 +179,7 @@ class GridRow extends Component {
                             status = permission.length > 0 ? (permission[0].allowAccess ? 1 : 2) : 0;
                         }
 
-                        return <GridCell columnSize="10">
+                        return <GridCell columnSize={columnWidth}>
                                     <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def)} />
                                 </GridCell>;
                     })}
@@ -202,7 +202,10 @@ GridRow.propTypes = {
     localization: PropTypes.object,
     definitions: PropTypes.object.isRequired,
     permission: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(["role", "user"])
+    type: PropTypes.oneOf(["role", "user"]),
+    roleColumnWidth: PropTypes.number.isRequired,
+    columnWidth: PropTypes.number.isRequired,
+    actionsWidth: PropTypes.number.isRequired
 };
 
 GridRow.DefaultProps = {

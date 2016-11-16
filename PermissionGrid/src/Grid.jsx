@@ -92,17 +92,39 @@ class Grid extends Component {
     renderGrid(){
         const {props, state} = this;
 
+        const totalWidth = 100;
+        const defaultColumnWith = 10;
+        let roleColumnWidth = 20;
+        const minimumActionColumnWidth = 8;
+        
+        let columnWidth = defaultColumnWith;
+        let actionsWidth;
+        const tooManyColumns = totalWidth < roleColumnWidth + props.definitions.length * columnWidth;
+        if (tooManyColumns) {
+            roleColumnWidth = 18;
+            columnWidth = (totalWidth - roleColumnWidth - minimumActionColumnWidth)/props.definitions.length;
+            actionsWidth = totalWidth - roleColumnWidth - props.definitions.length * columnWidth;
+        } else {
+            actionsWidth = totalWidth - roleColumnWidth - props.definitions.length * columnWidth;
+        }
+        
         let self = this;
         return  <GridCell className={props.type + "-permissions-grid"}>
                     <GridCaption service={props.service} localization={props.localization} type={props.type} onSuggestion={this.onSuggestion.bind(this)} />
-                    <GridHeader type={props.type} definitions={props.definitions} />
+                    <GridHeader type={props.type} definitions={props.definitions} 
+                         roleColumnWidth={roleColumnWidth} 
+                         columnWidth={columnWidth}
+                         actionsWidth={actionsWidth} />
                     {props.permissions.map(function(permission){
                         return <GridRow 
                                     type={props.type} 
                                     definitions={props.definitions} 
                                     permission={permission} 
                                     onChange={self.onPermissionChange.bind(self)}
-                                    onDeletePermisson={self.onPermissionDeleted.bind(self)} />;
+                                    onDeletePermisson={self.onPermissionDeleted.bind(self)} 
+                                    roleColumnWidth={roleColumnWidth} 
+                                    columnWidth={columnWidth}
+                                    actionsWidth={actionsWidth} />;
                     })}
                     {props.permissions.length === 0 && <GridCell className="empty-row">{props.type == "role" ? props.localization.emptyRole : props.localization.emptyUser}</GridCell>}
                 </GridCell>;

@@ -16,13 +16,13 @@ class GridHeader extends Component {
     }
     
     renderHeader(){
-        const {props, state} = this;
-        let actionsWidth = 100 - 20 - props.definitions.length * 10;
+        const {props} = this;
+        const {roleColumnWidth, columnWidth, actionsWidth} = props;
 
         return  <GridCell className="grid-header">
-                    <GridCell columnSize="20"><span>{props.type}</span></GridCell>
+                    <GridCell columnSize={roleColumnWidth}><span>{props.type}</span></GridCell>
                     {props.definitions.map(function(def){
-                        return <GridCell columnSize="10"><span>{def.permissionName}</span></GridCell>;
+                        return <GridCell columnSize={columnWidth}><span>{def.permissionName}</span></GridCell>;
                     })}
                     <GridCell columnSize={actionsWidth} />
                 </GridCell>;
@@ -40,7 +40,10 @@ class GridHeader extends Component {
 GridHeader.propTypes = {
     localization: PropTypes.object,
     definitions: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(["role", "user"])
+    type: PropTypes.oneOf(["role", "user"]),
+    roleColumnWidth: PropTypes.number.isRequired,
+    columnWidth: PropTypes.number.isRequired,
+    actionsWidth: PropTypes.number.isRequired
 };
 
 GridHeader.DefaultProps = {
