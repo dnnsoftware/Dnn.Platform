@@ -52,8 +52,8 @@ class AddPages extends Component {
         for (let i = 0; i < elements.length; i++) {
             let index = this.getInteger(elements[i].order);
             const Component = elements[i].component;
-            const instance = <Component bulkPage={this.props.bulkPage} onChange={this.onChangeValue.bind(this)} 
-                store={elements[i].store} />;
+            const instance = <div className="input-group"><Component bulkPage={this.props.bulkPage} onChange={this.onChangeValue.bind(this)} 
+                store={elements[i].store} /></div>;
          
             if (index || index === 0) {
                 index = Math.min(array.length, Math.max(0, index));

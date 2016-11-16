@@ -31,7 +31,7 @@ class Scheduler extends Component {
                     label={Localization.get("EnableScheduling")}
                     />
                 <Switch
-                    labelHidden={true}
+                    labelHidden={false}
                     value={schedulingEnabled}
                     onChange={this.onChangeScheduling.bind(this)} />
                 <div style={{clear: "both"}}></div>

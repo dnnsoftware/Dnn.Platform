@@ -13,7 +13,7 @@ class DisplayInMenu extends Component {
                 tooltipMessage={Localization.get("DisplayInMenuTooltip")}
                 label={Localization.get("DisplayInMenu")} />
             <Switch
-                labelHidden={true}
+                labelHidden={false}
                 value={props.includeInMenu}
                 onChange={(value) => props.onChangeValue("includeInMenu", value)} />
             <div style={{ clear: "both" }}></div>
