@@ -3,11 +3,11 @@
 // Copyright (c) 2002-2016, DNN Corp.
 // All rights reserved.
 
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
     /// <summary>
     /// Interface responsible to manage the PersonaBar structure by User's Roles and Sku

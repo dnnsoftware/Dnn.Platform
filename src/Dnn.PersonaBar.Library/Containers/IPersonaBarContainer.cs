@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.UI;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 
 namespace Dnn.PersonaBar.Library.Containers
 {

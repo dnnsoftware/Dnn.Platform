@@ -25,20 +25,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
 using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
-using Dnn.PersonaBar.Library.PersonaBar.Repository;
+using Dnn.PersonaBar.Library.Model;
+using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
 
 #endregion
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
+namespace Dnn.PersonaBar.Library.Permissions
 {
     public class MenuPermissionController
     {

@@ -6,15 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Repository
+namespace Dnn.PersonaBar.Library.Repository
 {
     public class PersonaBarExtensionRepository : ServiceLocator<IPersonaBarExtensionRepository, PersonaBarExtensionRepository>,
         IPersonaBarExtensionRepository

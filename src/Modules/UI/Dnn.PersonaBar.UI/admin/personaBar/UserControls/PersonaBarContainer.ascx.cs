@@ -9,7 +9,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Dnn.PersonaBar.Library.Containers;
-using Dnn.PersonaBar.Library.PersonaBar.Controllers;
+using Dnn.PersonaBar.Library.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;

@@ -29,7 +29,7 @@ using DotNetNuke.Security.Permissions;
 
 #endregion
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
+namespace Dnn.PersonaBar.Library.Model
 {
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke

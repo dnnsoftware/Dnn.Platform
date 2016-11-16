@@ -4,9 +4,9 @@
 // All rights reserved.
 
 using System.Collections.Generic;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Repository
+namespace Dnn.PersonaBar.Library.Repository
 {
     /// <summary>
     /// Interface responsible for persona bar extensions.

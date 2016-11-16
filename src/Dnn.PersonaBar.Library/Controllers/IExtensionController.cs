@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 
 namespace Dnn.PersonaBar.Library.Controllers
 {

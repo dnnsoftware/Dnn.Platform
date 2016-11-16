@@ -7,7 +7,7 @@
 
 using Dnn.PersonaBar.Library.DTO;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
     public interface IPersonaBarUserSettingsController
     {

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Exceptions
+namespace Dnn.PersonaBar.Library.Exceptions
 {
     public class InvalidConfigurationFileException : Exception
     {

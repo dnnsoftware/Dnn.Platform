@@ -10,7 +10,7 @@ using Dnn.PersonaBar.Library.DTO;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Personalization;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
     public class PersonaBarUserSettingsController : ServiceLocator<IPersonaBarUserSettingsController, PersonaBarUserSettingsController>, IPersonaBarUserSettingsController
     {

@@ -21,10 +21,11 @@
 #region Usings
 
 using System.Collections;
+using Dnn.PersonaBar.Library.Model;
 
 #endregion
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
+namespace Dnn.PersonaBar.Library.Permissions
 {
     internal class CompareMenuPermissions : IComparer
     {

@@ -26,11 +26,10 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Permissions;
 
 #endregion
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Permissions
+namespace Dnn.PersonaBar.Library.Model
 {
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke

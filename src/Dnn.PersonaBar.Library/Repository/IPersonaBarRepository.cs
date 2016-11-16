@@ -3,9 +3,9 @@
 // Copyright (c) 2002-2016, DNN Corp.
 // All rights reserved.
 
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Repository
+namespace Dnn.PersonaBar.Library.Repository
 {
     /// <summary>
     /// Interface responsible to get the Persona Bar menu structure from the data layer

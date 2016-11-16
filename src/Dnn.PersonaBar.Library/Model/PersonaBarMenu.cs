@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Model
+namespace Dnn.PersonaBar.Library.Model
 {
     [DataContract]
     [Serializable]

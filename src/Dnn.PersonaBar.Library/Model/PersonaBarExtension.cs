@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Model
+namespace Dnn.PersonaBar.Library.Model
 {
     [DataContract]
     public class PersonaBarExtension : IHydratable

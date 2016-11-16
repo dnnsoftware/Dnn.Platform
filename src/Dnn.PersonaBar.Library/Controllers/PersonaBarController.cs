@@ -6,18 +6,17 @@
 using System;
 using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Containers;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.PersonaBar.Permissions;
-using Dnn.PersonaBar.Library.PersonaBar.Repository;
+using Dnn.PersonaBar.Library.Permissions;
+using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using Newtonsoft.Json;
-using MenuItem = Dnn.PersonaBar.Library.PersonaBar.Model.MenuItem;
-using PersonaBarMenu = Dnn.PersonaBar.Library.PersonaBar.Model.PersonaBarMenu;
+using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
+using PersonaBarMenu = Dnn.PersonaBar.Library.Model.PersonaBarMenu;
 
-namespace Dnn.PersonaBar.Library.PersonaBar.Controllers
+namespace Dnn.PersonaBar.Library.Controllers
 {
     public class PersonaBarController : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
     {

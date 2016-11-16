@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.PersonaBar.Model;
+using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Seo.Components
