@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         public ServiceScope Scope { get; set; }
 
         /// <summary>
-        /// The menu identifier which decide the api whether can request the api.
+        /// The menu identifier which decide the api whether can requested.
         /// For example, if this value set to "Pages", the user who have access to pages module can request api.
         /// Users who don't have permissions to Pages module, will not available to request the api.
         /// </summary>
