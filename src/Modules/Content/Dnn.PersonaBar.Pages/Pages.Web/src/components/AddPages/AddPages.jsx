@@ -4,24 +4,11 @@ import Localization from "../../localization";
 import styles from "./style.less";
 import MultiLineInput from "dnn-multi-line-input";
 import Label from "dnn-label";
-import PagePicker from "dnn-page-picker";
-import utils from "../../utils";
-import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Tags from "dnn-tags";
-import Switch from "dnn-switch";
-import Scheduler from "../common/Scheduler/Scheduler";
-
-/* eslint-disable spellcheck/spell-checker */
-const PageToTestParameters = {
-    portalId: -2,
-    cultureCode: "",
-    isMultiLanguage: false,
-    excludeAdminTabs: false,
-    disabledNotSelectable: false,
-    roles: "0",
-    sortOrder: 0
-};
-/* eslint-enable spellcheck/spell-checker */
+import BranchParent from "./BranchParent";
+import KeyWords from "./KeyWords";
+import Tags from "./Tags";
+import DisplayInMenu from "./DisplayInMenu";
+import EnableScheduling from "./EnableScheduling";
 
 class AddPages extends Component {
     onChangeValue(key, value) {
@@ -36,11 +23,57 @@ class AddPages extends Component {
     onChangeTags(tags) {
         this.onChangeValue("tags", tags.join(","));
     }
+
+    getLeftColumnComponents() {
+        const {bulkPage} = this.props;
+        const tags = bulkPage.tags ? bulkPage.tags.split(",") : [];
+
+        const defaultLeftColumnComponents = [
+            <BranchParent parentId={bulkPage.parentId}
+                onChangeValue={this.onChangeValue.bind(this)} />,
+            <KeyWords keywords={bulkPage.keywords}
+                onChangeEvent={this.onChangeEvent.bind(this)} />,
+            <Tags tags={tags}
+                onChangeTags={this.onChangeTags.bind(this)} />,
+            <DisplayInMenu includeInMenu={bulkPage.includeInMenu}
+                onChangeValue={this.onChangeValue.bind(this)} />,
+            <EnableScheduling startDate={bulkPage.startDate}
+                endDate={bulkPage.endDate}
+                onChangeValue={this.onChangeValue.bind(this)} />
+        ];
+        
+        const additionalComponents = this.props.components;
+
+        this.insertElementsInArray(defaultLeftColumnComponents, additionalComponents);
+        return defaultLeftColumnComponents;
+    }
+
+    insertElementsInArray(array, elements) {
+        for (let i = 0; i < elements.length; i++) {
+            let index = this.getInteger(elements[i].order);
+            const Component = elements[i].component;
+            const instance = <Component bulkPage={this.props.bulkPage} onChange={this.onChangeValue.bind(this)} 
+                store={elements[i].store} />;
+         
+            if (index || index === 0) {
+                index = Math.min(array.length, Math.max(0, index));
+                array.splice(index, 0, instance);
+            }            
+        }
+    }
+
+    getInteger(value) {
+        if (value === 0) {
+            return 0;
+        }
+        if (value) {
+            return parseInt(value.toString());
+        }
+        return value;
+    }  
  
     render() {
         const {bulkPage, onCancel, onSave} = this.props;
-        const noneSpecifiedText = utils.getPortalName();
-        const tags = bulkPage.tags ? bulkPage.tags.split(",") : [];
 
         return (
             <div className={styles.addPages}>
@@ -49,53 +82,7 @@ class AddPages extends Component {
                         <div className="column-heading">
                             {Localization.get("BulkPageSettings")}
                         </div>
-                        <div className="input-group">
-                            <Label
-                                label={Localization.get("BranchParent")} />
-                            <PagePicker 
-                                serviceFramework={utils.getServiceFramework()}
-                                style={{ width: "100%", zIndex: 2 }}
-                                OnSelect={(value) => this.onChangeValue("parentId", value)}
-                                defaultLabel={noneSpecifiedText}
-                                noneSpecifiedText={noneSpecifiedText}
-                                CountText={"{0} Results"}
-                                PortalTabsParameters={PageToTestParameters}
-                                selectedTabId={bulkPage.parentId || -1} />
-                        </div>
-                        <div className="input-group">
-                            <MultiLineInputWithError
-                                className="keywords-field"
-                                label={Localization.get("Keywords")}
-                                value={bulkPage.keywords} 
-                                onChange={(value) => this.onChangeEvent("keywords", value)} />
-                            <div style={{clear: "both"}}></div>
-                        </div>
-                        <div className="input-group">
-                            <Label label={Localization.get("Tags")}/>
-                            <Tags 
-                                tags={tags} 
-                                onUpdateTags={(tags) => this.onChangeTags(tags)}/>
-                            <div style={{clear: "both"}}></div>
-                        </div>
-                        <div className="input-group">
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={Localization.get("DisplayInMenuTooltip")}
-                                label={Localization.get("DisplayInMenu")}
-                                />
-                            <Switch
-                                labelHidden={true}
-                                value={bulkPage.includeInMenu}
-                                onChange={(value) => this.onChangeValue("includeInMenu", value)} />
-                            <div style={{clear: "both"}}></div>
-                        </div>
-                        <div className="input-group">
-                            <Scheduler 
-                                startDate={bulkPage.startDate} 
-                                endDate={bulkPage.endDate}
-                                onChange={(key, value) => this.onChangeValue(key, value)} />
-                            <div style={{clear: "both"}}></div>
-                        </div>
+                        {this.getLeftColumnComponents()}
                     </div>
                     <div className="right-column">
                         <div className="column-heading">
@@ -132,7 +119,8 @@ AddPages.propTypes = {
     bulkPage: PropTypes.object.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    onChangeField: PropTypes.func.isRequired
+    onChangeField: PropTypes.func.isRequired, 
+    components: PropTypes.array.isRequired
 };
 
 export default AddPages;

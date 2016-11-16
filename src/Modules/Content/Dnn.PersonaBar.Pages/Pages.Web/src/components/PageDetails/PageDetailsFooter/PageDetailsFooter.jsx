@@ -5,7 +5,6 @@ import GridCell from "dnn-grid-cell";
 import PageNameInput from "./PageNameInput";
 import DisplayInMenu from "./DisplayInMenu";
 import EnableScheduling from "./EnableScheduling";
-import application from "../../../globals/application";
 
 class PageDetailsFooter extends Component {
 
@@ -28,25 +27,25 @@ class PageDetailsFooter extends Component {
             [<DisplayInMenu includeInMenu={page.includeInMenu}
                 onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />];
 
-        const additionalLeftComponents = application.getPageDetailFooterComponents().filter(
+        const additionalLeftComponents = this.props.components.filter(
             function (component) {
                 return component.leftSide && (component.pageType === pageType || component.pageType === "all");
             });
 
-        this.insertElementsInArray(defaultLeftColumnComponents, additionalLeftComponents, "order", "component");
+        this.insertElementsInArray(defaultLeftColumnComponents, additionalLeftComponents);
         return defaultLeftColumnComponents;
     }
 
-    insertElementsInArray(array, elements, propertyNameHasIndex, propertyNameHasValue) {
+    insertElementsInArray(array, elements) {
         for (let i = 0; i < elements.length; i++) {
-            let index = this.getInteger(elements[i][propertyNameHasIndex]);
-            const Component = elements[i][propertyNameHasValue];
-            Component.props.page = this.props.page;
-            Component.props.onChange = this.onChangeValue.bind(this);
+            let index = this.getInteger(elements[i].order);
+            const Component = elements[i].component;
+            const instance = <Component page={this.props.page} onChange={this.onChangeValue.bind(this)} 
+                store={elements[i].store} />;
 
             if (index || index === 0) {
                 index = Math.min(array.length, Math.max(0, index));
-                array.splice(index, 0, Component);
+                array.splice(index, 0, instance);
             }            
         }
     }
@@ -79,7 +78,7 @@ class PageDetailsFooter extends Component {
                 onChangeStartDate={this.onChangeValue.bind(this, "startDate")}
                 onChangeEndDate={this.onChangeValue.bind(this, "endDate")} />];
         
-        const additionalRightComponents = application.getPageDetailFooterComponents().filter(
+        const additionalRightComponents = this.props.components.filter(
             function (component) {
                 return !component.leftSide && (component.pageType === pageType || component.pageType === "all");
             });
@@ -111,7 +110,8 @@ class PageDetailsFooter extends Component {
 PageDetailsFooter.propTypes = {
     page: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    onChangeField: PropTypes.func.isRequired
+    onChangeField: PropTypes.func.isRequired,
+    components: PropTypes.array.isRequired
 };
 
 export default PageDetailsFooter;

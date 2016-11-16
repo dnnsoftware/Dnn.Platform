@@ -1,7 +1,6 @@
 import utilities from "../utils";
 import PageHierarchyActions from "../actions/pageHierarchyActions";
 import ExtensionsActions from "../actions/extensionsActions";
-const pageDetailsFooterComponents = [];
 
 const application = {
     init(initCallback) {
@@ -27,10 +26,10 @@ const application = {
         application.dispatch(ExtensionsActions.registerToolbarComponent(component));
     },
     registerPageDetailFooterComponent(component) {
-        pageDetailsFooterComponents.push(component);
-    },
-    getPageDetailFooterComponents() {
-        return pageDetailsFooterComponents;
+        application.dispatch(ExtensionsActions.registerPageDetailFooterComponent(component));
+    },    
+    registerMultiplePagesComponent(component) {
+        application.dispatch(ExtensionsActions.registerMultiplePagesComponent(component));
     }
 };
 

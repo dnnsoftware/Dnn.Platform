@@ -122,7 +122,8 @@ class App extends Component {
                                       onCancelEditingPageModule={props.onCancelEditingPageModule}
                                       editingSettingModuleId={props.editingSettingModuleId}
                                       onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
-                                      onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}  />
+                                      onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
+                                      pageDetailsFooterComponents={props.pageDetailsFooterComponents}  />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -142,7 +143,8 @@ class App extends Component {
                             bulkPage={props.bulkPage}
                             onCancel={props.onCancelAddMultiplePages} 
                             onSave={props.onSaveMultiplePages}
-                            onChangeField={props.onChangeAddMultiplePagesField} />
+                            onChangeField={props.onChangeAddMultiplePagesField} 
+                            components={props.multiplePagesComponents} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -219,7 +221,9 @@ App.propTypes = {
     onLoadSavePageAsTemplate: PropTypes.func.isRequired,
     onCancelSavePageAsTemplate: PropTypes.func.isRequired,
     onDuplicatePage: PropTypes.func.isRequired,
-    error: PropTypes.object
+    error: PropTypes.object,
+    multiplePagesComponents: PropTypes.array.isRequired,
+    pageDetailsFooterComponents: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
@@ -230,7 +234,9 @@ function mapStateToProps(state) {
         selectedPageDirty: state.pages.dirtyPage,
         bulkPage: state.addPages.bulkPage,
         editingSettingModuleId: state.pages.editingSettingModuleId,
-        error: state.errors.error
+        error: state.errors.error,
+        multiplePagesComponents: state.extensions.multiplePagesComponents,
+        pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents
     };
 }
 

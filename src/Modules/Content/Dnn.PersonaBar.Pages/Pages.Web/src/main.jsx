@@ -15,6 +15,7 @@ window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
 window.dnn.pages.setItemTemplate = application.setItemTemplate;
 window.dnn.pages.registerToolbarComponent = application.registerToolbarComponent;
 window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDetailFooterComponent;
+window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePagesComponent;
 
 const appContainer = document.getElementById("pages-container");
 const initCallback = appContainer.getAttribute("data-init-callback");

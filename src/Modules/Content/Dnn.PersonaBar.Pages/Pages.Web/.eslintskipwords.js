@@ -143,4 +143,5 @@ module.exports = [
     "args",
     "cmd",
     "startswith",
+    "selectable"
 ]
