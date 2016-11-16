@@ -970,7 +970,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return pageSettings;
         }
 
-        private PagePermissions GetPermissionsData(int pageId)
+        public PagePermissions GetPermissionsData(int pageId)
         {
             var permissions = new PagePermissions(true);
             if (pageId > 0)
