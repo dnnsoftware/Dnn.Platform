@@ -81,6 +81,70 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             });
         }
 
+        public static void LocalizeLanguagePages(LocalizationProgress progress, int portalId, string cultureCode, string defaultLocale)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var pageList = GetTabsToLocalize(portalId, cultureCode, defaultLocale);
+                    var locale = LocaleController.Instance.GetLocale(cultureCode);
+
+                    //add translator role
+                    Localization.AddTranslatorRole(portalId, locale);
+
+                    //populate pages
+                    ProcessLanguage(pageList, locale, defaultLocale, 0, 1, progress);
+
+                    //Map special pages
+                    PortalController.Instance.MapLocalizedSpecialPages(portalId, locale.Code);
+
+                    //clear portal cache
+                    DataCache.ClearPortalCache(portalId, true);
+                    progress.Reset();
+                    SaveProgressToFile(progress);
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        Logger.Error(ex);
+                        progress.Reset().Error = ex.ToString();
+                        SaveProgressToFile(progress);
+                    }
+                    catch (Exception)
+                    {
+                        //ignore
+                    }
+                }
+            });
+        }
+
+        private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
+        {
+            var results = new List<TabInfo>();
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId)
+                .Where(kvp => kvp.Value.CultureCode == defaultLocale && !kvp.Value.IsDeleted);
+
+            foreach (var kvp in portalTabs)
+            {
+                if (kvp.Value.LocalizedTabs.Count == 0)
+                {
+                    results.Add(kvp.Value);
+                }
+                else
+                {
+                    var tabLocalizedInCulture = kvp.Value.LocalizedTabs.Any(localizedTab => localizedTab.Value.CultureCode == code);
+                    if (!tabLocalizedInCulture)
+                    {
+                        results.Add(kvp.Value);
+                    }
+                }
+            }
+
+            return results;
+        }
+
         private static void ProcessLanguage(ICollection<TabInfo> pageList, Locale locale,
             string defaultLocale, int languageCount, int totalLanguages, LocalizationProgress progress)
         {

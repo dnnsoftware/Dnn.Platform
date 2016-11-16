@@ -23,11 +23,13 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -44,6 +46,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         internal static readonly Regex FileInfoRegex = new Regex(
             @"\.([A-Z]{2}\-[A-Z]{2})((\.Host)?|(\.Portal-\d+)?)\.resx$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+        private ITabController _tabController = TabController.Instance;
+        private ILocaleController _localeController = LocaleController.Instance;
+        private IPortalController _portalController = PortalController.Instance;
 
         private string _selectedResourceFile;
 
@@ -186,7 +192,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
                 }
 
-                var language = LocaleController.Instance.GetLocale(locale);
+                var language = _localeController.GetLocale(locale);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -280,7 +286,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
                 }
 
-                var language = LocaleController.Instance.GetLocale(request.Locale);
+                var language = _localeController.GetLocale(request.Locale);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -312,9 +318,29 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var progress = new LocalizationProgress { InProgress = true, };
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = _portalController.GetCurrentPortalSettings();
                 LanguagesControllerTasks.LocalizeSitePages(
                     progress, PortalId, translatePages, portalSettings.DefaultLanguage ?? Localization.SystemLocale);
+                return Request.CreateResponse(HttpStatusCode.OK, progress);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/LocalizedContent?cultureCode=de-DE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage LocalizedContent([FromUri] string cultureCode)
+        {
+            try
+            {
+                var progress = new LocalizationProgress { InProgress = true, };
+                var portalSettings = _portalController.GetCurrentPortalSettings();
+                LanguagesControllerTasks.LocalizeLanguagePages(
+                    progress, PortalId, cultureCode, portalSettings.DefaultLanguage ?? Localization.SystemLocale);
                 return Request.CreateResponse(HttpStatusCode.OK, progress);
             }
             catch (Exception ex)
@@ -347,19 +373,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var portalDefault = portalSettings.DefaultLanguage;
-                foreach (var locale in LocaleController.Instance.GetLocales(PortalId).Values)
+                var portalDefault = PortalSettings.DefaultLanguage;
+                foreach (var locale in _localeController.GetLocales(PortalId).Values)
                 {
                     if (locale.Code != portalDefault)
                     {
-                        LocaleController.Instance.PublishLanguage(PortalId, locale.Code, false);
-                        TabController.Instance.DeleteTranslatedTabs(PortalId, locale.Code, false);
-                        PortalController.Instance.RemovePortalLocalization(PortalId, locale.Code, false);
+                        _localeController.PublishLanguage(PortalId, locale.Code, false);
+                        _tabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
+                        _portalController.RemovePortalLocalization(PortalId, locale.Code, false);
                     }
                 }
 
-                TabController.Instance.EnsureNeutralLanguage(PortalId, portalDefault, false);
+                _tabController.EnsureNeutralLanguage(PortalId, portalDefault, false);
                 PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "False");
                 DataCache.ClearPortalCache(PortalId, true);
 
@@ -372,20 +397,57 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        // POST /api/personabar/languages/PublishPages?languageId=5
+        // POST /api/personabar/languages/PublishAllPages?cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage PublishPage(int languageId)
+        public HttpResponseMessage PublishAllPages([FromUri] string cultureCode, [FromUri] bool enable)
         {
             try
             {
-                var locale = new LocaleController().GetLocale(languageId);
-                if (locale == null)
+                if (IsDefaultLanguage(cultureCode))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidLanguageID");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
 
-                LocaleController.Instance.PublishLanguage(PortalId, locale.Code, true);
+                var locale = _localeController.GetLocale(cultureCode);
+                if (locale == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                _localeController.PublishLanguage(PortalId, locale.Code, enable);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/DeleteLanguagePages?cultureCode=de-DE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteLanguagePages(string cultureCode)
+        {
+            try
+            {
+                if (IsDefaultLanguage(cultureCode))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                var locale = _localeController.GetLocale(cultureCode);
+                if (locale == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                _tabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
+                _portalController.RemovePortalLocalization(PortalId, locale.Code, false);
+                _localeController.PublishLanguage(PortalId, locale.Code, false);
+
+                DataCache.ClearPortalCache(PortalId, true);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -442,7 +504,80 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 SaveNonLocalizedPages(pages);
-                return Request.CreateResponse(HttpStatusCode.OK, pages);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/ConvertPageToNeutral
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage ConvertPageToNeutral([FromUri] int tabId)
+        {
+            try
+            {
+                if (_tabController.GetTabsByPortal(PortalId).WithParentId(tabId).Count > 0)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, LocalizeString("MakeNeutral.ErrorMessage"));
+                }
+
+                var defaultLocale = _localeController.GetDefaultLocale(PortalId);
+                _tabController.ConvertTabToNeutralLanguage(PortalId, tabId, defaultLocale.Code, true);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/AddMissingLanguages
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage AddMissingLanguages([FromUri] int tabId)
+        {
+            try
+            {
+                _tabController.AddMissingLanguages(PortalId, tabId);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/NotifyTranslators
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage NotifyTranslators(TranslatorsComment comment)
+        {
+            try
+            {
+                // loop through all localized version of this page
+                var currentTab = _tabController.GetTab(comment.TabId, PortalId, false);
+                foreach (var localizedTab in currentTab.LocalizedTabs.Values)
+                {
+                    var users = new Dictionary<int, UserInfo>();
+
+                    //Give default translators for this language and administrators permissions
+                    _tabController.GiveTranslatorRoleEditRights(localizedTab, users);
+
+                    //Send Messages to all the translators of new content
+                    foreach (var translator in users.Values.Where(user => user.UserID != PortalSettings.AdministratorId))
+                    {
+                        AddTranslationSubmittedNotification(localizedTab, translator, comment.Text);
+                    }
+                }
+
+                var msgToUser = LocalizeString("TranslationMessageConfirmMessage.Text");
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Message = msgToUser });
             }
             catch (Exception ex)
             {
@@ -510,6 +645,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, LocalResourcesFile);
+        }
+
+        private bool IsDefaultLanguage(string cultureCode)
+        {
+            return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        protected bool IsLanguageEnabled(string cultureCode)
+        {
+            return _localeController.GetLocales(PortalId).ContainsKey(cultureCode);
         }
 
         /// -----------------------------------------------------------------------------
@@ -796,7 +941,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private DnnPagesDto GetNonLocalizedPages(int tabId)
         {
-            var currentTab = TabController.Instance.GetTab(tabId, PortalId, false);
+            var currentTab = _tabController.GetTab(tabId, PortalId, false);
 
             //Unique id of default language page
             var uniqueId = currentTab.DefaultLanguageGuid != Null.NullGuid
@@ -804,7 +949,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 : currentTab.UniqueId;
 
             // get all non admin pages and not deleted
-            var allPages = TabController.Instance.GetTabsByPortal(PortalId).Values.Where(
+            var allPages = _tabController.GetTabsByPortal(PortalId).Values.Where(
                 t => t.TabID != PortalSettings.AdminTabId && (Null.IsNull(t.ParentId) || t.ParentId != PortalSettings.AdminTabId));
             allPages = allPages.Where(t => t.IsDeleted == false);
             // get all localized pages of current page
@@ -871,7 +1016,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
             }
 
-            var dnnPages = new DnnPagesDto(locales);
+            var dnnPages = new DnnPagesDto(locales)
+            {
+                HasMissingLanguages = _tabController.HasMissingLanguages(PortalId, tabId)
+            };
 
             // filter the list of localized pages to only those that have a culture we want to see
             var viewableLocalizedPages = localizedPages.Where(
@@ -892,11 +1040,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 dnnPage.Title = localTabInfo.Title;
                 dnnPage.Description = localTabInfo.Description;
                 dnnPage.Path = localTabInfo.TabPath.Substring(0, localTabInfo.TabPath.LastIndexOf("//", StringComparison.Ordinal)).Replace("//", "");
-                dnnPage.HasChildren = (TabController.Instance.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count != 0);
+                dnnPage.HasChildren = (_tabController.GetTabsByPortal(PortalId).WithParentId(tabInfo.TabID).Count != 0);
                 dnnPage.CanAdminPage = TabPermissionController.CanAdminPage(tabInfo);
                 dnnPage.CanViewPage = TabPermissionController.CanViewPage(tabInfo);
                 dnnPage.LocalResourceFile = LocalResourcesFile;
-                dnnPage.PageUrl = Globals.NavigateURL(localTabInfo.TabID, false, PortalSettings, "", localTabInfo.CultureCode, new string[] { });
+                dnnPage.PageUrl = Globals.NavigateURL(localTabInfo.TabID, false, PortalSettings, "", localTabInfo.CultureCode);
 
                 // calculate position in the form of 1.3.2...
                 var siblingTabs = tabInfos.Where(t => t.ParentId == localTabInfo.ParentId && t.CultureCode == localTabInfo.CultureCode || t.CultureCode == null).OrderBy(t => t.TabOrder).ToList();
@@ -913,7 +1061,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 dnnPage.DefaultLanguageGuid = localTabInfo.DefaultLanguageGuid;
                 dnnPage.IsTranslated = localTabInfo.IsTranslated;
-                dnnPage.IsPublished = TabController.Instance.IsTabPublished(localTabInfo);
+                dnnPage.IsPublished = _tabController.IsTabPublished(localTabInfo);
                 // generate modules information
                 var moduleController = ModuleController.Instance;
                 foreach (var moduleInfo in moduleController.GetTabModules(localTabInfo.TabID).Values)
@@ -953,7 +1101,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     dnnModule.IsTranslated = moduleInfo.IsTranslated;
                     dnnModule.IsLocalized = moduleInfo.IsLocalized;
 
-                    dnnModule.IsShared = TabController.Instance.GetTabsByModuleID(moduleInfo.ModuleID).Values.Count(t => t.CultureCode == moduleInfo.CultureCode) > 1;
+                    dnnModule.IsShared = _tabController.GetTabsByModuleID(moduleInfo.ModuleID).Values.Count(t => t.CultureCode == moduleInfo.CultureCode) > 1;
 
                     // detect error : the default language module is on an other page
                     dnnModule.ErrorDefaultOnOtherTab = moduleInfo.DefaultLanguageGuid != Null.NullGuid && moduleInfo.DefaultLanguageModule == null;
@@ -971,10 +1119,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private void SaveNonLocalizedPages(DnnPagesDto pages)
         {
             // check all pages except the default "en-US" one
-            var tabController = TabController.Instance;
             foreach (var page in pages.Pages)
             {
-                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                var tabInfo = _tabController.GetTab(page.TabId, PortalId, true);
                 if (tabInfo != null &&
                     (tabInfo.TabName != page.TabName ||
                      tabInfo.Title != page.Title ||
@@ -983,7 +1130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     tabInfo.TabName = page.TabName;
                     tabInfo.Title = page.Title;
                     tabInfo.Description = page.Description;
-                    tabController.UpdateTab(tabInfo);
+                    _tabController.UpdateTab(tabInfo);
                 }
             }
 
@@ -1008,7 +1155,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         if (tabModule.DefaultLanguageGuid != Null.NullGuid &&
                             tabModule.IsLocalized != moduleDto.IsLocalized)
                         {
-                            var locale = LocaleController.Instance.GetLocale(tabModule.CultureCode);
+                            var locale = _localeController.GetLocale(tabModule.CultureCode);
                             if (moduleDto.IsLocalized)
                                 moduleController.LocalizeModule(tabModule, locale);
                             else
@@ -1023,19 +1170,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             moduleController.UpdateTranslationStatus(tabModule, moduleDto.IsTranslated);
                         }
                     }
-#if false
                     else
                     {
                         // There was a logic here in the original ControlBar
                         // functionality that is not maintained in the new PB.
                     }
-#endif
                 }
             }
 
             foreach (var page in pages.Pages)
             {
-                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                var tabInfo = _tabController.GetTab(page.TabId, PortalId, true);
                 if (tabInfo != null)
                 {
                     var moduleTranslateOverride = false;
@@ -1043,7 +1188,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         if (tabInfo.IsTranslated != page.IsTranslated)
                         {
-                            tabController.UpdateTranslationStatus(tabInfo, page.IsTranslated);
+                            _tabController.UpdateTranslationStatus(tabInfo, page.IsTranslated);
                             if (page.IsTranslated)
                             {
                                 moduleTranslateOverride = true;
@@ -1080,17 +1225,17 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 //Second mark tab as translated
-                tabController.UpdateTranslationStatus(tabInfo, true);
+                _tabController.UpdateTranslationStatus(tabInfo, true);
 
                 //Third publish Tab (update Permissions)
-                tabController.PublishTab(tabInfo);
+                _tabController.PublishTab(tabInfo);
             }
 
             // manage translated status of tab. In order to do that, we need to check if all modules on the page are translated
             var tabTranslatedStatus = true;
             foreach (var page in pages.Pages)
             {
-                var tabInfo = tabController.GetTab(page.TabId, PortalId, true);
+                var tabInfo = _tabController.GetTab(page.TabId, PortalId, true);
                 if (tabInfo != null)
                 {
                     if (tabInfo.ChildModules.Any(moduleKvp => !moduleKvp.Value.IsTranslated))
@@ -1100,11 +1245,35 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                     if (tabTranslatedStatus && !tabInfo.IsTranslated)
                     {
-                        tabController.UpdateTranslationStatus(tabInfo, true);
+                        _tabController.UpdateTranslationStatus(tabInfo, true);
                     }
                 }
             }
         }
+
+        private void AddTranslationSubmittedNotification(TabInfo tabInfo, UserInfo translator, string comment)
+        {
+            var notificationsController = NotificationsController.Instance;
+            var notificationType = notificationsController.GetNotificationType("TranslationSubmitted");
+            var subject = Localization.GetString("NewContentMessage.Subject", LocalResourcesFile);
+            var body = string.Format(Localization.GetString("NewContentMessage.Body", LocalResourcesFile),
+                tabInfo.TabName,
+                Globals.NavigateURL(tabInfo.TabID, false, PortalSettings, Null.NullString, tabInfo.CultureCode),
+                comment);
+
+            var sender = UserController.GetUserById(PortalSettings.PortalId, PortalSettings.AdministratorId);
+            var notification = new Notification
+            {
+                NotificationTypeID = notificationType.NotificationTypeId,
+                Subject = subject,
+                Body = body,
+                IncludeDismissAction = true,
+                SenderUserID = sender.UserID
+            };
+
+            notificationsController.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { translator });
+        }
+
     }
 
     internal static class KpvExtension

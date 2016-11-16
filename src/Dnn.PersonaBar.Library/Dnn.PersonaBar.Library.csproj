@@ -99,6 +99,7 @@
     <Compile Include="DTO\Permissions.cs" />
     <Compile Include="DTO\RolePermission.cs" />
     <Compile Include="DTO\Tabs\TabDto.cs" />
+    <Compile Include="DTO\Tabs\TranslatorsComment.cs" />
     <Compile Include="DTO\UserPermission.cs" />
     <Compile Include="DTO\UserSettings.cs" />
     <Compile Include="Helper\IPermissionGridApi.cs" />

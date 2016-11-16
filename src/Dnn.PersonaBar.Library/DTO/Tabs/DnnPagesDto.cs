@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
     [JsonObject]
     public class DnnPagesDto
     {
+        public bool HasMissingLanguages { get; set; }
         public bool ErrorExists { get; set; }
         public IList<LocaleInfoDto> Locales { get; }
         public IList<DnnPageDto> Pages { get; }
