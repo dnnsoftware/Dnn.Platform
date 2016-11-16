@@ -21,7 +21,7 @@ define(['jquery', 'knockout',
     '../scripts/koBindingHandlers/jScrollPane',
     '../scripts/koBindingHandlers/tabs',
     '../scripts/koBindingHandlers/setWhenHover',
-    '../scripts/koBindingHandlers/setWidthFromParentScrollPaneWhen'], function ($, ko, template) {
+    '../scripts/koBindingHandlers/setWidthFromParentScrollPaneWhen'], function ($, ko) {
         var DnnPageRecycleBin;
 
         var ModuleInfo = function (requestData) {
@@ -43,7 +43,7 @@ define(['jquery', 'knockout',
             self.mouseOver = ko.observable(false);
         };
 
-        var PageOrTemplateInfo = function (requestData) {
+        var PageInfo = function (requestData) {
             var PAGES_TREE_LEFT_PADDING = 50;
 
             var self = this;
@@ -121,8 +121,6 @@ define(['jquery', 'knockout',
             self.id = requestData.id;
             self.name = requestData.name;
             self.childCount = requestData.childCount;
-            self.thumbnail = requestData.thumbnail;
-            self.largeThumbnail = requestData.largeThumbnail;
             self.url = requestData.url;
             self.publishDate = requestData.publishDate;
             self.status = requestData.status;
@@ -133,11 +131,6 @@ define(['jquery', 'knockout',
             self.useDefaultSkin = requestData.useDefaultSkin;
             self.lastModifiedOnDate = requestData.lastModifiedOnDate;
             self.friendlyLastModifiedOnDate = requestData.friendlyLastModifiedOnDate;
-
-            // thumbnail attributes
-            self.thumbnailVisible = ko.observable(false);
-            self.thumbnailTop = ko.observable("0px");
-            self.thumbnailLeft = ko.observable("0px");
 
             // other attributes
             self.even = ko.observable(false);
@@ -159,10 +152,8 @@ define(['jquery', 'knockout',
 
             self.cellWidth = ko.computed(function () {
                 var separatorWidth = 19;
-                var thumbnailIconPadding = 10;
-                var thumbnailUsedWidth = 24; //The thumbnail icon width is 48, however we only have to keep in mind the half of it since the nested row starts at that position
                 var labelWidth = 160;
-                return (self.numberOfNestedChildren() * (separatorWidth + thumbnailIconPadding + thumbnailUsedWidth)) + labelWidth;
+                return (self.numberOfNestedChildren() * separatorWidth) + labelWidth;
             });
 
             self.totalHeight = ko.computed(function () {
@@ -200,18 +191,6 @@ define(['jquery', 'knockout',
                 setOddEvenInChildren(self.children, newValue);
             });
 
-            self.thumbnailVisible.subscribe(function (newVal) {
-                if (!newVal) {
-                    return;
-                }
-
-                var pageId = self.id;
-                var $preview = $('.row[data-page-id="' + pageId + '"]').find('.pages-preview');
-                if ($preview.parent().is('.pageDataContainer')) {
-                    $(document.body).append($preview);
-                }
-            });
-
             // API methods
             self.calculateDepth = function () {
                 calculateDepthOfNode(self);
@@ -228,7 +207,6 @@ define(['jquery', 'knockout',
             var RECYCLE_BIN_DEFAULT_OPTIONS = {
 
             };
-            var IMAGE_THUMBNAIL_HEIGTH = 480;
 
             // var _privateVar;
             var _options, _resx, _serviceController, _utility, _viewModel;
@@ -237,10 +215,10 @@ define(['jquery', 'knockout',
             var getSelectedElements, markAllElementsAs, markAllModulesAsIfPossible, getTreesOfPages, setOddEvenOrderInRoots, calculateDepthOfPages,
                 changeElementSelectedStatus, restoreSelectedPagesHandler, removeSelectedPagesHandler,
                 pageRestoreRevomeOperationsCallback, canBeDeleted,
-                restoreSelectedModulesHandler, removeSelectedModulesHandler, restoreSelectedTemplatesHandler, removeSelectedTemplatesHandler,
-                restorePageHandler, removePageHandler, restoreModuleHandler, removeModuleHandler, restoreTemplateHandler, removeTemplateHandler, emptyRecycleBinHandler,
+                restoreSelectedModulesHandler, removeSelectedModulesHandler,
+                restorePageHandler, removePageHandler, restoreModuleHandler, removeModuleHandler, emptyRecycleBinHandler,
                 getDeletedPageList, getDeletedModuleList,
-                getDeletedTemplateList, showPreview, hidePreview, getService, getViewModel, tabActivated;
+                getService, getViewModel, tabActivated;
 
             /* Class properties */
             DnnPageRecycleBin.class = 'DnnPageRecycleBin';
@@ -411,50 +389,6 @@ define(['jquery', 'knockout',
                 }
             };
 
-            restoreSelectedTemplatesHandler = function () {
-                var templatesList, viewModel;
-
-                viewModel = getViewModel();
-                templatesList = getSelectedElements(viewModel.deletedtemplatesList());
-
-                if (templatesList.length > 0) {
-                    var confirmText, yesText, noText;
-                    confirmText = templatesList.length > 1 ? _resx.recyclebin_RestoreTemplatesConfirm : _resx.recyclebin_RestoreTemplateConfirm;
-                    yesText = _resx.recyclebin_YesConfirm;
-                    noText = _resx.recyclebin_NoConfirm;
-
-                    _utility.confirm(confirmText, yesText, noText, function () {
-                        getService().post('RestorePage', templatesList, function () {
-                            for (var i = 0; i < templatesList.length; i++) {
-                                viewModel.deletedtemplatesList.remove(templatesList[i]);
-                            }
-                        });
-                    });
-                }
-            };
-
-            removeSelectedTemplatesHandler = function () {
-                var templatesList, viewModel;
-
-                viewModel = getViewModel();
-                templatesList = getSelectedElements(viewModel.deletedtemplatesList());
-
-                if (templatesList.length > 0) {
-                    var confirmText, yesText, noText;
-                    confirmText = templatesList.length > 1 ? _resx.recyclebin_RemoveTemplatesConfirm : _resx.recyclebin_RemoveTemplateConfirm;
-                    yesText = _resx.recyclebin_YesConfirm;
-                    noText = _resx.recyclebin_NoConfirm;
-
-                    _utility.confirm(confirmText, yesText, noText, function () {
-                        getService().post('RemovePage', templatesList, function () {
-                            for (var i = 0; i < templatesList.length; i++) {
-                                viewModel.deletedtemplatesList.remove(templatesList[i]);
-                            }
-                        });
-                    });
-                }
-            };
-
             pageRestoreRevomeOperationsCallback = function (data) {
                 if (data.Status > 0) {
                     // Error: inform
@@ -537,38 +471,6 @@ define(['jquery', 'knockout',
                 });
             };
 
-            restoreTemplateHandler = function (templateData, e) {
-                var viewModel, confirmText, yesText, noText;
-                viewModel = getViewModel();
-                confirmText = _resx.recyclebin_RestoreTemplateConfirm;
-                yesText = _resx.recyclebin_YesConfirm;
-                noText = _resx.recyclebin_NoConfirm;
-
-                _utility.confirm(confirmText, yesText, noText, function () {
-                    var templateList = [];
-                    templateList.push({ id: templateData.id });
-                    getService().post('RestorePage', templateList, function () {
-                        viewModel.deletedtemplatesList.remove(templateData);
-                    });
-                });
-            };
-
-            removeTemplateHandler = function (templateData, e) {
-                var viewModel, confirmText, yesText, noText;
-                viewModel = getViewModel();
-                confirmText = _resx.recyclebin_RemoveTemplateConfirm;
-                yesText = _resx.recyclebin_YesConfirm;
-                noText = _resx.recyclebin_NoConfirm;
-
-                _utility.confirm(confirmText, yesText, noText, function () {
-                    var templateList = [];
-                    templateList.push({ id: templateData.id });
-                    getService().post('RemovePage', templateList, function () {
-                        viewModel.deletedtemplatesList.remove(templateData);
-                    });
-                });
-            };
-
             emptyRecycleBinHandler = function () {
                 var viewModel = getViewModel();
                 var confirmText = _resx.recyclebin_EmptyRecycleBinConfirm;
@@ -579,7 +481,6 @@ define(['jquery', 'knockout',
                     getService().get('EmptyRecycleBin', { t: (new Date).getTime() }, function () {
                         viewModel.deletedpagesList.removeAll();
                         viewModel.deletedmodulesList.removeAll();
-                        viewModel.deletedtemplatesList.removeAll();
                     });
                 });
             };
@@ -642,7 +543,7 @@ define(['jquery', 'knockout',
 
                 getService().get('GetDeletedPageList', {}, function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        var page = new PageOrTemplateInfo(data[i]);
+                        var page = new PageInfo(data[i]);
 
                         listOfPages.push(page);
                     }
@@ -666,39 +567,6 @@ define(['jquery', 'knockout',
                 });
             };
 
-            getDeletedTemplateList = function () {
-                var viewModel = getViewModel();
-                viewModel.deletedTemplatesReady(false);
-                viewModel.deletedtemplatesList.removeAll();
-
-                getService().get('GetDeletedTemplates', {}, function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var template = new PageOrTemplateInfo(data[i]);
-                        viewModel.deletedtemplatesList.push(template);
-                    }
-                    viewModel.selectAllTemplates(false);
-                    viewModel.deletedTemplatesReady(true);
-                });
-            },
-
-            showPreview = function (page, event) {
-                var $image, offset, left, top;
-                $image = $(event.target);
-
-                offset = $image.offset();
-                left = (offset.left + $image.width() + 5);
-                top = (offset.top + $image.height() / 2 - IMAGE_THUMBNAIL_HEIGTH / 2);
-
-                page.thumbnailLeft(left + "px");
-                page.thumbnailTop(top + "px");
-
-                page.thumbnailVisible(true);
-            };
-
-            hidePreview = function (page, event) {
-                page.thumbnailVisible(false);
-            };
-
             tabActivated = function (event, ui) {
                 var panelId = ui.newPanel.attr('id');
                 var activeTab = 0;
@@ -708,9 +576,6 @@ define(['jquery', 'knockout',
                         break;
                     case 'modules':
                         activeTab = 1;
-                        break;
-                    case 'templates':
-                        activeTab = 2;
                         break;
                     default:
                         activeTab = 0;
@@ -728,14 +593,11 @@ define(['jquery', 'knockout',
 
                         deletedPagesReady: ko.observable(false),
                         deletedModulesReady: ko.observable(false),
-                        deletedTemplatesReady: ko.observable(false),
 
                         deletedpagesList: ko.observableArray([]),
                         deletedmodulesList: ko.observableArray([]),
-                        deletedtemplatesList: ko.observableArray([]),
 
                         selectAllPages: ko.observable(false),
-                        selectAllTemplates: ko.observable(false),
                         selectAllModules: ko.observable(false),
 
 
@@ -743,27 +605,20 @@ define(['jquery', 'knockout',
 
                         removePage: removePageHandler,
                         removeModule: removeModuleHandler,
-                        removeTemplate: removeTemplateHandler,
 
                         restorePage: restorePageHandler,
                         restoreModule: restoreModuleHandler,
-                        restoreTemplate: restoreTemplateHandler,
 
                         restoreSelectedPages: restoreSelectedPagesHandler,
                         restoreSelectedModules: restoreSelectedModulesHandler,
-                        restoreSelectedTemplates: restoreSelectedTemplatesHandler,
 
                         removeSelectedPages: removeSelectedPagesHandler,
                         removeSelectedModules: removeSelectedModulesHandler,
-                        removeSelectedTemplates: removeSelectedTemplatesHandler,
 
                         refreshPages: getDeletedPageList,
                         refreshModules: getDeletedModuleList,
-                        refreshTemplates: getDeletedTemplateList,
 
                         emptyRecycleBin: emptyRecycleBinHandler,
-                        showPreview: showPreview,
-                        hidePreview: hidePreview,
 
                         tabActivated: tabActivated
                     };
@@ -772,9 +627,6 @@ define(['jquery', 'knockout',
                         markAllElementsAs(_viewModel.deletedpagesList(), newValue);
                     });
 
-                    _viewModel.selectAllTemplates.subscribe(function (newValue) {
-                        markAllElementsAs(_viewModel.deletedtemplatesList(), newValue);
-                    });
                     _viewModel.selectAllModules.subscribe(function (newValue) {
                         markAllModulesAsIfPossible(_viewModel.deletedmodulesList(), newValue);
                     });
@@ -786,7 +638,7 @@ define(['jquery', 'knockout',
 
             getService = function () {
                 _utility.sf.moduleRoot = "personaBar";
-                _utility.sf.controller = "PageManagement";
+                _utility.sf.controller = "Recyclebin";
 
                 return _utility.sf;
             };
@@ -801,7 +653,6 @@ define(['jquery', 'knockout',
             DnnPageRecycleBin.prototype.show = function () {
                 getDeletedPageList();
                 getDeletedModuleList();
-                getDeletedTemplateList();
             };
 
             return DnnPageRecycleBin;

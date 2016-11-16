@@ -347,9 +347,6 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
 .recycleBinContainer .EmptyList.NoModules {
     background-image: url('../Images/Icon-Empty-Modules-white.png');
 }
-.recycleBinContainer .EmptyList.NoTemplates {
-    background-image: url('../Images/Icon-Empty-Templates-white.png');
-}
 
 .recycleBinContainer input[type="checkbox"]:disabled + .qaTooltip {
     left: 20px;
@@ -424,7 +421,6 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
         background-color: #d9ecfa;
     }
 
-        .recycleBinContainer #templates table.dnnRBGrid tr.hover,
         .recycleBinContainer #modules table.dnnRBGrid tr.hover {
             background-color: #d9ecfa;
         }

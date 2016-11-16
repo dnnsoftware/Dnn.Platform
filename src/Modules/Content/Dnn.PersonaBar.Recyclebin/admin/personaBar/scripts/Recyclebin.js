@@ -17,9 +17,7 @@ define(['jquery',
 	'dnn.jquery.extensions',
 	'jquery.tokeninput',
 	'dnn.jScrollBar',
-    'jquery-ui.min',
-    'css!../css/Pages.css',
-    'css!../css/tags-input.css'],
+    'jquery-ui.min'],
     function ($, ko, koMapping, DnnPageRecycleBin) {
         'use strict';
 

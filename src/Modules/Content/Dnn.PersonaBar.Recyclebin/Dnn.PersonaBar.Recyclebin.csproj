@@ -75,6 +75,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,13 +98,17 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Dto\ModuleItem.cs" />
+    <Compile Include="Components\Dto\PageItem.cs" />
+    <Compile Include="Services\RecyclebinController.cs" />
+    <Compile Include="Components\IRecyclebinController.cs" />
+    <Compile Include="Components\RecyclebinController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\RecycleBin.css" />
-    <Content Include="admin\personaBar\css\RecycleBin.mobi.css" />
+    <Content Include="admin\personaBar\images\fallback-thumbnail.png" />
     <Content Include="admin\personaBar\images\Icons-RecycleBin.png" />
-    <Content Include="admin\personaBar\RecycleBin.mobi.html" />
     <Content Include="admin\personaBar\scripts\RecycleBin.js" />
     <Content Include="admin\personaBar\RecycleBin.html" />
     <Content Include="admin\personaBar\scripts\RecycleBin.ViewModel.js" />
@@ -111,8 +116,6 @@
     <Content Include="admin\personaBar\images\Icon-Empty-Pages-white.png" />
     <Content Include="admin\personaBar\images\icon-empty-state-modules.png" />
     <Content Include="admin\personaBar\images\icon-empty-state-pages.png" />
-    <Content Include="admin\personaBar\images\icon-empty-state-templates.png" />
-    <Content Include="admin\personaBar\images\Icon-Empty-Templates-white.png" />
     <Content Include="License.txt" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>

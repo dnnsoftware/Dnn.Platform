@@ -159,9 +159,6 @@
   <data name="recyclebin_NoPages.Text" xml:space="preserve">
     <value>No Pages In Recycle Bin</value>
   </data>
-  <data name="recyclebin_NoTemplates.Text" xml:space="preserve">
-    <value>No Templates In Recycle Bin</value>
-  </data>
   <data name="recyclebin_Page.Text" xml:space="preserve">
     <value>Page</value>
   </data>
@@ -179,12 +176,6 @@
   </data>
   <data name="recyclebin_RemovePagesConfirm.Text" xml:space="preserve">
     <value>&lt;p&gt;Please confirm you wish to delete selected pages.&lt;/p&gt;</value>
-  </data>
-  <data name="recyclebin_RemoveTemplateConfirm.Text" xml:space="preserve">
-    <value>&lt;p&gt;Please confirm you wish to delete this template.&lt;/p&gt;</value>
-  </data>
-  <data name="recyclebin_RemoveTemplatesConfirm.Text" xml:space="preserve">
-    <value>&lt;p&gt;Please confirm you wish to delete selected templates.&lt;/p&gt;</value>
   </data>
   <data name="recyclebin_Restore.Text" xml:space="preserve">
     <value>Restore</value>
@@ -207,18 +198,6 @@
   <data name="recyclebin_RestorePagesInvalid.Text" xml:space="preserve">
     <value>The page(s) you tried to restore should select their parent in same time.</value>
   </data>
-  <data name="recyclebin_RestoreTemplateConfirm.Text" xml:space="preserve">
-    <value>&lt;p&gt;Please confirm you wish to restore this template.&lt;/p&gt;</value>
-  </data>
-  <data name="recyclebin_RestoreTemplatesConfirm.Text" xml:space="preserve">
-    <value>&lt;p&gt;Please confirm you wish to restore selected templates.&lt;/p&gt;</value>
-  </data>
-  <data name="recyclebin_Template.Text" xml:space="preserve">
-    <value>Template</value>
-  </data>
-  <data name="recyclebin_Templates.Text" xml:space="preserve">
-    <value>Templates</value>
-  </data>
   <data name="recyclebin_Title.Text" xml:space="preserve">
     <value>Recycle Bin</value>
   </data>
@@ -227,5 +206,20 @@
   </data>
   <data name="recyclebin_YesConfirm.Text" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="Service_RemoveTabError.Text" xml:space="preserve">
+    <value>Page {0} cannot be deleted until its children have been deleted first.&lt;br/&gt;</value>
+  </data>
+  <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
+    <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
+  </data>
+  <data name="Service_RestoreModuleError.Text" xml:space="preserve">
+    <value>Error restoring module {0} on page {1}. Page is deleted.</value>
+  </data>
+  <data name="Service_RestoreTabError.Text" xml:space="preserve">
+    <value>Page {0} cannot be restored until its parent is restored first.&lt;br/&gt;</value>
+  </data>
+  <data name="Service_RestoreTabModuleError.Text" xml:space="preserve">
+    <value>Error restoring page has occurred:&lt;br/&gt;{0}</value>
   </data>
 </root>
