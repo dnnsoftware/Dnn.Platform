@@ -76,7 +76,12 @@ class BasicSettingsPanelBody extends Component {
         let basicLoginSettings = Object.assign({}, state.basicLoginSettings);
 
         if (key === "RedirectAfterLoginTabId" || key === "RedirectAfterLogoutTabId") {
-            basicLoginSettings[key] = event;
+            if (basicLoginSettings[key] !== parseInt(event)) {
+                basicLoginSettings[key] = event;
+            }
+            else {
+                return;
+            }
         }
         else if (key === "DefaultAuthProvider" || key === "PrimaryAdministratorId") {
             basicLoginSettings[key] = event.value;

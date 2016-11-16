@@ -62,7 +62,12 @@ class DefaultPagesSettingsPanelBody extends Component {
 
         if (key === "SplashTabId" || key === "HomeTabId" || key === "LoginTabId" || key === "RegisterTabId" ||
             key === "UserTabId" || key === "SearchTabId" || key === "Custom404TabId" || key === "Custom500TabId") {
-            defaultPagesSettings[key] = event;
+            if (defaultPagesSettings[key] !== parseInt(event)) {
+                defaultPagesSettings[key] = event;
+            }
+            else {
+                return;
+            }
         }
         else {
             defaultPagesSettings[key] = typeof (event) === "object" ? event.target.value : event;

@@ -170,7 +170,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Filters = filters,
-                        EnableIPChecking = !Host.EnableIPChecking
+                        EnableIPChecking = Host.EnableIPChecking
                     }
                 };
 
