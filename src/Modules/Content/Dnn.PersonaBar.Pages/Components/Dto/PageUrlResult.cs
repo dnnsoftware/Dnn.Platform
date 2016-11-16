@@ -1,4 +1,4 @@
-﻿namespace Dnn.PersonaBar.Pages.Services.Dto
+﻿namespace Dnn.PersonaBar.Pages.Components.Dto
 {
     public class PageUrlResult
     {

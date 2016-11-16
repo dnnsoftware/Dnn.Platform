@@ -141,7 +141,7 @@
     <Compile Include="Services\Dto\PagePermissions.cs" />
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageTemplate.cs" />
-    <Compile Include="Services\Dto\PageUrlResult.cs" />
+    <Compile Include="Components\Dto\PageUrlResult.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\TranslatorsComment.cs" />
     <Compile Include="Services\Dto\Url.cs" />
