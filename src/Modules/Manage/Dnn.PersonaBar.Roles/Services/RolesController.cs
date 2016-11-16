@@ -25,7 +25,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Roles.Services
 {
-    [ServiceScope(Identifier = "Roles")]
+    [ServiceScope(SupportExtension = "Roles")]
     public class RolesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));

@@ -29,7 +29,7 @@ using Dnn.PersonaBar.Library.Attributes;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
-    [ServiceScope(Identifier = "Pages")]
+    [ServiceScope(SupportExtension = "Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {

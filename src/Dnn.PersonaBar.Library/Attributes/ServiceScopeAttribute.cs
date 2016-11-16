@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.PersonaBar.Controllers;
 using Dnn.PersonaBar.Library.PersonaBar.Model;
 using Dnn.PersonaBar.Library.PersonaBar.Repository;
@@ -15,9 +12,17 @@ namespace Dnn.PersonaBar.Library.Attributes
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ServiceScopeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
+        /// <summary>
+        /// The default service scope when <see cref="SupportExtension"/> is not defined.
+        /// </summary>
         public ServiceScope Scope { get; set; }
 
-        public string Identifier { get; set; }
+        /// <summary>
+        /// The menu identifier which decide the api whether can request the api.
+        /// For example, if this value set to "Pages", the user who have access to pages module can request api.
+        /// Users who don't have permissions to Pages module, will not available to request the api.
+        /// </summary>
+        public string SupportExtension { get; set; }
 
         /// <summary>
         /// The Roles which need exclude from permissions, when user in the role will receive 401 exception.
@@ -49,7 +54,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return true;
             }
-
+            //when there have excluded roles defined, and current user in the role. the service call will failed.
             if (!string.IsNullOrEmpty(Exclude))
             {
                 foreach (var roleName in Exclude.Split(';'))
@@ -65,10 +70,10 @@ namespace Dnn.PersonaBar.Library.Attributes
                 }
             }
 
-            //if menu identifier defined, then will check the menu permission.
-            var menuItem = GetMenu();
+            var menuItem = GetMenuByIdentifier();
             if (menuItem != null && portalSettings != null)
             {
+                //if supported extension defined, then will check the menu permission.
                 return PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
             }
 
@@ -80,6 +85,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                 case ServiceScope.Regular:
                     if (portalSettings != null)
                     {
+                        //if user have ability on any persona bar menus, then need allow to request api.
                         return PersonaBarController.Instance.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;
                     }
                     
@@ -89,14 +95,14 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
         }
 
-        private MenuItem GetMenu()
+        private MenuItem GetMenuByIdentifier()
         {
-            if (string.IsNullOrEmpty(Identifier))
+            if (string.IsNullOrEmpty(SupportExtension))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(Identifier);
+            return PersonaBarRepository.Instance.GetMenuItem(SupportExtension);
         }
     }
 }
