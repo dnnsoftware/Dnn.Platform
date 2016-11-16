@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
@@ -24,7 +24,7 @@ class IpFilterRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            this.props.Collapse();
+            //this.props.Collapse();
         } else {
             this.props.OpenCollapse(this.props.id);
         }
@@ -38,7 +38,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="allow-icon" dangerouslySetInnerHTML={{ __html: allowIcon }} />
-                        <div>{resx.get("AllowIP") }</div>
+                        <div>{resx.get("AllowIP")}</div>
                     </div>
                 );
             }
@@ -46,7 +46,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="deny-icon" dangerouslySetInnerHTML={{ __html: denyIcon }} />
-                        <div>{resx.get("DenyIP") }</div>
+                        <div>{resx.get("DenyIP")}</div>
                     </div>
                 );
             }
@@ -66,25 +66,25 @@ class IpFilterRow extends Component {
                     <div className={"collapsible-header1 " + !opened} >
                         <div className={"row"}>
                             <div className="ip-filter-item item-row-ruleType">
-                                {this.getRuleTypeDisplay() }
+                                {this.getRuleTypeDisplay()}
                             </div>
                             <div className="ip-filter-item item-row-ipAddress">
                                 {props.ipFilter}
                             </div>
-                            { props.id !== "add" &&
+                            {props.id !== "add" &&
                                 <div className="ip-filter-item item-row-editButton">
-                                    <div className="delete-icon" dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this) } />
-                                    <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: editIcon }} onClick={this.toggle.bind(this) } />
+                                    <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this)}></div>
+                                    <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: editIcon }} onClick={this.toggle.bind(this)} />
                                 </div>
                             }
                         </div>
                     </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children }</Collapse>
+                    <Collapse accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
                 </div>
             );
         }
         else {
-            return <div/>;
+            return <div />;
         }
     }
 }

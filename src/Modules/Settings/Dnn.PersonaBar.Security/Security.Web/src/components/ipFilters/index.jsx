@@ -66,9 +66,7 @@ class IpFiltersPanelBody extends Component {
     toggle(openId) {
         if (openId !== "") {
             this.uncollapse(openId);
-        } else {
-            this.collapse();
-        }
+        } 
     }
 
     onUpdateIpFilter(ipFilter) {
@@ -132,7 +130,7 @@ class IpFiltersPanelBody extends Component {
                 <div>
                     <div className="ip-filter-items">
                         <div className="ip-filter-topbar">
-                            {!this.state.enableIPChecking &&
+                            {!this.props.enableIPChecking &&
                                 <div className="warning-container">
                                     <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
                                     {resx.get("IPFiltersDisabled")}
