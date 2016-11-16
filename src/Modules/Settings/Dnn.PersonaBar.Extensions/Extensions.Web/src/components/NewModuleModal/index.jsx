@@ -47,10 +47,13 @@ class NewModuleModal extends Component {
         props.dispatch(FolderActions.getModuleFiles(parameters));
     }
 
+    retrieveOwnerAndModuleFolders() {
+        this.props.dispatch(FolderActions.getOwnerFolders());
+        this.props.dispatch(FolderActions.getModuleFolders(""));
+    }
+
     onSelectNewModuleType(option) {
         const { props } = this;
-        props.dispatch(FolderActions.getOwnerFolders());
-        props.dispatch(FolderActions.getModuleFolders(""));
         this.setState({
             selectedType: option.value
         });
@@ -60,13 +63,8 @@ class NewModuleModal extends Component {
         return this.state.selectedType !== 0 && this.state.selectedType !== 1 && this.state.selectedType !== 2;
     }
 
-    onAddNewFolder(value, type, callback) {
+    onAddNewFolder(payload, type, callback) {
         const { props } = this;
-        let payload = {
-            moduleFolder: "",
-            ownerFolder: ""
-        };
-        payload[type] = value;
 
         props.dispatch(FolderActions.createFolder(payload, type, callback));
     }
@@ -113,7 +111,8 @@ class NewModuleModal extends Component {
                     onCancel={this.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} />;
+                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             case 1:
                 return <FromControl
                     ownerFolders={ownerFolders}
@@ -123,7 +122,8 @@ class NewModuleModal extends Component {
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} />;
+                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             case 2:
                 return <FromManifest
                     ownerFolders={ownerFolders}
@@ -133,7 +133,8 @@ class NewModuleModal extends Component {
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} />;
+                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             default:
                 return <div></div>;
         }

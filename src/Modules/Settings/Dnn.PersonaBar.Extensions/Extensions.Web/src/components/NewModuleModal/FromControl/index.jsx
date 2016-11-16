@@ -42,7 +42,9 @@ class FromControl extends Component {
             triedToSave: false
         };
     }
-
+    componentWillMount() {
+        this.props.retrieveOwnerAndModuleFolders();
+    }
     componentWillReceiveProps(props) {
         if (props.moduleFiles.length > 0) {
             let { newModule } = this.state;
@@ -119,6 +121,41 @@ class FromControl extends Component {
         props.onCreateNewModule(valueMapNewModule(state.newModule));
     }
 
+    onAddedNewFolder(data, type) {
+        let {newModule} = this.state;
+        if (type === "ownerFolder") {
+            newModule.ownerFolder.value = data.ownerFolder;
+            this.props.onSelectOwnerFolder(data.ownerFolder);
+            if (newModule.moduleFolder.value !== "") {
+                newModule.moduleFolder.value = "";
+                newModule.moduleFolder.error = true;
+            }
+        }
+        if (type === "moduleFolder") {
+            newModule.moduleFolder.value = data.moduleFolder;
+            newModule.moduleFolder.error = false;
+            this.props.onSelectModuleFolder({
+                ownerFolder: newModule.ownerFolder.value,
+                moduleFolder: data.moduleFolder,
+                type: 0
+            });
+        }
+        this.setState({
+            newModule
+        });
+    }
+
+    onAddNewFolder(value, type, callback) {
+        const { newModule } = this.state;
+        let payload = {
+            moduleFolder: type === "ownerFolder" ? "" : newModule.moduleFolder.value,
+            ownerFolder: newModule.ownerFolder.value
+        };
+        payload[type] = value;
+
+        this.props.onAddNewFolder(payload, type, callback);
+    }
+
     render() {
         const {props, state} = this;
         return (
@@ -132,7 +169,8 @@ class FromControl extends Component {
                             tooltipMessage={Localization.get("NewModule_OwnerFolder.HelpText")}
                             onFolderSelect={this.onFolderSelect.bind(this, "ownerFolder")}
                             value={state.newModule.ownerFolder.value}
-                            onAddNewFolder={props.onAddNewFolder.bind(this)} />
+                            onAddNewFolder={this.onAddNewFolder.bind(this)}
+                            onAddedNewFolder={this.onAddedNewFolder.bind(this)} />
                         <FolderDropdown
                             folders={props.moduleFolders}
                             label={Localization.get("NewModule_ModuleFolder.Label")}
@@ -140,8 +178,9 @@ class FromControl extends Component {
                             tooltipMessage={Localization.get("NewModule_ModuleFolder.HelpText")}
                             onFolderSelect={this.onFolderSelect.bind(this, "moduleFolder")}
                             value={state.newModule.moduleFolder.value}
-                            onAddNewFolder={props.onAddNewFolder.bind(this)}
-                            error={state.newModule.moduleFolder.error && state.triedToSave} />
+                            onAddNewFolder={this.onAddNewFolder.bind(this)}
+                            error={state.newModule.moduleFolder.error && state.triedToSave}
+                            onAddedNewFolder={this.onAddedNewFolder.bind(this)} />
                         <DropdownWithError
                             label={Localization.get("NewModule_Resource.Label")}
                             tooltipMessage={Localization.get("NewModule_Resource.HelpText")}
@@ -186,12 +225,16 @@ class FromControl extends Component {
     }
 }
 
-FromControl.PropTypes = {
+FromControl.propTypes = {
     onCancel: PropTypes.func,
     ownerFolders: PropTypes.array,
     moduleFolders: PropTypes.array,
     moduleFiles: PropTypes.array,
-    onCreateNewModule: PropTypes.func
+    onCreateNewModule: PropTypes.func,
+    onSelectOwnerFolder: PropTypes.func,
+    onSelectModuleFolder: PropTypes.func,
+    onAddNewFolder: PropTypes.func,
+    retrieveOwnerAndModuleFolders: PropTypes.func
 };
 
 export default FromControl;

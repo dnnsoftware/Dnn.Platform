@@ -55,7 +55,7 @@ const folderActions = {
                     }
                 });
                 if (callback) {
-                    callback(data);
+                    callback(parameters);
                 }
             }, errorCallback);
         };
