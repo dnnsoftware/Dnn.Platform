@@ -172,7 +172,7 @@ class LanguageRow extends Component {
                                 {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
-                                <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>
+                                {!props.isDefault && <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>}
                                 <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
                                 {!props.isDefault &&
                                     <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
