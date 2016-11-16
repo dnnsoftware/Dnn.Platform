@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
-import style from "./style.less";
+import "./style.less";
 
 const searchIconImage = require("!raw!./img/search.svg");
 
@@ -76,7 +76,7 @@ export default class FolderSelector extends Component {
         const searchIcon = this.getSearchIcon();
 
         return ( 
-            <div className={style.folderSelector}>
+            <div className="dnn-folder-selector">
                 <div className="selected-item" onClick={this.onFoldersClick.bind(this) }>
                     {selectedFolderText}
                 </div>

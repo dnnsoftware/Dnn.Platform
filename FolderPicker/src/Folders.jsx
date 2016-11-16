@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import style from "./style.less";
+import "./style.less";
 
 const folderIcon = require("!raw!./img/folder.svg");
 
@@ -88,7 +88,7 @@ export default class Folders extends Component {
         const folders = this.getFolders(this.props.folders);
 
         return (
-            <div className={style.folderPicker}>
+            <div className="dnn-folders-component">
                 {folders}
             </div>
         );

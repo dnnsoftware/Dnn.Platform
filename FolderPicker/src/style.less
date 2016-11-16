@@ -1,7 +1,15 @@
+.prefixes(@property, @value) {
+    -webkit-@{property}: @value;
+    -khtml-@{property}: @value;
+    -moz-@{property}: @value;
+    -ms-@{property}: @value;
+    @{property}: @value;
+}
+
 @import "~dnn-global-styles/index";
 @transition: .2s;
 
-:local(.folderSelector) {
+.dnn-folder-selector {
     width: 100%;
     float: left;
     height: 30px;
@@ -21,14 +29,6 @@
         border-right: 6px solid transparent;
         border-top: 6px solid @rollingStone;
     }
-
-    .prefixes(@property, @value) {
-        -webkit-@{property}: @value;
-        -khtml-@{property}: @value;
-        -moz-@{property}: @value;
-            -ms-@{property}: @value;
-                @{property}: @value;
-    }   
 
     .selected-item {
         float: left;
@@ -122,8 +122,7 @@
     }
 }
 
-:local(.folderPicker) {
-    
+.dnn-folders-component {
     padding-top: 6px;
     ul {
         padding-left: 20px;
