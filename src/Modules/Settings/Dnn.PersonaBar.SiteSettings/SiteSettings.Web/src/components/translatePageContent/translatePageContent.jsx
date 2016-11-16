@@ -50,15 +50,15 @@ class TranslatePageContent extends Component {
                 basicSettings: Object.assign(data.Settings)
             });
         }));
-
     }
 
     getProgressData() {
         const {props, state} = this;
         props.dispatch(LanguagesActions.getLocalizationProgress((data) => {
             this.setState(data);
+            this.getPageList();
             if (data.InProgress && !data.Error) {
-                return setTimeout(this.getProgressData, 500);
+                return setTimeout(this.getProgressData, 1000);
             }
             if (data.Error) {
                 return;
@@ -67,7 +67,9 @@ class TranslatePageContent extends Component {
         }));
     }
 
-    doneProgress() { }
+    doneProgress() {
+        this.getPageList();
+    }
 
     renderPageList() {
         const {pageList} = this.state;
@@ -160,7 +162,7 @@ class TranslatePageContent extends Component {
                 </div>}
 
                 <div className="list-header">
-                    <span>{resx.get("PagesToTranslate") } <span>{language.LocalizablePages}</span></span>
+                    <span>{resx.get("PagesToTranslate") } <span>{state.pageList ? state.pageList.length: 0}</span></span>
                     <span className="float-right"><em>+</em>{resx.get("AddAllUnlocalizedPages") }</span>
                 </div>
 
