@@ -104,9 +104,6 @@ class TranslatePageContent extends Component {
     onPublishTranslatedPages(enable=true) {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        console.log('11', cultureCode);
-        console.log('12', enable);
-        
         props.dispatch(LanguagesActions.publishAllPages({cultureCode, enable}, (data) => {
             console.log('PUBLISH DATA: ', data);
         }));
