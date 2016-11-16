@@ -102,7 +102,6 @@
     </Compile>
     <Compile Include="Components\BulkPagesController.cs" />
     <Compile Include="Components\Converters.cs" />
-    <Compile Include="Components\Dto\PageUrlResult.cs" />
     <Compile Include="Components\Dto\Template.cs" />
     <Compile Include="Components\Dto\UrlIdDto.cs" />
     <Compile Include="Components\Exceptions\BulkPagesException.cs" />
