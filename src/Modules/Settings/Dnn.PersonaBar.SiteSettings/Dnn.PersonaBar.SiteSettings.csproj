@@ -104,8 +104,13 @@
     <Compile Include="Components\SiteSettingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\CreateLanguagePackRequest.cs" />
+    <Compile Include="Services\Dto\DnnModuleDto.cs" />
+    <Compile Include="Services\Dto\DnnModulesDto.cs" />
+    <Compile Include="Services\Dto\DnnPageDto.cs" />
+    <Compile Include="Services\Dto\DnnPagesDto.cs" />
     <Compile Include="Services\Dto\LocalizationEntry.cs" />
     <Compile Include="Services\Dto\LocalizationProgress.cs" />
+    <Compile Include="Services\Dto\TranslatorsComment.cs" />
     <Compile Include="Services\Dto\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\UpdateLanguageSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateIgnoreWordsRequest.cs" />

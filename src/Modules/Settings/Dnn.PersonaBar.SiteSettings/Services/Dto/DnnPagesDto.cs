@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.PersonaBar.Library.DTO.Tabs;
 using Newtonsoft.Json;
 
-namespace Dnn.PersonaBar.Library.DTO.Tabs
+namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
     [JsonObject]
     public class DnnPagesDto

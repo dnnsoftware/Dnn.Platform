@@ -463,8 +463,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                var tabsController = new TabsController();
-                var nonTranslatedTabs = tabsController.GetTabsForTranslation(cultureCode);
+                var nonTranslatedTabs = GetTabsForTranslationInternal(cultureCode);
                 return Request.CreateResponse(HttpStatusCode.OK, nonTranslatedTabs);
             }
             catch (Exception ex)
@@ -472,6 +471,26 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 Logger.Error(ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
+        }
+
+        private  IList<LanguageTabDto> GetTabsForTranslationInternal(string cultureCode)
+        {
+            var locale = new LocaleController().GetLocale(cultureCode);
+            var portalSettings = PortalSettings;
+            var pages = new List<LanguageTabDto>();
+            if (locale != null && locale.Code != portalSettings.DefaultLanguage)
+            {
+                var portalTabs = _tabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values;
+                var nonTranslated = (from t in portalTabs where !t.IsTranslated && !t.IsDeleted select t);
+                pages.AddRange(
+                    nonTranslated.Select(page => new LanguageTabDto()
+                    {
+                        PageId = page.TabID,
+                        PageName = page.TabName,
+                        ViewUrl = Globals.NavigateURL(page.TabID),
+                    }));
+            }
+            return pages;
         }
 
         // GET /api/personabar/languages/GetTabLocalization?tabId=123
