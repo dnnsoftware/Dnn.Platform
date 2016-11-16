@@ -29,19 +29,28 @@ class TranslatePageContent extends Component {
 
     componentWillMount() {
         const {props, state} = this;
-        const cultureCode = props.languageBeingEdited.Code;
-
         this.setState({ languageBeingEdited: props.languageBeingEdited });
+        this.getPageList();
+        this.getBasicSettings();
+        this.getProgressData();
+    }
 
+    getPageList() {
+        const {props, state} = this;
+        const cultureCode = props.languageBeingEdited.Code;
         props.dispatch(LanguagesActions.getPageList(cultureCode, (data) => {
             this.setState({ pageList: data });
         }));
+    }
+
+    getBasicSettings() {
+        const {props, state} = this;
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 basicSettings: Object.assign(data.Settings)
             });
         }));
-        this.getProgressData();
+
     }
 
     getProgressData() {
@@ -74,12 +83,6 @@ class TranslatePageContent extends Component {
         });
     }
 
-    onToggleActive() {
-        let {languageBeingEdited} = this.state;
-        languageBeingEdited.Active = !languageBeingEdited.Active;
-        this.setState({ languageBeingEdited });
-    }
-
     onSave() {
 
     }
@@ -89,11 +92,24 @@ class TranslatePageContent extends Component {
     }
 
     onEraseAllLocalizedPages() {
-
+        const {props, state} = this;
+        const cultureCode = props.languageBeingEdited.Code;
+        props.dispatch(LanguagesActions.deleteLanguagePages(cultureCode, (data) => {
+            console.log('ERASE DATA: ', data);
+            
+            this.getPageList();
+        }));
     }
 
-    onPublishTranslatedPages() {
-
+    onPublishTranslatedPages(enable=true) {
+        const {props, state} = this;
+        const cultureCode = props.languageBeingEdited.Code;
+        console.log('11', cultureCode);
+        console.log('12', enable);
+        
+        props.dispatch(LanguagesActions.publishAllPages({cultureCode, enable}, (data) => {
+            console.log('PUBLISH DATA: ', data);
+        }));
     }
 
     onCancel() {
@@ -120,20 +136,6 @@ class TranslatePageContent extends Component {
                         <span >{language.NativeName}</span>
                         {state.basicSettings && <span className="float-right">{state.basicSettings.PortalName}</span>}
                     </div>
-                    <InputGroup>
-                        <div className="activate-pages-switch">
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("ActivatePages.Help") }
-                                label={resx.get("ActivatePages") }
-                                />
-                            <Switch
-                                labelHidden={true}
-                                value={language.Active}
-                                onChange={this.onToggleActive.bind(this) }
-                                />
-                        </div>
-                    </InputGroup>
                     <div className="button-block">
                         <Button
                             type="secondary"
@@ -146,17 +148,16 @@ class TranslatePageContent extends Component {
                             {resx.get("EraseAllLocalizedPages") }
                         </Button>
                         <Button
-                            disabled={!language.Active}
                             type="primary"
                             className="float-right"
-                            onClick={this.onPublishTranslatedPages.bind(this) }>
+                            onClick={this.onPublishTranslatedPages.bind(this, true) }>
                             {resx.get("PublishTranslatedPages") }
                         </Button>
                         <Button
                             type="secondary"
                             className="float-right"
-                            onClick={this.onCancel.bind(this) }>
-                            {resx.get("Cancel") }
+                            onClick={this.onPublishTranslatedPages.bind(this, false) }>
+                            {resx.get("UnpublishTranslatedPages") }
                         </Button>
                     </div>
                 </div>}

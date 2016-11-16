@@ -52,9 +52,19 @@ class ApplicationService {
         sf.post("SaveResxEntries", payload, callback, failureCallback);
     }
 
-    getPageList (cultureCode, callback) {
-        const sf = this.getServiceFramework("Languages");        
-        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters({cultureCode}), {}, callback);
+    getPageList(cultureCode, callback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters({ cultureCode }), {}, callback);
+    }
+
+    deleteLanguagePages(cultureCode, callback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post(`DeleteLanguagePages?${serializeQueryStringParameters({ cultureCode })}`, {}, callback);
+    }
+    
+    publishAllPages(payload, callback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post(`PublishAllPages?${serializeQueryStringParameters(payload)}`, {}, callback);
     }
 }
 const applicationService = new ApplicationService();

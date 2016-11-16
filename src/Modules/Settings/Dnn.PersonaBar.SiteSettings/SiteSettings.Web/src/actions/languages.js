@@ -231,6 +231,36 @@ const languagesActions = {
             LanguageEditorService.disableLocalizedContent(callback);
         };
     },
+    deleteLanguagePages(cultureCode, callback) {
+        return (dispatch) => {
+            LanguageEditorService.deleteLanguagePages(cultureCode, data => {
+                dispatch({
+                    type: ActionTypes.DELETED_LANGUAGE_PAGES,
+                    data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    publishAllPages(payload, callback, failureCallback) {
+        return (dispatch) => {
+            LanguageEditorService.publishAllPages(payload, data => {
+                dispatch({
+                    type: ActionTypes.PUBLISHED_LOCALIZED_PAGES,
+                    data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
     enableLocalizedContent(payload, callback, failureCallback) {
         return (dispatch) => {
             LanguageEditorService.enableLocalizedContent(payload, data => {
@@ -298,7 +328,6 @@ const languagesActions = {
                         pageList: data
                     }
                 });
-                console.log(22222222222);
                 if (callback) {
                     callback(data);
                 }
