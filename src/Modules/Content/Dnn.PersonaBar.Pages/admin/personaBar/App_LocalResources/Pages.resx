@@ -624,4 +624,7 @@
   <data name="IncludeContentTooltip.Text" xml:space="preserve">
     <value>Check this box to include the module content.</value>
   </data>
+  <data name="SearchFolders.Text" xml:space="preserve">
+    <value>Search Folders</value>
+  </data>
 </root>

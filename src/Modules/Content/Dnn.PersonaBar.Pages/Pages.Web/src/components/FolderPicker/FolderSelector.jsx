@@ -2,8 +2,9 @@ import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
-const searchIcon = require("!raw!./img/search.svg");
-import style from "./style.less";
+import "./style.less";
+
+const searchIconImage = require("!raw!./img/search.svg");
 
 export default class FolderPickerContainer extends Component {
 
@@ -40,9 +41,9 @@ export default class FolderPickerContainer extends Component {
         this.setState({ showFolderPicker: false});
     }
 
-    onFolderClick(folder) {
+    onFolderChange(folder) {
         this.hide();
-        this.props.onFolderClick(folder);
+        this.props.onFolderChange(folder);
     }
 
     onChangeSearchFolderText(e) {
@@ -63,21 +64,34 @@ export default class FolderPickerContainer extends Component {
         this.setState({ showFolderPicker: !showFolderPicker });
     }
 
-    render() {
+    getSearchIcon() {
         /* eslint-disable react/no-danger */
-        const selectedFolderText = this.props.selectedFolder ? this.props.selectedFolder.value : "<Not Specified>";
+        return (<div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIconImage }} />);
+        /* eslint-enable react/no-danger */
+    }
+
+    render() {
+        const {selectedFolder, folders, onParentExpands, noFolderSelectedValue, searchFolderPlaceHolder} = this.props;
+        const selectedFolderText = selectedFolder ? selectedFolder.value : "<" + noFolderSelectedValue + ">";
+        const searchIcon = this.getSearchIcon();
 
         return ( 
-            <div className={style.filePickerContainer}>
+            <div className="dnn-folder-selector">
                 <div className="selected-item" onClick={this.onFoldersClick.bind(this) }>
                     {selectedFolderText}
                 </div>
-                <div className={"file-picker-container" + (this.state.showFolderPicker ? " show" : "") } >
+                <div className={"folder-selector-container" + (this.state.showFolderPicker ? " show" : "") } >
                     <div className="inner-box">
                         <div className="search">
-                            <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder="Search Folders..." />
-                            {this.state.searchFolderText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
-                            <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
+                            <input 
+                                type="text" 
+                                value={this.state.searchFolderText} 
+                                onChange={this.onChangeSearchFolderText.bind(this) } 
+                                placeholder={searchFolderPlaceHolder} />
+                            {this.state.searchFolderText && 
+                                <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>
+                            }
+                            {searchIcon}
                         </div>
                         <div className="items">
                             <Scrollbars className="scrollArea content-vertical"
@@ -85,9 +99,9 @@ export default class FolderPickerContainer extends Component {
                                 autoHeightMin={0}
                                 autoHeightMax={200}>
                                 <Folders
-                                    folders={this.props.folders}
-                                    getChildren={this.props.getChildren}
-                                    onFolderClick={this.onFolderClick.bind(this) }/>
+                                    folders={folders}
+                                    onParentExpands={onParentExpands}
+                                    onFolderChange={this.onFolderChange.bind(this) }/>
                             </Scrollbars>
                         </div>
                     </div>
@@ -100,8 +114,10 @@ export default class FolderPickerContainer extends Component {
 
 FolderPickerContainer.propTypes = {
     folders: PropTypes.object.isRequired,
-    onFolderClick: PropTypes.func.isRequired,
-    getChildren: PropTypes.func.isRequired,
-    selectedFolder: PropTypes.object.isRequired,
-    searchFolder: PropTypes.func.isRequired
+    onFolderChange: PropTypes.func.isRequired,
+    onParentExpands: PropTypes.func.isRequired,
+    selectedFolder: PropTypes.object,
+    searchFolder: PropTypes.func.isRequired,
+    noFolderSelectedValue: PropTypes.string.isRequired,
+    searchFolderPlaceHolder: PropTypes.string.isRequired
 };

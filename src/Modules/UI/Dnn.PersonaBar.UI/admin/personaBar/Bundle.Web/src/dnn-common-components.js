@@ -32,6 +32,7 @@ import Tags from "dnn-tags";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import Tooltip from "dnn-tooltip";
 import NumberSlider from "dnn-slider";
+import FolderPicker from "dnn-folder-picker";
 
 export {
     Button,
@@ -67,5 +68,6 @@ export {
     Tags,
     TextOverflowWrapper,
     Tooltip,
-    NumberSlider
+    NumberSlider,
+    FolderPicker	
 };

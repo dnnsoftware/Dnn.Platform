@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from "react";
-import FolderPickerContainer from "./FolderPickerContainer";
+import FolderSelector from "./FolderSelector";
 
 function findKey(thisObject, id) {
     /* eslint-disable spellcheck/spell-checker */
@@ -44,14 +44,14 @@ export default class FolderPicker extends Component {
     getFolders(searchText) {
         const sf = this.getServiceFramework();
         if (!searchText) {
-            return sf.get("GetFolders", {}, this.setFolders.bind(this), this.props.onServiceError);
+            return sf.get("GetFolders", {}, this.setFolders.bind(this), this.props.onRetrieveFolderError);
         }
-        sf.get("SearchFolders", { searchText }, this.setFolders.bind(this), this.props.onServiceError);
+        sf.get("SearchFolders", { searchText }, this.setFolders.bind(this), this.props.onRetrieveFolderError);
     }
 
     getChildrenFolders(parentId) {
-        const sf = this.getServiceFramework("Vocabularies");
-        sf.get("GetFolderDescendants", { parentId }, this.addChildFolders.bind(this, parentId), this.props.onServiceError);
+        const sf = this.getServiceFramework();
+        sf.get("GetFolderDescendants", { parentId }, this.addChildFolders.bind(this, parentId), this.props.onRetrieveFolderError);
     }
 
     setFolders(result) {
@@ -59,9 +59,9 @@ export default class FolderPicker extends Component {
     }
 
     addChildFolders(parentId, result) {
-        let folders = this.state.folders;
-        let parent = findKey(folders, parentId);
-        let children = result.Items.map((item) => {
+        const folders = this.state.folders;
+        const parent = findKey(folders, parentId);
+        const children = result.Items.map((item) => {
             return { data: item, children: [] };
         });
         parent.children = children;
@@ -69,22 +69,32 @@ export default class FolderPicker extends Component {
     }
 
     render() {
-        const {selectedFolder, onSelectFolder} = this.props;
-
+        const {onSelectFolder} = this.props;
+        
         return (
-            <FolderPickerContainer
-                selectedFolder={selectedFolder}
+            <FolderSelector
                 folders={this.state.folders}
                 searchFolder={this.getFolders.bind(this)}
-                onFolderClick={onSelectFolder}
-                getChildren={this.getChildrenFolders.bind(this) }/>
+                onParentExpands={this.getChildrenFolders.bind(this)}
+                onFolderChange={onSelectFolder}
+                {...this.props} />
         );    
     }
 }
 
+/**
+ * propTypes
+ * @property {object} serviceFramework service to retrieve data
+ * @property {object} selectedFolder selected folder. Should be null or have a key and value properties
+ * @property {object} onSelectFolder called when change folder. Pass as parameter a selectedFolder object
+ * @property {object} onRetrieveFolderError callback for error when retrieve data
+ */
+
 FolderPicker.propTypes = {
     serviceFramework: PropTypes.object.isRequired,
-    selectedFolder: PropTypes.object.isRequired,
+    selectedFolder: PropTypes.object,
     onSelectFolder: PropTypes.func.isRequired,
-    onServiceError: PropTypes.func.isRequired
+    onRetrieveFolderError: PropTypes.func,
+    noFolderSelectedValue: PropTypes.string.isRequired,
+    searchFolderPlaceHolder: PropTypes.string.isRequired
 };

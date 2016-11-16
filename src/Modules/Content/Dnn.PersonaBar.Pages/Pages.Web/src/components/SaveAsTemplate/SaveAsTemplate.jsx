@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import Button from "dnn-button";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import FolderPicker from "../FolderPicker/FolderPicker";
+import FolderPicker from "dnn-folder-picker";
 import utils from "../../utils";
 import styles from "./style.less";
 import Localization from "../../localization";
@@ -37,7 +37,9 @@ class SaveAsTemplate extends Component {
                                 serviceFramework={serviceFramework}
                                 selectedFolder={template.folder}
                                 onSelectFolder={(folder) => onChangeField("folder", folder)}
-                                onServiceError={() => {}} />
+                                onRetrieveFolderError={() => {}}
+                                noFolderSelectedValue={Localization.get("NoneSpecified")}
+                                searchFolderPlaceHolder={Localization.get("SearchFolders") + "..."} />
                         </div>
                     </div>
                     <div className="right-column">

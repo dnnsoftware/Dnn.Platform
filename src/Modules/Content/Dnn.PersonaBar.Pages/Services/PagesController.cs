@@ -352,5 +352,16 @@ namespace Dnn.PersonaBar.Pages.Services
                 return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Field, ex.Message });
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SavePageAsTemplate(PageTemplate pageTemplate)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
+                Status = 0,
+                Response = "Not implemented yet"
+            });
+        }
     }
 }
