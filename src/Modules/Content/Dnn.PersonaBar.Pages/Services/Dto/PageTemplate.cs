@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public string Name { get; set; }
 
         [DataMember(Name = "folder")]
-        public int Folder { get; set; }
+        public PageFolderTemplate Folder { get; set; }
 
         [DataMember(Name = "description")]
         public string Description { get; set; }

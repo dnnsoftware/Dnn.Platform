@@ -131,6 +131,8 @@
     <Compile Include="Services\Dto\PageSettings.cs" />
     <Compile Include="Services\Dto\PageMoveRequest.cs" />
     <Compile Include="Services\Dto\PagePermissions.cs" />
+    <Compile Include="Services\Dto\PageFolderTemplate.cs" />
+    <Compile Include="Services\Dto\PageTemplate.cs" />
     <Compile Include="Services\Dto\Theme.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\PagesController.cs" />
