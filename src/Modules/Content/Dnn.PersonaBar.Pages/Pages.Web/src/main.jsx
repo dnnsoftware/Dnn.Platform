@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import "string.prototype.startswith";
 import application from "./globals/application";
 import configureStore from "./store/configureStore";
-import App from "./containers/Root";
+import App from "./components/App";
 
 let store = configureStore();
 
