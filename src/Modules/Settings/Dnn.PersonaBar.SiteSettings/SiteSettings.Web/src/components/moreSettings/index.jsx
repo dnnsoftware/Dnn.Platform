@@ -2,10 +2,15 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions
+    pagination as PaginationActions,
+    siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import Button from "dnn-button";
-import GridCell from "dnn-grid-cell";
+import InputGroup from "dnn-input-group";
+import Switch from "dnn-switch";
+import Tooltip from "dnn-tooltip";
+import Label from "dnn-label";
+import Grid from "dnn-grid-system";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -14,6 +19,9 @@ import styles from "./style.less";
 class MoreSettingsPanelBody extends Component {
     constructor() {
         super();
+        this.state = {
+            otherSettings: undefined
+        };
     }
 
     // getMicroservicesExtensions() {
@@ -102,6 +110,63 @@ class MoreSettingsPanelBody extends Component {
     //     </div>;
     // }
 
+    componentWillMount() {
+        const {props} = this;
+        if (props.otherSettings) {
+            this.setState({
+                otherSettings: props.otherSettings
+            });
+            return;
+        }
+
+        props.dispatch(SiteBehaviorActions.getOtherSettings((data) => {
+            this.setState({
+                otherSettings: Object.assign({}, data.Settings)
+            });
+        }));
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            otherSettings: Object.assign({}, props.otherSettings)
+        });
+    }
+
+    onSettingChange(key, event) {
+        let {state, props} = this;
+        let otherSettings = Object.assign({}, state.otherSettings);
+
+        otherSettings[key] = typeof (event) === "object" ? event.target.value : event;
+
+        this.setState({
+            otherSettings: otherSettings
+        });
+
+        props.dispatch(SiteBehaviorActions.otherSettingsClientModified(otherSettings));
+    }
+
+    onUpdate(event) {
+        event.preventDefault();
+        const {props, state} = this;
+
+        props.dispatch(SiteBehaviorActions.updateOtherSettings(state.otherSettings, (data) => {
+            util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+        }, (error) => {
+            util.utilities.notifyError(resx.get("SettingsError"));
+        }));
+    }
+
+    onCancel(event) {
+        const {props, state} = this;
+        util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+            props.dispatch(SiteBehaviorActions.getOtherSettings((data) => {
+                this.setState({
+                    otherSettings: Object.assign({}, data.Settings)
+                });
+            }));
+        });
+    }
+
     renderSiteBehaviorExtensions() {
         const SiteBehaviorExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         if (!SiteBehaviorExtras || SiteBehaviorExtras.length === 0) {
@@ -147,6 +212,51 @@ class MoreSettingsPanelBody extends Component {
     render() {
         const {props, state} = this;
 
+        const columnOne = <div className="left-column">
+            {state.otherSettings &&
+                <InputGroup>
+                    <Label
+                        labelType="inline"
+                        tooltipMessage={resx.get("plUpgrade.Help")}
+                        label={resx.get("plUpgrade")}
+                        extra={
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"
+                                style={{ float: "left", position: "static" }}
+                                />}
+                        />
+                    <Switch
+                        labelHidden={true}
+                        value={state.otherSettings.CheckUpgrade}
+                        onChange={this.onSettingChange.bind(this, "CheckUpgrade")}
+                        />
+                </InputGroup>
+            }
+        </div>;
+        const columnTwo = <div className="right-column">
+            {state.otherSettings &&
+                <InputGroup>
+                    <Label
+                        labelType="inline"
+                        tooltipMessage={resx.get("plImprovementProgram.Help")}
+                        label={resx.get("plImprovementProgram")}
+                        extra={
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"
+                                style={{ float: "left", position: "static" }}
+                                />}
+                        />
+                    <Switch
+                        labelHidden={true}
+                        value={state.otherSettings.DnnImprovementProgram}
+                        onChange={this.onSettingChange.bind(this, "DnnImprovementProgram")}
+                        />
+                </InputGroup>
+            }
+        </div>;
+
         return (
             <div className={styles.moreSettings}>
                 {this.renderSiteBehaviorExtensions()}
@@ -163,6 +273,7 @@ class MoreSettingsPanelBody extends Component {
                         </Button>
                     </div>
                 </div>
+                <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                 {(window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras) &&
                     <div className="buttons-box">
                         <Button
@@ -178,6 +289,22 @@ class MoreSettingsPanelBody extends Component {
                         </Button>
                     </div>
                 }
+                {!window.dnn.SiteSettings &&
+                    <div className="buttons-box">
+                        <Button
+                            disabled={!this.props.otherSettingsClientModified}
+                            type="secondary"
+                            onClick={this.onCancel.bind(this)}>
+                            {resx.get("Cancel")}
+                        </Button>
+                        <Button
+                            disabled={!this.props.otherSettingsClientModified}
+                            type="primary"
+                            onClick={this.onUpdate.bind(this)}>
+                            {resx.get("Save")}
+                        </Button>
+                    </div>
+                }
             </div>
         );
     }
@@ -186,12 +313,15 @@ class MoreSettingsPanelBody extends Component {
 MoreSettingsPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     portalId: PropTypes.number,
-    openHtmlEditorManager: PropTypes.func
+    openHtmlEditorManager: PropTypes.func,
+    otherSettings: PropTypes.object,
+    otherSettingsClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
-        ...state
+        otherSettings: state.siteBehavior.otherSettings,
+        otherSettingsClientModified: state.siteBehavior.otherSettingsClientModified
     };
 }
 

@@ -1762,7 +1762,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Language = language != null ? new
                     {
-                        PortalId= pid,
+                        PortalId = pid,
                         language.LanguageId,
                         language.NativeName,
                         language.EnglishName,
@@ -1786,7 +1786,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Roles = ""
                     },
                     SupportedFallbacks = fallbacks
-            });
+                });
             }
             catch (Exception exc)
             {
@@ -2344,6 +2344,58 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Groups = groups
                 });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SiteSettings/GetOtherSettings
+        /// <summary>
+        /// Gets other settings
+        /// </summary>
+        /// <returns>other settings</returns>
+        [HttpGet]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        public HttpResponseMessage GetOtherSettings()
+        {
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Settings = new
+                    {
+                        CheckUpgrade = HostController.Instance.GetBoolean("CheckUpgrade", true),
+                        DnnImprovementProgram = HostController.Instance.GetBoolean("DnnImprovementProgram", true)
+                    }
+                });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/UpdateOtherSettings
+        /// <summary>
+        /// Updates other settings
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [DnnAuthorize(StaticRoles = "Superusers")]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateOtherSettings(UpdateOtherSettingsRequest request)
+        {
+            try
+            {
+                HostController.Instance.Update("CheckUpgrade", request.CheckUpgrade ? "Y" : "N", false);
+                HostController.Instance.Update("DnnImprovementProgram", request.DnnImprovementProgram ? "Y" : "N", false);
+                DataCache.ClearCache();
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {

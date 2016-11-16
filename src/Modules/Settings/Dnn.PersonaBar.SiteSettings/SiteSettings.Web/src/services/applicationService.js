@@ -262,6 +262,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteSettings");        
         sf.get("GetTranslatorRoles?portalId=" + portalId + "&groupId=" + groupId + "&cultureCode=" + cultureCode, {}, callback);
     } 
+
+    getOtherSettings(callback) {
+        const sf = this.getServiceFramework("SiteSettings");        
+        sf.get("GetOtherSettings", {}, callback);
+    } 
+
+    updateOtherSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.post("UpdateOtherSettings", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

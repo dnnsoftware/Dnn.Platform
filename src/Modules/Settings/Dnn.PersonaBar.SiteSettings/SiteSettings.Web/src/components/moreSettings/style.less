@@ -15,7 +15,7 @@
             margin: 0;
         }
     }
-    .messageBox{
+    .messageBox {
         border: 1px solid @alto;
         background-color: @gallery;
         margin: 20px 0;
@@ -23,31 +23,52 @@
         padding: 10px 30px;
         display: inline-block;
     }
-
-    .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;
-        label {
-            font-weight: bolder;
-            float: left;
-        }
-        input {
-            width: auto;
-        }
-        .dnn-switch-container{
-            float: right;
+    .dnn-grid-system {
+        border-top: 1px solid @alto;
+        margin-top: 20px;
+        padding-top: 20px;
+        .dnn-grid-cell {
+            .left-column {
+                padding-right: 30px;
+                .dnn-ui-common-input-group {
+                    padding: 0 0 15px 0;
+                    label {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    input {
+                        width: auto;
+                    }
+                    .dnn-switch-container {
+                        float: right;
+                    }
+                }
+            }
+            .right-column {
+                padding-left: 30px;
+                border-left: 1px solid @alto;
+                .dnn-ui-common-input-group {
+                    padding: 0 0 15px 0;
+                    label {
+                        font-weight: bolder;
+                        float: left;
+                    }
+                    input {
+                        width: auto;
+                    }
+                    .dnn-switch-container {
+                        float: right;
+                    }
+                    .dnn-label {
+                        width: 70%;
+                        label{
+                            width: 70%;
+                        }
+                    }
+                }
+            }
         }
     }
-
-    .dnn-grid-cell{
-        .left-column{
-            padding-right: 30px;
-        }
-        .right-column{
-            padding-left: 30px;
-            border-left: 1px solid @alto;
-        }
-    }
-
     .buttons-box {
         float: left;
         width: 100%;
@@ -57,14 +78,12 @@
             margin: 5px;
         }
     }
-
     .htmlEditorWrapper {
         float: left;
         border: 1px solid @alto;
         background-color: @gallery;
         width: 100%;
         margin: 0 0 20px 0;
-        
         .htmlEditorWrapper-left {
             width: 70%;
             float: left;

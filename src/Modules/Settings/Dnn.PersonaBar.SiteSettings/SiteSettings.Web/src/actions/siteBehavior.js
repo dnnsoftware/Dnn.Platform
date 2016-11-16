@@ -467,6 +467,62 @@ const siteBehaviorActions = {
                 }
             });
         };
+    },
+    getOtherSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getOtherSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_OTHER_SETTINGS,
+                    data: {
+                        settings: data.Settings,
+                        otherSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateOtherSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateOtherSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SITESETTINGS_OTHER_SETTINGS,
+                    data: {
+                        otherSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    otherSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SITESETTINGS_OTHER_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    settings: parameter,
+                    otherSettingsClientModified: true
+                }
+            });
+        };
+    },
+    cancelOtherSettingsClientModified() {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.CANCELED_SITESETTINGS_OTHER_SETTINGS_CLIENT_MODIFIED,
+                data: {
+                    otherSettingsClientModified: false
+                }
+            });
+        };
     }
 };
 

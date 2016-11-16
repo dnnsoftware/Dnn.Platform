@@ -133,6 +133,21 @@ export default function siteBehavior(state = {
             return { ...state,
                 siteAliases: action.data.siteAliases
             };        
+        case ActionTypes.RETRIEVED_SITESETTINGS_OTHER_SETTINGS:
+            return { ...state,
+                otherSettings: action.data.settings,
+                otherSettingsClientModified: action.data.otherSettingsClientModified
+            };
+        case ActionTypes.UPDATED_SITESETTINGS_OTHER_SETTINGS:
+        case ActionTypes.CANCELED_SITESETTINGS_OTHER_SETTINGS_CLIENT_MODIFIED:
+            return { ...state,
+                otherSettingsClientModified: action.data.otherSettingsClientModified
+            };
+        case ActionTypes.SITESETTINGS_OTHER_SETTINS_CLIENT_MODIFIED:
+            return { ...state,
+                otherSettings: action.data.settings,
+                otherSettingsClientModified: action.data.otherSettingsClientModified
+            };
         default:
             return state;
     }
