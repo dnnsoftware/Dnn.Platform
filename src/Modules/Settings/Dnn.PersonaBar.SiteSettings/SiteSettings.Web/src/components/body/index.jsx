@@ -45,9 +45,9 @@ export class Body extends Component {
                 resx.get("TabMore")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
-                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
-                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
-                <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <SiteAliasSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <MoreSettings portalId={props.portalId} openHtmlEditorManager={props.openHtmlEditorManager.bind(this)} />
             </Tabs>;
         }
@@ -56,10 +56,38 @@ export class Body extends Component {
                 tabHeaders={[resx.get("TabDefaultPages"),
                 resx.get("TabUserProfiles")]}
                 type="secondary">
-                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode}/>                
-                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode}/>
+                <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
             </Tabs>;
         }
+    }
+
+    getSearchSecondaryTabs() {
+
+        const SearchExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras;
+
+        let searchTabHeaders = [resx.get("TabBasicSettings"), resx.get("TabSynonyms"), resx.get("TabIgnoreWords")];
+        let searchTabContent = [<BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
+        <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode} />,
+        <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode} />];
+
+        if (SearchExtras && SearchExtras.length > 0) {
+            SearchExtras.sort(function (a, b) {
+                if (a.RenderOrder < b.RenderOrder) return -1;
+                if (a.RenderOrder > b.RenderOrder) return 1;
+                return 0;
+            }).forEach((searchExtra)=>{
+                searchTabHeaders.push(searchExtra.TabHeader);
+                searchTabContent.push(searchExtra.Component);
+            });
+        }
+
+
+        return <Tabs onSelect={this.handleSelect.bind(this)}
+            tabHeaders={searchTabHeaders}
+            type="secondary">
+            {searchTabContent}
+        </Tabs>;
     }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
@@ -72,7 +100,7 @@ export class Body extends Component {
                     resx.get("TabLanguage"),
                     resx.get("TabSearch")]}
                     type="primary">
-                    {this.props.showing && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>}
+                    {this.props.showing && <BasicSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />}
                     {this.props.showing && this.renderSiteBehaviorTab()}
                     {this.props.showing && <LanguageSettings
                         portalId={this.props.portalId}
@@ -81,15 +109,7 @@ export class Body extends Component {
                         openLocalizedContent={this.props.openLocalizedContent}
                         cultureCode={this.props.cultureCode}
                         />}
-                    <Tabs onSelect={this.handleSelect.bind(this)}
-                        tabHeaders={[resx.get("TabBasicSettings"),
-                        resx.get("TabSynonyms"),
-                        resx.get("TabIgnoreWords")]}
-                        type="secondary">
-                        <BasicSearchSettings portalId={this.props.portalId} cultureCode={this.props.cultureCode} />
-                        <SynonymsGroups portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
-                        <IgnoreWords portalId={this.props.portalId} cultureCode={this.props.cultureCode}/>
-                    </Tabs>
+                    {this.getSearchSecondaryTabs()}
                 </Tabs>
             </SocialPanelBody>
         );
