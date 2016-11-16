@@ -94,7 +94,7 @@ class Suggestion extends Component {
                         valueField="value"
                         textField="label"/>
                     <div className="add-button" onClick={this.onAddSuggestion.bind(this) }>
-                        <IconButton type="add" width={17} /> {props.localization.add}
+                        <IconButton type="add" width={17} height={17}/> {props.localization.add}
                     </div>
                 </span>
             </div>
