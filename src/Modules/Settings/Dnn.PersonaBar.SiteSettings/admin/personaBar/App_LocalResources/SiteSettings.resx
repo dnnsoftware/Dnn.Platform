@@ -1038,9 +1038,6 @@
   <data name="InvalidLocale.ErrorMessage" xml:space="preserve">
     <value>Current site does not support this locale ({0}).</value>
   </data>
-  <data name="MakeNeutral.ErrorMessage" xml:space="preserve">
-    <value>Not possible to convert to neutral; this page has localized pages.</value>
-  </data>
   <data name="MicroServices.Text" xml:space="preserve">
     <value>MicroServices</value>
   </data>
@@ -1119,12 +1116,6 @@
   <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
     <value>Add All Unlocalized Pages</value>
   </data>
-  <data name="TranslationMessageConfirmMessage.Error" xml:space="preserve">
-    <value>Something went wrong notifying the Translators.</value>
-  </data>
-  <data name="TranslationMessageConfirmMessage.Text" xml:space="preserve">
-    <value>Translators successfully notified.</value>
-  </data>
   <data name="ViewPage.Text" xml:space="preserve">
     <value>[ View Page ]</value>
   </data>
@@ -1174,33 +1165,15 @@
     <value>Erase All Localized Pages</value>
   </data>
   <data name="PublishTranslatedPages.Text" xml:space="preserve">
-    <value>Publish Translated Pages</value>
+    <value>Publish All Pages</value>
+  </data>
+   <data name="UnpublishTranslatedPages.Text" xml:space="preserve">
+    <value>Unpublish All Pages</value>
   </data>
   <data name="PagesToTranslate.Text" xml:space="preserve">
     <value>Pages To Translate:</value>
   </data>
-    <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
+  <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
     <value>Add All Unlocalized Pages</value>
-  </data>
-    <data name="plImprovementProgram.Help" xml:space="preserve">
-    <value>Check this box to participate in the DNN Improvement Program. &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Learn More&lt;/a&gt;.</value>
-  </data>
-  <data name="plImprovementProgram.Text" xml:space="preserve">
-    <value>Participate in DNN Improvement Program:</value>
-  </data>
-  <data name="plUpgrade.Text" xml:space="preserve">
-    <value>Check for Software Upgrades</value>
-  </data>
-  <data name="plUpgrade.Help" xml:space="preserve">
-    <value>Check this box to have the application check if there are upgrades available.</value>
-  </data>
-  <data name="Pages.Header" xml:space="preserve">
-    <value>PAGES</value>
-  </data>
-  <data name="Translated.Header" xml:space="preserve">
-    <value>TRANSLATED</value>
-  </data>
-  <data name="Active.Header" xml:space="preserve">
-    <value>ACTIVE</value>
   </data>
 </root>

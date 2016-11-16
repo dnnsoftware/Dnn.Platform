@@ -1,5 +1,6 @@
 ﻿const webpack = require("webpack");
 const packageJson = require("./package.json");
+const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
 const webpackExternals = require("dnn-webpack-externals");
 module.exports = {
@@ -24,7 +25,11 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"]
+        extensions: ["", ".js", ".json", ".jsx"],
+        root: [
+            path.resolve('./src'),          // Look in src first
+            path.resolve('./node_modules')  // Last fallback to node_modules
+        ]
     },
     externals: webpackExternals,
     plugins: isProduction ? [

@@ -2,10 +2,20 @@ import React, { Component, PropTypes } from "react";
 import "./progressBar.less";
 
 class ProgressBar extends Component {
+    constructor(props) {
+        super(props);
+        this.percentageValue = this.props.percentageValue;
+    }
     /* eslint-disable react/no-danger */
     render() {
+
+        let transition = "1s linear";
+        if (this.percentageValue > this.props.percentageValue) {
+            transition = "0s linear";
+        }
+        this.percentageValue = this.props.percentageValue;
         const {props} = this;
-        let style = { width: 0 };
+        let style = { width: 0 , transition};
         if (props.percentageValue) {
             style.width = props.percentageValue + "%";
         } else if (props.currentValue && props.totalValue) {

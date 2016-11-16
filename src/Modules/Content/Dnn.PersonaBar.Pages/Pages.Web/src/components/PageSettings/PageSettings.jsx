@@ -10,6 +10,7 @@ import Seo from "../Seo/Seo";
 import More from "../More/More";
 import Appearance from "../Appearance/Appearance";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
+import PageLocalization from "../PageLocalization/PageLocalization";
 
 class PageSettings extends Component {
 
@@ -141,6 +142,7 @@ class PageSettings extends Component {
             <Tabs 
                 tabHeaders={[Localization.get("Details"), 
                              Localization.get("Permissions"), 
+                             Localization.get("Localization"),
                              Localization.get("Advanced")]}
                 className={styles.pageSettings}>
                 <div className="dnn-simple-tab-item">
@@ -159,6 +161,11 @@ class PageSettings extends Component {
                         permissions={selectedPage.permissions} 
                         onPermissionsChanged={this.props.onPermissionsChanged} />
                     {permissionFooter}
+                </div>
+                <div className="dnn-simple-tab-item">
+                    <PageLocalization
+                        page={selectedPage}
+                     />
                 </div>
                 <div>
                     <Tabs 
