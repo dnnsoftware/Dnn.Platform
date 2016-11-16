@@ -138,8 +138,24 @@ namespace DotNetNuke.Web.Common.Internal
         private void Application_End(object sender, EventArgs eventArgs)
         {
             Logger.Info("Application Ending");
-            Initialize.LogEnd();
-            Initialize.StopScheduler();
+
+            try
+            {
+                Initialize.LogEnd();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+
+            try
+            {
+                Initialize.StopScheduler();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
 
             //Shutdown Lucene, but not when we are installing
             if (Globals.Status != Globals.UpgradeStatus.Install)
