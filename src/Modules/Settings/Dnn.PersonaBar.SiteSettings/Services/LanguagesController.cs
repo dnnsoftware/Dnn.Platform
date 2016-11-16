@@ -12,7 +12,6 @@ using System.Web.Http;
 using System.Web.UI;
 using System.Xml;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.DTO.Tabs;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.SiteSettings.Components.Constants;
@@ -532,10 +531,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        // POST /api/personabar/languages/ConvertPageToNeutral
+        // POST /api/personabar/languages/MakePageNeutral?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage ConvertPageToNeutral([FromUri] int tabId)
+        public HttpResponseMessage MakePageNeutral([FromUri] int tabId)
         {
             try
             {
@@ -546,6 +545,33 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var defaultLocale = _localeController.GetDefaultLocale(PortalId);
                 _tabController.ConvertTabToNeutralLanguage(PortalId, tabId, defaultLocale.Code, true);
+                _tabController.ClearCache(PortalId);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST /api/personabar/languages/MakePageTranslatable?tabId=123
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MakePageTranslatable([FromUri] int tabId)
+        {
+            try
+            {
+                var currentTab = _tabController.GetTab(tabId, PortalId, false);
+                if (currentTab == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidTab");
+                }
+
+                var defaultLocale = _localeController.GetDefaultLocale(PortalId);
+                _tabController.LocalizeTab(currentTab, defaultLocale, false);
+                _tabController.AddMissingLanguages(PortalId, tabId);
+                _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -563,6 +589,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 _tabController.AddMissingLanguages(PortalId, tabId);
+                _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
