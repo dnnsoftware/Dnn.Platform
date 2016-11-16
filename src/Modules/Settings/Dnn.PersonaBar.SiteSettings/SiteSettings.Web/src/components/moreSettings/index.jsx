@@ -201,7 +201,7 @@ class MoreSettingsPanelBody extends Component {
         const SiteBehaviorExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
             SiteBehaviorExtras.forEach((extra) => {
-                if (this.props[extra.ReducerKey].formDirty) {
+                if (this.props[extra.ReducerKey] && this.props[extra.ReducerKey].formDirty) {
                     formDirty = true;
                 }
             });

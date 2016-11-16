@@ -80,7 +80,12 @@ define(['jquery'], function () {
         requiredArray.push('css!../../css/' + path + cssSuffix);
 
         window.require(requiredArray, function (loader, html) {
-            if (loader === undefined) return;
+            if (loader === undefined) {
+                if (typeof callback === "function") {
+                    callback();
+                }
+                return;
+            }
 
             $wrapper.css('visibility', 'hidden').html(html);
 
