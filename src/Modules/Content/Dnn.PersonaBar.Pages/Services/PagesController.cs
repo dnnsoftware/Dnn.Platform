@@ -36,12 +36,14 @@ namespace Dnn.PersonaBar.Pages.Services
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
+        private readonly ITemplateController _templateController;
 
         public PagesController()
         {
             _pagesController = Components.PagesController.Instance;
             _themesController = ThemesController.Instance;
             _bulkPagesController = BulkPagesController.Instance;
+            _templateController = TemplateController.Instance;
         }
 
         /// GET: api/Pages/GetPageDetails
@@ -357,11 +359,20 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SavePageAsTemplate(PageTemplate pageTemplate)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new
+            try
             {
-                Status = 0,
-                Response = "Not implemented yet"
-            });
+                var templateFilename = _templateController.SaveAsTemplate(pageTemplate);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Status = 0,
+                    Response = string.Format(Localization.GetString("ExportedMessage"), templateFilename)
+                });
+            }
+            catch (TemplateException ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, ex.Message });
+            }
         }
     }
 }

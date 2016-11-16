@@ -103,6 +103,7 @@
     <Compile Include="Components\BulkPagesController.cs" />
     <Compile Include="Components\Dto\PageUrlResult.cs" />
     <Compile Include="Components\Dto\UrlIdDto.cs" />
+    <Compile Include="Components\Exceptions\BulkPagesException.cs" />
     <Compile Include="Components\Exceptions\TemplateException.cs" />
     <Compile Include="Components\Exceptions\PageModuleNotFoundException.cs" />
     <Compile Include="Components\IBulkPagesController.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Components\Converters.cs" />
     <Compile Include="Components\Exceptions\PageNotFoundException.cs" />
     <Compile Include="Components\IPageUrlsController.cs" />
+    <Compile Include="Components\ITemplateController.cs" />
     <Compile Include="Components\Localization.cs" />
     <Compile Include="Components\PageManagementController.cs" />
     <Compile Include="Components\PagesControllerImpl.cs" />

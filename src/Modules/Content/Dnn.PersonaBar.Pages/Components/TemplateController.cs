@@ -8,11 +8,12 @@ using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
-    public class TemplateController
+    public class TemplateController : ServiceLocator<ITemplateController, TemplateController>, ITemplateController
     {
         private readonly ITabController _tabController;
 
@@ -23,13 +24,13 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public string SaveAsTemplate(PageTemplate template)
         {
-            string filename = null;
-            try { 
+            string filename;
+            try {
                 var folder = FolderManager.Instance.GetFolder(template.Folder.Key);
 
                 if (folder == null)
                 {
-                    return null;
+                    throw new TemplateException("Folder could not be found in system.");
                 }
 
                 filename = folder.FolderPath + template.Name + ".page.template";
@@ -69,6 +70,11 @@ namespace Dnn.PersonaBar.Pages.Components
             var xmlTab = new XmlDocument();
             var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
+        }
+
+        protected override Func<ITemplateController> GetFactory()
+        {
+            return () => new TemplateController();
         }
 
     }

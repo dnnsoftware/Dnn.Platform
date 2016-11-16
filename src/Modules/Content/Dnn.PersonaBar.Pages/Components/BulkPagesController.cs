@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Common;
@@ -39,12 +38,12 @@ namespace Dnn.PersonaBar.Pages.Components
             string invalidType;
             if (!TabController.IsValidTabName(strValue, out invalidType))
             {
-                throw new PageValidationException("bulkPages", string.Format(Localization.GetString(invalidType), strValue));
+                throw new BulkPagesException("bulkPages", string.Format(Localization.GetString(invalidType), strValue));
             }
 
             if (page.StartDate.HasValue && page.EndDate.HasValue && page.StartDate > page.EndDate)
             {
-                throw new PageValidationException("endDate", Localization.GetString("StartDateAfterEndDate"));
+                throw new BulkPagesException("endDate", Localization.GetString("StartDateAfterEndDate"));
             }
 
             var pages = strValue.Split(char.Parse("\n"));

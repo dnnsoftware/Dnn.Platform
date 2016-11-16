@@ -627,4 +627,7 @@
   <data name="SearchFolders.Text" xml:space="preserve">
     <value>Search Folders</value>
   </data>
+  <data name="ExportedMessage.Text" xml:space="preserve">
+    <value>The page template has been created to <b>{0}</b></value>
+  </data>
 </root>
