@@ -5,6 +5,7 @@ import GridCell from "dnn-grid-cell";
 import PageNameInput from "./PageNameInput";
 import DisplayInMenu from "./DisplayInMenu";
 import EnableScheduling from "./EnableScheduling";
+import Template from "./Template";
 
 class PageDetailsFooter extends Component {
 
@@ -20,12 +21,18 @@ class PageDetailsFooter extends Component {
 
     getLeftColumnComponents(normalPage, pageType) {
         const {page, errors} = this.props;
-        const defaultLeftColumnComponents = !normalPage ?
-            [<PageNameInput pageName={page.name}
+        let defaultLeftColumnComponents;
+        if (!normalPage) {
+            defaultLeftColumnComponents = [<PageNameInput pageName={page.name}
                 errors={errors}
-                onChangePageName={this.onChangeField.bind(this, "name")} />] :
-            [<DisplayInMenu includeInMenu={page.includeInMenu}
+                onChangePageName={this.onChangeField.bind(this, "name")} />];
+        } else {
+            defaultLeftColumnComponents = [<DisplayInMenu includeInMenu={page.includeInMenu}
                 onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />];
+            if (page.tabId === 0) {
+                defaultLeftColumnComponents.push(<Template templates={page.templates} />);
+            }
+        }
 
         const additionalLeftComponents = this.props.components.filter(
             function (component) {

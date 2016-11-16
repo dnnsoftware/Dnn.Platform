@@ -38,8 +38,8 @@ const PageService = function () {
 
     const getNewPage = function () {
         const api = getApi();
-        return api.get("GetDefaultPermissions")
-            .then(permissions => {
+        return api.get("GetDefaultSettings")
+            .then(settings => {
                 return {
                     tabId: 0,
                     name: "",
@@ -69,7 +69,8 @@ const PageService = function () {
                     createdOnDate: new Date(),
                     placeholderURL: "/",
                     modules: [],
-                    permissions: permissions,
+                    permissions: settings.permissions,
+                    templates: settings.templates,
                     schedulingEnabled: false,
                     permanentRedirect: false,
                     linkNewWindow: false,

@@ -254,10 +254,10 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage GetDefaultPermissions()
+        public HttpResponseMessage GetDefaultSettings()
         {
-            var permissions = _pagesController.GetPermissionsData(0);
-            return Request.CreateResponse(HttpStatusCode.OK, permissions);
+            var settings = _pagesController.GetDefaultSettings();
+            return Request.CreateResponse(HttpStatusCode.OK, settings);
         }
 
         [HttpGet]

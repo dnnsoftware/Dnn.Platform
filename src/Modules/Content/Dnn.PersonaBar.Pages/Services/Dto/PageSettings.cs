@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Dnn.PersonaBar.Pages.Components.Dto;
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
@@ -148,5 +149,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "templateTabId")]
         public int TemplateTabId { get; set; }
+
+        [DataMember(Name = "templates")]
+        public IEnumerable<Template> Templates { get; set; }
     }
 }
