@@ -130,5 +130,6 @@ module.exports = [
     "devtools",
     "ctrl",
     "resx",
-    "getsilence"
+    "getsilence",
+    "postsilence"
 ]

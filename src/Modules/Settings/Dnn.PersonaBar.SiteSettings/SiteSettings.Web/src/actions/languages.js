@@ -280,6 +280,23 @@ const languagesActions = {
             });
         };
     },
+    localizeContent(payload, callback, failureCallback) {
+        return (dispatch) => {
+            LanguageEditorService.localizeContent(payload, data => {
+                dispatch({
+                    type: ActionTypes.ENABLED_LOCALIZED_CONTENT,
+                    data
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
     getLocalizationProgress(callback) {
         return (dispatch) => {
             LanguageEditorService.getLocalizationProgress(data => {

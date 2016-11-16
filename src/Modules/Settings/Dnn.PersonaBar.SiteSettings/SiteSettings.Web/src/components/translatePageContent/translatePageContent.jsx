@@ -111,6 +111,14 @@ class TranslatePageContent extends Component {
         }));
     }
 
+    addPages() {
+        const {props, state} = this;
+        const cultureCode = props.languageBeingEdited.Code;
+        props.dispatch(LanguagesActions.localizeContent({cultureCode}, (data) => {
+            this.getProgressData();
+        }));
+    }
+
     onCancel() {
         this.props.closePersonaBarPage();
     }
@@ -163,10 +171,12 @@ class TranslatePageContent extends Component {
 
                 <div className="list-header">
                     <span>{resx.get("PagesToTranslate") } <span>{state.pageList ? state.pageList.length: 0}</span></span>
-                    <span className="float-right"><em>+</em>{resx.get("AddAllUnlocalizedPages") }</span>
+                    <span className="float-right" onClick={this.addPages.bind(this)}>
+                        <em>+</em>{resx.get("AddAllUnlocalizedPages") }
+                    </span>
                 </div>
 
-                {this.state.InProgress && <TranslationProgressBars
+                {state.InProgress && <TranslationProgressBars
                     InProgress={this.state.InProgress}
                     PrimaryPercent={this.state.PrimaryPercent}
                     PrimaryTotal={this.state.PrimaryTotal}
@@ -178,14 +188,14 @@ class TranslatePageContent extends Component {
                     Error={this.state.Error}
                     CurrentOperationText={this.state.CurrentOperationText}
                     />}
-                <div className="page-list">
+                {!!state.pageList && !!state.pageList.length && <div className="page-list">
                     <Scrollbars className="scrollArea content-vertical"
                         autoHeight
                         autoHeightMin={0}
                         autoHeightMax={500}>
                         {this.renderPageList() }
                     </Scrollbars>
-                </div>
+                </div>}
             </div>
         </SocialPanelBody>;
     }

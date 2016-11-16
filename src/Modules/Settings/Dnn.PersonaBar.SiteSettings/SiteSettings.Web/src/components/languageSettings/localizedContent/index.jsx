@@ -55,7 +55,7 @@ class LocalizedContent extends Component {
         props.dispatch(LanguagesActions.getLocalizationProgress((data) => {
             this.setState(data);
             if (data.InProgress && !data.Error) {
-                return setTimeout(this.getProgressData, 500);
+                return setTimeout(this.getProgressData, 1000);
             }
             if (data.Error) {
                 return;

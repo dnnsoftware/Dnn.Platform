@@ -42,6 +42,11 @@ class ApplicationService {
         sf.post("DisableLocalizedContent", {}, callback, failureCallback);
     }
 
+    localizeContent(parameters, callback, failureCallback) {
+        const sf = this.getServiceFramework("Languages");
+        sf.post("LocalizedContent?" + serializeQueryStringParameters(parameters), {}, callback, failureCallback);
+    }
+
     getLocalizationProgress(callback) {
         const sf = this.getServiceFramework("Languages");
         sf.getsilence("GetLocalizationProgress", {}, callback);
@@ -61,7 +66,7 @@ class ApplicationService {
         const sf = this.getServiceFramework("Languages");
         sf.post(`DeleteLanguagePages?${serializeQueryStringParameters({ cultureCode })}`, {}, callback);
     }
-    
+
     publishAllPages(payload, callback) {
         const sf = this.getServiceFramework("Languages");
         sf.post(`PublishAllPages?${serializeQueryStringParameters(payload)}`, {}, callback);
