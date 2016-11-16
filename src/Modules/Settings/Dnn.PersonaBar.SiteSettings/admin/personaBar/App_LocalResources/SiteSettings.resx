@@ -1038,9 +1038,6 @@
   <data name="InvalidLocale.ErrorMessage" xml:space="preserve">
     <value>Current site does not support this locale ({0}).</value>
   </data>
-  <data name="MakeNeutral.ErrorMessage" xml:space="preserve">
-    <value>Not possible to convert to neutral; this page has localized pages.</value>
-  </data>
   <data name="MicroServices.Text" xml:space="preserve">
     <value>MicroServices</value>
   </data>
@@ -1119,12 +1116,6 @@
   <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
     <value>Add All Unlocalized Pages</value>
   </data>
-  <data name="TranslationMessageConfirmMessage.Error" xml:space="preserve">
-    <value>Something went wrong notifying the Translators.</value>
-  </data>
-  <data name="TranslationMessageConfirmMessage.Text" xml:space="preserve">
-    <value>Translators successfully notified.</value>
-  </data>
   <data name="ViewPage.Text" xml:space="preserve">
     <value>[ View Page ]</value>
   </data>
@@ -1179,10 +1170,7 @@
   <data name="PagesToTranslate.Text" xml:space="preserve">
     <value>Pages To Translate:</value>
   </data>
-    <data name="AddAllUnlocalizedPages.Text" xml:space="preserve">
-    <value>Add All Unlocalized Pages</value>
-  </data>
-    <data name="plImprovementProgram.Help" xml:space="preserve">
+  <data name="plImprovementProgram.Help" xml:space="preserve">
     <value>Check this box to participate in the DNN Improvement Program. &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Learn More&lt;/a&gt;.</value>
   </data>
   <data name="plImprovementProgram.Text" xml:space="preserve">

@@ -4,7 +4,7 @@ using System.Linq;
 using Dnn.PersonaBar.Library.DTO.Tabs;
 using Newtonsoft.Json;
 
-namespace Dnn.PersonaBar.SiteSettings.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     [JsonObject]
     public class DnnPagesDto
