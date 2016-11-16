@@ -136,7 +136,7 @@
     <value>Unauthorized</value>
   </data>
   <data name="SearchPlaceHolder.Text" xml:space="preserve">
-    <value>Search Keyword</value>
+    <value>Search Users</value>
   </data>
   <data name="AccountSettings.Text" xml:space="preserve">
     <value>Account Settings</value>
