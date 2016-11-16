@@ -53,5 +53,5 @@ module.exports = {
         "dnn-page-picker": "dnn.nodeModules.CommonComponents.PagePicker",
         "dnn-searchable-tags": "dnn.nodeModules.CommonComponents.SearchableTags",
         "dnn-slider": "dnn.nodeModules.CommonComponents.NumberSlider",
-	"dnn-file-picker": "dnn.nodeModules.CommonComponents.FilePicker"
+	"dnn-folder-picker": "dnn.nodeModules.CommonComponents.FolderPicker"
 };
