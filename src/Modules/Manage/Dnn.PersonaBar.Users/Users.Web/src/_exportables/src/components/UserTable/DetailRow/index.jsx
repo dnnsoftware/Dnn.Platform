@@ -64,7 +64,7 @@ class DetailsRow extends Component {
                 icon: SettingsIcon,
                 title: Localization.get("ManageSettings.title")
             }
-        ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons()) || []);
+        ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons(user)) || []);
         if (!user.isSuperUser) {
             actionIcons = actionIcons.concat([{
                 index: 5,
@@ -75,10 +75,10 @@ class DetailsRow extends Component {
 
         if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin) {
             actionIcons = actionIcons.concat([{
-                    index: 10,
-                    icon: UserIcon,
-                    title: Localization.get("ManageProfile.title")
-                }]);
+                index: 10,
+                icon: UserIcon,
+                title: Localization.get("ManageProfile.title")
+            }]);
         }
 
         let i = 0;
