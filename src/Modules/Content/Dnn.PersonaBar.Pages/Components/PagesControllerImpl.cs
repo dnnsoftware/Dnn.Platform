@@ -904,7 +904,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        public PageSettings GetDefaultSettings()
+        public virtual PageSettings GetDefaultSettings()
         {
             var pageSettings = new PageSettings
             {
