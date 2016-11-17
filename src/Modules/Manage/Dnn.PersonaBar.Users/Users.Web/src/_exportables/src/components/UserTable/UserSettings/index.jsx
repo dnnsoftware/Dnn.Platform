@@ -203,11 +203,18 @@ class UserSettings extends Component {
                         <div className="title">
                             {Localization.get("PasswordManagement")}
                         </div>
-                        <GridCell className="link">
+                        {(this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
+                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
+                        !state.userDetails.isAdmin && !state.userDetails.isSuperUser))
+                        && <GridCell className="link">
                             <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
                             </div>
                             </GridCell>
-                        {!state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
+                        }
+                        {(this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
+                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
+                        !state.userDetails.isAdmin && !state.userDetails.isSuperUser))
+                        && !state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
                             <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
                             </div>
                             </GridCell>}
