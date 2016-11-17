@@ -276,6 +276,23 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
+        /// Activates the language without publishing it.
+        /// </summary>
+        /// <param name="portalid">The portalid.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="publish">if set to <c>true</c> will publishthe language.</param>
+        public void ActivateLanguage(int portalid, string cultureCode, bool publish)
+        {
+            Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
+            Locale enabledlanguage;
+            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            {
+                enabledlanguage.IsPublished = publish;
+                Instance.UpdatePortalLocale(enabledlanguage);
+            }
+        }
+
+        /// <summary>
         /// Publishes the language.
         /// </summary>
         /// <param name="portalid">The portalid.</param>

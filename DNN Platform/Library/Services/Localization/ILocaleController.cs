@@ -53,6 +53,8 @@ namespace DotNetNuke.Services.Localization
 
         bool IsDefaultLanguage(string code);
 
+        void ActivateLanguage(int portalid, string cultureCode, bool publish);
+
         void PublishLanguage(int portalid, string cultureCode, bool publish);
     }
 }
