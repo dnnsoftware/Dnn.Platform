@@ -300,6 +300,12 @@
   <data name="PageThemeTooltip.Text" xml:space="preserve">
     <value>The selected theme will be applied to this page.</value>
   </data>
+  <data name="PageLayoutTooltip.Text" xml:space="preserve">
+    <value>The selected layout will be applied to this page.</value>
+  </data>
+  <data name="PageContainerTooltip.Text" xml:space="preserve">
+    <value>The selected container will be applied to all modules on this page.</value>
+  </data>
   <data name="PreviewThemeLayoutAndContainer.Text" xml:space="preserve">
     <value>Preview Theme Layout and Container</value>
   </data>
@@ -413,12 +419,6 @@
   </data>
   <data name="File.Text" xml:space="preserve">
     <value>File</value>
-  </data>
-  <data name="PageContainerTooltip.text" xml:space="preserve">
-    <value>The selected container will be applied to all modules on this page.</value>
-  </data>
-  <data name="PageLayoutTooltip.text" xml:space="preserve">
-    <value>The selected theme will be applied to this page.</value>
   </data>
   <data name="PageStyleSheetTooltip.Text" xml:space="preserve">
     <value>A stylesheet that will only be loaded for this page. The file must be located in the home directory or a sub folder of the current website.</value>
