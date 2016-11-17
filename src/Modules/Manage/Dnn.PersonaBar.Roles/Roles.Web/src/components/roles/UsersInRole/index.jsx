@@ -196,7 +196,7 @@ class UsersInRole extends Component {
                                 valueField="userId"
                                 textField="displayName"/>
                             <div className="add-user-button" onClick={this.onAddUser.bind(this) }>
-                                <IconButton type="add" width={17} /> {resx.get("Add") }
+                                <IconButton type="add" width={17} height={15} /> {resx.get("Add") }
                             </div>
                         </span>
                     </GridCell>
