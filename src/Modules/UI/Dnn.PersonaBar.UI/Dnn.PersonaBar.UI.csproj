@@ -156,6 +156,7 @@
     <Compile Include="Components\IFileUploadService.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
     <Compile Include="MenuControllers\LinkMenuController.cs" />
+    <Compile Include="MenuControllers\EditMenuController.cs" />
     <Compile Include="MenuControllers\PlatformMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

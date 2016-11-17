@@ -635,7 +635,8 @@ BEGIN
         WHERE Identifier = 'Logout'
 
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
-        SET [Order] = 1000
+        SET [Order] = 1000,
+            Controller = 'Dnn.PersonaBar.UI.MenuControllers.EditMenuController, Dnn.PersonaBar.UI'
         WHERE Identifier = 'Edit'
     
     DECLARE @ParentId INT
@@ -657,7 +658,12 @@ BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
         SELECT MenuId, 'Administrators' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier IN ('Content','Manage','Settings','Tools','Logout','Edit','SiteAssets')
+            WHERE Identifier IN ('Content','Manage','Settings','Tools','Logout','SiteAssets')
+
+    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
+        SELECT MenuId, 'All Users' 
+            FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
+            WHERE Identifier = 'Edit'
 END
 GO
 

@@ -32,11 +32,7 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
+            var authenticated = Thread.CurrentPrincipal.Identity.IsAuthenticated;
             var portalSettings = PortalSettings.Current;
             var currentUser = UserController.Instance.GetCurrentUserInfo();
 
@@ -50,10 +46,11 @@ namespace Dnn.PersonaBar.Library.Attributes
             var isAdmin = currentUser.IsInRole(administratorRoleName);
             var isRegular = currentUser.UserID > 0;
 
-            if (isHost)
+            if (authenticated && isHost)
             {
                 return true;
             }
+
             //when there have excluded roles defined, and current user in the role. the service call will failed.
             if (!string.IsNullOrEmpty(Exclude))
             {
@@ -81,7 +78,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             switch (Scope)
             {
                 case ServiceScope.Admin:
-                    return isAdmin;
+                    return authenticated && isAdmin;
                 case ServiceScope.Regular:
                     if (portalSettings != null)
                     {

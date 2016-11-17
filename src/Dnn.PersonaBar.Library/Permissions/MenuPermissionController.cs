@@ -27,6 +27,7 @@ using System.Web.Caching;
 using Dnn.PersonaBar.Library.Data;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -210,20 +211,30 @@ namespace Dnn.PersonaBar.Library.Permissions
             ClearCache(Null.NullInteger);
         }
 
+        public static bool PermissionAlreadyInitialized(int portalId)
+        {
+            return PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
+        }
+
         #endregion
 
         #region Private Methods
+
+        private static void SetPermissionIntialized(int portalId)
+        {
+            PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
+        }
 
         private static void EnsureMenuDefaultPermissions(int portalId)
         {
             try
             {
-                var permissionInitialized = PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
+                var permissionInitialized = PermissionAlreadyInitialized(portalId);
                 if (!permissionInitialized)
                 {
                     lock (_defaultPermissionLocker)
                     {
-                        permissionInitialized = PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
+                        permissionInitialized = PermissionAlreadyInitialized(portalId);
                         if (!permissionInitialized)
                         {
                             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
@@ -242,7 +253,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                                 }
                             }
 
-                            PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
+                            SetPermissionIntialized(portalId);
                         }
                     }
                 }
@@ -258,9 +269,28 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             try
             {
+                var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
                 var permissions = GetPermissions(menuItem.MenuId);
-                var role = RoleController.Instance.GetRoleByName(portalId, roleName);
-                if (role != null && role.IsSystemRole && (ignoreExists || GetMenuPermissions(portalId, menuItem.MenuId).ToList().All(p => p.RoleID != role.RoleID)))
+                var roleId = nullRoleId;
+                switch (roleName)
+                {
+                    case Globals.glbRoleUnauthUserName:
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        break;
+                    case Globals.glbRoleAllUsersName:
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        break;
+                    default:
+                        var role = RoleController.Instance.GetRoleByName(portalId, roleName);
+                        if (role != null && role.IsSystemRole)
+                        {
+                            roleId = role.RoleID;
+                        }
+                        break;
+                }
+                
+                if (roleId > nullRoleId && 
+                        (ignoreExists || GetMenuPermissions(portalId, menuItem.MenuId).ToList().All(p => p.RoleID != roleId)))
                 {
                     foreach (var permission in permissions)
                     {
@@ -269,7 +299,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                             MenuPermissionId = Null.NullInteger,
                             MenuId = menuItem.MenuId,
                             PermissionID = permission.PermissionId,
-                            RoleID = role.RoleID,
+                            RoleID = roleId,
                             UserID = Null.NullInteger,
                             AllowAccess = true
                         };

@@ -24,11 +24,6 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
             var menuItem = GetMenuByIdentifier();
             var portalSettings = PortalSettings.Current;
 

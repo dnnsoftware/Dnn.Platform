@@ -204,7 +204,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
             {
-                MenuPermissionController.SaveMenuDefaultPermissions(portal.PortalID, menuItem, roleName);
+                var portalId = portal.PortalID;
+                //when default permission already initialized, then package need to save default permission immediately.
+                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
+                {
+                    MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);
+                }
             }
         }
 
@@ -213,18 +218,13 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             if (_menuRoles.ContainsKey(menuItem.Identifier))
             {
                 var defaultRoles = _menuRoles[menuItem.Identifier].Split(',');
-
                 PersonaBarRepository.Instance.SaveMenuDefaultRoles(menuItem, _menuRoles[menuItem.Identifier]);
 
-                //don't save menu permissions during install process
-                if (Globals.Status != Globals.UpgradeStatus.Install)
+                foreach (var roleName in defaultRoles)
                 {
-                    foreach (var roleName in defaultRoles)
+                    if (!string.IsNullOrEmpty(roleName.Trim()))
                     {
-                        if (!string.IsNullOrEmpty(roleName.Trim()))
-                        {
-                            SaveMenuPermission(menuItem, roleName.Trim());
-                        }
+                        SaveMenuPermission(menuItem, roleName.Trim());
                     }
                 }
             }
