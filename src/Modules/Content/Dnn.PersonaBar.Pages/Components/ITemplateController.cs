@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
+using DotNetNuke.Entities.Tabs;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -10,5 +11,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
         IEnumerable<Template> GetTemplates();
         int GetDefaultTemplateId(IEnumerable<Template> templates);
+        void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId);
     }
 }

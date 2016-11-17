@@ -400,6 +400,19 @@ namespace Dnn.PersonaBar.Pages.Components
                 CopyContentFromSourceTab(tab, pageSettings.TemplateTabId);
             }
 
+            if (pageSettings.TemplateId > 0)
+            {
+                try
+                {
+                    _templateController.CreatePageFromTemplate(pageSettings.TemplateId, tab, portalId);
+                }
+                catch (PageException)
+                {
+                    _tabController.DeleteTab(tab.TabID, portalId);
+                    throw;
+                }
+            }
+
             SaveTabUrl(tab, pageSettings);
 
             _tabController.ClearCache(portalId);

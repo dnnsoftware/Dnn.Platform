@@ -146,24 +146,70 @@ namespace Dnn.PersonaBar.Pages.Components
                                    Id = file.Text.Replace(".page.template", ""),
                                    Value = int.Parse(file.Value)
                                });
-
-            //if (!Page.IsPostBack)
-            //{
-            //    cboTemplate.ClearSelection();
-            //    var defaultItem = cboTemplate.FindItemByText("Default");
-            //    if (defaultItem != null)
-            //    {
-            //        defaultItem.Selected = true;
-            //    }
-            //}
-
-            //if (cboTemplate.SelectedIndex == -1)
-            //{
-            //    cboTemplate.SelectedIndex = 0;
-            //}
+            
             return templates;
         }
 
+        public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
+        {
+            // create the page from a template
+            if (templateId != Null.NullInteger)
+            {
+                var xmlDoc = new XmlDocument();
+                try
+                {
+                    // open the XML file
+                    var fileId = Convert.ToInt32(templateId);
+                    var templateFile = FileManager.Instance.GetFile(fileId);
+                    xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
+                }
+                catch (Exception ex)
+                {
+                    //Exceptions.LogException(ex);
+                    throw new PageException(Localization.GetString("BadTemplate"));
+                }
+                TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
+                //save tab permissions
+                RibbonBarManager.DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
+
+                var tabIndex = 0;
+                var exceptions = string.Empty;
+                foreach (XmlNode tabNode in xmlDoc.SelectSingleNode("//portal/tabs").ChildNodes)
+                {
+                    //Create second tab onward tabs. Note first tab is already created above.
+                    if (tabIndex > 0)
+                    {
+                        try
+                        {
+                            TabController.DeserializeTab(tabNode, null, portalId, PortalTemplateModuleAction.Replace);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Exceptions.LogException(ex);
+                            exceptions += string.Format("Template Tab # {0}. Error {1}<br/>", tabIndex + 1, ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(tab.SkinSrc) && !String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
+                        {
+                            tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", "");
+                        }
+                        if (string.IsNullOrEmpty(tab.ContainerSrc) && !String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", "")))
+                        {
+                            tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
+                        }
+                        TabController.Instance.UpdateTab(tab);
+                    }
+                    tabIndex++;
+                }
+
+                if (!string.IsNullOrEmpty(exceptions))
+                {
+                    throw new PageException(exceptions);
+                }
+            }
+        }
         #endregion
     }
 }
