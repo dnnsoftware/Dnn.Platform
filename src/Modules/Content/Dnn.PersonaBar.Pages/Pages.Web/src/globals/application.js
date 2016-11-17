@@ -33,6 +33,9 @@ const application = {
     },
     registerSettingsButtonComponent(component) {
         application.dispatch(ExtensionsActions.registerSettingsButtonComponent(component));
+    },
+    registerPageTypeSelectorComponent(component) {
+        application.dispatch(ExtensionsActions.registerPageTypeSelectorComponent(component));
     }
 
 };

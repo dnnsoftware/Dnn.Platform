@@ -80,7 +80,8 @@ class PageSettings extends Component {
             onEditingPageModule,
             onCancelEditingPageModule,
             editingSettingModuleId,
-            pageDetailsFooterComponents
+            pageDetailsFooterComponents,
+            pageTypeSelectorComponents
         } = this.props;
 
         const buttons = this.getButtons();
@@ -148,7 +149,8 @@ class PageSettings extends Component {
                 <div className="dnn-simple-tab-item">
                     <PageTypeSelector
                         page={selectedPage}
-                        onChangePageType={onChangePageType} />
+                        onChangePageType={onChangePageType} 
+                        components={pageTypeSelectorComponents} />
                     <PageDetails 
                         page={selectedPage}
                         errors={selectedPageErrors} 
@@ -194,8 +196,8 @@ PageSettings.propTypes = {
     onCopyAppearanceToDescendantPages: PropTypes.func.isRequired,
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number,
-    pageDetailsFooterComponents: PropTypes.array.isRequired
-
+    pageDetailsFooterComponents: PropTypes.array.isRequired,
+    pageTypeSelectorComponents: PropTypes.array.isRequired
 };
 
 export default PageSettings;

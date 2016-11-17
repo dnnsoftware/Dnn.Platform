@@ -4,7 +4,8 @@ export default function extensionsReducer(state = {
     toolbarComponents: [],
     multiplePagesComponents: [],
     pageDetailsFooterComponents: [],
-    settingsButtonComponents: {}
+    settingsButtonComponents: {},
+    pageTypeSelectorComponents: []
 }, action) {
 
     function addComponent(component) {
@@ -29,6 +30,11 @@ export default function extensionsReducer(state = {
         case ActionTypes.REGISTER_SETTINGS_BUTTON_COMPONENT:
             return { ...state,                
                 settingsButtonComponents: addComponent(action.data.component)
+            };
+
+        case ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT:
+            return { ...state,                
+                pageTypeSelectorComponents: [...state.pageTypeSelectorComponents, action.data.component]
             };
 
         default:

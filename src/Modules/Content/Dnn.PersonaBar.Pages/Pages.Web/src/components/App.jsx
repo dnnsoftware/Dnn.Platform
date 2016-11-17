@@ -139,7 +139,8 @@ class App extends Component {
                                       editingSettingModuleId={props.editingSettingModuleId}
                                       onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
                                       onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
-                                      pageDetailsFooterComponents={props.pageDetailsFooterComponents}  />
+                                      pageDetailsFooterComponents={props.pageDetailsFooterComponents} 
+                                      pageTypeSelectorComponents={props.pageTypeSelectorComponents} />
                     </SocialPanelBody>
                 </PersonaBarPage>);
     }
@@ -240,7 +241,8 @@ App.propTypes = {
     error: PropTypes.object,
     multiplePagesComponents: PropTypes.array.isRequired,
     pageDetailsFooterComponents: PropTypes.array.isRequired,
-    settingsButtonComponents: PropTypes.object.isRequired
+    settingsButtonComponents: PropTypes.object.isRequired,
+    pageTypeSelectorComponents: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
@@ -254,7 +256,8 @@ function mapStateToProps(state) {
         error: state.errors.error,
         multiplePagesComponents: state.extensions.multiplePagesComponents,
         pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents,
-        settingsButtonComponents: state.extensions.settingsButtonComponents
+        settingsButtonComponents: state.extensions.settingsButtonComponents,
+        pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents
     };
 }
 

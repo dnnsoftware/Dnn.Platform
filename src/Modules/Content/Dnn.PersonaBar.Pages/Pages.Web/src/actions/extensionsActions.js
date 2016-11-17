@@ -24,6 +24,12 @@ const extensionsActions = {
             type: ActionTypes.REGISTER_SETTINGS_BUTTON_COMPONENT,
             data: {component}
         };
+    },
+    registerPageTypeSelectorComponent(component) {
+        return {
+            type: ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT,
+            data: {component}
+        };
     }
 };
 
