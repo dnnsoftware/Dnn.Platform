@@ -18,7 +18,7 @@ class BranchParent extends Component {
 
     render() {
         const {props} = this;
-        const noneSpecifiedText = utils.getPortalName();
+        const noneSpecifiedText = utils.getPortalName() || Localization.get("Site");
         return <div className="input-group">
             <Label
                 label={Localization.get("BranchParent")} />

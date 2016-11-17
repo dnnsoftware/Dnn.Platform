@@ -106,7 +106,7 @@ function getSiteRoot() {
 
 function getPortalName() {
     checkInit();
-    return settings.portalName;
+    return settings && settings.portalName;
 }
 
 const utils = {

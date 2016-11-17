@@ -653,4 +653,7 @@ Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
   <data name="MakePageNeutral.Text" xml:space="preserve">
     <value>Make Page Neutral</value>
   </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
 </root>
