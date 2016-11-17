@@ -109,6 +109,11 @@ function getPortalName() {
     return settings && settings.portalName;
 }
 
+function getTemplateFolder() {
+    checkInit();
+    return settings.templateFolder;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -125,7 +130,8 @@ const utils = {
     getResx,
     getSiteRoot,
     areEqualInvariantCase,
-    getPortalName
+    getPortalName,
+    getTemplateFolder
 };
 
 export default utils;

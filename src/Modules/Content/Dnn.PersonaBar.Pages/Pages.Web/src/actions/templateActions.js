@@ -1,5 +1,7 @@
 import ActionTypes from "../constants/actionTypes/templateActionTypes";
 import TemplateService from "../services/templateService";
+import utils from "../utils";
+import cloneDeep from "lodash/cloneDeep";
 
 const templateActions = {
     
@@ -23,19 +25,22 @@ const templateActions = {
                 type: ActionTypes.SAVING_TEMPLATE
             });    
 
-            const state = getState();
-            const template = state.template.template;
-            TemplateService.savePageAsTemplate(template).then(() => {
+            const {pages, template} = getState();
+            const page = pages.selectedPage;
+            const pageTemplate = cloneDeep(template.template);
+            pageTemplate.tabId = page.tabId;
+
+            TemplateService.savePageAsTemplate(pageTemplate).then((response) => {
+                utils.notify(response.Response);
                 dispatch({
-                    type: ActionTypes.SAVED_TEMPLATE,
-                    data: { }
+                    type: ActionTypes.SAVED_TEMPLATE
                 });  
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_TEMPLATE,
                     data: {error}
                 });
-            });     
+            });
         };
     },
 

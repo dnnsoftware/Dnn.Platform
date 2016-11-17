@@ -628,7 +628,7 @@
     <value>Search Folders</value>
   </data>
   <data name="ExportedMessage.Text" xml:space="preserve">
-    <value>The page template has been created to <b>{0}</b></value>
+    <value>The page template has been created to {0}</value>
   </data>
   <data name="MakeNeutral.ErrorMessage" xml:space="preserve">
     <value>Not possible to convert to neutral; this page has localized pages.</value>
@@ -640,9 +640,7 @@
     <value>Translators successfully notified.</value>
   </data>
   <data name="NewContentMessage.Body" xml:space="preserve">
-    <value>The following page has new content ready for translation&lt;br/&gt;
-
-Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
+    <value>The following page has new content ready for translation&lt;br/&gt;Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
   </data>
   <data name="NewContentMessage.Subject" xml:space="preserve">
     <value>New Content Ready for Translation</value>

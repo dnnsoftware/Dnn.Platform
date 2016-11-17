@@ -29,11 +29,6 @@ export default function templateReducer(state = {
                 template: getEmptyTemplateModel(),
                 errors: []
             };
-
-        case ActionTypes.SAVED_TEMPLATE:
-            return { ...state,                
-                template: action.data.response
-            };
         
         case ActionTypes.CHANGE_TEMPLATE_FIELD_VALUE:
             return { ...state,

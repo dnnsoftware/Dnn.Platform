@@ -384,11 +384,12 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 var templateFilename = _templateController.SaveAsTemplate(pageTemplate);
+                var response = string.Format(Localization.GetString("ExportedMessage"), templateFilename);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 0,
-                    Response = string.Format(Localization.GetString("ExportedMessage"), templateFilename)
+                    Response = response
                 });
             }
             catch (TemplateException ex)

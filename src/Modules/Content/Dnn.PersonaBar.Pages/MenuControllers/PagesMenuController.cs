@@ -23,6 +23,7 @@ using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.PersonaBar.Pages.MenuControllers
 {
@@ -40,12 +41,20 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
+            var templateFolder = GetTemplateFolder();
             var settings = new Dictionary<string, object>
             {
-                {"portalName", PortalSettings.Current.PortalName}
+                {"portalName", PortalSettings.Current.PortalName},
+                {"templateFolder", new { key = templateFolder.FolderID, value = templateFolder.DisplayName}}
             };
 
             return settings;
+        }
+
+        private static IFolderInfo GetTemplateFolder()
+        {
+            const string folderPath = "Templates/";
+            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, folderPath);
         }
     }
 }
