@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
                 catch (Exception ex)
                 {
-                    //Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     throw new PageException(Localization.GetString("BadTemplate"));
                 }
                 TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         }
                         catch (Exception ex)
                         {
-                            //Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                             exceptions += string.Format("Template Tab # {0}. Error {1}<br/>", tabIndex + 1, ex.Message);
                         }
                     }
