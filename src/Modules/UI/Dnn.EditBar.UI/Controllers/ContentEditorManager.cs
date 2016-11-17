@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -19,6 +20,8 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -30,6 +33,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
+using Newtonsoft.Json;
 
 namespace Dnn.EditBar.UI.Controllers
 {
@@ -96,22 +100,22 @@ namespace Dnn.EditBar.UI.Controllers
 
             var user = PortalSettings.UserInfo;
 
-            var hasContentEditorRole = user.UserID > 0;
-
-            if (hasContentEditorRole)
+            if (user.UserID > 0)
             {
                 ClientAPI.RegisterClientVariable(Page, "dnn_current_userid", PortalSettings.UserInfo.UserID.ToString(), true);
             }
 
-            var isSpecialPageMode = Request.QueryString["dnnprintmode"] == "true" || Request.QueryString["popUp"] == "true";
-            if (isSpecialPageMode
-                || PortalSettings.UserMode != PortalSettings.Mode.Edit)
+            if (PortalSettings.UserMode != PortalSettings.Mode.Edit
+                    || !IsPageEditor()
+                    || EditBarController.Instance.GetMenuItems().Count == 0)
             {
                 Parent.Controls.Remove(this);
                 return;
             }
 
             RegisterClientResources();
+
+            RegisterEditBarResources();
 
             Page.Items.Add("ContentEditorManager", this);
 
@@ -251,14 +255,47 @@ namespace Dnn.EditBar.UI.Controllers
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
-            //ClientResourceManager.RegisterScript(Page,
-            //    Constants.SharedAssetsPath + "Javascripts/knockout.validation.min.js", 110);
-            //ClientResourceManager.RegisterScript(Page,
-            //    Constants.SharedAssetsPath + "Javascripts/dnn.jquery.notify.js");
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             ClientResourceManager.RegisterStyleSheet(Page,
                 "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+        }
+
+        private void RegisterEditBarResources()
+        {
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+            var settings = EditBarController.Instance.GetConfigurations(PortalSettings.PortalId);
+            var settingsScript = "window.editBarSettings = " + JsonConvert.SerializeObject(settings) + ";";
+            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "EditBarSettings", settingsScript, true);
+
+            ClientResourceManager.RegisterScript(Page, "~/admin/Dnn.EditBar/scripts/editBarContainer.js");
+
+            ClientResourceManager.RegisterStyleSheet(Page, "~/admin/Dnn.EditBar/css/editBarContainer.css");
+
+        }
+
+        private bool IsPageEditor()
+        {
+            return HasTabPermission("EDIT");
+
+        }
+
+        public static bool HasTabPermission(string permissionKey)
+        {
+            var principal = Thread.CurrentPrincipal;
+            if (!principal.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+
+            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            if (isAdminUser) return true;
+
+            return TabPermissionController.HasTabPermission(permissionKey);
         }
 
         private IEnumerable<IEnumerable<string>> GetPaneClientIdCollection()

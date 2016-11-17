@@ -60,7 +60,8 @@ namespace Dnn.EditBar.UI.HttpModules
 
             var request = e.Skin.Page.Request;
             var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
-            if (isSpecialPageMode || !IsPageEditor() || Globals.IsAdminControl())
+            if (isSpecialPageMode 
+                    || Globals.IsAdminControl())
             {
                 return;
             }
@@ -72,63 +73,6 @@ namespace Dnn.EditBar.UI.HttpModules
                     e.Skin.Page.Form.Controls.Add(new ContentEditorManager { Skin = e.Skin });
                 }
             }
-
-            RegisterEditBarResources(e.Skin.PortalSettings, e.Skin.Page);
-        }
-
-        private bool IsPageEditor()
-        {
-            return HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(PortalSettings.Current);
-
-        }
-
-        public static bool HasTabPermission(string permissionKey)
-        {
-            var principal = Thread.CurrentPrincipal;
-            if (!principal.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-
-            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser) return true;
-
-            return TabPermissionController.HasTabPermission(permissionKey);
-        }
-
-        private bool IsModuleAdmin(PortalSettings portalSettings)
-        {
-            bool isModuleAdmin = false;
-            foreach (ModuleInfo objModule in TabController.CurrentPage.Modules)
-            {
-                if (!objModule.IsDeleted)
-                {
-                    bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
-                    if (blnHasModuleEditPermissions)
-                    {
-                        isModuleAdmin = true;
-                        break;
-                    }
-                }
-            }
-            return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
-        }
-
-        private void RegisterEditBarResources(PortalSettings portalSettings, Page page)
-        {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            var settings = EditBarController.Instance.GetConfigurations(portalSettings.PortalId);
-            var settingsScript = "window.editBarSettings = " + JsonConvert.SerializeObject(settings) + ";";
-            page.ClientScript.RegisterClientScriptBlock(page.GetType(), "EditBarSettings", settingsScript, true);
-
-            ClientResourceManager.RegisterScript(page, "~/admin/Dnn.EditBar/scripts/editBarContainer.js");
-
-            ClientResourceManager.RegisterStyleSheet(page, "~/admin/Dnn.EditBar/css/editBarContainer.css");
-
         }
     }
 }

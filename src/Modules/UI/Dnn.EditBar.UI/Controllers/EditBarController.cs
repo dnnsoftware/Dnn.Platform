@@ -54,11 +54,7 @@ namespace Dnn.EditBar.UI.Controllers
             return settings;
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private IList<BaseMenuItem> GetMenuItems()
+        public IList<BaseMenuItem> GetMenuItems()
         {
             var menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
             if (menuItems == null)
@@ -81,6 +77,10 @@ namespace Dnn.EditBar.UI.Controllers
                     .ThenBy(m => m.Order)
                     .ToList();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private static IEnumerable<BaseMenuItem> GetMenuItemInstances()
         {
