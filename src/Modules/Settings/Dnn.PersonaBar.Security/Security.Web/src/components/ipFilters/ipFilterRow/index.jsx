@@ -62,8 +62,8 @@ class IpFilterRow extends Component {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         if (props.visible) {
             return (
-                <div className={"collapsible-component1"}>
-                    <div className={"collapsible-header1 " + !opened} >
+                <div className={"collapsible-component-ipfilters" + (opened ? " row-opened" : "")}>
+                    <div className={"collapsible-ipfilters " + !opened} >
                         <div className={"row"}>
                             <div className="ip-filter-item item-row-ruleType">
                                 {this.getRuleTypeDisplay()}

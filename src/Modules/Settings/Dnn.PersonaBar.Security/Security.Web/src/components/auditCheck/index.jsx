@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
@@ -17,7 +17,7 @@ class AuditCheckPanelBody extends Component {
 
     componentWillMount() {
         const {props} = this;
-        if(props.auditCheckResults) {
+        if (props.auditCheckResults) {
             return;
         }
         props.dispatch(SecurityActions.getAuditCheckResults((data) => {
@@ -47,7 +47,7 @@ class AuditCheckPanelBody extends Component {
                 return (
                     <div className="label-result-severity">
                         <div className="label-result-severity-pass">
-                            {resx.get("Pass") }
+                            {resx.get("Pass")}
                         </div>
                         <div>
                             {successText}
@@ -58,7 +58,7 @@ class AuditCheckPanelBody extends Component {
                 return (
                     <div className="label-result-severity">
                         <div className="label-result-severity-alert">
-                            {resx.get("Alert") }
+                            {resx.get("Alert")}
                         </div>
                         <div>
                             {failureText}
@@ -69,7 +69,7 @@ class AuditCheckPanelBody extends Component {
                 return (
                     <div className="label-result-severity">
                         <div className="label-result-severity-fail">
-                            {resx.get("Fail") }
+                            {resx.get("Fail")}
                         </div>
                         <div>
                             {failureText}
@@ -80,13 +80,23 @@ class AuditCheckPanelBody extends Component {
                 return (
                     <div className="label-result-severity">
                         <div className="label-result-severity-pass">
-                            {resx.get("Pass") }
+                            {resx.get("Pass")}
                         </div>
                         <div>
                             {successText}
                         </div>
                     </div>
                 );
+        }
+    }
+
+    /* eslint-disable react/no-danger */
+    getNotesDisplay(notes) {
+        if (notes && notes.length > 0) {
+            return <div className="log-detail" dangerouslySetInnerHTML={{ __html: notes }}></div>;
+        }
+        else {
+            return "N/A";
         }
     }
 
@@ -102,12 +112,12 @@ class AuditCheckPanelBody extends Component {
                     </div>
                     <div className="label-result">
                         <div className="label-wrapper">
-                            <span>{this.getResultDisplay(term.Severity, term.SuccessText, term.FailureText) }&nbsp; </span>
+                            <span>{this.getResultDisplay(term.Severity, term.SuccessText, term.FailureText)}&nbsp; </span>
                         </div>
                     </div>
                     <div className="label-notes">
                         <div className="label-wrapper">
-                            <span>{term.Notes.length == 0 ? "N/A" : term.Notes}&nbsp; </span>
+                            <span>{this.getNotesDisplay(term.Notes)}&nbsp; </span>
                         </div>
                     </div>
                 </div>
@@ -122,16 +132,16 @@ class AuditCheckPanelBody extends Component {
             return (
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
-                        {resx.get("AuditExplanation") }
+                        {resx.get("AuditExplanation")}
                     </div>
                     <div className="auditCheckItems">
-                        { this.renderHeader() }
-                        { this.renderedList() }
+                        {this.renderHeader()}
+                        {this.renderedList()}
                     </div>
                 </div>
             );
         }
-        else return <div/>;
+        else return <div />;
     }
 }
 
