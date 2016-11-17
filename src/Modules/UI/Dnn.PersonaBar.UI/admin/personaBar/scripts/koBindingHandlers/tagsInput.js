@@ -2,7 +2,7 @@
 define([
         'jquery',
         'knockout',
-        '../../../../Resources/Shared/Scripts/dnn.jquery',
+        '../../../../../Resources/Shared/Scripts/dnn.jquery',
         'css!../../css/tags-input.css'
 ],
 

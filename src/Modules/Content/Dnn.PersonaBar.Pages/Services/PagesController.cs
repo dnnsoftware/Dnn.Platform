@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Pages.Services
     public class PagesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
-        private const string LocalResourceFile = "~/admin/Dnn.PersonaBar/App_LocalResources/Pages.resx";
+        private const string LocalResourceFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Pages.resx";
 
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;

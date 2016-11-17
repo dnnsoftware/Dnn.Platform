@@ -2,15 +2,15 @@
 define([
         'jquery',
         'knockout',
-        '../../../../Resources/Shared/components/DropDownList/dnn.DropDownList',
-        '../../../../Resources/Shared/scripts/dnn.DataStructures.js',
-        '../../../../Resources/Shared/scripts/TreeView/dnn.TreeView.js',
-        '../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js',
-        '../../../../Resources/Shared/scripts/dnn.jquery.extensions.js',
-        '../../../../Resources/Shared/scripts/dnn.extensions.js',
-        '../../../../js/dnn.servicesframework.js',
-        '../../../../Resources/Shared/scripts/jquery/dnn.jScrollbar.js',
-        'css!../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'
+        '../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList',
+        '../../../../../Resources/Shared/scripts/dnn.DataStructures.js',
+        '../../../../../Resources/Shared/scripts/TreeView/dnn.TreeView.js',
+        '../../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js',
+        '../../../../../Resources/Shared/scripts/dnn.jquery.extensions.js',
+        '../../../../../Resources/Shared/scripts/dnn.extensions.js',
+        '../../../../../js/dnn.servicesframework.js',
+        '../../../../../Resources/Shared/scripts/jquery/dnn.jScrollbar.js',
+        'css!../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'
 ],
 
 function($, ko) {

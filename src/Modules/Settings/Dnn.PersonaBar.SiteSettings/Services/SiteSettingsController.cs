@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
-        private const string LocalResourcesFile = "~/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
+        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
         private const string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
         //Field Boost Settings - they are scaled down by 10.

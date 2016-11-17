@@ -18,24 +18,24 @@
         },
         map: {
 			'*': {
-		        'dnn.jquery': ['../../../../Resources/Shared/Scripts/dnn.jquery'],
-		        'dnn.jquery.extensions': ['../../../../Resources/Shared/Scripts/dnn.jquery.extensions'],
-		        'dnn.extensions': ['../../../../Resources/Shared/scripts/dnn.extensions'],
-		        'jquery.tokeninput': ['../../../../Resources/Shared/components/Tokeninput/jquery.tokeninput'],
-		        'dnn.jScrollBar': ['../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar'],
-		        'dnn.servicesframework': ['../../../../js/dnn.servicesframework'],
-		        'dnn.DataStructures': ['../../../../Resources/Shared/scripts/dnn.DataStructures'],
-		        'jquery.mousewheel': ['../../../../Resources/Shared/scripts/jquery/jquery.mousewheel'],
-				'dnn.TreeView': ['../../../../Resources/Shared/scripts/TreeView/dnn.TreeView'],
-				'dnn.DynamicTreeView': ['../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView'],
-				'dnn.DropDownList': ['../../../../Resources/Shared/Components/DropDownList/dnn.DropDownList'],
-                'css.DropDownList': ['css!../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'],
-		        'css.jScrollBar': ['css!../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar.css']
+			    'dnn.jquery': ['../../../../../Resources/Shared/Scripts/dnn.jquery'],
+			    'dnn.jquery.extensions': ['../../../../../Resources/Shared/Scripts/dnn.jquery.extensions'],
+			    'dnn.extensions': ['../../../../../Resources/Shared/scripts/dnn.extensions'],
+			    'jquery.tokeninput': ['../../../../../Resources/Shared/components/Tokeninput/jquery.tokeninput'],
+			    'dnn.jScrollBar': ['../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar'],
+			    'dnn.servicesframework': ['../../../../../js/dnn.servicesframework'],
+			    'dnn.DataStructures': ['../../../../../Resources/Shared/scripts/dnn.DataStructures'],
+			    'jquery.mousewheel': ['../../../../../Resources/Shared/scripts/jquery/jquery.mousewheel'],
+			    'dnn.TreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.TreeView'],
+			    'dnn.DynamicTreeView': ['../../../../../Resources/Shared/scripts/TreeView/dnn.DynamicTreeView'],
+			    'dnn.DropDownList': ['../../../../../Resources/Shared/Components/DropDownList/dnn.DropDownList'],
+			    'css.DropDownList': ['css!../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'],
+			    'css.jScrollBar': ['css!../../../../../Resources/Shared/scripts/jquery/dnn.jScrollBar.css']
 	        }
         },
         packages: [{
             name: "codemirror",
-            location: "./../../../../Resources/Shared/components/CodeEditor",
+            location: "./../../../../../Resources/Shared/components/CodeEditor",
             main: "lib/codemirror"
         }]
     });

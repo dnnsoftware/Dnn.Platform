@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Users.Components
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
         private const int SearchPageSize = 500;
 
-        private string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
+        private string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 

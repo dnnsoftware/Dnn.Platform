@@ -593,7 +593,7 @@ AS
 GO
 
 IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE [ControlKey] = N'CONTROLPANEL:PERSONABAR')
-    INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'CONTROLPANEL:PERSONABAR', NULL, N'admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx', NULL, -3, NULL, NULL, 0, NULL, NULL, -1, NULL, 1)
+    INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'CONTROLPANEL:PERSONABAR', NULL, N'DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx', NULL, -3, NULL, NULL, 0, NULL, NULL, -1, NULL, 1)
 GO
 
 EXEC {databaseOwner}{objectQualifier}AddListEntry @ListName = N'Installer',

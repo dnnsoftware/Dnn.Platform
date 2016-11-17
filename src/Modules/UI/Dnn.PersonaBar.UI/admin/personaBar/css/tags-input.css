@@ -39,7 +39,7 @@ div.dnnTagsInput span.tag {
         width: 8px;
         height: 8px;
         margin: 6px 0 0 0;
-        background: transparent url(../../../images/dnnTagClose.png) no-repeat;
+        background: transparent url(../../../../images/dnnTagClose.png) no-repeat;
         background-position: center;
     }
 
@@ -80,14 +80,14 @@ div.dnnTagsInput div {
             margin-right: 3px;
             color: #999;
             cursor: pointer;
-            background: url(../../../images/dnnSpinnerDownArrow.png) no-repeat;
+            background: url(../../../../images/dnnSpinnerDownArrow.png) no-repeat;
             background-position: right center;
             height: 22px;
         }
 
             div.dnnTagsInput div.dnnTags_filter > .dnnTags_filter_label.dnnExpanded {
                 color: #666;
-                background: url(../../../images/dnnSpinnerUpArrow.png) no-repeat;
+                background: url(../../../../images/dnnSpinnerUpArrow.png) no-repeat;
                 background-position: right center;
             }
 
@@ -146,7 +146,7 @@ div.dnnTagsInput div.dnnTags_filter a.dnnSearchButton {
     display: inline-block;
     width: 18px;
     height: 18px;
-    background-image: url(../../../images/search/searchButton.png);
+    background-image: url(../../../../images/search/searchButton.png);
     background-repeat: no-repeat;
     background-position: center center;
     vertical-align: top;

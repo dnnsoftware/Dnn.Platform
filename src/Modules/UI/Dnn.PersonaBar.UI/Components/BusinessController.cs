@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.UI.Components
 
         private void UpdateControlPanel()
          {
-             HostController.Instance.Update("ControlPanel", "admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
+             HostController.Instance.Update("ControlPanel", "DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
          }
 
     }

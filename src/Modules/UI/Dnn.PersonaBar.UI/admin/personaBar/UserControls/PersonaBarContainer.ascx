@@ -17,7 +17,7 @@
 
             var mobile = x <= 640;
 
-            var src = '<%= AppPath %>/admin/Dnn.PersonaBar/index' + (mobile ? '.mobi': '') + '.html';
+            var src = '<%= AppPath %>/DesktopModules/admin/Dnn.PersonaBar/index' + (mobile ? '.mobi': '') + '.html';
             src += '?cdv=' + '<%= BuildNumber %>';
             if (mobile) {
                 desktopIframe.parentElement.removeChild(desktopIframe);

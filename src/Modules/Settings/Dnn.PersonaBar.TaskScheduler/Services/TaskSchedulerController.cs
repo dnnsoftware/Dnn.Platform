@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
         private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
-        private static string localResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/TaskScheduler.resx");
+        private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/TaskScheduler.resx");
 
         /// GET: api/TaskScheduler/GetServers
         /// <summary>

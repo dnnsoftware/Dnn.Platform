@@ -3,7 +3,7 @@
         <package name="Dnn.PersonaBar.Users" type="PersonaBar" version="01.00.00">
             <friendlyName>Dnn.PersonaBar.Users</friendlyName>
             <description></description>
-            <iconFile>~/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
+            <iconFile>~/DesktopModules/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
             <owner>
                 <name>DNN</name>
                 <organization>DNN Corp.</organization>
@@ -20,7 +20,7 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
                         <resourceFile>
                             <name>Resources.zip</name>
                         </resourceFile>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="Script">
                     <scripts>
-                        <basePath>admin\Dnn.PersonaBar\Users</basePath>
+                        <basePath>DesktopModules\DesktopModules\admin\Dnn.PersonaBar\Users</basePath>
                         <script type="Install">
                             <path>Providers\DataProviders\SqlDataProvider</path>
                             <name>Install.SqlDataProvider</name>

@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
         private Components.VocabulariesController _controller = new Components.VocabulariesController();
-        private static string localResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Vocabularies.resx");
+        private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Vocabularies.resx");
 
         /// GET: api/Vocabularies/GetVocabularies
         /// <summary>

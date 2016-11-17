@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Seo.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
         private readonly Components.SeoController _controller = new Components.SeoController();
-        private static readonly string LocalResourcesFile = Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Seo.resx");
+        private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Seo.resx");
 
         /// GET: api/SEO/GetGeneralSettings
         /// <summary>

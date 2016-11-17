@@ -259,7 +259,7 @@
     <value>Error while adding a Slug. The slug '{0}' is not valid.</value>
   </data>
   <data name="PersonaBarDeleteIndexPageException.Text" xml:space="preserve">
-    <value>An error occurred during the process of deleting the index html files in the Persona Bar. This process is needed to allow the system to re-generate the persona bar menu structure to the latest version. To perform this operation manually, please go to following folder in your site file system "Admin\Dnn.PersonaBar" and delete all html files that starts with "index" word.</value>
+    <value>An error occurred during the process of deleting the index html files in the Persona Bar. This process is needed to allow the system to re-generate the persona bar menu structure to the latest version. To perform this operation manually, please go to following folder in your site file system "DesktopModules\admin\Dnn.PersonaBar" and delete all html files that starts with "index" word.</value>
   </data>
   <data name="CompanionSummary.Text" xml:space="preserve">
     <value>Select the companion modules that you wish to appear alongside the primary  &lt;em&gt;{0}&lt;/em&gt; module on the &lt;strong&gt;{1}&lt;/strong&gt; page.</value>

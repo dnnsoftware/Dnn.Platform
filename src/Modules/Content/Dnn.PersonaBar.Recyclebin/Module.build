@@ -4,7 +4,7 @@
       <Extension>zip</Extension>
       <DNNFileName>Dnn.PersonaBar.Recyclebin</DNNFileName>
       <PackageName>Dnn.PersonaBar.Recyclebin</PackageName>
-      <ModuleFolderName>$(WebsitePath)\admin\Dnn.PersonaBar</ModuleFolderName>
+      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

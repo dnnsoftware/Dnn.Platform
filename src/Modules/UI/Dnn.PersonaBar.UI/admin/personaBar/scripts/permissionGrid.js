@@ -24,7 +24,7 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
             this._buildRoleSelector();
             this._buildUserSelector();
             window.require(['css!../../css/permissionGrid.css',
-                    'css!../../../../Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css'
+                    'css!../../../../../Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css'
             ]);
         },
 

@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
-        public string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
 
         public TabDto GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
             string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,

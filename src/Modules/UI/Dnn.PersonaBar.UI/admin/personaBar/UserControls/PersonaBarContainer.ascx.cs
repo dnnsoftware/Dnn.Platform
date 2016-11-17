@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.UI.UserControls
 
         private void RegisterPersonaBarStyleSheet()
         {
-            ClientResourceManager.RegisterStyleSheet(Page, "~/admin/Dnn.PersonaBar/css/personaBarContainer.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
         }
 
         #endregion

@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         #region Properties
         private string LocalResourcesFile
         {
-            get { return Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Recyclebin.resx"); }
+            get { return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Recyclebin.resx"); }
         }
 
         private PortalSettings PortalSettings

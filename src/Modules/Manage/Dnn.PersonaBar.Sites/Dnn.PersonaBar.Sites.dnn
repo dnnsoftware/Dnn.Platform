@@ -3,7 +3,7 @@
         <package name="Dnn.PersonaBar.Sites" type="PersonaBar" version="01.00.00">
             <friendlyName>Dnn.PersonaBar.Sites</friendlyName>
             <description></description>
-            <iconFile>~/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
+            <iconFile>~/DesktopModules/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
             <owner>
                 <name>DNN</name>
                 <organization>DNN Corp.</organization>
@@ -20,7 +20,7 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
                         <resourceFile>
                             <name>Resources.zip</name>
                         </resourceFile>

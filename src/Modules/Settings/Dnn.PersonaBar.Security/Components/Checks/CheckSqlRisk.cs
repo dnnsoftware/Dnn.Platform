@@ -12,7 +12,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     {
         private string LocalResourceFile
         {
-            get { return "~/admin/Dnn.PersonaBar/App_LocalResources/Security.resx"; }
+            get { return "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Security.resx"; }
         }
 
         public CheckResult Execute()

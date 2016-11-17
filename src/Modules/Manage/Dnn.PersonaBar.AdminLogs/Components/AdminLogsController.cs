@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             get
             {
-                return Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/AdminLogs.resx");
+                return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/AdminLogs.resx");
             }
         }
 

@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Users.Services
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
-        private string LocalResourcesFile => Path.Combine("~/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
+        private string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Users.resx");
 
         #region Users API
 
