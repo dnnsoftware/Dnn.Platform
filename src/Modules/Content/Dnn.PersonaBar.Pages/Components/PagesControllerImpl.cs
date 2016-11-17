@@ -376,7 +376,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return true;
         }
 
-        public int AddTab(PageSettings pageSettings)
+        public virtual int AddTab(PageSettings pageSettings)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var portalId = portalSettings.PortalId;
