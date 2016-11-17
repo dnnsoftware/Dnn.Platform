@@ -14,7 +14,7 @@
             }
 
             var debugMode = settings.debugMode === true;
-            var src = appPath + '/admin/Dnn.EditBar/index.html';
+            var src = appPath + '/DesktopModules/admin/Dnn.EditBar/index.html';
             src += '?cdv=' + settings.buildNumber + (debugMode ? '&t=' + Math.random() : '');
             var $container = $('<div class="editBarFrameContainer"></div>');
             if ($('#personaBar-iframe').length) {

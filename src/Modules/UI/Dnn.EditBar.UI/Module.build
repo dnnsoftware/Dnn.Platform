@@ -4,7 +4,7 @@
         <Extension>zip</Extension>
         <DNNFileName>Dnn.EditBar.UI</DNNFileName>
         <PackageName>Dnn.EditBar.UI</PackageName>
-        <ModuleFolderName>$(WebsitePath)\admin\Dnn.EditBar</ModuleFolderName>
+        <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.EditBar</ModuleFolderName>
     </PropertyGroup>
     <Import Project="$(BuildScriptsPath)\Package.Targets" />
     <Import Project="$(BuildScriptsPath)\Module.Build"/>

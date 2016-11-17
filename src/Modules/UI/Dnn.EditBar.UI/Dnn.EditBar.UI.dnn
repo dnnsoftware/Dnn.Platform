@@ -50,7 +50,7 @@
                 </component>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>admin\Dnn.EditBar</basePath>
+                        <basePath>DesktopModules\admin\Dnn.EditBar</basePath>
                         <resourceFile>
                             <name>Resources.zip</name>
                         </resourceFile>

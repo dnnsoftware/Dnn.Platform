@@ -44,7 +44,7 @@ namespace Dnn.EditBar.UI.Controllers
     {
         #region Fields
         private const int CssFileOrder = 40;
-        public const string ControlFolder = "~/admin/Dnn.EditBar/Resources";
+        public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
         private bool _supportAjax = true;
         #endregion
 
@@ -270,9 +270,9 @@ namespace Dnn.EditBar.UI.Controllers
             var settingsScript = "window.editBarSettings = " + JsonConvert.SerializeObject(settings) + ";";
             Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "EditBarSettings", settingsScript, true);
 
-            ClientResourceManager.RegisterScript(Page, "~/admin/Dnn.EditBar/scripts/editBarContainer.js");
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
-            ClientResourceManager.RegisterStyleSheet(Page, "~/admin/Dnn.EditBar/css/editBarContainer.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
 
         }
 

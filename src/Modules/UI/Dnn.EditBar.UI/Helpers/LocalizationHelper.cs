@@ -9,7 +9,7 @@ namespace Dnn.EditBar.UI.Helpers
 {
     public static class LocalizationHelper
     {
-        private const string ResourcesFile = "~/admin/Dnn.EditBar/App_LocalResources/EditBar.resx";
+        private const string ResourcesFile = "~/DesktopModules/admin/Dnn.EditBar/App_LocalResources/EditBar.resx";
 
         public static string GetString(string key, string resourcesFile = ResourcesFile)
         {
