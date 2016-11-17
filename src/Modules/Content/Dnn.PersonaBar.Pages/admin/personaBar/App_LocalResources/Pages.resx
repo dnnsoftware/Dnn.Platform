@@ -647,4 +647,10 @@ Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
   <data name="NewContentMessage.Subject" xml:space="preserve">
     <value>New Content Ready for Translation</value>
   </data>
+    <data name="MakePagesTranslatable.Text" xml:space="preserve">
+    <value>Make Page Translatable</value>
+  </data>
+  <data name="MakePageNeutral.Text" xml:space="preserve">
+    <value>Make Page Neutral</value>
+  </data>
 </root>

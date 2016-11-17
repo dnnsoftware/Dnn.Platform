@@ -5,16 +5,31 @@ const languagesActions = {
     getLanguages(tabId, callback) {
         return (dispatch) => {
             LanguageService.getLanguages(tabId, data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PAGE_LANGUAGES,
-                    data
-                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    makePageTranslatable(tabId, callback) {
+        return (dispatch) => {
+            LanguageService.makePageTranslatable(tabId, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    makePageNeutral(tabId, callback) {
+        return (dispatch) => {
+            LanguageService.makePageNeutral(tabId, data => {
                 if (callback) {
                     callback(data);
                 }
             });
         };
     }
+
 };
 
 export default languagesActions;

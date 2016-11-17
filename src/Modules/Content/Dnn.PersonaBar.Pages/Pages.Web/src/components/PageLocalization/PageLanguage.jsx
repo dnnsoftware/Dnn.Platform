@@ -32,18 +32,21 @@ class PageLanguage extends Component {
     }
     /* eslint-disable react/no-danger */
     render() {
+        const iconSrc =  this.props.local && this.props.local.Icon ? this.props.local.Icon : "";
+        const cultureCode = this.props.local && this.props.local.CultureCode ? this.props.local.CultureCode : "";
+        const page = this.props.page ? this.props.page: {}; 
         return (
             <div className="page-language">
                 <div className="page-language-row">
-                    <img src={this.props.local.Icon} />
-                    <span>{this.props.local.CultureCode}</span>
+                    <img src={iconSrc} />
+                    <span>{cultureCode}</span>
                     <div className="icon" dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.onOpenSettings.bind(this) }></div>
                     <a className="icon" dangerouslySetInnerHTML={{ __html: EyeIcon }}></a>
                 </div>
                 <div className="page-language-row">
-                    <input type="text" value={this.props.page.TabName} />
-                    <input type="text" value={this.props.page.Title} />
-                    <textarea value={this.props.page.Title} />
+                    <input type="text" value={page.TabName} />
+                    <input type="text" value={page.Title} />
+                    <textarea value={page.Title} />
                 </div>
                 <div className="page-language-row">
                     <div className="page-language-row-header">

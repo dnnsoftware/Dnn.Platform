@@ -1,4 +1,4 @@
-import Api from "./api";
+import utils from "../utils";
 
 function serializeQueryStringParameters(obj) {
     let s = [];
@@ -10,11 +10,29 @@ function serializeQueryStringParameters(obj) {
     return s.join("&");
 }
 
-const languageService = {
-    getLanguages(tabId, callback) {
-        const api = new Api("Pages");
-        api.get("GetTabLocalization", {tabId}, callback);
+class LanguageService {
+    getServiceFramework(controller) {
+        let sf = utils.getServiceFramework();
+        sf.moduleRoot = "PersonaBar";
+        sf.controller = controller;
+        return sf;
     }
-};
 
+    getLanguages(tabId, callback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.get("GetTabLocalization?" + serializeQueryStringParameters({ tabId }), {}, callback);
+    }
+
+    makePageTranslatable(tabId, callback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.post("MakePageTranslatable?" + serializeQueryStringParameters({ tabId }), {}, callback);
+    }
+
+    makePageNeutral(tabId, callback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.post("MakePageNeutral?" + serializeQueryStringParameters({ tabId }), {}, callback);
+    }
+}
+
+const languageService = new LanguageService();
 export default languageService;
