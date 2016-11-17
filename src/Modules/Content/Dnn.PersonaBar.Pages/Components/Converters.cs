@@ -57,8 +57,10 @@ namespace Dnn.PersonaBar.Pages.Components
             var keywords = !string.IsNullOrEmpty(tab.KeyWords) ? tab.KeyWords : PortalSettings.Current.KeyWords;
             var pageType = GetPageType(tab.Url);
             
-            var fileId = GetFileIdRedirection(tab.Url);
-            var fileUrl = GetFileUrlRedirection(fileId);
+            var file = GetFileRedirection(tab.Url);
+            var fileId = file?.FileId;
+            var fileUrl = file?.Folder;
+            var fileName = file?.FileName;
 
             return new T
             {
@@ -74,7 +76,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 Url = pageManagementController.GetTabUrl(tab),
                 ExternalRedirection = pageType == "url" ? tab.Url : null,
                 FileIdRedirection = pageType == "file" ? fileId : null,
-                FileUrlRedirection = pageType == "file" ? fileUrl : null,
+                FileFolderPathRedirection = pageType == "file" ? fileUrl : null,
+                FileNameRedirection = pageType == "file" ? fileName : null,
                 ExistingTabRedirection = pageType == "tab" ? tab.Url : null,
                 Created = pageManagementController.GetCreatedInfo(tab),
                 Hierarchy = pageManagementController.GetTabHierarchy(tab),
@@ -116,7 +119,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return layout?.ThemeName;
         }
 
-        private static int? GetFileIdRedirection(string tabUrl)
+        private static IFileInfo GetFileRedirection(string tabUrl)
         {
             if (tabUrl == null || !tabUrl.StartsWith("FileId="))
             {
@@ -126,19 +129,9 @@ namespace Dnn.PersonaBar.Pages.Components
             int fileRedirectionId;
             if (int.TryParse(tabUrl.Substring(7), out fileRedirectionId))
             {
-                return fileRedirectionId;
+                return FileManager.Instance.GetFile(fileRedirectionId);
             }
             return null;
-        }
-
-        private static string GetFileUrlRedirection(int? fileId)
-        {
-            if (!fileId.HasValue)
-            {
-                return null;
-            }
-            var file = FileManager.Instance.GetFile(fileId.Value);
-            return file != null ? FileManager.Instance.GetUrl(file) : null;
         }
 
         private static int? CacheDuration(TabInfo tab)

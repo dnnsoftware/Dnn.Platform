@@ -1,0 +1,180 @@
+.prefixes(@property, @value) {
+    -webkit-@{property}: @value;
+     -khtml-@{property}: @value;
+       -moz-@{property}: @value;
+        -ms-@{property}: @value;
+            @{property}: @value;
+}
+
+@import "~dnn-global-styles/index";
+@transition: .2s;
+.item-picker-container {
+    position: absolute;
+    top: ~"calc(100% + 1px)";
+    left: -1px;
+    width: 100%;
+    border: 1px solid @alto;
+    background: white;
+    z-index: 1;
+    transition: @transition;
+    overflow: hidden;
+    max-height: 0px;
+    box-shadow: none;
+    opacity: 0;
+    &.show {
+        box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
+        max-height: 600px;
+        opacity: 1;
+    }
+    .inner-box {
+        box-sizing: border-box;
+        padding: 20px;
+        float: left;
+        width: 100%;
+        height: 100%;
+        .search {
+            float: left;
+            width: 100%;
+            border: 1px solid @alto;
+            position: relative;
+            .clear-button {
+                position: absolute;
+                right: 32px;
+                top: 50%;
+                height: 26px;
+                margin-top: -13px;
+                font-size: 26px;
+                line-height: 26px;
+                opacity: .5;
+                cursor: pointer;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            .search-icon {
+                position: absolute;
+                right: 0px;
+                top: 50%;
+                transform: translate(0, -50%);
+                height: 24px;
+                color: @rollingStone;
+            }
+            input[type="text"] {
+                float: left;
+                border: none;
+                width: ~"calc(100% - 40px)";
+                box-sizing: border-box;
+                outline: none !important;
+            }
+        }
+        .items {
+            float: left;
+            width: 100%;
+            border: 1px solid @alto;
+            height: 200px;
+            margin-top: 14px;
+            &, * {
+                .prefixes(user-select, none);
+            }
+        }
+    }
+}
+
+.item-picker {
+    padding-top: 6px;
+    ul {
+        padding-left: 20px;
+        box-sizing: border-box;
+        li {
+            list-style: none;
+            position: relative;
+            float: left;
+            width: 100%;
+            margin-top: 0px;
+            & > div {
+                padding-top: 0px;
+                cursor: pointer;
+                float: left;
+                width: 100%;
+                padding-top: 4px;
+                &:hover {
+                    color: @curiousBlue;
+                }   
+            }
+            & > ul {
+                height: 0px;
+                overflow: hidden;
+                float: left;
+                width: 100%;
+            }
+            &.open {
+                & > ul {
+                    height: auto;
+                }
+                & > .has-children {
+                    transform: rotate(90Deg);
+                }
+            }
+            .icon {
+                width: 14px;
+                float: left;
+                margin-right: 5px;
+                height: 13px;
+                cursor: pointer;
+            }
+            .item-name {
+                cursor: pointer;
+                float: left;
+                width: ~"calc(100% - 30px)";
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &.none-specified {
+                    font-weight: bold;
+                }
+            }
+            .has-children {
+                position: absolute;
+                left: -15px;
+                top: 1px;
+                width: 10px;
+                height: 10px;
+                cursor: pointer;
+                transition: .18s;
+                &:after {
+                    content: "";
+                    position: absolute;
+                    left: 4px;
+                    top: 1px;
+                    width: 0;
+                    height: 0;
+                    border-top: 4px solid transparent;
+                    border-bottom: 4px solid transparent;
+                    border-left: 4px solid @rollingStone;
+                }
+            }
+        }
+    }
+}
+
+.file-upload-container {
+    .drop-down {
+        .selected-item {
+            float: left;
+            width: 100%;
+            height: 100%;
+            padding: 7px;
+            box-sizing: border-box;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 20px;
+        }
+    }
+    span > strong {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
