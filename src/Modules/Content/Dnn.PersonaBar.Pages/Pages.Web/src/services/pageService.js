@@ -2,42 +2,42 @@ import Api from "./api";
 
 const PageService = function () {
 
-    let api = null;
-    function getApi() {
-        if (api === null) {
-            api = new Api(window.dnn.pages.apiController);
-        }        
-        return api;
+    function getOverridablePagesApi() {
+        return new Api(window.dnn.pages.apiController);
+    }
+    
+    function getPagesApi() {
+        return new Api("Pages");
     }
 
     const getPage = function (pageId) {
-        const api = getApi();
+        const api = getOverridablePagesApi();
         return api.get("GetPageDetails", { pageId })
             .then(response => toFrontEndPage(response));
     };
 
     const savePage = function (page) {
-        const api = getApi();
+        const api = getOverridablePagesApi();
         return api.post("SavePageDetails", toBackEndPage(page));
     };
 
     const addPages = function (bulkPage) {
-        const api = getApi();
+        const api = getOverridablePagesApi();
         return api.post("SaveBulkPages", bulkPage);
     };
 
     const deletePageModule = function (module) {
-        const api = getApi();
+        const api = getPagesApi();
         return api.post("DeletePageModule", module);
     };
 
     const getPageUrlPreview = function (value) {
-        const api = getApi();
+        const api = getPagesApi();
         return api.get("GetPageUrlPreview", { url: value });
     };
 
     const getNewPage = function () {
-        const api = getApi();
+        const api = getPagesApi();
         return api.get("GetDefaultSettings")
             .then(settings => {
                 return {
@@ -81,19 +81,19 @@ const PageService = function () {
     };
 
     const getCacheProviderList = function () {
-        const api = getApi();
+        const api = getPagesApi();
         return api.get("GetCacheProviderList");
     };
 
     const copyAppearanceToDescendantPages = function (pageId, theme) {
-        const api = getApi();
+        const api = getPagesApi();
         return api.post("CopyThemeToDescendantPages", {
             pageId, theme
         });
     };
 
     const copyPermissionsToDescendantPages = function (pageId) {
-        const api = getApi();
+        const api = getPagesApi();
         return api.post("CopyPermissionsToDescendantPages", {
             pageId
         });

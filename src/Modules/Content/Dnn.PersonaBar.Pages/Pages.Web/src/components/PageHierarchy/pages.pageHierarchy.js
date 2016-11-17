@@ -160,7 +160,7 @@ window.dnn.pages = window.dnn.pages || {};
                 searchKey: viewModel.searchKeyword()
             };
 
-            this._getService().get('GetPageList', params, function (data) {
+            this._getOverridableService().get('GetPageList', params, function (data) {
                 if (viewModel.searchKeyword().length > 0) {
                     viewModel.pagesList.removeAll();
                 }
@@ -398,7 +398,7 @@ window.dnn.pages = window.dnn.pages || {};
 
             if (newPage.id > 0) {
                 if (newPage.childCount > 0) {
-                    this._getService().get('GetPageList', { parentId: newPage.id }, function(pageData) {
+                    this._getOverridableService().get('GetPageList', { parentId: newPage.id }, function(pageData) {
                         handler._addPagesList(newPage, pageData);
                     });
                 } else {
@@ -1171,15 +1171,20 @@ window.dnn.pages = window.dnn.pages || {};
                 }
             }
             return this._viewModel;
-        },
-
-        _getService: function () {
+        },       
+        _getOverridableService() {
             this.utility.sf.moduleRoot = "PersonaBar";
-            this.utility.sf.controller = window.dnn.pages.apiController;
+            this.utility.sf.controller =  window.dnn.pages.apiController;
 
             return this.utility.sf;
         },
-    };
+        _getService() {
+            this.utility.sf.moduleRoot = "PersonaBar";
+            this.utility.sf.controller = "Pages";
+
+            return this.utility.sf;
+        }
+    };    
 
     pageHierarchyDefaultOptions = {
         delayTime: 500,

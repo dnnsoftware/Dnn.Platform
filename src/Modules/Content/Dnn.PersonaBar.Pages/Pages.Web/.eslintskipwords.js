@@ -143,5 +143,6 @@ module.exports = [
     "args",
     "cmd",
     "startswith",
-    "selectable"
+    "selectable",
+    "overridable"
 ]
