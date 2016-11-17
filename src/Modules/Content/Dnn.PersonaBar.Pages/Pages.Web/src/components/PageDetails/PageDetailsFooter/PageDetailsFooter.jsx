@@ -44,7 +44,7 @@ class PageDetailsFooter extends Component {
 
         const additionalLeftComponents = this.props.components.filter(
             function (component) {
-                return component.leftSide && (component.pageType === pageType || component.pageType === "all");
+                return !component.newSection && component.leftSide && (component.pageType === pageType || component.pageType === "all");
             });
 
         this.insertElementsInArray(defaultLeftColumnComponents, additionalLeftComponents);
@@ -95,11 +95,22 @@ class PageDetailsFooter extends Component {
         
         const additionalRightComponents = this.props.components.filter(
             function (component) {
-                return !component.leftSide && (component.pageType === pageType || component.pageType === "all");
+                return !component.newSection && !component.leftSide && (component.pageType === pageType || component.pageType === "all");
             });
 
         this.insertElementsInArray(defaultRightColumnComponents, additionalRightComponents, "order", "component");
         return defaultRightColumnComponents;
+    }
+    
+    getNewSections(normalPage, pageType) {
+        const additionalComponents = this.props.components.filter(
+            function (component) {
+                return component.newSection && (component.pageType === pageType || component.pageType === "all");
+            });
+            
+        let orderedComponents = [];
+        this.insertElementsInArray(orderedComponents, additionalComponents, "order", "component");
+        return orderedComponents;
     }
 
     render() {
@@ -117,6 +128,7 @@ class PageDetailsFooter extends Component {
                     </GridCell>
                 </GridSystem>
                 <div style={{clear: "both"}}></div>
+                {this.getNewSections(normalPage, page.pageType)}
             </div>
         );
     }

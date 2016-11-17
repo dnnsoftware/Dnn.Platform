@@ -14,16 +14,12 @@ const styles = {
 };
 
 class Template extends Component {
-    getTemplatesOptions(){
+    getTemplatesOptions() {
         const {props} = this;
         const {templates} = props;
         return templates.map(template => {
             return {value: template.Value, label: template.Id};
         });
-    }
-    
-    onSelect(option) {
-        
     }
     
     render() {
