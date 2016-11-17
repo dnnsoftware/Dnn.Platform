@@ -85,25 +85,41 @@ class App extends Component {
                 Localization.get("PageSettings") + ": " + selectedPage.name;
     }
 
+    getSettingsButtons(){
+        const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage} = this.props;
+        const SaveAsTemplate = settingsButtonComponents.SaveAsTemplateButton || Button;
+
+        return (
+            <div className="heading-buttons">
+                <SaveAsTemplate 
+                    type="secondary" 
+                    size="large" 
+                    onClick={onLoadSavePageAsTemplate}
+                    onSaveAsPageTemplate={() => {}}
+                    onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
+                    { Localization.get("SaveAsTemplate") }
+                </SaveAsTemplate>
+                <Button 
+                    type="secondary" 
+                    size="large" 
+                    onClick={onDuplicatePage}>
+                    {Localization.get("DuplicatePage") }
+                </Button>
+            </div>
+        );
+    }
+
     getSettingsPage() {
         const {props} = this;
         const titleSettings = this.getPageTitle();
         const cancelAction = this.onCancelSettings.bind(this);
         const backToPages = <BackTo onClick={cancelAction} label={Localization.get("BackToPages")} />;
-        
+
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
                     <SocialPanelHeader title={titleSettings}>
                         {!this.isNewPage() && 
-                            <div className="heading-buttons">
-                                <Button type="secondary" size="large" onClick={props.onLoadSavePageAsTemplate}>{Localization.get("SaveAsTemplate") }</Button>
-                                <Button 
-                                    type="secondary" 
-                                    size="large" 
-                                    onClick={props.onDuplicatePage}>
-                                    {Localization.get("DuplicatePage") }
-                                </Button>
-                            </div>
-                         }
+                            this.getSettingsButtons()    
+                        }
                     </SocialPanelHeader>
                     <SocialPanelBody
                         workSpaceTrayOutside={true}
@@ -223,7 +239,8 @@ App.propTypes = {
     onDuplicatePage: PropTypes.func.isRequired,
     error: PropTypes.object,
     multiplePagesComponents: PropTypes.array.isRequired,
-    pageDetailsFooterComponents: PropTypes.array.isRequired
+    pageDetailsFooterComponents: PropTypes.array.isRequired,
+    settingsButtonComponents: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -236,7 +253,8 @@ function mapStateToProps(state) {
         editingSettingModuleId: state.pages.editingSettingModuleId,
         error: state.errors.error,
         multiplePagesComponents: state.extensions.multiplePagesComponents,
-        pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents
+        pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents,
+        settingsButtonComponents: state.extensions.settingsButtonComponents
     };
 }
 

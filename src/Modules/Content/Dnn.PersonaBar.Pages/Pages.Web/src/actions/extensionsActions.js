@@ -18,6 +18,12 @@ const extensionsActions = {
             type: ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT,
             data: {component}
         };
+    },
+    registerSettingsButtonComponent(component) {
+        return {
+            type: ActionTypes.REGISTER_SETTINGS_BUTTON_COMPONENT,
+            data: {component}
+        };
     }
 };
 

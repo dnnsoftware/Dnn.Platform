@@ -195,6 +195,7 @@ PageSettings.propTypes = {
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number,
     pageDetailsFooterComponents: PropTypes.array.isRequired
+
 };
 
 export default PageSettings;

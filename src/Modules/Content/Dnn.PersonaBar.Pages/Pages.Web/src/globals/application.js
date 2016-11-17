@@ -30,7 +30,11 @@ const application = {
     },    
     registerMultiplePagesComponent(component) {
         application.dispatch(ExtensionsActions.registerMultiplePagesComponent(component));
+    },
+    registerSettingsButtonComponent(component) {
+        application.dispatch(ExtensionsActions.registerSettingsButtonComponent(component));
     }
+
 };
 
 export default application;
