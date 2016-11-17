@@ -8,9 +8,6 @@ const KEY = {
     ESCAPE: 27
 };
 
-const imageFormats = "bmp,gif,jpeg,jpg,jpe,png,svg,ico";
-
-
 function findKey(thisObject, id) {
     let p, tRet;
     for (p in thisObject) {
@@ -83,15 +80,16 @@ export default class Browse extends Component {
     }
 
     getChildrenFolders(parentId) {
-        const sf = this.getServiceFramework("Vocabularies");
+        const sf = this.getServiceFramework();
         sf.get("GetFolderDescendants", { parentId }, this.addChildFolders.bind(this, parentId), this.handleError.bind(this));
     }
 
     getFiles() {
         const sf = this.getServiceFramework();
         let parentId = this.state.selectedFolder ? this.state.selectedFolder.key : null;
+        const extensions = this.props.fileFormats.map(format => format.split("/")[1]).join(",");
         if (parentId) {
-            sf.get("GetFiles", { parentId, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
+            sf.get("GetFiles", { parentId, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
         } else if (this.state.selectedFolder) {
             sf.get("SearchFolders", { searchText: this.state.selectedFolder.value }, this.setFolderId.bind(this), this.handleError.bind(this));
         } else {
@@ -101,8 +99,9 @@ export default class Browse extends Component {
 
     setFolderId(result) {
         const selectedFolder = result.Tree.children[0].data;
+        const extensions = this.props.fileFormats.map(format => format.split("/")[1]).join(",");
         const sf = this.getServiceFramework();
-        sf.get("GetFiles", { parentId: selectedFolder.key, filter: imageFormats }, this.setFiles.bind(this), this.handleError.bind(this));
+        sf.get("GetFiles", { parentId: selectedFolder.key, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
     }
 
     setFiles(result) {
@@ -170,7 +169,12 @@ Browse.propTypes = {
     utils: PropTypes.object.isRequired,
     selectedFile: PropTypes.object.isRequired,
     selectedFolder: PropTypes.object.isRequired,
+    fileFormats: PropTypes.array,
     onSave: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
+};
+
+Browse.defaultProps = {
+    fileFormats: []
 };
 
