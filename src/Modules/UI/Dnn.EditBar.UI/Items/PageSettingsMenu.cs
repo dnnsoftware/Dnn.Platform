@@ -29,7 +29,7 @@ namespace Dnn.EditBar.UI.Items
         public override bool Visible()
         {
             return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit
-                && Host.ControlPanel == "admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx";
+                && Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
