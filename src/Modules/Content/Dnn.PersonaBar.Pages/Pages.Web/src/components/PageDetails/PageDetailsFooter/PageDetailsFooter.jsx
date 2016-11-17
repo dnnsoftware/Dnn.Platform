@@ -11,7 +11,11 @@ class PageDetailsFooter extends Component {
 
     onChangeField(key, event) {
         const {onChangeField} = this.props;
-        onChangeField(key, event.target.value);
+        if (event.value) {
+            onChangeField(key, event.value);
+        } else {
+            onChangeField(key, event.target.value);
+        }        
     }
 
     onChangeValue(key, value) {
@@ -30,7 +34,11 @@ class PageDetailsFooter extends Component {
             defaultLeftColumnComponents = [<DisplayInMenu includeInMenu={page.includeInMenu}
                 onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />];
             if (page.tabId === 0) {
-                defaultLeftColumnComponents.push(<Template templates={page.templates} />);
+                defaultLeftColumnComponents.push(
+                    <Template templates={page.templates} 
+                        selectedTemplateId={page.templateId}
+                        onSelect={this.onChangeField.bind(this, "templateId")} />
+                );
             }
         }
 

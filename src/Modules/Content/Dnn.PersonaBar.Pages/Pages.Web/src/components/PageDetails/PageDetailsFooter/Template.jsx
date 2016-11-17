@@ -27,6 +27,8 @@ class Template extends Component {
     }
     
     render() {
+        const {selectedTemplateId, onSelect} = this.props;
+        
         return <div>
             <Label style={styles.label}
                 labelType="inline"
@@ -35,15 +37,17 @@ class Template extends Component {
                 />
             <Dropdown style={styles.dropdown} 
                 options={this.getTemplatesOptions()}
-                value="" 
-                onSelect={this.onSelect.bind(this)} 
+                value={selectedTemplateId}
+                onSelect={onSelect.bind(this)} 
                 withBorder={true} />
         </div>;
     }
 }
 
 Template.propTypes = {
-    templates: PropTypes.arrayOf(PropTypes.object).isRequired
+    templates: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectedTemplateId: PropTypes.number.isRequired,
+    onSelect: PropTypes.func.isRequired
 };
 
 export default Template;

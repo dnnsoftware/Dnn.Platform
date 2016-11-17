@@ -152,5 +152,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "templates")]
         public IEnumerable<Template> Templates { get; set; }
+
+        [DataMember(Name = "templateId")]
+        public int TemplateId { get; set; }
     }
 }

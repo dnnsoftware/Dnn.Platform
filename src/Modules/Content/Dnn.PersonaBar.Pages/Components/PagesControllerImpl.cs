@@ -55,6 +55,8 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly ITabController _tabController;
         private readonly IModuleController _moduleController;
         private readonly IPageUrlsController _pageUrlsController;
+        private readonly ITemplateController _templateController;
+
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
 
@@ -63,6 +65,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
             _pageUrlsController = PageUrlsController.Instance;
+            _templateController = TemplateController.Instance;
         }
         
         public bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
@@ -744,72 +747,7 @@ namespace Dnn.PersonaBar.Pages.Components
             page.PrimaryAliasId = GetPrimaryAliasId(portalSettings.PortalId, portalSettings.CultureCode);
             page.Locales = GetLocales(portalSettings.PortalId);
             page.HasParent = tab.ParentId > -1;
-            page.Templates = GetTemplates();
             return page;
-        }
-
-        public IEnumerable<Template> GetTemplates()
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var folders = FolderManager.Instance.GetFolders(user, "BROWSE, ADD");
-            var templateFolder = folders.SingleOrDefault(f => f.DisplayPath == "Templates/");
-            if (templateFolder != null)
-            {
-                //var folderName = templateFolder != null ? templateFolder.FolderName : null;
-                //if (folderName == string.Empty)
-                //{
-                //    templateFolder.FfolderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
-                //}
-                return LoadTemplates(templateFolder);
-            }
-
-            return null;
-        }
-
-        private IEnumerable<Template> LoadTemplates(IFolderInfo templateFolder)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var portalId = portalSettings.PortalId;
-            var templates = new List<Template>();
-            if (templateFolder == null)
-            {
-                return templates;
-            }
-
-            var folder = FolderManager.Instance.GetFolder(templateFolder.FolderID);
-            if (folder == null)
-            {
-                return templates;
-            }
-
-            templates.Add(new Template
-            {
-                Id = Localization.GetString("None_Specified"),
-                Value = Null.NullInteger
-            });
-
-            var files = Globals.GetFileList(portalId, "page.template", false, folder.FolderPath);
-            templates.AddRange(from FileItem file in files
-                select new Template
-                {
-                    Id = file.Text.Replace(".page.template", ""), Value = int.Parse(file.Value)
-                });
-
-            //if (!Page.IsPostBack)
-            //{
-            //    cboTemplate.ClearSelection();
-            //    var defaultItem = cboTemplate.FindItemByText("Default");
-            //    if (defaultItem != null)
-            //    {
-            //        defaultItem.Selected = true;
-            //    }
-            //}
-
-            //if (cboTemplate.SelectedIndex == -1)
-            //{
-            //    cboTemplate.SelectedIndex = 0;
-            //}
-            return templates;
         }
 
         public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
@@ -957,15 +895,11 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var pageSettings = new PageSettings
             {
-                Templates = GetTemplates(),
+                Templates = _templateController.GetTemplates(),
                 Permissions = GetPermissionsData(0)
             };
 
-            var firstOrDefault = pageSettings.Templates.FirstOrDefault(t => t.Id == "Default");
-            if (firstOrDefault != null)
-            {
-                pageSettings.TemplateTabId = firstOrDefault.Value;
-            }
+            pageSettings.TemplateId = _templateController.GetDefaultTemplateId(pageSettings.Templates);
                
             return pageSettings;
         }
