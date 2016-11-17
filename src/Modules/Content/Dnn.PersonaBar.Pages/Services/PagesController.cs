@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.UI.WebControls;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Pages.Components.Dto;
@@ -31,6 +32,7 @@ using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.DTO.Tabs;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -54,7 +56,6 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private readonly ITabController _tabController;
         private readonly ILocaleController _localeController;
-        private readonly IPortalController _portalController;
 
         public PagesController()
         {
@@ -65,7 +66,6 @@ namespace Dnn.PersonaBar.Pages.Services
 
             _tabController = TabController.Instance;
             _localeController = LocaleController.Instance;
-            _portalController = PortalController.Instance;
         }
 
         /// GET: api/Pages/GetPageDetails
@@ -453,7 +453,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        // POST /api/personabar/pages/AddMissingLanguages
+        // POST /api/personabar/pages/AddMissingLanguages?tabId=123
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage AddMissingLanguages([FromUri] int tabId)
@@ -543,6 +543,54 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        // POST /api/personabar/pages/RestoreModule?tabModuleId=123
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RestoreModule(int tabModuleId)
+        {
+            try
+            {
+                var moduleController = ModuleController.Instance;
+                var moduleInfo = moduleController.GetTabModule(tabModuleId);
+                if (moduleInfo == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidTabModule");
+                }
+
+                moduleController.RestoreModule(moduleInfo);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        // POST /api/personabar/pages/DeleteModule?tabModuleId=123
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteModule(int tabModuleId)
+        {
+            try
+            {
+                var moduleController = ModuleController.Instance;
+                var moduleInfo = moduleController.GetTabModule(tabModuleId);
+                if (moduleInfo == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidTabModule");
+                }
+
+                moduleController.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, false);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
@@ -553,15 +601,15 @@ namespace Dnn.PersonaBar.Pages.Services
             return DotNetNuke.Services.Localization.Localization.GetString(key, LocalResourceFile);
         }
 
-        private bool IsDefaultLanguage(string cultureCode)
-        {
-            return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.InvariantCultureIgnoreCase);
-        }
+        //private bool IsDefaultLanguage(string cultureCode)
+        //{
+        //    return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.InvariantCultureIgnoreCase);
+        //}
 
-        private bool IsLanguageEnabled(string cultureCode)
-        {
-            return _localeController.GetLocales(PortalId).ContainsKey(cultureCode);
-        }
+        //private bool IsLanguageEnabled(string cultureCode)
+        //{
+        //    return _localeController.GetLocales(PortalId).ContainsKey(cultureCode);
+        //}
 
         private DnnPagesDto GetNonLocalizedPages(int tabId)
         {
@@ -742,7 +790,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private void SaveNonLocalizedPages(DnnPagesDto pages)
         {
-            // check all pages except the default "en-US" one
+            // check all pages
             foreach (var page in pages.Pages)
             {
                 var tabInfo = _tabController.GetTab(page.TabId, PortalId, true);
@@ -794,10 +842,52 @@ namespace Dnn.PersonaBar.Pages.Services
                             moduleController.UpdateTranslationStatus(tabModule, moduleDto.IsTranslated);
                         }
                     }
-                    else
+                    else if (moduleDto.CopyModule)
                     {
-                        // There was a logic here in the original ControlBar
-                        // functionality that is not maintained in the new PB.
+                        // find the first existing module on the line
+                        foreach (var moduleToCopyFrom in modulesCollection.Modules)
+                        {
+                            if (moduleToCopyFrom.ModuleId > 0)
+                            {
+                                var miCopy = moduleController.GetTabModule(moduleToCopyFrom.ModuleId);
+                                if (miCopy.DefaultLanguageGuid == Null.NullGuid)
+                                {
+                                    // default
+                                    var toTabInfo = _tabController.GetTab(moduleToCopyFrom.TabId, PortalSettings.PortalId, false);
+                                    DisableTabVersioningAndWorkflow(toTabInfo);
+                                    moduleController.CopyModule(miCopy, toTabInfo, Null.NullString, true);
+                                    EnableTabVersioningAndWorkflow(toTabInfo);
+                                    var localizedModule = moduleController.GetModule(miCopy.ModuleID, moduleToCopyFrom.TabId, false);
+                                    moduleController.LocalizeModule(localizedModule, LocaleController.Instance.GetLocale(localizedModule.CultureCode));
+                                }
+                                else
+                                {
+                                    var miCopyDefault = moduleController.GetModuleByUniqueID(miCopy.DefaultLanguageGuid);
+                                    var toTabInfo = _tabController.GetTab(moduleToCopyFrom.TabId, PortalSettings.PortalId, false);
+                                    moduleController.CopyModule(miCopyDefault, toTabInfo, Null.NullString, true);
+                                }
+
+                                if (moduleDto == modulesCollection.Modules.First())
+                                {
+                                    // default language
+                                    var miDefault = moduleController.GetModule(miCopy.ModuleID, pages.Pages.First().TabId, false);
+                                    foreach (var page in pages.Pages.Skip(1))
+                                    {
+                                        var moduleInfo = moduleController.GetModule(miCopy.ModuleID, page.TabId, false);
+                                        if (moduleInfo != null)
+                                        {
+                                            if (miDefault != null)
+                                            {
+                                                moduleInfo.DefaultLanguageGuid = miDefault.UniqueId;
+                                            }
+                                            moduleController.UpdateModule(moduleInfo);
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -872,6 +962,38 @@ namespace Dnn.PersonaBar.Pages.Services
                         _tabController.UpdateTranslationStatus(tabInfo, true);
                     }
                 }
+            }
+        }
+
+        private static void EnableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+
+            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
+            {
+                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, true);
+            }
+
+            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
+            {
+                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
+            }
+        }
+
+        private static void DisableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+
+            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
+            {
+                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
+            }
+
+            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
+            {
+                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,23 +11,18 @@ using System.Web.Http;
 using System.Web.UI;
 using System.Xml;
 using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.DTO.Tabs;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.SiteSettings.Components.Constants;
 using Dnn.PersonaBar.SiteSettings.Components;
 using Dnn.PersonaBar.SiteSettings.Services.Dto;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Social.Notifications;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -412,6 +406,34 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        // POST /api/personabar/languages/ActivateLanguage?cultureCode=de-DE&enable=true
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage ActivateLanguage([FromUri] string cultureCode, [FromUri] bool enable)
+        {
+            try
+            {
+                if (IsDefaultLanguage(cultureCode))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                var locale = _localeController.GetLocale(cultureCode);
+                if (locale == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                _localeController.ActivateLanguage(PortalId, locale.Code, enable);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         // POST /api/personabar/languages/PublishAllPages?cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -641,6 +663,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 var nLoopVariables = d.SelectNodes("root/data");
                 if (nLoopVariables != null)
+                {
                     foreach (XmlNode nLoopVariable in nLoopVariables)
                     {
                         var n = nLoopVariable;
@@ -664,6 +687,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             }
                         }
                     }
+                }
             }
         }
 

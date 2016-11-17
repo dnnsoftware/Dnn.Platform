@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public bool IsLocalized { get; set; }
         public bool IsShared { get; set; }
         public bool IsDeleted { get; set; }
+        public bool CopyModule { get; set; }
         public bool ErrorDuplicateModule { get; set; }
         public bool ErrorDefaultOnOtherTab { get; set; }
         public bool ErrorCultureOfModuleNotCultureOfTab { get; set; }
