@@ -58,7 +58,7 @@ const siteInfoActions = {
                     type: ActionTypes.RETRIEVED_SEO_REGEX_SETTINGS,
                     data: {
                         regexSettings: data.Settings,
-                        clientModified: false
+                        regexClientModified: false
                     }
                 });
                 if (callback) {
@@ -73,7 +73,7 @@ const siteInfoActions = {
                 dispatch({
                     type: ActionTypes.UPDATED_SEO_REGEX_SETTINGS,
                     data: {
-                        clientModified: false
+                        regexClientModified: false
                     }
                 });
                 if (callback) {
@@ -92,7 +92,7 @@ const siteInfoActions = {
                 type: ActionTypes.SEO_REGEX_SETTINS_CLIENT_MODIFIED,
                 data: {
                     regexSettings: parameter,
-                    clientModified: true
+                    regexClientModified: true
                 }
             });
         };

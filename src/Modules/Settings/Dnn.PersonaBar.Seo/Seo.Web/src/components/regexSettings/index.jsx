@@ -420,13 +420,13 @@ class RegexSettingsPanelBody extends Component {
                     </div>
                     <div className="buttons-box">
                         <Button
-                            disabled={!this.props.clientModified}
+                            disabled={!this.props.regexClientModified}
                             type="secondary"
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={!this.props.clientModified}
+                            disabled={!this.props.regexClientModified}
                             type="primary"
                             onClick={this.onUpdate.bind(this)}>
                             {resx.get("Save")}
@@ -443,14 +443,14 @@ RegexSettingsPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     regexSettings: PropTypes.object,
-    clientModified: PropTypes.bool
+    regexClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
         regexSettings: state.seo.regexSettings,
-        clientModified: state.seo.clientModified
+        regexClientModified: state.seo.regexClientModified
     };
 }
 

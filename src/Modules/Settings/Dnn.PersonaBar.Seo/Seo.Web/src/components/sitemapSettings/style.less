@@ -30,6 +30,7 @@
             width: 100%;
             float: left;
             overflow: hidden;
+            text-transform: uppercase;
             .header-Name {
                 width: 40%;
                 float: left;
@@ -63,6 +64,8 @@
             border: @mercury;
             padding: 8px;
             box-sizing: border-box;
+            height: 34px;
+            margin-bottom: 3px;
         }
         .sitemapSettings-row_switch {
             border-bottom: 1px solid @alto;
@@ -95,12 +98,13 @@
             }
         }
         .dnn-dropdown {
-            width: 284px;
+            width: 100%;
         }
         .daysToCache {
             width: 100%;
             .dnn-dropdown {
-                width: 45%;
+                width: 62%;
+                box-sizing: border-box;
             }
             .clearCacheBtn {
                 margin-left: 10px;
@@ -108,14 +112,15 @@
                 width: 35%;
                 overflow: hidden;
             }
-            .dnn-ui-common-button{
+            .dnn-ui-common-button {
                 padding: 0;
             }
         }
         .searchEngineSubmit {
             width: 100%;
             .dnn-dropdown {
-                width: 45% !important;
+                width: 62% !important;
+                box-sizing: border-box;
             }
             .searchEngineSubmitBtn {
                 margin-left: 10px;
@@ -157,7 +162,7 @@
             padding-right: 30px;
             border-right: 1px solid @alto;
             .dnn-dropdown {
-                width: 281px;
+                width: 100%;
             }
         }
         .right-column {

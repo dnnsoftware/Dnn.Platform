@@ -22,16 +22,16 @@ export default function seoSettings(state = {
         case ActionTypes.RETRIEVED_SEO_REGEX_SETTINGS:
             return { ...state,
                 regexSettings: action.data.regexSettings,
-                clientModified: action.data.clientModified
+                regexClientModified: action.data.regexClientModified
             };
         case ActionTypes.SEO_REGEX_SETTINS_CLIENT_MODIFIED:
             return { ...state,
                 regexSettings: action.data.regexSettings,
-                clientModified: action.data.clientModified
+                regexClientModified: action.data.regexClientModified
             };
         case ActionTypes.UPDATED_SEO_REGEX_SETTINGS:
             return { ...state,
-                clientModified: action.data.clientModified
+                regexClientModified: action.data.regexClientModified
             };
         case ActionTypes.TESTED_SEO_PAGE_URL:
         case ActionTypes.CLEARED_SEO_TEST_PAGE_URL_RESULTS:
