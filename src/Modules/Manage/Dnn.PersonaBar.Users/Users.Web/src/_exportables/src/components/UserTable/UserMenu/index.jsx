@@ -17,6 +17,7 @@ class UserMenu extends Component {
             userDetails: props.userDetails,
             ChangePasswordVisible: false
         };
+        this.showMenu = false;
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -29,12 +30,20 @@ class UserMenu extends Component {
         document.addEventListener("click", this.handleClick, false);
         let {props} = this;
         if (props.userDetails === undefined || props.userDetails.userId !== props.userId) {
+            this.showMenu = false;
             this.getUserDetails(props);
+        }
+        else {
+            this.showMenu = true;
         }
     }
     componentWillReceiveProps(newProps) {
         if (newProps.userDetails === undefined && newProps.userDetails.userId !== newProps.userId) {
+            this.showMenu = false;
             this.getUserDetails(newProps);
+        }
+        else {
+            this.showMenu = true;
         }
     }
     getUserDetails(props) {
@@ -42,6 +51,8 @@ class UserMenu extends Component {
             let userDetails = Object.assign({}, data);
             this.setState({
                 userDetails
+            },()=>{
+                this.showMenu = true;
             });
         }));
     }
@@ -177,15 +188,18 @@ class UserMenu extends Component {
         }
     }
     forcePasswordChange() {
-        this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
-            if (data.Success) {
-                utilities.notify(Localization.get("UserPasswordUpdateChanged"), 10000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
-        }));
+        if (this.adminPermissionCheck() && !this.state.userDetails.needUpdatePassword && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId)
+        {
+            this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
+                if (data.Success) {
+                    utilities.notify(Localization.get("UserPasswordUpdateChanged"), 10000);
+                    this.reload();
+                }
+                else {
+                    utilities.notify(data.Message, 10000);
+                }
+            }));
+        }
     }
     updateAuthorizeStatus(authorized) {
         if (this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
@@ -201,22 +215,32 @@ class UserMenu extends Component {
         }
     }
     updateSuperUserStatus(setSuperUser) {
-         if (this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+        if (this.props.appSettings.applicationSettings.settings.isHost && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
             this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, (data) => {
                 if (!data.Success){
                     utilities.notify(data.Message, 10000);
-                }else{
+                }
+                else
+                {
                     this.reload();
                 }
             }));
-         }
+        }
     }
 
     toggleChangePassword(close) {
-        const show = !this.state.ChangePasswordVisible;
-        this.setState({ ChangePasswordVisible: show });
-        if (close)
-            this.props.onClose();
+        if (this.adminPermissionCheck()){
+            const show = !this.state.ChangePasswordVisible;
+            this.setState({ ChangePasswordVisible: show });
+            if (close)
+                this.props.onClose();
+        }
+    }
+    adminPermissionCheck()
+    {
+        return (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
+                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
+                        !this.state.userDetails.isAdmin && !this.state.userDetails.isSuperUser));
     }
     render() {
 
@@ -235,9 +259,7 @@ class UserMenu extends Component {
             }
         }
         
-        if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
-        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
-        !this.state.userDetails.isAdmin && !this.state.userDetails.isSuperUser))
+        if (this.adminPermissionCheck())
         {
             visibleMenus = [{ key:"ChangePassword", title: Localization.get("ChangePassword"), index: 30 }].concat(visibleMenus);
 
@@ -255,17 +277,19 @@ class UserMenu extends Component {
             if (this.state.userDetails.authorized && this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId) {
                 visibleMenus = [{ key:"cmdUnAuthorize", title:  Localization.get("cmdUnAuthorize"), index: 50 }].concat(visibleMenus);
             } 
-            else if (this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId){
+            else if (this.state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId)
+            {
                 visibleMenus = [{ key:"cmdAuthorize", title:  Localization.get("cmdAuthorize"), index: 50 }].concat(visibleMenus);
-        }
+            }
         }
        
         visibleMenus = visibleMenus.concat((this.props.getUserMenu && this.props.getUserMenu(this.state.userDetails)) || []);
 
         visibleMenus = this.sort(visibleMenus, "index");
-
-        return (
-            <GridCell className="dnn-user-menu menu-popup">
+        let showMenu = this.showMenu;
+        
+        if (showMenu){
+            return ( <GridCell className="dnn-user-menu menu-popup">
                 {!this.state.ChangePasswordVisible &&
                     <Menu>
                         {
@@ -279,7 +303,11 @@ class UserMenu extends Component {
                     <ChangePassword onCancel={this.toggleChangePassword.bind(this, true) } userId={this.props.userId} />
                 }
             </GridCell>
-        );
+            );
+        }
+        else{
+            return <div/>;
+        }
     }
 }
 

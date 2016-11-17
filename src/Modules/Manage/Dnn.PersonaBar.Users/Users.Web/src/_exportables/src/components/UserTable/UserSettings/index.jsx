@@ -161,6 +161,12 @@ class UserSettings extends Component {
             }
         }));
     }
+    adminPermissionCheck()
+    {
+        return (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
+                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
+                        !this.state.userDetails.isAdmin && !this.state.userDetails.isSuperUser));
+    }
     render() {
         let {state} = this;
         return <GridCell className={styles.userSettings}>
@@ -179,6 +185,7 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("Username.Required") }
                             style={inputStyle}
                             autoComplete="off"
+                            enabled={this.adminPermissionCheck()}
                             inputStyle={{ marginBottom: 25 }}/>
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
@@ -188,6 +195,7 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("DisplayName.Required") }
                             style={inputStyle}
                             autoComplete="off"
+                            enabled={this.adminPermissionCheck()}
                             inputStyle={{ marginBottom: 25 }} />
                         <SingleLineInputWithError value={state.accountSettings.email}
                             error={state.errors.email}
@@ -197,24 +205,19 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}
                             autoComplete="off"
+                            enabled={this.adminPermissionCheck()}
                             inputStyle={{ marginBottom: 25 }}/>
                     </div>
                     <GridCell className="no-padding">
                         <div className="title">
                             {Localization.get("PasswordManagement")}
                         </div>
-                        {(this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
-                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
-                        !state.userDetails.isAdmin && !state.userDetails.isSuperUser))
-                        && <GridCell className="link">
+                        {this.adminPermissionCheck() && <GridCell className="link">
                             <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
                             </div>
                             </GridCell>
                         }
-                        {(this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
-                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
-                        !state.userDetails.isAdmin && !state.userDetails.isSuperUser))
-                        && !state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
+                        {this.adminPermissionCheck() && !state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
                             <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
                             </div>
                             </GridCell>}
@@ -320,14 +323,16 @@ class UserSettings extends Component {
                     </GridSystem>
                 </GridCell>
             </GridCell>
-            <GridCell className="buttons">
-                <GridCell columnSize={50} className="leftBtn">
-                    <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
+            {this. adminPermissionCheck() &&
+                <GridCell className="buttons">
+                    <GridCell columnSize={50} className="leftBtn">
+                        <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
+                    </GridCell>
+                    <GridCell columnSize={50} className="rightBtn">
+                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
+                    </GridCell>
                 </GridCell>
-                <GridCell columnSize={50} className="rightBtn">
-                    <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
-                </GridCell>
-            </GridCell>
+            }
         </GridCell>;
     }
 }
