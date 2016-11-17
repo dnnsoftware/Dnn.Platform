@@ -23,7 +23,7 @@ class PageDetailsFooter extends Component {
         onChangeField(key, value);
     }
 
-    getLeftColumnComponents(normalPage, pageType) {
+    getLeftColumnComponents(normalPage, pageType, includeTemplates) {
         const {page, errors} = this.props;
         let defaultLeftColumnComponents;
         if (!normalPage) {
@@ -33,7 +33,7 @@ class PageDetailsFooter extends Component {
         } else {
             defaultLeftColumnComponents = [<DisplayInMenu includeInMenu={page.includeInMenu}
                 onChangeIncludeInMenu={this.onChangeValue.bind(this, "includeInMenu")} />];
-            if (page.tabId === 0) {
+            if (includeTemplates && page.tabId === 0) {
                 defaultLeftColumnComponents.push(
                     <Template templates={page.templates} 
                         selectedTemplateId={page.templateId}
@@ -116,19 +116,21 @@ class PageDetailsFooter extends Component {
     render() {
         const {page} = this.props;
         const normalPage = page.pageType === "normal";
+        const componentsInNewSection= this.getNewSections(normalPage, page.pageType);
+        const includeTemplates = componentsInNewSection.length === 0;
 
         return (
             <div className={styles.pageDetailsFooter}>                
                 <GridSystem>
                     <GridCell className="left-column">                        
-                        {this.getLeftColumnComponents(normalPage, page.pageType)}
+                        {this.getLeftColumnComponents(normalPage, page.pageType, includeTemplates)}
                     </GridCell>
                     <GridCell className="right-column">                       
                         {this.getRightColumnComponents(normalPage, page.pageType)}                       
                     </GridCell>
                 </GridSystem>
                 <div style={{clear: "both"}}></div>
-                {this.getNewSections(normalPage, page.pageType)}
+                {componentsInNewSection}
             </div>
         );
     }
