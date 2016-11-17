@@ -59,8 +59,8 @@ class LogSettingRow extends Component {
 
         if (props.visible) {
             return (
-                <div className={"collapsible-component1"} id={uniqueId}>
-                    <div className={"collapsible-header1 " + !opened} >
+                <div className={"collapsible-component-log" + (opened ? " row-opened" : "")} id={uniqueId}>
+                    <div className={"collapsible-header-log " + !opened} >
                         <GridCell title={props.typeName} columnSize={40} >
                             {props.typeName}</GridCell>
                         <GridCell  columnSize={20} >
