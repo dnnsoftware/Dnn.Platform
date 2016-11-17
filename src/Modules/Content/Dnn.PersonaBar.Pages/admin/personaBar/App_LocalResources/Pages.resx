@@ -657,4 +657,25 @@
   <data name="BadTemplate.Text" xml:space="preserve">
     <value>The page template is not a valid xml document.  Please select a different template and try again.</value>
   </data>
+  <data name="AddMissingLanguages.Text" xml:space="preserve">
+    <value>Add Missing Languages</value>
+  </data>
+  <data name="NotifyTranslators.Text" xml:space="preserve">
+    <value>Notify Translators</value>
+  </data>
+  <data name="UpdateLocalization.Text" xml:space="preserve">
+    <value>Update Localization</value>
+  </data>
+  <data name="NeutralPageText.Text" xml:space="preserve">
+    <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
+  </data>
+  <data name="NeutralPageClickButton.Text" xml:space="preserve">
+    <value>To change this to a translatable page, click the button here.</value>
+  </data>
+  <data name="NotifyModalHeader.Text" xml:space="preserve">
+    <value>Send a notification to translators</value>
+  </data>
+  <data name="NotifyModalPlaceholder.Text" xml:space="preserve">
+    <value>Enter a message to send to translators</value>
+  </data>
 </root>

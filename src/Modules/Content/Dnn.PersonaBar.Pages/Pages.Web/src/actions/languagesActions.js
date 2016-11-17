@@ -28,6 +28,24 @@ const languagesActions = {
                 }
             });
         };
+    },
+    addMissingLanguages(tabId, callback) {
+        return (dispatch) => {
+            LanguageService.addMissingLanguages(tabId, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    notifyTranslators(params, callback) {
+        return (dispatch) => {
+            LanguageService.notifyTranslators(params, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 
 };

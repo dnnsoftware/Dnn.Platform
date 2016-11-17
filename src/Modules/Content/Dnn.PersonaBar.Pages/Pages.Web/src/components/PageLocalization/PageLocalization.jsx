@@ -5,6 +5,7 @@ import Button from "dnn-button";
 import Localization from "../../localization";
 import Scrollbars from "react-custom-scrollbars";
 import PageLanguage from "./PageLanguage";
+import NotifyModal from "./NotifyModal";
 import utils from "../../utils";
 import style from "./style.less";
 
@@ -17,7 +18,10 @@ class PageLocalization extends Component {
         this.state = {
             Locales: [],
             Modules: [],
-            Pages: []
+            Pages: [],
+            ErrorExists: false,
+            showNotifyModal: false,
+            notifyMessage: ""
         };
     }
 
@@ -30,16 +34,22 @@ class PageLocalization extends Component {
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.getLanguages(tabId, (data) => {
             this.setState(data);
-            console.log('DATA:', data);
         }));
 
+    }
+
+    onCloseNotifyModal() {
+        this.setState({ showNotifyModal: false });
+    }
+
+    onOpenNotifyModal() {
+        this.setState({ showNotifyModal: true });
     }
 
     makePageTranslatable() {
         const {props, state} = this;
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.makePageTranslatable(tabId, (data) => {
-            console.log('DATA:', data);
             this.getLanguages();
         }));
     }
@@ -48,9 +58,20 @@ class PageLocalization extends Component {
         const {props, state} = this;
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.makePageNeutral(tabId, (data) => {
-            console.log('DATA:', data);
+            this.getLanguages();
         }));
     }
+
+    onAddMissingLanguages (){
+        const {props, state} = this;
+        const {tabId} = props.page;
+        props.dispatch(LanguagesActions.addMissingLanguages(tabId, (data) => {
+            this.getLanguages();
+        }));
+    }
+
+    onNotifyTranslators (){}
+    onUpdateLocalization (){}
 
     componentWillReceiveProps(newProps) {
     }
@@ -75,10 +96,39 @@ class PageLocalization extends Component {
         return pageLanguages;
     }
 
+    onSendNotifyMessage () {
+        const {props, state} = this;
+        const {tabId} = props.page;
+        const params = {TabId: tabId, Text: this.state.notifyMessage};
+        props.dispatch(LanguagesActions.notifyTranslators(params, (data) => {
+            this.onCloseNotifyModal();
+        }));
+    }
+
+    onUpdateNotifyMessage (e) {
+        this.setState({notifyMessage: e.target.value});
+    }
+
     render() {
-        const {Locales, Modules, Pages} = this.state;
+        const {Locales, Modules, Pages, ErrorExists} = this.state;
         const Languages = this.getAllLanguages();
-        const containerStyle = {width: (Languages.length - 1) * 250}; 
+        const containerStyle = { width: (Languages.length - 1) * 250 };
+
+        if (ErrorExists) {
+            return <div className="neutral-page">
+                <div className="left-panel">
+                    <p>{Localization.get("NeutralPageText") }</p>
+                    <p>{Localization.get("NeutralPageClickButton") }</p>
+                </div>
+                <div className="right-panel">
+                    <Button
+                        type="secondary"
+                        onClick={this.makePageTranslatable.bind(this) }>
+                        {Localization.get("MakePagesTranslatable") }
+                    </Button>
+                </div>
+            </div>;
+        }
 
         return <div className="page-localization">
             <div className="page-localization-container">
@@ -96,16 +146,37 @@ class PageLocalization extends Component {
                     </Scrollbars>
                 </div>
             </div>
-            <Button
-                type="secondary"
-                onClick={this.makePageTranslatable.bind(this) }>
-                {Localization.get("MakePagesTranslatable") }
-            </Button>
-            <Button
-                type="secondary"
-                onClick={this.makePageNeutral.bind(this) }>
-                {Localization.get("MakePageNeutral") }
-            </Button>
+            <div className="button-container">
+                <Button
+                    type="secondary"
+                    className="float-left"
+                    onClick={this.makePageNeutral.bind(this) }>
+                    {Localization.get("MakePageNeutral") }
+                </Button>
+                <Button
+                    type="secondary"
+                    className="float-left"
+                    onClick={this.onAddMissingLanguages.bind(this) }>
+                    {Localization.get("AddMissingLanguages") }
+                </Button>
+                <Button
+                    type="primary"
+                    className="float-right"
+                    onClick={this.onUpdateLocalization.bind(this) }>
+                    {Localization.get("UpdateLocalization") }
+                </Button>
+                <Button
+                    type="secondary"
+                    className="float-right"
+                    onClick={this.onOpenNotifyModal.bind(this) }>
+                    {Localization.get("NotifyTranslators") }
+                </Button>
+            </div>
+            {this.state.showNotifyModal && <NotifyModal 
+                onSend={this.onSendNotifyMessage.bind(this)}
+                onUpdateMessage={this.onUpdateNotifyMessage.bind(this)}
+                notifyMessage={this.state.notifyMessage}
+                onClose={this.onCloseNotifyModal.bind(this)} />}
         </div>;
     }
 }

@@ -32,6 +32,16 @@ class LanguageService {
         const sf = this.getServiceFramework("Pages");
         sf.post("MakePageNeutral?" + serializeQueryStringParameters({ tabId }), {}, callback);
     }
+
+    addMissingLanguages(tabId, callback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.post("AddMissingLanguages?" + serializeQueryStringParameters({ tabId }), {}, callback);
+    }
+
+    notifyTranslators(params, callback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.post("NotifyTranslators", params, callback);
+    }
 }
 
 const languageService = new LanguageService();
