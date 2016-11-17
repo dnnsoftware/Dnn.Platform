@@ -53,8 +53,8 @@ class SchedulerRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component1"}>
-                <div className={"collapsible-header1 " + !opened} >
+            <div className={"collapsible-component-scheduler" + (opened ? " row-opened" : "")}>
+                <div className={"collapsible-header-scheduler " + !opened} >
                     <div className={"row"}>
                         <div title={props.name} className="schedule-item item-row-name">
                             {props.name}&nbsp; </div>
