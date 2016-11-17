@@ -105,15 +105,20 @@ class ProfilePropertiesPanel extends Component {
     onDeleteProperty(propertyId) {
         const {props, state} = this;
 
-        util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
-            props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
-                util.utilities.notify(resx.get("DeleteSuccess"));
-                this.collapse();
-            }, (error) => {
-                util.utilities.notify(resx.get("DeleteError"));
-            }));
-        });
+        if (props.profilePropertyClientModified) {
+            util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
+        }
+        else {
+            util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
+                const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
+                props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
+                    util.utilities.notify(resx.get("DeleteSuccess"));
+                    this.collapse();
+                }, (error) => {
+                    util.utilities.notify(resx.get("DeleteError"));
+                }));
+            });
+        }
     }
 
     findWithAttr(array, attr, value) {
@@ -131,39 +136,29 @@ class ProfilePropertiesPanel extends Component {
         const {props, state} = this;
 
         if (props.profilePropertyClientModified) {
-            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
-                this.moveUp(propertyId);
-            }, () => {
-                return;
-            });
+            util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            this.moveUp(propertyId);
-        }
-    }
+            const itemList = Object.assign([], props.profileProperties);
+            let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
-    moveUp(propertyId) {
-        const {props} = this;
-        const itemList = Object.assign([], props.profileProperties);
-        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
-
-        if (index > 0) {
-            let tmp = itemList[index];
-            itemList[index] = itemList[index - 1];
-            itemList[index - 1] = tmp;
-            props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
-                {
-                    PortalId: props.portalId,
-                    FirstPropertyDefinitionId: propertyId,
-                    SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
-                }, itemList, () => {
-                    util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
-                    this.collapse();
-                }, (error) => {
-                    const errorMessage = JSON.parse(error.responseText);
-                    util.utilities.notifyError(errorMessage.Message);
-                }));
+            if (index > 0) {
+                let tmp = itemList[index];
+                itemList[index] = itemList[index - 1];
+                itemList[index - 1] = tmp;
+                props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+                    {
+                        PortalId: props.portalId,
+                        FirstPropertyDefinitionId: propertyId,
+                        SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
+                    }, itemList, () => {
+                        util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
+                        this.collapse();
+                    }, (error) => {
+                        const errorMessage = JSON.parse(error.responseText);
+                        util.utilities.notifyError(errorMessage.Message);
+                    }));
+            }
         }
     }
 
@@ -171,40 +166,29 @@ class ProfilePropertiesPanel extends Component {
         const {props, state} = this;
 
         if (props.profilePropertyClientModified) {
-            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
-                this.moveDown(propertyId);
-            }, () => {
-                return;
-            });
+            util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            this.moveDown(propertyId);
-        }
-    }
+            const itemList = Object.assign([], props.profileProperties);
+            let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
-    moveDown(propertyId) {
-        const {props} = this;
-
-        const itemList = Object.assign([], props.profileProperties);
-        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
-
-        if (index < itemList.length - 1) {
-            let tmp = itemList[index];
-            itemList[index] = itemList[index + 1];
-            itemList[index + 1] = tmp;
-            props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
-                {
-                    PortalId: props.portalId,
-                    FirstPropertyDefinitionId: propertyId,
-                    SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
-                }, itemList, () => {
-                    util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
-                    this.collapse();
-                }, (error) => {
-                    const errorMessage = JSON.parse(error.responseText);
-                    util.utilities.notifyError(errorMessage.Message);
-                }));
+            if (index < itemList.length - 1) {
+                let tmp = itemList[index];
+                itemList[index] = itemList[index + 1];
+                itemList[index + 1] = tmp;
+                props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+                    {
+                        PortalId: props.portalId,
+                        FirstPropertyDefinitionId: propertyId,
+                        SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
+                    }, itemList, () => {
+                        util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
+                        this.collapse();
+                    }, (error) => {
+                        const errorMessage = JSON.parse(error.responseText);
+                        util.utilities.notifyError(errorMessage.Message);
+                    }));
+            }
         }
     }
 

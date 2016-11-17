@@ -1200,4 +1200,7 @@
   <data name="ViewOrderUpdateSuccess.Text" xml:space="preserve">
     <value>View orders have been updated.</value>
   </data>
+  <data name="SaveOrCancelWarning.Text" xml:space="preserve">
+    <value>You have unsaved changes. Please save or cancel your changes first.</value>
+  </data>  
 </root>

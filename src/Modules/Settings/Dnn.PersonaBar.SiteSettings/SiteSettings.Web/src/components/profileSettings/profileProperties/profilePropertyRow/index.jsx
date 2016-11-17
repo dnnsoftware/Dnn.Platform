@@ -2,10 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon } from "dnn-svg-icons";
-
-const ArrowMoveUpIcong = require(`!raw!./svg/arrow_moveup.svg`);
-const ArrowMoveDownIcong = require(`!raw!./svg/arrow_movedown.svg`);
+import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon, ArrowMoveUpIcon, ArrowMoveDownIcon } from "dnn-svg-icons";
 
 class ProfilePropertyRow extends Component {
     componentWillMount() {
@@ -55,8 +52,8 @@ class ProfilePropertyRow extends Component {
                 <div className={"collapsible-header-properties " + !opened} >
                     <div className={"row"}>
                         <div className="property-item item-row-orderButton">                            
-                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveDownIcong }} onClick={props.onMoveDown}></div>
-                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveUpIcong }} onClick={props.onMoveUp}></div>&nbsp;
+                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveDownIcon }} onClick={props.onMoveDown}></div>
+                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveUpIcon }} onClick={props.onMoveUp}></div>&nbsp;
                         </div>
                         <div title={props.name} className="property-item item-row-name">
                             {props.name}&nbsp; </div>
