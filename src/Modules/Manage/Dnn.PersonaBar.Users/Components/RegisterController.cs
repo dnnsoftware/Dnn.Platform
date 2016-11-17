@@ -219,11 +219,11 @@ namespace Dnn.PersonaBar.Users.Components
                 return null;
             }
 
-            if (registerationDetails.IgnoreRegistrationMode)
-            {
-                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-                return UserBasicDto.FromUserInfo(newUser);
-            }
+//            if (registerationDetails.IgnoreRegistrationMode)
+//            {
+//                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
+//                return UserBasicDto.FromUserInfo(newUser);
+//            }
 
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
