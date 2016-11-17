@@ -48,7 +48,7 @@ class ProfilePropertyRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component-properties"}>
+            <div className={"collapsible-component-properties" + (opened ? " row-opened" : "")}>
                 <div className={"collapsible-header-properties " + !opened} >
                     <div className={"row"}>
                         <div className="property-item item-row-orderButton">                            

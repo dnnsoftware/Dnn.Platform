@@ -153,7 +153,7 @@ class LanguageRow extends Component {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         if (props.contentLocalizationEnabled) {
             return (
-                <div className={"collapsible-component-language"}>
+                <div className={"collapsible-component-language" + (opened ? " row-opened" : "")}>
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name-adv">
@@ -187,7 +187,7 @@ class LanguageRow extends Component {
         }
         else {
             return (
-                <div className={"collapsible-component-language"}>
+                <div className={"collapsible-component-language" + (opened ? " row-opened" : "")}>
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name">

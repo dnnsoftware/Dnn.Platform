@@ -1,11 +1,17 @@
 @import "../../less/globals.less";
 @import "~dnn-global-styles/index";
 #siteSettings-container {
-    .socialpanelbody {        
+    .socialpanelbody {
         > div {
             .normalPanel {
                 .searchpanel {
-                    border-bottom: 0;                 
+                    border-bottom: 0;
+                    .row-opened {
+                        margin-top: -1px;
+                        margin-bottom: -1px;
+                        border-top: 1px solid @curiousBlue;
+                        border-bottom: 1px solid @curiousBlue !important;
+                    }
                 }
             }
         }
