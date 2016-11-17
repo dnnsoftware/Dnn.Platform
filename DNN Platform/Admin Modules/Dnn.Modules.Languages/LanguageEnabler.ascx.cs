@@ -638,7 +638,7 @@ namespace Dnn.Modules.Languages
 
                     if (publishedCheckbox.Enabled)
                     {
-                        LocaleController.Instance.PublishLanguage(PortalId, locale.Code, publishedCheckbox.Checked);
+                        LocaleController.Instance.ActivateLanguage(PortalId, locale.Code, publishedCheckbox.Checked);
                     }
 
                     //Redirect to refresh page (and skinobjects)
