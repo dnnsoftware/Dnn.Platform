@@ -63,8 +63,17 @@ class ProfilePropertiesPanel extends Component {
     }
 
     toggle(openId) {
+        const {props} = this;
         if (openId !== "") {
-            this.uncollapse(openId);
+            if (props.profilePropertyClientModified) {
+                util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                    props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
+                    this.uncollapse(openId);
+                });
+            }
+            else {
+                this.uncollapse(openId);
+            }
         }
     }
 
@@ -94,7 +103,17 @@ class ProfilePropertiesPanel extends Component {
     }
 
     onDeleteProperty(propertyId) {
+        const {props, state} = this;
 
+        util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
+            const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
+            props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
+                util.utilities.notify(resx.get("DeleteSuccess"));
+                this.collapse();
+            }, (error) => {
+                util.utilities.notify(resx.get("DeleteError"));
+            }));
+        });
     }
 
     findWithAttr(array, attr, value) {
@@ -111,13 +130,28 @@ class ProfilePropertiesPanel extends Component {
     onMovePropertyUp(propertyId) {
         const {props, state} = this;
 
+        if (props.profilePropertyClientModified) {
+            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
+                this.moveUp(propertyId);
+            }, () => {
+                return;
+            });
+        }
+        else {
+            this.moveUp(propertyId);
+        }
+    }
+
+    moveUp(propertyId) {
+        const {props} = this;
         const itemList = Object.assign([], props.profileProperties);
-        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);        
+        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
         if (index > 0) {
             let tmp = itemList[index];
             itemList[index] = itemList[index - 1];
-            itemList[index-1] = tmp;
+            itemList[index - 1] = tmp;
             props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
                 {
                     PortalId: props.portalId,
@@ -136,13 +170,29 @@ class ProfilePropertiesPanel extends Component {
     onMovePropertyDown(propertyId) {
         const {props, state} = this;
 
+        if (props.profilePropertyClientModified) {
+            util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
+                props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
+                this.moveDown(propertyId);
+            }, () => {
+                return;
+            });
+        }
+        else {
+            this.moveDown(propertyId);
+        }
+    }
+
+    moveDown(propertyId) {
+        const {props} = this;
+
         const itemList = Object.assign([], props.profileProperties);
         let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
         if (index < itemList.length - 1) {
             let tmp = itemList[index];
             itemList[index] = itemList[index + 1];
-            itemList[index+1] = tmp;
+            itemList[index + 1] = tmp;
             props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
                 {
                     PortalId: props.portalId,
@@ -243,13 +293,15 @@ ProfilePropertiesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
     profileProperties: PropTypes.array,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    profilePropertyClientModified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
     return {
         profileProperties: state.siteBehavior.profileProperties,
-        tabIndex: state.pagination.tabIndex
+        tabIndex: state.pagination.tabIndex,
+        profilePropertyClientModified: state.siteBehavior.profilePropertyClientModified
     };
 }
 

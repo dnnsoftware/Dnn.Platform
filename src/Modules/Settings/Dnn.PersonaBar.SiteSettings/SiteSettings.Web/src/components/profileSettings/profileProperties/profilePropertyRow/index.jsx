@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon, ArrowUpIcon, ArrowDownIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon } from "dnn-svg-icons";
+
+const ArrowMoveUpIcong = require(`!raw!./svg/arrow_moveup.svg`);
+const ArrowMoveDownIcong = require(`!raw!./svg/arrow_movedown.svg`);
 
 class ProfilePropertyRow extends Component {
     componentWillMount() {
@@ -35,7 +38,7 @@ class ProfilePropertyRow extends Component {
     isSystemProperty(name) {
         let flag = false;
         let systemProperties = ["lastname", "firstname", "preferredtimezone", "preferredlocale"];
-        if(name) {
+        if (name) {
             if (systemProperties.indexOf(name.toLowerCase()) > -1) {
                 flag = true;
             }
@@ -48,9 +51,13 @@ class ProfilePropertyRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component1"}>
-                <div className={"collapsible-header1 " + !opened} >
+            <div className={"collapsible-component-properties"}>
+                <div className={"collapsible-header-properties " + !opened} >
                     <div className={"row"}>
+                        <div className="property-item item-row-orderButton">                            
+                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveDownIcong }} onClick={props.onMoveDown}></div>
+                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveUpIcong }} onClick={props.onMoveUp}></div>&nbsp;
+                        </div>
                         <div title={props.name} className="property-item item-row-name">
                             {props.name}&nbsp; </div>
                         <div className="property-item item-row-dataType">
@@ -61,14 +68,12 @@ class ProfilePropertyRow extends Component {
                             {this.getBooleanDisplay(props.required)}</div>
                         <div className="property-item item-row-visible">
                             {this.getBooleanDisplay(props.visible)}</div>
-                        <div className="property-item item-row-editButton">   
-                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowUpIcon }} onClick={props.onMoveUp}></div>    
-                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={props.onMoveDown}></div>                     
+                        <div className="property-item item-row-editButton">
                             {!this.isSystemProperty(props.name) &&
                                 <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete}></div>
                             }
                             <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                 <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>

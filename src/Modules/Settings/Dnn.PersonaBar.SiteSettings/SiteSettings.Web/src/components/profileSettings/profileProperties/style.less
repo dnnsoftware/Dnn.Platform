@@ -15,15 +15,25 @@
                                 border: solid 1px @alto;
                                 float: left;
                                 width: 100%;
-                                .collapsible-component1 {
+                                .collapsible-component-properties {
                                     &:nth-child(2) {
                                         .up-icon {
-                                            display: none !important;
+                                            cursor: default;
+                                            > svg {                                                
+                                                &:hover {
+                                                    fill: @alto;
+                                                }
+                                            }
                                         }
                                     }
                                     &:last-child {
                                         .down-icon {
-                                            display: none !important;
+                                            cursor: default;
+                                            > svg {                                                
+                                                &:hover {
+                                                    fill: @alto;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -36,10 +46,10 @@
                                 overflow: hidden;
                             }
                             .header-Name {
-                                width: 23%;
+                                width: 29%;
                                 float: left;
                                 font-weight: bolder;
-                                padding-left: 15px;
+                                padding-left: 60px;
                             }
                             .header-DataType {
                                 width: 20%;

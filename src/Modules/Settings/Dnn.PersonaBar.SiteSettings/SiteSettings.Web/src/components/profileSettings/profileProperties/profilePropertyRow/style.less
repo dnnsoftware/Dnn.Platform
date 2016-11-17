@@ -1,12 +1,12 @@
 @import "~dnn-global-styles/index";
-.collapsible-component1 {
+.collapsible-component-properties {
     display: inline-block;
     width: 100%;
     cursor: auto;
     &:not(:last-child) {
         border-bottom: 1px solid @alto;
     }
-    div.collapsible-header1 {
+    div.collapsible-header-properties {
         width: 100%;
         float: left;
         position: relative;
@@ -43,10 +43,50 @@
                     }
                 }
             }
-            .item-row-editButton {
-                width: 12% !important;
+            .item-row-orderButton {
+                width: 6%;
+                height: 16px;
                 float: right;
                 margin-right: 5px;
+                &:not(:last-child) {
+                    float: left;
+                    margin-right: 0px;
+                }
+                .up-icon,
+                .down-icon {
+                    display: block;
+                    cursor: pointer;
+                    float: right;
+                    margin-left: 5px;
+                    > svg {
+                        width: 16px;
+                        float: left;
+                        height: 16px;
+                        &:hover {
+                            fill: @curiousBlue;
+                        }
+                        fill: @alto;
+                    }
+                }
+                .up-icon-hidden,
+                .down-icon-hidden {
+                    display: none;
+                }
+                .up-icon-active,
+                .down-icon-active {
+                    > svg {
+                        float: right;
+                        margin-left: 5px;
+                        width: 16px;
+                        height: 16px;
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .item-row-editButton {
+                width: 7% !important;
+                float: right;
+                margin-right: 10px;
                 &:not(:last-child) {
                     float: left;
                     margin-right: 0px;
