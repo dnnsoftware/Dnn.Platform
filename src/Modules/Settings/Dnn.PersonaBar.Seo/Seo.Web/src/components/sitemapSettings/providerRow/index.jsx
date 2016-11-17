@@ -48,8 +48,8 @@ class ProviderRow extends Component {
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         if (props.visible) {
             return (
-                <div className={"collapsible-component1"}>
-                    <div className={"collapsible-header1 " + !opened} >
+                <div className={"collapsible-component-providers" + (opened ? " row-opened" : "")}>
+                    <div className={"collapsible-providers " + !opened} >
                         <div className={"row"}>
                             <div className="provider-item item-row-name">
                                 {props.name}
