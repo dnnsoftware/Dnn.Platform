@@ -53,6 +53,8 @@ const UploadCircleIcon = require(`!raw!./svg/upload_circle.svg`);
 const XIcon = require(`!raw!./svg/x.svg`);
 const XThinIcon = require(`!raw!./svg/x_thin.svg`);
 const ModuleIcon = require(`!raw!./svg/module.svg`);
+const ArrowMoveUpIcon = require(`!raw!./svg/arrow_moveup.svg`);
+const ArrowMoveDownIcon = require(`!raw!./svg/arrow_movedown.svg`);
 export {
     ActivityIcon, 
     AddIcon,
@@ -107,5 +109,7 @@ export {
     UploadCircleIcon,
     XIcon,
     XThinIcon,
-	ModuleIcon
+	ModuleIcon,
+    ArrowMoveUpIcon,
+    ArrowMoveDownIcon
 };
