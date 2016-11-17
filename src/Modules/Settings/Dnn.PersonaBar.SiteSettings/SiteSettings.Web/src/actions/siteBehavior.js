@@ -523,6 +523,25 @@ const siteBehaviorActions = {
                 }
             });
         };
+    },
+    swapProfilePropertyOrders(payload, properties, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.swapProfilePropertyOrders(payload, data => {
+                dispatch({
+                    type: ActionTypes.SWAPPED_SITESETTINGS_PROFILE_PROPERTY_ORDER,
+                    data: {
+                        profileProperties: properties
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
     }
 };
 

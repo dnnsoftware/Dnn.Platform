@@ -10,11 +10,23 @@
                             width: 100%;
                             float: left;
                             margin: 15px 0 0 0;
-                            box-sizing: border-box;                   
+                            box-sizing: border-box;
                             .property-items-grid {
-                                border: solid 1px @alto;                                
-                                float: left;   
-                                width: 100%;                             
+                                border: solid 1px @alto;
+                                float: left;
+                                width: 100%;
+                                .collapsible-component1 {
+                                    &:nth-child(2) {
+                                        .up-icon {
+                                            display: none !important;
+                                        }
+                                    }
+                                    &:last-child {
+                                        .down-icon {
+                                            display: none !important;
+                                        }
+                                    }
+                                }
                             }
                             .header-row {
                                 border-bottom: 1px solid @alto;
@@ -24,7 +36,7 @@
                                 overflow: hidden;
                             }
                             .header-Name {
-                                width: 25%;
+                                width: 23%;
                                 float: left;
                                 font-weight: bolder;
                                 padding-left: 15px;
@@ -67,7 +79,7 @@
                                         }
                                     }
                                 }
-                            }                            
+                            }
                             .AddItemRow {
                                 text-align: right;
                                 width: 100%;
@@ -76,11 +88,11 @@
                                 font-weight: bolder;
                                 border-bottom: 1px solid @alto;
                                 overflow: hidden;
-                                height: 25px;    
+                                height: 25px;
                                 .sectionTitle {
                                     font-weight: bolder;
                                     float: left;
-                                }                            
+                                }
                                 .AddItemBox {
                                     width: auto;
                                     float: right;
@@ -116,7 +128,7 @@
                                     }
                                 }
                             }
-                            .property-item{
+                            .property-item {
                                 color: @thunder;
                             }
                         }

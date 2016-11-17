@@ -17,7 +17,7 @@
             float: left;
             width: 100%;
             .item-row-name {
-                width: 25%;
+                width: 23%;
                 float: left;
                 padding-left: 15px;
             }
@@ -44,14 +44,17 @@
                 }
             }
             .item-row-editButton {
-                width: 10%;
+                width: 12% !important;
                 float: right;
                 margin-right: 5px;
                 &:not(:last-child) {
                     float: left;
                     margin-right: 0px;
                 }
-                .delete-icon, .edit-icon, .drag-icon {
+                .delete-icon, 
+                .edit-icon, 
+                .up-icon,
+                .down-icon {
                     display: block;
                     cursor: pointer;
                     float: right;
@@ -67,10 +70,13 @@
                     }
                 }
                 .delete-icon-hidden,
-                .drag-icon-hidden {
+                .up-icon-hidden,
+                .down-icon-hidden {
                     display: none;
                 }
-                .edit-icon-active, .drag-icon-active {
+                .edit-icon-active, 
+                .up-icon-active,
+                .down-icon-active {
                     > svg {
                         float: right;
                         margin-left: 5px;

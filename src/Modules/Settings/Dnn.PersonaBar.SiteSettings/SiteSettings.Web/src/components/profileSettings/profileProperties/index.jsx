@@ -94,16 +94,68 @@ class ProfilePropertiesPanel extends Component {
     }
 
     onDeleteProperty(propertyId) {
+
+    }
+
+    findWithAttr(array, attr, value) {
+        if (array) {
+            for (let i = 0; i < array.length; i += 1) {
+                if (array[i][attr] === value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    onMovePropertyUp(propertyId) {
         const {props, state} = this;
-        util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
-            props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
-                util.utilities.notify(resx.get("DeleteSuccess"));
-                this.collapse();
-            }, (error) => {
-                util.utilities.notify(resx.get("DeleteError"));
-            }));
-        });
+
+        const itemList = Object.assign([], props.profileProperties);
+        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);        
+
+        if (index > 0) {
+            let tmp = itemList[index];
+            itemList[index] = itemList[index - 1];
+            itemList[index-1] = tmp;
+            props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+                {
+                    PortalId: props.portalId,
+                    FirstPropertyDefinitionId: propertyId,
+                    SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
+                }, itemList, () => {
+                    util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
+                    this.collapse();
+                }, (error) => {
+                    const errorMessage = JSON.parse(error.responseText);
+                    util.utilities.notifyError(errorMessage.Message);
+                }));
+        }
+    }
+
+    onMovePropertyDown(propertyId) {
+        const {props, state} = this;
+
+        const itemList = Object.assign([], props.profileProperties);
+        let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
+
+        if (index < itemList.length - 1) {
+            let tmp = itemList[index];
+            itemList[index] = itemList[index + 1];
+            itemList[index+1] = tmp;
+            props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+                {
+                    PortalId: props.portalId,
+                    FirstPropertyDefinitionId: propertyId,
+                    SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
+                }, itemList, () => {
+                    util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
+                    this.collapse();
+                }, (error) => {
+                    const errorMessage = JSON.parse(error.responseText);
+                    util.utilities.notifyError(errorMessage.Message);
+                }));
+        }
     }
 
     /* eslint-disable react/no-danger */
@@ -127,10 +179,12 @@ class ProfilePropertiesPanel extends Component {
                         OpenCollapse={this.toggle.bind(this)}
                         Collapse={this.collapse.bind(this)}
                         onDelete={this.onDeleteProperty.bind(this, item.PropertyDefinitionId)}
+                        onMoveUp={this.onMovePropertyUp.bind(this, item.PropertyDefinitionId)}
+                        onMoveDown={this.onMovePropertyDown.bind(this, item.PropertyDefinitionId)}
                         id={id}>
                         <ProfilePropertyEditor
                             propertyId={item.PropertyDefinitionId}
-                            Collapse={this.collapse.bind(this)}                            
+                            Collapse={this.collapse.bind(this)}
                             onUpdate={this.onUpdateProperty.bind(this)}
                             id={id}
                             openId={this.state.openId} />
@@ -166,6 +220,8 @@ class ProfilePropertiesPanel extends Component {
                                 OpenCollapse={this.toggle.bind(this)}
                                 Collapse={this.collapse.bind(this)}
                                 onDelete={this.onDeleteProperty.bind(this)}
+                                onMoveUp={this.onMovePropertyUp.bind(this)}
+                                onMoveDown={this.onMovePropertyDown.bind(this)}
                                 id={"add"}>
                                 <ProfilePropertyEditor
                                     Collapse={this.collapse.bind(this)}

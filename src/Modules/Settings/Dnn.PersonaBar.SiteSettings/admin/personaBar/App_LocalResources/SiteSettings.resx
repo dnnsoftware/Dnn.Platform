@@ -1194,4 +1194,10 @@
   <data name="Active.Header" xml:space="preserve">
     <value>ACTIVE</value>
   </data>
+  <data name="PropertyDefinitionUpdateSuccess.Text" xml:space="preserve">
+    <value>Property Definitions have been updated.</value>
+  </data>
+  <data name="ViewOrderUpdateSuccess.Text" xml:space="preserve">
+    <value>View orders have been updated.</value>
+  </data>
 </root>

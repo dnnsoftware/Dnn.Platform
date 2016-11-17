@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon, ArrowUpIcon, ArrowDownIcon } from "dnn-svg-icons";
 
 class ProfilePropertyRow extends Component {
     componentWillMount() {
@@ -43,10 +43,6 @@ class ProfilePropertyRow extends Component {
         return flag;
     }
 
-    dragRow(){
-        
-    }
-
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -66,9 +62,10 @@ class ProfilePropertyRow extends Component {
                         <div className="property-item item-row-visible">
                             {this.getBooleanDisplay(props.visible)}</div>
                         <div className="property-item item-row-editButton">   
-                            <div className={opened ? "drag-icon-hidden" : "drag-icon"} dangerouslySetInnerHTML={{ __html: DragRowIcon }} onClick={this.dragRow.bind(this)}></div>                         
+                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowUpIcon }} onClick={props.onMoveUp}></div>    
+                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={props.onMoveDown}></div>                     
                             {!this.isSystemProperty(props.name) &&
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete.bind(this)}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete}></div>
                             }
                             <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}></div>
                         </div>                        
@@ -90,6 +87,8 @@ ProfilePropertyRow.propTypes = {
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,
     onDelete: PropTypes.func,
+    onMoveUp: PropTypes.func,
+    onMoveDown: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string
 };

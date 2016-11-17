@@ -418,8 +418,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     DefaultVisibility = v.DefaultVisibility.ToString(),
                     v.Required,
                     v.Visible,
+                    v.ViewOrder,
                     CanDelete = CanDeleteProperty(v)
-                });
+                }).OrderBy(v => v.ViewOrder);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -657,6 +658,47 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                             string.Format(Localization.GetString("RequiredTextBox", LocalResourcesFile)));
                     }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false });
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SiteSettings/SwapProfilePropertyOrders
+        /// <summary>
+        /// Moves profile property
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage SwapProfilePropertyOrders(SwapProfilePropertyOrdersRequest request)
+        {
+            try
+            {
+                var pid = request.PortalId ?? PortalId;
+
+                if (request.FirstPropertyDefinitionId != Null.NullInteger && request.SecondPropertyDefinitionId != Null.NullInteger)
+                {
+                    var firstProfileProperty = ProfileController.GetPropertyDefinition(request.FirstPropertyDefinitionId, pid);
+                    var secondProfileProperty = ProfileController.GetPropertyDefinition(request.SecondPropertyDefinitionId, pid);
+
+                    int firstViewOrder = firstProfileProperty.ViewOrder;
+
+                    firstProfileProperty.ViewOrder = secondProfileProperty.ViewOrder;
+                    secondProfileProperty.ViewOrder = firstViewOrder;
+
+                    ProfileController.UpdatePropertyDefinition(firstProfileProperty);
+                    ProfileController.UpdatePropertyDefinition(secondProfileProperty);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
                 else
                 {
