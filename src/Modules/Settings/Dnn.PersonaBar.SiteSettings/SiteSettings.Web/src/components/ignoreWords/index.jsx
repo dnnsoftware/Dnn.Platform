@@ -200,10 +200,10 @@ class IgnoreWordsPanel extends Component {
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                                 <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                                 </div> {resx.get("cmdAddWord")}
-                        </div>
+                            </div>
                         }
                         {this.props.cultures && this.props.cultures.length > 1 &&
-                            <div className="synonyms-filter">
+                            <div className="language-filter">
                                 <DropDown
                                     value={this.state.culture}
                                     fixedHeight={200}

@@ -26,8 +26,8 @@ class SynonymsGroupRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component1"}>
-                <div className={"collapsible-header1 " + !opened} >
+            <div className={"collapsible-component-synonyms"}>
+                <div className={"collapsible-header-synonyms " + !opened} >
                     <div className={"row"}>
                         <div className="synonyms-item item-row-tags">
                             {props.tags}</div>                        

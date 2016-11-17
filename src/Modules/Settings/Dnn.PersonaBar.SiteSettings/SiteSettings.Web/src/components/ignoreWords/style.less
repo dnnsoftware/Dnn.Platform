@@ -10,13 +10,14 @@
                             width: 100%;
                             float: left;
                             padding: 30px;
-                            box-sizing: border-box;                   
+                            box-sizing: border-box;
                             .words-items-grid {
-                                border: solid 1px @alto;                                
-                                float: left;   
-                                width: 100%;                             
+                                border: solid 1px @alto;
+                                float: left;
+                                width: 100%;
                             }
                             .header-row {
+                                text-transform: uppercase;
                                 &:last-child {
                                     border-bottom: 0;
                                 }
@@ -25,13 +26,13 @@
                                 width: 100%;
                                 float: left;
                                 overflow: hidden;
+                                .header-IgnoreWords {
+                                    width: 85%;
+                                    float: left;
+                                    font-weight: bolder;
+                                    margin-left: 15px;
+                                }
                             }
-                            .header-IgnoreWords {
-                                width: 85%;
-                                float: left;
-                                font-weight: bolder;
-                                margin-left: 15px;
-                            }                            
                             .collapsible-component {
                                 .collapsible-header {
                                     text-align: right;
@@ -44,7 +45,7 @@
                                         }
                                     }
                                 }
-                            }                            
+                            }
                             .AddItemRow {
                                 text-align: right;
                                 width: 100%;
@@ -53,13 +54,14 @@
                                 padding: 0 0 5px 0;
                                 font-weight: bolder;
                                 border-bottom: 1px solid @alto;
-                                height: 25px;    
+                                height: 25px;
                                 .sectionTitle {
                                     font-weight: bolder;
                                     float: left;
                                     text-transform: uppercase;
-                                }                            
-                                .synonyms-filter {
+                                }
+                                .language-filter {
+                                    height: 32px;
                                     float: right;
                                     margin: -7px 0 0 0;
                                     border-left: 1px solid @alto;
@@ -121,7 +123,7 @@
                                     }
                                 }
                             }
-                            .words-item{
+                            .words-item {
                                 color: @thunder;
                             }
                         }
