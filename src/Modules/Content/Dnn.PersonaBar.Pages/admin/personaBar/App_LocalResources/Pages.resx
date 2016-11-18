@@ -175,7 +175,7 @@
     <value>An error has occurred.</value>
   </data>
   <data name="DeleteModuleConfirm.Text" xml:space="preserve">
-    <value>Are you sure you want delete the module "[MODULETITLE]" from this page?</value>
+    <value>Are you sure you want to delete the module "[MODULETITLE]" from this page?</value>
   </data>
   <data name="SitemapPriority.Text" xml:space="preserve">
     <value>Sitemap Priority</value>
