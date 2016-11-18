@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     ExtensionActions,
-    PaginationActions
+    PaginationActions,
+    VisiblePanelActions
 } from "actions";
 import Localization from "localization";
 import ExtensionList from "./ExtensionList";
@@ -54,11 +55,11 @@ class InstalledExtensions extends Component {
         props.dispatch(ExtensionActions.getInstalledPackages(option.value));
     }
 
-    onDelete(packageId, index) {
+    onDelete(_package, index) {
         const {props} = this;
-        utilities.utilities.confirm(Localization.get("DeleteExtension.Warning"), Localization.get("DeleteExtension.Confirm"), Localization.get("DeleteExtension.Cancel"), () => {
-            props.dispatch(ExtensionActions.deletePackage(packageId, index));
-        });
+        props.dispatch(ExtensionActions.setPackageBeingDeleted(Object.assign({ packageType: props.selectedInstalledPackageType }, _package), index, () => {
+            props.dispatch(VisiblePanelActions.selectPanel(6));
+        }));
     }
 
     render() {

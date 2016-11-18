@@ -162,11 +162,11 @@ class PackageInformation extends Component {
                             onChange={props.onChange && props.onChange.bind(this, "email")} />
                     </div>
                 </GridSystem>
-                <GridCell columnSize={100} className="modal-footer">
+                {!props.buttonsAreHidden && <GridCell columnSize={100} className="modal-footer">
                     <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("Cancel.Button")}</Button>
                     {!props.disabled && <Button type="primary" onClick={props.onSave.bind(this, true)}>{Localization.get("EditModule_SaveAndClose.Button")}</Button>}
                     {(!props.disabled || props.installationMode) && <Button type="primary" onClick={props.onSave.bind(this)}>{props.primaryButtonText}</Button>}
-                </GridCell>
+                </GridCell>}
             </GridCell>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>

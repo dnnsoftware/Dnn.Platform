@@ -151,9 +151,9 @@ const extensionActions = {
             }, errorCallback);
         };
     },
-    deletePackage(packageId, index, callback) {
+    deletePackage(payload, index, callback) {
         return (dispatch) => {
-            ExtensionService.deletePackage(packageId, (data) => {
+            ExtensionService.deletePackage(payload, (data) => {
                 dispatch({
                     type: ActionTypes.DELETED_EXTENSION,
                     payload: {
@@ -164,6 +164,30 @@ const extensionActions = {
                     callback(data);
                 }
             }, errorCallback);
+        };
+    },
+    setPackageBeingDeleted(extensionBeingDeleted, extensionBeingDeletedIndex, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_EXTENSION_BEING_DELETED,
+                payload: {
+                    extensionBeingDeleted,
+                    extensionBeingDeletedIndex
+                }
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+    toggleDeleteFiles(callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.TOGGLE_DELETE_EXTENSION_FILES
+            });
+            if (callback) {
+                callback();
+            }
         };
     },
     createNewModule(payload, shouldAppend, callback) {

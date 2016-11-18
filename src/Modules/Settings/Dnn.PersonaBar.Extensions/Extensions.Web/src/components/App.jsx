@@ -7,6 +7,7 @@ import NewModuleModal from "./NewModuleModal";
 import InstallExtensionModal from "./installExtensionModal";
 import EditExtension from "./EditExtension";
 import CreatePackageModal from "./CreatePackageModal";
+import DeleteExtension from "./DeleteExtension";
 import { VisiblePanelActions } from "actions";
 
 
@@ -52,6 +53,11 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 5}>
                     {props.selectedPage === 5 &&
                         <CreatePackageModal onCancel={this.selectPanel.bind(this, 4)} />
+                    }
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 6}>
+                    {props.selectedPage === 6 &&
+                        <DeleteExtension onCancel={this.selectPanel.bind(this, 0)} />
                     }
                 </PersonaBarPage>
             </div>

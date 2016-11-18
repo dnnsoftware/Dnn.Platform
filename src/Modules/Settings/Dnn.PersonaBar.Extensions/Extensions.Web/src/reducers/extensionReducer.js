@@ -67,7 +67,10 @@ export default function extension(state = {
     moduleCategories: [],
     tabBeingEdited: 0,
     locales: [],
-    localePackages: []
+    localePackages: [],
+    extensionBeingDeleted: {},
+    extensionBeingDeletedIndex: -1,
+    deleteExtensionFiles: false
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_INSTALLED_PACKAGES:
@@ -86,7 +89,17 @@ export default function extension(state = {
             };
         case ActionTypes.DELETED_EXTENSION:
             return { ...state,
-                installedPackages: removeRecordFromArray(state.installedPackages, action.payload.index)
+                installedPackages: removeRecordFromArray(state.installedPackages, action.payload.index),
+                deleteExtensionFiles: false
+            };
+        case ActionTypes.SET_EXTENSION_BEING_DELETED:
+            return {...state,
+                extensionBeingDeleted: action.payload.extensionBeingDeleted,
+                extensionBeingDeletedIndex: action.payload.extensionBeingDeletedIndex
+            };
+        case ActionTypes.TOGGLE_DELETE_EXTENSION_FILES:
+            return { ...state,
+                deleteExtensionFiles: !state.deleteExtensionFiles
             };
         case ActionTypes.EDIT_EXTENSION:
             return { ...state,

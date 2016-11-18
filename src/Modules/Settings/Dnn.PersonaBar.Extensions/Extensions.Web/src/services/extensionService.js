@@ -91,9 +91,9 @@ class ExtensionService {
         };
         sf.post("InstallAvailablePackage", payload, callback);
     }
-    deletePackage(packageId, callback) {
+    deletePackage(payload, callback) {
         const sf = this.getServiceFramework("Extensions");
-        sf.post("DeletePackage", { id: packageId }, callback);
+        sf.post("DeletePackage", payload, callback);
     }
     parsePackage(file, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");

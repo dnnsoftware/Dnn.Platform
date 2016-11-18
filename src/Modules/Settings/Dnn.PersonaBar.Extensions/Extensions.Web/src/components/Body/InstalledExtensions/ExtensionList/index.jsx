@@ -19,7 +19,7 @@ class ExtensionList extends Component {
                         _package={_package}
                         isHost={props.isHost}
                         onEdit={props.onEdit.bind(this, index)}
-                        onDelete={props.onDelete.bind(this, _package.packageId, index)}
+                        onDelete={props.onDelete.bind(this, _package, index)}
                         />;
                 }) }
             </GridCell>

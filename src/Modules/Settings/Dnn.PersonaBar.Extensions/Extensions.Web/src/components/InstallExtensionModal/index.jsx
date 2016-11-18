@@ -119,7 +119,7 @@ class InstallExtensionModal extends Component {
                 onCancel={this.cancelInstall.bind(this)}
                 installationMode={true}
                 onSave={this.goToReleaseNotes.bind(this)}
-                primaryButtonText="Next"
+                primaryButtonText={Localization.get("Next")}
                 disabled={true} />;
         }
     }
