@@ -61,9 +61,17 @@ class FromControl extends Component {
         const { props, state } = this;
         let {newModule, triedToSave} = this.state;
         if (key === "ownerFolder") {
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            newModule.moduleFolder.value = "";
+            newModule.moduleFolder.error = true;
+            triedToSave = false;
             props.onSelectOwnerFolder(option.value);
         }
         if (key === "moduleFolder" && option.value !== "") {
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            triedToSave = false;
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
                 moduleFolder: option.value,
@@ -125,15 +133,23 @@ class FromControl extends Component {
         let {newModule} = this.state;
         if (type === "ownerFolder") {
             newModule.ownerFolder.value = data.ownerFolder;
+            newModule.moduleFolder.value = "";
+            newModule.moduleFolder.error = true;
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            this.setState({
+                triedToSave: false
+            });
             this.props.onSelectOwnerFolder(data.ownerFolder);
-            if (newModule.moduleFolder.value !== "") {
-                newModule.moduleFolder.value = "";
-                newModule.moduleFolder.error = true;
-            }
         }
         if (type === "moduleFolder") {
             newModule.moduleFolder.value = data.moduleFolder;
             newModule.moduleFolder.error = false;
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            this.setState({
+                triedToSave: false
+            });
             this.props.onSelectModuleFolder({
                 ownerFolder: newModule.ownerFolder.value,
                 moduleFolder: data.moduleFolder,

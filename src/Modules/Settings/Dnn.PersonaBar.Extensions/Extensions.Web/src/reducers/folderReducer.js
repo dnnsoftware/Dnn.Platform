@@ -1,6 +1,6 @@
 import { folder as ActionTypes } from "constants/actionTypes";
 
-function addToFolders(value, folders){
+function addToFolders(value, folders) {
     return folders.concat(value).sort();
 }
 
@@ -16,11 +16,12 @@ export default function folder(state = {
             };
         case ActionTypes.RETRIEVED_MODULE_FOLDERS:
             return { ...state,
-                moduleFolders: action.payload
+                moduleFolders: action.payload,
+                moduleFiles: []
             };
         case ActionTypes.RETRIEVED_MODULE_FILES:
             return { ...state,
-                moduleFiles: action.payload  
+                moduleFiles: action.payload
             };
         case ActionTypes.CREATED_NEW_MODULE_FOLDER:
             return { ...state,
@@ -28,7 +29,7 @@ export default function folder(state = {
             };
         case ActionTypes.CREATED_NEW_OWNER_FOLDER:
             return { ...state,
-                ownerFolders: addToFolders(action.payload.value, state.ownerFolders)                
+                ownerFolders: addToFolders(action.payload.value, state.ownerFolders)
             };
         default:
             return state;

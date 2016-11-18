@@ -38,7 +38,7 @@ class FromManifest extends Component {
             triedToSave: false
         };
     }
-    componentWillMount(){
+    componentWillMount() {
         this.props.retrieveOwnerAndModuleFolders();
     }
     componentWillReceiveProps(props) {
@@ -57,9 +57,17 @@ class FromManifest extends Component {
         const { props, state } = this;
         let {newModule, triedToSave} = this.state;
         if (key === "ownerFolder") {
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            newModule.moduleFolder.value = "";
+            newModule.moduleFolder.error = true;
+            triedToSave = false;
             props.onSelectOwnerFolder(option.value);
         }
         if (key === "moduleFolder" && option.value !== "") {
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            triedToSave = false;
             props.onSelectModuleFolder({
                 ownerFolder: state.newModule.ownerFolder.value,
                 moduleFolder: option.value,
@@ -129,6 +137,11 @@ class FromManifest extends Component {
         if (type === "moduleFolder") {
             newModule.moduleFolder.value = data.moduleFolder;
             newModule.moduleFolder.error = false;
+            newModule.fileName.value = "";
+            newModule.fileName.error = true;
+            this.setState({
+                triedToSave: false
+            });
         }
         this.setState({
             newModule

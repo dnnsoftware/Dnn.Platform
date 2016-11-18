@@ -52,6 +52,9 @@ class FromNew extends Component {
         const { props } = this;
         let {newModule, triedToSave} = this.state;
         if (key === "ownerFolder") {
+            newModule.moduleFolder.value = "";
+            newModule.moduleFolder.error = true;
+            triedToSave = false;
             props.onSelectOwnerFolder(option.value);
         }
         if (newModule[key].required) {
@@ -113,6 +116,9 @@ class FromNew extends Component {
                 newModule.moduleFolder.value = "";
                 newModule.moduleFolder.error = true;
             }
+            this.setState({
+                triedToSave: false
+            });
         }
         if (type === "moduleFolder") {
             newModule.moduleFolder.value = data.moduleFolder;
