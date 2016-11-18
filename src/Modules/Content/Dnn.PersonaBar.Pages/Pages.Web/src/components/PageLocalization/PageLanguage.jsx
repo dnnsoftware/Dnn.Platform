@@ -53,8 +53,7 @@ class PageLanguage extends Component {
                 <div className="page-language-row">
                     <img src={iconSrc} />
                     <span>{cultureCode}</span>
-                    <div className="icon" dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.onOpenSettings.bind(this) }></div>
-                    <a className="icon" dangerouslySetInnerHTML={{ __html: EyeIcon }}></a>
+                    <a className="icon" href={page.PageUrl} dangerouslySetInnerHTML={{ __html: EyeIcon }}></a>
                 </div>
                 <div className="page-language-row">
                     <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName")} />
