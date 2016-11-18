@@ -161,8 +161,14 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            permissionInfo.MenuPermissionId = _dataService.SavePersonaBarMenuPermission(permissionInfo.MenuPermissionId, portalId, menu.MenuId, permissionInfo.PermissionID,
-                permissionInfo.RoleID, permissionInfo.UserID, permissionInfo.AllowAccess, user.UserID);
+            permissionInfo.MenuPermissionId = _dataService.SavePersonaBarMenuPermission(
+                portalId, 
+                menu.MenuId, 
+                permissionInfo.PermissionID,
+                permissionInfo.RoleID, 
+                permissionInfo.UserID, 
+                permissionInfo.AllowAccess, 
+                user.UserID);
 
             ClearCache(portalId);
         }

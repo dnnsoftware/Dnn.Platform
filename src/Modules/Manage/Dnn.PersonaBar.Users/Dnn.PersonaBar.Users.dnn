@@ -36,7 +36,7 @@
                 </component>
                 <component type="Script">
                     <scripts>
-                        <basePath>DesktopModules\DesktopModules\admin\Dnn.PersonaBar\Users</basePath>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar\Users</basePath>
                         <script type="Install">
                             <path>Providers\DataProviders\SqlDataProvider</path>
                             <name>Install.SqlDataProvider</name>
@@ -61,6 +61,14 @@
                         <order>10</order>
                         <defaultRoles>Administrators</defaultRoles>
                     </menu>
+                    <permission>
+                        <key>ADDUSER</key>
+                        <name>Add User</name>
+                    </permission>
+                    <permission>
+                        <key>CHANGEPASSWORD</key>
+                        <name>Change Password</name>
+                    </permission>
                 </component>
             </components>
         </package>

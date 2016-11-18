@@ -481,7 +481,6 @@ IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{o
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuPermission]
-    @MenuPermissionId           INT,
     @PortalId                   INT,
     @MenuId                     INT,
     @PermissionId               INT,
@@ -491,14 +490,18 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuPermission]
     @CurrentUserId              INT
 AS
 BEGIN
-    IF EXISTS(SELECT MenuPermissionId FROM {databaseOwner}[{objectQualifier}PersonaBarMenuPermission] WHERE MenuPermissionId = @MenuPermissionId)
+    DECLARE @MenuPermissionId INT
+    SELECT @MenuPermissionId = MenuPermissionId FROM {databaseOwner}[{objectQualifier}PersonaBarMenuPermission] 
+        WHERE      (PortalId = @PortalId OR (PortalId IS NULL AND @PortalId IS NULL))
+            AND    MenuId = @MenuId 
+            AND    PermissionId = @PermissionId
+            AND    (RoleId = @RoleId OR (RoleId IS NULL AND @RoleId IS NULL))
+            AND    (UserId = @UserId OR (UserId IS NULL AND @UserId IS NULL))
+
+    IF @MenuPermissionId > 0
     BEGIN
         UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenuPermission]
-            SET PortalId = @PortalId,
-                MenuId = @MenuId,
-                PermissionId = @PermissionId,
-                RoleId = @RoleId,
-                UserId = @UserId,
+            SET 
                 AllowAccess = @AllowAccess,
                 LastModifiedByUserId = CASE WHEN @CurrentUserId = -1 THEN NULL ELSE @CurrentUserId END,
                 LastModifiedOnDate = GETDATE()

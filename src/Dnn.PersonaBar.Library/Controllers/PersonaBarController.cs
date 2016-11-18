@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
@@ -111,8 +112,40 @@ namespace Dnn.PersonaBar.Library.Controllers
         private string GetMenuSettings(MenuItem menuItem)
         {
             var menuController = GetMenuItemController(menuItem);
-            var settings = menuController?.GetSettings(menuItem);
-            return settings != null ? JsonConvert.SerializeObject(settings) : string.Empty;
+            var settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
+            AddPermissions(menuItem, settings);
+            return JsonConvert.SerializeObject(settings);
+        }
+
+        private void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var portalSettings = PortalSettings.Current;
+            if (!settings.ContainsKey("isAdmin") && portalSettings != null)
+            {
+                settings.Add("isAdmin", user.IsInRole(portalSettings.AdministratorRoleName));
+            }
+
+            if (!settings.ContainsKey("isHost"))
+            {
+                settings.Add("isHost", user.IsSuperUser);
+            }
+
+            if (!settings.ContainsKey("permissions") && portalSettings != null)
+            {
+                var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
+                    .Where(p => p.MenuId == menuItem.MenuId);
+                var portalId = portalSettings.PortalId;
+                var permissions = new Dictionary<string, bool>();
+                foreach (var permission in menuPermissions)
+                {
+                    var key = permission.PermissionKey;
+                    var hasPermission = MenuPermissionController.HasMenuPermission(portalId, menuItem, key);
+                    permissions.Add(key, hasPermission);
+                }
+
+                settings.Add("permissions", permissions);
+            }
         }
 
         private IMenuItemController GetMenuItemController(MenuItem menuItem)

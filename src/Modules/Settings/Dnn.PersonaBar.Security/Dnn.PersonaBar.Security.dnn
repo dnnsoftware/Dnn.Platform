@@ -36,7 +36,7 @@
         </component>
         <component type="Script">
           <scripts>
-            <basePath>DesktopModules\DesktopModules\admin\Dnn.PersonaBar\Security</basePath>
+            <basePath>DesktopModules\admin\Dnn.PersonaBar\Security</basePath>
             <script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Install.SqlDataProvider</name>

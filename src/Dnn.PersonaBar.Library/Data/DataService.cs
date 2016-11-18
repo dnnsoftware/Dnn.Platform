@@ -53,10 +53,10 @@ namespace Dnn.PersonaBar.Library.Data
             return DataProvider.ExecuteScalar<string>("GetPersonaBarMenuDefaultRoles", menuId);
         }
 
-        public int SavePersonaBarMenuPermission(int menuPermissionId, int portalId, int menuId, int permissionId, int roleId,
+        public int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId, int roleId,
             int userId, bool allowAccees, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuPermission", menuPermissionId, DataProvider.GetNull(portalId), menuId, permissionId,
+            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
                 GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
         }
 
