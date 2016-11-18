@@ -232,8 +232,9 @@ class BasicSettingsPanelBody extends Component {
                     <FileUpload
                         utils={util}
                         selectedFile={state.basicSettings.LogoFile}
-                        folderName={state.basicSettings.FavIcon.FolderName}
+                        folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "LogoFile")}
+                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpe"]}
                         />
                 </InputGroup>
             </div>;
@@ -246,8 +247,9 @@ class BasicSettingsPanelBody extends Component {
                     <FileUpload
                         utils={util}
                         selectedFile={state.basicSettings.FavIcon}
-                        folderName={state.basicSettings.FavIcon.FolderName}
+                        folderName={state.basicSettings.FavIcon ? state.basicSettings.FavIcon.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "FavIcon")}
+                        fileFormats={["image/x-icon"]}
                         />
                 </InputGroup>
             </div>;

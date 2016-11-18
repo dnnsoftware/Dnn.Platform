@@ -61,6 +61,8 @@ class LanguageVerifierGridPanel extends Component {
                     </div>
                     <div className="language-name">{props.language}</div>
                 </div>
+                {(props.missingFiles.length > 0 || props.filesWithDuplicateEntries.length > 0 || props.filesWithDuplicateEntries.length > 0
+                    || props.filesWithObsoleteEntries.length > 0 || props.oldFiles.length > 0 || props.malformedFiles.length > 0) &&
                 <div className="verifier-grid-body">
                     {props.missingFiles.length > 0 &&
                         <LanguageVerifierRow
@@ -84,7 +86,7 @@ class LanguageVerifierGridPanel extends Component {
                             <div className="resx-files">{this.renderBody(props.filesWithDuplicateEntries)}</div>
                         </LanguageVerifierRow>
                     }
-                    {props.filesWithMissingEntries.length > 0 &&
+                    {props.filesWithDuplicateEntries.length > 0&&
                         <LanguageVerifierRow
                             text={resx.get("MissingEntries") + props.filesWithMissingEntries.length}
                             closeOnClick={true}
@@ -129,6 +131,7 @@ class LanguageVerifierGridPanel extends Component {
                         </LanguageVerifierRow>
                     }
                 </div>
+            }
             </div>
         );
     }
