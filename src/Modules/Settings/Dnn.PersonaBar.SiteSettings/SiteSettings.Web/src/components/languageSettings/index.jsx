@@ -126,7 +126,7 @@ class LanguageSettingsPanelBody extends Component {
 
     disableLocalizedContent() {
         this.props.dispatch(LanguagesActions.disableLocalizedContent(() => {
-            this.onSettingChange("ContentLocalizationEnabled", false);
+            this.props.dispatch(LanguagesActions.getLanguageSettings(this.props.portalId, this.props.cultureCode));
         }));
     }
 
