@@ -40,11 +40,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public string FooterText { get; set; }
 
-        public string LogoFile { get; set; }
+        public FileDto LogoFile { get; set; }
 
         public string TimeZone { get; set; }
 
-        public int FavIcon { get; set; }
+        public FileDto FavIcon { get; set; }
 
         public string IconSet { get; set; }
     }

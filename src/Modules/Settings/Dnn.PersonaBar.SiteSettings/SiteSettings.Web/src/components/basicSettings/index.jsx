@@ -67,12 +67,9 @@ class BasicSettingsPanelBody extends Component {
         let {state, props} = this;
         let basicSettings = Object.assign({}, state.basicSettings);
 
-        if (key === "LogoFile") {
-            basicSettings[key] = event.path.split("?")[0];
-        }
-        else if (key === "FavIcon") {
-            basicSettings[key] = event.fileId;
-        }
+        if (key === "LogoFile" || key === "FavIcon") {
+            basicSettings[key] = event;
+        }        
         else if (key === "TimeZone" || key === "IconSets") {
             basicSettings[key] = event.value;
         }
@@ -234,8 +231,9 @@ class BasicSettingsPanelBody extends Component {
                         />
                     <FileUpload
                         utils={util}
-                        imagePath={state.basicSettings.LogoFile}
-                        onImageSelect={this.onSettingChange.bind(this, "LogoFile")}
+                        selectedFile={state.basicSettings.LogoFile}
+                        folderName={state.basicSettings.FavIcon.FolderName}
+                        onSelectFile={this.onSettingChange.bind(this, "LogoFile")}
                         />
                 </InputGroup>
             </div>;
@@ -247,8 +245,9 @@ class BasicSettingsPanelBody extends Component {
                         />
                     <FileUpload
                         utils={util}
-                        imagePath={state.basicSettings.FavIcon}
-                        onImageSelect={this.onSettingChange.bind(this, "FavIcon")}
+                        selectedFile={state.basicSettings.FavIcon}
+                        folderName={state.basicSettings.FavIcon.FolderName}
+                        onSelectFile={this.onSettingChange.bind(this, "FavIcon")}
                         />
                 </InputGroup>
             </div>;

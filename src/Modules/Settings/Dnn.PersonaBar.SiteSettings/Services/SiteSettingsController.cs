@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -42,6 +43,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
+using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
@@ -88,6 +90,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
                 var portalSettings = new PortalSettings(portal);
+                var logoFile = string.IsNullOrEmpty(portal.LogoFile) ? null : FileManager.Instance.GetFile(pid, portal.LogoFile);
+                var favIcon = string.IsNullOrEmpty(new FavIcon(portal.PortalID).GetSettingPath()) ? null : FileManager.Instance.GetFile(pid, new FavIcon(portal.PortalID).GetSettingPath());
 
                 var settings = new
                 {
@@ -100,8 +104,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     portal.FooterText,
                     TimeZone = portalSettings.TimeZone.Id,
                     portal.HomeDirectory,
-                    portal.LogoFile,
-                    FavIcon = new FavIcon(portal.PortalID).GetSettingPath(),
+                    LogoFile = logoFile != null ? new FileDto()
+                    {
+                        fileName = logoFile.FileName,
+                        folderPath = logoFile.Folder,
+                        fileId = logoFile.FileId
+                    } : null,
+                    FavIcon = favIcon != null ? new FileDto()
+                    {
+                        fileName = favIcon.FileName,
+                        folderPath = favIcon.Folder,
+                        fileId = favIcon.FileId
+                    } : null,
                     IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, new
@@ -138,14 +152,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.PortalName = request.PortalName;
-                portalInfo.LogoFile = request.LogoFile;
+                portalInfo.LogoFile = FileManager.Instance.GetFile(request.LogoFile.fileId).RelativePath;
                 portalInfo.FooterText = request.FooterText;
                 portalInfo.Description = request.Description;
                 portalInfo.KeyWords = request.KeyWords;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
                 PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false, cultureCode);
-                new FavIcon(pid).Update(request.FavIcon);
+                new FavIcon(pid).Update(request.FavIcon.fileId);
                 PortalController.UpdatePortalSetting(pid, "DefaultIconLocation", "icons/" + request.IconSet, false, cultureCode);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
