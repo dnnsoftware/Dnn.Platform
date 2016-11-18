@@ -242,6 +242,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             catch (Exception ex)
             {
                 Log.AddFailure(ex);
+                throw;
             }
         }
 
