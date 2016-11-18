@@ -125,7 +125,7 @@ class PageSettings extends Component {
             }
         ];
 
-        if (isEditingExistingPage) {
+        if (isEditingExistingPage && selectedPage.pageType === "normal") {
             advancedTabs.unshift({
                 label: Localization.get("Modules"),
                 component: <div className="dnn-simple-tab-item">
