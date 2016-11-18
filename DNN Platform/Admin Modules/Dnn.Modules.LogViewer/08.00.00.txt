@@ -1,0 +1,4 @@
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/LogViewer/LogViewer.ascx.cs
+DesktopModules/Admin/LogViewer/EditLogTypes.ascx.cs
+

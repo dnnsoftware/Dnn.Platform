@@ -1,0 +1,87 @@
+.dnnLogViewer, .dnnEditLogTypes{margin:2em auto;}
+.dnnlvOptions { float: left; }
+.dnnlvOptions > .dnnLabel { display: block; width: auto;margin-left: 10px;margin-top: 5px; }
+.dnnlvOptions > .RadComboBox_Default { display: block; width: 150px !important;float: left; }
+.dnnlvPageSettings { float: right; margin-right: 15px; }
+.dnnlvPageSettings > .dnnLabel { display: block; width: auto; margin-top: 5px; }
+.dnnlvPageSettings > .RadComboBox_Default { display: block; width: 80px !important;float: left; }
+
+.dnnLogViewer .dnnShortFormInfo{background:#edf8ff url(../../../images/help-icn.png) no-repeat 10px center;border:#46a3d3 2px solid;color:#085b8f;text-shadow:0px 1px 1px #fff;width: 350px;;}
+.dnnLogViewer .dnnFormItem input[type="text"], .dnnLogViewer .dnnFormItem textarea{width:35%;}
+.dnnlvFilter{}
+.dnnlvFilter fieldset a{display:block;width:65px;text-align:right;padding-right:25px;font-weight:bold;float:left;}
+.dnnlvFilter fieldset .dnnLeft{width:320px;margin-left:25px;}
+.dnnlvFilter fieldset .RadComboBox .RadComboBox_Default .dnnLeft{width:200px !important;}
+.dnnlvFilter .rcbArrowCell .rcbArrowCellRight a{display:none;}
+.dnnlvLegend{ margin: 20px 0 10px 10px;}
+.dnnlvLegend h3{margin-top:0;padding-top:0; font-size: 16px; color: #666;}
+.dnnlvLegend .dnnLeft{ width: 250px; }
+.dnnlvLegend .dnnLeft div.lvlItem{ color: #666;padding: 8px;clear: both; }
+.dnnlvLegend div.lvlItem span{ display: block;float: left;margin-right: 10px;}
+.dnnlvContent{margin-top:1em;}
+.dnnlvContent.dnnClear .dnnFormHelpContent{margin:0 0 1em 0;}
+.dnnlvContent.dnnClear{border-top:1px #ccc dotted;padding-top:1.5em;}
+.dnnForm .dnnlvGridContent br{display:block !important;}
+.dnnlvSendExceptions{}
+.dnnLogItemHeaderIndicator > span { display: block;float: left; width: 15px; height: 15px; margin-top: 4px;}
+.dnnLogViewer .Exception{color:#fff;background-color:#ff1414; width: 15px; height: 15px; }
+.dnnLogViewer .ItemCreated{color:#fff;background-color:#009900; width: 15px; height: 15px; }
+.dnnLogViewer .ItemUpdated{color:#fff;background-color:#009999; width: 15px; height: 15px; }
+.dnnLogViewer .ItemDeleted{color:#000;background-color:#14ffff; width: 15px; height: 15px; }
+.dnnLogViewer .OperationSuccess{color:#fff;background-color:#999900; width: 15px; height: 15px; }
+.dnnLogViewer .OperationFailure{color:#fff;background-color:#990000; width: 15px; height: 15px; }
+.dnnLogViewer .GeneralAdminOperation{color:#fff;background-color:#4d0099; width: 15px; height: 15px; }
+.dnnLogViewer .AdminAlert{color:#fff;background-color:#148aff; width: 15px; height: 15px; }
+.dnnLogViewer .HostAlert{color:#fff;background-color:#ff8a14; width: 15px; height: 15px; }
+.dnnLogViewer .SecurityException{color:#fff;background-color:#000; width: 15px; height: 15px; } 
+.dnnEditLogTypes .dnnFormItem .dnnFixedSizeComboBox{ width: 146px !important;}
+.dnnEditLogTypes .dnnFormItem .dnnFixedSizeComboBox.short{ width: 88px !important;}
+.dnnEditLogTypes .dnnFormItem .dnnFixedSizeLabel{ float: left;margin-right: 18px;line-height: 32px;}
+.dnnLogHeader{font-weight: bold;font-size:110%;padding:3px 20px;  background: #f0f2f1;
+    background: -moz-linear-gradient(top, #fff 0%, #f0f2f1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f2f1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#f0f2f1 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(top, #fff 0%,#f0f2f1 100%); /* W3C */
+    border: 1px solid #ccc;
+     }
+     .dnnLogHeader div{
+         background: transparent; padding: 6px 0 6px 0; 
+     }
+     .dnnLogItemHeader div{
+        padding: 6px 0 6px 0;
+     }
+     
+     
+	.dnnLogHeader div, .dnnLogItemHeader input, .dnnLogItemHeader div, .dnnLogItemHeader p{float:left;  }
+	.dnnLogItemHeader .dnnCheckbox{
+	    display: inline-block;
+	    margin-right: 10px;
+	}
+	
+.dnnLogItemHeader{border-bottom:1px solid #ccc;line-height:2;cursor:pointer; clear:both;overflow:hidden;color:#fff; padding: 3px 20px; }
+.dnnLogItemAltHeader {background-color: #f2f2f2; }
+.dnnLogItemHeader:hover{background-color:  #e8f1fa; }
+.dnnLogItemHeader > div {color:#666; }
+.dnnLogItemHeaderDate > div { padding: 0 !important;}
+.dnnLogItemHeader span.block {
+	display: inline-block;
+	padding: 0 4px;
+}
+.dnnLogItemDetail{border: 1px solid #ccc;padding:1em 1.5em;background:#fff;}
+	.dnnLogItemDetail p{margin:0 0 .2em 0;padding:0;}
+	
+	table.PagingTable{
+	    margin: 10px 0 0 0;	   
+	    font-size: 13px; 
+	    width: 100%;
+	}
+	
+	table.PagingTable td{
+	    padding: 3px;
+	}
+	
+	table.PagingTable td a,
+	table.PagingTable td span{
+	    display: inline-block;
+	    margin-right: 5px;
+	}
