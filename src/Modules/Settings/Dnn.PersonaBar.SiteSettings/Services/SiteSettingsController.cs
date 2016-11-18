@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchDescriptionBoostSetting = "Search_Description_Boost";
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
-        #region Site Settings API
+        #region Site Info API
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -180,6 +180,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        #endregion
+
+        #region Site Behavior API
 
         /// GET: api/SiteSettings/GetDefaultPagesSettings
         /// <summary>
@@ -1133,6 +1137,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        #endregion
+        
+        #region Search Settings API
+
         /// GET: api/SiteSettings/GetBasicSearchSettings
         /// <summary>
         /// Gets basic search settings
@@ -1432,7 +1440,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                string cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
                 if (request.SynonymsGroupID != null)
@@ -1607,6 +1615,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        #endregion
+
+        #region Language Settings API
 
         /// GET: api/SiteSettings/GetLanguageSettings
         /// <summary>
@@ -2426,6 +2438,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
+
+        #endregion
+
+        #region Other Settings API
 
         /// GET: api/SiteSettings/GetOtherSettings
         /// <summary>
