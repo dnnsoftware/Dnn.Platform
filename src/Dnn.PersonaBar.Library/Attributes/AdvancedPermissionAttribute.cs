@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// <summary>
         /// The menu identifier.
         /// </summary>
-        public string SupportExtension { get; set; }
+        public string MenuName { get; set; }
 
         /// <summary>
         /// The permission key. 
@@ -37,12 +37,12 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         private MenuItem GetMenuByIdentifier()
         {
-            if (string.IsNullOrEmpty(SupportExtension))
+            if (string.IsNullOrEmpty(MenuName))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(SupportExtension);
+            return PersonaBarRepository.Instance.GetMenuItem(MenuName);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Library.Attributes
     public class MenuPermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         /// <summary>
-        /// The default service scope when <see cref="SupportExtension"/> is not defined.
+        /// The default service scope when <see cref="MenuName"/> is not defined.
         /// </summary>
         public ServiceScope Scope { get; set; }
 
@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         /// For example, if this value set to "Pages", the user who have access to pages module can request api.
         /// Users who don't have permissions to Pages module, will not available to request the api.
         /// </summary>
-        public string SupportExtension { get; set; }
+        public string MenuName { get; set; }
 
         /// <summary>
         /// The Roles which need exclude from permissions, when user in the role will receive 401 exception.
@@ -94,12 +94,12 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         private MenuItem GetMenuByIdentifier()
         {
-            if (string.IsNullOrEmpty(SupportExtension))
+            if (string.IsNullOrEmpty(MenuName))
             {
                 return null;
             }
 
-            return PersonaBarRepository.Instance.GetMenuItem(SupportExtension);
+            return PersonaBarRepository.Instance.GetMenuItem(MenuName);
         }
     }
 }

@@ -32,7 +32,7 @@ using System.IO;
 
 namespace Dnn.PersonaBar.Users.Services
 {
-    [MenuPermission(SupportExtension = "Users")]
+    [MenuPermission(MenuName = "Users")]
     public class UsersController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
