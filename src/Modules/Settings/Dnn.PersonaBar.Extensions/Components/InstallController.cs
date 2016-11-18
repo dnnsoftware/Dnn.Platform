@@ -129,10 +129,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        public Installer GetInstaller(Stream stream, string fileName)
+        private Installer GetInstaller(Stream stream, string fileName)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, true, false);
-            if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName))
+            if (installer.IsValid &&
+                string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName))
             {
                 CreateManifest(installer, fileName);
             }
