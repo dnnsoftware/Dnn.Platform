@@ -248,26 +248,28 @@ class LanguageSettingsPanelBody extends Component {
                             />
                     </div>
                 </InputGroup>
-                <InputGroup>
-                    <div className="languageSettings-row_switch">
-                        <Label
-                            labelType="inline"
-                            tooltipMessage={resx.get("plEnableContentLocalization.Help")}
-                            label={resx.get("plEnableContentLocalization")}
-                            extra={
-                                <Tooltip
-                                    messages={[resx.get("GlobalSetting")]}
-                                    type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
-                        <Switch
-                            labelHidden={true}
-                            value={state.languageSettings.AllowContentLocalization}
-                            onChange={this.onSettingChange.bind(this, "AllowContentLocalization")}
-                            />
-                    </div>
-                </InputGroup>
+                {isHost &&
+                    <InputGroup>
+                        <div className="languageSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plEnableContentLocalization.Help")}
+                                label={resx.get("plEnableContentLocalization")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
+                                />
+                            <Switch
+                                labelHidden={true}
+                                value={state.languageSettings.AllowContentLocalization}
+                                onChange={this.onSettingChange.bind(this, "AllowContentLocalization")}
+                                />
+                        </div>
+                    </InputGroup>
+                }
                 <div className={"collapsible-button" + (defaultAllowContentLocalization || state.languageSettings.ContentLocalizationEnabled ? " open" : "")}>
                     {!state.languageSettings.ContentLocalizationEnabled && <Button
                         type="secondary"
