@@ -56,6 +56,14 @@
         * @param {Object} params parameters for the panel
         */
         this.openPanel = function openPanel(path, params) {
+            if (!params.identifier) {
+                params.identifier = path;
+            }
+
+            if (!params.settings) {
+                params.settings = util.findMenuSettings(params.identifier);
+            }
+
             util.loadPanel(path, params);
         };
 
