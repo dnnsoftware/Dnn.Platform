@@ -63,7 +63,7 @@
             if (!params.settings) {
                 params.settings = util.findMenuSettings(params.identifier);
             }
-
+            params.path = path;
             util.loadPanel(path, params);
         };
 
