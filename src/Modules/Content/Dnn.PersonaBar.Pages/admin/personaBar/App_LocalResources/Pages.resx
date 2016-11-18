@@ -631,7 +631,37 @@
     <value>The page template has been created to {0}</value>
   </data>
   <data name="MakeNeutral.ErrorMessage" xml:space="preserve">
-    <value>Not possible to convert to neutral; this page has localized pages.</value>
+    <value>Page cannot be converted to a neutral culture, because there are child pages.</value>
+  </data>
+  <data name="Detached.Text" xml:space="preserve">
+    <value>Detached {0}</value>
+  </data>
+  <data name="ModuleDeleted.Text" xml:space="preserve">
+    <value>This module is deleted, and exists in the recycle bin.</value>
+  </data>
+  <data name="ModuleInfo.Text" xml:space="preserve">
+    <value>Module: {0}&lt;br/&gt;ModuleTitle: {1}&lt;br/&gt;Pane: {2}</value>
+  </data>
+  <data name="ModuleInfoForNonAdmins.Text" xml:space="preserve">
+    <value>You do not have enough permissions to edit the title of this module.</value>
+  </data>
+  <data name="NotTranslated.Text" xml:space="preserve">
+    <value>Not translated {0}</value>
+  </data>
+  <data name="Reference.Text" xml:space="preserve">
+    <value>Reference {0}</value>
+  </data>
+  <data name="ReferenceDefault.Text" xml:space="preserve">
+    <value>Reference Default Language {0}</value>
+  </data>
+  <data name="Translated.Text" xml:space="preserve">
+    <value>Translated {0}</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>[Default Language]</value>
+  </data>
+  <data name="NotActive.Text" xml:space="preserve">
+    <value>[Language is not Active]</value>
   </data>
   <data name="TranslationMessageConfirmMessage.Error" xml:space="preserve">
     <value>Something went wrong notifying the Translators.</value>

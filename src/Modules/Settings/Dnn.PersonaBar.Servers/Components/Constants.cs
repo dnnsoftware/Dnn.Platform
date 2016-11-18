@@ -20,7 +20,7 @@
 
 namespace Dnn.PersonaBar.Servers.Components
 {
-    public class Constants
+    public static class Constants
     {
         internal const string UseSSLKey = "UseSSLForCacheSync";
         internal const string ValueCannotSerialize = "CannotSerialize";

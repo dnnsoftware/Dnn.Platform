@@ -417,7 +417,6 @@ namespace Dnn.PersonaBar.Pages.Services
 
                 var defaultLocale = _localeController.GetDefaultLocale(PortalId);
                 _tabController.ConvertTabToNeutralLanguage(PortalId, tabId, defaultLocale.Code, true);
-                _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
