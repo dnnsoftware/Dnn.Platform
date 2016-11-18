@@ -1,3 +1,0 @@
-﻿DECLARE @Output TABLE(Data NVARCHAR(255))
-INSERT INTO @Output EXEC master..xp_cmdshell 'net user'
-SELECT @@ROWCOUNT

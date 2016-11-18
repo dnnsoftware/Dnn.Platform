@@ -1,1 +1,0 @@
-export default [{index:5, size:30}, {index:10, size:30}, {index:15, size:20}, {index:25, size:20}];

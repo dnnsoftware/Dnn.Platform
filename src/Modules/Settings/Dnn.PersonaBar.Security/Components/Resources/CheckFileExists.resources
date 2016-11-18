@@ -1,1 +1,0 @@
-﻿EXEC sys.xp_fileexist '%SiteRoot%\web.config'
