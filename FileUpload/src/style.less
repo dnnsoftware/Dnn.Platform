@@ -176,7 +176,23 @@
     }
 }
 
+.dnn-file-upload .dnn-file-upload-file-name {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+
+    & > span {
+        background-color: @alabaster;
+        padding: 3px 10px;
+        border-radius: 3px;
+        border: solid 1px lightgray;
+        opacity: 0.8;
+    }
+}
+
 .dnn-file-upload .file-upload-container {
+    
     &.dnn-upload-bar {
         padding: 12px;
         transition: opacity .4s .6s;

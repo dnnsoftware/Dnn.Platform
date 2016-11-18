@@ -347,7 +347,7 @@ export default class FileUpload extends Component {
                         onError={this.handleImageError.bind(this) }
                         src={src}/></div>}
                 {this.state.selectedFile &&
-                    <div>{this.state.selectedFile.value}</div>}
+                    <div className="dnn-file-upload-file-name"><span>{this.state.selectedFile.value}</span></div>}
             </div>
             {this.state.uploading && <UploadBar uploadComplete={this.state.uploadComplete} errorText={this.state.errorText} fileName={this.state.fileName}/>}
         </div>;
