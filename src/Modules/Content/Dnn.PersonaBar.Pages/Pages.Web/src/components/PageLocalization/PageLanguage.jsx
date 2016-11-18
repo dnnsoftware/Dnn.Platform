@@ -15,6 +15,19 @@ class PageLanguage extends Component {
 
     }
 
+    onUpdatePages(key, e) {
+        const value = e.target.value;
+        const CultureCode = this.props.local.CultureCode;
+        this.props.onUpdatePages(CultureCode, key, value);
+    }
+
+    onUpdateModules(module, e) {
+        const value = e.target.value;
+        const {CultureCode, ModuleId} = module;
+        this.props.onUpdateModules(CultureCode, ModuleId, value);
+    }
+
+
     renderModules() {
         const {modules} = this.props;
         if (!modules) {
@@ -26,7 +39,7 @@ class PageLanguage extends Component {
                     messages={[module.ModuleTitle]}
                     style={{ float: "left", position: "static" }}
                 />
-                <input type="text" value={module.ModuleTitle} />
+                <input type="text" value={module.ModuleTitle} onChange={this.onUpdateModules.bind(this, module)}/>
             </div>;
         });
     }
@@ -44,9 +57,9 @@ class PageLanguage extends Component {
                     <a className="icon" dangerouslySetInnerHTML={{ __html: EyeIcon }}></a>
                 </div>
                 <div className="page-language-row">
-                    <input type="text" value={page.TabName} />
-                    <input type="text" value={page.Title} />
-                    <textarea value={page.Title} />
+                    <input type="text" value={page.TabName} onChange={this.onUpdatePages.bind(this, "TabName")} />
+                    <input type="text" value={page.Title} onChange={this.onUpdatePages.bind(this, "Title")} />
+                    <textarea value={page.Description} onChange={this.onUpdatePages.bind(this, "Description")}/>
                 </div>
                 <div className="page-language-row">
                     <div className="page-language-row-header">
@@ -63,20 +76,9 @@ class PageLanguage extends Component {
 PageLanguage.propTypes = {
     local: PropTypes.object.isRequired,
     page: PropTypes.object.isRequired,
-    modules: PropTypes.object.isRequired
+    modules: PropTypes.object.isRequired,
+    onUpdatePages: PropTypes.func,
+    onUpdateModules: PropTypes.func
 };
 
 export default PageLanguage;
-
-
-        //  data: {
-        //         Locals: [
-        //             {CultureCode: "Da-da", Icon: "/images/Flags/da-DK.gif"}
-        //         ],
-        //         Modules: [
-        //             {ModuleTitle: "Blu-Ray Players"}
-        //         ],
-        //         Pages: [
-        //            {Description: "", Title: "", TabName: "Home"} 
-        //         ]
-        //     }

@@ -46,8 +46,20 @@ const languagesActions = {
                 }
             });
         };
+    },
+    updateTabLocalization(params, callback, failureCallback) {
+        return (dispatch) => {
+            LanguageService.updateTabLocalization(params, data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if(failureCallback) {
+                    failureCallback();
+                }
+            });
+        };
     }
-
 };
 
 export default languagesActions;

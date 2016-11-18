@@ -29,6 +29,30 @@ class PageLocalization extends Component {
         this.getLanguages();
     }
 
+    onUpdatePages(cultureCode, key, value) {
+        const {Pages} = this.state;
+        Pages.forEach((page) => {
+            if (page.CultureCode === cultureCode) {
+                page[key] = value;
+            }
+        });
+        this.setState({ Pages });
+    }
+
+    onUpdateModules(cultureCode, ModuleId, value) {
+        const {Modules} = this.state;
+        Modules.forEach((modules) => {
+            if (modules.Modules) {
+                modules.Modules.forEach((module) => {
+                    if (module.CultureCode === cultureCode && module.ModuleId === ModuleId) {
+                        module.ModuleTitle =value;
+                    }
+                });
+            }
+        });
+        this.setState({ Modules });
+    }
+
     getLanguages() {
         const {props, state} = this;
         const {tabId} = props.page;
@@ -62,7 +86,7 @@ class PageLocalization extends Component {
         }));
     }
 
-    onAddMissingLanguages (){
+    onAddMissingLanguages() {
         const {props, state} = this;
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.addMissingLanguages(tabId, (data) => {
@@ -70,43 +94,61 @@ class PageLocalization extends Component {
         }));
     }
 
-    onNotifyTranslators (){}
-    onUpdateLocalization (){}
+    onUpdateLocalization() {
+        const {props, state} = this;
+        const {Locales, Modules, Pages} = state;
+        const params = {Locales, Modules, Pages};
+        props.dispatch(LanguagesActions.updateTabLocalization(params, (data) => {
+            this.getLanguages();
+        }));
+    }
 
     componentWillReceiveProps(newProps) {
     }
 
     renderPageLanguage(local, modules, page) {
-        const Modules = modules && modules.Modules ? modules.Modules : [];
         return <PageLanguage
             local={local}
-            modules={Modules}
+            modules={modules}
             page={page}
+            onUpdatePages={this.onUpdatePages.bind(this) }
+            onUpdateModules={this.onUpdateModules.bind(this)}
             />;
+    }
+
+    renderDefaultPageLnaguage() {
+        const {Locales, Modules, Pages} = this.state;
+        const modules = Modules.map((module) => {
+            return module.Modules[0];
+        });
+        return this.renderPageLanguage(Locales[0], modules, Pages[0]);
     }
 
     getAllLanguages() {
         const {Locales, Modules, Pages} = this.state;
         const pageLanguages = Locales.map((l, index) => {
+            const modules = Modules.map((module) => {
+                return module.Modules[index];
+            });
             if (!index) {
                 return false;
             }
-            return this.renderPageLanguage(Locales[index], Modules[index], Pages[index]);
+            return this.renderPageLanguage(Locales[index], modules, Pages[index]);
         });
         return pageLanguages;
     }
 
-    onSendNotifyMessage () {
+    onSendNotifyMessage() {
         const {props, state} = this;
         const {tabId} = props.page;
-        const params = {TabId: tabId, Text: this.state.notifyMessage};
+        const params = { TabId: tabId, Text: this.state.notifyMessage };
         props.dispatch(LanguagesActions.notifyTranslators(params, (data) => {
             this.onCloseNotifyModal();
         }));
     }
 
-    onUpdateNotifyMessage (e) {
-        this.setState({notifyMessage: e.target.value});
+    onUpdateNotifyMessage(e) {
+        this.setState({ notifyMessage: e.target.value });
     }
 
     render() {
@@ -133,7 +175,7 @@ class PageLocalization extends Component {
         return <div className="page-localization">
             <div className="page-localization-container">
                 <div className="default-language-container">
-                    {this.renderPageLanguage(Locales[0], Modules[0], Pages[0]) }
+                    {this.renderDefaultPageLnaguage() }
                 </div>
                 <div className="languages-container">
                     <Scrollbars className="scrollArea content-vertical"
@@ -172,11 +214,11 @@ class PageLocalization extends Component {
                     {Localization.get("NotifyTranslators") }
                 </Button>
             </div>
-            {this.state.showNotifyModal && <NotifyModal 
-                onSend={this.onSendNotifyMessage.bind(this)}
-                onUpdateMessage={this.onUpdateNotifyMessage.bind(this)}
+            {this.state.showNotifyModal && <NotifyModal
+                onSend={this.onSendNotifyMessage.bind(this) }
+                onUpdateMessage={this.onUpdateNotifyMessage.bind(this) }
                 notifyMessage={this.state.notifyMessage}
-                onClose={this.onCloseNotifyModal.bind(this)} />}
+                onClose={this.onCloseNotifyModal.bind(this) } />}
         </div>;
     }
 }

@@ -42,6 +42,11 @@ class LanguageService {
         const sf = this.getServiceFramework("Pages");
         sf.post("NotifyTranslators", params, callback);
     }
+
+    updateTabLocalization(params, callback, failureCallback) {
+        const sf = this.getServiceFramework("Pages");
+        sf.post("UpdateTabLocalization", params, callback, failureCallback);
+    }
 }
 
 const languageService = new LanguageService();
