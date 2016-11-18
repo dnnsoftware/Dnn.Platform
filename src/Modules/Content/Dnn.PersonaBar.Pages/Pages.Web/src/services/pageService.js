@@ -37,46 +37,44 @@ const PageService = function () {
     };
 
     const getNewPage = function () {
-        const api = getPagesApi();
+        const api = getOverridablePagesApi();
         return api.get("GetDefaultSettings")
             .then(settings => {
-                return {
-                    tabId: 0,
-                    name: "",
-                    status: "Visible",
-                    localizedName: "",
-                    alias: "",
-                    title: "",
-                    description: "",
-                    keywords: "",
-                    tags: "",
-                    url: "",
-                    externalRedirection: "",
-                    fileRedirection: "",
-                    existingTabRedirection: "",
-                    includeInMenu: true,
-                    allowIndex: true,
-                    thumbnail: "",
-                    created: "",
-                    hierarchy: "",
-                    hasChild: false,
-                    type: 0,
-                    customUrlEnabled: true,
-                    pageType: "normal",
-                    isCopy: false,
-                    startDate: null,
-                    endDate: null,
-                    createdOnDate: new Date(),
-                    placeholderURL: "/",
-                    modules: [],
-                    permissions: settings.permissions,
-                    templates: settings.templates,
-                    schedulingEnabled: false,
-                    permanentRedirect: false,
-                    linkNewWindow: false,
-                    templateTabId: null,
-                    templateId: settings.templateId
-                };
+                const page = toFrontEndPage(settings);
+                page.tabId = 0;
+                page.name = "";
+                page.status = "Visible";
+                page.localizedName = "";
+                page.alias = "";
+                page.title = "";
+                page.description = "";
+                page.keywords = "";
+                page.tags = "";
+                page.url = "";
+                page.externalRedirection = "";
+                page.fileRedirection = "";
+                page.existingTabRedirection = "";
+                page.includeInMenu = true;
+                page.allowIndex = true;
+                page.thumbnail = "";
+                page.created = "";
+                page.hierarchy = "";
+                page.hasChild = false;
+                page.type = 0;
+                page.customUrlEnabled = true;
+                page.pageType = "normal";
+                page.isCopy = false;
+                page.startDate = null;
+                page.endDate = null;
+                page.createdOnDate = new Date();
+                page.placeholderURL = "/";
+                page.modules = [];
+                page.schedulingEnabled = false;
+                page.permanentRedirect = false;
+                page.linkNewWindow = false;
+                page.templateTabId = null;
+
+                return page;
             });
     };
 
