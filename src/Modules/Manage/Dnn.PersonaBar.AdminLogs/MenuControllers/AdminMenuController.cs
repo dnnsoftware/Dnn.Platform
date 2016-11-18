@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Portals;
@@ -25,7 +21,9 @@ namespace Dnn.PersonaBar.AdminLogs.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
-            return null;
+            var settings = new Dictionary<string, object>();
+            settings.Add("isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser);
+            return settings;
         }
     }
 }

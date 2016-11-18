@@ -140,19 +140,9 @@ class AdminLogPanelBody extends Component {
             });
         }
         else {
-            util.utilities.notify(resx.get("SelectException"));
+            util.utilities.notifyError(resx.get("SelectException"));
         }
-    }
-
-    onEmailLogItems() {
-        const {props} = this;
-        if (props.selectedRowIds.length > 0) {
-            props.dispatch(LogActions.emailLogItems(props.selectedRowIds));
-        }
-        else {
-            alert((resx.get("SelectException")));
-        }
-    }
+    }    
 
     toggleEmailPanel() {
         this.setState({
@@ -184,31 +174,7 @@ class AdminLogPanelBody extends Component {
                 props.dispatch(LogActions.getLogList(this.getNextPage()));
             });
         }
-    }
-
-    renderedPortalList() {
-        const {props} = this;
-        let portals = props.portalList.map((term, index) => {
-            return (
-                <li onClick={this.onSelectPortal.bind(this, term.PortalID, term.PortalName)} value={term.PortalID}>{term.PortalName}</li>
-            );
-        });
-        //portals.unshift(<li onClick={this.onSelectPortal.bind(this, "-1", "All Sites") } value={-1}>All Sites</li>);
-        return <ul className="site-group-filter">{portals}
-        </ul>;
-    }
-
-    renderedLogTypeList() {
-        const {props} = this;
-        let logTypes = props.logTypeList.map((term, index) => {
-            return (
-                <li onClick={this.onSelectLogType.bind(this, term.LogTypeKey, term.LogTypeFriendlyName)}>{term.LogTypeFriendlyName}</li>
-            );
-        });
-        //logTypes.unshift(<li onClick={this.onSelectLogType.bind(this, "*", "All Types") }>All Types</li>);
-        return <ul className="site-group-filter">{logTypes}
-        </ul>;
-    }
+    }    
 
     renderLogListHeader() {
         const {props, state} = this;

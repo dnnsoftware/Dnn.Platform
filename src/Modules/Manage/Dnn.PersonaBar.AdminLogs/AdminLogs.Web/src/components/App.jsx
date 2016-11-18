@@ -14,10 +14,14 @@ import LogSettings from "./LogSettings";
 import {
     pagination as PaginationActions
 } from "../actions";
+import util from "../utils";
+
+let isHost = false;
 
 class App extends Component {
     constructor() {
         super();
+        isHost = util.settings.isHost;
     }
 
     handleSelect(index) {
@@ -38,12 +42,21 @@ class App extends Component {
                     <SocialPanelHeader title={("Admin Logs")}>
                     </SocialPanelHeader>
                     <SocialPanelBody>
-                        <Tabs onSelect={this.handleSelect.bind(this)}
-                            tabHeaders={[resx.get("AdminLogs.Header"), resx.get("LogSettings.Header")]}
-                            type="primary">
-                            <AdminLogs />
-                            <LogSettings />
-                        </Tabs>
+                        {isHost &&
+                            <Tabs onSelect={this.handleSelect.bind(this)}
+                                tabHeaders={[resx.get("AdminLogs.Header"), resx.get("LogSettings.Header")]}
+                                type="primary">
+                                <AdminLogs />
+                                <LogSettings />
+                            </Tabs>
+                        }
+                        {!isHost &&
+                            <Tabs onSelect={this.handleSelect.bind(this)}
+                                tabHeaders={[resx.get("AdminLogs.Header")]}
+                                type="primary">
+                                <AdminLogs />
+                            </Tabs>
+                        }
                     </SocialPanelBody>
                 </div>]}
                 selectedPage={props.selectedPage}

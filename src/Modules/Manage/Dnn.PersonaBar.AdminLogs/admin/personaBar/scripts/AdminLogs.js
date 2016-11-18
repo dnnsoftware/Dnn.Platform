@@ -23,6 +23,7 @@
             window.dnn.initAdminLogs = function initializeAdminLogs() {
                 return {
                     utility: utility,
+                    settings: params.settings,
                     moduleName: 'AdminLogs'
                 };
             };

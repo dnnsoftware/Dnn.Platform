@@ -133,7 +133,7 @@ class LogItemRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={!this.state.collapsed} style={{ float: "left" }}>{!state.collapsed && props.children }</Collapse>
+                <Collapse isOpened={!this.state.collapsed} style={{ height: "auto", float: "left", width: "100%" }}>{!state.collapsed && props.children }</Collapse>
             </div>
         );
     }
