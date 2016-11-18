@@ -23,7 +23,7 @@ class Label extends Component {
                     type="info"
                     tooltipPlace={props.tooltipPlace}
                     rendered={tooltipMessages.length > 0}
-                    style={tooltipStyle}/>
+                    style={Object.assign(props.tooltipStyle, tooltipStyle)}/>
                     {props.extra}
             </div>
         );
@@ -36,6 +36,7 @@ Label.propTypes = {
     labelFor: PropTypes.string,
     tooltipMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     tooltipPlace: PropTypes.string,
+    tooltipStyle: PropTypes.object,
     labelType: PropTypes.oneOf(["inline", "block"]),
     style: PropTypes.object,
     extra: PropTypes.node
