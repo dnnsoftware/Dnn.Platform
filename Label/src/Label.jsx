@@ -17,7 +17,7 @@ class Label extends Component {
         const tooltipMessages = props.tooltipMessage instanceof Array ? props.tooltipMessage : [props.tooltipMessage];
         return (
             <div className={"dnn-label" + (props.className ? (" " + props.className) : "") + (" " + props.labelType) } style={props.style}>
-                <label htmlFor={props.labelFor}>{props.label}</label>
+                <label htmlFor={props.labelFor} onClick={props.onClick && props.onClick.bind(this)}>{props.label}</label>
                 <Tooltip
                     messages={tooltipMessages}
                     type="info"
@@ -39,7 +39,8 @@ Label.propTypes = {
     tooltipStyle: PropTypes.object,
     labelType: PropTypes.oneOf(["inline", "block"]),
     style: PropTypes.object,
-    extra: PropTypes.node
+    extra: PropTypes.node,
+    onClick: PropTypes.func
 };
 Label.defaultProps = {
     labelType: "block",
