@@ -72,16 +72,22 @@ class Body extends Component {
     toggleCreateBox() {
         this.refs["userTable"].getWrappedInstance().onAddUser();
     }
-
+    canAddUser()
+    {
+        return appSettings.applicationSettings.settings.isHost || appSettings.applicationSettings.settings.permissions.ADD_USER;
+    }
     render() {
         const {props, state} = this;
         const panelBodyMargin = state.createBoxVisible ? "without-margin" : "";
         return (
             <GridCell>
                 <SocialPanelHeader title={Localization.get("nav_Users") }>
+                 {
+                    this.canAddUser() &&  
                     <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
                         {Localization.get("btnCreateUser") }
                     </Button>
+                }
                 </SocialPanelHeader>
                 <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable" appSettings={appSettings}/>

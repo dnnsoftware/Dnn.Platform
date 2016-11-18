@@ -10,6 +10,7 @@ import utilities from "utils";
 import Button from "dnn-button";
 import styles from "./style.less";
 import ChangePassword from "../ChangePassword";
+import {canManagePassword, canEditSettings} from "../../permissionHelpers.js";
 
 const inputStyle = { width: "100%" };
 const blankAccountSettings = {
@@ -40,16 +41,7 @@ class UserSettings extends Component {
         }
         else
         {
-            let userDetails = Object.assign({}, props.userDetails);
-            let {accountSettings} = this.state;
-            accountSettings.displayName = userDetails.displayName;
-            accountSettings.userName = userDetails.userName;
-            accountSettings.email = userDetails.email;
-            accountSettings.userId = userDetails.userId;
-            this.setState({
-                accountSettings,
-                userDetails
-            });
+            this.updateUserDetailsState(props.userDetails);
         }
     }
     componentWillReceiveProps(newProps) {
@@ -58,31 +50,25 @@ class UserSettings extends Component {
         }
         else
         {
-            let userDetails = Object.assign({}, newProps.userDetails);
-            let {accountSettings} = this.state;
-            accountSettings.displayName = userDetails.displayName;
-            accountSettings.userName = userDetails.userName;
-            accountSettings.email = userDetails.email;
-            accountSettings.userId = userDetails.userId;
-            this.setState({
-                accountSettings,
-                userDetails
-            });
+            this.updateUserDetailsState(newProps.userDetails);
         }
     }
     getUserDetails(props, userId) {
         props.dispatch(CommonUsersActions.getUserDetails({ userId: userId }, (data) => {
-            let userDetails = Object.assign({}, data);
-            let {accountSettings} = this.state;
-            accountSettings.displayName = userDetails.displayName;
-            accountSettings.userName = userDetails.userName;
-            accountSettings.email = userDetails.email;
-            accountSettings.userId = userDetails.userId;
-            this.setState({
-                accountSettings,
-                userDetails
-            });
+            this.updateUserDetailsState(data);
         }));
+    }
+    updateUserDetailsState(details) {
+        let userDetails = Object.assign({}, details);
+        let {accountSettings} = this.state;
+        accountSettings.displayName = userDetails.displayName;
+        accountSettings.userName = userDetails.userName;
+        accountSettings.email = userDetails.email;
+        accountSettings.userId = userDetails.userId;
+        this.setState({
+            accountSettings,
+            userDetails
+        });
     }
     onChange(key, item) {
         let {accountSettings} = this.state;
@@ -161,12 +147,6 @@ class UserSettings extends Component {
             }
         }));
     }
-    adminPermissionCheck()
-    {
-        return (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin || 
-                        (!this.props.appSettings.applicationSettings.settings.isHost && !this.props.appSettings.applicationSettings.settings.isAdmin && 
-                        !this.state.userDetails.isAdmin && !this.state.userDetails.isSuperUser));
-    }
     render() {
         let {state} = this;
         return <GridCell className={styles.userSettings}>
@@ -185,7 +165,7 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("Username.Required") }
                             style={inputStyle}
                             autoComplete="off"
-                            enabled={this.adminPermissionCheck()}
+                            enabled={canEditSettings(this.props.appSettings.applicationSettings.settings)}
                             inputStyle={{ marginBottom: 25 }}/>
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
@@ -195,7 +175,7 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("DisplayName.Required") }
                             style={inputStyle}
                             autoComplete="off"
-                            enabled={this.adminPermissionCheck()}
+                            enabled={canEditSettings(this.props.appSettings.applicationSettings.settings)}
                             inputStyle={{ marginBottom: 25 }} />
                         <SingleLineInputWithError value={state.accountSettings.email}
                             error={state.errors.email}
@@ -205,29 +185,30 @@ class UserSettings extends Component {
                             errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}
                             autoComplete="off"
-                            enabled={this.adminPermissionCheck()}
+                            enabled={canEditSettings(this.props.appSettings.applicationSettings.settings)}
                             inputStyle={{ marginBottom: 25 }}/>
                     </div>
-                    <GridCell className="no-padding">
-                        <div className="title">
-                            {Localization.get("PasswordManagement")}
-                        </div>
-                        {this.adminPermissionCheck() && <GridCell className="link">
-                            <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
+                    {canManagePassword(this.props.appSettings.applicationSettings.settings, this.state.userDetails.userId) &&
+                        <GridCell className="no-padding">
+                            <div className="title">
+                                {Localization.get("PasswordManagement")}
                             </div>
+                            <GridCell className="link">
+                                <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
+                                </div>
                             </GridCell>
-                        }
-                        {this.adminPermissionCheck() && !state.userDetails.needUpdatePassword && state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId && <GridCell className="link">
-                            <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
-                            </div>
-                            </GridCell>}
-                        {state.userDetails.userId!==this.props.appSettings.applicationSettings.settings.userId &&
+                            {!state.userDetails.needUpdatePassword && 
+                                <GridCell className="link">
+                                    <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
+                                    </div>
+                                </GridCell>
+                            }
                             <GridCell className="link">
                                 <div onClick={this.onSendPasswordLink.bind(this) }>[ {Localization.get("ResetPassword")} ]
                                 </div>
                             </GridCell>
-                        }
-                    </GridCell>
+                        </GridCell>
+                    }
                 </GridCell>
                 <GridCell className="outer-box right" columnSize={50}>
                     <div className="title">
@@ -323,7 +304,7 @@ class UserSettings extends Component {
                     </GridSystem>
                 </GridCell>
             </GridCell>
-            {this. adminPermissionCheck() &&
+            {canEditSettings(this.props.appSettings.applicationSettings.settings) &&
                 <GridCell className="buttons">
                     <GridCell columnSize={50} className="leftBtn">
                         <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>

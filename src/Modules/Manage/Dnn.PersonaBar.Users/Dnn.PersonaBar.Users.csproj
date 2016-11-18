@@ -102,6 +102,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Components\Comparers\UserSearchResultComparer.cs" />
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Contracts\CreateUserContract.cs" />
     <Compile Include="Components\Contracts\GetUsersContract.cs" />
     <Compile Include="Components\Contracts\RegisterationDetails.cs" />

@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (disallowRegistration)
             {
-                message = Localization.GetString("RegistrationNotAllowed", Constants.SharedResources);
+                message = Localization.GetString("RegistrationNotAllowed",Library.Constants.SharedResources);
                 return null;
             }
 
@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Users.Components
             //ensure this user doesn't exist
             if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
             {
-                message = Localization.GetString("RegistrationUsernameAlreadyPresent", Constants.SharedResources);
+                message = Localization.GetString("RegistrationUsernameAlreadyPresent", Library.Constants.SharedResources);
                 return null;
             }
 
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var portalSecurity = new PortalSecurity();
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                 {
-                    message = Localization.GetString("RegistrationProfanityNotAllowed", Constants.SharedResources);
+                    message = Localization.GetString("RegistrationProfanityNotAllowed", Library.Constants.SharedResources);
                     return null;
                 }
             }
@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Email);
                 if (matches.Count == 0)
                 {
-                    message = Localization.GetString("RegistrationInvalidEmailUsed", Constants.SharedResources);
+                    message = Localization.GetString("RegistrationInvalidEmailUsed", Library.Constants.SharedResources);
                     return null;
                 }
             }
@@ -140,7 +140,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count > 0)
                 {
-                    message = Localization.GetString("RegistrationExcludedTermsUsed", Constants.SharedResources);
+                    message = Localization.GetString("RegistrationExcludedTermsUsed", Library.Constants.SharedResources);
                     return null;
                 }
             }
@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count == 0)
                 {
-                    message = Localization.GetString("RegistrationInvalidUserNameUsed", Constants.SharedResources);
+                    message = Localization.GetString("RegistrationInvalidUserNameUsed", Library.Constants.SharedResources);
                     return null;
                 }
             }

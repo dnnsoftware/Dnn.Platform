@@ -8,6 +8,7 @@ import UserMenu from "../UserMenu";
 import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
 import ColumnSizes from "../columnSizes";
+import {canManageRoles, canManageProfile, canViewSettings} from "../../permissionHelpers.js";
 
 class DetailsRow extends Component {
     constructor() {
@@ -56,16 +57,21 @@ class DetailsRow extends Component {
         const show = !this.state.showMenu;
         this.setState({ showMenu: show });
     }
+    
     /* eslint-disable react/no-danger */
     getUserActions(user, opened) {
-        let actionIcons = [
-            {
+        let actionIcons = [];
+        actionIcons = actionIcons.concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons(user)) || []);
+        if (canViewSettings(this.props.appSettings.applicationSettings.settings)) {
+            actionIcons = actionIcons.concat([{
                 index: 15,
                 icon: SettingsIcon,
                 title: Localization.get("ManageSettings.title")
-            }
-        ].concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons(user)) || []);
-        if (!user.isSuperUser) {
+            }]);
+        }
+
+        if (canManageRoles(this.props.appSettings.applicationSettings.settings, user))
+        {
             actionIcons = actionIcons.concat([{
                 index: 5,
                 icon: ShieldIcon,
@@ -73,7 +79,8 @@ class DetailsRow extends Component {
             }]);
         }
 
-        if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin) {
+        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
+        {
             actionIcons = actionIcons.concat([{
                 index: 10,
                 icon: UserIcon,
@@ -120,13 +127,6 @@ class DetailsRow extends Component {
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
             },
-            // {
-            //     index: 20,
-            //     content: <GridCell columnSize={columnSizes.find(x=>x.index===20).size}  className={user.isDeleted ? "deleted" : ""}>
-            //         {user.authorized !== "-" && <p>{user.authorized ? Localization.get("Authorized") : Localization.get("UnAuthorized")}</p>}
-            //         {user.authorized === "-" && user.authorized}
-            //     </GridCell>
-            // },
             {
                 index: 25,
                 content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>

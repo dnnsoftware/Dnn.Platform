@@ -12,6 +12,7 @@ import styles from "./style.less";
 import {sort} from "../../helpers";
 import Localization from "localization";
 import ColumnSizes from "./columnSizes";
+import {canManageRoles, canManageProfile, canViewSettings, canAddUser} from "../permissionHelpers.js";
 
 class UserTable extends Component {
     constructor() {
@@ -48,14 +49,17 @@ class UserTable extends Component {
         this.toggle(this.state.openId === "add" ? "" : "add", 0);
     }
     getChildren(user) {
-        let children = [
-            {
+        let children = [];
+        children = children.concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
+        if (canViewSettings(this.props.appSettings.applicationSettings.settings))
+        {
+            children = children.concat([{
                 index: 15,
                 content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } appSettings={this.props.appSettings}/>
-            }
-        ].concat((this.props.getUserTabs && this.props.getUserTabs(user)) || []);
+            }]);
+        }
         
-        if (!user.isSuperUser)
+        if (canManageRoles(this.props.appSettings.applicationSettings.settings, user))
         {
             children = children.concat([{
                 index: 5,
@@ -63,11 +67,12 @@ class UserTable extends Component {
             }]);
         }
 
-        if (this.props.appSettings.applicationSettings.settings.isHost || this.props.appSettings.applicationSettings.settings.isAdmin) {
+        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
+        {
             children = children.concat([{
-                    index: 10,
-                    content: <EditProfile  userId={user.userId} />
-                }]);
+                index: 10,
+                content: <EditProfile  userId={user.userId} />
+            }]);
         }
         return sort(children, "index").map((child) => {
             return child.content;
@@ -79,9 +84,8 @@ class UserTable extends Component {
         let headers = [{index: 5, size: columnSizes.find(x=>x.index===5).size, header: Localization.get("Name.Header")},
                     {index: 10, size: columnSizes.find(x=>x.index===10).size, header: Localization.get("Email.Header")},
                     {index: 15, size: columnSizes.find(x=>x.index===15).size, header: Localization.get("Created.Header")},
-                    //{index: 20,header: Localization.get("Authorized.Header")},
                     {index: 25, size: columnSizes.find(x=>x.index===25).size, header:""}];
-        if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function"){
+        if (this.props.getUserColumns !== undefined  && typeof this.props.getUserColumns ==="function") {
             let extraColumns = this.props.getUserColumns();
             if (extraColumns!==undefined && extraColumns.length>0)
             {
@@ -96,6 +100,7 @@ class UserTable extends Component {
         }
         return headers;
     }
+    
     render() {
         const {props} = this;
         let i = 0;
@@ -104,7 +109,8 @@ class UserTable extends Component {
         return (
             <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>
-                {opened && <DetailRow
+                {opened && canAddUser(this.props.appSettings.applicationSettings.settings) 
+                    && <DetailRow
                     Collapse={this.collapse.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
                     currentIndex={this.state.renderIndex}

@@ -1,76 +1,100 @@
 <dotnetnuke type="Package" version="5.0">
-    <packages>
-        <package name="Dnn.PersonaBar.Users" type="PersonaBar" version="01.00.00">
-            <friendlyName>Dnn.PersonaBar.Users</friendlyName>
-            <description></description>
-            <iconFile>~/DesktopModules/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
-            <owner>
-                <name>DNN</name>
-                <organization>DNN Corp.</organization>
-                <url>http://www.dnnsoftware.com</url>
-                <email>support@dnnsoftware.com</email>
-            </owner>
-            <license src="License.txt"></license>
-            <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
-            <dependencies>
-                <dependency type="CoreVersion">08.00.00</dependency>
-                <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
-            </dependencies>
-            <azureCompatible>true</azureCompatible>
-            <components>
-                <component type="ResourceFile">
-                    <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
-                        <resourceFile>
-                            <name>Resources.zip</name>
-                        </resourceFile>
-                    </resourceFiles>
-                </component>
-                <component type="Assembly">
-                    <assemblies>
-                        <assembly>
-                            <name>Dnn.PersonaBar.Users.dll</name>
-                            <path>bin</path>
-                        </assembly>
-                    </assemblies>
-                </component>
-                <component type="Script">
-                    <scripts>
-                        <basePath>DesktopModules\admin\Dnn.PersonaBar\Users</basePath>
-                        <script type="Install">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
-                            <name>Install.SqlDataProvider</name>
-                            <version>01.00.00</version>
-                        </script>
-                        <script type="UnInstall">
-                            <path>Providers\DataProviders\SqlDataProvider</path>
-                            <name>Uninstall.SqlDataProvider</name>
-                            <version>01.00.00</version>
-                        </script>
-                    </scripts>
-                </component>
-                <component type="PersonaBarMenu">
-                    <menu>
-                        <identifier>Users</identifier>
-                        <moduleName>Users</moduleName>
-                        <controller>Dnn.PersonaBar.Users.Components.UsersMenuController, Dnn.PersonaBar.Users</controller>
-                        <resourceKey>nav_Users</resourceKey>
-                        <path>Users</path>
-                        <mobileSupport>true</mobileSupport>
-                        <parent>Manage</parent>
-                        <order>10</order>
-                        <defaultRoles>Administrators</defaultRoles>
-                    </menu>
-                    <permission>
-                        <key>ADDUSER</key>
-                        <name>Add User</name>
-                    </permission>
-                    <permission>
-                        <key>CHANGEPASSWORD</key>
-                        <name>Change Password</name>
-                    </permission>
-                </component>
-            </components>
-        </package>
-    </packages>
+  <packages>
+    <package name="Dnn.PersonaBar.Users" type="PersonaBar" version="01.00.00">
+      <friendlyName>Dnn.PersonaBar.Users</friendlyName>
+      <description></description>
+      <iconFile>~/DesktopModules/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <dependencies>
+        <dependency type="CoreVersion">08.00.00</dependency>
+        <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
+      </dependencies>
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <name>Dnn.PersonaBar.Users.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\admin\Dnn.PersonaBar\Users</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Install.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.00</version>
+            </script>
+          </scripts>
+        </component>
+        <component type="PersonaBarMenu">
+          <menu>
+            <identifier>Users</identifier>
+            <moduleName>Users</moduleName>
+            <controller>Dnn.PersonaBar.Users.Components.UsersMenuController, Dnn.PersonaBar.Users</controller>
+            <resourceKey>nav_Users</resourceKey>
+            <path>Users</path>
+            <mobileSupport>true</mobileSupport>
+            <parent>Manage</parent>
+            <order>10</order>
+            <defaultRoles>Administrators</defaultRoles>
+          </menu>
+          <permission>
+            <key>ADD_USER</key>
+            <name>Add User</name>
+          </permission>
+          <permission>
+            <key>MANAGE_ROLES</key>
+            <name>Manage Roles</name>
+          </permission>
+          <permission>
+            <key>MANAGE_PROFILE</key>
+            <name>Manage Profile</name>
+          </permission>
+          <permission>
+            <key>VIEW_SETTINGS</key>
+            <name>View Settings</name>
+          </permission>
+          <permission>
+            <key>EDIT_SETTINGS</key>
+            <name>Edit Settings</name>
+          </permission>
+          <permission>
+            <key>DELETE_USER</key>
+            <name>Delete User</name>
+          </permission>
+          <permission>
+            <key>AUTHORIZE_UNAUTHORIZE_USER</key>
+            <name>Authorize/Unauthorize User</name>
+          </permission>
+          <permission>
+            <key>MANAGE_PASSWORD</key>
+            <name>Manage Password</name>
+          </permission>
+        </component>
+      </components>
+    </package>
+  </packages>
 </dotnetnuke>
