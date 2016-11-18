@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import styles from "./style.less";
-import FileUpload from "./FileUpload/FileUpload";
+import FileUpload from "dnn-file-upload";
 import utils from "../../../../utils";
 import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
@@ -33,7 +33,6 @@ class PageFile extends Component {
                         <FileUpload
                             utils={utilities}
                             selectedFile={selectedFile}
-                            //fileFormats={["image/png"]}
                             onSelectFile={this.onFileSelect.bind(this)} />
                     </GridCell>
                     <GridCell className="right-column">
