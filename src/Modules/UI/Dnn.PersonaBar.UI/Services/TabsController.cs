@@ -7,7 +7,7 @@ using System.Web.Http;
 using DotNetNuke.Instrumentation;
 namespace Dnn.PersonaBar.UI.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Admin)]
     public class TabsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TabsController));

@@ -34,7 +34,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Seo.Services
 {
-    [ServiceScope(SupportExtension = "Seo")]
+    [MenuPermission(SupportExtension = "Seo")]
     public class SeoController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));

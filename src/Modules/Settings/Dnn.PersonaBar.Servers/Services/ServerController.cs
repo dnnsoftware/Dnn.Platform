@@ -37,7 +37,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));

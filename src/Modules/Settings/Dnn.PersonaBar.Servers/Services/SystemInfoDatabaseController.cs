@@ -32,7 +32,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class SystemInfoDatabaseController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));

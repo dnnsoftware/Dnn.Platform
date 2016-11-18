@@ -42,7 +42,7 @@ using static System.Boolean;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
         private const string UseSSLKey = "UseSSLForCacheSync";

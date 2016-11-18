@@ -18,7 +18,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.ConfigConsole.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class ConfigConsoleController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));

@@ -19,7 +19,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.UI.Services
 {
-    [ServiceScope(Scope = ServiceScope.Regular)]
+    [MenuPermission(Scope = ServiceScope.Regular)]
     public class UserSettingsController : PersonaBarApiController
     {
         /// <summary>

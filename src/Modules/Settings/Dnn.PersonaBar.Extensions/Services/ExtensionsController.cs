@@ -44,7 +44,7 @@ using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.PersonaBar.Extensions.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Admin)]
     public class ExtensionsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));

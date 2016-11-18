@@ -47,7 +47,7 @@ using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Admin)]
     public class SiteSettingsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));

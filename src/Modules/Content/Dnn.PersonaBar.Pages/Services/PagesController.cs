@@ -42,7 +42,7 @@ using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
-    [ServiceScope(SupportExtension = "Pages")]
+    [MenuPermission(SupportExtension = "Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {

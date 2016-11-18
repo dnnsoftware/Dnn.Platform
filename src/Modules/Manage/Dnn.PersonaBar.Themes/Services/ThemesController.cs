@@ -31,7 +31,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Themes.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Admin)]
     public class ThemesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));

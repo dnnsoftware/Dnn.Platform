@@ -40,7 +40,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Servers.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsSmtpHostController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));

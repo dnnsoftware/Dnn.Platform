@@ -16,7 +16,7 @@ using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Licensing.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class LicensingController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LicensingController));

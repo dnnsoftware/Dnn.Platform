@@ -28,7 +28,7 @@ using Microsoft.VisualBasic;
 
 namespace Dnn.PersonaBar.TaskScheduler.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class TaskSchedulerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));

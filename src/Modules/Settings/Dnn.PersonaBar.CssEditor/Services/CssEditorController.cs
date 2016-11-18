@@ -25,7 +25,7 @@ using DotNetNuke.Web.Client;
 
 namespace Dnn.PersonaBar.CssEditor.Services
 {
-    [ServiceScope(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Admin)]
     public class CssEditorController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CssEditorController));

@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.UI.Services
             var namespaces = new List<string>();
             foreach (var type in controllerTypes)
             {
-                var scopeAttr = (ServiceScopeAttribute)type.GetCustomAttributes(false).Cast<Attribute>().FirstOrDefault(a => a is ServiceScopeAttribute);
+                var scopeAttr = (MenuPermissionAttribute)type.GetCustomAttributes(false).Cast<Attribute>().FirstOrDefault(a => a is MenuPermissionAttribute);
                 if (scopeAttr != null)
                 {
                     if (!namespaces.Contains(type.Namespace))

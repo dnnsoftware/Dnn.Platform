@@ -27,7 +27,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Sites.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class SitesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SitesController));

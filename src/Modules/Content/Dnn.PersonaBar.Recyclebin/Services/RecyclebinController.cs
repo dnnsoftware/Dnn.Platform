@@ -40,7 +40,7 @@ using Dnn.PersonaBar.Recyclebin.Components.Dto;
 
 namespace Dnn.PersonaBar.Recyclebin.Services
 {
-    [ServiceScope(SupportExtension = "Recyclebin")]
+    [MenuPermission(SupportExtension = "Recyclebin")]
     public class RecyclebinController : PersonaBarApiController
     {
         [HttpGet]

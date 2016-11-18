@@ -24,7 +24,7 @@ using DotNetNuke.Services.Exceptions;
 
 namespace Dnn.PersonaBar.UI.Services
 {
-    [ServiceScope(Scope = ServiceScope.Regular)]
+    [MenuPermission(Scope = ServiceScope.Regular)]
     public class MenuExtensionsController : PersonaBarApiController
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuExtensionsController));

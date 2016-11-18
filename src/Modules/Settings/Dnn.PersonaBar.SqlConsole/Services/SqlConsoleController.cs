@@ -27,7 +27,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.SqlConsole.Services
 {
-    [ServiceScope(Scope = ServiceScope.Host)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class SqlConsoleController : PersonaBarApiController
     {
         private ISqlQueryController _controller = SqlQueryController.Instance;

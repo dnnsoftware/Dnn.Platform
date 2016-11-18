@@ -24,7 +24,7 @@ using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
 
 namespace Dnn.PersonaBar.Vocabularies.Services
 {
-    [ServiceScope(SupportExtension = "Vocabularies")]
+    [MenuPermission(SupportExtension = "Vocabularies")]
     public class VocabulariesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
