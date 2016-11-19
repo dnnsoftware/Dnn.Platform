@@ -244,9 +244,12 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
+                var isAdmin = IsAdmin();
+
                 var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
                     ref totalRecords, false, false)
                     .Cast<UserInfo>()
+                    .Where(x => isAdmin || !x.Roles.Contains(PortalSettings.AdministratorRoleName))
                     .Select(u => new UserRoleDto()
                     {
                         UserId = u.UserID,

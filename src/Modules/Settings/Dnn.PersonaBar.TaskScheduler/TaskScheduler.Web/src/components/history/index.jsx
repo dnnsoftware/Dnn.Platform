@@ -8,7 +8,7 @@ import {
 import TaskHistoryItemRow from "./taskHistoryItemRow";
 import "./style.less";
 import util from "../../utils";
-import Pager from "../common/Pager";
+import Pager from "dnn-pager";
 import resx from "../../resources";
 
 const svgIcon = require(`!raw!./../svg/history.svg`);
@@ -69,17 +69,6 @@ class HistoryPanelBody extends Component {
         });
     }
 
-    onPageSizeChange(event) {
-        let size = event.value;
-        const {props, state} = this;
-        this.setState({
-            pageIndex: 0,
-            pageSize: size
-        }, () => {
-            props.dispatch(TaskActions.getScheduleItemHistory({ scheduleId: props.scheduleId, pageIndex: 0, pageSize: size }));
-        });
-    }
-
     renderedHistoryListHeader() {
         const {props} = this;
         let tableHeaders = tableFields.map((field, index) => {
@@ -96,13 +85,18 @@ class HistoryPanelBody extends Component {
         const {props, state} = this;
         return (
             <div className="taskHistoryList-pager">
-                <Pager total={props.totalCount}
-                    startIndex={state.pageIndex * state.pageSize}
+                <Pager
+                    showStartEndButtons={true}
+                    showPageSizeOptions={true}
+                    showPageInfo={false}
+                    numericCounters={4}
                     pageSize={state.pageSize}
-                    onPageChange={this.onPageChange.bind(this) }
-                    onPageSizeChange={this.onPageSizeChange.bind(this) } 
-                    pageSizeStyle={pageSizeStyle}
-                    pageSizeOptions={pageSizeOptions}/>
+                    totalRecords={props.totalCount}
+                    onPageChanged={this.onPageChange.bind(this)}
+                    pageSizeDropDownWithoutBorder={true}
+                    pageSizeOptionText={resx.get("pageSizeOption")}
+                    summaryText={resx.get("pagerSummary")}
+                    />
             </div>
         );
     }

@@ -473,15 +473,12 @@ namespace Dnn.PersonaBar.Users.Services
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new List<UserRoleInfo>());
                 }
+                var isAdmin = IsAdmin();
 
                 var roles = RoleController.Instance.GetRoles(PortalId,
                     x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
                 var matchedRoles = roles
-                    .Where(
-                        x =>
-                            UserInfo.IsSuperUser || UserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) ||
-                            (!UserInfo.IsSuperUser && !UserInfo.Roles.Contains(PortalSettings.AdministratorRoleName) &&
-                             x.RoleType != RoleType.Administrator))
+                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
                     .ToList().Take(count).Select(u => new UserRoleInfo
                     {
                         RoleID = u.RoleID,
@@ -599,6 +596,11 @@ namespace Dnn.PersonaBar.Users.Services
         {
             Requires.NotNegative("UserId", userRoleDto.UserId);
             Requires.NotNegative("RoleId", userRoleDto.RoleId);
+        }
+        private bool IsAdmin()
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
         }
     }
 }
