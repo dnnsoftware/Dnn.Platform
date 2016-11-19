@@ -1,11 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import PagesDescription from "./PagesDescription";
 import Button from "./Button";
-
-const svgIconLeft = require(`!raw!./svg/arrow_left.svg`);
-const svgIconRight = require(`!raw!./svg/arrow_right.svg`);
-const svgIconEndLeft = require(`!raw!./svg/arrow-end_left.svg`);
-const svgIconEndRight = require(`!raw!./svg/arrow-end_right.svg`);
+import { ArrowLeftIcon, ArrowRightIcon, ArrowEndLeftIcon, ArrowEndRightIcon } from "dnn-svg-icons";
 
 const style = {
     float: "right",
@@ -50,11 +46,11 @@ class InnerPager extends Component {
     render() {
         return (
             <div style={style}>                                   
-                <Button onClick={this.onFirstPage.bind(this)} disabled={this.isFirstPage()} icon={svgIconEndLeft} />    
-                <Button onClick={this.onPreviousPage.bind(this)} disabled={this.isFirstPage()} icon={svgIconLeft} />    
+                <Button onClick={this.onFirstPage.bind(this)} disabled={this.isFirstPage()} icon={ArrowEndLeftIcon} />    
+                <Button onClick={this.onPreviousPage.bind(this)} disabled={this.isFirstPage()} icon={ArrowLeftIcon} />    
                 <PagesDescription currentPage={this.props.currentPage} pagesDescriptionStyle={this.props.pagesDescriptionStyle}/>                     
-                <Button onClick={this.onNextPage.bind(this)} disabled={this.isLastPage()} icon={svgIconRight} />
-                <Button onClick={this.onLastPage.bind(this)} disabled={this.isLastPage()} icon={svgIconEndRight} />
+                <Button onClick={this.onNextPage.bind(this)} disabled={this.isLastPage()} icon={ArrowRightIcon} />
+                <Button onClick={this.onLastPage.bind(this)} disabled={this.isLastPage()} icon={ArrowEndRightIcon} />
             </div>
         );
     }
