@@ -20,6 +20,7 @@
                 moduleName: "Pages",
                 config: config,
                 viewName: (params && params.viewName) ? params.viewName : null,
+                viewParams: (params && params.viewParams) ? params.viewParams : null,
                 settings: params.settings
             };
         };
