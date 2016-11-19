@@ -14,6 +14,7 @@ import {
     languages as LanguagesActions,
     siteInfo as SiteInfoActions
 } from "actions";
+import utils from "utils";
 
 
 class TranslatePageContent extends Component {
@@ -79,8 +80,8 @@ class TranslatePageContent extends Component {
         return pageList.map((page) => {
             return <div className="page-list-item">
                 <span>{page.PageName}</span>
-                <a className="float-right">{resx.get("EditPageSettings") }</a>
-                <a className="float-right" target="_blank" href={page.ViewUrl}>{resx.get("ViewPage") }</a>
+                <a className="float-right" onClick={this.goToPageSettings.bind(this, page.PageId)}>{resx.get("EditPageSettings")}</a>
+                <a className="float-right" target="_blank" href={page.ViewUrl}>{resx.get("ViewPage")}</a>
             </div>;
         });
     }
@@ -98,15 +99,15 @@ class TranslatePageContent extends Component {
         const cultureCode = props.languageBeingEdited.Code;
         props.dispatch(LanguagesActions.deleteLanguagePages(cultureCode, (data) => {
             console.log('ERASE DATA: ', data);
-            
+
             this.getPageList();
         }));
     }
 
-    onPublishTranslatedPages(enable=true) {
+    onPublishTranslatedPages(enable = true) {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.publishAllPages({cultureCode, enable}, (data) => {
+        props.dispatch(LanguagesActions.publishAllPages({ cultureCode, enable }, (data) => {
             console.log('PUBLISH DATA: ', data);
         }));
     }
@@ -114,7 +115,7 @@ class TranslatePageContent extends Component {
     addPages() {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.localizeContent({cultureCode}, (data) => {
+        props.dispatch(LanguagesActions.localizeContent({ cultureCode }, (data) => {
             this.getProgressData();
         }));
     }
@@ -123,6 +124,41 @@ class TranslatePageContent extends Component {
         this.props.closePersonaBarPage();
     }
 
+    goToPageSettings(pageId) {
+        let personaBar = window.parent.dnn ? window.parent.dnn.PersonaBar : null;
+        if (personaBar) {
+            personaBar.openPanel('Pages',
+                {
+                    viewParams:
+                    {
+                        pageId,
+                        viewTab: "localization",
+                        referral: utils.moduleName,
+                        referralText: resx.get("BackToLanguages").substring(1)
+                    }
+                }
+            );
+
+            let event = document.createEvent("Event");
+            event.initEvent("viewPageSettings", true, true);
+
+            event.pageId = pageId;
+            event.viewTab = "localization";
+            event.referral = utils.moduleName;
+            event.referralText = resx.get("BackToLanguages").substring(1);
+
+            document.dispatchEvent(event);
+        }
+    }
+    onToggleActive() {
+        let {languageBeingEdited} = this.state;
+        languageBeingEdited.Active = !languageBeingEdited.Active;
+        this.setState({ languageBeingEdited });
+        this.props.dispatch(LanguagesActions.activateLanguage({
+            cultureCode: languageBeingEdited.Code,
+            enable: languageBeingEdited.Active
+        }));
+    }
     render() {
 
         const {props, state} = this;
@@ -131,8 +167,8 @@ class TranslatePageContent extends Component {
         return <SocialPanelBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
-            workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage }>
-                {resx.get("BackToLanguages") }
+            workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage}>
+                {resx.get("BackToLanguages")}
             </div>}
             workSpaceTrayVisible={true}>
 
@@ -143,36 +179,49 @@ class TranslatePageContent extends Component {
                         <span >{language.NativeName}</span>
                         {state.basicSettings && <span className="float-right">{state.basicSettings.PortalName}</span>}
                     </div>
+                    <InputGroup>
+                        <div className="activate-pages-switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("ActivatePages.Help")}
+                                label={resx.get("ActivatePages")} />
+                            <Switch
+                                labelHidden={true}
+                                value={language.Active}
+                                onChange={this.onToggleActive.bind(this)}
+                                />
+                        </div>
+                    </InputGroup>
                     <div className="button-block">
                         <Button
                             type="secondary"
-                            onClick={this.onMarkAllPagesAsTranslated.bind(this) }>
-                            {resx.get("MarkAllPagesAsTranslated") }
+                            onClick={this.onMarkAllPagesAsTranslated.bind(this)}>
+                            {resx.get("MarkAllPagesAsTranslated")}
                         </Button>
                         <Button
                             type="secondary"
-                            onClick={this.onEraseAllLocalizedPages.bind(this) }>
-                            {resx.get("EraseAllLocalizedPages") }
+                            onClick={this.onEraseAllLocalizedPages.bind(this)}>
+                            {resx.get("EraseAllLocalizedPages")}
                         </Button>
                         <Button
                             type="primary"
                             className="float-right"
-                            onClick={this.onPublishTranslatedPages.bind(this, true) }>
-                            {resx.get("PublishTranslatedPages") }
+                            onClick={this.onPublishTranslatedPages.bind(this, true)}>
+                            {resx.get("PublishTranslatedPages")}
                         </Button>
                         <Button
                             type="secondary"
                             className="float-right"
-                            onClick={this.onPublishTranslatedPages.bind(this, false) }>
-                            {resx.get("UnpublishTranslatedPages") }
+                            onClick={this.onPublishTranslatedPages.bind(this, false)}>
+                            {resx.get("UnpublishTranslatedPages")}
                         </Button>
                     </div>
                 </div>}
 
                 <div className="list-header">
-                    <span>{resx.get("PagesToTranslate") } <span>{state.pageList ? state.pageList.length: 0}</span></span>
+                    <span>{resx.get("PagesToTranslate")} <span>{state.pageList ? state.pageList.length : 0}</span></span>
                     <span className="float-right" onClick={this.addPages.bind(this)}>
-                        <em>+</em>{resx.get("AddAllUnlocalizedPages") }
+                        <em>+</em>{resx.get("AddAllUnlocalizedPages")}
                     </span>
                 </div>
 
@@ -193,7 +242,7 @@ class TranslatePageContent extends Component {
                         autoHeight
                         autoHeightMin={0}
                         autoHeightMax={500}>
-                        {this.renderPageList() }
+                        {this.renderPageList()}
                     </Scrollbars>
                 </div>}
             </div>

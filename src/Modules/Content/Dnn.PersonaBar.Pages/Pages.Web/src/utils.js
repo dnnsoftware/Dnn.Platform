@@ -2,6 +2,7 @@ let utilities = null;
 let config = null;
 let moduleName = null;
 let viewName = null;
+let viewParams = null;
 let initialized = false;
 let settings = null;
 
@@ -22,6 +23,7 @@ function init(options) {
     config = options.config; 
     moduleName = options.moduleName;
     viewName = options.viewName;
+    viewParams = options.viewParams;
     initialized = true;   
     settings = options.settings;
 }
@@ -94,6 +96,11 @@ function getViewName() {
     return viewName;
 }
 
+function getViewParams(){
+    checkInit();
+    return viewParams;
+}
+
 function getResx(moduleName, key) {
     checkInit();
     return utilities.getResx(moduleName, key);
@@ -127,6 +134,7 @@ const utils = {
     getModuleName,
     getCurrentPageId,
     getViewName,
+    getViewParams,
     getResx,
     getSiteRoot,
     areEqualInvariantCase,

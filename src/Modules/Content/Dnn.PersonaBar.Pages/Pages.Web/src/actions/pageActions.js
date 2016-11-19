@@ -13,7 +13,7 @@ function updateUrlPreview(value, dispatch) {
             urlPreviewChange: true,
             field: "url",
             value: response.Url
-        });  
+        });
     }).catch(() => {
         dispatch({
             type: ActionTypes.ERROR_LOADING_PAGE
@@ -24,11 +24,19 @@ function updateUrlPreview(value, dispatch) {
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
 const pageActions = {
+    selectPageSettingTab(selectedPageSettingTab) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SELECT_PAGE_SETTING_TAB,
+                selectedPageSettingTab
+            });
+        };
+    },
     loadPage(pageId) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.LOAD_PAGE
-            });    
+            });
 
             PagesService.getPage(pageId).then(response => {
                 dispatch({
@@ -36,13 +44,13 @@ const pageActions = {
                     data: {
                         page: response
                     }
-                });  
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_LOADING_PAGE,
-                    data: {error}
+                    data: { error }
                 });
-            });     
+            });
         };
     },
 
@@ -53,7 +61,7 @@ const pageActions = {
 
             dispatch({
                 type: ActionTypes.LOAD_PAGE
-            }); 
+            });
 
             duplicatedPage.templateTabId = duplicatedPage.tabId;
             duplicatedPage.tabId = 0;
@@ -65,7 +73,7 @@ const pageActions = {
                 data: {
                     page: duplicatedPage
                 }
-            });    
+            });
         };
     },
 
@@ -73,8 +81,8 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.LOAD_PAGE
-            }); 
-            
+            });
+
             PagesService.getNewPage().then(page => {
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
@@ -95,7 +103,7 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SAVE_PAGE
-            });    
+            });
 
             PagesService.savePage(page).then(response => {
 
@@ -107,15 +115,15 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {
-                        createdPage: page.tabId === 0 ? response.Page : null 
+                        createdPage: page.tabId === 0 ? response.Page : null
                     }
-                });  
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PAGE,
-                    data: {error}
+                    data: { error }
                 });
-            });     
+            });
         };
     },
 
@@ -128,11 +136,11 @@ const pageActions = {
                 value
             });
 
-            if (key === "name" && 
-                pages.selectedPage.tabId === 0 && 
+            if (key === "name" &&
+                pages.selectedPage.tabId === 0 &&
                 !pages.urlChanged &&
                 pages.selectedPage.pageType === "normal") {
-                debouncedUpdateUrlPreview(value, dispatch);    
+                debouncedUpdateUrlPreview(value, dispatch);
             }
         };
     },
@@ -163,19 +171,19 @@ const pageActions = {
                     dispatch({
                         type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
                         data: { cacheProviderList }
-                    });  
+                    });
                 }).catch((error) => {
                     dispatch({
                         type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST,
-                        data: {error}
+                        data: { error }
                     });
-                });                     
+                });
             }
         };
     },
 
     deletePageModule(module) {
-        return (dispatch, getState) => {            
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.DELETING_PAGE_MODULE
             });
@@ -190,23 +198,23 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.DELETED_PAGE_MODULE,
                     data: { module }
-                });  
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_DELETING_PAGE_MODULE,
-                    data: {error}
+                    data: { error }
                 });
-            });      
+            });
         };
     },
 
     editingPageModule(module) {
         return {
             type: ActionTypes.EDITING_PAGE_MODULE,
-            data: {module}
+            data: { module }
         };
     },
-    
+
     cancelEditingPageModule() {
         return {
             type: ActionTypes.CANCEL_EDITING_PAGE_MODULE,
@@ -215,7 +223,7 @@ const pageActions = {
     },
 
     copyAppearanceToDescendantPages() {
-        return (dispatch, getState) => {            
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.COPYING_APPEARANCE_TO_DESCENDANT_PAGES
             });
@@ -224,7 +232,7 @@ const pageActions = {
             const page = state.pages.selectedPage;
             const { defaultPortalLayout, defaultPortalContainer } = state.theme;
             const theme = {
-                skinSrc: page.skinSrc  || defaultPortalLayout, 
+                skinSrc: page.skinSrc || defaultPortalLayout,
                 containerSrc: page.containerSrc || defaultPortalContainer
             };
 
@@ -237,19 +245,19 @@ const pageActions = {
                 utils.notify(Localization.get("CopyAppearanceToDescendantPagesSuccess"));
                 dispatch({
                     type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
-                    data: { }
-                });  
+                    data: {}
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_COPYING_APPEARANCE_TO_DESCENDANT_PAGES,
-                    data: {error}
+                    data: { error }
                 });
-            });      
+            });
         };
     },
 
     copyPermissionsToDescendantPages() {
-        return (dispatch, getState) => {            
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.COPYING_PERMISSIONS_TO_DESCENDANT_PAGES
             });
@@ -259,14 +267,14 @@ const pageActions = {
                 utils.notify(Localization.get("CopyPermissionsToDescendantPagesSuccess"));
                 dispatch({
                     type: ActionTypes.COPIED_PERMISSIONS_TO_DESCENDANT_PAGES,
-                    data: { }
-                });  
+                    data: {}
+                });
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
-                    data: {error}
+                    data: { error }
                 });
-            });      
+            });
         };
     }
 };

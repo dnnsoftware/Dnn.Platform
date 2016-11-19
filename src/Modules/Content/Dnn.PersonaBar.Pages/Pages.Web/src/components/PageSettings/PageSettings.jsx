@@ -145,7 +145,9 @@ class PageSettings extends Component {
                              Localization.get("Permissions"), 
                              Localization.get("Localization"),
                              Localization.get("Advanced")]}
-                className={styles.pageSettings}>
+                className={styles.pageSettings}
+                onSelect={this.props.selectPageSettingTab.bind(this)}
+                selectedIndex={this.props.selectedPageSettingTab}>
                 <div className="dnn-simple-tab-item">
                     <PageTypeSelector
                         page={selectedPage}
@@ -197,7 +199,9 @@ PageSettings.propTypes = {
     onCopyPermissionsToDescendantPages: PropTypes.func.isRequired,
     editingSettingModuleId: PropTypes.number,
     pageDetailsFooterComponents: PropTypes.array.isRequired,
-    pageTypeSelectorComponents: PropTypes.array.isRequired
+    pageTypeSelectorComponents: PropTypes.array.isRequired,
+    selectedPageSettingTab: PropTypes.number,
+    selectPageSettingTab: PropTypes.func
 };
 
 export default PageSettings;

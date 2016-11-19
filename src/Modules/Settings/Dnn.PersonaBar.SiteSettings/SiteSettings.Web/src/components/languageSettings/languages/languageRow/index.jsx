@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon, PreviewIcon } from "dnn-svg-icons";
 
 class LanguageRow extends Component {
     componentWillMount() {
@@ -146,7 +146,6 @@ class LanguageRow extends Component {
         }
         return name;
     }
-
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;

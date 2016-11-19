@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import SocialPanelHeader from "dnn-social-panel-header";
@@ -19,14 +19,80 @@ import utils from "../utils";
 import BackTo from "./common/BackTo/BackTo";
 import panels from "../constants/panels";
 
-class App extends Component {
+function getSelectedTabBeingViewed(viewTab) {
+    switch (viewTab) {
+        case "details":
+            return 0;
+        case "permissions":
+            return 1;
+        case "localization":
+            return 2;
+        case "advanced":
+            return 3;
+    }
+}
 
+class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            referral: "",
+            referralText: ""
+        };
+    }
     componentDidMount() {
         const {props} = this;
         const viewName = utils.getViewName();
+        const viewParams = utils.getViewParams();
+        
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
+
+        //Resolve tab being viewed, if view params are present.
+        this.resolveTabBeingViewed(viewParams);
+
+        //Listen to event fired to view page settings (from site settings)
+        document.addEventListener("viewPageSettings", this.resolveTabBeingViewed.bind(this), false);
+    }
+
+    //Update referral text if coming from a referral. (ex: "SiteSettings", resx.get("BackToLanguages"))
+    updateReferral(referral, referralText) {
+        this.setState({
+            referral,
+            referralText
+        });
+    }
+
+    //Method to go back to referral panel.
+    goToReferralPanel(referral) {
+        let personaBar = window.parent.dnn ? window.parent.dnn.PersonaBar : null;
+        if (personaBar) {
+            personaBar.openPanel(referral, {}); //Open, panel should already be rendered, so no need to pass params.
+            this.updateReferral("", "");
+        }
+    }
+
+    //Call method to go back to referral panel
+    backToReferral(referral) {
+        this.goToReferralPanel(referral);
+    }
+
+    //Resolves tab being viewed if view params are present.
+    resolveTabBeingViewed(viewParams) {
+        if (viewParams.pageId) {
+            this.props.onLoadPage(viewParams.pageId);
+        }
+        if (viewParams.viewTab) {
+            this.selectPageSettingTab(getSelectedTabBeingViewed(viewParams.viewTab));
+        }
+        if (viewParams.referral) {
+            this.updateReferral(viewParams.referral, viewParams.referralText);
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("viewPageSettings");
     }
 
     componentWillReceiveProps(newProps) {
@@ -65,7 +131,7 @@ class App extends Component {
     }
 
     showCancelWithoutSavingDialog() {
-        const onConfirm = () =>  this.props.onCancelPage();
+        const onConfirm = () => this.props.onCancelPage();
         utils.confirm(
             Localization.get("CancelWithoutSaving"),
             Localization.get("Close"),
@@ -80,69 +146,76 @@ class App extends Component {
 
     getPageTitle() {
         const {selectedPage} = this.props;
-        return this.isNewPage() ? 
-                Localization.get("AddPage") : 
-                Localization.get("PageSettings") + ": " + selectedPage.name;
+        return this.isNewPage() ?
+            Localization.get("AddPage") :
+            Localization.get("PageSettings") + ": " + selectedPage.name;
     }
 
-    getSettingsButtons(){
+    getSettingsButtons() {
         const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage} = this.props;
         const SaveAsTemplate = settingsButtonComponents.SaveAsTemplateButton || Button;
 
         return (
             <div className="heading-buttons">
-                <SaveAsTemplate 
-                    type="secondary" 
-                    size="large" 
+                <SaveAsTemplate
+                    type="secondary"
+                    size="large"
                     onClick={onLoadSavePageAsTemplate}
-                    onSaveAsPageTemplate={() => {}}
+                    onSaveAsPageTemplate={() => { } }
                     onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
-                    { Localization.get("SaveAsTemplate") }
+                    {Localization.get("SaveAsTemplate")}
                 </SaveAsTemplate>
-                <Button 
-                    type="secondary" 
-                    size="large" 
+                <Button
+                    type="secondary"
+                    size="large"
                     onClick={onDuplicatePage}>
-                    {Localization.get("DuplicatePage") }
+                    {Localization.get("DuplicatePage")}
                 </Button>
             </div>
         );
+    }
+
+    selectPageSettingTab(index) {
+        this.props.selectPageSettingTab(index);
     }
 
     getSettingsPage() {
         const {props} = this;
         const titleSettings = this.getPageTitle();
         const cancelAction = this.onCancelSettings.bind(this);
-        const backToPages = <BackTo onClick={cancelAction} label={Localization.get("BackToPages")} />;
+        const backToReferral = this.backToReferral.bind(this, this.state.referral);
+        const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-                    <SocialPanelHeader title={titleSettings}>
-                        {!this.isNewPage() && 
-                            this.getSettingsButtons()    
-                        }
-                    </SocialPanelHeader>
-                    <SocialPanelBody
-                        workSpaceTrayOutside={true}
-                        workSpaceTray={backToPages}
-                        workSpaceTrayVisible={true}>
-                        <PageSettings selectedPage={props.selectedPage}
-                                      selectedPageErrors={props.selectedPageErrors}
-                                      selectedPageDirty={props.selectedPageDirty} 
-                                      onCancel={cancelAction} 
-                                      onSave={this.onSavePage.bind(this)}
-                                      onChangeField={props.onChangePageField}
-                                      onPermissionsChanged={props.onPermissionsChanged}
-                                      onChangePageType={props.onChangePageType}
-                                      onDeletePageModule={props.onDeletePageModule}
-                                      onEditingPageModule={props.onEditingPageModule}
-                                      onCancelEditingPageModule={props.onCancelEditingPageModule}
-                                      editingSettingModuleId={props.editingSettingModuleId}
-                                      onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
-                                      onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
-                                      pageDetailsFooterComponents={props.pageDetailsFooterComponents} 
-                                      pageTypeSelectorComponents={props.pageTypeSelectorComponents} />
-                    </SocialPanelBody>
-                </PersonaBarPage>);
+            <SocialPanelHeader title={titleSettings}>
+                {!this.isNewPage() &&
+                    this.getSettingsButtons()
+                }
+            </SocialPanelHeader>
+            <SocialPanelBody
+                workSpaceTrayOutside={true}
+                workSpaceTray={backToPages}
+                workSpaceTrayVisible={true}>
+                <PageSettings selectedPage={props.selectedPage}
+                    selectedPageErrors={props.selectedPageErrors}
+                    selectedPageDirty={props.selectedPageDirty}
+                    onCancel={cancelAction}
+                    onSave={this.onSavePage.bind(this)}
+                    selectedPageSettingTab={props.selectedPageSettingTab}
+                    selectPageSettingTab={this.selectPageSettingTab.bind(this)}
+                    onChangeField={props.onChangePageField}
+                    onPermissionsChanged={props.onPermissionsChanged}
+                    onChangePageType={props.onChangePageType}
+                    onDeletePageModule={props.onDeletePageModule}
+                    onEditingPageModule={props.onEditingPageModule}
+                    onCancelEditingPageModule={props.onCancelEditingPageModule}
+                    editingSettingModuleId={props.editingSettingModuleId}
+                    onCopyAppearanceToDescendantPages={props.onCopyAppearanceToDescendantPages}
+                    onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
+                    pageDetailsFooterComponents={props.pageDetailsFooterComponents}
+                    pageTypeSelectorComponents={props.pageTypeSelectorComponents} />
+            </SocialPanelBody>
+        </PersonaBarPage>);
     }
 
     getAddPages() {
@@ -150,20 +223,20 @@ class App extends Component {
         const backToPages = <BackTo onClick={props.onCancelAddMultiplePages} label={Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
-                    <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
-                    </SocialPanelHeader>
-                    <SocialPanelBody
-                        workSpaceTrayOutside={true}
-                        workSpaceTray={backToPages}
-                        workSpaceTrayVisible={true}>
-                        <AddPages  
-                            bulkPage={props.bulkPage}
-                            onCancel={props.onCancelAddMultiplePages} 
-                            onSave={props.onSaveMultiplePages}
-                            onChangeField={props.onChangeAddMultiplePagesField} 
-                            components={props.multiplePagesComponents} />
-                    </SocialPanelBody>
-                </PersonaBarPage>);
+            <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
+            </SocialPanelHeader>
+            <SocialPanelBody
+                workSpaceTrayOutside={true}
+                workSpaceTray={backToPages}
+                workSpaceTrayVisible={true}>
+                <AddPages
+                    bulkPage={props.bulkPage}
+                    onCancel={props.onCancelAddMultiplePages}
+                    onSave={props.onSaveMultiplePages}
+                    onChangeField={props.onChangeAddMultiplePagesField}
+                    components={props.multiplePagesComponents} />
+            </SocialPanelBody>
+        </PersonaBarPage>);
     }
 
     getSaveAsTemplatePage() {
@@ -173,37 +246,37 @@ class App extends Component {
         const backToPageSettings = <BackTo onClick={props.onCancelSavePageAsTemplate} label={backToLabel} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
-                    <SocialPanelHeader title={Localization.get("SaveAsTemplate")}>
-                    </SocialPanelHeader>
-                    <SocialPanelBody
-                        workSpaceTrayOutside={true}
-                        workSpaceTray={backToPageSettings}
-                        workSpaceTrayVisible={true}>
-                        <SaveAsTemplate 
-                            onCancel={props.onCancelSavePageAsTemplate} />
-                    </SocialPanelBody>
-                </PersonaBarPage>);
+            <SocialPanelHeader title={Localization.get("SaveAsTemplate")}>
+            </SocialPanelHeader>
+            <SocialPanelBody
+                workSpaceTrayOutside={true}
+                workSpaceTray={backToPageSettings}
+                workSpaceTrayVisible={true}>
+                <SaveAsTemplate
+                    onCancel={props.onCancelSavePageAsTemplate} />
+            </SocialPanelBody>
+        </PersonaBarPage>);
     }
 
     render() {
         const {props} = this;
-        
+
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
                     <SocialPanelHeader title={Localization.get("Pages")}>
-                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage") }</Button>
-                        <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages") }</Button>
+                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                        <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
                     </SocialPanelHeader>
                     <PageList onPageSettings={this.onPageSettings.bind(this)} />
                 </PersonaBarPage>
-                {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage && 
+                {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage &&
                     this.getSettingsPage()
                 }
-                {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL && 
+                {props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL &&
                     this.getAddPages()
                 }
-                {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL && 
+                {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
                     this.getSaveAsTemplatePage()
                 }
             </div>
@@ -242,7 +315,9 @@ App.propTypes = {
     multiplePagesComponents: PropTypes.array.isRequired,
     pageDetailsFooterComponents: PropTypes.array.isRequired,
     settingsButtonComponents: PropTypes.object.isRequired,
-    pageTypeSelectorComponents: PropTypes.array.isRequired
+    pageTypeSelectorComponents: PropTypes.array.isRequired,
+    selectedPageSettingTab: PropTypes.number,
+    selectPageSettingTab: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -257,20 +332,22 @@ function mapStateToProps(state) {
         multiplePagesComponents: state.extensions.multiplePagesComponents,
         pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents,
         settingsButtonComponents: state.extensions.settingsButtonComponents,
-        pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents
+        pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
+        selectedPageSettingTab: state.pages.selectedPageSettingTab
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators ({
+    return bindActionCreators({
         onCancelPage: PageActions.cancelPage,
         onSavePage: PageActions.savePage,
+        selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,
         onSaveMultiplePages: AddPagesActions.addPages,
         onCancelAddMultiplePages: AddPagesActions.cancelAddMultiplePages,
         onLoadAddMultiplePages: AddPagesActions.loadAddMultiplePages,
-        onChangeAddMultiplePagesField: AddPagesActions.changeAddMultiplePagesField, 
+        onChangeAddMultiplePagesField: AddPagesActions.changeAddMultiplePagesField,
         onChangePageField: PageActions.changePageField,
         onChangePageType: PageActions.changePageType,
         onPermissionsChanged: PageActions.changePermissions,

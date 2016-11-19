@@ -370,6 +370,15 @@ const languagesActions = {
             });
 
         };
+    },
+    activateLanguage(payload, callback) {
+        return (dispatch) => {
+            ApplicationService.activateLanguage(payload, () => {
+                if (callback) {
+                    callback();
+                }
+            });
+        };
     }
 };
 

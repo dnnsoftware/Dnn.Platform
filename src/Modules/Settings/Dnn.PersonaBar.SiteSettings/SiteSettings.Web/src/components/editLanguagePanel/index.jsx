@@ -11,7 +11,6 @@ import "./style.less";
 
 function alreadyAChildTerm(childFolders, compareValue) {
     return childFolders.find((cf) => {
-        console.log(cf, compareValue);
         return cf.NewValue === compareValue;
     });
 }
@@ -130,7 +129,6 @@ class EditLanguagePanel extends Component {
             }
         ];
         const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host");
-        console.log(languageFolders);
         return (
             <SocialPanelBody
                 className="edit-language-panel"

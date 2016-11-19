@@ -7,7 +7,8 @@ export default function pagesReducer(state = {
     cacheProviderList: null,
     editingSettingModuleId: null,
     urlChanged: false,
-    dirtyPage: false
+    dirtyPage: false,
+    selectedPageSettingTab: 0
 }, action) {    
 
     const changeField = function changeField(field, value) {
@@ -28,6 +29,10 @@ export default function pagesReducer(state = {
     }
 
     switch (action.type) {
+        case ActionTypes.SELECT_PAGE_SETTING_TAB:
+            return { ...state,
+                selectedPageSettingTab: action.selectedPageSettingTab
+            };
         case ActionTypes.LOAD_PAGE:
             return { ...state,                
                 selectedPage: null,

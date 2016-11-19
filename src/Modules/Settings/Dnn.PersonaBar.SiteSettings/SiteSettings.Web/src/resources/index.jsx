@@ -2,8 +2,7 @@ import util from "../utils";
 
 const resx = {
     get(key) {
-        let moduleName = util.moduleName;
-        return util.utilities.getResx(moduleName, key);
+        return util.utilities.getResx("SiteSettings", key);
     }
 };
 export default resx;
