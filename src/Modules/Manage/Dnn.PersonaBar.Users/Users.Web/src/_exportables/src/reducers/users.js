@@ -13,73 +13,55 @@ const switchCase = [
     {
         condition: ActionTypes.UPDATE_USER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    users: updateUsersList(state.users, action.payload.Results)
-                };
-            }
-            return state;
+            return {
+                users: updateUsersList(state.users, action.payload)
+            };
         }
     },
     {
         condition: ActionTypes.CREATE_USER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                let totalUsers = Object.assign(state.totalUsers);
-                return {
-                    users: updateUsersList(state.users, action.payload.Results),
-                    totalUsers: totalUsers + 1
-                };
-            }
-            return state;
+            let totalUsers = Object.assign(state.totalUsers);
+            return {
+                users: updateUsersList(state.users, action.payload),
+                totalUsers: totalUsers + 1
+            };
         }
     },
     {
         condition: ActionTypes.DELETE_USER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    users: updateUser(state.users, action.payload.userId, true, null)
-                };
-            }
-            return state;
+            return {
+                users: updateUser(state.users, action.payload.userId, true, null)
+            };
         }
     },
     {
         condition: ActionTypes.RESTORE_USER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    users: updateUser(state.users, action.payload.userId, false, null)
-                };
-            }
-            return state;
+            return {
+                users: updateUser(state.users, action.payload.userId, false, null)
+            };
         }
     },
     {
         condition: ActionTypes.USER_MADE_SUPERUSER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                let totalUsers = Object.assign(state.totalUsers);
-                return {
-                    users: removeUser(state.users, action.payload.userId),
-                    totalUsers: totalUsers - 1
-                };
-            }
-            return state;
+            let totalUsers = Object.assign(state.totalUsers);
+            return {
+                users: removeUser(state.users, action.payload.userId),
+                totalUsers: totalUsers - 1
+            };
         }
     },
     {
         condition: ActionTypes.ERASE_USER,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                let totalUsers = Object.assign(state.totalUsers);
-                return {
-                    users: removeUser(state.users, action.payload.userId),
-                    totalUsers: totalUsers - 1
-                };
-            }
-            return state;
+            let totalUsers = Object.assign(state.totalUsers);
+            return {
+                users: removeUser(state.users, action.payload.userId),
+                totalUsers: totalUsers - 1
+            };
         }
     },
     {
@@ -110,33 +92,25 @@ const switchCase = [
     {
         condition: ActionTypes.SAVE_USER_ROLE,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    userRoles: updateUserRoleList(state.userRoles, action.payload.Results)
-                };
-            }
+            return {
+                userRoles: updateUserRoleList(state.userRoles, action.payload)
+            };
         }
     },
     {
         condition: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    users: updateUser(state.users, action.payload.userId, null, action.payload.authorized)
-                };
-            }
-            return state;
+            return {
+                users: updateUser(state.users, action.payload.userId, null, action.payload.authorized)
+            };
         }
     },
     {
         condition: ActionTypes.REMOVE_USER_ROLE,
         functionToRun: (state, action) => {
-            if (action.payload.Success) {
-                return {
-                    userRoles: removeUserRoleFromList(state.userRoles, action.payload.roleId)
-                };
-            }
-            return state;
+            return {
+                userRoles: removeUserRoleFromList(state.userRoles, action.payload.roleId)
+            };
         }
     }
 ];

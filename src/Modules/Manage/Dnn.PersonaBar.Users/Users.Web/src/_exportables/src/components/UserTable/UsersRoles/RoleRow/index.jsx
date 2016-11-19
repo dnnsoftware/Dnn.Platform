@@ -29,9 +29,7 @@ class RoleRow extends Component {
     onDeleteClick(userRole) {
         const {props} = this;
         utilities.confirm(formatString(Localization.get("DeleteRole.Confirm"), userRole.roleName, userRole.displayName), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            props.dispatch(CommonUsersActions.removeUserRole(userRole, (data) => {
-                //props.deleteRole(data.RoleId);
-            }));
+            props.dispatch(CommonUsersActions.removeUserRole(userRole));
         });
     }
     onTimeClick(userRole, index) {

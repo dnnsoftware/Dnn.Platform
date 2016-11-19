@@ -62,13 +62,8 @@ class CreateUserBox extends Component {
         this.submitted = true;
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, (data) => {
-                if (data.Success) {
-                    this.cancel();
-                    utilities.notify(Localization.get("UserCreated"), 3000);
-                }
-                else {
-                    utilities.notify(data.Message, 10000);
-                }
+                this.cancel();
+                utilities.notify(Localization.get("UserCreated"), 3000);
             }));
         }
     }

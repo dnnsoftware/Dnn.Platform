@@ -11,6 +11,6 @@ namespace Dnn.PersonaBar.Users.Components
 {
     internal interface IRegisterController
     {
-        UserBasicDto Register(RegisterationDetails registerationDetails, out string message);
+        UserBasicDto Register(RegisterationDetails registerationDetails);
     }
 }

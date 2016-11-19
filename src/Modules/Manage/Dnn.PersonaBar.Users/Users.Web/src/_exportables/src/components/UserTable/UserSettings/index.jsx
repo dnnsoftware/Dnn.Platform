@@ -80,14 +80,9 @@ class UserSettings extends Component {
     save() {
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.updateUserBasicInfo(this.state.accountSettings, (data) => {
-                if (data.Success) {
-                    utilities.notify(Localization.get("UserUpdated"), 3000);
-                    this.getUserDetails(this.props, this.state.accountSettings.userId);
-                    this.props.collapse();
-                }
-                else {
-                    utilities.notify(data.Message, 10000);
-                }
+                utilities.notify(Localization.get("UserUpdated"), 3000);
+                this.getUserDetails(this.props, this.state.accountSettings.userId);
+                this.props.collapse();
             }));
         }
     }
@@ -127,24 +122,15 @@ class UserSettings extends Component {
     }
     onForcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
-            if (data.Success) {
-                utilities.notify(Localization.get("UserPasswordUpdateChanged"), 3000);
-                let {userDetails} = this.state;
-                userDetails.needUpdatePassword = true;
-                this.setState({ userDetails });
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(Localization.get("UserPasswordUpdateChanged"), 3000);
+            let {userDetails} = this.state;
+            userDetails.needUpdatePassword = true;
+            this.setState({ userDetails });
         }));
     }
     onSendPasswordLink() {
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
-            if (data.Success)
-                utilities.notify(Localization.get("PasswordSent"), 3000);
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(Localization.get("PasswordSent"), 3000);
         }));
     }
     render() {

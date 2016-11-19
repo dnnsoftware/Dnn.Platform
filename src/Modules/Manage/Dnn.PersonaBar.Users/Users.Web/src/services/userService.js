@@ -17,13 +17,13 @@ class UserService {
 
         return sf;
     }
-    getUsers(searchParameters, callback) {
+    getUsers(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback);
+        sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
     }
-    getUserFilters(callback) {
+    getUserFilters(callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUserFilters", {}, callback);
+        sf.get("GetUserFilters", {}, callback, errorCallback);
     }
 }
 const userService = new UserService();

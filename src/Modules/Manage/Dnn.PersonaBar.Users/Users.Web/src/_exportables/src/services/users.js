@@ -17,21 +17,21 @@ class UserService {
 
         return sf;
     }
-    getUsers(searchParameters, callback) {
+    getUsers(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback);
+        sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
     }
-    getUserDetails(userDetailsParameters, callback) {
+    getUserDetails(userDetailsParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUserDetail?" + serializeQueryStringParameters(userDetailsParameters), {}, callback);
+        sf.get("GetUserDetail?" + serializeQueryStringParameters(userDetailsParameters), {}, callback, errorCallback);
     }
     updateUserBasicInfo(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
         sf.post("UpdateUserBasicInfo", userDetails, callback, errorCallback);
     }
-    getUserFilters(callback) {
+    getUserFilters(callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUserFilters", {}, callback);
+        sf.get("GetUserFilters", {}, callback, errorCallback);
     }
     createUser(userDetails, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
@@ -70,13 +70,13 @@ class UserService {
         sf.post("UpdateAuthorizeStatus?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
     //User Roles Methods
-    getUserRoles(searchParameters, callback) {
+    getUserRoles(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetUserRoles?" + serializeQueryStringParameters(searchParameters), {}, callback);
+        sf.get("GetUserRoles?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
     }
-    getSuggestRoles(searchParameters, callback) {
+    getSuggestRoles(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");
-        sf.get("GetSuggestRoles?" + serializeQueryStringParameters(searchParameters), {}, callback);
+        sf.get("GetSuggestRoles?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
     }
     saveUserRole(payload, notifyUser, isOwner, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");

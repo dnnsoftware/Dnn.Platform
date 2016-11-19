@@ -134,76 +134,43 @@ class UserMenu extends Component {
     }
     onSendPasswordLink() {
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
-            if (data.Success)
-                utilities.notify(Localization.get("PasswordSent"), 10000);
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(Localization.get("PasswordSent"), 10000);
         }));
     }
     deleteUser() {
         utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
             this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, (data) => {
-                if (data.Success) {
-                    utilities.notify(Localization.get("UserDeleted"), 3000);
-                    this.reload();
-                }
-                else {
-                    utilities.notify(data.Message, 10000);
-                }
+                utilities.notify(Localization.get("UserDeleted"), 3000);
+                this.reload();
             }));
         });
     }
     hardDeleteUser() {
         utilities.confirm(Localization.get("RemoveUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }, (data) => {
-                if (!data.Success)
-                    utilities.notify(data.Message, 10000);
-            }));
+            this.props.dispatch(CommonUsersActions.eraseUser({ userId: this.props.userId }));
         });
     }
     restoreUser() {
         this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
-            if (data.Success) {
-                utilities.notify(Localization.get("UserRestored"), 3000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(Localization.get("UserRestored"), 3000);
+            this.reload();
         }));
     }
     forcePasswordChange() {
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
-            if (data.Success) {
-                utilities.notify(Localization.get("UserPasswordUpdateChanged"), 10000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(Localization.get("UserPasswordUpdateChanged"), 10000);
+            this.reload();
         }));
     }
     updateAuthorizeStatus(authorized) {
         this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
-            if (data.Success) {
-                utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
-                this.reload();
-            }
-            else {
-                utilities.notify(data.Message, 10000);
-            }
+            utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
+            this.reload();
         }));
     }
     updateSuperUserStatus(setSuperUser) {
         this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, (data) => {
-            if (!data.Success){
-                utilities.notify(data.Message, 10000);
-            }
-            else
-            {
-                this.reload();
-            }
+            this.reload();
         }));
     }
     toggleChangePassword(close) {

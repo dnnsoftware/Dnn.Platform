@@ -3,66 +3,66 @@ import {CommonUsersService as UserService} from "../services";
 import utilities from "utils";
 
 function errorCallback(message) {
-    utilities.notify(message);
+    utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
 }
 const userActions = {
     getUsers(searchParameters, callback) {
         return (dispatch) => {
-            UserService.getUsers(searchParameters, payload => {
+            UserService.getUsers(searchParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_USERS,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
     },
     getUserDetails(userDetailsParameters, callback) {
         return (dispatch) => {
-            UserService.getUserDetails(userDetailsParameters, payload => {
+            UserService.getUserDetails(userDetailsParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_USER_DETAILS,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
     },
     getUserFilters(callback) {
         return () => {
-            UserService.getUserFilters(payload => {
+            UserService.getUserFilters(data => {
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
     },
     createUser(userDetails, callback) {
         return (dispatch) => {
-            UserService.createUser(userDetails, payload => {
+            UserService.createUser(userDetails, data => {
                 dispatch({
                     type: ActionTypes.CREATE_USER,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
     },
     updateUserBasicInfo(userDetails, callback) {
         return (dispatch) => {
-            UserService.updateUserBasicInfo(userDetails, payload => {
+            UserService.updateUserBasicInfo(userDetails, data => {
                 dispatch({
                     type: ActionTypes.UPDATE_USER,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
@@ -99,7 +99,7 @@ const userActions = {
             UserService.deleteUser(payload, data => {
                 dispatch({
                     type: ActionTypes.DELETE_USER,
-                    payload: { userId: payload.userId, Success: data.Success }
+                    payload: { userId: payload.userId }
                 });
                 if (callback) {
                     callback(data);
@@ -112,7 +112,7 @@ const userActions = {
             UserService.hardDeleteUser(payload, data => {
                 dispatch({
                     type: ActionTypes.ERASE_USER,
-                    payload: { userId: payload.userId, Success: data.Success }
+                    payload: { userId: payload.userId }
                 });
                 if (callback) {
                     callback(data);
@@ -125,7 +125,7 @@ const userActions = {
             UserService.restoreUser(payload, data => {
                 dispatch({
                     type: ActionTypes.RESTORE_USER,
-                    payload: { userId: payload.userId, Success: data.Success }
+                    payload: { userId: payload.userId }
                 });
                 if (callback) {
                     callback(data);
@@ -138,7 +138,7 @@ const userActions = {
             UserService.updateSuperUserStatus(payload, data => {
                 dispatch({
                     type: ActionTypes.USER_MADE_SUPERUSER,
-                    payload: { userId: payload.userId, Success: data.Success }
+                    payload: { userId: payload.userId }
                 });
                 if (callback) {
                     callback(data);
@@ -151,7 +151,7 @@ const userActions = {
             UserService.updateAuthorizeStatus(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
-                    payload: { userId: payload.userId, authorized: payload.authorized, Success: data.Success }
+                    payload: { userId: payload.userId, authorized: payload.authorized }
                 });
                 if (callback) {
                     callback(data);
@@ -161,26 +161,26 @@ const userActions = {
     },
     getUserRoles(searchParameters, callback) {
         return (dispatch) => {
-            UserService.getUserRoles(searchParameters, payload => {
+            UserService.getUserRoles(searchParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_USERS_ROLES,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
     },
     getSuggestRoles(searchParameters, callback) {
         return (dispatch) => {
-            UserService.getSuggestRoles(searchParameters, payload => {
+            UserService.getSuggestRoles(searchParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SUGGEST_ROLES,
-                    payload: { matchedRoles: payload }
+                    payload: { matchedRoles: data }
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
             }, errorCallback);
         };
@@ -203,7 +203,7 @@ const userActions = {
             UserService.removeUserRole(payload, data => {
                 dispatch({
                     type: ActionTypes.REMOVE_USER_ROLE,
-                    payload: { userId: payload.userId, roleId: payload.roleId, Success: data.Success }
+                    payload: { userId: payload.userId, roleId: payload.roleId }
                 });
                 if (callback) {
                     callback(data);

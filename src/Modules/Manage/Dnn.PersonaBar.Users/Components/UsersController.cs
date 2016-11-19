@@ -107,15 +107,13 @@ namespace Dnn.PersonaBar.Users.Components
             return new UserDetailDto(user);
         }
 
-        public bool ChangePassword(int portalId, int userId, string newPassword, out string errorMessage)
+        public bool ChangePassword(int portalId, int userId, string newPassword)
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                errorMessage = Localization.GetString("CannotChangePassword", LocalResourcesFile);
-                return false;
+                throw new Exception(Localization.GetString("CannotChangePassword", LocalResourcesFile));
             }
 
-            errorMessage = string.Empty;
             var user = UserController.Instance.GetUserById(portalId, userId);
             if (user == null)
             {
@@ -129,8 +127,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (membershipPasswordController.FoundBannedPassword(newPassword) || user.Username == newPassword)
                 {
-                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
-                    return false;
+                    throw new Exception(Localization.GetString("PasswordResetFailed", LocalResourcesFile));
                 }
 
             }
@@ -138,8 +135,7 @@ namespace Dnn.PersonaBar.Users.Components
             //check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
-                errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory", LocalResourcesFile);
-                return false;
+                throw new Exception(Localization.GetString("PasswordResetFailed_PasswordInHistory", LocalResourcesFile));
             }
 
             try
@@ -147,17 +143,16 @@ namespace Dnn.PersonaBar.Users.Components
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
-                    errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
+                    throw new Exception(Localization.GetString("PasswordResetFailed", LocalResourcesFile));
                 }
 
-                return passwordChanged;
+                return true;
             }
             catch (MembershipPasswordException exc)
             {
                 //Password Answer missing
                 Logger.Error(exc);
-                errorMessage = Localization.GetString("PasswordInvalid", LocalResourcesFile);
-                return false;
+                throw new Exception(Localization.GetString("PasswordInvalid", LocalResourcesFile));
             }
             catch (ThreadAbortException)
             {
@@ -167,8 +162,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Fail
                 Logger.Error(exc);
-                errorMessage = Localization.GetString("PasswordResetFailed", LocalResourcesFile);
-                return false;
+                throw new Exception(Localization.GetString("PasswordResetFailed", LocalResourcesFile));
             }
         }
 
@@ -223,10 +217,8 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         public UserRoleDto SaveUserRole(int portalId, UserInfo userInfo, UserRoleDto userRoleDto, bool notifyUser,
-            bool isOwner, out string errorMessage, out bool success)
+            bool isOwner)
         {
-            errorMessage = string.Empty;
-            success = true;
             if (!UserRoleDto.AllowExpiredRole(PortalSettings, userRoleDto.UserId, userRoleDto.RoleId))
             {
                 userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
@@ -257,9 +249,7 @@ namespace Dnn.PersonaBar.Users.Components
                     AllowDelete = RoleController.CanRemoveUserFromRole(PortalSettings, user.UserID, role.RoleID)
                 };
             }
-            success = false;
-            errorMessage = Localization.GetString("InSufficientPermissions", LocalResourcesFile);
-            return null;
+            throw new Exception(Localization.GetString("InSufficientPermissions", LocalResourcesFile));
         }
 
         #endregion

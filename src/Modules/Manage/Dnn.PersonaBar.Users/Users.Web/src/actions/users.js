@@ -1,30 +1,31 @@
 import {users as ActionTypes}  from "dnn-users-common-action-types";
 import UserService from "services";
+import utilities from "utils";
+
+function errorCallback(message) {
+    utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
+}
 const userActions = {
     getUsers(searchParameters, callback) {
         return (dispatch) => {
-            UserService.getUsers(searchParameters, payload => {
+            UserService.getUsers(searchParameters, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_USERS,
-                    payload
+                    payload: data
                 });
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
     getUserFilters(callback) {
         return () => {
-            UserService.getUserFilters(payload => {
-                // dispatch({
-                //     type: ActionTypes.RETRIEVED_USER_FILTERS,
-                //     payload
-                // });
+            UserService.getUserFilters(data => {
                 if (callback) {
-                    callback(payload);
+                    callback(data);
                 }
-            });
+            }, errorCallback);
         };
     }
 };

@@ -87,11 +87,7 @@ class UserRoles extends Component {
         const {props} = this;
 
         let parameter = { roleId: roleId, userId: props.userDetails.userId, startTime: startTime, expiresTime: expiresTime };
-        props.dispatch(CommonUsersActions.saveUserRole(parameter, this.state.sendEmail, this.state.isOwner, (data)=>{
-            if (!data.Success){
-                utilities.notify(data.Message, 10000);
-            }
-        }));
+        props.dispatch(CommonUsersActions.saveUserRole(parameter, this.state.sendEmail, this.state.isOwner));
         this.setState({ sendEmail: true, isOwner: false, allowOwner: false });
     }
 

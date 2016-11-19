@@ -29,7 +29,7 @@ class Body extends Component {
     }
     componentWillMount() {
         this.props.dispatch(CommonUsersActions.getUserFilters((data) => {
-            let userFilters = Object.assign([], JSON.parse(JSON.stringify(data.Results)));
+            let userFilters = Object.assign([], JSON.parse(JSON.stringify(data)));
             this.setState({
                 userFilters
             });
