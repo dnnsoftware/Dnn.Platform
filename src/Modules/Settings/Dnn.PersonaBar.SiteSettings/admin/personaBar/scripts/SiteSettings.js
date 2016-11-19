@@ -40,6 +40,9 @@ define(['jquery',
             },
 
             load: function (params, callback) {
+                if (typeof callback === 'function') {
+                    callback();
+                }
             },
 
             loadMobile: function (params, callback) {
