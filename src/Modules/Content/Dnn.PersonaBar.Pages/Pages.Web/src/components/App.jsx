@@ -44,7 +44,7 @@ class App extends Component {
         const {props} = this;
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
-        
+
         if (viewName === "edit") {
             props.onLoadPage(utils.getCurrentPageId());
         }
@@ -80,6 +80,9 @@ class App extends Component {
 
     //Resolves tab being viewed if view params are present.
     resolveTabBeingViewed(viewParams) {
+        if (!viewParams) {
+            return;
+        }
         if (viewParams.pageId) {
             this.props.onLoadPage(viewParams.pageId);
         }
