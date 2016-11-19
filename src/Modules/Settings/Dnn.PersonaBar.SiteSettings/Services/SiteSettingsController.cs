@@ -163,7 +163,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.KeyWords = request.KeyWords;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
-                PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "TimeZone", request.TimeZone, false);
 
                 if (request.FavIcon != null && request.FavIcon.fileId != Null.NullInteger)
                 {
@@ -265,7 +265,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.Custom500TabId = request.Custom500TabId;
 
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
-                PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -847,9 +847,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             try
             {
                 var pid = request.PortalId ?? PortalId;
-                var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
 
-                PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false);
                 HostController.Instance.Update("AutoAddPortalAlias", request.AutoAddPortalAlias ? "Y" : "N", true);
 
                 DataCache.ClearPortalCache(pid, false);
@@ -1697,8 +1696,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
                 var portalSettings = new PortalSettings(portal);
 
-                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString(), cultureCode);
-                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString(), cultureCode);
+                PortalController.UpdatePortalSetting(pid, "EnableBrowserLanguage", request.EnableBrowserLanguage.ToString());
+                PortalController.UpdatePortalSetting(pid, "AllowUserUICulture", request.AllowUserUICulture.ToString());
 
                 if (!portalSettings.ContentLocalizationEnabled)
                 {
@@ -1724,7 +1723,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         }
                     }
 
-                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString(), cultureCode);
+                    PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString());
                 }
 
                 var oldLanguageDisplayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
