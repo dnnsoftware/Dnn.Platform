@@ -43,7 +43,7 @@
                         <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
                         <order>20</order>
-                        <defaultRoles>Administrators</defaultRoles>
+                        <defaultPermissions>Administrators</defaultPermissions>
                     </menu>
                 </component>
             </components>

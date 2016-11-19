@@ -44,7 +44,7 @@
             <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>70</order>
-            <defaultRoles>Administrators</defaultRoles>
+            <defaultPermissions>Administrators</defaultPermissions>
           </menu>
         </component>
       </components>

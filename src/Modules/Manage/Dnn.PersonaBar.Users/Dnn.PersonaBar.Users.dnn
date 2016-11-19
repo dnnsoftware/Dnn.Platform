@@ -59,7 +59,7 @@
             <mobileSupport>true</mobileSupport>
             <parent>Manage</parent>
             <order>10</order>
-            <defaultRoles>Administrators|ADD_USER|MANAGE_PASSWORD,Content Managers</defaultRoles>
+            <defaultPermissions>Administrators|ADD_USER|MANAGE_PASSWORD</defaultPermissions>
           </menu>
           <permission>
             <key>ADD_USER</key>
