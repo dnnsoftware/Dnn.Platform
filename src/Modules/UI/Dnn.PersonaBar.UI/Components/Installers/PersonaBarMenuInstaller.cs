@@ -48,6 +48,13 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 SavePermissionDefinitions();
 
+                if (_menuItems.Any())
+                {
+                    foreach (var menuItem in _menuItems)
+                    {
+                        SaveMenuPermissions(menuItem);
+                    }
+                }
                 Completed = true;
             }
             catch (Exception ex)
@@ -88,7 +95,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuItems()
         {
-            foreach (var menuItem in _menuItems)
+            foreach (var menuItem in _menuItems.Where(x=>!string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
             {
                 if (_parentMaps.ContainsKey(menuItem.Identifier))
                 {
@@ -101,7 +108,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 PersonaBarRepository.Instance.SaveMenuItem(menuItem);
 
-                SaveMenuPermissions(menuItem);
+                //SaveMenuPermissions(menuItem);
             }
         }
 
@@ -131,10 +138,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 var identifier = definition.Identifier;
                 var menu = _menuItems.FirstOrDefault(m => string.IsNullOrEmpty(identifier) || m.Identifier == identifier);
-                if (menu != null)
+                if (menu?.MenuId <= 0)
                 {
-                    MenuPermissionController.SavePersonaBarPermission(menu.MenuId, definition.Key, definition.Name);
+                    menu = PersonaBarRepository.Instance.GetMenuItem(identifier);
                 }
+                if (menu != null)
+                    MenuPermissionController.SavePersonaBarPermission(menu.MenuId, definition.Key, definition.Name);
             }
         }
 
@@ -167,7 +176,6 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 _menuRoles.Add(menuItem.Identifier, defaultPermissions);
             }
-
             _menuItems.Add(menuItem);
         }
 
@@ -218,6 +226,11 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             if (_menuRoles.ContainsKey(menuItem.Identifier))
             {
                 var defaultPermissions = _menuRoles[menuItem.Identifier].Split(',');
+                if (menuItem?.MenuId <= 0)
+                {
+                    menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
+                }
+                PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
                 PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, _menuRoles[menuItem.Identifier]);
 
                 foreach (var roleName in defaultPermissions)

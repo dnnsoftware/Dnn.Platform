@@ -27,6 +27,7 @@ using System.Web.Caching;
 using Dnn.PersonaBar.Library.Data;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -303,10 +304,19 @@ namespace Dnn.PersonaBar.Library.Permissions
                         }
                         break;
                 }
-                
-                if (roleId > nullRoleId && 
-                        (ignoreExists || GetMenuPermissions(portalId, menuItem.MenuId).ToList().All(p => p.RoleID != roleId)))
+
+                if (roleId > nullRoleId)
                 {
+                    var menuPermissions = GetMenuPermissions(portalId, menuItem.MenuId);
+
+                    if (!ignoreExists)
+                    {
+                        permissions =
+                            permissions.Where(
+                                x =>
+                                    !menuPermissions.ToList()
+                                        .Exists(y => y.PermissionID == x.PermissionId && y.RoleID == roleId));
+                    }
                     foreach (var permission in permissions)
                     {
                         var menuPermissionInfo = new MenuPermissionInfo
