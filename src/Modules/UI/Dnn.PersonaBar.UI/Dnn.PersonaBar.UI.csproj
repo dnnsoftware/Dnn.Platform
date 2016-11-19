@@ -220,7 +220,6 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Package.targets" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>

@@ -127,6 +127,10 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarMenuByIdentifier]
     @Identifier  NVARCHAR(50)
 AS
+    DELETE p FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] p
+        INNER JOIN {databaseOwner}[{objectQualifier}PersonaBarMenu] m ON m.MenuId = p.MenuId
+        WHERE m.Identifier = @Identifier
+
     DELETE FROM {databaseOwner}[{objectQualifier}PersonaBarMenu]
         WHERE Identifier = @Identifier
 GO
@@ -337,7 +341,7 @@ BEGIN
 	        [LastModifiedByUserID] [INT] NULL,
 	        [LastModifiedOnDate] [DATETIME] NULL,
         CONSTRAINT [PK_{objectQualifier}PersonaBarPermission] PRIMARY KEY CLUSTERED ([PermissionId] ASC),
-        CONSTRAINT [FK_{objectQualifier}PersonaBarPermission_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId]) ON DELETE CASCADE,
+        CONSTRAINT [FK_{objectQualifier}PersonaBarPermission_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId]),
         CONSTRAINT [IX_{objectQualifier}PersonaBarPermissionScope] UNIQUE NONCLUSTERED ([MenuId] ASC, [PermissionKey] ASC)
     )
 END
@@ -436,7 +440,7 @@ BEGIN
 	    [LastModifiedOnDate] [DATETIME] NULL,
         CONSTRAINT [PK_{objectQualifier}PersonaBarMenuPermission] PRIMARY KEY CLUSTERED ([MenuPermissionId] ASC),
         CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_Permission] FOREIGN KEY([PermissionId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarPermission] ([PermissionID]) ON DELETE CASCADE,
-        CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId]),
+        CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId]) ON DELETE CASCADE,
         CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_Portals] FOREIGN KEY([PortalId])REFERENCES {databaseOwner}[{objectQualifier}Portals] ([PortalId]) ON DELETE CASCADE,
         CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_Roles] FOREIGN KEY([RoleId])REFERENCES {databaseOwner}[{objectQualifier}Roles] ([RoleID]),
         CONSTRAINT [FK_{objectQualifier}PersonaBarMenuPermission_Users] FOREIGN KEY([UserId])REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserID]) ON DELETE CASCADE,

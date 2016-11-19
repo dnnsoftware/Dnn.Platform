@@ -275,8 +275,17 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             try
             {
+                var defaultPermissions = roleName.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (defaultPermissions.Count > 1)
+                {
+                    roleName = defaultPermissions[0];
+                }
+                defaultPermissions.RemoveAt(0);
+
                 var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
-                var permissions = GetPermissions(menuItem.MenuId);
+                var permissions = GetPermissions(menuItem.MenuId)
+                    .Where(p => p.MenuId == Null.NullInteger || defaultPermissions.Contains(p.PermissionKey));
+
                 var roleId = nullRoleId;
                 switch (roleName)
                 {
