@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import resx from "../../../resources";
 
 const style = {        
     float: "left",
@@ -8,19 +9,19 @@ const style = {
 class ItemsDescription extends Component {
     getDescription() {
         if (this.props.total === 0) {
-            return "No entries";
+            return resx.get("pagerNoEntries");
         }
         
         if (this.props.total === 1) {
-            return "Showing 1 entry";
+            return resx.get("pagerShowOneEntry");
         }
 
         if (this.props.total <= this.props.pageSize) {
-            const noPagerFormat = "Showing [TOTAL] entries";
+            const noPagerFormat = resx.get("noPagerFormat");
             return noPagerFormat.replace("[TOTAL]", this.props.total);            
         }
         
-        const pagerFormat = "Showing [FROM]-[TO] of [TOTAL] entries";
+        const pagerFormat = resx.get("pagerFormat");
         return pagerFormat.replace("[FROM]", this.props.from)
                             .replace("[TO]", this.props.to)
                             .replace("[TOTAL]", this.props.total);

@@ -567,4 +567,16 @@
   <data name="cmdAddTask.Text" xml:space="preserve">
     <value>Add Task</value>
   </data>
+  <data name="pagerNoEntries.Text" xml:space="preserve">
+    <value>No entries</value>
+  </data>
+  <data name="pagerShowOneEntry.Text" xml:space="preserve">
+    <value>Showing 1 entry</value>
+  </data>
+  <data name="noPagerFormat.Text" xml:space="preserve">
+    <value>Showing [TOTAL] entries</value>
+  </data>
+  <data name="pagerFormat.Text" xml:space="preserve">
+    <value>Showing [FROM]-[TO] of [TOTAL] entries</value>
+  </data>
 </root>

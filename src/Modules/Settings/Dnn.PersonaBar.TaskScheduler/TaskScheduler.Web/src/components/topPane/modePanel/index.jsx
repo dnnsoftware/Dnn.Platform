@@ -106,7 +106,7 @@ class ModePanel extends Component {
     render() {
         const {props, state} = this;
         return (
-            <div className="collapsible-content-mode">
+            <div className={props.isOpened ? "collapsible-content-mode" : "collapsible-content-mode-hidden"}>
                 <Collapse
                     fixedHeight={props.fixedHeight}
                     keepCollapsedContent={props.keepCollapsedContent}

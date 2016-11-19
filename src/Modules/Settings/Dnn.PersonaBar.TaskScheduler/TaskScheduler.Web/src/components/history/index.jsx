@@ -162,7 +162,7 @@ function mapStateToProps(state) {
     return {
         taskHistoryList: state.task.taskHistoryList,
         tabIndex: state.pagination.tabIndex,
-        totalCount: state.task.totalCount
+        totalCount: state.task.totalHistoryCount
     };
 }
 

@@ -109,7 +109,7 @@ const taskActions = {
                     type: ActionTypes.RETRIEVED_SCHEDULE_HISTORY,
                     data: {
                         taskHistoryList: data.Results,
-                        totalCount: data.TotalResults
+                        totalHistoryCount: data.TotalResults
                     }
                 });
                 if (callback) {

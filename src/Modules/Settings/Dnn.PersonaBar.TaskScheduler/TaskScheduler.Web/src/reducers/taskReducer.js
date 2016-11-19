@@ -32,7 +32,7 @@ export default function taskList(state = {
         case ActionTypes.RETRIEVED_SCHEDULE_HISTORY:
             return { ...state,
                 taskHistoryList: action.data.taskHistoryList,
-                totalCount: action.data.totalCount
+                totalHistoryCount: action.data.totalHistoryCount
             };
         case ActionTypes.RETRIEVED_SCHEDULE_ITEMS:
         case ActionTypes.DELETED_SCHEDULE_ITEM:
