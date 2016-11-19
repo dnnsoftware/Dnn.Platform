@@ -307,10 +307,9 @@ namespace Dnn.PersonaBar.Library.Permissions
 
                 if (roleId > nullRoleId)
                 {
-                    var menuPermissions = GetMenuPermissions(portalId, menuItem.MenuId);
-
                     if (!ignoreExists)
                     {
+                        var menuPermissions = GetMenuPermissions(portalId, menuItem.MenuId);
                         permissions =
                             permissions.Where(
                                 x =>
