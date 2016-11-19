@@ -22,7 +22,7 @@
                     <resourceFiles>
                         <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
                         <resourceFile>
-                            <name>Resources.zip</name>
+                            <name>Dnn.PersonaBar.Themes.Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>

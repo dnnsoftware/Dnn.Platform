@@ -22,7 +22,7 @@
           <resourceFiles>
             <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
             <resourceFile>
-              <name>Resources.zip</name>
+              <name>Dnn.PersonaBar.Users.Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
@@ -59,7 +59,7 @@
             <mobileSupport>true</mobileSupport>
             <parent>Manage</parent>
             <order>10</order>
-            <defaultRoles>Administrators</defaultRoles>
+            <defaultRoles>Administrators|ADD_USER|MANAGE_PASSWORD,Content Managers</defaultRoles>
           </menu>
           <permission>
             <key>ADD_USER</key>

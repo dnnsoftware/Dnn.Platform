@@ -18,10 +18,6 @@
     </ExtensionPackager>
 
     <CallTarget Targets="Minification"/>
-    <!-- all above to compress and replace the following step, also i adds another step: compressing CSS files.
-    <MakeDir Directories="$(MSBuildProjectDirectory)\Package"/>
-    <Zip Files="@(Resources)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
-    -->
 
     <Copy SourceFiles="$(DNNFileName).dnn" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <ItemGroup>
@@ -51,9 +47,9 @@
     </PropertyGroup>
 
     <MakeDir Directories="$(MSBuildProjectDirectory)\Package"/>
-    <Zip Files="@(Resources)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
-    <Unzip ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" TargetDirectory="$(MSBuildProjectDirectory)\Package\Resources" />
-    <Delete Files="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+    <Zip Files="@(Resources)" WorkingDirectory="$(MSBuildProjectDirectory)" ZipFileName="$(MSBuildProjectDirectory)\Package\$(PackageName).Resources.zip" />
+    <Unzip ZipFileName="$(MSBuildProjectDirectory)\Package\$(PackageName).Resources.zip" TargetDirectory="$(MSBuildProjectDirectory)\Package\Resources" />
+    <Delete Files="$(MSBuildProjectDirectory)\Package\$(PackageName).Resources.zip" />
     <ItemGroup>
       <_JSFilesToMinify Include="$(MSBuildProjectDirectory)\Package\Resources\**\*.js" Exclude="$(MSBuildProjectDirectory)\Package\Resources\**\*.min.js" />
       <_Step2FilesToZip Include="$(MSBuildProjectDirectory)\Package\Resources\**\*" />
@@ -71,7 +67,7 @@
           Condition="Exists(%(_CSSFilesToCompress.FullPath))" ContinueOnError="false" />
 
     <Zip Files="@(_Step2FilesToZip)" WorkingDirectory="$(MSBuildProjectDirectory)\Package\Resources\admin\personaBar"
-         ZipFileName="$(MSBuildProjectDirectory)\Package\Resources.zip" />
+         ZipFileName="$(MSBuildProjectDirectory)\Package\$(PackageName).Resources.zip" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package\Resources" ContinueOnError="WarnAndContinue" />
   </Target>
 </Project>
