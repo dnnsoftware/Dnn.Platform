@@ -45,6 +45,7 @@ class LanguageVerifierPanelBody extends Component {
                 return (
                     <LanguageVerifierGrid
                         language={item.Language}
+                        isDefault={item.IsSystemDefault}
                         icon={item.Icon}
                         missingFiles={item.MissingFiles}
                         filesWithDuplicateEntries={item.FilesWithDuplicateEntries}

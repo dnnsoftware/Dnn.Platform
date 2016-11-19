@@ -26,7 +26,7 @@ class LanguageVerifierRow extends Component {
         const {props, state} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component-verifier"}>
+            <div className={"collapsible-component-verifier" + (opened ? " row-opened" : "")}>
                 <div className={"collapsible-header-verifier " + !opened} >
                     <div className={"row"}>
                         <div className="verifier-item item-row-name">

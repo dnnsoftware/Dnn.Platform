@@ -2223,7 +2223,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                     tables.Add(new
                     {
-                        Language = locale.EnglishName,
+                        Language = Localization.GetLocaleName(locale.Code, GetCultureDropDownType(PortalId)),
+                        IsSystemDefault = Localization.SystemLocale == locale.Code,
                         Icon = string.IsNullOrEmpty(locale.Code)
                             ? "/images/Flags/none.gif"
                             : $"/images/Flags/{locale.Code}.gif",

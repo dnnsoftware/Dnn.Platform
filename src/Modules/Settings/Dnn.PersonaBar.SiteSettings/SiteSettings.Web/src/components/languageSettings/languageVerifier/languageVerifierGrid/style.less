@@ -14,12 +14,18 @@
             border-bottom: 1px solid @alto;
             padding: 0 0 10px 0;
             margin: 0 0 20px 0;
+            color: @rollingStone;
             .language-flag {
                 float: left;
             }
             .language-name {
                 float: left;
                 margin-left: 10px;
+                font-size: 13px;
+            }
+            .default-language {
+                float: right;
+                font-size: 13px;
             }
         }
         .verifier-grid-body {
@@ -31,24 +37,15 @@
                 .resx-file {
                     padding: 0 0 10px 0;
                     word-break: break-all;
+                    color: @thunder;
                 }
             }
-        }
-    }
-    .collapsible-component {
-        .collapsible-header {
-            text-align: right;
-            text-transform: none;
-            padding-right: 40px;
-            .collapse-icon {
-                display: none;
-                &.collapsed {
-                    display: none;
-                }
+            .row-opened {
+                margin-top: -1px;
+                margin-bottom: -1px;
+                border-top: 1px solid @curiousBlue;
+                border-bottom: 1px solid @curiousBlue !important;
             }
         }
-    }
-    .verifier-item {
-        color: @thunder;
     }
 }
