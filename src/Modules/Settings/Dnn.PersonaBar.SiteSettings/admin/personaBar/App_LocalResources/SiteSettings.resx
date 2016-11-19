@@ -649,13 +649,13 @@
     <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
-    <value>Custom Analyzer Type</value>
+    <value>Customize Analyzer Type</value>
   </data>
   <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
     <value>Check this box to return search criteria that occurs within a word rather than only at the beginning of the word. Warning: Enabling wildcard searching may cause performance issues.</value>
   </data>
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
-    <value>Enable Partial-Word Search (Slow)</value>
+    <value>Enable Partial Word Search</value>
   </data>
   <data name="SearchPriorities.Text" xml:space="preserve">
     <value>SEARCH PRIORITIES</value>
@@ -1172,5 +1172,8 @@
   </data>
   <data name="SaveOrCancelWarning.Text" xml:space="preserve">
     <value>You have unsaved changes. Please save or cancel your changes first.</value>
+  </data>  
+  <data name="systemDefaultLanguage.Text" xml:space="preserve">
+    <value>System Default Language</value>
   </data>  
 </root>

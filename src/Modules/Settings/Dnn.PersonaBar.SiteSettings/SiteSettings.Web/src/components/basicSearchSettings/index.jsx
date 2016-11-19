@@ -13,6 +13,7 @@ import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
 import Button from "dnn-button";
+import Tooltip from "dnn-tooltip";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -190,6 +191,12 @@ class BasicSearchSettingsPanelBody extends Component {
                         <Label
                             tooltipMessage={resx.get("lblIndexWordMinLength.Help")}
                             label={resx.get("lblIndexWordMinLength")}
+                            extra={
+                                <Tooltip
+                                    messages={[resx.get("GlobalSetting")]}
+                                    type="global"
+                                    style={{ float: "left", position: "static" }}
+                                    />}
                             />
                         <SingleLineInputWithError
                             inputStyle={{ margin: "0" }}
@@ -205,6 +212,12 @@ class BasicSearchSettingsPanelBody extends Component {
                         <Label
                             tooltipMessage={resx.get("lblIndexWordMaxLength.Help")}
                             label={resx.get("lblIndexWordMaxLength")}
+                            extra={
+                                <Tooltip
+                                    messages={[resx.get("GlobalSetting")]}
+                                    type="global"
+                                    style={{ float: "left", position: "static" }}
+                                    />}
                             />
                         <SingleLineInputWithError
                             inputStyle={{ margin: "0" }}
@@ -222,6 +235,12 @@ class BasicSearchSettingsPanelBody extends Component {
                         <Label
                             tooltipMessage={resx.get("lblCustomAnalyzer.Help")}
                             label={resx.get("lblCustomAnalyzer")}
+                            extra={
+                                <Tooltip
+                                    messages={[resx.get("GlobalSetting")]}
+                                    type="global"
+                                    style={{ float: "left", position: "static" }}
+                                    />}
                             />
                         <Dropdown
                             options={this.getAnalyzerTypeOptions()}
@@ -235,6 +254,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("lblAllowLeadingWildcard.Help")}
                                 label={resx.get("lblAllowLeadingWildcard")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <Switch
                                 labelHidden={true}
@@ -253,6 +278,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("lblTitleBoost.Help")}
                                 label={resx.get("lblTitleBoost")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <NumberSlider
                                 min={0}
@@ -267,6 +298,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("lblTagBoost.Help")}
                                 label={resx.get("lblTagBoost")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <NumberSlider
                                 min={0}
@@ -281,6 +318,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("lblContentBoost.Help")}
                                 label={resx.get("lblContentBoost")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <NumberSlider
                                 min={0}
@@ -295,6 +338,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("v.Help")}
                                 label={resx.get("lblDescriptionBoost")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <NumberSlider
                                 min={0}
@@ -309,6 +358,12 @@ class BasicSearchSettingsPanelBody extends Component {
                                 labelType="inline"
                                 tooltipMessage={resx.get("lblAuthorBoost.Help")}
                                 label={resx.get("lblAuthorBoost")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                        />}
                                 />
                             <NumberSlider
                                 min={0}
