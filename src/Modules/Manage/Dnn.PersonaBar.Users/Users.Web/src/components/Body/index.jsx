@@ -74,7 +74,7 @@ class Body extends Component {
     }
     canAddUser()
     {
-        return appSettings.applicationSettings.settings.isHost || appSettings.applicationSettings.settings.permissions.ADD_USER;
+        return appSettings.applicationSettings.settings.permissions.ADD_USER;
     }
     render() {
         const {props, state} = this;
