@@ -196,12 +196,14 @@ class LanguageSettingsPanelBody extends Component {
                         onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
                         enabled={!state.languageSettings.ContentLocalizationEnabled}
                         />
-                    <RadioButtons
-                        onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
-                        options={this.getLanguageDisplayModes()}
-                        buttonGroup="languageDisplayMode"
-                        value={state.languageSettings.LanguageDisplayMode}
-                        />
+                    {isHost &&
+                        <RadioButtons
+                            onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
+                            options={this.getLanguageDisplayModes()}
+                            buttonGroup="languageDisplayMode"
+                            value={state.languageSettings.LanguageDisplayMode}
+                            />
+                    }
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
