@@ -142,7 +142,7 @@ class AdminLogPanelBody extends Component {
         else {
             util.utilities.notifyError(resx.get("SelectException"));
         }
-    }    
+    }
 
     toggleEmailPanel() {
         this.setState({
@@ -174,7 +174,7 @@ class AdminLogPanelBody extends Component {
                 props.dispatch(LogActions.getLogList(this.getNextPage()));
             });
         }
-    }    
+    }
 
     renderLogListHeader() {
         const {props, state} = this;
@@ -306,30 +306,32 @@ class AdminLogPanelBody extends Component {
         let portalOptions = createPortalOptions(state.portalList);
         let logTypeOptions = createLogTypeOptions(state.logTypeList);
         return (
-            state.portalList.length > 0 &&
-            state.logTypeList.length > 0 &&
             <div>
                 <div className="toolbar">
-                    <div className="sitegroup-filter-container">
-                        <DropDown
-                            value={state.currentPortalId}
-                            fixedHeight={200}
-                            style={{ width: "100%" }}
-                            options={portalOptions}
-                            withBorder={false}
-                            onSelect={this.onSelectPortal.bind(this)}
-                            />
-                    </div>
-                    <div className="sitegroup-filter-container">
-                        <DropDown
-                            value={state.currentLogTypeKey}
-                            fixedHeight={200}
-                            style={{ width: "100%" }}
-                            options={logTypeOptions}
-                            withBorder={false}
-                            onSelect={this.onSelectLogType.bind(this)}
-                            />
-                    </div>
+                    {state.portalList.length > 0 &&
+                        <div className="sitegroup-filter-container">
+                            <DropDown
+                                value={state.currentPortalId}
+                                fixedHeight={200}
+                                style={{ width: "100%" }}
+                                options={portalOptions}
+                                withBorder={false}
+                                onSelect={this.onSelectPortal.bind(this)}
+                                />
+                        </div>
+                    }
+                    {state.logTypeList.length > 0 &&
+                        <div className="sitegroup-filter-container">
+                            <DropDown
+                                value={state.currentLogTypeKey}
+                                fixedHeight={200}
+                                style={{ width: "100%" }}
+                                options={logTypeOptions}
+                                withBorder={false}
+                                onSelect={this.onSelectLogType.bind(this)}
+                                />
+                        </div>
+                    }
                     <div className="toolbar-button toolbar-button-actions">
                         <span onClick={this.toggleEmailPanel.bind(this)}>{resx.get("btnEmail")} </span>
                         <div className="collapsible-content">
