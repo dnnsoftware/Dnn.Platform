@@ -14,9 +14,9 @@
         padding: 15px 0 10px 0;
         box-sizing: border-box;
         cursor: auto;
-        .row {    
+        .row {
             float: left;
-            width: 100%;      
+            width: 100%;
             .item-row-alias {
                 width: 35%;
                 float: left;
@@ -29,6 +29,9 @@
             .item-row-theme {
                 width: 20%;
                 float: left;
+                word-break: break-all;
+                padding-right: 5px;
+                box-sizing: border-box;
             }
             .item-row-language {
                 width: 10%;
@@ -49,15 +52,14 @@
                 }
             }
             .item-row-actionButtons {
-                width: 8%;                
+                width: 8%;
                 margin-right: 15px;
                 float: right;
                 &:not(:last-child) {
-                   float: left; 
-                   margin-right: 0px;                  
+                    float: left;
+                    margin-right: 0px;
                 }
-                .delete-icon,
-                .edit-icon {
+                .delete-icon, .edit-icon {
                     margin-left: 5px;
                     float: right;
                     display: block;
@@ -72,18 +74,18 @@
                         fill: @alto;
                     }
                 }
-                .delete-icon-hidden{
+                .delete-icon-hidden {
                     display: none;
                 }
                 .edit-icon-active {
                     > svg {
                         width: 16px;
                         float: right;
-                        height: 16px;                        
+                        height: 16px;
                         fill: @curiousBlue;
                     }
                 }
-            }            
+            }
             .item-row-wrapper {
                 padding: 0 5px 0 5px;
             }
