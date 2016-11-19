@@ -406,6 +406,44 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        // POST /api/personabar/languages/MarkAllPagesTranslated?cultureCode=de-DE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage MarkAllPagesTranslated([FromUri] string cultureCode)
+        {
+            try
+            {
+                if (IsDefaultLanguage(cultureCode))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                var locale = _localeController.GetLocale(cultureCode);
+                if (locale == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
+                }
+
+                var nonTranslatedTabs =
+                    from t in _tabController.GetTabsByPortal(PortalId).WithCulture(locale.Code, false).Values
+                    where !t.IsTranslated && !t.IsDeleted
+                    select t;
+
+                foreach (var page in nonTranslatedTabs)
+                {
+                    page.LocalizedVersionGuid = page.DefaultLanguageTab.LocalizedVersionGuid;
+                    _tabController.UpdateTab(page);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         // POST /api/personabar/languages/ActivateLanguage?cultureCode=de-DE&enable=true
         [HttpPost]
         [ValidateAntiForgeryToken]
