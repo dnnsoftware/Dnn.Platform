@@ -121,7 +121,6 @@ class SiteAliasSettingsPanelBody extends Component {
                                 onChange={this.onSettingChange.bind(this, "PortalAliasMapping")}
                                 options={this.getMappingModeOptions()}
                                 buttonGroup="aliasMode"
-                                buttonWidth={100}
                                 value={state.urlMappingSettings.PortalAliasMapping} />
                         </InputGroup>
                         <InputGroup>
