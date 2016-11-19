@@ -36,7 +36,7 @@ class SiteAliasSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, (data) => {
+        props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 urlMappingSettings: Object.assign({}, data.Settings)
             });
@@ -93,7 +93,7 @@ class SiteAliasSettingsPanelBody extends Component {
     onCancel(event) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, (data) => {
+            props.dispatch(SiteBehaviorActions.getUrlMappingSettings(props.portalId, props.cultureCode, (data) => {
                 let urlMappingSettings = Object.assign({}, data.Settings);
                 this.setState({
                     urlMappingSettings
@@ -167,7 +167,8 @@ SiteAliasSettingsPanelBody.propTypes = {
     urlMappingSettings: PropTypes.object,
     portalAliasMappingModes: PropTypes.array,
     urlMappingSettingsClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {
