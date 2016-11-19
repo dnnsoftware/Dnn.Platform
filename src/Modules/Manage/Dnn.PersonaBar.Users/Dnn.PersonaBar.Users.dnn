@@ -59,7 +59,7 @@
             <mobileSupport>true</mobileSupport>
             <parent>Manage</parent>
             <order>10</order>
-            <defaultPermissions>Administrators|ADD_USER|MANAGE_PASSWORD</defaultPermissions>
+            <defaultPermissions>Administrators|ADD_USER|MANAGE_ROLES|MANAGE_PROFILE|VIEW_SETTINGS|EDIT_SETTINGS|DELETE_USER|AUTHORIZE_UNAUTHORIZE_USER|MANAGE_PASSWORD</defaultPermissions>
           </menu>
           <permission>
             <key>ADD_USER</key>
