@@ -44,12 +44,12 @@ IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_PersonaBa
     DROP VIEW {databaseOwner}[{objectQualifier}vw_PersonaBarMenuPermissions]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultRoles
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultRoles
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
@@ -68,8 +68,8 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{o
     DROP TABLE {databaseOwner}{objectQualifier}PersonaBarPermission
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuDefaultRoles') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-    DROP TABLE {databaseOwner}{objectQualifier}PersonaBarMenuDefaultRoles
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuDefaultPermissions') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    DROP TABLE {databaseOwner}{objectQualifier}PersonaBarMenuDefaultPermissions
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)

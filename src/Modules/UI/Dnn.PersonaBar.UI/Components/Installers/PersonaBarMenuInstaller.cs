@@ -162,10 +162,10 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 _parentMaps.Add(menuItem.Identifier, parent);
             }
 
-            var defaultRoles = Util.ReadElement(menuNavigator, "defaultRoles", string.Empty);
-            if (!string.IsNullOrEmpty(defaultRoles))
+            var defaultPermissions = Util.ReadElement(menuNavigator, "defaultPermissions", string.Empty);
+            if (!string.IsNullOrEmpty(defaultPermissions))
             {
-                _menuRoles.Add(menuItem.Identifier, defaultRoles);
+                _menuRoles.Add(menuItem.Identifier, defaultPermissions);
             }
 
             _menuItems.Add(menuItem);
@@ -217,10 +217,10 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         {
             if (_menuRoles.ContainsKey(menuItem.Identifier))
             {
-                var defaultRoles = _menuRoles[menuItem.Identifier].Split(',');
-                PersonaBarRepository.Instance.SaveMenuDefaultRoles(menuItem, _menuRoles[menuItem.Identifier]);
+                var defaultPermissions = _menuRoles[menuItem.Identifier].Split(',');
+                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, _menuRoles[menuItem.Identifier]);
 
-                foreach (var roleName in defaultRoles)
+                foreach (var roleName in defaultPermissions)
                 {
                     if (!string.IsNullOrEmpty(roleName.Trim()))
                     {

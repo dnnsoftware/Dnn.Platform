@@ -43,14 +43,14 @@ namespace Dnn.PersonaBar.Library.Data
             return DataProvider.ExecuteReader("GetPersonaBarExtensions");
         }
 
-        public int SavePersonaBarMenuDefaultRoles(int menuId, string roleNames)
+        public int SavePersonaBarMenuDefaultPermissions(int menuId, string roleNames)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuDefaultRoles", menuId, roleNames);
+            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuDefaultPermissions", menuId, roleNames);
         }
 
-        public string GetPersonaBarMenuDefaultRoles(int menuId)
+        public string GetPersonaBarMenuDefaultPermissions(int menuId)
         {
-            return DataProvider.ExecuteScalar<string>("GetPersonaBarMenuDefaultRoles", menuId);
+            return DataProvider.ExecuteScalar<string>("GetPersonaBarMenuDefaultPermissions", menuId);
         }
 
         public int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId, int roleId,

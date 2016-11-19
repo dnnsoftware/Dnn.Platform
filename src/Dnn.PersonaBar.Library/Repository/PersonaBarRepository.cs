@@ -92,14 +92,14 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        public string GetMenuDefaultRoles(int menuId)
+        public string GetMenuDefaultPermissions(int menuId)
         {
-            return _dataService.GetPersonaBarMenuDefaultRoles(menuId);
+            return _dataService.GetPersonaBarMenuDefaultPermissions(menuId);
         }
 
-        public void SaveMenuDefaultRoles(MenuItem menuItem, string roleNames)
+        public void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames)
         {
-            _dataService.SavePersonaBarMenuDefaultRoles(menuItem.MenuId, roleNames);
+            _dataService.SavePersonaBarMenuDefaultPermissions(menuItem.MenuId, roleNames);
         }
 
         private void InjectMenuItems(MenuItem parent, IList<MenuItem> menuItems)

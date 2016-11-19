@@ -45,17 +45,17 @@ namespace Dnn.PersonaBar.Library.Repository
         MenuItem GetMenuItem(int menuId);
 
         /// <summary>
-        /// Get a menu item's default allowed roles.
+        /// Get a menu item's default allowed permissions.
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        string GetMenuDefaultRoles(int menuId);
+        string GetMenuDefaultPermissions(int menuId);
 
         /// <summary>
-        /// Save a menu item's default allowed roles.
+        /// Save a menu item's default allowed permissions.
         /// </summary>
         /// <param name="menuItem"></param>
         /// <param name="roleNames"></param>
-        void SaveMenuDefaultRoles(MenuItem menuItem, string roleNames);
+        void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames);
     }
 }

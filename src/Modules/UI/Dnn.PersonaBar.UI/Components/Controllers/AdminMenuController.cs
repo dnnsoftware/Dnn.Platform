@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             if (!tab.IsSuperTab)
             {
                 var portal = PortalController.Instance.GetPortal(portalId);
-                PersonaBarRepository.Instance.SaveMenuDefaultRoles(menuItem, portal.AdministratorRoleName);
+                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, portal.AdministratorRoleName);
             }
         }
 

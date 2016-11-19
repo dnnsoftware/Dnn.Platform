@@ -25,9 +25,9 @@ namespace Dnn.PersonaBar.Library.Data
         IDataReader GetPersonaBarExtensions();
 
 
-        int SavePersonaBarMenuDefaultRoles(int menuId, string roleNames);
+        int SavePersonaBarMenuDefaultPermissions(int menuId, string roleNames);
 
-        string GetPersonaBarMenuDefaultRoles(int menuId);
+        string GetPersonaBarMenuDefaultPermissions(int menuId);
 
 
         int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId,

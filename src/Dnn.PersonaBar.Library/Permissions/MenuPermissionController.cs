@@ -246,10 +246,10 @@ namespace Dnn.PersonaBar.Library.Permissions
                             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
                             foreach (var menuItem in menuItems)
                             {
-                                var defaultRoles = PersonaBarRepository.Instance.GetMenuDefaultRoles(menuItem.MenuId);
-                                if (!string.IsNullOrEmpty(defaultRoles))
+                                var defaultPermissions = PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
+                                if (!string.IsNullOrEmpty(defaultPermissions))
                                 {
-                                    foreach (var roleName in defaultRoles.Split(','))
+                                    foreach (var roleName in defaultPermissions.Split(','))
                                     {
                                         if (!string.IsNullOrEmpty(roleName.Trim()))
                                         {

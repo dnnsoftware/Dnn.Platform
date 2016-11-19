@@ -163,40 +163,40 @@ AS
     FROM {databaseOwner}[{objectQualifier}PersonaBarMenu]
 GO
 
-IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuDefaultRoles') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarMenuDefaultPermissions') AND OBJECTPROPERTY(id, N'IsTable') = 1)
 BEGIN
-    CREATE TABLE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles](
+    CREATE TABLE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions](
 	    [Id] INT IDENTITY(1,1) NOT NULL,
 	    [MenuId] INT NOT NULL,
         [RoleNames] NVARCHAR(260) NOT NULL,
-        CONSTRAINT [PK_{objectQualifier}PersonaBarMenuDefaultRoles] PRIMARY KEY CLUSTERED ([Id] ASC),
-        CONSTRAINT [FK_{objectQualifier}PersonaBarMenuDefaultRoles_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId])  ON DELETE CASCADE,
-        CONSTRAINT [IX_{objectQualifier}PersonaBarMenuDefaultRoles] UNIQUE NONCLUSTERED ([MenuId] ASC)
+        CONSTRAINT [PK_{objectQualifier}PersonaBarMenuDefaultPermissions] PRIMARY KEY CLUSTERED ([Id] ASC),
+        CONSTRAINT [FK_{objectQualifier}PersonaBarMenuDefaultPermissions_MenuId] FOREIGN KEY([MenuId]) REFERENCES {databaseOwner}[{objectQualifier}PersonaBarMenu] ([MenuId])  ON DELETE CASCADE,
+        CONSTRAINT [IX_{objectQualifier}PersonaBarMenuDefaultPermissions] UNIQUE NONCLUSTERED ([MenuId] ASC)
     )
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultRoles
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuDefaultRoles]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuDefaultPermissions]
     @MenuId                     INT,
     @RoleNames                  NVARCHAR(260)
 AS
 BEGIN
-    IF EXISTS(SELECT MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles] WHERE MenuId = @MenuId)
+    IF EXISTS(SELECT MenuId FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId)
     BEGIN
-        UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
+        UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
             SET 
                 RoleNames = @RoleNames
             WHERE MenuId = @MenuId
 
-            SELECT Id FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles] WHERE MenuId = @MenuId
+            SELECT Id FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId
     END
     ELSE
     BEGIN
-        INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles] (
+        INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] (
             [MenuId],
             [RoleNames]
         ) VALUES (
@@ -209,14 +209,14 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultRoles') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultRoles
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarMenuDefaultRoles]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarMenuDefaultPermissions]
     @MenuId INT
 AS
-	SELECT RoleNames FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles] WHERE MenuId = @MenuId
+	SELECT RoleNames FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId
 GO
 
 IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarExtensions') AND OBJECTPROPERTY(id, N'IsTable') = 1)
@@ -662,12 +662,12 @@ BEGIN
         Path = 'LinkMenu?portalId=-1&path=//Host//FileManagement&sku=DNN'
         WHERE Identifier = 'GlobalAssets'
 
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
+    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
         SELECT MenuId, 'Administrators' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier IN ('Content','Manage','Settings','Tools','Logout','SiteAssets')
 
-    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultRoles]
+    INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
         SELECT MenuId, 'All Users' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier = 'Edit'
