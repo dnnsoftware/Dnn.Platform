@@ -15,7 +15,15 @@ import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
-
+function getError(errors) {
+    let hasError = false;
+    Object.keys(errors).forEach((key) => {
+        if (errors[key] === true) {
+            hasError = true;
+        }
+    });
+    return hasError;
+}
 class MoreSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -114,23 +122,49 @@ class MoreSettingsPanelBody extends Component {
 
     onSaveMoreSettings() {
         const SiteBehaviorExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras;
+        let _errorInSave = false;
 
         if (SiteBehaviorExtras && SiteBehaviorExtras.length > 0) {
+
+            //First, loop through and check there are no errors.
             SiteBehaviorExtras.forEach((extra) => {
-                if (typeof extra.SaveMethod === "function") {
-                    //Call the Save Method of each SiteBehaviorExtra.
-                    this.props.dispatch(extra.SaveMethod(
-                        Object.assign({ formDirty: this.props[extra.ReducerKey].formDirty }, this.props[extra.ReducerKey].onSavePayload),
-                        () => { },  //Save Callback
-                        () => { this.setState({ errorInSave: true }); } // Error Callback
-                    ));
+
+                const currentReducer = this.props[extra.ReducerKey];
+
+                if (currentReducer.errors && getError(currentReducer.errors)) {
+                    extra.SetTriedToSave && this.props.dispatch(extra.SetTriedToSave(true));
+                    _errorInSave = true;
+                } else {
+                    extra.SetTriedToSave && this.props.dispatch(extra.SetTriedToSave(false));
                 }
             });
+
+            //Only go through the save if none of them have an error.
+            if (!_errorInSave) {
+                SiteBehaviorExtras.forEach((extra) => {
+                    if (typeof extra.SaveMethod === "function") {
+
+                        const currentReducer = this.props[extra.ReducerKey];
+
+                        //Call the Save Method of each SiteBehaviorExtra.
+                        this.props.dispatch(extra.SaveMethod(
+                            Object.assign({ formDirty: currentReducer.formDirty }, currentReducer.onSavePayload),
+                            () => { },  //Save Callback
+                            () => { this.setState({ errorInSave: true }); } // Error Callback
+                        ));
+                    }
+                });
+            } else {
+                //Return if there is an error.
+                return;
+            }
         }
+        
         if (this.props.otherSettingsClientModified) {
             this.onUpdate();
         }
-        if (this.state.errorInSave) {
+
+        if ((this.state.errorInSave)) {
             util.utilities.notifyError(resx.get("SettingsError"));
             this.setState({
                 errorInSave: false
