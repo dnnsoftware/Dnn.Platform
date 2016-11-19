@@ -181,12 +181,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="editBar\css\AddExistingModule.css" />
+    <Content Include="editBar\css\AddModule.css" />
     <Content Include="editBar\css\PageSettings.css" />
     <Content Include="editBar\css\ExitEditMode.css" />
     <Content Include="editBar\css\editBarContainer.css" />
     <Content Include="editBar\css\main.css" />
-    <Content Include="editBar\css\AddModule.css" />
+    <Content Include="editBar\css\AddExistingModule.css" />
     <Content Include="editBar\images\AddExistingModule_Sprite.png" />
     <Content Include="editBar\images\AddModule_Sprite.png" />
     <Content Include="editBar\resources\ContentEditorManager\Images\icon-add-module.png" />

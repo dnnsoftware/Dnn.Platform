@@ -7,6 +7,7 @@ using Dnn.EditBar.Library;
 using Dnn.EditBar.Library.Items;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Web.Components.Controllers;
 
 namespace Dnn.EditBar.UI.Items
 {
@@ -41,7 +42,14 @@ namespace Dnn.EditBar.UI.Items
 
         public override bool Visible()
         {
-            return PortalSettings.Current?.UserMode == PortalSettings.Mode.Edit;
+            var portalSettings = PortalSettings.Current;
+            if (portalSettings == null)
+            {
+                return false;
+            }
+
+            return portalSettings.UserMode == PortalSettings.Mode.Edit
+                && ControlBarController.Instance.GetCategoryDesktopModules(portalSettings.PortalId, "All", string.Empty).Any();
         }
     }
 }

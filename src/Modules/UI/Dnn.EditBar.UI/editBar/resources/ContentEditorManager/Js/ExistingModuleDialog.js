@@ -320,7 +320,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 this._initScrollView();
             }
             else {
-                if (container.has("li").length == 0 && this._startIndex == 0) {
+                if (container.has("li").length === 0) {
                     $(".jspVerticalBar").hide();
                     //scroll top to render no modules message
                     $(".jspDrag").css("top", "0px");

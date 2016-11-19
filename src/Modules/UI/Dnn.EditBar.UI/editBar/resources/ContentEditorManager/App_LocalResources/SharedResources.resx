@@ -172,7 +172,7 @@
     <value>Changes shown are not published</value>
   </data>
   <data name="NoModules.Text" xml:space="preserve">
-    <value>No matching modules</value>
+    <value>There are no modules available to use on this page.</value>
   </data>
   <data name="PendingSave.Text" xml:space="preserve">
     <value>You have not finished adding the module, are you sure you want to continue without saving?</value>
