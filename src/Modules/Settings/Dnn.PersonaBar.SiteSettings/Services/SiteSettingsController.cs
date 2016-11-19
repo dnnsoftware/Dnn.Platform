@@ -608,7 +608,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     PropertyCategory = request.PropertyCategory,
                     PropertyName = request.PropertyName,
                     ReadOnly = request.ReadOnly,
-                    Required = !UserInfo.IsSuperUser && request.Required,
+                    Required = !Globals.IsHostTab(PortalSettings.ActiveTab.TabID) && request.Required,
                     ValidationExpression = request.ValidationExpression,
                     ViewOrder = request.ViewOrder,
                     Visible = request.Visible,
