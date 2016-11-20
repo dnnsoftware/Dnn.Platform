@@ -42,7 +42,7 @@ class LanguagesPanel extends Component {
             });
             return;
         }
-        props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
+        props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
             this.setState({
                 languageList: Object.assign({}, data.Languages),
                 contentLocalizationEnabled: props.contentLocalizationEnabled
@@ -54,7 +54,7 @@ class LanguagesPanel extends Component {
         let {state} = this;        
 
         if (state.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
-            props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode, (data) => {
+            props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
                 this.getHeaderColumns(props.contentLocalizationEnabled);
                 this.setState({
                     contentLocalizationEnabled: props.contentLocalizationEnabled
@@ -138,7 +138,7 @@ class LanguagesPanel extends Component {
                     window.parent.location = data.RedirectUrl;
                 }
                 else {
-                    props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
+                    props.dispatch(LanguagesActions.getLanguages(props.portalId));
                 }
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
@@ -149,7 +149,7 @@ class LanguagesPanel extends Component {
             props.dispatch(LanguagesActions.addLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageCreateSuccess"));
                 this.collapse();
-                props.dispatch(LanguagesActions.getLanguages(props.portalId, props.cultureCode));
+                props.dispatch(LanguagesActions.getLanguages(props.portalId));
                 props.dispatch(LanguagesActions.getAllLanguages());
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);

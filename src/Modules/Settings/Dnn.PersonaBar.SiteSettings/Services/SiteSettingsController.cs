@@ -1755,16 +1755,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets languages
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
         /// <returns>languages</returns>
         [HttpGet]
-        public HttpResponseMessage GetLanguages([FromUri] int? portalId, [FromUri] string cultureCode)
+        public HttpResponseMessage GetLanguages([FromUri] int? portalId)
         {
             try
             {
                 var pid = portalId ?? PortalId;
-                cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
-                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
+                var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(portal);
 
                 if (portalSettings.ContentLocalizationEnabled)

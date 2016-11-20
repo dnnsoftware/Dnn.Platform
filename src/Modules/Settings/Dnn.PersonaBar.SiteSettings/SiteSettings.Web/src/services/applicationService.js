@@ -203,9 +203,9 @@ class ApplicationService {
         sf.post("UpdateLanguageSettings", payload, callback, failureCallback);
     }
 
-    getLanguages(portalId, cultureCode, callback) {
+    getLanguages(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetLanguages?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetLanguages?portalId=" + portalId, {}, callback);
     }
 
     getLanguage(portalId, languageId, callback) {

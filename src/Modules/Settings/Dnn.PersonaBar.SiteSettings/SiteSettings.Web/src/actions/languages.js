@@ -52,9 +52,9 @@ const languagesActions = {
             });
         };
     },
-    getLanguages(portalId, cultureCode, callback) {
+    getLanguages(portalId, callback) {
         return (dispatch) => {
-            ApplicationService.getLanguages(portalId, cultureCode, data => {
+            ApplicationService.getLanguages(portalId, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGES,
                     data: {
