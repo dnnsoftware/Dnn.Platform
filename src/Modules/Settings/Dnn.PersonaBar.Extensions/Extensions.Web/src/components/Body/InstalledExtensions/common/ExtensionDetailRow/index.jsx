@@ -11,22 +11,20 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete, isHost}) => (
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
             <img src={_package.packageIcon && _package.packageIcon.replace("~", "")} />
         </GridCell>
-        <GridCell columnSize={ColumnSizes[1]}>
+        <GridCell columnSize={ColumnSizes[1]} style={{padding: "0 35px"}}>
             <span className="package-name">{_package.friendlyName}</span>
-        </GridCell>
-        <GridCell columnSize={ColumnSizes[2]}>
             <p dangerouslySetInnerHTML={{ __html: _package.description }}></p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[3]}>
+        <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.version}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[4]}>
+        <GridCell columnSize={ColumnSizes[3]}>
             <p>{_package.inUse}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[5]}>
+        <GridCell columnSize={ColumnSizes[4]}>
             <p>{/*_package.upgradeUrl*/}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[6]}>
+        <GridCell columnSize={ColumnSizes[5]}>
             {(_package.canDelete && isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}
             <div className="extension-action" onClick={onEdit.bind(this, _package.packageId)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>
         </GridCell>

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
 import ExtensionHeader from "../common/ExtensionHeader";
 import ExtensionDetailRow from "../common/ExtensionDetailRow";
@@ -12,7 +12,7 @@ class ExtensionList extends Component {
         const {props, state} = this;
 
         return (
-            <GridCell className={styles.extensionList}>
+            <GridCell className={styles.extensionList} style={{ padding: "5px 20px" }}>
                 <ExtensionHeader />
                 {props.packages.map((_package, index) => {
                     return <ExtensionDetailRow
@@ -21,7 +21,7 @@ class ExtensionList extends Component {
                         onEdit={props.onEdit.bind(this, index)}
                         onDelete={props.onDelete.bind(this, _package, index)}
                         />;
-                }) }
+                })}
             </GridCell>
         );
     }

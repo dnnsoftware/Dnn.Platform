@@ -11,16 +11,14 @@ const ExtensionDetailRow = ({_package, type, onInstall}) => (
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
             <img src={_package.packageIcon.replace("~", "")} />
         </GridCell>
-        <GridCell columnSize={ColumnSizes[1]}>
+        <GridCell columnSize={ColumnSizes[1]} style={{padding: "0 35px"}}>
             <span className="package-name">{_package.friendlyName}</span>
-        </GridCell>
-        <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.description}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[3]}>
+        <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.version}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[4]}>
+        <GridCell columnSize={ColumnSizes[3]}>
             <form action="/API/PersonaBar/Extensions/DownloadPackage" method="GET" target="_blank">
                 <input type="hidden" name="FileName" value={_package.fileName} />
                 <input type="hidden" name="PackageType" value={type} />

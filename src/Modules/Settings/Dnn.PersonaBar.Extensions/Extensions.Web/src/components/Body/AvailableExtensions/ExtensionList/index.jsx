@@ -12,7 +12,7 @@ class ExtensionList extends Component {
         const {props, state} = this;
 
         return (
-            <GridCell>
+            <GridCell  style={{ padding: "5px 20px" }}>
                 <ExtensionHeader />
                 {props.packages.map((_package) => {
                     return <ExtensionDetailRow
