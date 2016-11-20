@@ -649,13 +649,13 @@
     <value>If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.  Note: If you want existing content to index with the new analyzer, you must visit the Admin &gt; Search Admin page of each site that you want re-index and click the "Re-Index Content" button.</value>
   </data>
   <data name="lblCustomAnalyzer.Text" xml:space="preserve">
-    <value>Customize Analyzer Type</value>
+    <value>Custom Analyzer Type</value>
   </data>
   <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
     <value>Check this box to return search criteria that occurs within a word rather than only at the beginning of the word. Warning: Enabling wildcard searching may cause performance issues.</value>
   </data>
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
-    <value>Enable Partial Word Search</value>
+    <value>Enable Partial-Word Search (Slow)</value>
   </data>
   <data name="SearchPriorities.Text" xml:space="preserve">
     <value>SEARCH PRIORITIES</value>
@@ -973,7 +973,7 @@
     <value>Highlight Pending Translations</value>
   </data>
   <data name="LanguageEditor.Header" xml:space="preserve">
-    <value>Language Editor</value>
+    <value>Translate Resource Files</value>
   </data>
   <data name="LocalizedValue.Text" xml:space="preserve">
     <value>Localized Value</value>
@@ -1066,25 +1066,25 @@
     <value>Enable Localized Content</value>
   </data>
   <data name="EnableLocalizedContentHelpText.Text" xml:space="preserve">
-     <value>Enabling localized content allows you to provide translated module content in addition to displaying translated static text. Once localized contetnt is enabled the default site culture will be permanently set and <strong>cannot be changed</strong>.</value>
+    <value />
   </data>
   <data name="EnableLocalizedContentClickCancel.Text" xml:space="preserve">
     <value>Click Cancel now if you want to change the current site default.</value>
   </data>
   <data name="TranslationProgressBarText.Text" xml:space="preserve">
-     <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
+    <value>[number] new pages are beign created for each language. Please wait as you localized pages are generated...</value>
   </data>
   <data name="TotalProgress.Text" xml:space="preserve">
-     <value>Total Progress [number]%</value>
+    <value>Total Progress [number]%</value>
   </data>
-    <data name="TotalLanguages.Text" xml:space="preserve">
-     <value>Total Languages [number]</value>
+  <data name="TotalLanguages.Text" xml:space="preserve">
+    <value>Total Languages [number]</value>
   </data>
   <data name="Progress.Text" xml:space="preserve">
-     <value>Progress [number]%</value>
+    <value>Progress [number]%</value>
   </data>
   <data name="ElapsedTime.Text" xml:space="preserve">
-     <value>Elapsed Time: </value>
+    <value>Elapsed Time: </value>
   </data>
   <data name="ProcessingPage.Text" xml:space="preserve">
     <value>{0}: Page {1} of {2} - {3}</value>
@@ -1137,7 +1137,7 @@
   <data name="PublishTranslatedPages.Text" xml:space="preserve">
     <value>Publish All Pages</value>
   </data>
-   <data name="UnpublishTranslatedPages.Text" xml:space="preserve">
+  <data name="UnpublishTranslatedPages.Text" xml:space="preserve">
     <value>Unpublish All Pages</value>
   </data>
   <data name="PagesToTranslate.Text" xml:space="preserve">
@@ -1172,8 +1172,29 @@
   </data>
   <data name="SaveOrCancelWarning.Text" xml:space="preserve">
     <value>You have unsaved changes. Please save or cancel your changes first.</value>
-  </data>  
-  <data name="systemDefaultLanguage.Text" xml:space="preserve">
-    <value>System Default Language</value>
-  </data>  
+  </data>
+  <data name="DeactivateLanguageWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to deactivate {0}?</value>
+  </data>
+  <data name="DeletedAllLocalizedPages.Text" xml:space="preserve">
+    <value>Localized pages deleted successfully.</value>
+  </data>
+  <data name="EraseTranslatedPagesWarning.Text" xml:space="preserve">
+    <value>You are about to permanently remove all translations for the '{0}' language. Are you sure you want to continue?</value>
+  </data>
+  <data name="Mode.HelpText" xml:space="preserve">
+    <value>Select System to edit the base file for a given language; Host will create a custom version of the localized file for this installation.</value>
+  </data>
+  <data name="Mode.Label" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="PagesSuccessfullyLocalized.Text" xml:space="preserve">
+    <value>Pages successfully localized.</value>
+  </data>
+  <data name="PublishedAllTranslatedPages.Text" xml:space="preserve">
+    <value>Pages published successfully.</value>
+  </data>
+  <data name="SelectResourcePlaceholder.Text" xml:space="preserve">
+    <value>-- Select --</value>
+  </data>
 </root>

@@ -54,7 +54,7 @@
             }
             .edit-resource-files {
                 >.dnn-grid-cell {
-                    padding: 15px;
+                    padding: 15px 0;
                     &:first-child {
                         padding-left: 0;
                     }
@@ -64,18 +64,14 @@
                 }
                 .dnn-switch-container {
                     width: 100%;
-                    > .switch-label {
-                        width: 100%;
-                        float: left;
-                        margin-bottom: 15px;
+                    .dnn-switch {
+                        float: right;
                     }
-                    .dnn-switch {}
                 }
                 .translation-action-buttons {
-                    text-align: center;
+                    text-align: right;
                 }
                 .dnn-ui-common-button {
-                    margin-top: 25px;
                     margin-left: 10px;
                 }
                 .dnn-dropdown-with-error {
@@ -112,7 +108,8 @@
                     position: relative;
                     .tree-container {
                         position: absolute;
-                        width: 100%;
+                        width: 50%;
+                        z-index: 1000;
                         height: 100%;
                     }
                     ul.root-level {
@@ -209,7 +206,7 @@
                         .dnn-ui-common-single-line-input {
                             width: 100%;
                             border-radius: 0;
-                            &.highlight{
+                            &.highlight {
                                 border: 1px solid @alizarinCrimson;
                             }
                         }

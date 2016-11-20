@@ -379,6 +379,15 @@ const languagesActions = {
                 }
             });
         };
+    },
+    markAllPagesAsTranslated(cultureCode, callback) {
+        return dispatch => {
+            ApplicationService.markAllPagesAsTranslated(cultureCode, () => {
+                if (callback) {
+                    callback();
+                }
+            });
+        };
     }
 };
 

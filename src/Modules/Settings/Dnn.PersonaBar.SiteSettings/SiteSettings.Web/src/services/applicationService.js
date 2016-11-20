@@ -282,6 +282,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("Languages");
         sf.post("ActivateLanguage?" + serializeQueryStringParameters(payload), {}, callback, failureCallback);
     }
+
+    markAllPagesAsTranslated(cultureCode, callback, failureCallback){
+        const sf = this.getServiceFramework("Languages");
+        sf.post("MarkAllPagesTranslated?cultureCode=" + cultureCode, {}, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

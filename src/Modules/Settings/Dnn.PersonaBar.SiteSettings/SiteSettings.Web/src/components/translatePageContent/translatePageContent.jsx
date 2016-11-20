@@ -86,29 +86,29 @@ class TranslatePageContent extends Component {
         });
     }
 
-    onSave() {
-
-    }
-
-    onMarkAllPagesAsTranslated() {
-
+    onMarkAllPagesAsTranslated(cultureCode) {
+        this.props.dispatch(LanguagesActions.markAllPagesAsTranslated(cultureCode, () => {
+            utils.utilities.notify(resx.get("PagesSuccessfullyTranslated"));
+            this.getPageList();
+        }));
     }
 
     onEraseAllLocalizedPages() {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.deleteLanguagePages(cultureCode, (data) => {
-            console.log('ERASE DATA: ', data);
-
-            this.getPageList();
-        }));
+        utils.utilities.confirm(resx.get("EraseTranslatedPagesWarning").replace("{0}", cultureCode), resx.get("Yes"), resx.get("No"), () => {
+            props.dispatch(LanguagesActions.deleteLanguagePages(cultureCode, (data) => {
+                utils.utilities.notify(resx.get("DeletedAllLocalizedPages"));
+                this.getPageList();
+            }));
+        });
     }
 
     onPublishTranslatedPages(enable = true) {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
         props.dispatch(LanguagesActions.publishAllPages({ cultureCode, enable }, (data) => {
-            console.log('PUBLISH DATA: ', data);
+            utils.utilities.notify(resx.get("PublishedAllTranslatedPages"));
         }));
     }
 
@@ -150,14 +150,28 @@ class TranslatePageContent extends Component {
             document.dispatchEvent(event);
         }
     }
-    onToggleActive() {
-        let {languageBeingEdited} = this.state;
-        languageBeingEdited.Active = !languageBeingEdited.Active;
-        this.setState({ languageBeingEdited });
+    toggleActivateLanguage(languageBeingEdited) {
         this.props.dispatch(LanguagesActions.activateLanguage({
             cultureCode: languageBeingEdited.Code,
             enable: languageBeingEdited.Active
         }));
+    }
+    onToggleActive(active) {
+
+        if (!active) {
+            let {languageBeingEdited} = this.state;
+            const languageName = this.props.languageDisplayMode.toLowerCase() === "native" ? languageBeingEdited.NativeName : languageBeingEdited.EnglishName;
+            utils.utilities.confirm(resx.get("DeactivateLanguageWarning").replace("{0}", languageName), resx.get("Yes"), resx.get("No"), () => {
+                languageBeingEdited.Active = !languageBeingEdited.Active;
+                this.toggleActivateLanguage(languageBeingEdited);
+                this.setState({ languageBeingEdited });
+            });
+        } else {
+            let {languageBeingEdited} = this.state;
+            languageBeingEdited.Active = !languageBeingEdited.Active;
+            this.toggleActivateLanguage(languageBeingEdited);
+            this.setState({ languageBeingEdited });
+        }
     }
     render() {
 
@@ -188,6 +202,7 @@ class TranslatePageContent extends Component {
                             <Switch
                                 labelHidden={true}
                                 value={language.Active}
+                                readOnly={!language.Enabled}
                                 onChange={this.onToggleActive.bind(this)}
                                 />
                         </div>
@@ -195,7 +210,7 @@ class TranslatePageContent extends Component {
                     <div className="button-block">
                         <Button
                             type="secondary"
-                            onClick={this.onMarkAllPagesAsTranslated.bind(this)}>
+                            onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code)}>
                             {resx.get("MarkAllPagesAsTranslated")}
                         </Button>
                         <Button
@@ -256,13 +271,15 @@ TranslatePageContent.propTypes = {
     cultureCode: PropTypes.string,
     onSelectChange: PropTypes.func,
     portalId: PropTypes.number,
-    closePersonaBarPage: PropTypes.func
+    closePersonaBarPage: PropTypes.func,
+    languageDisplayMode: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         pageList: state.languages.pageList,
-        languageBeingEdited: state.languageEditor.languageBeingEdited
+        languageBeingEdited: state.languageEditor.languageBeingEdited,
+        languageDisplayMode: (state.languages.languageSettings && state.languages.languageSettings.LanguageDisplayMode) || "NATIVE"
     };
 }
 

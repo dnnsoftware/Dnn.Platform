@@ -75,10 +75,10 @@ class ResourceTree extends Component {
             resxBeingEditedDisplay
         } = this.props;
         return (
-            <GridCell columnSize={50} className="resource-file-tree-container">
-                <Label label="Resource File: " />
-                <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)}>
-                    {resxBeingEditedDisplay || "-- Select --"}
+            <GridCell columnSize={100} className="resource-file-tree-container">
+                <Label label={resx.get("ResourceFile")} />
+                <div className="resource-file-dropdown" onClick={this.onToggleTree.bind(this)} style={{ width: "50%" }}>
+                    {resxBeingEditedDisplay || resx.get("SelectResourcePlaceholder")}
                     <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }}></div>
                 </div>
                 <Collapse isOpened={this.state.treeOpened} className="tree-container" keepCollapsedContent={true}>

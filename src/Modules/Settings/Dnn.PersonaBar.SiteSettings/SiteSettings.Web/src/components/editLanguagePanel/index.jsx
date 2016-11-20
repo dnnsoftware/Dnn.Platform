@@ -133,7 +133,7 @@ class EditLanguagePanel extends Component {
             <SocialPanelBody
                 className="edit-language-panel"
                 workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this)}>{resx.get("BackToSiteSettings")}</div>}
+                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this)}>{resx.get("BackToLanguages")}</div>}
                 workSpaceTrayVisible={true}>
                 <LanguageInfoView
                     languageBeingEdited={languageBeingEdited}

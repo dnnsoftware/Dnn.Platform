@@ -37,7 +37,7 @@ class LanguageInfoView extends Component {
                         <p>{languageBeingEdited.NativeName}</p>
                     </GridCell>
                     <GridCell columnSize={60} className="mode-container">
-                        <RadioButtons tooltipMessage="Placeholder" label="Mode:" buttonGroup="mode" options={ModeOptions} value={selectedMode} onChange={onSelectMode} />
+                        <RadioButtons tooltipMessage={resx.get("Mode.HelpText")} label={resx.get("Mode.Label")} buttonGroup="mode" options={ModeOptions} value={selectedMode} onChange={onSelectMode} />
                     </GridCell>
                 </GridCell>
                 <GridCell className="edit-resource-files">
@@ -50,7 +50,7 @@ class LanguageInfoView extends Component {
                     <GridCell columnSize={50}>
                         <Switch label={resx.get("HighlightPendingTranslations")} value={highlightPendingTranslations} onChange={onHighlightPendingTranslations} />
                     </GridCell>
-                    <GridCell columnSize={100} className="translation-action-buttons">
+                    <GridCell columnSize={50} className="translation-action-buttons">
                         <Button type="secondary" onClick={onCancel}>{resx.get("Cancel")}</Button>
                         <Button type="primary" onClick={onSaveTranslations} disabled={!resxBeingEdited}>{resx.get("SaveTranslationsToFile")}</Button>
                     </GridCell>
