@@ -1108,7 +1108,7 @@
     <value>Yes</value>
   </data>
   <data name="DeleteExtension.Warning" xml:space="preserve">
-    <value>Are you sure you want to delete this package?</value>
+    <value>Are you sure you want to delete {0}?</value>
   </data>
   <data name="Download.Button" xml:space="preserve">
     <value>Download</value>
@@ -1139,5 +1139,17 @@
   </data>
   <data name="ViewErrorLog.Text" xml:space="preserve">
     <value>[View Error Log]</value>
+  </data>
+  <data name="Delete.Button" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteExtension.Action" xml:space="preserve">
+    <value>Delete Extensions - {0}</value>
+  </data>
+  <data name="DeleteFiles.HelpText" xml:space="preserve">
+    <value>Check this box to delete the files associated with this extension.</value>
+  </data>
+  <data name="DeleteFiles.Label" xml:space="preserve">
+    <value>Delete Files?</value>
   </data>
 </root>
