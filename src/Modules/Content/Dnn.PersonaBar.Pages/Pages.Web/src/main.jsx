@@ -18,6 +18,7 @@ window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDet
 window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePagesComponent;
 window.dnn.pages.registerSettingsButtonComponent = application.registerSettingsButtonComponent;
 window.dnn.pages.registerPageTypeSelectorComponent = application.registerPageTypeSelectorComponent;
+window.dnn.pages.registerAdditionalPanel = application.registerAdditionalPanel;
 
 const appContainer = document.getElementById("pages-container");
 const initCallback = appContainer.getAttribute("data-init-callback");

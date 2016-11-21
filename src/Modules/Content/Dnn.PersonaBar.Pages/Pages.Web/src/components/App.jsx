@@ -7,7 +7,8 @@ import PersonaBarPage from "dnn-persona-bar-page";
 import {
     pageActions as PageActions,
     addPagesActions as AddPagesActions,
-    templateActions as TemplateActions
+    templateActions as TemplateActions,
+    visiblePanelActions as VisiblePanelActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -155,7 +156,7 @@ class App extends Component {
     }
 
     getSettingsButtons() {
-        const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage} = this.props;
+        const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel} = this.props;
         const SaveAsTemplate = settingsButtonComponents.SaveAsTemplateButton || Button;
 
         return (
@@ -164,7 +165,8 @@ class App extends Component {
                     type="secondary"
                     size="large"
                     onClick={onLoadSavePageAsTemplate}
-                    onSaveAsPageTemplate={() => { } }
+                    onShowPanelCallback={onShowPanel}
+                    onHidePanelCallback={onHidePanel}
                     onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
                     {Localization.get("SaveAsTemplate")}
                 </SaveAsTemplate>
@@ -261,9 +263,26 @@ class App extends Component {
         </PersonaBarPage>);
     }
 
-    render() {
+    getAdditionalPanels() {
+        const additionalPanels = [];
         const {props} = this;
 
+        if (props.additionalPanels) {
+            for (let i = 0; i < props.additionalPanels.length; i++) {
+                const panel = props.additionalPanels[i];
+                if (props.selectedView === panel.panelId) {
+                    const Component = panel.component;
+                    additionalPanels.push(<Component  />);
+                }
+            }
+        }
+
+        return additionalPanels;
+    }
+
+    render() {
+        const {props} = this;
+        const additionalPanels = this.getAdditionalPanels();
         return (
             <div className="pages-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
@@ -282,6 +301,7 @@ class App extends Component {
                 {props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL &&
                     this.getSaveAsTemplatePage()
                 }
+                {additionalPanels}
             </div>
         );
     }
@@ -320,7 +340,10 @@ App.propTypes = {
     settingsButtonComponents: PropTypes.object.isRequired,
     pageTypeSelectorComponents: PropTypes.array.isRequired,
     selectedPageSettingTab: PropTypes.number,
-    selectPageSettingTab: PropTypes.func
+    selectPageSettingTab: PropTypes.func,
+    additionalPanels: PropTypes.array.isRequired,
+    onShowPanel: PropTypes.func.isRequired,
+    onHidePanel: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -336,7 +359,8 @@ function mapStateToProps(state) {
         pageDetailsFooterComponents: state.extensions.pageDetailsFooterComponents,
         settingsButtonComponents: state.extensions.settingsButtonComponents,
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
-        selectedPageSettingTab: state.pages.selectedPageSettingTab
+        selectedPageSettingTab: state.pages.selectedPageSettingTab,
+        additionalPanels: state.extensions.additionalPanels
     };
 }
 
@@ -361,7 +385,9 @@ function mapDispatchToProps(dispatch) {
         onCopyPermissionsToDescendantPages: PageActions.copyPermissionsToDescendantPages,
         onLoadSavePageAsTemplate: TemplateActions.loadSavePageAsTemplate,
         onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate,
-        onDuplicatePage: PageActions.duplicatePage
+        onDuplicatePage: PageActions.duplicatePage,
+        onShowPanel: VisiblePanelActions.showPanel,
+        onHidePanel: VisiblePanelActions.hidePanel
     }, dispatch);
 }
 

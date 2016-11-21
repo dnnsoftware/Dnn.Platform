@@ -30,6 +30,12 @@ const extensionsActions = {
             type: ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT,
             data: {component}
         };
+    },
+    registerAdditionalPanel(panel) {
+        return {
+            type: ActionTypes.REGISTER_ADDITIONAL_PANEL,
+            data: {panel}
+        };
     }
 };
 

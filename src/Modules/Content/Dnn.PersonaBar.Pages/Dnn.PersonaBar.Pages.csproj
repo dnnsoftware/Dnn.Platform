@@ -177,7 +177,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\personaBar\App_LocalResources\Pages.resx" />
+    <Content Include="admin\personaBar\App_LocalResources\Pages.resx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Pages.dnn">

@@ -4,6 +4,7 @@ import addPagesActions from "./addPagesActions";
 import pageHierarchyActions from "./pageHierarchyActions";
 import pageSeoActions from "./pageSeoActions";
 import templateActions from "./templateActions";
+import visiblePanelActions from "./visiblePanelActions";
 
 export {
     pagination,
@@ -11,5 +12,6 @@ export {
     addPagesActions,
     pageHierarchyActions,
     pageSeoActions,
-    templateActions
+    templateActions,
+    visiblePanelActions
 };

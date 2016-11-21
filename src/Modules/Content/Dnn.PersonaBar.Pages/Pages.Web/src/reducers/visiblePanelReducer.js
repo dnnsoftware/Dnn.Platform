@@ -1,7 +1,8 @@
 import {
     pageActionTypes as PageActionTypes,
     addPagesActionTypes as AddPagesActionTypes,
-    templateActionTypes as TemplateActionTypes
+    templateActionTypes as TemplateActionTypes,
+    visiblePanelActionTypes as VisiblePanelActionTypes
 } from "../constants/actionTypes";
 import panels  from "../constants/panels";
 
@@ -15,6 +16,7 @@ export default function visiblePanel(state = {
         case PageActionTypes.CANCEL_PAGE:
         case AddPagesActionTypes.CANCEL_ADD_MULTIPLE_PAGES:
         case AddPagesActionTypes.SAVED_MULTIPLE_PAGES:
+        case VisiblePanelActionTypes.HIDE_PANEL:
             return { ...state,
                 selectedPage: panels.MAIN_PANEL
             };
@@ -34,6 +36,11 @@ export default function visiblePanel(state = {
         case TemplateActionTypes.SAVED_TEMPLATE:
             return { ...state,
                 selectedPage: panels.PAGE_SETTINGS_PANEL
+            };
+
+        case VisiblePanelActionTypes.SHOW_PANEL:
+            return { ...state,
+                selectedPage: action.data.panelId
             };
         
         default:
