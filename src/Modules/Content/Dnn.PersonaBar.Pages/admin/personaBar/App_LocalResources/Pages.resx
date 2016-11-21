@@ -708,4 +708,7 @@
   <data name="NotifyModalPlaceholder.Text" xml:space="preserve">
     <value>Enter a message to send to translators</value>
   </data>
+  <data name="CopyModule.Text" xml:space="preserve">
+    <value>Copy Module</value>
+  </data>
 </root>

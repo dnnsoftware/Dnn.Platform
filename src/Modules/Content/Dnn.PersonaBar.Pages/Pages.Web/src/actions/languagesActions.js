@@ -1,9 +1,8 @@
-import { languagesActionTypes as ActionTypes } from "../constants/actionTypes";
 import LanguageService from "services/languageService";
 
 const languagesActions = {
     getLanguages(tabId, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.getLanguages(tabId, data => {
                 if (callback) {
                     callback(data);
@@ -12,7 +11,7 @@ const languagesActions = {
         };
     },
     makePageTranslatable(tabId, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.makePageTranslatable(tabId, data => {
                 if (callback) {
                     callback(data);
@@ -21,7 +20,7 @@ const languagesActions = {
         };
     },
     makePageNeutral(tabId, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.makePageNeutral(tabId, data => {
                 if (callback) {
                     callback(data);
@@ -30,7 +29,7 @@ const languagesActions = {
         };
     },
     addMissingLanguages(tabId, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.addMissingLanguages(tabId, data => {
                 if (callback) {
                     callback(data);
@@ -39,7 +38,7 @@ const languagesActions = {
         };
     },
     notifyTranslators(params, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.notifyTranslators(params, data => {
                 if (callback) {
                     callback(data);
@@ -48,14 +47,40 @@ const languagesActions = {
         };
     },
     updateTabLocalization(params, callback, failureCallback) {
-        return (dispatch) => {
+        return () => {
             LanguageService.updateTabLocalization(params, data => {
                 if (callback) {
                     callback(data);
                 }
             }, data => {
-                if(failureCallback) {
-                    failureCallback();
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    deleteModule(params, callback, failureCallback) {
+        return () => {
+            LanguageService.deleteModule(params, data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
+    restoreModule(params, callback, failureCallback) {
+        return () => {
+            LanguageService.restoreModule(params, data => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
                 }
             });
         };

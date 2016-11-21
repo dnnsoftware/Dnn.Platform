@@ -1,13 +1,11 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import Button from "dnn-button";
 import Localization from "../../localization";
 import Scrollbars from "react-custom-scrollbars";
 import PageLanguage from "./PageLanguage";
 import NotifyModal from "./NotifyModal";
-import utils from "../../utils";
-import style from "./style.less";
+import "./style.less";
 
 import LanguagesActions from "../../actions/languagesActions";
 
@@ -39,13 +37,13 @@ class PageLocalization extends Component {
         this.setState({ Pages });
     }
 
-    onUpdateModules(cultureCode, ModuleId, value) {
+    onUpdateModules(cultureCode, index, value, key = "ModuleTitle") {
         const {Modules} = this.state;
-        Modules.forEach((modules) => {
+        Modules.forEach((modules, i) => {
             if (modules.Modules) {
                 modules.Modules.forEach((module) => {
-                    if (module.CultureCode === cultureCode && module.ModuleId === ModuleId) {
-                        module.ModuleTitle =value;
+                    if (module.CultureCode === cultureCode && i === index) {
+                        module[key] = value;
                     }
                 });
             }
@@ -54,7 +52,7 @@ class PageLocalization extends Component {
     }
 
     getLanguages() {
-        const {props, state} = this;
+        const {props} = this;
         const {tabId} = props.page;
         props.dispatch(LanguagesActions.getLanguages(tabId, (data) => {
             this.setState(data);
@@ -71,25 +69,39 @@ class PageLocalization extends Component {
     }
 
     makePageTranslatable() {
-        const {props, state} = this;
+        const {props} = this;
         const {tabId} = props.page;
-        props.dispatch(LanguagesActions.makePageTranslatable(tabId, (data) => {
+        props.dispatch(LanguagesActions.makePageTranslatable(tabId, () => {
             this.getLanguages();
         }));
     }
 
     makePageNeutral() {
-        const {props, state} = this;
+        const {props} = this;
         const {tabId} = props.page;
-        props.dispatch(LanguagesActions.makePageNeutral(tabId, (data) => {
+        props.dispatch(LanguagesActions.makePageNeutral(tabId, () => {
             this.getLanguages();
         }));
     }
 
     onAddMissingLanguages() {
-        const {props, state} = this;
+        const {props} = this;
         const {tabId} = props.page;
-        props.dispatch(LanguagesActions.addMissingLanguages(tabId, (data) => {
+        props.dispatch(LanguagesActions.addMissingLanguages(tabId, () => {
+            this.getLanguages();
+        }));
+    }
+
+    onDeleteModule(tabModuleId) {
+        const {props} = this;
+        props.dispatch(LanguagesActions.deleteModule({ tabModuleId }, () => {
+            this.getLanguages();
+        }));
+    }
+
+    onRestoreModule(tabModuleId) {
+        const {props} = this;
+        props.dispatch(LanguagesActions.restoreModule({ tabModuleId }, () => {
             this.getLanguages();
         }));
     }
@@ -97,13 +109,10 @@ class PageLocalization extends Component {
     onUpdateLocalization() {
         const {props, state} = this;
         const {Locales, Modules, Pages} = state;
-        const params = {Locales, Modules, Pages};
-        props.dispatch(LanguagesActions.updateTabLocalization(params, (data) => {
+        const params = { Locales, Modules, Pages };
+        props.dispatch(LanguagesActions.updateTabLocalization(params, () => {
             this.getLanguages();
         }));
-    }
-
-    componentWillReceiveProps(newProps) {
     }
 
     renderPageLanguage(local, modules, page) {
@@ -111,12 +120,14 @@ class PageLocalization extends Component {
             local={local}
             modules={modules}
             page={page}
+            onDeleteModule={this.onDeleteModule.bind(this) }
+            onRestoreModule={this.onRestoreModule.bind(this) }
             onUpdatePages={this.onUpdatePages.bind(this) }
-            onUpdateModules={this.onUpdateModules.bind(this)}
+            onUpdateModules={this.onUpdateModules.bind(this) }
             />;
     }
 
-    renderDefaultPageLnaguage() {
+    renderDefaultPageLanguage() {
         const {Locales, Modules, Pages} = this.state;
         const modules = Modules.map((module) => {
             return module.Modules[0];
@@ -141,8 +152,8 @@ class PageLocalization extends Component {
     onSendNotifyMessage() {
         const {props, state} = this;
         const {tabId} = props.page;
-        const params = { TabId: tabId, Text: this.state.notifyMessage };
-        props.dispatch(LanguagesActions.notifyTranslators(params, (data) => {
+        const params = { TabId: tabId, Text: state.notifyMessage };
+        props.dispatch(LanguagesActions.notifyTranslators(params, () => {
             this.onCloseNotifyModal();
         }));
     }
@@ -152,11 +163,11 @@ class PageLocalization extends Component {
     }
 
     render() {
-        const {Locales, Modules, Pages, ErrorExists} = this.state;
+        const {Locales} = this.state;
         const Languages = this.getAllLanguages();
         const containerStyle = { width: (Languages.length - 1) * 250 };
 
-        if (ErrorExists) {
+        if (Locales.length <= 1) {
             return <div className="neutral-page">
                 <div className="left-panel">
                     <p>{Localization.get("NeutralPageText") }</p>
@@ -175,13 +186,13 @@ class PageLocalization extends Component {
         return <div className="page-localization">
             <div className="page-localization-container">
                 <div className="default-language-container">
-                    {this.renderDefaultPageLnaguage() }
+                    {this.renderDefaultPageLanguage() }
                 </div>
                 <div className="languages-container">
                     <Scrollbars className="scrollArea content-vertical"
                         autoHeight
                         autoHeightMin={0}
-                        autoHeightMax={600}>
+                        autoHeightMax={9999}>
                         <div style={containerStyle}>
                             {Languages}
                         </div>

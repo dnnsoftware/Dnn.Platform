@@ -33,6 +33,14 @@
             width: 18px;
             cursor: pointer;
             margin-left: 2px;
+            &.float-left {
+                float: left;
+            }
+            &.blue {
+                svg {
+                    fill: @curiousBlue;
+                }
+            }
         }
         .page-language-row-header {
             .icon {
@@ -47,6 +55,27 @@
         }
         .module-row {
             margin-top: 10px;
+            width: 100%;
+            height: 34px;
+            .dnn-checkbox-container .checkbox input[type=checkbox]+label {
+                background: white;
+            }
+            .dnn-checkbox-container .checkbox input[type=checkbox]:checked+label {
+                background:  @curiousBlue;
+            }   
+            .icons-container {
+                width: 90px;
+                width: 42px;
+                padding-top: 6px;
+                .dnn-checkbox-container {
+                    width: 17px;
+                    height: 17px;
+                    margin-left: 2px;
+                }
+            }
+            &.copy {
+                padding: 8px 4px;
+            }
             .dnn-ui-common-tooltip {
                 float: left;
                 position: static;
@@ -54,7 +83,7 @@
                 margin-right: 10px;
             }
             input {
-                width: ~"calc(100% - 45px)";
+                width: ~"calc(100% - 72px)";
                 margin: 0px;
             }
         }
