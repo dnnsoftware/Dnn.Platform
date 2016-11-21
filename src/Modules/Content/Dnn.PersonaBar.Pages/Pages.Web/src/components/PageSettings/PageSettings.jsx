@@ -43,7 +43,7 @@ class PageSettings extends Component {
                     {saveButtonText}
                 </Button>];
                 
-        if (!securityService.isSuperUser()) {
+        if (selectedPage.tabId !== 0 && !securityService.isSuperUser()) {
             buttons.unshift(<Button
                     type="secondary"
                     onClick={onDelete}>

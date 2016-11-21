@@ -174,6 +174,9 @@ class App extends Component {
 
         return (
             <div className="heading-buttons">
+                <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
+                    <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                </Sec>
                 <Sec onlySuperUsers={true}>
                     <SaveAsTemplateButton
                         type="secondary"

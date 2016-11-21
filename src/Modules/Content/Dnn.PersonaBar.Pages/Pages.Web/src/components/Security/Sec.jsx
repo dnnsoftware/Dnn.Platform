@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from "react";
+import {Component, PropTypes} from "react";
 import securityService from "../../services/securityService";
 
 class Sec extends Component {
@@ -8,9 +8,13 @@ class Sec extends Component {
     }
     
     isVisible() {
-        const { permission, onlySuperUsers } = this.props;
-        
+        const { permission, onlySuperUsers, onlyForNotSuperUser } = this.props;
+                
         const isSuperUser = securityService.isSuperUser();
+        if (onlyForNotSuperUser && isSuperUser) {
+            return false;
+        }
+        
         if (isSuperUser) {
             return true;
         }
@@ -36,6 +40,7 @@ Sec.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     onlySuperUsers: PropTypes.bool,
+    onlyForNotSuperUser: PropTypes.bool,
     permission: PropTypes.string
 };
 
