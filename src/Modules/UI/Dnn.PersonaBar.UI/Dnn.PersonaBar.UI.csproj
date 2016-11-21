@@ -301,7 +301,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>if not $(ConfigurationName) == "Npm_Release" goto end
+    <PreBuildEvent>if not "$(ConfigurationName)"=="Npm_Release" goto end
 
 cd /D $(ProjectDir)admin\personaBar\Bundle.Web
 if exist .\node_modules goto build
