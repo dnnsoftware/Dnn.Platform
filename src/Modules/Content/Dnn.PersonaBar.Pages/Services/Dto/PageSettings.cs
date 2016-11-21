@@ -158,5 +158,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "templateId")]
         public int TemplateId { get; set; }
+
+        [DataMember(Name = "parentId")]
+        public int? ParentId { get; set; }
     }
 }

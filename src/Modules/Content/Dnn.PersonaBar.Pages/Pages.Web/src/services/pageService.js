@@ -1,5 +1,6 @@
 import Api from "./api";
-
+import utils from "../utils";
+import securityService from "./securityService";
 const PageService = function () {
 
     function getOverridablePagesApi() {
@@ -18,7 +19,15 @@ const PageService = function () {
 
     const savePage = function (page) {
         const api = getOverridablePagesApi();
-        return api.post("SavePageDetails", toBackEndPage(page));
+        let request = page;
+        
+        if (page.tabId === 0 && !securityService.isSuperUser()) {
+            request = {
+                ...page,
+                parentId: utils.getCurrentPageId() 
+            };
+        }
+        return api.post("SavePageDetails", toBackEndPage(request));
     };
 
     const addPages = function (bulkPage) {

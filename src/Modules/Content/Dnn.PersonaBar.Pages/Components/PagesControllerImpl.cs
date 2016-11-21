@@ -415,8 +415,25 @@ namespace Dnn.PersonaBar.Pages.Components
 
             SaveTabUrl(tab, pageSettings);
 
+            MovePageIfNeeded(pageSettings, tab);
+
             _tabController.ClearCache(portalId);
             return tab.TabID;
+        }
+
+        private void MovePageIfNeeded(PageSettings pageSettings, TabInfo tab)
+        {
+            if (pageSettings.ParentId.HasValue)
+            {
+                var request = new PageMoveRequest
+                {
+                    Action = "parent",
+                    PageId = tab.TabID,
+                    ParentId = pageSettings.ParentId.Value
+                };
+
+                MovePage(request);
+            }
         }
 
         protected virtual void UpdateTabInfoFromPageSettings(TabInfo tab, PageSettings pageSettings)

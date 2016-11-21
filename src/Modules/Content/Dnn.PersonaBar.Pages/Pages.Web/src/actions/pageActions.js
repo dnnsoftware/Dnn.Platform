@@ -24,7 +24,7 @@ function updateUrlPreview(value, dispatch) {
 
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
-const loadPage = function(dispatch, pageId) {
+const loadPage = function (dispatch, pageId) {
     dispatch({
         type: ActionTypes.LOAD_PAGE
     });
@@ -99,7 +99,10 @@ const pageActions = {
     cancelPage() {
         return (dispatch) => {
             if (!securityService.isSuperUser()) {
-                loadPage(dispatch, utils.getCurrentPageId());
+                utils.getUtilities().closePersonaBar(function () {
+                    loadPage(dispatch, utils.getCurrentPageId());
+                });
+                
                 return;    
             }
             
@@ -122,7 +125,12 @@ const pageActions = {
                     utils.notifyError(Localization.get("Error_" + response.Message), 3000);
                     return;
                 }
-
+                
+                if (page.tabId === 0 && !securityService.isSuperUser()) {
+                    loadPage(dispatch, utils.getCurrentPageId());
+                    return;    
+                }
+                
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {
