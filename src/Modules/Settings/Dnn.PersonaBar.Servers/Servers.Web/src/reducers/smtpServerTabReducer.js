@@ -1,6 +1,7 @@
 import { smtpServerTab as ActionTypes } from "../constants/actionTypes";
 import validateFields from "../validation/validationSmtpServerTab";
 import utils from "../utils";
+import localization from "../localization";
 
 export default function smtpServerTabReducer(state = {
     smtpServerInfo: {},
@@ -99,15 +100,18 @@ export default function smtpServerTabReducer(state = {
         }
         case ActionTypes.UPDATE_SMTP_SERVER_SETTINGS:
             return { ...state,
-                errorMessage:  ""
+                errorMessage:  "",
+                infoMessage: ""
             };
         case ActionTypes.UPDATED_SMTP_SERVER_SETTINGS: 
             return { ...state,
-                errorMessage: ""
+                errorMessage: "",
+                infoMessage: localization.get("SaveConfirmationMessage")
             };
         case ActionTypes.ERROR_UPDATING_SMTP_SERVER_SETTINGS:
             return { ...state,
-                errorMessage: action.payload.errorMessage
+                errorMessage: action.payload.errorMessage,
+                infoMessage: ""
             };
 
         case ActionTypes.SEND_TEST_EMAIL:

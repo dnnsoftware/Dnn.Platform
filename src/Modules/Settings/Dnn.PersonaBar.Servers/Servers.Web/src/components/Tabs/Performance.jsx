@@ -21,6 +21,10 @@ class Performance extends Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.infoMessage !== newProps.infoMessage && newProps.infoMessage) {
+            utils.notify(newProps.infoMessage);
+        }
+
         if (this.props.errorMessage !== newProps.errorMessage && newProps.errorMessage) {
             utils.notifyError(newProps.errorMessage);
         }
@@ -248,7 +252,8 @@ Performance.propTypes = {
     onRetrievePerformanceSettings: PropTypes.func.isRequired,
     onChangePerformanceSettingsValue: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    onIncrementVersion: PropTypes.func.isRequired
+    onIncrementVersion: PropTypes.func.isRequired,
+    infoMessage: PropTypes.string
 };
 
 function mapStateToProps(state) {    
@@ -257,7 +262,8 @@ function mapStateToProps(state) {
         loading: state.performanceTab.saving,
         isSaving: state.performanceTab.saving,
         incrementingVersion: state.performanceTab.incrementingVersion,
-        errorMessage: state.logsTab.errorMessage
+        errorMessage: state.logsTab.errorMessage,
+        infoMessage: state.performanceTab.infoMessage
     };
 }
 

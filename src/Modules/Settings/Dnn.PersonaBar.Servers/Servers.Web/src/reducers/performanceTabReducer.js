@@ -1,4 +1,5 @@
 import {performanceTab as ActionTypes}  from "../constants/actionTypes";
+import localization from "../localization";
 
 export default function webTabReducer(state = {
     performanceSettings: {},
@@ -6,7 +7,8 @@ export default function webTabReducer(state = {
     errorMessage: "",
     loading: false,
     saving: false,
-    incrementingVersion: false
+    incrementingVersion: false,
+    infoMessage: ""
 }, action) {
     switch (action.type) {
         case ActionTypes.LOAD_PERFORMANCE_TAB:
@@ -39,29 +41,37 @@ export default function webTabReducer(state = {
         }
         case ActionTypes.SAVE_PERFORMANCE_SETTINGS:
             return { ...state,
-                saving: true
+                saving: true,
+                errorMessage: "",
+                infoMessage: ""
             }; 
         case ActionTypes.SAVED_PERFORMANCE_SETTINGS: 
             return { ...state,
-                saving: false
+                saving: false,
+                errorMessage: "",
+                infoMessage: localization.get("SaveConfirmationMessage")
             };
         case ActionTypes.ERROR_SAVING_PERFORMANCE_SETTINGS:
             return { ...state,
                 saving: false,
-                errorMessage: action.payload.errorMessage
+                errorMessage: action.payload.errorMessage,
+                infoMessage: ""
             };
         case ActionTypes.INCREMENT_VERSION:
             return { ...state,
-                incrementingVersion: true
+                incrementingVersion: true,
+                infoMessage: ""
             }; 
         case ActionTypes.INCREMENTED_VERSION: 
             return { ...state,
-                incrementingVersion: false
+                incrementingVersion: false,
+                infoMessage: localization.get("VersionIncrementedConfirmation")
             };
         case ActionTypes.ERROR_INCREMENTING_VERSION:
             return { ...state,
                 incrementingVersion: false,
-                errorMessage: action.payload.errorMessage
+                errorMessage: action.payload.errorMessage,
+                infoMessage: ""
             };
         default:
             return state;     
