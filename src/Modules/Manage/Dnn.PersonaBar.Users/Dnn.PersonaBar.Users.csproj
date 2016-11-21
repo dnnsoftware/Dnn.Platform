@@ -167,7 +167,7 @@
   </ProjectExtensions>
   <Import Project="Module.build" />
   <PropertyGroup>
-    <PreBuildEvent>if not "$(ConfigurationName)"=="Npm_Release" goto end_exports
+    <PreBuildEvent>if /i not "$(ConfigurationName)"=="Npm_Release" goto end_exports
 
 cd /D $(ProjectDir)Users.Web
 if exist .\node_modules goto build
