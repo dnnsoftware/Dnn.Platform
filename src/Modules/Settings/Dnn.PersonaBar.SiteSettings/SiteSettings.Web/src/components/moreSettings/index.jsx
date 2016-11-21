@@ -159,7 +159,7 @@ class MoreSettingsPanelBody extends Component {
                 return;
             }
         }
-        
+
         if (this.props.otherSettingsClientModified) {
             this.onUpdate();
         }
@@ -255,22 +255,20 @@ class MoreSettingsPanelBody extends Component {
                     </div>
                 </div>
                 <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
-                {(window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras) &&
-                    <div className="buttons-box">
-                        <Button
-                            type="secondary"
-                            disabled={!this.getOverallFormDirty()}
-                            onClick={this.onCancel.bind(this)}>
-                            {resx.get("Cancel")}
-                        </Button>
-                        <Button
-                            type="primary"
-                            disabled={!this.getOverallFormDirty()}
-                            onClick={this.onSaveMoreSettings.bind(this)}>
-                            {resx.get("Save")}
-                        </Button>
-                    </div>
-                }
+                <div className="buttons-box">
+                    <Button
+                        type="secondary"
+                        disabled={!this.getOverallFormDirty()}
+                        onClick={this.onCancel.bind(this)}>
+                        {resx.get("Cancel")}
+                    </Button>
+                    <Button
+                        type="primary"
+                        disabled={!this.getOverallFormDirty()}
+                        onClick={this.onSaveMoreSettings.bind(this)}>
+                        {resx.get("Save")}
+                    </Button>
+                </div>
             </div>
         );
     }
