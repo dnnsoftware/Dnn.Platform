@@ -160,7 +160,7 @@ goto build
 
 :restore
 echo "Restore node modules"
-cmd /c npm install
+cmd /c npm install --cache-min 999999
 xcopy .\node_modules c:\npm_cache\$(ProjectName)\Roles.Web\node_modules /E /Q /S /Y /I
 goto build
 

@@ -161,7 +161,7 @@ goto build
 
 :restore
 echo "Restore node modules"
-cmd /c npm install
+cmd /c npm install --cache-min 999999
 xcopy .\node_modules c:\npm_cache\$(ProjectName)\Sites.Web\node_modules /E /Q /S /Y /I
 goto build
 
@@ -183,7 +183,7 @@ goto build_exports
 
 :restore_exports
 echo "Restore node modules"
-cmd /c npm install
+cmd /c npm install --cache-min 999999
 xcopy .\node_modules c:\npm_cache\$(ProjectName)\Sites.Web.Exports\node_modules /E /Q /S /Y /I
 goto build_exports
 
