@@ -38,9 +38,9 @@ class ApplicationService {
         sf.post("UpdateDefaultPagesSettings", payload, callback, failureCallback);
     }
 
-    getMessagingSettings(portalId, cultureCode, callback) {
+    getMessagingSettings(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetMessagingSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetMessagingSettings?portalId=" + portalId, {}, callback);
     }
 
     updateMessagingSettings(payload, callback, failureCallback) {
@@ -68,9 +68,9 @@ class ApplicationService {
         sf.get("GetProfileProperty?propertyId=" + propertyId + "&portalId=" + portalId, {}, callback);
     }
 
-    getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, callback) {
+    getProfilePropertyLocalization(portalId, propertyName, propertyCategory, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetProfilePropertyLocalization?propertyName=" + propertyName + "&propertyCategory=" + propertyCategory + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetProfilePropertyLocalization?portalId=" + portalId + "&propertyName=" + propertyName + "&propertyCategory=" + propertyCategory + "&cultureCode=" + cultureCode, {}, callback);
     }
 
     updateProfileProperty(payload, callback, failureCallback) {
@@ -93,14 +93,14 @@ class ApplicationService {
         sf.post("UpdateProfilePropertyLocalization", payload, callback, failureCallback);
     }
 
-    getUrlMappingSettings(portalId, cultureCode, callback) {
+    getUrlMappingSettings(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetUrlMappingSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetUrlMappingSettings?portalId=" + portalId, {}, callback);
     }
 
-    getSiteAliases(portalId, cultureCode, callback) {
+    getSiteAliases(portalId, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetSiteAliases?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetSiteAliases?portalId=" + portalId, {}, callback);
     }
 
     updateUrlMappingSettings(payload, callback, failureCallback) {

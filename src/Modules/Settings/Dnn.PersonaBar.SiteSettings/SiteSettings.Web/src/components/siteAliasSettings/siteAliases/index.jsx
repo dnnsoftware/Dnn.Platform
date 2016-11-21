@@ -33,7 +33,7 @@ class SiteAliasesPanel extends Component {
             });
             return;
         }
-        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, props.cultureCode, (data) => {
+        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, (data) => {
             this.setState({
                 siteAliases: Object.assign({}, data.PortalAliases)
             });
@@ -91,7 +91,7 @@ class SiteAliasesPanel extends Component {
             props.dispatch(SiteBehaviorActions.updateSiteAlias(aliasDetail, (data) => {
                 util.utilities.notify(resx.get("SiteAliasUpdateSuccess"));
                 this.collapse();
-                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, props.cultureCode));
+                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
@@ -101,7 +101,7 @@ class SiteAliasesPanel extends Component {
             props.dispatch(SiteBehaviorActions.addSiteAlias(aliasDetail, (data) => {
                 util.utilities.notify(resx.get("SiteAliasCreateSuccess"));
                 this.collapse();
-                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, props.cultureCode));
+                props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);

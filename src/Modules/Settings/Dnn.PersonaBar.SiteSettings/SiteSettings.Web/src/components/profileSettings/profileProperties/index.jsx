@@ -217,6 +217,7 @@ class ProfilePropertiesPanel extends Component {
                         onMoveDown={this.onMovePropertyDown.bind(this, item.PropertyDefinitionId)}
                         id={id}>
                         <ProfilePropertyEditor
+                            portalId={this.props.portalId}
                             propertyId={item.PropertyDefinitionId}
                             Collapse={this.collapse.bind(this)}
                             onUpdate={this.onUpdateProperty.bind(this)}
@@ -258,6 +259,7 @@ class ProfilePropertiesPanel extends Component {
                                 onMoveDown={this.onMovePropertyDown.bind(this)}
                                 id={"add"}>
                                 <ProfilePropertyEditor
+                                    portalId={this.props.portalId}
                                     Collapse={this.collapse.bind(this)}
                                     onUpdate={this.onUpdateProperty.bind(this)}
                                     id={"add"}

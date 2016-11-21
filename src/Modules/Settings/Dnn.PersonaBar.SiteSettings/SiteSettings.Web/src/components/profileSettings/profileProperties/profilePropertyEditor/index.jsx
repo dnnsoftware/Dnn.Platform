@@ -174,7 +174,7 @@ class ProfilePropertyEditor extends Component {
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         propertyLocalization["Language"] = event.value;
-        props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
+        props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
         
         this.setState({
             propertyLocalization: propertyLocalization,
@@ -263,7 +263,7 @@ class ProfilePropertyEditor extends Component {
                 props.dispatch(SiteBehaviorActions.addProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
-                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
                     });
@@ -275,7 +275,7 @@ class ProfilePropertyEditor extends Component {
                 props.dispatch(SiteBehaviorActions.updateProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
-                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
                     this.setState({
                         showFirstPage: false
                     });
@@ -285,7 +285,7 @@ class ProfilePropertyEditor extends Component {
             }
         }
         else {
-            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
             this.setState({
                 showFirstPage: false
             });
@@ -630,7 +630,8 @@ ProfilePropertyEditor.propTypes = {
     onUpdate: PropTypes.func,
     id: PropTypes.string,
     profilePropertyClientModified: PropTypes.bool,
-    propertyLocalizationClientModified: PropTypes.bool
+    propertyLocalizationClientModified: PropTypes.bool,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {

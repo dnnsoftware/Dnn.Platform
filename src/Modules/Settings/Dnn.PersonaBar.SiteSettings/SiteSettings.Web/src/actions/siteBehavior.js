@@ -49,9 +49,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getMessagingSettings(portalId, cultureCode, callback) {
+    getMessagingSettings(portalId, callback) {
         return (dispatch) => {
-            ApplicationService.getMessagingSettings(portalId, cultureCode, data => {
+            ApplicationService.getMessagingSettings(portalId, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_MESSAGING_SETTINGS,
                     data: {
@@ -218,9 +218,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, callback) {
+    getProfilePropertyLocalization(portalId, propertyName, propertyCategory, cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getProfilePropertyLocalization(propertyName, propertyCategory, cultureCode, data => {
+            ApplicationService.getProfilePropertyLocalization(portalId, propertyName, propertyCategory, cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTY_LOCALIZATION,
                     data: {
@@ -310,9 +310,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getUrlMappingSettings(portalId, cultureCode, callback) {
+    getUrlMappingSettings(portalId, callback) {
         return (dispatch) => {
-            ApplicationService.getUrlMappingSettings(portalId, cultureCode, data => {
+            ApplicationService.getUrlMappingSettings(portalId, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIAS_SETTINGS,
                     data: {
@@ -327,9 +327,9 @@ const siteBehaviorActions = {
             });
         };
     },
-    getSiteAliases(portalId, cultureCode, callback) {
+    getSiteAliases(portalId, callback) {
         return (dispatch) => {
-            ApplicationService.getSiteAliases(portalId, cultureCode, data => {
+            ApplicationService.getSiteAliases(portalId, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES,
                     data: {
