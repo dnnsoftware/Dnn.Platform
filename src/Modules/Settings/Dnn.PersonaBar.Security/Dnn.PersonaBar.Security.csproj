@@ -187,7 +187,7 @@
   </ProjectExtensions>
   <Import Project="Module.build" />
   <PropertyGroup>
-    <PreBuildEvent>if not $(ConfigurationName) == "Npm_Release" goto end
+    <PreBuildEvent>if not "$(ConfigurationName)"=="Npm_Release" goto end
 
 cd /D $(ProjectDir)Security.Web
 if exist .\node_modules goto build
