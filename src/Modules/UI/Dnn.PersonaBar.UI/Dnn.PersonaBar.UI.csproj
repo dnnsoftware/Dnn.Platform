@@ -64,15 +64,15 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <DefineConstants>TRACE</DefineConstants>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\</OutputPath>
-        <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
-        <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-        <NoWarn>1591</NoWarn>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\Dnn.PersonaBar.UI.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -302,6 +302,7 @@
   </Target>
   <PropertyGroup>
     <PreBuildEvent>cd /D $(ProjectDir)admin\personaBar\Bundle.Web
+xcopy c:\node_modules .\node_modules /E /Q /S /Y /I
 cmd /c npm install --cache-min 999999
 cmd /c npm run build</PreBuildEvent>
   </PropertyGroup>
