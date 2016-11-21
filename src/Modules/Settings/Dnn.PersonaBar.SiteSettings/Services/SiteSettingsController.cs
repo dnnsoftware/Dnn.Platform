@@ -54,6 +54,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
         private const string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -86,7 +87,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode)
@@ -156,7 +157,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
@@ -210,7 +211,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode)
@@ -268,7 +269,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
@@ -309,7 +310,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid);
@@ -353,7 +354,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 PortalController.UpdatePortalSetting(pid, "MessagingThrottlingInterval", request.ThrottlingInterval.ToString(), false);
@@ -390,7 +391,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var urlSettings = new FriendlyUrlSettings(pid);
@@ -435,7 +436,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 if (Config.GetFriendlyUrlProvider() == "advanced")
@@ -471,7 +472,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var profileProperties = ProfileController.GetPropertyDefinitionsByPortal(pid, false, false).Cast<ProfilePropertyDefinition>().Select(v => new
@@ -513,7 +514,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var profileProperty = ProfileController.GetPropertyDefinition(propertyId ?? -1, pid);
@@ -582,7 +583,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
@@ -626,7 +627,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString,
@@ -656,7 +657,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var property = new ProfilePropertyDefinition(pid)
@@ -715,7 +716,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var definitionId = request.PropertyDefinitionId ?? Null.NullInteger;
@@ -776,7 +777,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 if (request.FirstPropertyDefinitionId != Null.NullInteger && request.SecondPropertyDefinitionId != Null.NullInteger)
@@ -822,7 +823,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var propertyDefinition = ProfileController.GetPropertyDefinition(propertyId, pid);
@@ -858,7 +859,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(pid);
@@ -920,7 +921,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 PortalController.UpdatePortalSetting(pid, "PortalAliasMapping", request.PortalAliasMapping, false);
@@ -952,7 +953,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid);
@@ -1005,7 +1006,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var alias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
                 if (!UserInfo.IsSuperUser && alias.PortalID != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var response = new
@@ -1046,7 +1047,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string strAlias = request.HTTPAlias;
@@ -1109,7 +1110,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string strAlias = request.HTTPAlias;
@@ -1174,7 +1175,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portalAlias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
                 if (!UserInfo.IsSuperUser && portalAlias.PortalID != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 PortalAliasController.Instance.DeletePortalAlias(portalAlias);
@@ -1212,7 +1213,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var alias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(portalAliasId);
                 if (!UserInfo.IsSuperUser && alias.PortalID != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 PortalAliasInfo portalAlias = new PortalAliasInfo()
@@ -1405,7 +1406,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 SearchHelper.Instance.SetSearchReindexRequestTime(pid);
@@ -1432,7 +1433,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
@@ -1475,7 +1476,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var groups = SearchHelper.Instance.GetSynonymsGroups(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
@@ -1519,7 +1520,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -1560,7 +1561,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -1611,7 +1612,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 if (request.SynonymsGroupID != null)
@@ -1646,7 +1647,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var words = SearchHelper.Instance.GetSearchStopWords(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
@@ -1686,7 +1687,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -1717,7 +1718,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -1748,7 +1749,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
@@ -1844,7 +1845,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid);
@@ -1918,7 +1919,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var portal = PortalController.Instance.GetPortal(pid);
@@ -1991,7 +1992,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var lid = languageId ?? Null.NullInteger;
@@ -2122,7 +2123,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
                 
                 var language = LocaleController.Instance.GetLocale(request.Code) ?? new Locale { Code = request.Code };
@@ -2163,7 +2164,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 PortalController.UpdatePortalSetting(pid, $"DefaultTranslatorRoles-{request.Code}", request.Roles);
@@ -2193,7 +2194,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = request.PortalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 if (request.LanguageId != null)
@@ -2557,7 +2558,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 string defaultRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{cultureCode}", pid, "Administrators");
@@ -2598,7 +2599,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var pid = portalId ?? PortalId;
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
                 var groups = RoleController.GetRoleGroups(pid)
