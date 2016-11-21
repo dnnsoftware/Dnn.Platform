@@ -45,7 +45,7 @@
                         <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
                         <order>20</order>
-                        <defaultPermissions>Administrators</defaultPermissions>
+                        <defaultPermissions>Registered Users, Administrators</defaultPermissions>
                     </menu>
                 </component>
             </components>
