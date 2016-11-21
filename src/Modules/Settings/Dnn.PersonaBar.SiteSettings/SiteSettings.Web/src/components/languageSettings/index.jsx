@@ -85,12 +85,10 @@ class LanguageSettingsPanelBody extends Component {
 
         props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, (data) => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-            props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
-                defaultAllowContentLocalization = data.Settings.AllowContentLocalization;
-                this.setState({
-                    languageSettings: Object.assign({}, data.Settings)
-                });
-            }));
+            defaultAllowContentLocalization = state.languageSettings.AllowContentLocalization;
+            this.setState({
+                
+            });
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
