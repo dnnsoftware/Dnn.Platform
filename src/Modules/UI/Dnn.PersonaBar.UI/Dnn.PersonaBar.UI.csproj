@@ -302,7 +302,7 @@
   </Target>
   <PropertyGroup>
     <PreBuildEvent>cd /D $(ProjectDir)admin\personaBar\Bundle.Web
-cmd /c npm install --cache-min 999999
+xcopy c:\node_modules .\node_modules /E /Q /S /Y /I
 cmd /c npm run build</PreBuildEvent>
   </PropertyGroup>
 </Project>
