@@ -302,7 +302,25 @@
   </Target>
   <PropertyGroup>
     <PreBuildEvent>cd /D $(ProjectDir)admin\personaBar\Bundle.Web
-xcopy c:\node_modules .\node_modules /E /Q /S /Y /I
-cmd /c npm run build</PreBuildEvent>
+if exist .\node_modules goto build
+
+if not exist c:\npm_cache\$(ProjectName)\Bundle.Web\node_modules goto restore
+echo "Copy node_modules from cache"
+xcopy c:\npm_cache\$(ProjectName)\Bundle.Web\node_modules .\node_modules /E /Q /S /Y /I
+goto build
+
+:restore
+echo "Restore node modules"
+cmd /c npm install --cache-min 999999
+xcopy .\node_modules c:\npm_cache\$(ProjectName)\Bundle.Web\node_modules /E /Q /S /Y /I
+goto build
+
+:build
+echo "Start build bundle"
+cmd /c npm run build
+goto end
+
+:end
+echo "$(ProjectName)\Bundle.Web build successful"</PreBuildEvent>
   </PropertyGroup>
 </Project>
