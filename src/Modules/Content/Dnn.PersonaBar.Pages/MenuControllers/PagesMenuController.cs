@@ -53,12 +53,33 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var isSuperUser = user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
             var settings = new Dictionary<string, object>
             {
-                {"portalName", PortalSettings.Current.PortalName}
+                {"isSuperUser", isSuperUser},
+                {"portalName", PortalSettings.Current.PortalName},
+                {"currentPagePermissions", GetCurrentPagePermissions()}
             };
 
             return settings;
+        }
+
+        private JObject GetCurrentPagePermissions()
+        {
+            var permissions = new JObject
+            {
+                {"addContentToPage", TabPermissionController.CanAddContentToPage()},
+                {"addPage", TabPermissionController.CanAddPage()},
+                {"adminPage", TabPermissionController.CanAdminPage()},
+                {"copyPage", TabPermissionController.CanCopyPage()},
+                {"deletePage", TabPermissionController.CanDeletePage()},
+                {"exportPage", TabPermissionController.CanExportPage()},
+                {"importPage", TabPermissionController.CanImportPage()},
+                {"managePage", TabPermissionController.CanManagePage()}
+            };
+
+            return permissions;
         }
 
         private bool IsModuleAdmin()

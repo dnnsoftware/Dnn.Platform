@@ -96,7 +96,7 @@ function getViewName() {
     return viewName;
 }
 
-function getViewParams(){
+function getViewParams() {
     checkInit();
     return viewParams;
 }
@@ -121,6 +121,16 @@ function getTemplateFolder() {
     return settings.templateFolder;
 }
 
+function getIsSuperUser() {
+    checkInit();
+    return settings.isSuperUser;
+}
+
+function getCurrentPagePermissions() {
+    checkInit();
+    return settings.currentPagePermissions;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -139,7 +149,9 @@ const utils = {
     getSiteRoot,
     areEqualInvariantCase,
     getPortalName,
-    getTemplateFolder
+    getTemplateFolder,
+    getIsSuperUser,
+    getCurrentPagePermissions
 };
 
 export default utils;

@@ -23,7 +23,11 @@ class Template extends Component {
     }
     
     render() {
-        const {selectedTemplateId, onSelect} = this.props;
+        const {selectedTemplateId, templates, onSelect} = this.props;
+        
+        if (!templates || templates.length === 0) {
+            return null;
+        }
         
         return <div>
             <Label style={styles.label}

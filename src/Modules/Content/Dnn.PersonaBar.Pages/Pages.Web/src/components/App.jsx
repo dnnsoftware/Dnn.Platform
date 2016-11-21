@@ -19,6 +19,9 @@ import Button from "dnn-button";
 import utils from "../utils";
 import BackTo from "./common/BackTo/BackTo";
 import panels from "../constants/panels";
+import Sec from "./Security/Sec";
+import securityService from "../services/securityService";
+import permissionTypes from "../services/permissionTypes";
 
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
@@ -46,7 +49,7 @@ class App extends Component {
         const viewName = utils.getViewName();
         const viewParams = utils.getViewParams();
 
-        if (viewName === "edit") {
+        if (viewName === "edit" || !securityService.isSuperUser()) {
             props.onLoadPage(utils.getCurrentPageId());
         }
 
@@ -161,21 +164,25 @@ class App extends Component {
 
         return (
             <div className="heading-buttons">
-                <SaveAsTemplateButton
-                    type="secondary"
-                    size="large"
-                    onClick={onLoadSavePageAsTemplate}
-                    onShowPanelCallback={onShowPanel}
-                    onHidePanelCallback={onHidePanel}
-                    onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
-                    {Localization.get("SaveAsTemplate")}
-                </SaveAsTemplateButton>
-                <Button
-                    type="secondary"
-                    size="large"
-                    onClick={onDuplicatePage}>
-                    {Localization.get("DuplicatePage")}
-                </Button>
+                <Sec onlySuperUsers={true}>
+                    <SaveAsTemplateButton
+                        type="secondary"
+                        size="large"
+                        onClick={onLoadSavePageAsTemplate}
+                        onShowPanelCallback={onShowPanel}
+                        onHidePanelCallback={onHidePanel}
+                        onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
+                        {Localization.get("SaveAsTemplate")}
+                    </SaveAsTemplateButton>
+                </Sec>
+                <Sec permission={permissionTypes.COPY_PAGE}>
+                    <Button
+                        type="secondary"
+                        size="large"
+                        onClick={onDuplicatePage}>
+                        {Localization.get("DuplicatePage")}
+                    </Button>
+                </Sec>
             </div>
         );
     }
@@ -200,7 +207,7 @@ class App extends Component {
             <SocialPanelBody
                 workSpaceTrayOutside={true}
                 workSpaceTray={backToPages}
-                workSpaceTrayVisible={true}>
+                workSpaceTrayVisible={securityService.isSuperUser()}>
                 <PageSettings selectedPage={props.selectedPage}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
@@ -233,7 +240,7 @@ class App extends Component {
             <SocialPanelBody
                 workSpaceTrayOutside={true}
                 workSpaceTray={backToPages}
-                workSpaceTrayVisible={true}>
+                workSpaceTrayVisible={securityService.isSuperUser()}>
                 <AddPages
                     bulkPage={props.bulkPage}
                     onCancel={props.onCancelAddMultiplePages}

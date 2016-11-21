@@ -5,6 +5,7 @@ import utils from "../utils";
 import Localization from "../localization";
 import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
+import securityService from "../services/securityService";
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -23,6 +24,25 @@ function updateUrlPreview(value, dispatch) {
 
 const debouncedUpdateUrlPreview = debounce(updateUrlPreview, 500);
 
+const loadPage = function(dispatch, pageId) {
+    dispatch({
+        type: ActionTypes.LOAD_PAGE
+    });
+
+    PagesService.getPage(pageId).then(response => {
+        dispatch({
+            type: ActionTypes.LOADED_PAGE,
+            data: {
+                page: response
+            }
+        });
+    }).catch((error) => {
+        dispatch({
+            type: ActionTypes.ERROR_LOADING_PAGE,
+            data: { error }
+        });
+    });
+} ;
 const pageActions = {
     selectPageSettingTab(selectedPageSettingTab) {
         return (dispatch) => {
@@ -34,23 +54,7 @@ const pageActions = {
     },
     loadPage(pageId) {
         return (dispatch) => {
-            dispatch({
-                type: ActionTypes.LOAD_PAGE
-            });
-
-            PagesService.getPage(pageId).then(response => {
-                dispatch({
-                    type: ActionTypes.LOADED_PAGE,
-                    data: {
-                        page: response
-                    }
-                });
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_LOADING_PAGE,
-                    data: { error }
-                });
-            });
+            loadPage(dispatch, pageId);
         };
     },
 
@@ -93,9 +97,16 @@ const pageActions = {
     },
 
     cancelPage() {
-        return {
-            type: ActionTypes.CANCEL_PAGE,
-            data: {}
+        return (dispatch) => {
+            if (!securityService.isSuperUser()) {
+                loadPage(dispatch, utils.getCurrentPageId());
+                return;    
+            }
+            
+            dispatch({
+                type: ActionTypes.CANCEL_PAGE,
+                data: {}
+            });
         };
     },
 
