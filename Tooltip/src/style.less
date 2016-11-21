@@ -2,19 +2,26 @@
 .dnn-ui-common-tooltip {
     .tooltip-text {
         z-index: 10000;
-        margin-left: 3px;
+        max-width: 255px;
+        text-align: center;
+        padding: 7px 15px;
+        pointer-events: auto !important;
+        word-wrap: break-word;
+        word-break: break-all;
+        &:hover {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
         &.place-top {
             &:after {
                 border-top: 6px solid !important;
             }
         }
-        
         &.place-bottom {
             &:after {
                 border-bottom: 6px solid !important;
             }
         }
-        
         &.place-left {
             &:after {
                 border-left: 6px solid !important;
@@ -25,9 +32,7 @@
                 border-right: 6px solid !important;
             }
         }
-
     }
-    
     &.error {
         .icon svg {
             color: @alizarinCrimson;
@@ -43,13 +48,11 @@
             }
             &.place-bottom {
                 &:after {
-                    border-bottom-color:  @alizarinCrimson !important;
+                    border-bottom-color: @alizarinCrimson !important;
                 }
-            }    
-
+            }
         }
-    } 
-
+    }
     &.info {
         .icon svg {
             color: @alto;
@@ -65,9 +68,9 @@
             }
             &.place-bottom {
                 &:after {
-                    border-bottom-color:  @thunder !important;
+                    border-bottom-color: @thunder !important;
                 }
-            }  
+            }
         }
     }
     &.global {
@@ -85,9 +88,9 @@
             }
             &.place-bottom {
                 &:after {
-                    border-bottom-color:  @cerulean !important;
+                    border-bottom-color: @cerulean !important;
                 }
-            }  
+            }
         }
     }
     .icon svg {
