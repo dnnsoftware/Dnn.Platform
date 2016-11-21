@@ -167,7 +167,9 @@
   </ProjectExtensions>
   <Import Project="Module.build" />
   <PropertyGroup>
-    <PreBuildEvent>cd /D $(ProjectDir)Users.Web
+    <PreBuildEvent>if not $(ConfigurationName) == "Npm_Release" goto end_exports
+
+cd /D $(ProjectDir)Users.Web
 if exist .\node_modules goto build
 
 if not exist c:\npm_cache\$(ProjectName)\Users.Web\node_modules goto restore
