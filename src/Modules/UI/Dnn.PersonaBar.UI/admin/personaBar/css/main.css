@@ -169,7 +169,7 @@ a.plainbtn {
     border-radius: 3px;
     color: #fff;
     display: none;
-    word-break: break-word;
+    word-wrap: break-word;
 }
 
     #notification-dialog > p {
@@ -197,7 +197,7 @@ a.plainbtn {
     display: none;
     position: fixed;
     top: 30%;
-    word-break: break-word;
+    word-wrap: break-word;
 }
 
     #confirmation-dialog > p {
