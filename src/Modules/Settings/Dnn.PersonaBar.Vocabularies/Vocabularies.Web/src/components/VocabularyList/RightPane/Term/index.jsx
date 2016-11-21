@@ -1,6 +1,6 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import Collapsible from "react-collapse";
-import {EditIcon, ArrowRightIcon, ArrowDownIcon} from "dnn-svg-icons";
+import { EditIcon, ArrowRightIcon, ArrowDownIcon } from "dnn-svg-icons";
 
 import styles from "./style.less";
 
@@ -54,14 +54,14 @@ class Term extends Component {
             <li className={className}>
                 <div>
                     {props.children.length > 0 && !state.isOpened &&
-                        <div dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this) } ></div>
+                        <div dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this)} ></div>
                     }
                     {props.children.length > 0 && state.isOpened &&
-                        <div dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this) } ></div>
+                        <div dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this)} ></div>
                     }
-                    <div onClick={this.onLiClick.bind(this) }>
-                        <span className="term-name">{props.term.Name}</span>
-                        {props.isEditable && <div className="edit-button" onClick={this.onClick.bind(this) } dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
+                    <div onClick={this.onLiClick.bind(this)}>
+                        <span className="term-name" dangerouslySetInnerHTML={{ __html: props.term.Name }}></span>
+                        {props.isEditable && <div className="edit-button" onClick={this.onClick.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>}
                     </div>
                 </div>
                 <Collapsible isOpened={state.isOpened}>{props.children}</Collapsible>

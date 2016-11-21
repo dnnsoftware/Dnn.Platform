@@ -4,7 +4,7 @@ import MultiLineInputWithError  from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 import InputGroup from "dnn-input-group";
-import RadioButtons from "dnn-radio-buttons";
+import RadioButtons from "./RadioButtons";
 import {vocabulary as VocabularyActions,
     pagination as PaginationActions
 } from "../../actions";
@@ -154,14 +154,14 @@ class CreateVocabulary extends Component {
                             label={LocalizedResources.get("Type.Header") + ":"}
                             buttonGroup="vocabularyType"
                             buttonWidth={130}
-                            defaultValue={state.term.TypeId}/>
+                            value={state.term.TypeId}/>
                         <RadioButtons
                             onChange={this.onTermValueChange.bind(this, "ScopeTypeId") }
                             options={scopeOptions}
                             label={LocalizedResources.get("Scope.Header") + ":"}
                             buttonGroup="scopeType"
                             buttonWidth={130}
-                            defaultValue={state.term.ScopeTypeId}/>
+                            value={state.term.ScopeTypeId}/>
                         <div className="action-buttons">
                             <Button type="secondary" onClick={this.onCloseVocabulary.bind(this) }>{LocalizedResources.get("cancelCreate") }</Button>
                             <Button type="primary" onClick={this.onAddNewVocabulary.bind(this) }>{LocalizedResources.get("CreateVocabulary") }</Button>
