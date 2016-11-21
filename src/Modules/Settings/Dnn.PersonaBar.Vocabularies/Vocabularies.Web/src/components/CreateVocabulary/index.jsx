@@ -4,7 +4,7 @@ import MultiLineInputWithError  from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 import InputGroup from "dnn-input-group";
-import RadioButtons from "./RadioButtons";
+import RadioButtons from "dnn-radio-buttons";
 import {vocabulary as VocabularyActions,
     pagination as PaginationActions
 } from "../../actions";
