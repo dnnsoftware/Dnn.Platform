@@ -22,7 +22,8 @@ module.exports = {
         ]
     },
     externals: {
-        "react": "react"
+        "react": "react",
+        "dnn-label": "dnn-label"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
