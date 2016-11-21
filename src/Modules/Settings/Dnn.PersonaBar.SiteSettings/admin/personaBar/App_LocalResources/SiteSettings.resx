@@ -1197,4 +1197,7 @@
   <data name="SelectResourcePlaceholder.Text" xml:space="preserve">
     <value>-- Select --</value>
   </data>
+  <data name="PagesSuccessfullyTranslated.Text" xml:space="preserve">
+    <value>Pages successfully translated.</value>
+  </data>
 </root>
