@@ -170,38 +170,43 @@ class PageSettings extends Component {
                 className={styles.pageSettings}
                 onSelect={this.props.selectPageSettingTab.bind(this)}
                 selectedIndex={this.props.selectedPageSettingTab}>
-                <Sec permission={permissionTypes.MANAGE_PAGE}
-                    className="dnn-simple-tab-item">
-                    <PageTypeSelector
-                        page={selectedPage}
-                        onChangePageType={onChangePageType} 
-                        components={pageTypeSelectorComponents} />
-                    <PageDetails 
-                        page={selectedPage}
-                        errors={selectedPageErrors} 
-                        onChangeField={onChangeField}
-                        components={pageDetailsFooterComponents} />
-                    {footer}
+                <Sec permission={permissionTypes.MANAGE_PAGE}>
+                    <div className="dnn-simple-tab-item">
+                        <PageTypeSelector
+                            page={selectedPage}
+                            onChangePageType={onChangePageType} 
+                            components={pageTypeSelectorComponents} />
+                        <PageDetails 
+                            page={selectedPage}
+                            errors={selectedPageErrors} 
+                            onChangeField={onChangeField}
+                            components={pageDetailsFooterComponents} />
+                        {footer}
+                    </div>
                 </Sec>
-                <Sec permission={permissionTypes.ADMIN_PAGE}
-                    className="dnn-simple-tab-item">                
-                    <PermissionGrid
-                        permissions={selectedPage.permissions} 
-                        onPermissionsChanged={this.props.onPermissionsChanged} />
-                    {permissionFooter}
+                <Sec permission={permissionTypes.ADMIN_PAGE}>
+                    <div className="dnn-simple-tab-item">                
+                        <PermissionGrid
+                            permissions={selectedPage.permissions} 
+                            onPermissionsChanged={this.props.onPermissionsChanged} />
+                        {permissionFooter}
+                    </div>
                 </Sec>
-                <Sec permission={permissionTypes.ADMIN_PAGE}
-                    className="dnn-simple-tab-item">
-                    <PageLocalization
-                        page={selectedPage}
-                     />
+                <Sec permission={permissionTypes.ADMIN_PAGE}>
+                    <div className="dnn-simple-tab-item">
+                        <PageLocalization
+                            page={selectedPage}
+                        />
+                     </div>
                 </Sec>
                 <Sec permission={permissionTypes.MANAGE_PAGE}>
-                    <Tabs 
-                        tabHeaders={advancedTabs.map(tab => tab.label)}                        
-                        type="secondary">
-                        {advancedTabs.map(tab => tab.component)}
-                    </Tabs>
+                    <div>
+                        <Tabs 
+                            tabHeaders={advancedTabs.map(tab => tab.label)}                        
+                            type="secondary">
+                            {advancedTabs.map(tab => tab.component)}
+                        </Tabs>
+                    </div>
                 </Sec>
             </Tabs>
         );

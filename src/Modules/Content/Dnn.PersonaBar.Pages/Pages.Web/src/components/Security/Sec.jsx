@@ -28,11 +28,7 @@ class Sec extends Component {
             return null;
         }
         
-        return (
-            <div className={this.props.className}>
-                {this.props.children}
-            </div>
-        );
+        return this.props.children;
     }
 }
 
