@@ -42,7 +42,6 @@ class LanguagesPanel extends Component {
             });
             return;
         }
-        console.log(props.portalId);
         props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
             this.setState({
                 languageList: Object.assign({}, data.Languages),

@@ -177,7 +177,6 @@ class TranslatePageContent extends Component {
 
         const {props, state} = this;
         const language = state.languageBeingEdited;
-        console.log('LANGUAGE:', language);
         return <SocialPanelBody
             className="translate-page-content"
             workSpaceTrayOutside={true}

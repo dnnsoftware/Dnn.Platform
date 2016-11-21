@@ -1152,4 +1152,7 @@
   <data name="DeleteFiles.Label" xml:space="preserve">
     <value>Delete Files?</value>
   </data>
+  <data name="Extension.Header" xml:space="preserve">
+    <value>Extension</value>
+  </data>
 </root>

@@ -48,7 +48,6 @@ const portalActions = {
     },
     createPortal(payload, callback) {
         return (dispatch) => {
-            console.log(ActionTypes);
             PortalService.createPortal(payload, data => {
                 dispatch({
                     type: ActionTypes.CREATED_PORTAL,
