@@ -37,10 +37,10 @@ class ProfilePropertyEditor extends Component {
             },
             propertyLocalization: undefined,
             error: {
-                name: true,
-                category: true,
-                datatype: true,
-                localename: true,
+                name: false,
+                category: false,
+                datatype: false,
+                localename: false,
                 length: false
             },
             triedToSubmit: false,
@@ -263,7 +263,7 @@ class ProfilePropertyEditor extends Component {
                 props.dispatch(SiteBehaviorActions.addProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
-                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false
                     });
@@ -275,7 +275,7 @@ class ProfilePropertyEditor extends Component {
                 props.dispatch(SiteBehaviorActions.updateProfileProperty(state.profileProperty, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
-                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+                    props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false
                     });
@@ -285,7 +285,7 @@ class ProfilePropertyEditor extends Component {
             }
         }
         else {
-            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, ""));
+            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
             this.setState({
                 showFirstPage: false
             });
@@ -631,7 +631,8 @@ ProfilePropertyEditor.propTypes = {
     id: PropTypes.string,
     profilePropertyClientModified: PropTypes.bool,
     propertyLocalizationClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

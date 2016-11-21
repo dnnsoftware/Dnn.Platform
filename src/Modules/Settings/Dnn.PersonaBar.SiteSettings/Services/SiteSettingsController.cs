@@ -587,8 +587,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
-                var portal = PortalController.Instance.GetPortal(pid, cultureCode);
-                var portalSettings = new PortalSettings(portal);
                 
                 var response = new
                 {
@@ -596,11 +594,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     PropertyLocalization = new
                     {
                         Language = cultureCode,
-                        PropertyName = Localization.GetString("ProfileProperties_" + propertyName, ProfileResourceFile, portalSettings, cultureCode),
-                        PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", ProfileResourceFile, portalSettings, cultureCode),
-                        PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", ProfileResourceFile, portalSettings, cultureCode),
-                        PropertyValidation = Localization.GetString("ProfileProperties_" + propertyName + ".Validation", ProfileResourceFile, portalSettings, cultureCode),
-                        CategoryName = Localization.GetString("ProfileProperties_" + propertyCategory + ".Header", ProfileResourceFile, portalSettings, cultureCode)
+                        PropertyName = Localization.GetString("ProfileProperties_" + propertyName, ProfileResourceFile, cultureCode),
+                        PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", ProfileResourceFile, cultureCode),
+                        PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", ProfileResourceFile, cultureCode),
+                        PropertyValidation = Localization.GetString("ProfileProperties_" + propertyName + ".Validation", ProfileResourceFile, cultureCode),
+                        CategoryName = Localization.GetString("ProfileProperties_" + propertyCategory + ".Header", ProfileResourceFile, cultureCode)
                     }
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -632,6 +630,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString,
                     request.PropertyHelpString, request.PropertyRequiredString, request.PropertyValidationString, request.CategoryNameString);
+                DataCache.ClearCache();
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

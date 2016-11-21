@@ -218,6 +218,7 @@ class ProfilePropertiesPanel extends Component {
                         id={id}>
                         <ProfilePropertyEditor
                             portalId={this.props.portalId}
+                            cultureCode={this.props.cultureCode}
                             propertyId={item.PropertyDefinitionId}
                             Collapse={this.collapse.bind(this)}
                             onUpdate={this.onUpdateProperty.bind(this)}
@@ -260,6 +261,7 @@ class ProfilePropertiesPanel extends Component {
                                 id={"add"}>
                                 <ProfilePropertyEditor
                                     portalId={this.props.portalId}
+                                    cultureCode={this.props.cultureCode}
                                     Collapse={this.collapse.bind(this)}
                                     onUpdate={this.onUpdateProperty.bind(this)}
                                     id={"add"}
@@ -280,6 +282,7 @@ ProfilePropertiesPanel.propTypes = {
     tabIndex: PropTypes.number,
     profileProperties: PropTypes.array,
     portalId: PropTypes.number,
+    cultureCode: PropTypes.string,
     profilePropertyClientModified: PropTypes.bool
 };
 

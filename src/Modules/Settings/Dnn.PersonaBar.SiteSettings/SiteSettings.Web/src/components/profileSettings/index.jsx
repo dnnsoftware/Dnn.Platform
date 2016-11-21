@@ -166,7 +166,7 @@ class ProfileSettingsPanelBody extends Component {
                 <div className={styles.profileSettings}>
                     <div className="sectionTitleNoBorder">{resx.get("UserProfileSettings")}</div>
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
-                    <ProfileProperties portalId={props.portalId} />
+                    <ProfileProperties portalId={props.portalId} cultureCode={props.cultureCode}/>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.profileSettingsClientModified}
@@ -194,7 +194,8 @@ ProfileSettingsPanelBody.propTypes = {
     profileSettings: PropTypes.object,
     userVisibilityOptions: PropTypes.array,
     profileSettingsClientModified: PropTypes.bool,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {
