@@ -19,11 +19,7 @@ class SaveAsTemplate extends Component {
         const {onChangeField} = this.props;
         onChangeField(key, event.target.value);
     }
-
-    componentDidMount() {
-        this.props.onChangeField("folder", utils.getTemplateFolder());
-    }
-
+    
     render() {
         const {template, onChangeField, onSave, onCancel, errors} = this.props;
 

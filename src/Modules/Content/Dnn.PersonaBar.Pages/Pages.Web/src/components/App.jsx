@@ -157,11 +157,11 @@ class App extends Component {
 
     getSettingsButtons() {
         const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel} = this.props;
-        const SaveAsTemplate = settingsButtonComponents.SaveAsTemplateButton || Button;
+        const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
 
         return (
             <div className="heading-buttons">
-                <SaveAsTemplate
+                <SaveAsTemplateButton
                     type="secondary"
                     size="large"
                     onClick={onLoadSavePageAsTemplate}
@@ -169,7 +169,7 @@ class App extends Component {
                     onHidePanelCallback={onHidePanel}
                     onSaveAsPlatformTemplate={onLoadSavePageAsTemplate}>
                     {Localization.get("SaveAsTemplate")}
-                </SaveAsTemplate>
+                </SaveAsTemplateButton>
                 <Button
                     type="secondary"
                     size="large"
@@ -272,7 +272,13 @@ class App extends Component {
                 const panel = props.additionalPanels[i];
                 if (props.selectedView === panel.panelId) {
                     const Component = panel.component;
-                    additionalPanels.push(<Component  />);
+                    additionalPanels.push(
+                        <Component 
+                            onSave={()=> {}} 
+                            onCancel={props.onCancelSavePageAsTemplate}
+                            selectedPage={props.selectedPage}
+                        />
+                    );
                 }
             }
         }
