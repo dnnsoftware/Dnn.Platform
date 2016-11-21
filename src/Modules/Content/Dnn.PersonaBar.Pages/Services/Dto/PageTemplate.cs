@@ -8,9 +8,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "folder")]
-        public PageFolderTemplate Folder { get; set; }
-
         [DataMember(Name = "description")]
         public string Description { get; set; }
 

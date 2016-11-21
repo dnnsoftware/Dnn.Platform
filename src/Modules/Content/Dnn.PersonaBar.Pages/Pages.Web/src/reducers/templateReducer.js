@@ -13,8 +13,7 @@ function getEmptyTemplateModel() {
     return {
         name: "",
         description: "",
-        includeContent: false,
-        folder: null
+        includeContent: false
     };
 }
 

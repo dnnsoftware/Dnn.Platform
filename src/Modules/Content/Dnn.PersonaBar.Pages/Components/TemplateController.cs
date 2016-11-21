@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             string filename;
             try {
-                var folder = FolderManager.Instance.GetFolder(template.Folder.Key);
+                var folder = GetTemplateFolder();
 
                 if (folder == null)
                 {
@@ -70,6 +70,11 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return filename;
+        }
+        private static IFolderInfo GetTemplateFolder()
+        {
+            const string folderPath = "Templates/";
+            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, folderPath);
         }
 
         private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)

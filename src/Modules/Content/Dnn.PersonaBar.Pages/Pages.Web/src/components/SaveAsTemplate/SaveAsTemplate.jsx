@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from "react";
 import Button from "dnn-button";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import FolderPicker from "dnn-folder-picker";
 import utils from "../../utils";
 import styles from "./style.less";
 import Localization from "../../localization";
@@ -27,36 +26,17 @@ class SaveAsTemplate extends Component {
 
     render() {
         const {template, onChangeField, onSave, onCancel, errors} = this.props;
-        const serviceFramework = utils.getServiceFramework();
 
         return (
             <div className={styles.saveAsTemplate}>
-                <div className="grid-columns">
-                    <div className="left-column">
-                        <div className="input-group">
-                            <Label
-                                tooltipMessage={Localization.get("FolderTooltip")}
-                                label={Localization.get("Folder")} />
-                            <FolderPicker
-                                serviceFramework={serviceFramework}
-                                selectedFolder={template.folder}
-                                onSelectFolder={(folder) => onChangeField("folder", folder)}
-                                onRetrieveFolderError={() => {}}
-                                noFolderSelectedValue={Localization.get("NoneSpecified")}
-                                searchFolderPlaceHolder={Localization.get("SearchFolders") + "..."} />
-                        </div>
-                    </div>
-                    <div className="right-column">
-                        <div className="input-group">
-                            <SingleLineInputWithError
-                                label={Localization.get("TemplateName") + "*"}
-                                tooltipMessage={Localization.get("TemplateNameTooltip")}
-                                error={!!errors.name}
-                                errorMessage={errors.name}
-                                value={template.name} 
-                                onChange={this.onChangeField.bind(this, "name")} />
-                        </div>
-                    </div>
+                <div className="input-group">
+                    <SingleLineInputWithError
+                        label={Localization.get("TemplateName") + "*"}
+                        tooltipMessage={Localization.get("TemplateNameTooltip")}
+                        error={!!errors.name}
+                        errorMessage={errors.name}
+                        value={template.name} 
+                        onChange={this.onChangeField.bind(this, "name")} />
                 </div>
                 <div className="input-group">
                     <MultiLineInputWithError
