@@ -26,12 +26,12 @@ class PageSettings extends Component {
     }
 
     getButtons() {
-        const {selectedPage, onCancel, onSave} = this.props;
+        const {selectedPage, onCancel, onSave, onDelete} = this.props;
         const saveButtonText = selectedPage.tabId === 0 ? 
             Localization.get("AddPage") : Localization.get("Save");
         const pageErrors = this.hasPageErrors();
 
-        return [<Button
+        let buttons = [<Button
                     type="secondary"
                     onClick={onCancel}>
                     {Localization.get("Cancel")}
@@ -42,6 +42,15 @@ class PageSettings extends Component {
                     disabled={pageErrors}>
                     {saveButtonText}
                 </Button>];
+                
+        if (!securityService.isSuperUser()) {
+            buttons.unshift(<Button
+                    type="secondary"
+                    onClick={onDelete}>
+                    {Localization.get("Delete")}
+                </Button>);
+        }
+        return buttons;
     }
 
     getPageFooter(buttons) {
@@ -205,6 +214,7 @@ PageSettings.propTypes = {
     selectedPageDirty: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
     onPermissionsChanged: PropTypes.func.isRequired,
     onChangePageType: PropTypes.func.isRequired,

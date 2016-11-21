@@ -136,7 +136,17 @@ class App extends Component {
             this.props.onCancelPage();
         }
     }
-
+    
+    onDeleteSettings() {
+        const {props} = this;
+        const onDelete = () => this.props.onDeletePage(props.selectedPage);
+        utils.confirm(
+            Localization.get("DeletePageConfirm"),
+            Localization.get("Delete"),
+            Localization.get("Cancel"),
+            onDelete);
+    }
+    
     showCancelWithoutSavingDialog() {
         const onConfirm = () => this.props.onCancelPage();
         utils.confirm(
@@ -195,6 +205,7 @@ class App extends Component {
         const {props} = this;
         const titleSettings = this.getPageTitle();
         const cancelAction = this.onCancelSettings.bind(this);
+        const deleteAction = this.onDeleteSettings.bind(this);
         const backToReferral = this.backToReferral.bind(this, this.state.referral);
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
@@ -212,6 +223,7 @@ class App extends Component {
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={cancelAction}
+                    onDelete={deleteAction}
                     onSave={this.onSavePage.bind(this)}
                     selectedPageSettingTab={props.selectedPageSettingTab}
                     selectPageSettingTab={this.selectPageSettingTab.bind(this)}
@@ -330,6 +342,7 @@ App.propTypes = {
     editingSettingModuleId: PropTypes.number,
     onCancelPage: PropTypes.func.isRequired,
     onSavePage: PropTypes.func.isRequired,
+    onDeletePage: PropTypes.func.isRequired,
     onLoadPage: PropTypes.func.isRequired,
     onAddPage: PropTypes.func.isRequired,
     onCancelAddMultiplePages: PropTypes.func.isRequired,
@@ -381,6 +394,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         onCancelPage: PageActions.cancelPage,
         onSavePage: PageActions.savePage,
+        onDeletePage: PageActions.deletePage,
         selectPageSettingTab: PageActions.selectPageSettingTab,
         onLoadPage: PageActions.loadPage,
         onAddPage: PageActions.addPage,

@@ -29,6 +29,11 @@ const PageService = function () {
         }
         return api.post("SavePageDetails", toBackEndPage(request));
     };
+    
+    const deletePage = function (page) {
+        const api = getOverridablePagesApi();
+        return api.post("DeletePage", {id: page.tabId});
+    };
 
     const addPages = function (bulkPage) {
         const api = getOverridablePagesApi();
@@ -125,6 +130,7 @@ const PageService = function () {
     return {
         getPage,
         savePage,
+        deletePage,
         addPages,
         getNewPage,
         getCacheProviderList,

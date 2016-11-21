@@ -112,7 +112,34 @@ const pageActions = {
             });
         };
     },
+    deletePage(page) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.DELETE_PAGE
+            });
 
+            PagesService.deletePage(page).then(response => {
+
+                if (response.Status === responseStatus.ERROR) {
+                    utils.notifyError(Localization.get("Error_" + response.Message), 3000);
+                    return;
+                }
+                
+                if (page.tabId === 0 && !securityService.isSuperUser()) {
+                    utils.getUtilities().closePersonaBar();
+                }
+                
+                dispatch({
+                    type: ActionTypes.DELETED_PAGE
+                });
+            }).catch((error) => {
+                dispatch({
+                    type: ActionTypes.ERROR_DELETING_PAGE,
+                    data: { error }
+                });
+            });
+        };
+    },
     savePage(page) {
         return (dispatch) => {
             dispatch({
