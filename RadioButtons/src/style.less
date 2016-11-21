@@ -16,11 +16,6 @@
     .dnn-ui-common-tooltip {
         float: left;
         margin-left: 10px;
-        .tooltip-text {
-            max-width: 255px;
-            text-align: center;
-            padding: 7px 15px;
-        }
         svg {
             width: 20px;
             height: 20px;
@@ -61,13 +56,21 @@
                 position: absolute;
                 top: 2px;
                 left: 0;
+                padding: 2px;
             }
             input[type=radio] {
                 position: absolute;
                 visibility: hidden;
             }
             input[type=radio]:checked ~ .check {
-                border: 3px solid @curiousBlue;
+                border: 1px solid @curiousBlue;
+                .inside {
+                    background-color: @curiousBlue;
+                    width: 100%;
+                    height: 100%;
+                    box-sizing: border-box;
+                    border-radius: 100%;
+                }
             }
             &.disabled {
                 label {
@@ -76,8 +79,11 @@
                 }
                 &.checked {
                     input[type=radio]:checked ~ .check {
-                        border: 3px solid @alto;
+                        border: 1px solid @alto;
                         background: 1px solid @gallery;
+                        .inside {
+                            background-color: @alto;
+                        }
                     }
                 }
                 .check {
