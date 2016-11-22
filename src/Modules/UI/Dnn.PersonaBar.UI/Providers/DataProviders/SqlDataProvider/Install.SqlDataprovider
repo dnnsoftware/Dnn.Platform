@@ -653,13 +653,13 @@ BEGIN
         SET [Order] = 22,
         ParentId = @ParentId,
         Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
-        Path = 'LinkMenu?path=//Admin//FileManagement&sku=DNN'
+        Path = 'LinkMenu?path=//Admin//FileManagement'
         WHERE Identifier = 'SiteAssets'
     UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu]
         SET [Order] = 24,
         ParentId = @ParentId,
         Controller = 'Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI',
-        Path = 'LinkMenu?portalId=-1&path=//Host//FileManagement&sku=DNN'
+        Path = 'LinkMenu?portalId=-1&path=//Host//FileManagement'
         WHERE Identifier = 'GlobalAssets'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
