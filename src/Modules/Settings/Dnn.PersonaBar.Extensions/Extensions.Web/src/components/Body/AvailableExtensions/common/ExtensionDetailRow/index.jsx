@@ -13,7 +13,7 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy}) => (
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
             <span className="package-name">{_package.friendlyName}</span>
-            <p>{_package.description}</p>
+            <p dangerouslySetInnerHTML={{ __html: _package.description }}></p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.version}</p>
