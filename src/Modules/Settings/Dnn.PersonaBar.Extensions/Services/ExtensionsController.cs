@@ -72,7 +72,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         return new
                         {
                             Type = packageType,
-                            HasAvailablePackages = _controller.HasAvailablePackage(packageType, out rootPath)
+                            HasAvailablePackages = _controller.HasAvailablePackage(packageType, out rootPath),
+                            DisplayName = Localization.GetString(packageType + ".Type", Constants.SharedResources),
                         };
                     });
                 var response = new

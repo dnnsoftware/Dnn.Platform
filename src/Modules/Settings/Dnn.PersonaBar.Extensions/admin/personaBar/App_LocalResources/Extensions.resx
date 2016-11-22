@@ -264,6 +264,9 @@
   <data name="MoreExtensions.Text" xml:space="preserve">
     <value>More Extensions</value>
   </data>
+  <data name="PersonaBar.Type" xml:space="preserve">
+    <value>Persona Bar</value>
+  </data>
   <data name="Provider.Type" xml:space="preserve">
     <value>Providers</value>
   </data>
