@@ -665,7 +665,7 @@ BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
         SELECT MenuId, 'Administrators' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
-            WHERE Identifier IN ('Content','Manage','Settings','Tools','Logout','SiteAssets')
+            WHERE Identifier IN ('Manage','Settings','Tools','Logout','SiteAssets')
 	
 	INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
         SELECT MenuId, 'Registered Users' 
