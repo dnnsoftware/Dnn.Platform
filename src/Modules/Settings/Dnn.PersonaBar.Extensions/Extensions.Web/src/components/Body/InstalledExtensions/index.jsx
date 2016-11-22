@@ -69,7 +69,7 @@ class InstalledExtensions extends Component {
                 <GridCell className="collapse-section">
                     <DropdownWithError className="filter-dropdown" onSelect={this.onFilterSelect.bind(this)} options={props.installedPackageTypes && props.installedPackageTypes.map((_package) => {
                         return {
-                            label: _package.Type.split("_").join("").split(/(?=[A-Z])/).join(" "),
+                            label: _package.DisplayName,
                             value: _package.Type
                         };
                     })}
