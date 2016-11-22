@@ -5,21 +5,25 @@
     min-height: 235px;
 
     .site-theme-tabs{
-        margin-left: 20px;
+        position: relative;
         .site-theme-title{
             text-transform: uppercase;
             font-weight: bold;
             line-height: 30px;
-            float: left;
+            position: absolute;
+            top: 0;
+            left: 0;
             span{
                 margin-left: 13px;
             }
         }
         .dnn-tabs > ul{
-            padding-left: 280px;
+            float: right;
+            width: 100%;
             li{
-                padding: 9px 0 13px;
+                padding: 6px 0 13px;
                 margin: 0 15px;
+                float: right;
             }
         }
     }

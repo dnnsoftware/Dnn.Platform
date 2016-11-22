@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Tabs from "dnn-tabs";
 import {
@@ -28,7 +28,7 @@ class SiteTheme extends Component {
         props.dispatch(ThemeActions.getCurrentTheme());
     }
 
-    hasData(){
+    hasData() {
         const {props, state} = this;
 
         let source = props.themes.layouts;
@@ -40,9 +40,9 @@ class SiteTheme extends Component {
         return isHost || hasData;
     }
 
-    getTabs(){
+    getTabs() {
         return this.hasData() ? [Localization.get("Layouts"), Localization.get("Containers"), Localization.get("Settings")]
-                              : [Localization.get("Layouts"), Localization.get("Containers")];
+            : [Localization.get("Layouts"), Localization.get("Containers")];
     }
 
     render() {
@@ -50,22 +50,22 @@ class SiteTheme extends Component {
 
         return (
             <GridCell className="site-theme">
-                <GridCell columnSize={168} type="px">
+                <GridCell columnSize={25}>
                     <CurrentTheme />
                 </GridCell>
-                <GridCell className="site-theme-tabs" columnSize={560} type="px">
+                <GridCell className="site-theme-tabs" columnSize={75}>
                     <div className="site-theme-title">
                         <label>{Localization.get("SiteTheme")}</label>
                         <span>{props.currentTheme.SiteLayout.themeName}</span>
                     </div>
                     <Tabs tabHeaders={this.getTabs()}
-                            type="secondary">
+                        type="secondary">
                         <ThemeFileList type={0} />
                         <ThemeFileList type={1} />
                         {this.hasData() && <ThemeSettings />}
                     </Tabs>
                 </GridCell>
-                
+
             </GridCell>
         );
     }
