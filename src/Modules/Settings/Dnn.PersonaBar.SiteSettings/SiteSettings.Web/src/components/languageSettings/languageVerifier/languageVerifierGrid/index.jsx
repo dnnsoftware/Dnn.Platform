@@ -61,7 +61,7 @@ class LanguageVerifierGridPanel extends Component {
                     </div>
                     <div className="language-name">{props.language + (props.isDefault ? "**" : "")}</div>
                     {props.isDefault
-                        && <div className="default-language">{resx.get("systemDefaultLanguage")}</div>
+                        && <div className="default-language">{resx.get("systemDefaultLabel")}</div>
                     }
                 </div>
                 {(props.missingFiles.length > 0 || props.filesWithDuplicateEntries.length > 0 || props.filesWithDuplicateEntries.length > 0
