@@ -673,7 +673,7 @@ BEGIN
             WHERE Identifier = 'Content'
 
     INSERT INTO {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions]
-        SELECT MenuId, 'All Users' 
+        SELECT MenuId, 'Registered Users' 
             FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] 
             WHERE Identifier = 'Edit'
 END
