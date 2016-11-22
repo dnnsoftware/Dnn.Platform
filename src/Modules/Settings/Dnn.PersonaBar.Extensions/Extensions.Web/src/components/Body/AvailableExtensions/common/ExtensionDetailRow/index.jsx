@@ -19,11 +19,15 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy}) => (
             <p>{_package.version}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[3]}>
-            <form action="/API/PersonaBar/Extensions/DownloadPackage" method="GET" target="_blank">
+            {_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadPackage" method="GET" target="_blank">
                 <input type="hidden" name="FileName" value={_package.fileName} />
                 <input type="hidden" name="PackageType" value={type} />
                 <button className="dnn-ui-common-button install-download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
-            </form>
+            </form>}
+            {!_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadLanguagePackage" method="GET" target="_blank">
+                <input type="hidden" name="CultureCode" value={_package.description} />
+                <button className="dnn-ui-common-button install-download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
+            </form>}
             {!_package.fileName &&
                 <Button className="install-download-button" onClick={onDeploy.bind(this, _package)}>{Localization.get("Deploy.Button")}</Button>
             }

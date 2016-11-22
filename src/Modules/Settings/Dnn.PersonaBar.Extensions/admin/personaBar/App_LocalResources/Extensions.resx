@@ -1158,4 +1158,7 @@
   <data name="Extension.Header" xml:space="preserve">
     <value>Extension</value>
   </data>
+  <data name="Deploy.Button" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
 </root>
