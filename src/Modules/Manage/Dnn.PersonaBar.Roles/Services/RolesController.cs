@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Roles.Services
     [MenuPermission(MenuName = "Roles")]
     public class RolesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RolesController));
 
         #region Role API
 
@@ -41,10 +41,10 @@ namespace Dnn.PersonaBar.Roles.Services
                 var isAdmin = IsAdmin();
 
                 var roles = (groupId < Null.NullInteger
-                                    ? RoleController.Instance.GetRoles(PortalId)
-                                    : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == groupId))
-                                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
-                                    .Select(RoleDto.FromRoleInfo);
+                    ? RoleController.Instance.GetRoles(PortalId)
+                    : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == groupId))
+                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
+                    .Select(RoleDto.FromRoleInfo);
 
                 if (!string.IsNullOrEmpty(keyword))
                 {
@@ -53,15 +53,16 @@ namespace Dnn.PersonaBar.Roles.Services
                             r => r.Name.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger);
                 }
 
-                var loadMore = roles.Count() > startIndex + pageSize;
-                roles = roles.Skip(startIndex).Take(pageSize);
+                var roleDtos = roles as RoleDto[] ?? roles.ToArray();
+                var loadMore = roleDtos.Count() > startIndex + pageSize;
+                roles = roleDtos.Skip(startIndex).Take(pageSize);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {roles = roles, loadMore = loadMore});
+                return Request.CreateResponse(HttpStatusCode.OK, new {roles, loadMore});
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -79,7 +80,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 if (roleDto.Id == Null.NullInteger)
                 {
-                    
+
                     if (RoleController.Instance.GetRole(PortalId,
                         r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase)) == null)
                     {
@@ -88,19 +89,23 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = "DuplicateRole" });
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            Localization.GetString("DuplicateRole", Components.Constants.LocalResourcesFile));
                     }
                 }
                 else
                 {
                     if (RoleController.Instance.GetRole(PortalId,
-                        r => rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) && r.RoleID != roleDto.Id) == null)
+                        r =>
+                            rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) &&
+                            r.RoleID != roleDto.Id) == null)
                     {
                         RoleController.Instance.UpdateRole(role, assignExistUsers);
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = "DuplicateRole" });
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            Localization.GetString("DuplicateRole", Components.Constants.LocalResourcesFile));
                     }
                 }
 
@@ -108,12 +113,16 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (ArgumentException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (SecurityException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -124,12 +133,14 @@ namespace Dnn.PersonaBar.Roles.Services
             var role = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
             if (role == null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "RoleNotFound");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
             }
 
             if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidRequest");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
             }
 
             RoleController.Instance.DeleteRole(role);
@@ -152,15 +163,15 @@ namespace Dnn.PersonaBar.Roles.Services
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, PortalId));
                 }
                 var groups = RoleController.GetRoleGroups(PortalId)
-                                .Cast<RoleGroupInfo>()
-                                .Select(RoleGroupDto.FromRoleGroupInfo);
+                    .Cast<RoleGroupInfo>()
+                    .Select(RoleGroupDto.FromRoleGroupInfo);
 
                 return Request.CreateResponse(HttpStatusCode.OK, groups);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -183,7 +194,8 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                     catch
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = "DuplicateRoleGroup" });
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            Localization.GetString("DuplicateRoleGroup", Components.Constants.LocalResourcesFile));
                     }
                 }
                 else
@@ -194,7 +206,8 @@ namespace Dnn.PersonaBar.Roles.Services
                     }
                     catch
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = "DuplicateRoleGroup" });
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            Localization.GetString("DuplicateRoleGroup", Components.Constants.LocalResourcesFile));
                     }
                 }
 
@@ -205,12 +218,12 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (ArgumentException ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -221,7 +234,8 @@ namespace Dnn.PersonaBar.Roles.Services
             var roleGroup = RoleController.GetRoleGroup(PortalId, roleGroupDto.Id);
             if (roleGroup == null)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "RoleGroupNotFound");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    Localization.GetString("RoleGroupNotFound", Components.Constants.LocalResourcesFile));
             }
 
             RoleController.DeleteRoleGroup(roleGroup);
@@ -262,9 +276,9 @@ namespace Dnn.PersonaBar.Roles.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-            
+
         }
 
         [HttpGet]
@@ -275,41 +289,43 @@ namespace Dnn.PersonaBar.Roles.Services
                 var role = RoleController.Instance.GetRoleById(PortalId, roleId);
                 if (role == null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, new { });
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
                 }
 
                 if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidRequest");
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
                 }
 
                 var users = RoleController.Instance.GetUserRoles(PortalId, Null.NullString, role.RoleName);
                 if (!string.IsNullOrEmpty(keyword))
                 {
-                    users = users.Where(u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
-                        .ToList();
+                    users =
+                        users.Where(u => u.FullName.StartsWith(keyword, StringComparison.InvariantCultureIgnoreCase))
+                            .ToList();
                 }
 
                 var totalRecords = users.Count;
                 var startIndex = pageIndex*pageSize;
                 var portal = PortalController.Instance.GetPortal(PortalId);
                 var pagedData = users.Skip(startIndex).Take(pageSize).Select(u => new UserRoleDto()
-                    {
-                        UserId = u.UserID,
-                        RoleId = u.RoleID,
-                        DisplayName = u.FullName,
-                        StartTime = u.EffectiveDate,
-                        ExpiresTime = u.ExpiryDate,
-                        AllowExpired = AllowExpired(u.UserID, u.RoleID),
-                        AllowDelete = RoleController.CanRemoveUserFromRole(portal, u.UserID, u.RoleID)
-                    });
+                {
+                    UserId = u.UserID,
+                    RoleId = u.RoleID,
+                    DisplayName = u.FullName,
+                    StartTime = u.EffectiveDate,
+                    ExpiresTime = u.ExpiryDate,
+                    AllowExpired = AllowExpired(u.UserID, u.RoleID),
+                    AllowDelete = RoleController.CanRemoveUserFromRole(portal, u.UserID, u.RoleID)
+                });
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {users = pagedData, totalRecords = totalRecords});
+                return Request.CreateResponse(HttpStatusCode.OK, new {users = pagedData, totalRecords});
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -352,10 +368,18 @@ namespace Dnn.PersonaBar.Roles.Services
                         AllowDelete = RoleController.CanRemoveUserFromRole(portal, addedUser.UserID, addedUser.RoleID)
                     });
             }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (SecurityException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -376,10 +400,18 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 return Request.CreateResponse(HttpStatusCode.OK, new {userRoleDto.UserId, userRoleDto.RoleId});
             }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (SecurityException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new {Error = ex.Message});
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -393,7 +425,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
             if (!IsAdmin() && role.Id == PortalSettings.AdministratorRoleId)
             {
-                throw new SecurityException("InvalidRequest");
+                throw new SecurityException(Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
             }
         }
 
@@ -409,7 +441,7 @@ namespace Dnn.PersonaBar.Roles.Services
 
             if (!IsAdmin() && userRoleDto.RoleId == PortalSettings.AdministratorRoleId)
             {
-                throw new SecurityException("InvalidRequest");
+                throw new SecurityException(Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
             }
         }
 
@@ -456,6 +488,7 @@ namespace Dnn.PersonaBar.Roles.Services
                 user = UserController.Instance.GetUserById(Null.NullInteger, userId);
             return user;
         }
+
         #endregion
     }
 }

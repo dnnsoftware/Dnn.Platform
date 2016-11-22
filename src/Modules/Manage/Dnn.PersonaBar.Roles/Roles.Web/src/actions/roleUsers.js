@@ -1,5 +1,10 @@
 import {roleUsers as ActionTypes}  from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
+import util from "../utils";
+
+function errorCallback(message) {
+    util.utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
+}
 
 const roleUsersActions = {
     getSuggestUsers(parameters, callback) {
@@ -12,7 +17,7 @@ const roleUsersActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
     getRoleUsers(parameters, callback) {
@@ -25,10 +30,10 @@ const roleUsersActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
-    addUserToRole(parameters, notifyUser, isOwner, callback, failureCallback) {
+    addUserToRole(parameters, notifyUser, isOwner, callback) {
         return (dispatch) => {
             ApplicationService.addUserToRole(parameters, notifyUser, isOwner, (data) => {
                 dispatch({
@@ -38,14 +43,10 @@ const roleUsersActions = {
                 if (callback) {
                     callback(data);
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     },
-    removeUserFromRole(parameters, callback, failureCallback) {
+    removeUserFromRole(parameters, callback) {
         return (dispatch) => {
             ApplicationService.removeUserFromRole(parameters, data => {
                 dispatch({
@@ -56,11 +57,7 @@ const roleUsersActions = {
                 if (callback) {
                     callback(data);
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     }
 

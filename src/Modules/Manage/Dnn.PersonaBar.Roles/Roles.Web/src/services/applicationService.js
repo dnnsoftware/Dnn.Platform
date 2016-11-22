@@ -11,15 +11,6 @@ function serializeQueryStringParameters(obj) {
     return s.join("&");
 }
 
-function showError(xhr) {
-    let response = eval("(" + xhr.responseText + ")");
-    let message = "Failed...";
-    if (response["Error"]) {
-        message = resx.get(response["Error"]);
-    }
-
-    util.utilities.notify(message);
-}
 class ApplicationService {
     getServiceFramework(controller) {
         let sf = util.utilities.sf;
@@ -30,54 +21,54 @@ class ApplicationService {
         return sf;
     }
 
-    getRoleGroups(reload, callback) {
+    getRoleGroups(reload, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.get("GetRoleGroups", { reload: reload }, callback, showError);
+        sf.get("GetRoleGroups", { reload: reload }, callback, errorCallback);
     }
 
-    getRoles(parameters, callback) {
+    getRoles(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.get("GetRoles", parameters, callback);
+        sf.get("GetRoles", parameters, callback, errorCallback);
     }
 
-    saveRoleGroup(group, callback) {
+    saveRoleGroup(group, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("SaveRoleGroup", group, callback, showError);
+        sf.post("SaveRoleGroup", group, callback, errorCallback);
     }
 
-    deleteRoleGroup(group, callback) {
+    deleteRoleGroup(group, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("DeleteRoleGroup", group, callback, showError);
+        sf.post("DeleteRoleGroup", group, callback, errorCallback);
     }
 
-    saveRole(assignExistUsers, role, callback) {
+    saveRole(assignExistUsers, role, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("SaveRole?assignExistUsers=" + assignExistUsers, role, callback, showError);
+        sf.post("SaveRole?assignExistUsers=" + assignExistUsers, role, callback, errorCallback);
     }
 
-    deleteRole(role, callback) {
+    deleteRole(role, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("DeleteRole", role, callback, showError);
+        sf.post("DeleteRole", role, callback, errorCallback);
     }
 
-    getSuggestUsers(parameters, callback) {
+    getSuggestUsers(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.get("GetSuggestUsers", parameters, callback, showError);
+        sf.get("GetSuggestUsers", parameters, callback, errorCallback);
     }
 
-    getRoleUsers(parameters, callback) {
+    getRoleUsers(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.get("GetRoleUsers", parameters, callback, showError);
+        sf.get("GetRoleUsers", parameters, callback, errorCallback);
     }
 
-    addUserToRole(parameters, notifyUser, isOwner, callback) {
+    addUserToRole(parameters, notifyUser, isOwner, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("AddUserToRole?notifyUser=" + notifyUser + "&isOwner=" + isOwner, parameters, callback, showError);
+        sf.post("AddUserToRole?notifyUser=" + notifyUser + "&isOwner=" + isOwner, parameters, callback, errorCallback);
     }
 
-    removeUserFromRole(parameters, callback) {
+    removeUserFromRole(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Roles");
-        sf.post("RemoveUserFromRole", parameters, callback, showError);
+        sf.post("RemoveUserFromRole", parameters, callback, errorCallback);
     }
 }
 const applicationService = new ApplicationService();

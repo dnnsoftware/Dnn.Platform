@@ -46,8 +46,6 @@ class FiltersBar extends Component {
                     selectedGroup
                 });
                 this.props.onRoleGroupChanged(selectedGroup);
-            }, (error) => {
-                util.utilities.notify(resx.get("DeleteRoleGroup.Error"));
             }));
         }, () => {
         });

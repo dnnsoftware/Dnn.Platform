@@ -80,8 +80,6 @@ class RoleGroupEditor extends Component {
                 if (typeof this.props.onSave === "function") {
                     this.props.onSave(group);
                 }
-            }, () => {
-                util.utilities.notify(resx.get("RoleGroupUpdated.Error"));
             }));
         }
     }

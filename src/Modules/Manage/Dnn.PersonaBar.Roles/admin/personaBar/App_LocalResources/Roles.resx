@@ -348,4 +348,10 @@
   <data name="InSufficientPermissions.Text" xml:space="preserve">
     <value>You do not have enough permissions to perform this action.</value>
   </data>
+  <data name="UserNotFound.Text" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="InvalidRequest.Text" xml:space="preserve">
+    <value>Invalid request.</value>
+  </data>
 </root>

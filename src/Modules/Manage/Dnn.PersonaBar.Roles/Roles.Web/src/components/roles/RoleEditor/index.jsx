@@ -160,12 +160,7 @@ class RolesEditor extends Component {
                 props.dispatch(RolesActions.deleteRole(roleDetails, (data) => {
                     util.utilities.notify(resx.get("DeleteRole.Message"));
                     props.Collapse(event);
-                }, (error) => {
-                    util.utilities.notify(resx.get("DeleteRole.Error"));
-                })
-                );
-            }, () => {
-                //util.utilities.notify(resx.get("ActionCancelled.Message"));
+                }));
             });
         }
         else {

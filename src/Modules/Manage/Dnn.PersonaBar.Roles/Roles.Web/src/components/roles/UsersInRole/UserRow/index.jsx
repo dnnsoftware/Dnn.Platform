@@ -54,9 +54,7 @@ class UserRow extends Component {
     onDeleteClick(userRole) {
         const {props} = this;
         util.utilities.confirm(resx.get("DeleteUser.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
-            props.dispatch(RoleUsersActions.removeUserFromRole(userRole, (data) => {
-                //props.deleteUser(data.RoleId);
-            }));
+            props.dispatch(RoleUsersActions.removeUserFromRole(userRole));
         });
     }
     onTimeClick(userRole, index) {

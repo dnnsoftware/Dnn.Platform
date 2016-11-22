@@ -1,6 +1,10 @@
 import {roles as ActionTypes}  from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
+import util from "../utils";
 
+function errorCallback(message) {
+    util.utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
+}
 const rolesActions = {
     getRoleGroupsList(reload, callback) {
         return (dispatch) => {
@@ -12,10 +16,10 @@ const rolesActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
-    saveRoleGroup(group, callback, failureCallback) {
+    saveRoleGroup(group, callback) {
         return (dispatch) => {
             ApplicationService.saveRoleGroup(group, data => {
                 dispatch({
@@ -26,14 +30,10 @@ const rolesActions = {
                 if (callback) {
                     callback(data);
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     },
-    deleteRoleGroup(group, callback, failureCallback) {
+    deleteRoleGroup(group, callback) {
         return (dispatch) => {
             ApplicationService.deleteRoleGroup(group, data => {
                 dispatch({
@@ -44,11 +44,7 @@ const rolesActions = {
                 if (callback) {
                     callback(data);
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     },
     getRolesList(parameters, callback) {
@@ -63,10 +59,10 @@ const rolesActions = {
                 if (callback) {
                     callback(data);
                 }
-            });
+            }, errorCallback);
         };
     },
-    saveRole(currentGroupId, assignExistUsers, role, callback, failureCallback) {
+    saveRole(currentGroupId, assignExistUsers, role, callback) {
         return (dispatch) => {
             ApplicationService.saveRole(assignExistUsers, role, data => {
                 dispatch({
@@ -77,14 +73,10 @@ const rolesActions = {
                 if (callback) {
                     callback(data);
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     },
-    deleteRole(role, callback, failureCallback) {
+    deleteRole(role, callback) {
         return (dispatch) => {
             ApplicationService.deleteRole(role, data => {
                 dispatch({
@@ -95,11 +87,7 @@ const rolesActions = {
                 if (callback) {
                     callback();
                 }
-            }, data => {
-                if (failureCallback) {
-                    failureCallback(data);
-                }
-            });
+            }, errorCallback);
         };
     }
 };
