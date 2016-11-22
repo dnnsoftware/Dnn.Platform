@@ -21,19 +21,19 @@
 using System.Collections.Generic;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
+using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.Pages.MenuControllers
 {
     public class PagesMenuController : IMenuItemController
     {
+        private readonly ISecurityService _securityService;
+        public PagesMenuController()
+        {
+            _securityService = SecurityService.Instance;
+        }
+
         public void UpdateParameters(MenuItem menuItem)
         {
             
@@ -41,57 +41,19 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var isSuperUser = user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
-            if (isSuperUser)
-            {
-                return true;
-            }
-
-            return IsPageAdmin();
+            return _securityService.IsVisible(menuItem);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var isSuperUser = user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
             var settings = new Dictionary<string, object>
             {
-                {"isSuperUser", isSuperUser},
+                {"isSuperUser", _securityService.IsSuperUser()},
                 {"portalName", PortalSettings.Current.PortalName},
-                {"currentPagePermissions", GetCurrentPagePermissions()}
+                {"currentPagePermissions", _securityService.GetCurrentPagePermissions()}
             };
 
             return settings;
-        }
-
-        private JObject GetCurrentPagePermissions()
-        {
-            var permissions = new JObject
-            {
-                {"addContentToPage", TabPermissionController.CanAddContentToPage()},
-                {"addPage", TabPermissionController.CanAddPage()},
-                {"adminPage", TabPermissionController.CanAdminPage()},
-                {"copyPage", TabPermissionController.CanCopyPage()},
-                {"deletePage", TabPermissionController.CanDeletePage()},
-                {"exportPage", TabPermissionController.CanExportPage()},
-                {"importPage", TabPermissionController.CanImportPage()},
-                {"managePage", TabPermissionController.CanManagePage()}
-            };
-
-            return permissions;
-        }
-
-        private bool IsPageAdmin()
-        {
-            return //TabPermissionController.CanAddContentToPage() ||
-                    TabPermissionController.CanAddPage()
-                    || TabPermissionController.CanAdminPage()
-                    || TabPermissionController.CanCopyPage()
-                    || TabPermissionController.CanDeletePage()
-                    || TabPermissionController.CanExportPage()
-                    || TabPermissionController.CanImportPage()
-                    || TabPermissionController.CanManagePage();
         }
     }
 }
