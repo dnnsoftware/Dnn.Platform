@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.Security.Components
                 new CheckDiskAcccessPermissions(),
                 new CheckSqlRisk(),
                 new CheckAllowableFileExtensions(),
+                new CheckHiddenSystemFiles(),
             };
 
             if (Globals.NETFrameworkVersion <= new Version(4, 5, 1))

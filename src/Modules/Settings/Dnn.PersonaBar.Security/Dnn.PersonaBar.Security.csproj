@@ -126,6 +126,7 @@
     <Compile Include="Components\Checks\CheckSqlRisk.cs" />
     <Compile Include="Components\Checks\CheckSuperuserOldPassword.cs" />
     <Compile Include="Components\Checks\CheckTracing.cs" />
+    <Compile Include="Components\Checks\CheckHiddenSystemFiles.cs" />
     <Compile Include="Components\Checks\CheckUnexpectedExtensions.cs" />
     <Compile Include="Components\Checks\CheckViewstatemac.cs" />
     <Compile Include="MenuControllers\SecurityMenuController.cs" />

@@ -142,6 +142,26 @@ namespace Dnn.PersonaBar.Security.Components
             return files;
         }
 
+        /// <summary>
+        ///     search all website files which are hidden or system.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<string> FineHiddenSystemFiles()
+        {
+            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
+            .Where(f =>
+            {
+                if (Path.GetFileName(f)?.Equals("thumbs.db", StringComparison.InvariantCultureIgnoreCase) == true)
+                {
+                    return false;
+                }
+
+                var attributes = File.GetAttributes(f);
+                return attributes.HasFlag(FileAttributes.Hidden) || attributes.HasFlag(FileAttributes.System);
+            });
+            return files;
+        }
+
         public static List<object> SearchDatabase(string searchText)
         {
             List<object> results = new List<object>();
