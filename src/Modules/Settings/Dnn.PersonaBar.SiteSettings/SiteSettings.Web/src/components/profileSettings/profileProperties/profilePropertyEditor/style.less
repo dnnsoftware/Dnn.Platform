@@ -20,16 +20,22 @@
             font-weight: bolder;
             float: left;
         }
-        .dnn-dropdown
-        {
+        .dnn-dropdown {
             width: 100% !important;
             box-sizing: border-box;
+            .language-flag {
+                float: left;
+                height: 16px;
+            }
+            .language-name {
+                float: left;
+                margin-left: 10px;
+            }
         }
-        .dnn-dropdown-with-error,
-        .dnn-single-line-input-with-error {
+        .dnn-dropdown-with-error, .dnn-single-line-input-with-error {
             width: 100% !important;
         }
-        .dnn-switch-container{
+        .dnn-switch-container {
             float: right;
         }
         input {
@@ -42,18 +48,18 @@
             border-right: 1px solid @alto;
         }
         .right-column {
-            padding-left: 30px;    
-            border-left: 0 !important;        
+            padding-left: 30px;
+            border-left: 0 !important;
         }
         .left-column2 {
-            padding-right: 30px; 
+            padding-right: 30px;
             .dnn-label {
                 padding-top: 10px;
-            }           
+            }
         }
         .right-column2 {
-            padding-left: 30px;                
-            border-left: 1px solid @alto;    
+            padding-left: 30px;
+            border-left: 1px solid @alto;
         }
     }
     .editor-buttons-box {

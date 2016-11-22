@@ -520,7 +520,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var profileProperty = ProfileController.GetPropertyDefinition(propertyId ?? -1, pid);
                 var listController = new ListController();
 
-                var cultureList = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, Thread.CurrentThread.CurrentUICulture.Name, "", false);
+                var cultureList = Localization.LoadCultureInListItems(GetCultureDropDownType(pid), Thread.CurrentThread.CurrentUICulture.Name, "", false);
 
                 var response = new
                 {
@@ -554,7 +554,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     LanguageOptions = cultureList.Select(c => new
                     {
                         c.Text,
-                        c.Value
+                        c.Value,
+                        Icon =
+                            string.IsNullOrEmpty(c.Value)
+                                ? "/images/Flags/none.gif"
+                                : $"/images/Flags/{c.Value}.gif"
                     })
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);

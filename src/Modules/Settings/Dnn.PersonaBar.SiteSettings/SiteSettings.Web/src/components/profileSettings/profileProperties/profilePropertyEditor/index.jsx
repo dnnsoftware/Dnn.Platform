@@ -169,18 +169,18 @@ class ProfilePropertyEditor extends Component {
         props.dispatch(SiteBehaviorActions.profilePropertyClientModified(profileProperty));
     }
 
-    onLanguageChange(event){
+    onLanguageChange(event) {
         let {state, props} = this;
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         propertyLocalization["Language"] = event.value;
         props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, event.value));
-        
+
         this.setState({
             propertyLocalization: propertyLocalization,
             triedToSubmit: false,
             error: state.error
-        });        
+        });
     }
 
     onLocaleSettingChange(key, event) {
@@ -219,7 +219,14 @@ class ProfilePropertyEditor extends Component {
         let options = [];
         if (this.props.languageOptions !== undefined) {
             options = this.props.languageOptions.map((item) => {
-                return { label: item.Text, value: item.Value };
+                return {
+                    label: <div style={{ float: "left", display: "flex" }}>
+                        <div className="language-flag">
+                            <img src={item.Icon} />
+                        </div>
+                        <div className="language-name">{item.Text}</div>
+                    </div>, value: item.Value
+                };
             });
         }
         return options;
@@ -237,14 +244,14 @@ class ProfilePropertyEditor extends Component {
         return options;
     }
 
-    getDefaultVisibility(){
+    getDefaultVisibility() {
         const {props, state} = this;
-        if(!state.profileProperty){
-            if(props.id === "add") {
+        if (!state.profileProperty) {
+            if (props.id === "add") {
                 return 2;
             }
         }
-        else{
+        else {
             return state.profileProperty.DefaultVisibility;
         }
     }
