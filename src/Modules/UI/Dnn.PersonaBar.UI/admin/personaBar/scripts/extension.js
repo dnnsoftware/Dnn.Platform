@@ -34,11 +34,15 @@ define(['jquery'], function () {
                     $panel.trigger('init.extension', [getExtensionsByMenu(menuIdentifier)]);
                 }
             }
-            for (var i = 0; i < extensions.length; i++) {
-                var extension = extensions[i];
-                utility.parseQueryParameter(extension);
+            if (extensions.length === 0) {
+                $panel.trigger('init.extension', []);
+            } else {
+                for (var i = 0; i < extensions.length; i++) {
+                    var extension = extensions[i];
+                    utility.parseQueryParameter(extension);
 
-                initExtension($panel, menuIdentifier, extension, params, initCompleteCallback);
+                    initExtension($panel, menuIdentifier, extension, params, initCompleteCallback);
+                }
             }
         });
     };
@@ -54,7 +58,7 @@ define(['jquery'], function () {
         service.moduleRoot = 'personaBar';
         service.controller = 'MenuExtensions';
         service.getsilence('GetExtensions', { menu: menuIdentifier }, function (data) {
-            if (data && data.length && typeof callback === "function") {
+            if (data && typeof data.length === "number" && typeof callback === "function") {
                 callback.call(self, data);
             }
         });
