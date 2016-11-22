@@ -296,7 +296,6 @@ class App extends Component {
                     const Component = panel.component;
                     additionalPanels.push(
                         <Component 
-                            onSave={()=> {}} 
                             onCancel={props.onCancelSavePageAsTemplate}
                             selectedPage={props.selectedPage}
                             store={panel.store} />
