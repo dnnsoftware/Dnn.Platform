@@ -43,7 +43,26 @@ class LanguagePackPanelBody extends Component {
         let options = [];
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {
-                return { label: item.NativeName, value: item.Code };
+                if (props.languageSettings.LanguageDisplayMode === "NATIVE") {
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.NativeName}</div>
+                        </div>, value: item.Code
+                    };
+                }
+                else {
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.EnglishName}</div>
+                        </div>, value: item.Code
+                    };
+                }
             });
         }
         return options;
@@ -275,14 +294,16 @@ LanguagePackPanelBody.propTypes = {
     portalId: PropTypes.number,
     closeLanguagePack: PropTypes.func,
     languages: PropTypes.array,
-    modules: PropTypes.array
+    modules: PropTypes.array,
+    languageSettings: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         tabIndex: state.pagination.tabIndex,
         languages: state.languages.languageList,
-        modules: state.languages.modules
+        modules: state.languages.modules,
+        languageSettings: state.languages.languageSettings
     };
 }
 
