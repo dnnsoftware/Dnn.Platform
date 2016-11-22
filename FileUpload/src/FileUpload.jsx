@@ -139,11 +139,13 @@ export default class FileUpload extends Component {
     }
 
     uploadFile(file) {
+        if (!file) {
+            return;
+        }
         const fileFormats = this.props.fileFormats;        
         if (fileFormats.length > 0) {
             let format = file.type;
-            format = format.split("/")[1];
-            const isAcceptFormat = fileFormats.some(f => format.indexOf(f) !== -1);
+            const isAcceptFormat = fileFormats.some(f => format === f);
             if (!isAcceptFormat) {
                 return this.handleError("wrong format");
             }
