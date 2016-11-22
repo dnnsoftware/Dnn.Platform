@@ -317,6 +317,16 @@ namespace Dnn.PersonaBar.Extensions.Components
             return Upgrade.UpgradeRedirect(version, packageType, packageName, "");
         }
 
+        internal static string UpgradeIndicator(Version version, string packageType, string packageName)
+        {
+            var url = Upgrade.UpgradeIndicator(version, packageType, packageName, "", false, false); // last 2 params are unused
+            if (string.IsNullOrEmpty(url))
+            {
+                url = Globals.ApplicationPath + "/images/spacer.gif";
+            }
+            return url;
+        }
+
         internal static string GetPackageIcon(PackageInfo package)
         {
             switch (package.PackageType.ToLowerInvariant())

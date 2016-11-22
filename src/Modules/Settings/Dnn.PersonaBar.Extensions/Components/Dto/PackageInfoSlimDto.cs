@@ -57,6 +57,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("upgradeUrl")]
         public string UpgradeUrl { get; set; }
 
+        [JsonProperty("upgradeIndicator")]
+        public string UpgradeIndicator { get; set; }
+
         [JsonProperty("packageIcon")]
         public string PackageIcon { get; set; }
 
@@ -81,6 +84,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             Version = package.Version.ToString(3);
             IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
             UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
+            UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
             PackageIcon = ExtensionsController.GetPackageIcon(package);
             CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 

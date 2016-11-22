@@ -28,6 +28,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Components.Controllers.Models;
 using Newtonsoft.Json;
 
 #endregion
@@ -60,6 +61,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         [JsonProperty("upgradeUrl")]
         public string UpgradeUrl { get; set; }
+
+        [JsonProperty("upgradeIndicator")]
+        public string UpgradeIndicator { get; set; }
 
         [JsonProperty("packageIcon")]
         public string PackageIcon { get; set; }
@@ -106,6 +110,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
             Version = package.Version.ToString(3);
             UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
+            UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
             PackageIcon = ExtensionsController.GetPackageIcon(package);
             License = package.License;
             ReleaseNotes = package.ReleaseNotes;
