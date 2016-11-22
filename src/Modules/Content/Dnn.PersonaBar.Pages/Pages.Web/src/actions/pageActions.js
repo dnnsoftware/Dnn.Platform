@@ -82,12 +82,18 @@ const pageActions = {
     },
 
     addPage() {
-        return (dispatch) => {
+        return (dispatch, getState) => {
+            const {pages} = getState();
+            const previousPage = pages.selectedPage;
             dispatch({
                 type: ActionTypes.LOAD_PAGE
             });
 
             PagesService.getNewPage().then(page => {
+                if (previousPage && !securityService.isSuperUser()) {
+                    page.permissions = cloneDeep(previousPage.permissions);
+                }
+                
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: { page }
