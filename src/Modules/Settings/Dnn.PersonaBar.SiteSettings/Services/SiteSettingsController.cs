@@ -1435,7 +1435,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
+                string viewType = GetLanguageDisplayMode(pid);
 
                 var locals = LocaleController.Instance.GetLocales(pid).Values;
                 var cultureCodeList = locals.Select(local => new
@@ -1880,7 +1880,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     PortalController.UpdatePortalSetting(pid, "EnableUrlLanguage", request.EnableUrlLanguage.ToString());
                 }
 
-                var oldLanguageDisplayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", "ViewType" + pid));
+                var oldLanguageDisplayMode = GetLanguageDisplayMode(pid);
                 if (request.LanguageDisplayMode != oldLanguageDisplayMode)
                 {
                     var personalizationController = new PersonalizationController();
@@ -2899,8 +2899,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private CultureDropDownTypes GetCultureDropDownType(int portalId)
         {
             CultureDropDownTypes displayType;
-            string viewTypePersonalizationKey = "ViewType" + portalId;
-            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            string viewType = GetLanguageDisplayMode(portalId);
             switch (viewType)
             {
                 case "NATIVE":

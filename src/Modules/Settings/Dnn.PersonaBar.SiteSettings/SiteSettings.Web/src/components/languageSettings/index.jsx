@@ -87,7 +87,7 @@ class LanguageSettingsPanelBody extends Component {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             defaultAllowContentLocalization = state.languageSettings.AllowContentLocalization;
             this.setState({
-                
+
             });
         }, (error) => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -194,14 +194,12 @@ class LanguageSettingsPanelBody extends Component {
                         onSelect={this.onSettingChange.bind(this, "SiteDefaultLanguage")}
                         enabled={!state.languageSettings.ContentLocalizationEnabled}
                         />
-                    {isHost &&
-                        <RadioButtons
-                            onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
-                            options={this.getLanguageDisplayModes()}
-                            buttonGroup="languageDisplayMode"
-                            value={state.languageSettings.LanguageDisplayMode}
-                            />
-                    }
+                    <RadioButtons
+                        onChange={this.onSettingChange.bind(this, "LanguageDisplayMode")}
+                        options={this.getLanguageDisplayModes()}
+                        buttonGroup="languageDisplayMode"
+                        value={state.languageSettings.LanguageDisplayMode}
+                        />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
