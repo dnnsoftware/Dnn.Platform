@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Users.Services
                     if (!UserInfo.IsSuperUser)
                     {
                         return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                            Localization.GetString("InsufficientPermission", Components.Constants.LocalResourcesFile));
+                            Localization.GetString("InSufficientPermissions.Text", Components.Constants.LocalResourcesFile));
                     }
                     userDetail = Components.UsersController.Instance.GetUserDetail(Null.NullInteger, userId);
                 }
@@ -654,7 +654,7 @@ namespace Dnn.PersonaBar.Users.Services
             if ((user.IsSuperUser && !UserInfo.IsSuperUser) || !IsAdmin())
             {
                 response = Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
-                    Localization.GetString("InsufficientPermission", Components.Constants.LocalResourcesFile));
+                    Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
                 return null;
             }
             if (user.IsSuperUser)

@@ -534,7 +534,4 @@
   <data name="UserRestoreError.Text" xml:space="preserve">
     <value>Can not restore the user.</value>
   </data>
-  <data name="InsufficientPermission.Text" xml:space="preserve">
-    <value>You do not have enough permissions to perform this operation.</value>
-  </data>
 </root>
