@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+  <Words>
+    <!--<Unrecognized>
+      <Word>cb</Word>
+    </Unrecognized>-->
+    <Recognized>
+      <Word>DNN</Word>
+      <Word>CKEditor</Word>
+    </Recognized>
+    <!--<Deprecated>
+      <Term PreferredAlternate="EnterpriseServices">ComPlus</Term>
+    </Deprecated>-->
+  </Words>
+  <!--<Acronyms>
+    <CasingExceptions>
+      <Acronym>CJK</Acronym>
+      <Acronym>Pi</Acronym>
+    </CasingExceptions>
+  </Acronyms>-->
+</Dictionary>

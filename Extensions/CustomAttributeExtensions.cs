@@ -10,7 +10,7 @@ namespace DNNConnect.CKEditorProvider.Extensions
     public static class CustomAttributeExtensions
     {
         /// <summary>
-        /// Gets the custom attribute of <see cref="T" />
+        /// Gets the custom attribute of <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">The Type</typeparam>
         /// <param name="propertyInfo">The property info.</param>

@@ -2838,7 +2838,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Show Preview of the Page links
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="eeventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void TreeTabs_NodeClick(object sender, EventArgs eventArgs)
         {
             if (dnntreeTabs.SelectedNode == null)
@@ -3037,7 +3037,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// Load Files of Selected Folder
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RadTreeNodeEventArgs" /> instance containing the event data.</param>
+        /// <param name="eventArgs">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void FoldersTree_NodeClick(object sender, EventArgs eventArgs)
         {
             var folderId = Convert.ToInt32(FoldersTree.SelectedNode.Value);
