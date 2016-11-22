@@ -126,6 +126,16 @@ const PageService = function () {
             schedulingEnabled: undefined
         };
     };
+    
+    const openPageInEditMode = function (id, url) {
+        const api = getPagesApi();
+        return api.get("EditModeForPage", { id: id })
+            .then(() => 
+                utils.getUtilities().closePersonaBar(function () {
+                    window.top.location.href = url;
+                })
+            );
+    };
 
     return {
         getPage,
@@ -137,7 +147,8 @@ const PageService = function () {
         deletePageModule,
         getPageUrlPreview,
         copyAppearanceToDescendantPages,
-        copyPermissionsToDescendantPages
+        copyPermissionsToDescendantPages,
+        openPageInEditMode
     };
 };
 

@@ -160,7 +160,7 @@ const pageActions = {
                 }
                 
                 if (page.tabId === 0 && !securityService.isSuperUser()) {
-                    loadPage(dispatch, utils.getCurrentPageId());
+                    PagesService.openPageInEditMode(response.Page.id, response.Page.url);
                     return;    
                 }
                 
