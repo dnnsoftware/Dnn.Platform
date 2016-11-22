@@ -1099,7 +1099,7 @@ namespace DNNConnect.CKEditorProvider
         /// </summary>
         private void FillInformations()
         {
-            var ckEditorPackage = PackageController.GetPackageByName("DotNetNuke.CKHtmlEditorProvider");
+            var ckEditorPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals("DotNetNuke.CKHtmlEditorProvider", StringComparison.OrdinalIgnoreCase));
 
             if (ckEditorPackage != null)
             {
