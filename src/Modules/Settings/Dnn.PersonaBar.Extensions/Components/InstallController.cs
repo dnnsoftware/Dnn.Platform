@@ -2,10 +2,10 @@
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Web.Management;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Portals;
@@ -58,6 +58,12 @@ namespace Dnn.PersonaBar.Extensions.Components
                     else
                     {
                         parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
+                        parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName);
+                        if (parseResult.NoManifest)
+                        {
+                            // we still can install when the manifest is missing
+                            parseResult.Success = true;
+                        }
                     }
 
                     DeleteTempInstallFiles(installer);
@@ -71,7 +77,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
-        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
+        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream)
         {
             var installResult = new InstallResultDto();
             var fileName = Path.GetFileName(filePath);
@@ -85,7 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 try
                 {
-                    var installer = GetInstaller(stream, fileName);
+                    var installer = GetInstaller(stream, fileName, legacySkin);
 
                     if (installer.IsValid)
                     {
@@ -129,24 +135,26 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        private Installer GetInstaller(Stream stream, string fileName)
+        private Installer GetInstaller(Stream stream, string fileName, string legacySkin = null)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, true, false);
             if (installer.IsValid &&
                 string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName))
             {
-                CreateManifest(installer, fileName);
+                CreateManifest(installer, fileName, legacySkin);
             }
 
             return installer;
         }
 
-        private void CreateManifest(Installer installer, string fileName)
+        private void CreateManifest(Installer installer, string fileName, string legacySkin)
         {
             var manifestFile = Path.Combine(installer.TempInstallFolder, Path.GetFileNameWithoutExtension(fileName) + ".dnn");
-            StreamWriter manifestWriter = new StreamWriter(manifestFile);
-            manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, "Skin", installer.TempInstallFolder));
-            manifestWriter.Close();
+            using (var manifestWriter = new StreamWriter(manifestFile))
+            {
+                manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, legacySkin ?? "Skin", installer.TempInstallFolder));
+                manifestWriter.Close();
+            }
         }
 
         private static void DeleteTempInstallFiles(Installer installer)

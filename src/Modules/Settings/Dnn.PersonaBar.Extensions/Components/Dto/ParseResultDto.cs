@@ -73,6 +73,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             Success = false;
             Message = message;
             AddLogs(logs);
+            // the UI asked for these to be non-null empty for moving to the next item.
+            Description = Email = FriendlyName = IsInUse = License = Name =
+                Organization = Owner = PackageIcon = PackageType = ReleaseNotes =
+                SiteSettingsLink = UpgradeIndicator = UpgradeUrl = Url = Version = "";
         }
 
         public void Succeed(IList<LogEntry> logs)

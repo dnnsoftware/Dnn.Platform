@@ -507,13 +507,13 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         [RequireHost]
-        public Task<HttpResponseMessage> InstallPackage()
+        public Task<HttpResponseMessage> InstallPackage([FromUri] string legacySkin = null)
         {
             try
             {
                 return
                     UploadFileAction((portalSettings, userInfo, filePath, stream) =>
-                        InstallController.Instance.InstallPackage(portalSettings, userInfo, filePath, stream));
+                        InstallController.Instance.InstallPackage(portalSettings, userInfo, legacySkin, filePath, stream));
             }
             catch (Exception ex)
             {
@@ -1446,7 +1446,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                return InstallController.Instance.InstallPackage(PortalSettings, UserInfo, filePath, stream);
+                return InstallController.Instance.InstallPackage(PortalSettings, UserInfo, null, filePath, stream);
             }
         }
 
