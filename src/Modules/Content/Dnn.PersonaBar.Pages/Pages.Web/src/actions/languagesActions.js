@@ -1,4 +1,5 @@
 import LanguageService from "services/languageService";
+import utils from "../utils";
 
 const languagesActions = {
     getLanguages(tabId, callback) {
@@ -25,6 +26,9 @@ const languagesActions = {
                 if (callback) {
                     callback(data);
                 }
+            }, data => {
+                const Message = JSON.parse(data.responseText).Message;
+                utils.notifyError(Message, 4000);
             });
         };
     },

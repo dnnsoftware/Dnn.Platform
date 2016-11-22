@@ -144,5 +144,6 @@ module.exports = [
     "cmd",
     "startswith",
     "selectable",
-    "overridable"
+    "overridable",
+    "guid"
 ]

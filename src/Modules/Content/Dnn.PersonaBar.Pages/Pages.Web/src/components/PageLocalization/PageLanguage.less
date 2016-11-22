@@ -61,8 +61,8 @@
                 background: white;
             }
             .dnn-checkbox-container .checkbox input[type=checkbox]:checked+label {
-                background:  @curiousBlue;
-            }   
+                background: @curiousBlue;
+            }
             .icons-container {
                 width: 90px;
                 width: 42px;
@@ -85,6 +85,17 @@
             input {
                 width: ~"calc(100% - 72px)";
                 margin: 0px;
+            }
+            &.footer {
+                height: 10px;
+                margin-bottom: 6px;
+                & > div {
+                    float: right;
+                }
+                .checkbox {
+                    margin-left: 6px;
+                    margin-right: 4px;
+                }
             }
         }
     }

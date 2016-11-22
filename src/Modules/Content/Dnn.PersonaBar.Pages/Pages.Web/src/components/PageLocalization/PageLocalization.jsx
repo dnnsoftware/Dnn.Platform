@@ -163,11 +163,13 @@ class PageLocalization extends Component {
     }
 
     render() {
-        const {Locales} = this.state;
+        const {Pages} = this.state;
+        const isNeutral = Pages[0] ? Pages[0].DefaultLanguageGuid ==="00000000-0000-0000-0000-000000000000" : true;
+        
         const Languages = this.getAllLanguages();
         const containerStyle = { width: (Languages.length - 1) * 250 };
 
-        if (Locales.length <= 1) {
+        if (isNeutral) {
             return <div className="neutral-page">
                 <div className="left-panel">
                     <p>{Localization.get("NeutralPageText") }</p>

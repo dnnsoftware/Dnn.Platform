@@ -28,9 +28,9 @@ class LanguageService {
         sf.post("MakePageTranslatable?" + serializeQueryStringParameters({ tabId }), {}, callback);
     }
 
-    makePageNeutral(tabId, callback) {
+    makePageNeutral(tabId, callback, failureCallback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("MakePageNeutral?" + serializeQueryStringParameters({ tabId }), {}, callback);
+        sf.post("MakePageNeutral?" + serializeQueryStringParameters({ tabId }), {}, callback, failureCallback);
     }
 
     addMissingLanguages(tabId, callback) {

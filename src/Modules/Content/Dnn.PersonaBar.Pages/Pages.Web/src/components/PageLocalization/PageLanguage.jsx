@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import Localization from "localization";
 import Module from "./Module";
+import Checkbox from "dnn-checkbox";
 import "./PageLanguage.less";
 
 import { EyeIcon, ModuleIcon } from "dnn-svg-icons";
@@ -26,10 +27,10 @@ class PageLanguage extends Component {
                 onUpdateModules={this.props.onUpdateModules}
                 onDeleteModule={this.props.onDeleteModule}
                 onRestoreModule={this.props.onRestoreModule}
-                index={index} 
+                index={index}
                 cultureCode={cultureCode}
-            />;
-        }); 
+                />;
+        });
         return (
             <div className="page-language">
                 <div className="page-language-row">
@@ -48,6 +49,20 @@ class PageLanguage extends Component {
                         <span>{Localization.get("ModulesOnThisPage") }</span>
                     </div>
                     {moduleComponents }
+                    <div className="module-row footer">
+                        <Checkbox
+                            style={{ float: "right" }}
+                            value={page.IsTranslated}
+                            onChange={this.onUpdatePages.bind(this, "IsTranslated") } />
+                        <div>{Localization.get("TranslatedCheckbox") }</div>
+                    </div>
+                    <div className="module-row footer">
+                        <Checkbox
+                            style={{ float: "right" }}
+                            value={page.IsPublished}
+                            onChange={this.onUpdatePages.bind(this, "IsPublished") } />
+                        <div>{Localization.get("PublishedCheckbox") }</div>
+                    </div>
                 </div>
             </div>
         );

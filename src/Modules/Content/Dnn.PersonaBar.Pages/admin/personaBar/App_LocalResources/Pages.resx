@@ -711,4 +711,10 @@
   <data name="CopyModule.Text" xml:space="preserve">
     <value>Copy Module</value>
   </data>
+  <data name="TranslatedCheckbox.Text" xml:space="preserve">
+    <value>Translated</value>
+  </data>
+  <data name="PublishedCheckbox.Text" xml:space="preserve">
+    <value>Published</value>
+  </data>
 </root>

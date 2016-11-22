@@ -30,7 +30,9 @@ class Module extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {module, isDefault} = this.props;
+        const {module} = this.props;
+        const {isDefault} = this.props;
+
         if (module.Exist) {
             const className = "module-row" + (module.IsDeleted ? " deleted" : "");
             return <div className={className}>
