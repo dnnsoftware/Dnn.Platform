@@ -348,15 +348,6 @@ const extensionActions = {
     deployAvailablePackage(_package, updatedPackageIndex, callback) {
         return (dispatch) => {
             ExtensionService.deployAvailablePackage(_package.description, (data) => {
-                let updatedPackage = utilities.utilities.getObjectCopy(_package);
-                updatedPackage.fileName = data.FileName;
-                dispatch({
-                    type: ActionTypes.DEPLOYED_AVAILABLE_PACKAGE,
-                    payload: {
-                        updatedPackage,
-                        updatedPackageIndex
-                    }
-                });
                 if (callback) {
                     callback(data);
                 }
