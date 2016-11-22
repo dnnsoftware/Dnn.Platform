@@ -68,10 +68,24 @@ class LanguageEditor extends Component {
             if (props.fullLanguageList !== undefined) {
                 options = props.fullLanguageList.map((item) => {
                     if (props.languageDisplayMode === "NATIVE") {
-                        return { label: item.NativeName, value: item.Name };
+                        return {
+                            label: <div style={{ float: "left", display: "flex" }}>
+                                <div className="language-flag">
+                                    <img src={item.Icon} />
+                                </div>
+                                <div className="language-name">{item.NativeName}</div>
+                            </div>, value: item.Name, text: item.NativeName
+                        };
                     }
                     else {
-                        return { label: item.EnglishName, value: item.Name };
+                        return {
+                            label: <div style={{ float: "left", display: "flex" }}>
+                                <div className="language-flag">
+                                    <img src={item.Icon} />
+                                </div>
+                                <div className="language-name">{item.EnglishName}</div>
+                            </div>, value: item.Name, text: item.EnglishName
+                        };
                     }
                 });
             }
@@ -85,8 +99,8 @@ class LanguageEditor extends Component {
             }
         }
         return options.sort(function (a, b) {
-            let nameA = a.label.toUpperCase();
-            let nameB = b.label.toUpperCase();
+            let nameA = a.text.toUpperCase();
+            let nameB = b.text.toUpperCase();
             if (nameA < nameB) {
                 return -1;
             }
@@ -95,6 +109,36 @@ class LanguageEditor extends Component {
             }
             return 0;
         });
+    }
+
+    getFallbackOptions() {
+        const {props, state} = this;
+        let options = [];
+        if (props.fallbacks !== undefined) {
+            options = props.fallbacks.map((item) => {
+                if (props.languageDisplayMode === "NATIVE") {
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.NativeName}</div>
+                        </div>, value: item.Name
+                    };
+                }
+                else {
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.EnglishName}</div>
+                        </div>, value: item.Name
+                    };
+                }
+            });
+        }
+        return options;
     }
 
     onSettingChange(key, event) {
@@ -143,22 +187,6 @@ class LanguageEditor extends Component {
         if (props.languageDisplayModes !== undefined) {
             options = props.languageDisplayModes.map((item) => {
                 return { label: item.Key, value: item.Value };
-            });
-        }
-        return options;
-    }
-
-    getFallbackOptions() {
-        let {props, state} = this;
-        let options = [];
-        if (props.fallbacks !== undefined) {
-            options = props.fallbacks.map((item) => {
-                if (props.languageDisplayMode === "NATIVE") {
-                    return { label: item.NativeName, value: item.Name };
-                }
-                else {
-                    return { label: item.EnglishName, value: item.Name };
-                }
             });
         }
         return options;
@@ -302,7 +330,7 @@ class LanguageEditor extends Component {
                         label={resx.get("DefaultLanguage")}
                         />
                 </InputGroup>
-            }            
+            }
         </div>;
         return (
             <div className="language-editor">

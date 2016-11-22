@@ -1801,6 +1801,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 settings.SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
                     ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
                     : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid));
+                settings.SystemDefaultLanguageIcon = string.IsNullOrEmpty(Localization.SystemLocale) ? "/images/Flags/none.gif" : $"/images/Flags/{Localization.SystemLocale}.gif";
                 settings.SiteDefaultLanguage = portalSettings.DefaultLanguage;
                 settings.LanguageDisplayMode = GetLanguageDisplayMode(pid);
                 settings.EnableUrlLanguage = portalSettings.EnableUrlLanguage;
@@ -1817,7 +1818,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         l.NativeName,
                         l.EnglishName,
-                        l.Name
+                        l.Name,
+                        Icon = string.IsNullOrEmpty(l.Name) ? "/images/Flags/none.gif" : $"/images/Flags/{l.Name}.gif"
                     }),
                     LanguageDisplayModes = languageDisplayModes
                 });
@@ -2095,7 +2097,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         c.NativeName,
                         c.EnglishName,
-                        c.Name
+                        c.Name,
+                        Icon =
+                            string.IsNullOrEmpty(c.Name)
+                                ? "/images/Flags/none.gif"
+                                : $"/images/Flags/{c.Name}.gif"
                     })
                 });
             }

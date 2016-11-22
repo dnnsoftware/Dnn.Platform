@@ -111,10 +111,24 @@ class LanguageSettingsPanelBody extends Component {
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {
                 if (state.languageSettings.LanguageDisplayMode === "NATIVE") {
-                    return { label: item.NativeName, value: item.Name };
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.NativeName}</div>
+                        </div>, value: item.Name
+                    };
                 }
                 else {
-                    return { label: item.EnglishName, value: item.Name };
+                    return {
+                        label: <div style={{ float: "left", display: "flex" }}>
+                            <div className="language-flag">
+                                <img src={item.Icon} />
+                            </div>
+                            <div className="language-name">{item.EnglishName}</div>
+                        </div>, value: item.Name
+                    };
                 }
             });
         }
@@ -165,6 +179,22 @@ class LanguageSettingsPanelBody extends Component {
         }
     }
 
+    getDefaultLanguageDisplay() {
+        const {state} = this;
+        return (
+            <div className="default-language">
+                <div className="language-container">
+                    <div style={{ float: "left", display: "flex" }}>
+                        <div className="language-flag">
+                            <img src={state.languageSettings.SystemDefaultLanguageIcon} />
+                        </div>
+                        <div className="language-name">{state.languageSettings.SystemDefaultLanguage}</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -175,13 +205,7 @@ class LanguageSettingsPanelBody extends Component {
                         tooltipMessage={resx.get("systemDefaultLabel.Help")}
                         label={resx.get("systemDefaultLabel")}
                         />
-                    <SingleLineInputWithError
-                        inputStyle={{ margin: "0" }}
-                        withLabel={false}
-                        error={false}
-                        value={state.languageSettings.SystemDefaultLanguage}
-                        enabled={false}
-                        />
+                    {this.getDefaultLanguageDisplay()}
                 </InputGroup>
                 <InputGroup>
                     <Label

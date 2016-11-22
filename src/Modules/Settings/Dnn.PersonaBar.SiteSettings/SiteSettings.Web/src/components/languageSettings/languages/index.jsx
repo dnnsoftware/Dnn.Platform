@@ -151,6 +151,7 @@ class LanguagesPanel extends Component {
                 this.collapse();
                 props.dispatch(LanguagesActions.getLanguages(props.portalId));
                 props.dispatch(LanguagesActions.getAllLanguages());
+                props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode));
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
                 util.utilities.notifyError(errorMessage.Message);
