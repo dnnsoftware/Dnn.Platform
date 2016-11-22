@@ -39,8 +39,10 @@ const application = {
     },
     registerAdditionalPanel(panel) {
         application.dispatch(ExtensionsActions.registerAdditionalPanel(panel));
+    },
+    isSuperUserForPages() {
+        return utilities.getIsSuperUser();
     }
-
 };
 
 export default application;
