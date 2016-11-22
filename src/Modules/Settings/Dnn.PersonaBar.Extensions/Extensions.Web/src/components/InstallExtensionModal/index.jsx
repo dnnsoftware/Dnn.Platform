@@ -128,15 +128,17 @@ class InstallExtensionModal extends Component {
         const { props } = this;
         if (props.installingAvailablePackage) {
             props.dispatch(PaginationActions.loadTab(0, () => {
-                props.dispatch(ExtensionActions.getInstalledPackages(props.availablePackage.PackageType));
-                props.dispatch(ExtensionActions.getAvailablePackages(props.availablePackage.PackageType));
+                const _packageType = (props.availablePackage && props.availablePackage.PackageType) ? props.availablePackage.PackageType : "Module";
+                props.dispatch(ExtensionActions.getInstalledPackages(_packageType));
+                props.dispatch(ExtensionActions.getAvailablePackages(_packageType));
             }));
         } else {
             if (props.tabIndex !== 0) {
                 props.dispatch(PaginationActions.loadTab(0));
             }
             if (props.parsedInstallationPackage.packageType !== props.selectedInstalledPackageType) {
-                props.dispatch(ExtensionActions.getInstalledPackages(props.parsedInstallationPackage.packageType));
+                const _packageType = (props.parsedInstallationPackage && props.parsedInstallationPackage.packageType) ? props.parsedInstallationPackage.packageType : "Module";
+                props.dispatch(ExtensionActions.getInstalledPackages(_packageType));
             }
         }
         props.onCancel();
