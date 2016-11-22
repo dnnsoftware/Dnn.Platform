@@ -38,16 +38,13 @@ const switchCase = [{
 }, {
     condition: ActionTypes.CREATED_PORTAL,
     functionToRun: (state, action) => {
-        if (action.payload.Success) {
-            let portals = Object.assign([], utilities.getObjectCopy(
-                state.portals));
-            let totalCount = Object.assign(state.totalCount);
-            return {
-                portals: addPortalToList(portals, action.payload.Portal),
-                totalCount: totalCount + 1
-            };
-        }
-        return state;
+        let portals = Object.assign([], utilities.getObjectCopy(
+            state.portals));
+        let totalCount = Object.assign(state.totalCount);
+        return {
+            portals: addPortalToList(portals, action.payload.Portal),
+            totalCount: totalCount + 1
+        };
     }
 }];
 

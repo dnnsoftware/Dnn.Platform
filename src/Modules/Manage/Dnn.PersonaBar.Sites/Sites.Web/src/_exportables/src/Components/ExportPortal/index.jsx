@@ -92,14 +92,12 @@ class ExportPortal extends Component {
         if (this.Validate()) {
             props.dispatch(CommonExportPortalActions.exportPortal(state.portalBeingExported, (data) => {
                 utilities.notify(data.Message);
-                if (data.Success) {
-                    let {portalBeingExported} = state;
-                    portalBeingExported.fileName = "";
-                    portalBeingExported.description = "";
-                    this.setState({ portalBeingExported }, () => {
-                        props.onCancel();
-                    });
-                }
+                let {portalBeingExported} = state;
+                portalBeingExported.fileName = "";
+                portalBeingExported.description = "";
+                this.setState({ portalBeingExported }, () => {
+                    props.onCancel();
+                });
             }));
         }
     }

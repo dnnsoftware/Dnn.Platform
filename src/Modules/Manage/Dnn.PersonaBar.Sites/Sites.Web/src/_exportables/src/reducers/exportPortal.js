@@ -25,17 +25,14 @@ const switchCase = [{
 }, {
     condition: ActionTypes.EXPORTED_PORTAL_TEMPLATE,
     functionToRun: (state, action) => {
-        if (action.payload.Success) {
-            let templates = Object.assign([], utilities.getObjectCopy(
-                state.templates));
-            let totalTemplateCount = Object.assign(state.totalTemplateCount);
-            return {
-                templates: addTemplateToList(templates, action.payload
-                    .Template),
-                totalTemplateCount: totalTemplateCount + 1
-            };
-        }
-        return state;
+        let templates = Object.assign([], utilities.getObjectCopy(
+            state.templates));
+        let totalTemplateCount = Object.assign(state.totalTemplateCount);
+        return {
+            templates: addTemplateToList(templates, action.payload
+                .Template),
+            totalTemplateCount: totalTemplateCount + 1
+        };
     }
 }];
 

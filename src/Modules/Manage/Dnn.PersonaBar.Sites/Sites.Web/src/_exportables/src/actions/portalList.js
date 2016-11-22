@@ -7,25 +7,21 @@ import
 import utilities from "utils";
 
 function errorCallback(message) {
-    utilities.notifyError(message);
+    utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
 }
 const portalActions = {
     deletePortal(portalId, index, callback) {
         return (dispatch) => {
             PortalService.deletePortal(portalId, data => {
-                if (data.Success) {
-                    dispatch({
-                        type: ActionTypes.DELETED_PORTAL,
-                        payload: {
-                            index,
-                            portalId
-                        }
-                    });
-                    if (callback) {
-                        callback(data);
+                dispatch({
+                    type: ActionTypes.DELETED_PORTAL,
+                    payload: {
+                        index,
+                        portalId
                     }
-                } else {
-                    errorCallback(data.ErrorMessage);
+                });
+                if (callback) {
+                    callback(data);
                 }
             }, errorCallback);
         };
@@ -53,7 +49,6 @@ const portalActions = {
                     type: ActionTypes.CREATED_PORTAL,
                     payload: {
                         Portal: data.Portal,
-                        Success: data.Success,
                         ErrorMessage: data.ErrorMessage
                     }
                 });

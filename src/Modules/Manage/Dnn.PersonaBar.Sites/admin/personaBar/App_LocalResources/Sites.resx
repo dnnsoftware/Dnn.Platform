@@ -357,4 +357,10 @@
   <data name="UsernameRequired.Error" xml:space="preserve">
     <value>User name is required.</value>
   </data>
+  <data name="PortalDeletionDenied.Text" xml:space="preserve">
+    <value>Portal deletion not allowed.</value>
+  </data>
+  <data name="PortalNotFound.Text" xml:space="preserve">
+    <value>Portal not found.</value>
+  </data>
 </root>

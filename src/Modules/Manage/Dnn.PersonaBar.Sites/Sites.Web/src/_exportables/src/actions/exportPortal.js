@@ -7,7 +7,7 @@ import
 import utilities from "utils";
 
 function errorCallback(message) {
-    utilities.notify(message);
+    utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
 }
 const portalActions = {
     getPortalLocales(portalId, callback) {
@@ -25,7 +25,6 @@ const portalActions = {
                 dispatch({
                     type: ActionTypes.EXPORTED_PORTAL_TEMPLATE,
                     payload: {
-                        Success: data.Success,
                         Message: data.Message,
                         Template: data.Template
                     }

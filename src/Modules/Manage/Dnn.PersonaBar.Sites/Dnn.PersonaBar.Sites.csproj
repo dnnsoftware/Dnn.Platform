@@ -113,6 +113,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Dto\HttpAliasDto.cs" />
     <Compile Include="Components\SitesController.cs" />
     <Compile Include="MenuControllers\AdminMenuController.cs" />

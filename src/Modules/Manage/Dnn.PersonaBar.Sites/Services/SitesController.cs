@@ -68,7 +68,6 @@ namespace Dnn.PersonaBar.Sites.Services
                 }
                 var response = new
                 {
-                    Success = true,
                     Results = portals.Select(GetPortalDto).ToList(),
                     TotalResults = totalRecords
                 };
@@ -104,16 +103,11 @@ namespace Dnn.PersonaBar.Sites.Services
                     request.PasswordConfirm, request.Question, request.Answer);
                 if (portalId < 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                    {
-                        Success = false,
-                        ErrorMessage = errors
-                    });
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join("<br/>", errors));
                 }
                 var portal = PortalController.Instance.GetPortal(portalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Success = true,
                     Portal = GetPortalDto(portal),
                     ErrorMessage = errors
                 });
@@ -150,23 +144,13 @@ namespace Dnn.PersonaBar.Sites.Services
                                 UserInfo.UserID, EventLogController.EventLogType.PORTAL_DELETED);
                             return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                         }
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                        {
-                            Success = false,
-                            ErrorMessage = strMessage
-                        });
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
                     }
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                    {
-                        Success = false,
-                        ErrorMessage = "Portal deletion not allowed."
-                    });
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                        Localization.GetString("PortalDeletionDenied", Components.Constants.LocalResourcesFile));
                 }
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                {
-                    Success = false,
-                    ErrorMessage = "Portal not found"
-                });
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    Localization.GetString("PortalNotFound", Components.Constants.LocalResourcesFile));
             }
             catch (Exception exc)
             {
@@ -192,17 +176,12 @@ namespace Dnn.PersonaBar.Sites.Services
 
                 if (!success)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                    {
-                        Success = false,
-                        Message = message
-                    });
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
                 }
                 var template = _controller.GetPortalTemplates().First(x => x.Name == request.FileName);
                 var templateItem = _controller.CreateListItem(template);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Success = true,
                     Message = message,
                     Template = new
                     {

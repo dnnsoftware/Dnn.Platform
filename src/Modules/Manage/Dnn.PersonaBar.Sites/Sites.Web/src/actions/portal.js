@@ -7,7 +7,7 @@ import {
 import utilities from "utils";
 
 function errorCallback(message) {
-    utilities.notify(message);
+    utilities.notifyError(JSON.parse(message.responseText).Message, 5000);
 }
 const portalActions = {
     loadPortals(searchParameters, callback) {
