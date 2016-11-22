@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ContentOptions.Action" xml:space="preserve">
+    <value>View Schedule Status</value>
+  </data>
+  <data name="ScheduleHistory.Action" xml:space="preserve">
+    <value>View Schedule History</value>
+  </data>
+  <data name="plType.Text" xml:space="preserve">
+    <value>Full Class Name and Assembly:</value>
+  </data>
+  <data name="plEnabled.Text" xml:space="preserve">
+    <value>Schedule Enabled:</value>
+  </data>
+  <data name="plTimeLapse.Text" xml:space="preserve">
+    <value>Frequency:</value>
+  </data>
+  <data name="plTimeLapse.Help" xml:space="preserve">
+    <value>Set the time period to determine how frequently this task will run.</value>
+  </data>
+  <data name="Minutes.Text" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="Days.Text" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Hours.Text" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Weeks.Text" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="Months.Text" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="Years.Text" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="plRetryTimeLapse.Text" xml:space="preserve">
+    <value>Retry Time Lapse:</value>
+  </data>
+  <data name="plRetryTimeLapse.Help" xml:space="preserve">
+    <value>Set the time period to rerun this task after a failure.</value>
+  </data>
+  <data name="plRetainHistoryNum.Text" xml:space="preserve">
+    <value>Retain Schedule History:</value>
+  </data>
+  <data name="plRetainHistoryNum.Help" xml:space="preserve">
+    <value>Select the number of items to be retained in the schedule history.</value>
+  </data>
+  <data name="plAttachToEvent.Text" xml:space="preserve">
+    <value>Run on Event:</value>
+  </data>
+  <data name="plAttachToEvent.Help" xml:space="preserve">
+    <value>Select "Application Start" to run this event when the web app starts. Note that   events run on APPLICATION_END may not run reliably on some hosts.</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="APPLICATION_START.Text" xml:space="preserve">
+    <value>APPLICATION_START</value>
+  </data>
+  <data name="plCatchUpEnabled.Text" xml:space="preserve">
+    <value>Catch Up Enabled:</value>
+  </data>
+  <data name="plCatchUpEnabled.Help" xml:space="preserve">
+    <value>Check this box to run this event once for each frequency that was missed during any server downtime.</value>
+  </data>
+  <data name="plObjectDependencies.Text" xml:space="preserve">
+    <value>Object Dependencies:</value>
+  </data>
+  <data name="plObjectDependencies.Help" xml:space="preserve">
+    <value>Enter the tables or other objects that this event is dependent on.  E.g. "Users,UsersOnline"</value>
+  </data>
+  <data name="UpdateSuccess.Text" xml:space="preserve">
+    <value>Your changes have been saved.</value>
+  </data>
+  <data name="DeleteSuccess.Text" xml:space="preserve">
+    <value>The schedule item has been deleted.</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Edit Schedule</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
+  </data>
+  <data name="plType.Help" xml:space="preserve">
+    <value>This is the full class name followed by the assembly name.  E.g. "DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE"</value>
+  </data>
+  <data name="plServers.Text" xml:space="preserve">
+    <value>Run on Servers:</value>
+  </data>
+  <data name="plServers.Help" xml:space="preserve">
+    <value>Select the web server(s) that this schedule should run on.  Leave empty to run on all servers.</value>
+  </data>
+  <data name="Seconds.Text" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="plEnabled.Help" xml:space="preserve">
+    <value>Check this box to enable the schedule for this job.</value>
+  </data>
+  <data name="plFriendlyName.Help" xml:space="preserve">
+    <value>Enter a name for the scheduled job.</value>
+  </data>
+  <data name="plFriendlyName.Text" xml:space="preserve">
+    <value>Friendly Name:</value>
+  </data>
+  <data name="cmdRun.Text" xml:space="preserve">
+    <value>Run Now</value>
+  </data>
+  <data name="RunNow.Text" xml:space="preserve">
+    <value>Item added to schedule for immediate execution.</value>
+  </data>
+  <data name="TypeRequired.Text" xml:space="preserve">
+    <value>The type of schedule item is required.</value>
+  </data>
+  <data name="TimeLapseValidator.ErrorMessage" xml:space="preserve">
+    <value>Frequency range is from 1 to 999999.</value>
+  </data>
+  <data name="TimeLapseRequired.ErrorMessage" xml:space="preserve">
+    <value>You must set Frequency value.</value>
+  </data>
+  <data name="RetryTimeLapseValidator.ErrorMessage" xml:space="preserve">
+    <value>Retry Frequency range is from 1 to 999999.</value>
+  </data>
+  <data name="plScheduleStartDate.Text" xml:space="preserve">
+    <value>Schedule Start Date/Time:</value>
+  </data>
+  <data name="plScheduleStartDate.Help" xml:space="preserve">
+    <value>Enter the start date/time for scheduled job.  Note: If the server is down at the scheduled time or other jobs are already running, then the job will run as soon as the server comes back on online.</value>
+  </data>
+  <data name="InvalidFrequencyAndRetry.Text" xml:space="preserve">
+    <value>The values for frequency and retry are invalid as the retry interval exceeds the frequency interval.</value>
+  </data>
+</root>
