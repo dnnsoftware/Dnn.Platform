@@ -100,7 +100,7 @@ class LocalizedContent extends Component {
                 <div className="languagePack-wrapper">
                     <InputGroup>
                         <div className="help-text-with-background">
-                            <p dangerouslySetInnerHTML={{ __html: resx.get("EnableLocalizedContentHelpText") }}></p>
+                            <p>{resx.get("EnableLocalizedContentHelpText") }</p>
                             <p>{resx.get("EnableLocalizedContentClickCancel") }</p>
                         </div>
                     </InputGroup>

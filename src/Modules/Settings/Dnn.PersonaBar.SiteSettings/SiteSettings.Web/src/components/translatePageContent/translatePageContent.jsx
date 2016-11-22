@@ -174,9 +174,9 @@ class TranslatePageContent extends Component {
         }
     }
     render() {
-
         const {props, state} = this;
         const language = state.languageBeingEdited;
+        const isEnabled = !!this.state.pageList.length && language.Enabled;
         return <SocialPanelBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
@@ -201,7 +201,7 @@ class TranslatePageContent extends Component {
                             <Switch
                                 labelHidden={true}
                                 value={language.Active}
-                                readOnly={!language.Enabled}
+                                readOnly={!isEnabled}
                                 onChange={this.onToggleActive.bind(this)}
                                 />
                         </div>
@@ -209,15 +209,18 @@ class TranslatePageContent extends Component {
                     <div className="button-block">
                         <Button
                             type="secondary"
+                            disabled={!language.Active || !isEnabled}
                             onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code)}>
                             {resx.get("MarkAllPagesAsTranslated")}
                         </Button>
                         <Button
+                            disabled={!language.Active || !isEnabled}
                             type="secondary"
                             onClick={this.onEraseAllLocalizedPages.bind(this)}>
                             {resx.get("EraseAllLocalizedPages")}
                         </Button>
                         <Button
+                            disabled={!language.Active || !isEnabled}
                             type="primary"
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, true)}>
@@ -225,6 +228,7 @@ class TranslatePageContent extends Component {
                         </Button>
                         <Button
                             type="secondary"
+                            disabled={!language.Active || !isEnabled}
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, false)}>
                             {resx.get("UnpublishTranslatedPages")}
