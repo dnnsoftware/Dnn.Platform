@@ -60,7 +60,7 @@
       -->
 
     <ItemGroup>
-      <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\**\*.css" Exclude="$(MSBuildProjectDirectory)\Package\**\*" />
+      <_CSSFilesToCompress Include="$(MSBuildProjectDirectory)\**\*.css" Exclude="$(MSBuildProjectDirectory)\Package\**\*;$(MSBuildProjectDirectory)\**\node_modules\**\*;$(MSBuildProjectDirectory)\**.Web\src\**\*" />
     </ItemGroup>
     <Message Text="Compressing CSS files" Importance="high" />
     <Exec Command="$(yuicompressor) -v &quot;%(_CSSFilesToCompress.FullPath)&quot; &gt; &quot;$(MSBuildProjectDirectory)\Package\Resources\%(_CSSFilesToCompress.RecursiveDir)%(_CSSFilesToCompress.Filename)%(_CSSFilesToCompress.Extension)&quot;"
