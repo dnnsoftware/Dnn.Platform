@@ -110,6 +110,7 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\RolesController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DTO\UserRoleDto.cs" />

@@ -345,4 +345,7 @@
   <data name="isOwner.Text" xml:space="preserve">
     <value>Is Owner</value>
   </data>
+  <data name="InSufficientPermissions.Text" xml:space="preserve">
+    <value>You do not have enough permissions to perform this action.</value>
+  </data>
 </root>

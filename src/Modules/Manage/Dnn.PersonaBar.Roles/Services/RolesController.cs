@@ -21,6 +21,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Roles.Services
@@ -324,7 +325,11 @@ namespace Dnn.PersonaBar.Roles.Services
                 {
                     userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
                 }
-                var user = UserController.Instance.GetUserById(PortalId, userRoleDto.UserId);
+                HttpResponseMessage response;
+                var user = GetUser(userRoleDto.UserId, out response);
+                if (user == null)
+                    return response;
+
                 var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
                     isOwner = false;
@@ -361,6 +366,10 @@ namespace Dnn.PersonaBar.Roles.Services
             try
             {
                 Validate(userRoleDto);
+                HttpResponseMessage response;
+                var user = GetUser(userRoleDto.UserId, out response);
+                if (user == null)
+                    return response;
 
                 RoleController.Instance.UpdateUserRole(PortalId, userRoleDto.UserId, userRoleDto.RoleId,
                     RoleStatus.Approved, false, true);
@@ -420,6 +429,33 @@ namespace Dnn.PersonaBar.Roles.Services
             return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
         }
 
+        private bool IsAdmin(UserInfo user)
+        {
+            return user.IsSuperUser || user.IsInRole(PortalSettings.AdministratorRoleName);
+        }
+
+        private UserInfo GetUser(int userId, out HttpResponseMessage response)
+        {
+            response = null;
+            var user = UserController.Instance.GetUserById(PortalId, userId);
+            if (user == null)
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                    Localization.GetString("UserNotFound", Components.Constants.LocalResourcesFile));
+                return null;
+            }
+            if (!IsAdmin(user)) return user;
+
+            if ((user.IsSuperUser && !UserInfo.IsSuperUser) || !IsAdmin())
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                    Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
+                return null;
+            }
+            if (user.IsSuperUser)
+                user = UserController.Instance.GetUserById(Null.NullInteger, userId);
+            return user;
+        }
         #endregion
     }
 }
