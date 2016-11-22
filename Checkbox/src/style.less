@@ -1,9 +1,9 @@
 @import "~dnn-global-styles/index";
 .dnn-checkbox-container {
     .dnn-label {
-        
         label {
             font-weight: bold;
+            cursor: pointer;
         }
         .dnn-ui-common-tooltip {
             .icon {
@@ -20,12 +20,15 @@
     }
     .checkbox {
         position: relative;
-        width: 17px;
-        height: 17px;
-        margin-bottom: 15px;
-        display: inline-block;
+        display: inline;
         margin-right: 10px;
+        > label {
+            width: 17px;
+            height: 17px;
+        }
         input[type="checkbox"] {
+            opacity: 0;
+            padding: 0;
             & + label {
                 position: absolute;
                 top: 0px;
