@@ -2918,8 +2918,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private string GetLanguageDisplayMode(int portalId)
         {
-            string viewTypePersonalizationKey = "ViewType" + portalId;
-            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            string viewTypePersonalizationKey = "LanguageDisplayMode:ViewType" + portalId;
+            var personalizationController = new PersonalizationController();
+            var personalization = personalizationController.LoadProfile(UserInfo.UserID, portalId);
+
+            string viewType = Convert.ToString(personalization.Profile[viewTypePersonalizationKey]);
             return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
         }
 
