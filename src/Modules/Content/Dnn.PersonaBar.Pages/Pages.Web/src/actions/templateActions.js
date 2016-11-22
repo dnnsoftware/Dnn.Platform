@@ -3,6 +3,7 @@ import TemplateService from "../services/templateService";
 import utils from "../utils";
 import cloneDeep from "lodash/cloneDeep";
 
+const ERROR_STATUS = 1;
 const templateActions = {
     
     loadSavePageAsTemplate() {
@@ -31,6 +32,14 @@ const templateActions = {
             pageTemplate.tabId = page.tabId;
 
             TemplateService.savePageAsTemplate(pageTemplate).then((response) => {
+                if (response.Status === ERROR_STATUS) {
+                    dispatch({
+                        type: ActionTypes.ERROR_SAVING_TEMPLATE,
+                        data: {error: {message: response.Message}}
+                    });
+                    return;
+                }
+                
                 utils.notify(response.Response);
                 dispatch({
                     type: ActionTypes.SAVED_TEMPLATE

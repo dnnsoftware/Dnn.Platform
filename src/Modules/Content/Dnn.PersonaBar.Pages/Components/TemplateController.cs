@@ -57,16 +57,20 @@ namespace Dnn.PersonaBar.Pages.Components
                 //Serialize tabs
                 var nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                 SerializeTab(template, xmlTemplate, nodeTabs);
-
+           
                 //add file to Files table
                 using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
                 {
                     FileManager.Instance.AddFile(folder, template.Name + ".page.template", fileContent, true, true, "application/octet-stream");
                 }
             }
+            catch (DotNetNuke.Services.FileSystem.PermissionsNotMetException)
+            {
+                throw new TemplateException("Error accessing to the templates folder.");
+            }
             catch (Exception)
             {
-                throw new TemplateException("Error processing template.");
+                throw new TemplateException("Error accessing to the templates folder.");
             }
 
             return filename;
