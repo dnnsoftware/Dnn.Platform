@@ -1161,4 +1161,17 @@
   <data name="Deploy.Button" xml:space="preserve">
     <value>Deploy</value>
   </data>
+  <data name="InstallExtension_UploadFailedUnknown.Text" xml:space="preserve">
+    <value>Zip File Upload Failed</value>
+  </data>
+  <data name="InstallExtension_UploadFailedUnknownLogs.Text" xml:space="preserve">
+    <value>An unknown error has occured. Please check your installation zip file and try again. &lt;br/&gt;
+Common issues with bad installation files:
+&lt;ul&gt;
+&lt;li&gt;Zip file size is too large, check your IIS settings for max upload file size.&lt;/li&gt;
+&lt;li&gt;Missing resources in the zip file.&lt;/li&gt;
+&lt;li&gt;Invalid files in the package.&lt;/li&gt;
+&lt;li&gt;File extension is not .zip.&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
 </root>

@@ -20,12 +20,13 @@ class LogDisplay extends Component {
             <GridCell style={{ padding: 0 }} className="install-failure-logs">
                 <Scrollbars style={licenseBoxStyle}>
                     <div className="package-installation-report">
-                        {props.logs.map((log) => {
+                        {props.logs && props.logs.map((log) => {
                             return <p className={log.Type.toLowerCase()}>{log.Type + " " + log.Description}</p>;
                         })}
+                        {!props.logs && <p className="logs-unknown-error" dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_UploadFailedUnknownLogs") }}></p>}
                     </div>
                 </Scrollbars>
-            </GridCell>
+            </GridCell >
         );
     }
 }

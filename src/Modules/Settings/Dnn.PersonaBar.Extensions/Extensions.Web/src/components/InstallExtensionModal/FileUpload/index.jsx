@@ -53,10 +53,10 @@ export default class FileUpload extends Component {
         this.uploadFile(e.target.files[0]);
     }
 
-    getErrorCount(_package){
+    getErrorCount(_package) {
         let count = 0;
         _package.forEach(key => {
-            if(key.Type === "Failure"){
+            if (key.Type === "Failure") {
                 count++;
             }
         });
@@ -64,11 +64,16 @@ export default class FileUpload extends Component {
     }
 
     handleError(error) {
-        const errorCount = this.getErrorCount(this.props.parsedInstallationPackage.logs);
-        const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
-        const { props } = this;
-        this.setState({ uploading: true, errorText, errorInPackage : true }, () => {
-        });
+        if (this.props.parsedInstallationPackage && this.props.parsedInstallationPackage.logs) {
+            const errorCount = this.getErrorCount(this.props.parsedInstallationPackage.logs);
+            const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
+            const { props } = this;
+            this.setState({ uploading: true, errorText, errorInPackage: true }, () => {
+            });
+        } else {
+            const errorText = Localization.get("InstallExtension_UploadFailedUnknown");
+            this.setState({ uploading: true, errorText, errorInPackage : true });
+        }
     }
 
     uploadFile(file) {
@@ -159,7 +164,7 @@ export default class FileUpload extends Component {
             </div>
             }
             {this.props.viewingLog &&
-                <LogDisplay logs={this.props.parsedInstallationPackage.logs} />}
+                <LogDisplay logs={this.props.parsedInstallationPackage && this.props.parsedInstallationPackage.logs} />}
             {(this.state.uploading && !this.props.viewingLog) &&
                 <UploadBar
                     uploadComplete={this.state.uploadComplete}
