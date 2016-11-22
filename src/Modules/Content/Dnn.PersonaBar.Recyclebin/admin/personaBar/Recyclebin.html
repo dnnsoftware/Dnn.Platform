@@ -138,8 +138,8 @@
         <td class="pagename" data-bind="html: TabName, click: !TabDeleted ? $root.changeElementSelectedStatus : null, css: {'action-disabled': TabDeleted}"></td>
         <td class="deleteddate" data-bind="css: {'action-disabled': TabDeleted}"><span data-bind="html: LastModifiedOnDate, click: !TabDeleted ? $root.changeElementSelectedStatus : null"></span></td>
         <td class="actions">
-            <span class="restore" data-bind="click: !TabDeleted ? $root.restoreModule : null, enable: !TabDeleted, clickBubble: false, css: { 'action-disabled': TabDeleted }, visible: mouseOver"></span>
-            <span class="remove" data-bind="click: $root.removeModule, clickBubble: false, visible: mouseOver"></span>
+            <span class="restore" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, click: !TabDeleted ? $root.restoreModule : null, enable: !TabDeleted, clickBubble: false, css: { 'action-disabled': TabDeleted }, visible: mouseOver"></span>
+            <span class="remove" data-bind="attr: { title: $root.resx.recyclebin_Delete }, click: $root.removeModule, clickBubble: false, visible: mouseOver"></span>
         </td>
     </tr>
 </script>
