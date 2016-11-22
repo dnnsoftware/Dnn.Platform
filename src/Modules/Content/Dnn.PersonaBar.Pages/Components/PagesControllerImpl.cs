@@ -338,7 +338,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return ValidatePageUrlSettings(pageSettings, tab, ref invalidField, ref errorMessage);
         }
 
-        protected virtual int GetTemplateParentId(int tabId)
+        protected virtual int GetTemplateParentId(int portalId)
         {
             return Null.NullInteger;
         }

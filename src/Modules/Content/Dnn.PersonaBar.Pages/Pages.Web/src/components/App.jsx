@@ -277,7 +277,7 @@ class App extends Component {
                             onSave={()=> {}} 
                             onCancel={props.onCancelSavePageAsTemplate}
                             selectedPage={props.selectedPage}
-                        />
+                            store={panel.store} />
                     );
                 }
             }
