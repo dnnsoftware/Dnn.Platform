@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
                 return true;
             }
 
-            return IsPageAdmin() || IsModuleAdmin();
+            return IsPageAdmin();
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
@@ -80,25 +80,6 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
             };
 
             return permissions;
-        }
-
-        private bool IsModuleAdmin()
-        {
-            bool moduleAdmin = Null.NullBoolean;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            foreach (ModuleInfo module in TabController.CurrentPage.Modules)
-            {
-                if (!module.IsDeleted)
-                {
-                    bool hasEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, module);
-                    if (hasEditPermissions)
-                    {
-                        moduleAdmin = true;
-                        break;
-                    }
-                }
-            }
-            return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
         }
 
         private bool IsPageAdmin()
