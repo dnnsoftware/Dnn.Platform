@@ -57,6 +57,18 @@ class AvailableExtensions extends Component {
             }));
         }));
     }
+
+    onDeploy(index, _package, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const {props} = this;
+
+        props.dispatch(ExtensionActions.deployAvailablePackage(_package, index, () => {
+            props.dispatch(ExtensionActions.getAvailablePackages(props.selectedAvailablePackageType));
+        }));
+    }
+
     render() {
         const {props} = this;
         return (
@@ -77,7 +89,8 @@ class AvailableExtensions extends Component {
                     <ExtensionList
                         packages={props.availablePackages}
                         type={props.selectedAvailablePackageType}
-                        onInstall={this.onInstall.bind(this)} />
+                        onInstall={this.onInstall.bind(this)}
+                        onDeploy={this.onDeploy.bind(this)} />
                 }
             </GridCell>
         );

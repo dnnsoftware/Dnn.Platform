@@ -104,6 +104,10 @@ class ExtensionService {
 
         sf.postfile("ParsePackage", formData, callback, errorCallback);
     }
+    deployAvailablePackage(cultureCode, callback, errorCallback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.post("ParseLanguagePackage?cultureCode=" + cultureCode, {}, callback, errorCallback);
+    }
     installPackage(file, callback) {
         const sf = this.getServiceFramework("Extensions");
 

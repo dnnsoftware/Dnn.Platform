@@ -11,7 +11,7 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete, isHost}) => (
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
             <img src={_package.packageIcon && _package.packageIcon.replace("~", "")} />
         </GridCell>
-        <GridCell columnSize={ColumnSizes[1]} style={{padding: "0 35px"}}>
+        <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
             <span className="package-name">{_package.friendlyName}</span>
             <p dangerouslySetInnerHTML={{ __html: _package.description }}></p>
         </GridCell>
@@ -22,7 +22,9 @@ const ExtensionDetailRow = ({_package, onEdit, onDelete, isHost}) => (
             <p>{_package.inUse}</p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[4]}>
-            <p>{/*_package.upgradeUrl*/}</p>
+            <a href={_package.upgradeUrl} target="_blank">
+                <img src={_package.upgradeIndicator} />
+            </a>
         </GridCell>
         <GridCell columnSize={ColumnSizes[5]}>
             {(_package.canDelete && isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={onDelete}></div>}

@@ -14,11 +14,12 @@ class ExtensionList extends Component {
         return (
             <GridCell  style={{ padding: "5px 20px" }}>
                 <ExtensionHeader />
-                {props.packages.map((_package) => {
+                {props.packages.map((_package, index) => {
                     return <ExtensionDetailRow
                         _package={_package}
                         type={props.type}
                         onInstall={props.onInstall.bind(this)}
+                        onDeploy={props.onDeploy.bind(this, index)}
                         />;
                 }) }
             </GridCell>
@@ -33,7 +34,8 @@ ExtensionList.propTypes = {
     onChange: PropTypes.func,
     type: PropTypes.string,
     onDownload: PropTypes.func,
-    onInstall: PropTypes.func
+    onInstall: PropTypes.func,
+    onDeploy: PropTypes.func
 };
 
 

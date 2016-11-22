@@ -151,6 +151,10 @@ export default function extension(state = {
             return { ...state,
                 localePackages: action.payload
             };
+        case ActionTypes.DEPLOYED_AVAILABLE_PACKAGE:
+            return { ...state,
+                availablePackages: [...state.availablePackages.slice(0, action.payload.updatedPackageIndex), action.payload.updatedPackage, ...state.availablePackages.slice(action.payload.updatedPackageIndex + 1)]
+            };
         default:
             return state;
     }
