@@ -1203,4 +1203,7 @@
   <data name="DisableLanguageWarning.Text" xml:space="preserve">
     <value>Are you sure you want to disable the language {0}</value>
   </data>
+  <data name="MakeNeutralWarning.Text" xml:space="preserve">
+    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+  </data>
 </root>

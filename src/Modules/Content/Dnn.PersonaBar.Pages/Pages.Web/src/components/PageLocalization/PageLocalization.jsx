@@ -5,6 +5,7 @@ import Localization from "../../localization";
 import Scrollbars from "react-custom-scrollbars";
 import PageLanguage from "./PageLanguage";
 import NotifyModal from "./NotifyModal";
+import utils from "../../utils";
 import "./style.less";
 
 import LanguagesActions from "../../actions/languagesActions";
@@ -77,11 +78,13 @@ class PageLocalization extends Component {
     }
 
     makePageNeutral() {
-        const {props} = this;
-        const {tabId} = props.page;
-        props.dispatch(LanguagesActions.makePageNeutral(tabId, () => {
-            this.getLanguages();
-        }));
+        utils.confirm(Localization.get("MakeNeutralWarning"), Localization.get("Yes"), Localization.get("No"), () => {
+            const {props} = this;
+            const {tabId} = props.page;
+            props.dispatch(LanguagesActions.makePageNeutral(tabId, () => {
+                this.getLanguages();
+            }));
+        });
     }
 
     onAddMissingLanguages() {

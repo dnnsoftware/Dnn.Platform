@@ -717,4 +717,7 @@
   <data name="PublishedCheckbox.Text" xml:space="preserve">
     <value>Published</value>
   </data>
+  <data name="MakeNeutralWarning.Text" xml:space="preserve">
+    <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
+  </data>
 </root>
