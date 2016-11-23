@@ -143,15 +143,15 @@ export default class FileUpload extends Component {
             return;
         }
         const fileFormats = this.props.fileFormats;        
+        this.setState({ fileName: file.name });
         if (fileFormats.length > 0) {
             let format = file.type;
             const isAcceptFormat = fileFormats.some(f => format === f);
             if (!isAcceptFormat) {
                 return this.handleError("wrong format");
             }
-        }
+        }        
         
-        this.setState({ fileName: file.name });
         this.postFile(file);
     }
 
