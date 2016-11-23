@@ -16,7 +16,8 @@ import { AddIcon,
     LockClosedIcon,
     CheckMarkIcon,
     CrossOutIcon,
-    CheckboxUncheckedIcon 
+    CheckboxUncheckedIcon,
+    CheckboxIcon
 } from "dnn-svg-icons";
 
 import "./style.less";
@@ -27,7 +28,7 @@ class IconButton extends Component {
     }
 
     getIcon() {
-        const {props, state} = this;
+        const {props} = this;
 
         switch (props.type.toLowerCase()) {
             case "add":
@@ -66,6 +67,8 @@ class IconButton extends Component {
                 return  CrossOutIcon;
             case "unchecked":
                 return CheckboxUncheckedIcon;
+            case "checkbox":
+                return CheckboxIcon;
             default:
                 return null;
         }

@@ -10,44 +10,46 @@ class StatusSwitch extends Component {
         };
     }
 
-    changeState(){
-        const {props, state} = this;
+    changeState() {
+        const {props} = this;
 
-        if(props.status === 3){
+        if (props.status === 3){
             return;
         }
 
         let status = props.status + 1;
-        if(status > 2){
+        if (status > 2){
             status = 0;
         }
 
-        if(typeof props.onChange === "function"){
+        if (typeof props.onChange === "function"){
             props.onChange(status);
         }
     }
 
     render() {
-        const {props, state} = this;
+        const {props } = this;
 
         let type = "";
-        switch(props.status){
+        let className = "";
+        switch (props.status) {
             case 0:
                 type = "unchecked";
                 break;
             case 1:
-                type = "checked";
+                type = "checkbox";
                 break;
             case 2:
                 type = "denied";
                 break;
             case 3:
-                type = "lock-closed";
+                type = "checked";
+                className = "locked";
                 break;
         }
         return (
             
-            <IconButton type={type}  onClick={this.changeState.bind(this)} />
+            <IconButton type={type} className={className} onClick={this.changeState.bind(this)} />
         );
     }
 }
