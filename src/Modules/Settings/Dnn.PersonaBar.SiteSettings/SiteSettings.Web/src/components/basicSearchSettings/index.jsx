@@ -7,6 +7,7 @@ import {
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import DropdownWithError from "dnn-dropdown-with-error";
 import NumberSlider from "dnn-slider";
 import Grid from "dnn-grid-system";
 import Switch from "dnn-switch";
@@ -231,23 +232,22 @@ class BasicSearchSettingsPanelBody extends Component {
                     </InputGroup>
                 </div>;
                 const columnTwo = <div className="right-column">
-                    <InputGroup>
-                        <Label
-                            tooltipMessage={resx.get("lblCustomAnalyzer.Help")}
-                            label={resx.get("lblCustomAnalyzer")}
-                            extra={
-                                <Tooltip
-                                    messages={[resx.get("GlobalSetting")]}
-                                    type="global"
-                                    style={{ float: "left", position: "static" }}
-                                    />}
-                            />
-                        <Dropdown
-                            options={this.getAnalyzerTypeOptions()}
-                            value={state.basicSearchSettings.SearchCustomAnalyzer}
-                            onSelect={this.onSettingChange.bind(this, "SearchCustomAnalyzer")}
-                            />
-                    </InputGroup>
+                    <DropdownWithError
+                        style={{ maxWidth: "100%" }}
+                        options={this.getAnalyzerTypeOptions()}
+                        value={state.basicSearchSettings.SearchCustomAnalyzer}
+                        onSelect={this.onSettingChange.bind(this, "SearchCustomAnalyzer")}
+                        tooltipMessage={resx.get("lblCustomAnalyzer.Help")}
+                        label={resx.get("lblCustomAnalyzer")}
+                        labelStyle={{ width: "auto" }}
+                        labelIsMultiLine={true}
+                        extraToolTips={
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"
+                                style={{ float: "left", position: "static", marginTop: -3 }}
+                                />}
+                        />
                     <InputGroup>
                         <div className="basicSearchSettings-row_switch">
                             <Label
