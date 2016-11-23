@@ -43,13 +43,40 @@
             }
         }
         .page-language-row-header {
+            width: 100%;
+            & > .icon {
+                svg {
+                    fill: black;
+                }
+            }
+            .dnn-checkbox-container .checkbox input[type=checkbox]+label {
+                background: white;
+            }
+            .dnn-checkbox-container .checkbox input[type=checkbox]:checked+label {
+                background: @curiousBlue;
+            }
             .icon {
                 float: left !important;
                 width: 29px;
                 height: 13px;
                 margin-top: -7px;
-                svg {
-                    fill: black;
+                &.blue {
+                    svg {
+                        fill: @curiousBlue;
+                    }
+                }
+            }
+            .icons-container {
+                float: right;
+                .icon {
+                    width: 18px;
+                    margin-top: 0px;
+                }
+                .dnn-checkbox-container {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 4px;
+                    margin-left: 3px;
                 }
             }
         }

@@ -4,9 +4,39 @@ import Module from "./Module";
 import Checkbox from "dnn-checkbox";
 import "./PageLanguage.less";
 
-import { EyeIcon, ModuleIcon } from "dnn-svg-icons";
+import { EyeIcon, ModuleIcon, LinkIcon } from "dnn-svg-icons";
 
 class PageLanguage extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            allModulesLinked: false,
+            allModulesSelected: false
+        };
+    }
+
+    updateAllModules(key, value) {
+        const {modules} = this.props;
+        const CultureCode = this.props.local.CultureCode;
+        modules.forEach((module, index) => {
+            this.props.onUpdateModules(CultureCode, index, value, key);
+        });
+    }
+
+    selectAllModules(e) {
+        const allModulesSelected = e;
+        this.setState({ allModulesSelected }, ()=> {
+            this.updateAllModules("IsTranslated", e);
+        });
+    }
+
+    linkAllModules() {
+        const allModulesLinked = !this.state.allModulesLinked;
+        this.setState({ allModulesLinked }, () => {
+            this.updateAllModules("IsLocalized", allModulesLinked);
+        });
+    } 
 
     onUpdatePages(key, e) {
         const value = e.target.value;
@@ -47,6 +77,16 @@ class PageLanguage extends Component {
                     <div className="page-language-row-header">
                         <span className="icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
                         <span>{Localization.get("ModulesOnThisPage") }</span>
+                        {!page.Default && <div className="icons-container">
+                            <span
+                            className={`icon float-left ${(this.state.allModulesLinked ? " blue" : "")}`}
+                            onClick={this.linkAllModules.bind(this)  }
+                            dangerouslySetInnerHTML={{ __html: LinkIcon }} />
+                            <Checkbox
+                            style={{ float: "left" }}
+                            value={this.state.allModulesSelected}
+                            onChange={this.selectAllModules.bind(this) } />
+                        </div>}
                     </div>
                     {moduleComponents }
                     <div className="module-row footer">
