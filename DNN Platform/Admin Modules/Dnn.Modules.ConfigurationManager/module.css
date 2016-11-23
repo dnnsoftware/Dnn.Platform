@@ -1,0 +1,26 @@
+﻿.dnnAdminTabNav {
+    margin-bottom: -3px;
+}
+
+.dnnForm fieldset {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+a.dnnPrimaryAction {
+    margin-bottom: 0;
+}
+
+#dnnConfigFiles, #dnnConfigMerge {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 1em;
+}
+
+.dnnSeparatorPanel {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 1em;
+}
+
+.dnnSeparatorPanel.dnnFormItem > .RadComboBox_Default {
+    margin-bottom: 1em;
+}

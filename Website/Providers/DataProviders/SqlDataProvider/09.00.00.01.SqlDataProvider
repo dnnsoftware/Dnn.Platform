@@ -23,6 +23,7 @@ UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHE
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
 UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
