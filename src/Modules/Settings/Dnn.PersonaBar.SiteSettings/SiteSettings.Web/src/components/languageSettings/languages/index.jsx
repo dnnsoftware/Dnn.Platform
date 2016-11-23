@@ -30,12 +30,27 @@ class LanguagesPanel extends Component {
         isHost = util.settings.isHost;
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.languageList) {
+            if (props.portalId === undefined || props.languageList.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {props, state} = this;
 
         this.getHeaderColumns(props.contentLocalizationEnabled);
 
-        if (props.languageList) {
+        if (!this.loadData()) {
             this.setState({
                 languageList: props.languageList,
                 contentLocalizationEnabled: props.contentLocalizationEnabled

@@ -29,9 +29,24 @@ class DefaultPagesSettingsPanelBody extends Component {
         isHost = util.settings.isHost;
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.defaultPagesSettings) {
+            if (props.portalId === undefined || props.defaultPagesSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        if (props.defaultPagesSettings) {
+        if (!this.loadData()) {
             this.setState({
                 defaultPagesSettings: props.defaultPagesSettings
             });

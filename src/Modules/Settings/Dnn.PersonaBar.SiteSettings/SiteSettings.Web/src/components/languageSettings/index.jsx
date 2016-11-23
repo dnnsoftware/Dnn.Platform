@@ -33,9 +33,24 @@ class LanguageSettingsPanelBody extends Component {
         isHost = util.settings.isHost;
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.languageSettings) {
+            if (props.portalId === undefined || props.languageSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        if (props.languageSettings) {
+        if (!this.loadData()) {
             this.setState({
                 languageSettings: props.languageSettings
             });

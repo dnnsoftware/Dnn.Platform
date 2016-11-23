@@ -27,9 +27,24 @@ class MessagingSettingsPanelBody extends Component {
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.messagingSettings) {
+            if (props.portalId === undefined || props.messagingSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        if (props.messagingSettings) {
+        if (!this.loadData()) {
             this.setState({
                 messagingSettings: props.messagingSettings
             });

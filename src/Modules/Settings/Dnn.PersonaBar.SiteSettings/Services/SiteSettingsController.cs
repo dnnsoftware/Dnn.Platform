@@ -1800,20 +1800,22 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         "ENGLISH")
                 };
 
-                dynamic settings = new ExpandoObject();
-                settings.ContentLocalizationEnabled = portalSettings.ContentLocalizationEnabled;
-                settings.SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
+                var settings = new
+                {
+                    PortalId = portal.PortalID,
+                    portalSettings.ContentLocalizationEnabled,
+                    SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
                     ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
-                    : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid));
-                settings.SystemDefaultLanguageIcon = string.IsNullOrEmpty(Localization.SystemLocale) ? "/images/Flags/none.gif" : $"/images/Flags/{Localization.SystemLocale}.gif";
-                settings.SiteDefaultLanguage = portalSettings.DefaultLanguage;
-                settings.LanguageDisplayMode = GetLanguageDisplayMode(pid);
-                settings.EnableUrlLanguage = portalSettings.EnableUrlLanguage;
-                settings.EnableBrowserLanguage = portalSettings.EnableBrowserLanguage;
-                settings.AllowUserUICulture = portalSettings.AllowUserUICulture;
-                settings.PortalId = portal.PortalID;
-                settings.CultureCode = portal.CultureCode;
-                settings.AllowContentLocalization = Host.EnableContentLocalization;
+                    : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid)),
+                    SystemDefaultLanguageIcon = string.IsNullOrEmpty(Localization.SystemLocale) ? "/images/Flags/none.gif" : $"/images/Flags/{Localization.SystemLocale}.gif",
+                    SiteDefaultLanguage = portalSettings.DefaultLanguage,
+                    LanguageDisplayMode = GetLanguageDisplayMode(pid),
+                    portalSettings.EnableUrlLanguage,
+                    portalSettings.EnableBrowserLanguage,
+                    portalSettings.AllowUserUICulture,
+                    portal.CultureCode,
+                    AllowContentLocalization = Host.EnableContentLocalization
+                };
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -1929,7 +1931,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(portal);
-
+                
                 if (portalSettings.ContentLocalizationEnabled)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, new
@@ -1946,12 +1948,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             l.EnglishName,
                             Enabled = IsLanguageEnabled(pid, l.Code),
                             IsDefault = l.Code == portalSettings.DefaultLanguage,
-                            LocalizablePages = GetLocalizablePages(l.Code),
-                            LocalizedStatus = GetLocalizedStatus(l.Code),
-                            TranslatedPages = GetTranslatedPages(l.Code),
-                            TranslatedStatus = GetTranslatedStatus(l.Code),
+                            LocalizablePages = GetLocalizablePages(pid, l.Code),
+                            LocalizedStatus = GetLocalizedStatus(portalSettings, l.Code),
+                            TranslatedPages = GetTranslatedPages(portalSettings, l.Code),
+                            TranslatedStatus = GetTranslatedStatus(portalSettings, l.Code),
                             Active = IsLanguagePublished(pid, l.Code),
-                            IsLocalized = IsLocalized(l.Code)
+                            IsLocalized = IsLocalized(portalSettings, l.Code)
                         })
                     });
                 }
@@ -2046,7 +2048,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         language.Code,
                         language.Fallback,
                         Enabled = IsLanguageEnabled(pid, language.Code),
-                        CanEnableDisable = CanEnableDisable(pid, language.Code),
+                        CanEnableDisable = CanEnableDisable(portalSettings, language.Code),
                         IsDefault = language.Code == portalSettings.DefaultLanguage,
                         Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators")
                     } : new
@@ -2702,10 +2704,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return isPublished;
         }
 
-        private string GetTranslatedPages(string code)
+        private string GetTranslatedPages(PortalSettings portalSettings, string code)
         {
             string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
                 int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
                 status = translatedCount.ToString(CultureInfo.InvariantCulture);
@@ -2713,49 +2715,49 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return status;
         }
 
-        private string GetLocalizedStatus(string code)
+        private string GetLocalizedStatus(PortalSettings portalSettings, string code)
         {
             string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
-                int defaultPageCount = GetLocalizedPages(PortalSettings.DefaultLanguage, false).Count;
-                int currentPageCount = GetLocalizedPages(code, false).Count;
+                int defaultPageCount = GetLocalizedPages(portalSettings.PortalId, portalSettings.DefaultLanguage, false).Count;
+                int currentPageCount = GetLocalizedPages(portalSettings.PortalId, code, false).Count;
                 status = $"{currentPageCount / (float)defaultPageCount:#0%}";
             }
             return status;
         }
 
-        private string GetLocalizablePages(string code)
+        private string GetLocalizablePages(int portalId, string code)
         {
-            int count = GetLocalizedPages(code, false).Count(t => !t.Value.IsDeleted);
+            int count = GetLocalizedPages(portalId, code, false).Count(t => !t.Value.IsDeleted);
             return count.ToString(CultureInfo.CurrentUICulture);
         }
 
-        private TabCollection GetLocalizedPages(string code, bool includeNeutral)
+        private TabCollection GetLocalizedPages(int portalId, string code, bool includeNeutral)
         {
-            return TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, includeNeutral);
+            return TabController.Instance.GetTabsByPortal(portalId).WithCulture(code, includeNeutral);
         }
 
-        private string GetTranslatedStatus(string code)
+        private string GetTranslatedStatus(PortalSettings portalSettings, string code)
         {
             string status = "";
-            if (!IsDefaultLanguage(code) && IsLocalized(code))
+            if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
-                int localizedCount = GetLocalizedPages(code, false).Count;
-                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
+                int localizedCount = GetLocalizedPages(portalSettings.PortalId, code, false).Count;
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(portalSettings.PortalId).WithCulture(code, false).Values where t.IsTranslated select t).Count();
                 status = $"{translatedCount / (float)localizedCount:#0%}";
             }
             return status;
         }
 
-        private bool IsDefaultLanguage(string code)
+        private bool IsDefaultLanguage(PortalSettings portalSettings, string code)
         {
-            return code == PortalSettings.DefaultLanguage;
+            return code == portalSettings.DefaultLanguage;
         }
 
-        private bool IsLocalized(string code)
+        private bool IsLocalized(PortalSettings portalSettings, string code)
         {
-            return (code != PortalSettings.DefaultLanguage && GetLocalizedPages(code, false).Count > 0);
+            return (code != portalSettings.DefaultLanguage && GetLocalizedPages(portalSettings.PortalId, code, false).Count > 0);
         }
 
         private bool CanDeleteProperty(ProfilePropertyDefinition definition)
@@ -2892,16 +2894,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return LocaleController.Instance.GetLocales(portalId).TryGetValue(code, out enabledLanguage);
         }
 
-        private bool CanEnableDisable(int portalId, string code)
+        private bool CanEnableDisable(PortalSettings portalSettings, string code)
         {
             bool canEnable;
-            if (IsLanguageEnabled(portalId, code))
+            if (IsLanguageEnabled(portalSettings.PortalId, code))
             {
-                canEnable = !IsDefaultLanguage(code) && !IsLanguagePublished(portalId, code);
+                canEnable = !IsDefaultLanguage(portalSettings, code) && !IsLanguagePublished(portalSettings.PortalId, code);
             }
             else
             {
-                canEnable = !IsDefaultLanguage(code);
+                canEnable = !IsDefaultLanguage(portalSettings, code);
             }
             return canEnable;
         }

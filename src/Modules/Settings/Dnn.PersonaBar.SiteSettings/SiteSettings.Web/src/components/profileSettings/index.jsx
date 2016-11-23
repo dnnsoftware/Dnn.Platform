@@ -27,9 +27,24 @@ class ProfileSettingsPanelBody extends Component {
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.profileSettings) {
+            if (props.portalId === undefined || props.profileSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        if (props.profileSettings) {
+        if (!this.loadData()) {
             this.setState({
                 profileSettings: props.profileSettings
             });

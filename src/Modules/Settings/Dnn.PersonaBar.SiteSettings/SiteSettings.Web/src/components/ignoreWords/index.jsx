@@ -36,18 +36,11 @@ class IgnoreWordsPanel extends Component {
             props.dispatch(SearchActions.getCultureList(props.portalId));
         }
 
-        if (props.ignoreWords) {
+        props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
             this.setState({
-                ignoreWords: props.ignoreWords
+                ignoreWords: Object.assign({}, data.IgnoreWords)
             });
-        }
-        else {
-            props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
-                this.setState({
-                    ignoreWords: Object.assign({}, data.IgnoreWords)
-                });
-            }));
-        }
+        }));
     }
 
     componentWillReceiveProps(props) {

@@ -30,14 +30,29 @@ class BasicSettingsPanelBody extends Component {
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.basicSettings) {
+            if (props.portalId === undefined || props.basicSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        // if (props.basicSettings) {
-        //     this.setState({
-        //         basicSettings: props.basicSettings
-        //     });
-        //     return;
-        // }
+        if (!this.loadData()) {
+             this.setState({
+                 basicSettings: props.basicSettings
+             });
+             return;
+        }
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 basicSettings: Object.assign({}, data.Settings)

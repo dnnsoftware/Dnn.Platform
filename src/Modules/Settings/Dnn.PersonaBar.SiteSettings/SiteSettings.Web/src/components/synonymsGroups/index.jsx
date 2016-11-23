@@ -34,18 +34,11 @@ class SynonymsGroupsPanel extends Component {
 
         props.dispatch(SearchActions.getCultureList(props.portalId));
 
-        if (props.synonymsGroups) {
+        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
             this.setState({
-                synonymsGroups: props.synonymsGroups
+                synonymsGroups: Object.assign({}, data.SynonymsGroups)
             });
-        }
-        else {
-            props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
-                this.setState({
-                    synonymsGroups: Object.assign({}, data.SynonymsGroups)
-                });
-            }));
-        }
+        }));
     }
 
     componentWillReceiveProps(props) {

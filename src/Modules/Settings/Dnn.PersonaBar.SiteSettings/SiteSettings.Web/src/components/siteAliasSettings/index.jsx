@@ -28,9 +28,24 @@ class SiteAliasSettingsPanelBody extends Component {
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.urlMappingSettings) {
+            if (props.portalId === undefined || props.urlMappingSettings.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {state, props} = this;
-        if (props.urlMappingSettings) {
+        if (!this.loadData()) {
             this.setState({
                 urlMappingSettings: props.urlMappingSettings
             });
