@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 try
                 {
-                    var installer = GetInstaller(stream, fileName);
+                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
 
                     if (installer.IsValid)
                     {
@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 try
                 {
-                    var installer = GetInstaller(stream, fileName, legacySkin);
+                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin);
 
                     if (installer.IsValid)
                     {
@@ -137,7 +137,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        private static Installer GetInstaller(Stream stream, string fileName, string legacySkin = null)
+        private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, true, false);
             if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
@@ -147,6 +147,13 @@ namespace Dnn.PersonaBar.Extensions.Components
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
             }
 
+            installer.InstallerInfo.PortalID = portalId;
+
+            //Read the manifest
+            if (installer.InstallerInfo.ManifestFile != null)
+            {
+                installer.ReadManifest(true);
+            }
             return installer;
         }
 
