@@ -11,12 +11,26 @@ import More from "../More/More";
 import Appearance from "../Appearance/Appearance";
 import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 import PageLocalization from "../PageLocalization/PageLocalization";
-import Sec from "../Security/Sec";
 import securityService from "../../services/securityService";
 import permissionTypes from "../../services/permissionTypes";
+import LanguagesActions from "../../actions/languagesActions";
 
 
 class PageSettings extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            AllowContentLocalization: false
+        };
+    } 
+
+    componentWillMount() {
+        LanguagesActions.getLanguageSettings(null, (data) => {
+            const {AllowContentLocalization} = data.Settings;
+            this.state = {AllowContentLocalization};  
+        })();
+    }
 
     hasPageErrors() {
         const {selectedPageErrors} = this.props;
@@ -174,18 +188,22 @@ class PageSettings extends Component {
         }
         if (securityService.userHasPermission(permissionTypes.ADMIN_PAGE)) {
             headers.push(Localization.get("Permissions"));
-            headers.push(Localization.get("Localization"));
+            if (this.state.AllowContentLocalization) {
+                headers.push(Localization.get("Localization"));
+            }
             tabs.push(<div className="dnn-simple-tab-item">                
                         <PermissionGrid
                             permissions={selectedPage.permissions} 
                             onPermissionsChanged={this.props.onPermissionsChanged} />
                         {permissionFooter}
                     </div>);
-            tabs.push(<div className="dnn-simple-tab-item">
-                        <PageLocalization
-                            page={selectedPage}
-                        />
-                     </div>);
+            if (this.state.AllowContentLocalization) {
+                tabs.push(<div className="dnn-simple-tab-item">
+                            <PageLocalization
+                                page={selectedPage}
+                            />
+                        </div>);
+            }
         }
         if (securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
             headers.push(Localization.get("Advanced"));

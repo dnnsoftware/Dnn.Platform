@@ -88,6 +88,15 @@ const languagesActions = {
                 }
             });
         };
+    },
+    getLanguageSettings(portalId, callback) {
+        return () => {
+            LanguageService.getLanguageSettings(portalId, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

@@ -53,6 +53,11 @@ class LanguageService {
         sf.post("RestoreModule?" + serializeQueryStringParameters(params), {}, callback, failureCallback);
     }
 
+    getLanguageSettings(portalId, callback) {
+        const sf = this.getServiceFramework("SiteSettings");
+        sf.get("GetLanguageSettings?portalId=" + portalId , {}, callback);
+    }
+
     deleteModule(params, callback, failureCallback) {
         const sf = this.getServiceFramework("Pages");
         sf.post("DeleteModule?" + serializeQueryStringParameters(params), {}, callback, failureCallback);

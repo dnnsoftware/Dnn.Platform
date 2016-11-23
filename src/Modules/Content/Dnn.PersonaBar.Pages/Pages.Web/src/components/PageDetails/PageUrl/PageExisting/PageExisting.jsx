@@ -28,19 +28,19 @@ class PageExisting extends Component {
 
     render() {
         const {page} = this.props;
-        const serviceFramework = utils.getServiceFramework(); 
+        const serviceFramework = utils.getServiceFramework();
         const noneSpecifiedText = "<" + Localization.get("NoneSpecified") + ">";
 
         return (
             <div className={styles.pageExisting}>
                 <InputGroup>
                     <Label
-                        tooltipMessage={Localization.get("ExistingPageTooltip")}
-                        label={Localization.get("ExistingPage")} />
-                    <PagePicker 
+                        tooltipMessage={Localization.get("ExistingPageTooltip") }
+                        label={Localization.get("ExistingPage") } />
+                    <PagePicker
                         serviceFramework={serviceFramework}
                         style={{ width: "100%", zIndex: 2 }}
-                        OnSelect={this.onChangePage.bind(this)}
+                        OnSelect={this.onChangePage.bind(this) }
                         defaultLabel={noneSpecifiedText}
                         noneSpecifiedText={noneSpecifiedText}
                         CountText={"{0} Results"}
@@ -48,7 +48,7 @@ class PageExisting extends Component {
                         selectedTabId={page.existingTabRedirection || -1} />
                 </InputGroup>
                 <PageUrlCommons {...this.props} />
-                <div style={{clear: "both"}}></div>
+                <div style={{ clear: "both" }}></div>
             </div>
         );
     }
