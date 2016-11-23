@@ -166,39 +166,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// GET: api/Extensions/GetPortals
-        /// <summary>
-        /// Gets portals list
-        /// </summary>
-        /// <param></param>
-        /// <returns>List of portals</returns>
-        [HttpGet]
-        [RequireHost]
-        public HttpResponseMessage GetPortals()
-        {
-            try
-            {
-                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
-                var availablePortals = portals.Select(v => new
-                {
-                    v.PortalID,
-                    v.PortalName
-                }).ToList();
-                var response = new
-                {
-                    Success = true,
-                    Results = availablePortals,
-                    TotalResults = availablePortals.Count
-                };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
         /// GET: api/Extensions/GetPackageUsage
         /// <summary>
         /// Gets package usage
