@@ -333,10 +333,7 @@ const siteBehaviorActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES,
                     data: {
-                        siteAliases: data.PortalAliases,
-                        browsers: data.BrowserTypes,
-                        languages: data.Languages,
-                        skins: data.Skins
+                        siteAliases: data
                     }
                 });
                 if (callback) {

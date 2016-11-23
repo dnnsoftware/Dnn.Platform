@@ -12,7 +12,7 @@ class HtmlEditorManagerPanelBody extends Component {
         super();
     }
 
-    getIframeUrl(){
+    getIframeUrl() {
         return "/Host/HTMLEditorManager?portalid=" + this.props.portalId + "&portpopUp=true";
     }
 

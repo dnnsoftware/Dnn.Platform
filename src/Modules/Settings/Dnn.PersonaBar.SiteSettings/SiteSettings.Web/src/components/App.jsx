@@ -89,7 +89,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
                     <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
                     </SocialPanelHeader>
-                    <HtmlEditorManager portalId={props.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this)} />
+                    <HtmlEditorManager portalId={state.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
                 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageVerifier}>

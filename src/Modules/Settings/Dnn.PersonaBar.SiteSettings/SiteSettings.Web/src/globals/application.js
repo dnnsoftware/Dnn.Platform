@@ -10,7 +10,11 @@ const boilerPlate = {
         utilities.init(options.utility);
         utilities.moduleName = options.moduleName;
         utilities.settings = options.settings;
-        
+
+        if (!window.dnn.SiteSettings) {
+            window.dnn.SiteSettings = {};
+        }
+
         window.dnn.SiteSettings.bundleLoaded = true;
 
         // delay the styles loading after the __webpack_public_path__ is set

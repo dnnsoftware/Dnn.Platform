@@ -98,10 +98,7 @@ export default function siteBehavior(state = {
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_PORTAL_ALIASES:
             return { ...state,
-                siteAliases: action.data.siteAliases,
-                browsers: action.data.browsers,
-                languages: action.data.languages,
-                skins: action.data.skins
+                siteAliases: action.data.siteAliases
             };
         case ActionTypes.SITESETTINGS_URL_MAPPING_SETTINGS_CLIENT_MODIFIED:
             return { ...state,

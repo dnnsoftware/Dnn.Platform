@@ -690,6 +690,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     }
                     else
                     {
+                        DataCache.ClearDefinitionsCache(pid);
                         return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
@@ -747,6 +748,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     if (ValidateProperty(property))
                     {
                         ProfileController.UpdatePropertyDefinition(property);
+                        DataCache.ClearDefinitionsCache(pid);
                         return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                     else
@@ -797,7 +799,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                     ProfileController.UpdatePropertyDefinition(firstProfileProperty);
                     ProfileController.UpdatePropertyDefinition(secondProfileProperty);
-
+                    DataCache.ClearDefinitionsCache(pid);
                     return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
                 else
@@ -839,7 +841,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 ProfileController.DeletePropertyDefinition(propertyDefinition);
-
+                DataCache.ClearDefinitionsCache(pid);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
@@ -977,7 +979,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var response = new
                 {
-                    Success = true,
+                    PortalId = pid,
                     PortalAliases = aliases,
                     BrowserTypes = Enum.GetNames(typeof(BrowserTypes)),
                     Languages = LocaleController.Instance.GetLocales(pid).Select(l => new

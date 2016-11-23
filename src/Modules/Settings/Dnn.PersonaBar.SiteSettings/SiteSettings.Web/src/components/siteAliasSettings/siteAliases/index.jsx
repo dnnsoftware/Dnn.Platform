@@ -19,25 +19,32 @@ class SiteAliasesPanel extends Component {
     constructor() {
         super();
         this.state = {
-            siteAliases: [],
             openId: ""
         };
+    }
+
+    loadData() {
+        const {props} = this;
+        if (props.siteAliases) {
+            if (props.portalId === undefined || props.siteAliases.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
     }
 
     componentWillMount() {
         const {props} = this;
 
-        if (props.siteAliases) {
-            this.setState({
-                siteAliases: props.siteAliases
-            });
+        if (!this.loadData()) {
             return;
         }
-        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId, (data) => {
-            this.setState({
-                siteAliases: Object.assign({}, data.PortalAliases)
-            });
-        }));
+        props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
     }
 
     componentWillReceiveProps(props) {
@@ -46,7 +53,7 @@ class SiteAliasesPanel extends Component {
             tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });
             tableFields.push({ "name": resx.get("Browser.Header"), "id": "Browser" });
             tableFields.push({ "name": resx.get("Theme.Header"), "id": "Theme" });
-            if (props.languages.length > 1) {
+            if (props.siteAliases. Languages.length > 1) {
                 tableFields.push({ "name": resx.get("Language.Header"), "id": "Language" });
             }
             tableFields.push({ "name": resx.get("Primary.Header"), "id": "Primary" });
@@ -112,7 +119,7 @@ class SiteAliasesPanel extends Component {
     onDeleteSiteAlias(aliasId) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SiteAliasDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            const itemList = props.siteAliases.filter((item) => item.PortalAliasID !== aliasId);
+            const itemList = props.siteAliases.PortalAliases.filter((item) => item.PortalAliasID !== aliasId);
             props.dispatch(SiteBehaviorActions.deleteSiteAlias(aliasId, itemList, () => {
                 util.utilities.notify(resx.get("SiteAliasDeleteSuccess"));
                 this.collapse();
@@ -126,7 +133,7 @@ class SiteAliasesPanel extends Component {
     renderedSiteAliases() {
         let i = 0;
         if (this.props.siteAliases) {
-            return this.props.siteAliases.map((item, index) => {
+            return this.props.siteAliases.PortalAliases.map((item, index) => {
                 let id = "row-" + i++;
                 return (
                     <SiteAliasRow
@@ -138,7 +145,7 @@ class SiteAliasesPanel extends Component {
                         isPrimary={item.IsPrimary}
                         deletable={item.Deletable}
                         editable={item.Editable}
-                        showLanguageColumn={this.props.languages && this.props.languages.length > 1}
+                        showLanguageColumn={this.props.siteAliases.Languages && this.props.siteAliases.Languages.length > 1}
                         index={index}
                         key={"aliasItem-" + index}
                         closeOnClick={true}
@@ -182,7 +189,7 @@ class SiteAliasesPanel extends Component {
                                 isPrimary={"-"}
                                 deletable={false}
                                 editable={false}
-                                showLanguageColumn={this.props.languages && this.props.languages.length > 1}
+                                showLanguageColumn={this.props.siteAliases && this.props.siteAliases.Languages && this.props.siteAliases.Languages.length > 1}
                                 index={"add"}
                                 key={"aliasItem-add"}
                                 closeOnClick={true}
@@ -210,10 +217,7 @@ class SiteAliasesPanel extends Component {
 SiteAliasesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    siteAliases: PropTypes.array,
-    browsers: PropTypes.array,
-    languages: PropTypes.array,
-    skins: PropTypes.array,
+    siteAliases: PropTypes.object,
     portalId: PropTypes.number,
     cultureCode: PropTypes.string
 };
@@ -221,9 +225,6 @@ SiteAliasesPanel.propTypes = {
 function mapStateToProps(state) {
     return {
         siteAliases: state.siteBehavior.siteAliases,
-        browsers: state.siteBehavior.browsers,
-        languages: state.siteBehavior.languages,
-        skins: state.siteBehavior.skins,
         tabIndex: state.pagination.tabIndex
     };
 }
