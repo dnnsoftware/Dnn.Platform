@@ -170,13 +170,13 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        [HttpGet]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
-        public HttpResponseMessage ChangePasswordAvailable()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK,
-                new {Enabled = !MembershipProviderConfig.RequiresQuestionAndAnswer});
-        }
+//        [HttpGet]
+//        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
+//        public HttpResponseMessage ChangePasswordAvailable()
+//        {
+//            return Request.CreateResponse(HttpStatusCode.OK,
+//                new {Enabled = !MembershipProviderConfig.RequiresQuestionAndAnswer});
+//        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -399,23 +399,23 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
-        public HttpResponseMessage DeleteUnauthorizedUsers()
-        {
-            try
-            {
-                UserController.DeleteUnauthorizedUsers(PortalId);
-
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
+//        [HttpPost]
+//        [ValidateAntiForgeryToken]
+//        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
+//        public HttpResponseMessage DeleteUnauthorizedUsers()
+//        {
+//            try
+//            {
+//                UserController.DeleteUnauthorizedUsers(PortalId);
+//
+//                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+//            }
+//            catch (Exception ex)
+//            {
+//                Logger.Error(ex);
+//                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+//            }
+//        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -600,21 +600,21 @@ namespace Dnn.PersonaBar.Users.Services
         #endregion
 
         #region Profiles API
-
-        [HttpGet]
-        public HttpResponseMessage GetProfileDefinitions()
-        {
-            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
-                .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
-
-            return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
-        }
-
-        [HttpGet]
-        public HttpResponseMessage GetUserProfile(int userId)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
-        }
+//        User profile is not implemented currently
+//        [HttpGet]
+//        public HttpResponseMessage GetProfileDefinitions()
+//        {
+//            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
+//                .Cast<ProfilePropertyDefinition>().Select(d => new ProfileDefinitionDto(d));
+//
+//            return Request.CreateResponse(HttpStatusCode.OK, profileDefinitions);
+//        }
+//
+//        [HttpGet]
+//        public HttpResponseMessage GetUserProfile(int userId)
+//        {
+//            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+//        }
 
         #endregion
 
