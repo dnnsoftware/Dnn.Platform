@@ -44,6 +44,7 @@ class DropdownWithError extends Component {
                         enabled={props.enabled}
                         value={props.value}
                         closeOnClick={props.closeOnClick}
+                        labelIsMultiLine={props.labelIsMultiLine}
                         prependWith={props.prependWith}
                         />
                     <Tooltip
@@ -88,7 +89,8 @@ DropdownWithError.propTypes = {
     style: PropTypes.object,
     labelStyle: PropTypes.object,
     extraToolTips: PropTypes.node,
-    prependWith: PropTypes.string
+    prependWith: PropTypes.string,
+    labelIsMultiLine: PropTypes.bool
 };
 DropdownWithError.defaultProps = {
     error: false,
