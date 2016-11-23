@@ -1,0 +1,59 @@
+.dnnEditVocab .RadListBox {
+    white-space: normal !important;
+}
+
+.dnnEditVocab .RadListBox .rlbGroup {
+    border: 1px solid #c9c9c9;
+    width : 442px !important;
+}
+
+.dnnEditVocab .RadListBox_Default .rlbText,
+.dnnEditVocab .RadListBox_Default .rlbItem,
+.dnnEditVocab .RadListBox_Default .rlbButtonText,
+.dnnEditVocab .RadListBox_Default .rlbEmptyMessage {
+    font-size: inherit !important;
+    font-family: inherit !important;
+    color: inherit !important;
+}
+
+/* Search Suggest */
+ul.ui-autocomplete, 
+ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
+	ul.ui-autocomplete{
+		display:none;
+		position:absolute;top:46px;left:0;
+		width:auto;
+		border:1px solid #ccc; background:#fff;
+		z-index:5;
+		
+		/*CSS3*/
+		-moz-border-radius-bottomright: 3px;
+		-moz-border-radius-bottomleft:	3px;
+		-webkit-border-radius: 			0px 0px 3px 3px;
+		border-radius: 					0px 0px 3px 3px; 
+		
+		-webkit-box-shadow: 	0px 2px 0px 0px rgba(0, 0, 0, .5);
+		-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
+		box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
+	}
+	ul.ui-autocomplete li{display:block;clear:both;overflow:hidden}
+		    ul.ui-autocomplete li a{
+				display:block;
+				padding:10px;
+				border-bottom:1px #e8e8e8 solid;
+				clear:both;overflow:hidden
+			}
+		    ul.ui-autocomplete li a:hover{
+				background:#FEFDDE;
+				cursor:pointer
+			}
+
+
+.dnnActions a.dnnActionDisabled {
+	background: #cdcdcd;
+	color: #999;
+	cursor: text;
+	border-color: #999;
+	text-shadow: 0px -1px 0px #cdcdcd;
+}
+

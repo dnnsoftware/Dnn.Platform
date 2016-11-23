@@ -194,7 +194,10 @@
   </data>
   <data name="Tab.SearchResultsCE.Title.Text" xml:space="preserve">
     <value>Search Results</value>
-  </data> 
+  </data>
+  <data name="Tab.Taxonomy.Title.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>  
   <data name="Tab.DigitalAssetsManagement.Title.Text" xml:space="preserve">
     <value>File Management</value>
   </data>
