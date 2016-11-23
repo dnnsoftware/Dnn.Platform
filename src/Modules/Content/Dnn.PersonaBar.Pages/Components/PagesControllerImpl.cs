@@ -780,19 +780,22 @@ namespace Dnn.PersonaBar.Pages.Components
             return page;
         }
 
-        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        public PageUrlResult CreateCustomUrl(SeoUrl dto)
         {
-            return _pageUrlsController.CreateCustomUrl(dto, portalSettings);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return _pageUrlsController.CreateCustomUrl(dto.SaveUrl, _tabController.GetTab(dto.TabId, portalSettings.PortalId, false));
         }
 
-        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        public PageUrlResult UpdateCustomUrl(SeoUrl dto)
         {
-            return _pageUrlsController.UpdateCustomUrl(dto, portalSettings);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return _pageUrlsController.UpdateCustomUrl(dto.SaveUrl, _tabController.GetTab(dto.TabId, portalSettings.PortalId, false));
         }
 
-        public PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings)
+        public PageUrlResult DeleteCustomUrl(UrlIdDto dto)
         {
-            return _pageUrlsController.DeleteCustomUrl(dto, portalSettings);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return _pageUrlsController.DeleteCustomUrl(dto.Id, _tabController.GetTab(dto.TabId, portalSettings.PortalId, false));
         }
         protected IOrderedEnumerable<KeyValuePair<int, string>> GetLocales(int portalId)
         {

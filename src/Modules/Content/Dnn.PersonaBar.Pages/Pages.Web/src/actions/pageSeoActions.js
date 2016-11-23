@@ -45,12 +45,14 @@ const pageSeoActions = {
         };        
     },
     addUrl(url, primaryAliasId) {
-        return (dispatch) => {
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.SEO_ADD_URL
             });
 
-            PageSeoService.add(url, primaryAliasId).then((response) => {
+            const {pages} = getState();
+            const tabId = pages.selectedPage.tabId;
+            PageSeoService.add(url, tabId, primaryAliasId).then((response) => {
                 const newUrl = {
                     ...url
                 };  
@@ -80,12 +82,14 @@ const pageSeoActions = {
         };
     },
     saveUrl(url, primaryAliasId) {
-        return (dispatch) => {
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.SEO_SAVE_URL
             });
 
-            PageSeoService.save(url, primaryAliasId).then((response) => {
+            const {pages} = getState();
+            const tabId = pages.selectedPage.tabId;
+            PageSeoService.save(url, tabId, primaryAliasId).then((response) => {
                 if (!response.Success) {
                     dispatch({
                         type: ActionTypes.ERROR_SEO_SAVING_URL,
@@ -112,12 +116,14 @@ const pageSeoActions = {
         };
     },
     deleteUrl(url) {
-        return (dispatch) => {
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.SEO_DELETE_URL
             });
 
-            PageSeoService.delete(url).then((response) => {
+            const {pages} = getState();
+            const tabId = pages.selectedPage.tabId;
+            PageSeoService.delete(url, tabId).then((response) => {
                 if (!response.Success) {
                     dispatch({
                         type: ActionTypes.ERROR_SEO_DELETING_URL,

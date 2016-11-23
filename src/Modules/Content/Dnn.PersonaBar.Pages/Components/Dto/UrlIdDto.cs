@@ -2,6 +2,7 @@
 {
     public class UrlIdDto
     {
+        public int TabId { get; set; }
         public int Id { get; set; }
     }
 }

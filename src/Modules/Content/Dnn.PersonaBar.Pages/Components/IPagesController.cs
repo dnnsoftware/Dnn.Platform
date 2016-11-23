@@ -2,9 +2,7 @@
 using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
 
 namespace Dnn.PersonaBar.Pages.Components
 {
@@ -52,9 +50,9 @@ namespace Dnn.PersonaBar.Pages.Components
 
         IEnumerable<Url> GetPageUrls(int tabId);
         PageSettings GetPageSettings(int pageId);
-        PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
-        PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings);
-        PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings);
+        PageUrlResult CreateCustomUrl(SeoUrl dto);
+        PageUrlResult UpdateCustomUrl(SeoUrl dto);
+        PageUrlResult DeleteCustomUrl(UrlIdDto dto);
 
         PagePermissions GetPermissionsData(int pageId);
     }

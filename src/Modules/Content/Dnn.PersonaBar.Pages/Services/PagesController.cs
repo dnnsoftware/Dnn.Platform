@@ -30,6 +30,7 @@ using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Web.Api;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.DTO.Tabs;
+using Dnn.PersonaBar.Pages.Components.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -56,6 +57,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private readonly ITabController _tabController;
         private readonly ILocaleController _localeController;
+        private readonly ISecurityService _securityService;
 
         public PagesController()
         {
@@ -66,6 +68,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
             _tabController = TabController.Instance;
             _localeController = LocaleController.Instance;
+            _securityService = SecurityService.Instance;
         }
 
         /// GET: api/Pages/GetPageDetails
@@ -77,6 +80,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageDetails(int pageId)
         {
+            if (!_securityService.CanManagePage(GetTabById(pageId)))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var page = _pagesController.GetPageSettings(pageId);
@@ -90,9 +98,14 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage CreateCustomUrl(SaveUrlDto dto)
+        public HttpResponseMessage CreateCustomUrl(SeoUrl dto)
         {
-            var result = _pagesController.CreateCustomUrl(dto, PortalSettings);
+            if (!_securityService.CanManagePage(GetTabById(dto.TabId)))
+            {
+                return GetForbiddenResponse();
+            }
+
+            var result = _pagesController.CreateCustomUrl(dto);
 
             return Request.CreateResponse(HttpStatusCode.OK,
                                 new
@@ -103,9 +116,14 @@ namespace Dnn.PersonaBar.Pages.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateCustomUrl(SaveUrlDto dto)
+        public HttpResponseMessage UpdateCustomUrl(SeoUrl dto)
         {
-            var result = _pagesController.UpdateCustomUrl(dto, PortalSettings);
+            if (!_securityService.CanManagePage(GetTabById(dto.TabId)))
+            {
+                return GetForbiddenResponse();
+            }
+
+            var result = _pagesController.UpdateCustomUrl(dto);
             
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -120,7 +138,12 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteCustomUrl(UrlIdDto dto)
         {
-            _pagesController.DeleteCustomUrl(dto, PortalSettings);
+            if (!_securityService.CanManagePage(GetTabById(dto.TabId)))
+            {
+                return GetForbiddenResponse();
+            }
+
+            _pagesController.DeleteCustomUrl(dto);
 
             var response = new
             {
@@ -140,6 +163,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "")
         {
+            /*if (!_securityService.IsPageAdminUser())
+            {
+                return GetForbiddenResponse();
+            }*/
+
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
             var pages = from p in _pagesController.GetPageList(parentId, searchKey)
@@ -150,6 +178,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageHierarchy(int pageId)
         {
+            if (!_securityService.IsPageAdminUser())
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var paths = _pagesController.GetPageHierarchy(pageId);
@@ -165,6 +198,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage MovePage(PageMoveRequest request)
         {
+            if (!_securityService.IsPageAdminUser())
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var tab = _pagesController.MovePage(request);
@@ -187,6 +225,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeletePage(PageItem page)
         {
+            if (!_securityService.CanDeletePage(GetTabById(page.Id)))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 _pagesController.DeletePage(page);
@@ -203,6 +246,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeletePageModule(PageModuleItem module)
         {
+            if (!_securityService.CanManagePage(GetTabById(module.PageId)))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 _pagesController.DeleteTabModule(module.PageId, module.ModuleId);
@@ -218,6 +266,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage CopyThemeToDescendantPages(CopyThemeRequest copyTheme)
         {
+            if (!_securityService.CanManagePage(GetTabById(copyTheme.PageId)))
+            {
+                return GetForbiddenResponse();
+            }
+
             _pagesController.CopyThemeToDescendantPages(copyTheme.PageId, copyTheme.Theme);
             return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
         }
@@ -226,6 +279,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage CopyPermissionsToDescendantPages(CopyPermissionsRequest copyPermissions)
         {
+            if (!_securityService.CanAdminPage(GetTabById(copyPermissions.PageId)))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 _pagesController.CopyPermissionsToDescendantPages(copyPermissions.PageId);
@@ -292,11 +350,6 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageUrlPreview(string url)
         {
-            if (string.IsNullOrEmpty(url))
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Url = string.Empty});
-            }
-
             var cleanedUrl = _pagesController.CleanTabUrl(url);
             return Request.CreateResponse(HttpStatusCode.OK, new {Url = cleanedUrl});
         }
@@ -316,27 +369,6 @@ namespace Dnn.PersonaBar.Pages.Services
                 defaultPortalLayout,
                 defaultPortalContainer
             });
-        }
-
-        private string GetDefaultPortalTheme()
-        {
-            var layoutSrc = GetDefaultPortalLayout();
-            if (string.IsNullOrWhiteSpace(layoutSrc))
-            {
-                return null;
-            }
-            var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
-            return layout?.ThemeName;
-        }
-
-        private string GetDefaultPortalContainer()
-        {
-            return PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
-        }
-
-        private string GetDefaultPortalLayout()
-        {
-            return PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
         }
 
         [HttpGet]
@@ -433,7 +465,7 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
-                var currentTab = _tabController.GetTab(tabId, PortalId, false);
+                var currentTab = GetTabById(tabId);
                 if (currentTab == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidTab");
@@ -478,7 +510,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 // loop through all localized version of this page
-                var currentTab = _tabController.GetTab(comment.TabId, PortalId, false);
+                var currentTab = GetTabById(comment.TabId);
                 foreach (var localizedTab in currentTab.LocalizedTabs.Values)
                 {
                     var users = new Dictionary<int, UserInfo>();
@@ -612,7 +644,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private DnnPagesDto GetNonLocalizedPages(int tabId)
         {
-            var currentTab = _tabController.GetTab(tabId, PortalId, false);
+            var currentTab = GetTabById(tabId);
 
             //Unique id of default language page
             var uniqueId = currentTab.DefaultLanguageGuid != Null.NullGuid
@@ -1017,6 +1049,37 @@ namespace Dnn.PersonaBar.Pages.Services
             };
 
             notificationsController.SendNotification(notification, PortalSettings.PortalId, null, new List<UserInfo> { translator });
+        }
+
+        private HttpResponseMessage GetForbiddenResponse()
+        {
+            return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "The user is not allowed to access this method." });
+        }
+
+        private string GetDefaultPortalTheme()
+        {
+            var layoutSrc = GetDefaultPortalLayout();
+            if (string.IsNullOrWhiteSpace(layoutSrc))
+            {
+                return null;
+            }
+            var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
+            return layout?.ThemeName;
+        }
+
+        private string GetDefaultPortalContainer()
+        {
+            return PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
+        }
+
+        private string GetDefaultPortalLayout()
+        {
+            return PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
+        }
+
+        private TabInfo GetTabById(int pageId)
+        {
+            return _tabController.GetTab(pageId, PortalId, false);
         }
     }
 }

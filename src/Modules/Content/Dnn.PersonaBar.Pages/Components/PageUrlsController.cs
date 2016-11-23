@@ -30,8 +30,9 @@ namespace Dnn.PersonaBar.Pages.Components
             return automaticUrls;
         }
 
-        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        public PageUrlResult CreateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             //Clean Url
@@ -57,8 +58,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     SuggestedUrlPath = "/" + urlPath
                 };
             }
-
-            var tab = portalSettings.ActiveTab;
 
             if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
                                      && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
@@ -127,8 +126,9 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, PortalSettings portalSettings)
+        public PageUrlResult UpdateCustomUrl(SaveUrlDto dto, TabInfo tab)
         {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             //Clean Url
@@ -160,7 +160,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     };
             }
 
-            var tab = portalSettings.ActiveTab;
             var cultureCode = LocaleController.Instance.GetLocales(portalSettings.PortalId)
                 .Where(l => l.Value.KeyID == dto.LocaleKey)
                 .Select(l => l.Value.Code)
@@ -227,10 +226,10 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
-        public PageUrlResult DeleteCustomUrl(UrlIdDto dto, PortalSettings portalSettings)
+        public PageUrlResult DeleteCustomUrl(int id, TabInfo tab)
         {
-            var tab = portalSettings.ActiveTab;
-            var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == dto.Id);
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tabUrl = tab.TabUrls.SingleOrDefault(u => u.SeqNum == id);
 
             TabController.Instance.DeleteTabUrl(tabUrl, portalSettings.PortalId, true);
 

@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
         {
             var settings = new Dictionary<string, object>
             {
-                {"isSuperUser", _securityService.IsSuperUser()},
+                {"isSuperUser", _securityService.IsPageAdminUser()},
                 {"portalName", PortalSettings.Current.PortalName},
                 {"currentPagePermissions", _securityService.GetCurrentPagePermissions()}
             };

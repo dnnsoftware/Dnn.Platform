@@ -1,6 +1,7 @@
 ﻿using System;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
@@ -52,7 +53,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             return permissions;
         }
 
-        public virtual bool IsSuperUser()
+        public virtual bool IsPageAdminUser()
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
@@ -62,5 +63,26 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         {
             return () => new SecurityService();
         }
+
+        public virtual bool IsUserAllowed(string permission)
+        {
+            return IsPageAdminUser() || (bool) GetCurrentPagePermissions().GetValue(permission);
+        }
+
+        public virtual bool CanManagePage(TabInfo tab)
+        {
+            return IsPageAdminUser() || tab == null || TabPermissionController.CanManagePage(tab);
+        }
+
+        public virtual bool CanAdminPage(TabInfo tab)
+        {
+            return IsPageAdminUser() || tab == null || TabPermissionController.CanAdminPage(tab);
+        }
+
+        public virtual bool CanDeletePage(TabInfo tab)
+        {
+            return IsPageAdminUser() || tab == null || TabPermissionController.CanDeletePage(tab);
+        }
+
     }
 }
