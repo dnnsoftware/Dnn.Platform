@@ -10,6 +10,8 @@ const boilerPlate = {
         utilities.init(options.utility);
         utilities.moduleName = options.moduleName;
         utilities.settings = options.settings;
+        
+        window.dnn.SiteSettings.bundleLoaded = true;
 
         // delay the styles loading after the __webpack_public_path__ is set
         // this allows the fonts associated to be loaded properly in production
