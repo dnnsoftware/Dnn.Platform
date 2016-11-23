@@ -363,4 +363,7 @@
   <data name="PortalNotFound.Text" xml:space="preserve">
     <value>Portal not found.</value>
   </data>
+  <data name="LoadMore.Button" xml:space="preserve">
+    <value>Load More</value>
+  </data>
 </root>
