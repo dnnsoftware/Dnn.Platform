@@ -76,12 +76,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 8px 40px 8px 15px;
+        &.no-wrap{
+            white-space: nowrap;
+        }
     }
     .collapsible-content {
         position: absolute;
         padding: 0;
         left: -1px;
-        top: 33px;
+        top: 102%;
         width: 100%;
         box-sizing: content-box;
         background-color: @white;

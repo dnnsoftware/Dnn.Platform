@@ -123,6 +123,10 @@ class Dropdown extends Component {
         return (props.prependWith ? props.prependWith + " " + label : label);
     }
 
+    getIsMultiLineLabel(){
+        return this.props.labelIsMultiLine ? "" : " no-wrap";
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -131,7 +135,7 @@ class Dropdown extends Component {
         });
         return (
             <div className={this.getClassName()} style={props.style}>
-                <div className="collapsible-label" onClick={this.toggleDropdown.bind(this)}>
+                <div className={"collapsible-label" + this.getIsMultiLineLabel()} onClick={this.toggleDropdown.bind(this)}>
                     {this.getDropdownLabel()}
                 </div>
                 {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this)}></div>}
@@ -159,7 +163,7 @@ class Dropdown extends Component {
     }
 }
 
-Dropdown.PropTypes = {
+Dropdown.propTypes = {
     label: PropTypes.string,
     fixedHeight: PropTypes.number,
     collapsibleWidth: PropTypes.number,
@@ -175,7 +179,8 @@ Dropdown.PropTypes = {
     enabled: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     closeOnClick: PropTypes.bool,
-    prependWith: PropTypes.string
+    prependWith: PropTypes.string,
+    labelIsMultiLine: PropTypes.bool
 };
 
 Dropdown.defaultProps = {
