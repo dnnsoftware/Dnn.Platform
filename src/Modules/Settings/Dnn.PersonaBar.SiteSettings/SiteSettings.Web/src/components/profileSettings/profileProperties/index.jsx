@@ -19,14 +19,38 @@ class ProfilePropertiesPanel extends Component {
     constructor() {
         super();
         this.state = {
-            profileProperties: [],
             openId: ""
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.profileProperties) {
+            if (props.portalId === undefined || props.profileProperties.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {props} = this;
-        props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
+
+        if (!this.loadData()) {
+            return;
+        }
+        else {
+            props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId, (data) => {
+                this.setState({
+                    pid: data.PortalId
+                });
+            }));
+        }
 
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
@@ -110,7 +134,7 @@ class ProfilePropertiesPanel extends Component {
         }
         else {
             util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-                const itemList = props.profileProperties.filter((item) => item.PropertyDefinitionId !== propertyId);
+                const itemList = props.profileProperties.Properties.filter((item) => item.PropertyDefinitionId !== propertyId);
                 props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
                     util.utilities.notify(resx.get("DeleteSuccess"));
                     this.collapse();
@@ -139,7 +163,7 @@ class ProfilePropertiesPanel extends Component {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            const itemList = Object.assign([], props.profileProperties);
+            const itemList = Object.assign([], props.profileProperties.Properties);
             let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
             if (index > 0) {
@@ -169,7 +193,7 @@ class ProfilePropertiesPanel extends Component {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            const itemList = Object.assign([], props.profileProperties);
+            const itemList = Object.assign([], props.profileProperties.Properties);
             let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
 
             if (index < itemList.length - 1) {
@@ -196,7 +220,7 @@ class ProfilePropertiesPanel extends Component {
     renderedProfileProperties() {
         let i = 0;
         if (this.props.profileProperties) {
-            return this.props.profileProperties.map((item, index) => {
+            return this.props.profileProperties.Properties.map((item, index) => {
                 let id = "row-" + i++;
                 return (
                     <ProfilePropertyRow
@@ -280,7 +304,7 @@ class ProfilePropertiesPanel extends Component {
 ProfilePropertiesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number,
-    profileProperties: PropTypes.array,
+    profileProperties: PropTypes.object,
     portalId: PropTypes.number,
     cultureCode: PropTypes.string,
     profilePropertyClientModified: PropTypes.bool

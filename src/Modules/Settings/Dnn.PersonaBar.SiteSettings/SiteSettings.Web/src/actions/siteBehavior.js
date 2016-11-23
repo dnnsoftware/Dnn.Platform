@@ -148,7 +148,7 @@ const siteBehaviorActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTIES,
                     data: {
-                        profileProperties: data.ProfileProperties
+                        profileProperties: data
                     }
                 });
                 if (callback) {

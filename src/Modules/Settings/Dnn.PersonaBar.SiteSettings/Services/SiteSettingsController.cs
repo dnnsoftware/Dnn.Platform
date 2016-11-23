@@ -401,6 +401,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Settings = new
                     {
+                        PortalId = pid,
                         RedirectOldProfileUrl = Config.GetFriendlyUrlProvider() == "advanced" && urlSettings.RedirectOldProfileUrl,
                         urlSettings.VanityUrlPrefix,
                         ProfileDefaultVisibility = userSettings["Profile_DefaultVisibility"] == null ? (int)UserVisibilityMode.AdminOnly : Convert.ToInt32(userSettings["Profile_DefaultVisibility"]),
@@ -489,7 +490,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    ProfileProperties = profileProperties
+                    PortalId = pid,
+                    Properties = profileProperties
                 });
             }
             catch (Exception exc)
