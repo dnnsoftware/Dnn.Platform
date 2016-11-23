@@ -212,6 +212,18 @@ class LanguageEditor extends Component {
         }
     }
 
+    onToggleEnable(enabled) {
+        if (!enabled) {
+            const {languageDetail} = this.state;
+            const languageName = this.props.languageDisplayMode.toLowerCase() === "native" ? languageDetail.NativeName : languageDetail.EnglishName;
+            util.utilities.confirm(resx.get("DisableLanguageWarning").replace("{0}", languageName), resx.get("Yes"), resx.get("No"), () => {
+                this.onSettingChange("Enabled", enabled);
+            });
+        } else {
+            this.onSettingChange("Enabled", enabled);
+        }
+    }
+
     onRoleSelectChange(roleName, selected) {
         let {state, props} = this;
         let languageDetail = Object.assign({}, state.languageDetail);
@@ -317,7 +329,7 @@ class LanguageEditor extends Component {
                     <Switch
                         labelHidden={true}
                         value={state.languageDetail.Enabled}
-                        onChange={this.onSettingChange.bind(this, "Enabled")}
+                        onChange={this.onToggleEnable.bind(this)}
                         readOnly={!state.languageDetail.CanEnableDisable}
                         />
                 </div>

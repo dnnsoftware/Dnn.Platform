@@ -24,8 +24,8 @@ class Module extends Component {
 
     toggleLink() {
         const {module} = this.props;
-        const value = !module.TranslatedVisible;
-        this.onUpdateModules("TranslatedVisible", value);
+        const value = !module.IsLocalized;
+        this.onUpdateModules("IsLocalized", value);
     }
 
     /* eslint-disable react/no-danger */
@@ -47,7 +47,7 @@ class Module extends Component {
                 </div>}
                 {!module.IsDeleted && !isDefault && <div className="icons-container">
                     <span
-                        className={`icon float-left ${(!module.TranslatedVisible ? " blue" : "")}`}
+                        className={`icon float-left ${(module.IsLocalized ? " blue" : "")}`}
                         onClick={this.toggleLink.bind(this) }
                         dangerouslySetInnerHTML={{ __html: LinkIcon }} />
                     {module.TranslatedVisible && <Checkbox

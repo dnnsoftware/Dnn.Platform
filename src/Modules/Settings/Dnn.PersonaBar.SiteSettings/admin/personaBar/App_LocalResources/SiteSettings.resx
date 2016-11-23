@@ -1200,4 +1200,7 @@
   <data name="PagesSuccessfullyTranslated.Text" xml:space="preserve">
     <value>Pages successfully translated.</value>
   </data>
+  <data name="DisableLanguageWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to disable the language {0}</value>
+  </data>
 </root>
