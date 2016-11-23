@@ -175,6 +175,7 @@
     <Compile Include="Services\MenuExtensionsController.cs" />
     <Compile Include="Services\LocalizationController.cs" />
     <Compile Include="Services\ComponentsController.cs" />
+    <Compile Include="Services\PortalsController.cs" />
     <Compile Include="Services\TabsController.cs" />
     <Compile Include="Services\UserSettingsController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />

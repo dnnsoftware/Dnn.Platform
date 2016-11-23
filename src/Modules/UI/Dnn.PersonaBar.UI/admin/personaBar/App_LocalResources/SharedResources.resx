@@ -285,4 +285,7 @@
   <data name="GenericErrorMessage.Error" xml:space="preserve">
     <value>An unknown error has occured. Please check the admin logs for more information.</value>
   </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>
