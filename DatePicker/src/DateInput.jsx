@@ -32,6 +32,9 @@ export default class DateInput extends Component {
 
     setMonth() {
         let {month} = this.state;
+        if (!month) {
+            return;
+        }
         if (month > 12) {
             month = 12;
         }
@@ -46,7 +49,11 @@ export default class DateInput extends Component {
     }
 
     setDay() {
+
         let {day} = this.state;
+        if (!day) {
+            return;
+        }
         if (day > 31) {
             day = 31;
         }
@@ -62,6 +69,9 @@ export default class DateInput extends Component {
 
     setHours() {
         let {hours} = this.state;
+        if (!hours) {
+            return;
+        }
         if (hours > 12) {
             hours = 12;
         }
@@ -80,6 +90,9 @@ export default class DateInput extends Component {
 
     setMinutes() {
         let {minutes} = this.state;
+        if (!minutes) {
+            return;
+        }
         if (minutes > 59) {
             minutes = 59;
         }
@@ -95,6 +108,9 @@ export default class DateInput extends Component {
 
     setYear() {
         let {year} = this.state;
+        if (!year) {
+            return;
+        }
         year = this.formatYear(year);
         this.setState({ year });
         let date = this.props.date || new Date();
