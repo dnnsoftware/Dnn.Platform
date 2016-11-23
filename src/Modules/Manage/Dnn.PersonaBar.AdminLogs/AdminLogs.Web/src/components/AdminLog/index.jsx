@@ -34,7 +34,7 @@ class AdminLogPanelBody extends Component {
             allRowIds: [],
             emailPanelOpen: false,
             currentPortal: "",
-            currentPortalId: "",
+            currentPortalId: "-2",
             currentLogType: "",
             currentLogTypeKey: "",
             pageIndex: 0,
@@ -47,27 +47,22 @@ class AdminLogPanelBody extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(LogActions.getPortalList((dataPortal) => {
-            let portalList = Object.assign([], dataPortal.Results);
-            let currentPortalId = portalList[0].PortalID;
-            let currentPortal = portalList[0].PortalName;
-            this.setState({
-                portalList,
-                currentPortalId,
-                currentPortal
-            });
-            props.dispatch(LogActions.getLogTypeList((dataLog) => {
-                let logTypeList = Object.assign([], dataLog.Results);
-                let currentLogType = logTypeList[0].LogTypeFriendlyName;
-                let currentLogTypeKey = logTypeList[0].LogTypeKey;
+        if (util.settings.isHost) {
+            props.dispatch(LogActions.getPortalList((dataPortal) => {
+                let portalList = Object.assign([], dataPortal.Results);
+                let currentPortalId = portalList[0].PortalID;
+                let currentPortal = portalList[0].PortalName;
                 this.setState({
-                    logTypeList,
-                    currentLogType,
-                    currentLogTypeKey
+                    portalList,
+                    currentPortalId,
+                    currentPortal
+                }, () => {
+                    this.getLogTypes();
                 });
-                props.dispatch(LogActions.getLogList(this.getNextPage()));
             }));
-        }));
+        } else {
+            this.getLogTypes();
+        }
 
         pageSizeOptions = [];
         pageSizeOptions.push({ "value": 10, "label": "10 entries per page" });
@@ -76,7 +71,21 @@ class AdminLogPanelBody extends Component {
         pageSizeOptions.push({ "value": 100, "label": "100 entries per page" });
         pageSizeOptions.push({ "value": 250, "label": "250 entries per page" });
     }
-
+    getLogTypes() {
+        const {props} = this;
+        props.dispatch(LogActions.getLogTypeList((dataLog) => {
+            let logTypeList = Object.assign([], dataLog.Results);
+            let currentLogType = logTypeList[0].LogTypeFriendlyName;
+            let currentLogTypeKey = logTypeList[0].LogTypeKey;
+            this.setState({
+                logTypeList,
+                currentLogType,
+                currentLogTypeKey
+            }, () => {
+                props.dispatch(LogActions.getLogList(this.getNextPage()));
+            });
+        }));
+    }
     getNextPage() {
         const {state} = this;
         if (state.currentPortalId === -1 || state.currentPortalId === "-1") {
@@ -202,7 +211,7 @@ class AdminLogPanelBody extends Component {
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
+                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this) } />
                 <label htmlFor="selectAll"></label>
             </div>
         </div>);
@@ -218,7 +227,7 @@ class AdminLogPanelBody extends Component {
                 <LogItemRow
                     cssClass={term.LogTypeCSSClass}
                     logId={term.LogGUID}
-                    allRowIds={this.props.logList.map((row) => row.LogGUID)}
+                    allRowIds={this.props.logList.map((row) => row.LogGUID) }
                     typeName={term.LogTypeFriendlyName}
                     createDate={term.LogCreateDate}
                     userName={term.LogUserName}
@@ -265,7 +274,7 @@ class AdminLogPanelBody extends Component {
                     numericCounters={4}
                     pageSize={state.pageSize}
                     totalRecords={props.totalCount}
-                    onPageChanged={this.onPageChange.bind(this)}
+                    onPageChanged={this.onPageChange.bind(this) }
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
@@ -308,7 +317,7 @@ class AdminLogPanelBody extends Component {
         return (
             <div>
                 <div className="toolbar">
-                    {state.portalList.length > 0 &&
+                    {util.settings.isHost && state.portalList.length > 0 &&
                         <div className="sitegroup-filter-container">
                             <DropDown
                                 value={state.currentPortalId}
@@ -316,7 +325,7 @@ class AdminLogPanelBody extends Component {
                                 style={{ width: "100%" }}
                                 options={portalOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectPortal.bind(this)}
+                                onSelect={this.onSelectPortal.bind(this) }
                                 />
                         </div>
                     }
@@ -328,32 +337,32 @@ class AdminLogPanelBody extends Component {
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectLogType.bind(this)}
+                                onSelect={this.onSelectLogType.bind(this) }
                                 />
                         </div>
                     }
                     <div className="toolbar-button toolbar-button-actions">
-                        <span onClick={this.toggleEmailPanel.bind(this)}>{resx.get("btnEmail")} </span>
+                        <span onClick={this.toggleEmailPanel.bind(this) }>{resx.get("btnEmail") } </span>
                         <div className="collapsible-content">
                             <EmailPanel
                                 fixedHeight={370}
                                 isOpened={state.emailPanelOpen}
                                 logIds={props.selectedRowIds}
-                                onCloseEmailPanel={this.toggleEmailPanel.bind(this)}>
+                                onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>
                             </EmailPanel>
                         </div>
                     </div>
-                    <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)}>{resx.get("btnDelete")} </div>
-                    <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)}>{resx.get("btnClear")} </div>
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) }>{resx.get("btnDelete") } </div> }
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) }>{resx.get("btnClear") } </div> }
                 </div>
                 <div className="logContainer">
                     <div className="logContainerBox">
-                        {this.renderLogListHeader()}
-                        {this.renderedLogList()}
+                        {this.renderLogListHeader() }
+                        {this.renderedLogList() }
                     </div>
                 </div>
-                {this.renderPager()}
-                {this.renderedLogLegend()}
+                {this.renderPager() }
+                {this.renderedLogLegend() }
             </div>
         );
     }

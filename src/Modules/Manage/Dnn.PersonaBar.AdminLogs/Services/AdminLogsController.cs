@@ -16,7 +16,9 @@ using Dnn.PersonaBar.AdminLogs.Services.Dto;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Api;
@@ -37,6 +39,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <param></param>
         /// <returns>List of portals</returns>
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetPortals()
         {
             try
@@ -145,7 +148,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             try
             {
                 var totalRecords = 0;
-                var logItems = LogController.Instance.GetLogs(portalId, logType == "*" ? string.Empty : logType,
+                var logItems = LogController.Instance.GetLogs(UserInfo.IsSuperUser ? portalId : PortalId,
+                    logType == "*" ? string.Empty : logType,
                     pageSize, pageIndex, ref totalRecords);
 
                 var items = logItems.Select(v => new
@@ -185,6 +189,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage DeleteLogItems(IEnumerable<string> logIds)
         {
             try
@@ -215,6 +220,15 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
+                if (request.LogIds.Any(
+                    x =>
+                        ((LogInfo)
+                            LogController.Instance.GetSingleLog(new LogInfo {LogGUID = x},
+                                LoggingProvider.ReturnType.LogInfoObjects))?.LogPortalID != PortalId))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                        Localization.GetString("UnAuthorizedToSendLog", Components.Constants.LocalResourcesFile));
+                }
                 string error;
                 var subject = request.Subject;
                 var strFromEmailAddress = !string.IsNullOrEmpty(UserInfo.Email) ? UserInfo.Email : PortalSettings.Email;
@@ -248,6 +262,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [RequireHost]
         public HttpResponseMessage ClearLog()
         {
             try

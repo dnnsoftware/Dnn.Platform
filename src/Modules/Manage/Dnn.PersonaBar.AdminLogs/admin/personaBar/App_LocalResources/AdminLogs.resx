@@ -464,4 +464,7 @@
   <data name="Email.Message" xml:space="preserve">
     <value>Valid email is required.</value>
   </data>
+  <data name="UnAuthorizedToSendLog.Text" xml:space="preserve">
+    <value>You are not authorized to send these log entries.</value>
+  </data>
 </root>

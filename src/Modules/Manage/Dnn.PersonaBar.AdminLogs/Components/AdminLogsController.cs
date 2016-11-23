@@ -53,14 +53,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
         }
 
-        private string LocalResourcesFile
-        {
-            get
-            {
-                return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/AdminLogs.resx");
-            }
-        }
-
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary
         {
             get
@@ -109,7 +101,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 {
                     str.Append(objLogInfo.Exception);
                 }
-                str.Append("<p>" + Localization.GetString("ServerName", LocalResourcesFile) +
+                str.Append("<p>" + Localization.GetString("ServerName",Constants.LocalResourcesFile) +
                            HttpUtility.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             }
             return str.ToString();
@@ -120,8 +112,8 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             LogController.Instance.ClearLog();
 
             //add entry to log recording it was cleared
-            EventLogController.Instance.AddLog(Localization.GetString("LogCleared", LocalResourcesFile),
-                               Localization.GetString("Username", LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
+            EventLogController.Instance.AddLog(Localization.GetString("LogCleared", Constants.LocalResourcesFile),
+                               Localization.GetString("Username", Constants.LocalResourcesFile) + ":" + UserController.Instance.GetCurrentUserInfo().Username,
                                PortalSettings,
                                -1,
                                EventLogController.EventLogType.ADMIN_ALERT);
@@ -131,17 +123,17 @@ namespace Dnn.PersonaBar.AdminLogs.Components
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
             int[] items = { 1, 2, 3, 4, 5, 10, 25, 100, 250, 500 };
-            options.Add(Localization.GetString("All", LocalResourcesFile), "*");
+            options.Add(Localization.GetString("All", Constants.LocalResourcesFile), "*");
             foreach (int item in items)
             {
                 if (item == 1)
                 {
-                    options.Add(item + Localization.GetString("LogEntry", LocalResourcesFile),
+                    options.Add(item + Localization.GetString("LogEntry", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    options.Add(item + Localization.GetString("LogEntries", LocalResourcesFile),
+                    options.Add(item + Localization.GetString("LogEntries", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
@@ -156,12 +148,12 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 if (item == 1)
                 {
-                    thresholds.Add(item + Localization.GetString("Occurence", LocalResourcesFile),
+                    thresholds.Add(item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    thresholds.Add(item + Localization.GetString("Occurences", LocalResourcesFile),
+                    thresholds.Add(item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
@@ -176,12 +168,12 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             {
                 if (item == 1)
                 {
-                    thresholds.Add(item + Localization.GetString("Occurence", LocalResourcesFile),
+                    thresholds.Add(item + Localization.GetString("Occurence", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    thresholds.Add(item + Localization.GetString("Occurences", LocalResourcesFile),
+                    thresholds.Add(item + Localization.GetString("Occurences", Constants.LocalResourcesFile),
                         item.ToString(CultureInfo.InvariantCulture));
                 }
             }
@@ -205,7 +197,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             Dictionary<string, string> notificationTimeTypes = new Dictionary<string, string>();
             foreach (int item in new[] { 1, 2, 3, 4 })
             {
-                notificationTimeTypes.Add(Localization.GetString(string.Format("TimeType_{0}", item), LocalResourcesFile), item.ToString(CultureInfo.InvariantCulture));
+                notificationTimeTypes.Add(Localization.GetString(string.Format("TimeType_{0}", item), Constants.LocalResourcesFile), item.ToString(CultureInfo.InvariantCulture));
             }
 
             return notificationTimeTypes;
@@ -262,17 +254,17 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
                 if (string.IsNullOrEmpty(returnMsg))
                 {
-                    error = Localization.GetString("EmailSuccess", LocalResourcesFile);
+                    error = Localization.GetString("EmailSuccess", Constants.LocalResourcesFile);
                 }
                 else
                 {
-                    error = Localization.GetString("EmailFailure", LocalResourcesFile);
+                    error = Localization.GetString("EmailFailure", Constants.LocalResourcesFile);
                 }
             }
             else
             {
-                returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", LocalResourcesFile), fromEmailAddress);
-                error = Localization.GetString("EmailFailure", LocalResourcesFile);
+                returnMsg = string.Format(Localization.GetString("InavlidEmailAddress", Constants.LocalResourcesFile), fromEmailAddress);
+                error = Localization.GetString("EmailFailure", Constants.LocalResourcesFile);
             }
             return returnMsg;
         }
