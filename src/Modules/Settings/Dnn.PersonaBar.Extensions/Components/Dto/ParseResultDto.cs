@@ -22,9 +22,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
 #endregion
@@ -71,12 +73,28 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public void Failed(string message, IList<LogEntry> logs = null)
         {
             Success = false;
-            Message = message;
+            Message = Localization.GetString(message, Constants.SharedResources) ?? message;
             AddLogs(logs);
-            // the UI asked for these to be non-null empty for moving to the next item.
-            Description = Email = FriendlyName = IsInUse = License = Name =
-                Organization = Owner = PackageIcon = PackageType = ReleaseNotes =
-                SiteSettingsLink = UpgradeIndicator = UpgradeUrl = Url = Version = "";
+            // UI devs asked for these to be non-null empty for moving to next step
+            Description = Description ?? "";
+            Email = Email ?? "";
+            FriendlyName = FriendlyName ?? "";
+            IsInUse = IsInUse ?? "";
+            License = License ?? "";
+            Name = Name ?? "";
+            Organization = Organization ?? "";
+            Owner = Owner ?? "";
+            PackageIcon = PackageIcon ?? "";
+            PackageType = PackageType ?? "";
+            ReleaseNotes = ReleaseNotes ?? "";
+            SiteSettingsLink = SiteSettingsLink ?? "";
+            UpgradeIndicator = UpgradeIndicator ?? "";
+            UpgradeUrl = UpgradeUrl ?? "";
+            Url = Url ?? "";
+            Version = Version ?? "";
+
+            LegacyError = LegacyError ?? "";
+            Message = Message ?? "";
         }
 
         public void Succeed(IList<LogEntry> logs)

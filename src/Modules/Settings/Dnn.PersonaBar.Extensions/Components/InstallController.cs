@@ -2,7 +2,6 @@
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Web.Management;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
@@ -13,6 +12,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Common.Utilities;
 
 namespace Dnn.PersonaBar.Extensions.Components
 {
@@ -114,7 +114,9 @@ namespace Dnn.PersonaBar.Extensions.Components
                         }
                         else
                         {
-                            installResult.NewPackageId = installer.Packages.First().Value.Package.PackageID;
+                            installResult.NewPackageId = installer.Packages.Count == 0
+                                ? Null.NullInteger
+                                : installer.Packages.First().Value.Package.PackageID;
                             installResult.Succeed(logs);
                             DeleteInstallFile(filePath);
                         }
@@ -135,19 +137,20 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        private Installer GetInstaller(Stream stream, string fileName, string legacySkin = null)
+        private static Installer GetInstaller(Stream stream, string fileName, string legacySkin = null)
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, true, false);
-            if (installer.IsValid &&
-                string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName))
+            if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
             {
-                CreateManifest(installer, fileName, legacySkin);
+                var manifestFile = CreateManifest(installer, fileName, legacySkin);
+                //Re-evaluate the package after creating a temporary manifest
+                installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
             }
 
             return installer;
         }
 
-        private void CreateManifest(Installer installer, string fileName, string legacySkin)
+        private static string CreateManifest(Installer installer, string fileName, string legacySkin)
         {
             var manifestFile = Path.Combine(installer.TempInstallFolder, Path.GetFileNameWithoutExtension(fileName) + ".dnn");
             using (var manifestWriter = new StreamWriter(manifestFile))
@@ -155,6 +158,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, legacySkin ?? "Skin", installer.TempInstallFolder));
                 manifestWriter.Close();
             }
+            return manifestFile;
         }
 
         private static void DeleteTempInstallFiles(Installer installer)
@@ -162,7 +166,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             try
             {
                 var tempFolder = installer.TempInstallFolder;
-                if (!String.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
+                if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
                 {
                     Globals.DeleteFolderRecursive(tempFolder);
                 }

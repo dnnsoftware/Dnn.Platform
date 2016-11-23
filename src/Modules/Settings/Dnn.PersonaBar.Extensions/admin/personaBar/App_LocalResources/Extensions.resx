@@ -1161,6 +1161,18 @@
   <data name="Container.Text" xml:space="preserve">
     <value>Container</value>
   </data>
+  <data name="InstallError.Text" xml:space="preserve">
+    <value>Error loading files from temporary folder - see below.</value>
+  </data>
+  <data name="InvalidExt.Text" xml:space="preserve">
+    <value>Invalid File Extension - {0}</value>
+  </data>
+  <data name="InvalidFiles.Text" xml:space="preserve">
+    <value>The package contains files with invalid File Extensions ({0})</value>
+  </data>
+  <data name="ZipCriticalError.Text" xml:space="preserve">
+    <value>Critical error reading zip package.</value>
+  </data>
   <data name="Deploy.Button" xml:space="preserve">
     <value>Deploy</value>
   </data>
