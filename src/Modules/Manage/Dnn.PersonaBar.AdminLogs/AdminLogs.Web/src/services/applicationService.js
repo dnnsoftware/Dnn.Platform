@@ -27,8 +27,8 @@ class ApplicationService {
     }
 
     getPortalList(callback) {
-        const sf = this.getServiceFramework("AdminLogs");
-        sf.get("GetPortals", {}, callback);
+        const sf = this.getServiceFramework("Portals");
+        sf.get("GetPortals?addAll=true", {}, callback);
     }
 
     /*Get all the types*/

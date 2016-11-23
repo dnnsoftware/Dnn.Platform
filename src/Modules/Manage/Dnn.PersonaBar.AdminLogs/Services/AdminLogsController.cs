@@ -32,59 +32,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AdminLogsController));
         private readonly Components.AdminLogsController _controller = new Components.AdminLogsController();
 
-        /// GET: api/AdminLogs/GetPortals
-        /// <summary>
-        /// Gets portals
-        /// </summary>
-        /// <param></param>
-        /// <returns>List of portals</returns>
-        [HttpGet]
-        [RequireHost]
-        public HttpResponseMessage GetPortals()
-        {
-            try
-            {
-                var portals = PortalController.Instance.GetPortals();
-                var query = from PortalInfo portal in portals
-                    select portal;
-                if (!UserInfo.IsSuperUser)
-                {
-                    query = from PortalInfo portal in portals
-                        where portal.PortalID == PortalSettings.PortalId
-                        select portal;
-                }
-
-                var availablePortals = query.Select(v => new
-                {
-                    PortalID = v.PortalID.ToString(),
-                    v.PortalName
-                }).ToList();
-
-                if (UserInfo.IsSuperUser)
-                {
-                    availablePortals.Insert(0, new
-                    {
-                        PortalID = "*",
-                        PortalName = Localization.GetString("All")
-                    });
-                }
-
-                var response = new
-                {
-                    Success = true,
-                    Results = availablePortals,
-                    TotalResults = availablePortals.Count
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
         /// GET: api/AdminLogs/GetLogTypes
         /// <summary>
         /// Gets log types
