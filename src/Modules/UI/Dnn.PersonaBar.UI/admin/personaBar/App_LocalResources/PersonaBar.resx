@@ -270,4 +270,10 @@
   <data name="nav_GlobalAssets.Text" xml:space="preserve">
     <value>Global Assets</value>
   </data>
+  <data name="title_Tasks.Text" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="txt_ViewIndex.Text" xml:space="preserve">
+    <value>Viewing {0} of {1}</value>
+  </data>
 </root>
