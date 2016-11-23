@@ -17,13 +17,20 @@ export default class UploadBar extends Component {
 
     componentDidMount() {
         setTimeout(this.increase.bind(this), 100);
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentWillReceiveProps(props) {
         if (props.uploadComplete) {
             clearTimeout(this.setTimeout);
-            this.setState({ percent: 100 }, () => {
-            });
+            if (this._isMounted) {
+                this.setState({ percent: 100 }, () => {
+                });
+            }
         }
     }
 
@@ -33,7 +40,9 @@ export default class UploadBar extends Component {
         this.timeout *= this.delta;
         this.delta *= 1.00;
         if (percent <= 100) {
-            this.setState({ percent });
+            if (this._isMounted) {
+                this.setState({ percent });
+            }
         }
         if (percent < 95) {
             this.setTimeout = setTimeout(this.increase.bind(this), this.timeout);

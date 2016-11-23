@@ -20,7 +20,8 @@ class InstallExtensionModal extends Component {
         this.state = {
             package: null,
             wizardStep: 0,
-            repairInstallChecked: false
+            repairInstallChecked: false,
+            selectedLegacyType: null
         };
     }
 
@@ -52,15 +53,20 @@ class InstallExtensionModal extends Component {
                 data = JSON.parse(data);
                 if (!data.success) {
                     if (errorCallback) {
-                        errorCallback();
+                        errorCallback(data);
                     }
                 }
-                if (callback) {
-                    callback(data.alreadyInstalled);
+                if (data.noManifest) {
+                    this.setState({
+                        selectedLegacyType: "Skin"
+                    });
                 }
-            }, () => {
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
                 if (errorCallback) {
-                    errorCallback();
+                    errorCallback(data);
                 }
             }));
         });
@@ -77,7 +83,7 @@ class InstallExtensionModal extends Component {
     installPackage() {
         const {props} = this;
         if (!props.installingAvailablePackage) {
-            props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, () => {
+            props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, this.state.selectedLegacyType, () => {
                 this.goToStep(4);
             }, !props.parsedInstallationPackage.alreadyInstalled));
         } else {
@@ -106,15 +112,26 @@ class InstallExtensionModal extends Component {
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
         props.dispatch(InstallationActions.toggleAcceptLicense(false));
         this.setState({
-            package: null
+            package: null,
+            selectedLegacyType: null
         });
+    }
+
+    getResxFromLegacyType() {
+        if (this.state.selectedLegacyType === "Skin") {
+            return Localization.get("CatalogSkin");
+        } else {
+            return Localization.get("Container");
+        }
     }
 
     getPackageInformationStep() {
         const {props} = this;
-        if (props.parsedInstallationPackage) {
+        const parsedInstallationPackageCopy = utilities.utilities.getObjectCopy(props.parsedInstallationPackage);
+        let parsedInstallationPackage = this.state.selectedLegacyType ? Object.assign(parsedInstallationPackageCopy, { packageType: this.getResxFromLegacyType() }) : parsedInstallationPackageCopy;
+        if (parsedInstallationPackage) {
             return <PackageInformation
-                extensionBeingEdited={props.parsedInstallationPackage}
+                extensionBeingEdited={parsedInstallationPackage}
                 validationMapped={false}
                 onCancel={this.cancelInstall.bind(this)}
                 installationMode={true}
@@ -136,9 +153,11 @@ class InstallExtensionModal extends Component {
             if (props.tabIndex !== 0) {
                 props.dispatch(PaginationActions.loadTab(0));
             }
-            if (props.parsedInstallationPackage.packageType !== props.selectedInstalledPackageType) {
+            if (props.parsedInstallationPackage.packageType && props.parsedInstallationPackage.packageType !== props.selectedInstalledPackageType) {
                 const _packageType = (props.parsedInstallationPackage && props.parsedInstallationPackage.packageType) ? props.parsedInstallationPackage.packageType : "Module";
                 props.dispatch(ExtensionActions.getInstalledPackages(_packageType));
+            } else if (this.state.selectedLegacyType) {
+                props.dispatch(ExtensionActions.getInstalledPackages(this.state.selectedLegacyType));
             }
         }
         props.onCancel();
@@ -152,6 +171,16 @@ class InstallExtensionModal extends Component {
     }
     clearParsedInstallationPackage() {
         this.props.dispatch(InstallationActions.clearParsedInstallationPackage());
+    }
+    cancelInstallationOnUpload() {
+        this.clearParsedInstallationPackage();
+        this.props.onCancel();
+        this.props.dispatch(InstallationActions.toggleAcceptLicense(false));
+    }
+    onSelectLegacyType(value) {
+        this.setState({
+            selectedLegacyType: value
+        });
     }
     render() {
         const {props} = this;
@@ -174,11 +203,16 @@ class InstallExtensionModal extends Component {
                                         toggleViewLog={this.toggleViewLog.bind(this)}
                                         clearParsedInstallationPackage={this.clearParsedInstallationPackage.bind(this)}
                                         viewingLog={props.viewingLog}
+                                        onSelectLegacyType={this.onSelectLegacyType.bind(this)}
+                                        selectedLegacyType={this.state.selectedLegacyType}
                                         />
                                 </GridCell>
                                 <GridCell className="modal-footer">
-                                    <Button onClick={!props.viewingLog ? props.onCancel.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
-                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary" disabled={!props.parsedInstallationPackage || !props.parsedInstallationPackage.success}>{Localization.get("InstallExtension_Upload.Button")}</Button>
+                                    <Button onClick={!props.viewingLog ? this.cancelInstallationOnUpload.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
+                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary"
+                                        disabled={(!props.parsedInstallationPackage || !props.parsedInstallationPackage.success)}>
+                                        {Localization.get("InstallExtension_Upload.Button")}
+                                    </Button>
                                 </GridCell>
                             </GridCell>
                         }

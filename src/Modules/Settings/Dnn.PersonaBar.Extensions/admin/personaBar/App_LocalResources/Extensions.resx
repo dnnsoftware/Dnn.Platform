@@ -1158,8 +1158,14 @@
   <data name="Extension.Header" xml:space="preserve">
     <value>Extension</value>
   </data>
+  <data name="Container.Text" xml:space="preserve">
+    <value>Container</value>
+  </data>
   <data name="Deploy.Button" xml:space="preserve">
     <value>Deploy</value>
+  </data>
+  <data name="InstallerMoreInfo.Text" xml:space="preserve">
+    <value>If you have reached this page it is because the installer needs some more information before proceeding.</value>
   </data>
   <data name="InstallExtension_UploadFailedUnknown.Text" xml:space="preserve">
     <value>Zip File Upload Failed</value>
@@ -1172,6 +1178,10 @@ Common issues with bad installation files:
 &lt;li&gt;Missing resources in the zip file.&lt;/li&gt;
 &lt;li&gt;Invalid files in the package.&lt;/li&gt;
 &lt;li&gt;File extension is not .zip.&lt;/li&gt;
+&lt;li&gt;Check that you are logged in.&lt;/li&gt;
 &lt;/ul&gt;</value>
+  </data>
+  <data name="InvalidDNNManifest.Text" xml:space="preserve">
+    <value>This package does not appear to be a valid DNN Extension as it does not have a manifest. Old (legacy) Themes and Containers do not contain manifests. If this package is a legacy Theme or Container Package please check the appropriate radio button below, and click Next.</value>
   </data>
 </root>

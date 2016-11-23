@@ -3,6 +3,8 @@ import UploadBar from "./UploadBar";
 import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
 import LogDisplay from "./LogDisplay";
+import RadioButtons from "dnn-radio-buttons";
+import utils from "utils";
 import "./style.less";
 
 export default class FileUpload extends Component {
@@ -22,7 +24,9 @@ export default class FileUpload extends Component {
             uploadComplete: false,
 
             errorText: "",
-            errorInPackage: false
+            errorInPackage: false,
+
+            noManifest: false
         };
     }
 
@@ -64,15 +68,15 @@ export default class FileUpload extends Component {
     }
 
     handleError(error) {
-        if (this.props.parsedInstallationPackage && this.props.parsedInstallationPackage.logs) {
-            const errorCount = this.getErrorCount(this.props.parsedInstallationPackage.logs);
+        if (error && error.logs && !error.noManifest) {
+            const errorCount = this.getErrorCount(error.logs);
             const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
             const { props } = this;
-            this.setState({ uploading: true, errorText, errorInPackage: true }, () => {
+            this.setState({ uploading: true, errorText, errorInPackage: true, noManifest: false }, () => {
             });
         } else {
             const errorText = Localization.get("InstallExtension_UploadFailedUnknown");
-            this.setState({ uploading: true, errorText, errorInPackage : true });
+            this.setState({ uploading: true, errorText, errorInPackage: true, noManifest: false });
         }
     }
 
@@ -103,17 +107,25 @@ export default class FileUpload extends Component {
         props.repairInstall();
     }
 
-    uploadComplete(alreadyInstalled) {
-        setTimeout(() => {
-            this.setState({ uploadComplete: true }, () => {
-                if (alreadyInstalled) {
-                    this.setState({
-                        alreadyInstalled: true,
-                        uploading: false
-                    });
-                }
+    uploadComplete(data) {
+        if (data.noManifest) {
+            this.setState({
+                uploading: false,
+                noManifest: true
             });
-        }, 1000);
+        } else {
+            setTimeout(() => {
+                this.setState({ uploadComplete: true }, () => {
+                    if (data.alreadyInstalled) {
+                        this.setState({
+                            alreadyInstalled: true,
+                            uploading: false,
+                            noManifest: data.noManifest
+                        });
+                    }
+                });
+            }, 1000);
+        }
     }
 
     onViewLog() {
@@ -179,6 +191,24 @@ export default class FileUpload extends Component {
                     uploadingText={Localization.get("InstallExtension_Uploading")}
                     />
             }
+            {
+                this.state.noManifest &&
+                <div className="no-valid-manifest" style={{ width: "calc(100% + 26px)", height: "calc(100% + 26px)" }}>
+                    <p>{Localization.get("InvalidDNNManifest")}</p>
+                    <RadioButtons options={[
+                        {
+                            label: Localization.get("CatalogSkin"),
+                            value: "Skin"
+                        }, {
+                            label: Localization.get("Container"),
+                            value: "Container"
+                        }
+                    ]}
+                        buttonGroup="selectedLegacyType"
+                        onChange={this.props.onSelectLegacyType.bind(this)}
+                        value={this.props.selectedLegacyType} />
+                </div>
+            }
             {this.state.alreadyInstalled &&
                 <AlreadyInstalled
                     fileName={this.state.fileName}
@@ -197,6 +227,8 @@ FileUpload.propTypes = {
     viewingLog: PropTypes.bool,
     toggleViewLog: PropTypes.func,
     clearParsedInstallationPackage: PropTypes.func,
+    onSelectLegacyType: PropTypes.func,
+    selectedLegacyType: PropTypes.string,
     //---OPTIONAL PROPS---
     buttons: PropTypes.array
 };

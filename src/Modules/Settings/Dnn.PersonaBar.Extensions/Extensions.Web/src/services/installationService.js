@@ -18,13 +18,17 @@ class InstallationService {
 
         sf.postfile("ParsePackage", formData, callback, errorCallback);
     }
-    installPackage(file, callback) {
+    installPackage(file, legacyType, callback) {
         const sf = this.getServiceFramework("Extensions");
 
         let formData = new FormData();
         formData.append("POSTFILE", file);
 
-        sf.postfile("InstallPackage", formData, callback, util.utilities.notifyError);
+        if (legacyType) {
+            sf.postfile("InstallPackage?legacySkin=" + legacyType, formData, callback, util.utilities.notifyError);
+        } else {
+            sf.postfile("InstallPackage", formData, callback, util.utilities.notifyError);
+        }
     }
 }
 const installationService = new InstallationService();

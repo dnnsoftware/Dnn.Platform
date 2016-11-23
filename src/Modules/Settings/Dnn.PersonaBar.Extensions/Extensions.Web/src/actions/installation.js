@@ -57,10 +57,10 @@ const installationActions = {
             }
         };
     },
-    installExtension(file, newExtension, callback, addToList) {
+    installExtension(file, newExtension, legacyType, callback, addToList) {
         let _newExtension = JSON.parse(JSON.stringify(newExtension));
         return (dispatch) => {
-            InstallationService.installPackage(file, (data) => {
+            InstallationService.installPackage(file, legacyType, (data) => {
                 dispatch({
                     type: ActionTypes.INSTALLED_EXTENSION_LOGS,
                     payload: JSON.parse(data)
