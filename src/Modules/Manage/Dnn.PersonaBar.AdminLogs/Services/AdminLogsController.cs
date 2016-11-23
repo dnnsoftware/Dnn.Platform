@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         {
             try
             {
-                if (request.LogIds.Any(
+                if (!UserInfo.IsSuperUser && request.LogIds.Any(
                     x =>
                         ((LogInfo)
                             LogController.Instance.GetSingleLog(new LogInfo {LogGUID = x},
