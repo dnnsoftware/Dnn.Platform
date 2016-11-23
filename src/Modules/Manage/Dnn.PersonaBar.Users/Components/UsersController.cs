@@ -178,6 +178,10 @@ namespace Dnn.PersonaBar.Users.Components
                 //Clear the Portal Cache
                 DataCache.ClearPortalCache(portalId, true);
             }
+            if (user.IsSuperUser)
+            {
+                DataCache.ClearHostCache(true);
+            }
             user.DisplayName = userBasicDto.Displayname;
             user.Email = userBasicDto.Email;
 
