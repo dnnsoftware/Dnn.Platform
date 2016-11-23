@@ -94,7 +94,7 @@ class CreatePortal extends Component {
             if (newPortal.SiteAlias !== "" && newPortal.SiteAlias.indexOf(rootDomain) === -1) {
                 newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteAlias;
             } else {
-                newPortal.SiteAlias = rootDomain + "/";
+                newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName;
             }
             this.setState({ newPortal });
         } else {
