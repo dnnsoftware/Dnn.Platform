@@ -4,7 +4,7 @@
 </div>
 <div class="socialpanelbody customCssPanelContainer customCssPanel" id="customCss-bodyPanel">
     <div class="cssForm">
-        <div class="form-item">
+        <div class="form-item" data-bind="visible:portals().length >1 ">
             <div>
                 <select data-bind="options: portals, optionsText: 'PortalName', value: portal, disable: portals().length < 2"></select>
             </div>

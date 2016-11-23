@@ -30,46 +30,6 @@ namespace Dnn.PersonaBar.CssEditor.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CssEditorController));
 
-        /// GET: api/CssEditor/GetPortals
-        /// <summary>
-        /// Gets portals
-        /// </summary>
-        /// <param></param>
-        /// <returns>List of portals</returns>
-        [HttpGet]
-        public HttpResponseMessage GetPortals()
-        {
-            try
-            {
-                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
-                if (!PortalSettings.Current.UserInfo.IsSuperUser)
-                {
-                    var userPortalId = PortalSettings.Current.PortalId;
-                    portals = portals.Where(portal => portal.PortalID == userPortalId);
-                }
-
-                var availablePortals = portals.Select(v => new
-                {
-                    v.PortalID,
-                    v.PortalName
-                }).ToList();
-
-                var response = new
-                {
-                    Success = true,
-                    Results = availablePortals,
-                    TotalResults = availablePortals.Count()
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
         /// GET: api/CssEditor/GetStyleSheet
         /// <summary>
         /// Gets portal.css of specific portal
