@@ -1988,7 +1988,7 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetFolderPermissionsByPortalAndPath(int portalId, string pathName)
         {
-            return ExecuteReader("GetFolderPermissionsByPortalAndPath", GetNull(portalId), GetNull(pathName) ?? "");
+            return ExecuteReader("GetFolderPermissionsByPortalAndPath", GetNull(portalId), pathName ?? "");
         }
 
         public virtual void UpdateFolderPermission(int FolderPermissionID, int FolderID, int PermissionID, int roleID,
