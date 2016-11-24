@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("menuStructure", JObject.FromObject(menuStructure));
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
             settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
-            settings.Add("portalId", portalSettings.PortalId);
+            settings.Add("portalId", portalId);
             if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
             {
                 settings.Add("beaconUrl", GetBeaconUrl());

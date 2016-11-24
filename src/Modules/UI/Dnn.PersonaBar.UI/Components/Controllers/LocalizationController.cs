@@ -13,13 +13,10 @@ using System.Threading;
 using System.Web.Caching;
 using System.Xml;
 using System.Xml.XPath;
-using Dnn.PersonaBar.Library;
-using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.UI.Components.Controllers
 {

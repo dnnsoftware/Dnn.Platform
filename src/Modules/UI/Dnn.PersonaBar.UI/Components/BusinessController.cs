@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Dnn.PersonaBar.UI.Components.Controllers;
+﻿using Dnn.PersonaBar.UI.Components.Controllers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.UI.Components
 {
     public class BusinessController : IUpgradeable
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
-
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -53,9 +48,8 @@ namespace Dnn.PersonaBar.UI.Components
         }
 
         private void UpdateControlPanel()
-         {
-             HostController.Instance.Update("ControlPanel", "DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
-         }
-
+        {
+            HostController.Instance.Update("ControlPanel", "DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
+        }
     }
 }

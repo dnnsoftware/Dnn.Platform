@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.XPath;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Installer;
@@ -27,12 +23,13 @@ namespace Dnn.PersonaBar.UI.Components.Installers
              public string Key { get; set; }
              public string Name { get; set; }
         }
-        private IList<MenuItem> _menuItems = new List<MenuItem>();
-        private IList<PersonaBarExtension> _extensions = new List<PersonaBarExtension>();
-        private IList<PermissionDefinition> _permissionDefinitions = new List<PermissionDefinition>();
-        private IDictionary<string, string> _extensionMenus = new Dictionary<string, string>();
-        private IDictionary<string, string> _menuRoles = new Dictionary<string, string>();
-        private IDictionary<string, string> _parentMaps = new Dictionary<string, string>();
+
+        private readonly IList<MenuItem> _menuItems = new List<MenuItem>();
+        private readonly IList<PersonaBarExtension> _extensions = new List<PersonaBarExtension>();
+        private readonly IList<PermissionDefinition> _permissionDefinitions = new List<PermissionDefinition>();
+        private readonly IDictionary<string, string> _extensionMenus = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> _menuRoles = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> _parentMaps = new Dictionary<string, string>();
 
         public override void Commit()
         {
@@ -107,8 +104,6 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 }
 
                 PersonaBarRepository.Instance.SaveMenuItem(menuItem);
-
-                //SaveMenuPermissions(menuItem);
             }
         }
 
