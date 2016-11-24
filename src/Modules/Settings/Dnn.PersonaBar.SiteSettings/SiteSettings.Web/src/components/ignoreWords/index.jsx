@@ -25,6 +25,21 @@ class IgnoreWordsPanel extends Component {
         };
     }
 
+    loadData() {
+        const {props} = this;
+        if (props.ignoreWords) {
+            if (props.portalId === undefined || props.ignoreWords.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
     componentWillMount() {
         const {props, state} = this;
 
@@ -32,10 +47,13 @@ class IgnoreWordsPanel extends Component {
             tableFields.push({ "name": resx.get("IgnoreWords"), "id": "IgnoreWords" });
         }
 
-        if (!props.cultures) {
-            props.dispatch(SearchActions.getCultureList(props.portalId));
+        if (!this.loadData()) {
+            this.setState({
+                ignoreWords: props.ignoreWords
+            });
+            return;
         }
-
+        props.dispatch(SearchActions.getCultureList(props.portalId));
         props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
             this.setState({
                 ignoreWords: Object.assign({}, data.IgnoreWords)

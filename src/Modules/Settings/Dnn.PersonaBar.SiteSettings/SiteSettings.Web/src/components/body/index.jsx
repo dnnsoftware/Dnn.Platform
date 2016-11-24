@@ -109,7 +109,7 @@ export class Body extends Component {
                         openLocalizedContent={this.props.openLocalizedContent}
                         cultureCode={this.props.cultureCode}
                         />}
-                    {this.getSearchSecondaryTabs()}
+                    {this.props.showing && this.getSearchSecondaryTabs()}
                 </Tabs>
             </SocialPanelBody>
         );

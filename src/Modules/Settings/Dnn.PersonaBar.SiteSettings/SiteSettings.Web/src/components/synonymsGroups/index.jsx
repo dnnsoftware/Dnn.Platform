@@ -19,10 +19,25 @@ class SynonymsGroupsPanel extends Component {
     constructor() {
         super();
         this.state = {
-            synonymsGroups: [],
+            synonymsGroups: undefined,
             openId: "",
             culture: "en-US"
         };
+    }
+
+    loadData() {
+        const {props} = this;
+        if (props.synonymsGroups) {
+            if (props.portalId === undefined || props.synonymsGroups.PortalId === props.portalId) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
     }
 
     componentWillMount() {
@@ -32,11 +47,16 @@ class SynonymsGroupsPanel extends Component {
             tableFields.push({ "name": resx.get("SynonymsGroup.Header"), "id": "Synonyms" });
         }
 
+        if (!this.loadData()) {
+            this.setState({
+                synonymsGroups: props.synonymsGroups
+            });
+            return;
+        }
         props.dispatch(SearchActions.getCultureList(props.portalId));
-
         props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
             this.setState({
-                synonymsGroups: Object.assign({}, data.SynonymsGroups)
+                synonymsGroups: Object.assign({}, data)
             });
         }));
     }
@@ -86,9 +106,9 @@ class SynonymsGroupsPanel extends Component {
 
     onUpdateSynonymsGroup(group) {
         const {props, state} = this;
-        let groups = [];
+        const synonymsGroups = Object.assign({}, props.synonymsGroups);
         if (group.SynonymsGroupId) {
-            groups = props.synonymsGroups.map((item, index) => {
+            synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.map((item, index) => {
                 if (item.SynonymsGroupId === group.SynonymsGroupId) {
                     return group;
                 }
@@ -97,7 +117,7 @@ class SynonymsGroupsPanel extends Component {
                 }
             });
 
-            props.dispatch(SearchActions.updateSynonymsGroup(group, groups, (data) => {
+            props.dispatch(SearchActions.updateSynonymsGroup(group, synonymsGroups, (data) => {
                 util.utilities.notify(resx.get("SynonymsGroupUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -119,8 +139,9 @@ class SynonymsGroupsPanel extends Component {
     onDeleteSynonymsGroup(group) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SynonymsGroupDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            const itemList = props.synonymsGroups.filter((item) => item.SynonymsGroupId !== group.SynonymsGroupId);
-            props.dispatch(SearchActions.deleteSynonymsGroup(group, itemList, () => {
+            const synonymsGroups = Object.assign({}, props.synonymsGroups);
+            synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.filter((item) => item.SynonymsGroupId !== group.SynonymsGroupId);
+            props.dispatch(SearchActions.deleteSynonymsGroup(group, synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupDeleteSuccess"));
                 this.collapse();
             }, (error) => {
@@ -165,7 +186,7 @@ class SynonymsGroupsPanel extends Component {
     renderedSynonymsGroups() {
         let i = 0;
         if (this.props.synonymsGroups) {
-            return this.props.synonymsGroups.map((item, index) => {
+            return this.props.synonymsGroups.SynonymsGroups.map((item, index) => {
                 let id = "row-" + i++;
                 return (
                     <SynonymsGroupRow

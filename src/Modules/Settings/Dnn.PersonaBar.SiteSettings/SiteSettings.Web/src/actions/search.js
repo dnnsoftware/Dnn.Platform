@@ -94,7 +94,7 @@ const searchActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_SYNONYMS_GROUPS,
                     data: {
-                        synonymsGroups: data.SynonymsGroups
+                        synonymsGroups: data
                     }
                 });
                 if (callback) {
@@ -106,15 +106,16 @@ const searchActions = {
     addSynonymsGroup(payload, groups, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.addSynonymsGroup(payload, data => {
-                let updatedGroups = groups.map((item, index) => {
+                let updatedGroups = groups.SynonymsGroups.map((item, index) => {
                     return item;
                 });                
                 updatedGroups.unshift({SynonymsGroupId: data.Id, SynonymsTags: payload.SynonymsTags});
-
+                const synonymsGroups = Object.assign({}, groups);
+                synonymsGroups.SynonymsGroups = updatedGroups;
                 dispatch({
                     type: ActionTypes.CREATED_SITESETTINGS_SYNONYMS_GROUP,
                     data: {
-                        synonymsGroups: updatedGroups,
+                        synonymsGroups: synonymsGroups,
                         synonymsGroupClientModified: false
                     }
                 });
@@ -148,13 +149,13 @@ const searchActions = {
             });
         };
     },
-    deleteSynonymsGroup(groupId, groups, callback, failureCallback) {
+    deleteSynonymsGroup(groupId, object, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.deleteSynonymsGroup(groupId, data => {
                 dispatch({
                     type: ActionTypes.DELETED_SITESETTINGS_SYNONYMS_GROUP,
                     data: {
-                        synonymsGroups: groups
+                        synonymsGroups: object
                     }
                 });
                 if (callback) {

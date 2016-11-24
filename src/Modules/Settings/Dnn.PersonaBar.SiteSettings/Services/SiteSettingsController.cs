@@ -1484,17 +1484,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var response = new
                 {
-                    Success = true,
+                    PortalId = pid,
                     SynonymsGroups = groups.Select(g => new
                     {
-                        g.PortalId,
                         g.SynonymsGroupId,
                         g.SynonymsTags
-                    }),
-                    Languages = LocaleController.Instance.GetLocales(pid).Select(l => new
-                    {
-                        l.Key,
-                        Value = l.Key
                     })
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
