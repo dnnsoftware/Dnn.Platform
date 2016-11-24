@@ -213,7 +213,7 @@ class App extends Component {
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-            <SocialPanelHeader title={titleSettings}>
+            <SocialPanelHeader title={titleSettings} tooltip={titleSettings}>
                 {!this.isNewPage() &&
                     this.getSettingsButtons()
                 }
