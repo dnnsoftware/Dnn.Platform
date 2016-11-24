@@ -1,0 +1,30 @@
+@import "~dnn-global-styles/index";
+.dnn-persona-bar-page-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    background-color: @white;
+    .prefixes(box-sizing, border-box);
+    min-height: 103px;
+    z-index: 1001;
+    padding: 28px 30px 10px 30px;
+    button {
+        float: right;
+    }
+    >h3 {
+        display: inline-block;
+        font-size: 28px;
+        letter-spacing: 1px;
+        line-height: 1em;
+        margin: 10px 0 10px 0;
+        font-weight: normal;
+        font-family: inherit;
+        .dnn-text-overflow-wrapper {
+            font-size: inherit;
+            .overflow-tooltip {
+                max-width: 500px;
+            }
+        }
+    }
+}
