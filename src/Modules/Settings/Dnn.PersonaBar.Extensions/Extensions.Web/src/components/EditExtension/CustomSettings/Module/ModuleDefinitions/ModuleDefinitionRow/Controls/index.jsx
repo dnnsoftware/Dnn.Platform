@@ -1,9 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
-import Button from "dnn-button";
 import Localization from "localization";
 import { AddIcon } from "dnn-svg-icons";
 import ControlRow from "./ControlRow";
@@ -12,11 +9,8 @@ import utilities from "utils";
 import { ModuleDefinitionActions, ExtensionActions } from "actions";
 import ControlFields from "./ControlFields";
 import utils from "utils";
-import styles from "./style.less";
+import "./style.less";
 
-function removeRecordFromArray(arr, index) {
-    return [...arr.slice(0, index), ...arr.slice(index + 1)];
-}
 function getSourceFolder(str) {
     return str.substr(0, str.lastIndexOf("/"));
 }
@@ -88,7 +82,7 @@ class Controls extends Component {
             props.dispatch(ModuleDefinitionActions.setFormDirt(true));
         }
     }
-    onDelete(controlId, index) {
+    onDelete(controlId) {
         utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {
             const { props } = this;
 

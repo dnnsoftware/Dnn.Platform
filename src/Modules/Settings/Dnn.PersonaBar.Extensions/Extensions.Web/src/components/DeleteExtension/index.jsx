@@ -1,12 +1,10 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import { ExtensionActions, VisiblePanelActions } from "actions";
 import PackageInformation from "../common/BasicPackageInformation";
-import ReleaseNotes from "../Editextension/ReleaseNotes";
-import License from "../EditExtension/License";
 import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
@@ -44,7 +42,7 @@ class DeleteExtension extends Component {
         const version = extensionBeingDeleted.version.value ? extensionBeingDeleted.version.value.split(".") : [0, 0, 0];
         return (
             <GridCell className={styles.DeleteExtension}>
-                <SocialPanelHeader title={Localization.get("DeleteExtension.Action").replace("{0}", extensionBeingDeleted.friendlyName)} />
+                <PersonaBarPageHeader title={Localization.get("DeleteExtension.Action").replace("{0}", extensionBeingDeleted.friendlyName)} />
                 <SocialPanelBody>
                     <GridCell className="delete-extension-box extension-form">
                         <PackageInformation

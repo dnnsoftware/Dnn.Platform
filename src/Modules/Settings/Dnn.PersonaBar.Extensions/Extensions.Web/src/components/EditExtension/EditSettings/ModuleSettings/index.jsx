@@ -2,14 +2,11 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { ExtensionActions, VisiblePanelActions } from "actions";
 import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import PermissionGrid from "dnn-permission-grid";
 import Localization from "localization";
 import utils from "utils";
-import styles from "./style.less";
+import "./style.less";
 
 class ModuleSettings extends Component {
     constructor(props) {
@@ -22,7 +19,7 @@ class ModuleSettings extends Component {
     }
 
     onPermissionsChanged(permissions) {
-        const {props, state} = this;
+        const {state} = this;
 
         let newPermissions = Object.assign({}, state.permissions, permissions);
         this.setState({ permissions: newPermissions });

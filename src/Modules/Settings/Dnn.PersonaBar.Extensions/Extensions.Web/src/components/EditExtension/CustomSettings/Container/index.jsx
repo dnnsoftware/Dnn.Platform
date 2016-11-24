@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Localization from "localization";
 import { connect } from "react-redux";
@@ -11,7 +9,7 @@ import styles from "./style.less";
 const inputStyle = { width: "100%" };
 class Container extends Component {
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editContainer + (props.className ? " " + props.className : "")}>

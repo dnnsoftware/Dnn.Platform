@@ -10,12 +10,9 @@ import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
 
-function formatVersionNumber(n) {
-    return n > 9 ? "" + n : "0" + n;
-}
 class SkinObject extends Component {
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let { extensionBeingEdited } = props;
 
         return (

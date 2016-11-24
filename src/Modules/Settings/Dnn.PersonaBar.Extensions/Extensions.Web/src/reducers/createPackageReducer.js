@@ -1,5 +1,4 @@
 import { createPackage as ActionTypes } from "constants/actionTypes";
-import undoable from "redux-undo";
 
 const newPackagePayload = {
     useExistingManifest: false,

@@ -13,7 +13,7 @@ const releaseBoxStyle = {
     height: 250,
     width: "100%"
 };
-class EditExtension extends Component {
+class ReleaseNotes extends Component {
     render() {
         const {props} = this;
         const {value} = props;
@@ -43,7 +43,7 @@ class EditExtension extends Component {
     }
 }
 
-EditExtension.PropTypes = {
+ReleaseNotes.propTypes = {
     onCancel: PropTypes.func,
     readOnly: PropTypes.bool,
     onSave: PropTypes.func,
@@ -52,4 +52,4 @@ EditExtension.PropTypes = {
     primaryButtonText: PropTypes.string
 };
 
-export default EditExtension;
+export default ReleaseNotes;

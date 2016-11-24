@@ -105,7 +105,7 @@ const extensionActions = {
         };
     },
     downloadPackage(packageType, packageName, callback) {
-        return (dispatch) => {
+        return () => {
             ExtensionService.downloadPackage(packageType, packageName, (data) => {
                 if (callback) {
                     callback(data);
@@ -346,7 +346,7 @@ const extensionActions = {
         };
     },
     deployAvailablePackage(_package, updatedPackageIndex, callback) {
-        return (dispatch) => {
+        return () => {
             ExtensionService.deployAvailablePackage(_package.description, (data) => {
                 if (callback) {
                     callback(data);

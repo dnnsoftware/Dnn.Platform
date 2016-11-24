@@ -105,7 +105,9 @@ class SiteAliasesPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SiteBehaviorActions.addSiteAlias(aliasDetail, (data) => {
+            const alias = Object.assign({}, aliasDetail);
+            alias["PortalId"] = props.portalId;
+            props.dispatch(SiteBehaviorActions.addSiteAlias(alias, (data) => {
                 util.utilities.notify(resx.get("SiteAliasCreateSuccess"));
                 this.collapse();
                 props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));

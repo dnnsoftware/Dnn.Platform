@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
 import { FolderActions, ExtensionActions, VisiblePanelActions } from "actions";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import FromControl from "./FromControl";
 import FromManifest from "./FromManifest";
@@ -53,7 +53,6 @@ class NewModuleModal extends Component {
     }
 
     onSelectNewModuleType(option) {
-        const { props } = this;
         this.setState({
             selectedType: option.value
         });
@@ -111,7 +110,7 @@ class NewModuleModal extends Component {
                     onCancel={this.onCancel.bind(this)}
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    onCreateNewModule={this.onCreateNewModule.bind(this)}
                     retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             case 1:
                 return <FromControl
@@ -122,7 +121,7 @@ class NewModuleModal extends Component {
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    onCreateNewModule={this.onCreateNewModule.bind(this)}
                     retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             case 2:
                 return <FromManifest
@@ -133,7 +132,7 @@ class NewModuleModal extends Component {
                     onSelectOwnerFolder={this.onSelectOwnerFolder.bind(this)}
                     onAddNewFolder={this.onAddNewFolder.bind(this)}
                     onSelectModuleFolder={this.onSelectModuleFolder.bind(this)}
-                    onCreateNewModule={this.onCreateNewModule.bind(this)} 
+                    onCreateNewModule={this.onCreateNewModule.bind(this)}
                     retrieveOwnerAndModuleFolders={this.retrieveOwnerAndModuleFolders.bind(this)}/>;
             default:
                 return <div></div>;
@@ -148,7 +147,7 @@ class NewModuleModal extends Component {
     render() {
         return (
             <div className={styles.newModuleModal}>
-                <SocialPanelHeader title={Localization.get("CreateModule.Action")} />
+                <PersonaBarPageHeader title={Localization.get("CreateModule.Action")} />
                 <SocialPanelBody>
                     <GridCell className="new-module-box extension-form">
                         <GridCell columnSize={100} style={{ marginBottom: 15, padding: 0 }}>

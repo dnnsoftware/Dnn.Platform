@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class IFrameHandler extends Component {
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <iframe src={props.extensionBeingEdited.siteSettingsLink.value} style={{ width: "100%", height: "750px" }} />

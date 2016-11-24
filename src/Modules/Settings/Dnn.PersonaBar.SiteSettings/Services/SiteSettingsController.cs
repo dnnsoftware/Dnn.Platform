@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -43,7 +42,6 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
 using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -1015,6 +1013,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Success = true,
                     PortalAlias = new
                     {
+                        alias.PortalID,
                         alias.PortalAliasID,
                         alias.HTTPAlias,
                         BrowserType = alias.BrowserType.ToString(),
@@ -1860,10 +1859,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     if (newDefaultLanguage != portalSettings.DefaultLanguage)
                     {
                         var needToRemoveOldDefaultLanguage = LocaleController.Instance.GetLocales(pid).Count == 1;
-                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(portalSettings.DefaultLanguage);
+                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(pid, portalSettings.DefaultLanguage);
                         if (!IsLanguageEnabled(pid, newDefaultLanguage))
                         {
-                            var language = LocaleController.Instance.GetLocale(newDefaultLanguage);
+                            var language = LocaleController.Instance.GetLocale(pid, newDefaultLanguage);
                             Localization.AddLanguageToPortal(pid, language.LanguageId, true);
                         }
 
@@ -1873,7 +1872,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                         if (needToRemoveOldDefaultLanguage)
                         {
-                            Localization.RemoveLanguageFromPortal(PortalId, oldDefaultLanguage.LanguageId);
+                            Localization.RemoveLanguageFromPortal(pid, oldDefaultLanguage.LanguageId);
                         }
                     }
 
@@ -2137,11 +2136,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (!IsLanguageEnabled(pid, language.Code))
                 {
-                    Localization.AddLanguageToPortal(PortalId, language.LanguageId, true);
+                    Localization.AddLanguageToPortal(pid, language.LanguageId, true);
                 }
 
                 string roles = $"Administrators;{$"Translator ({language.Code})"}";
-                PortalController.UpdatePortalSetting(PortalId, $"DefaultTranslatorRoles-{language.Code}", roles);
+                PortalController.UpdatePortalSetting(pid, $"DefaultTranslatorRoles-{language.Code}", roles);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -2189,7 +2188,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage UpdateLanguage(UpdateLanguageRequest request)
         {
             try
@@ -2203,14 +2201,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (request.LanguageId != null)
                 {
                     var language = LocaleController.Instance.GetLocale(request.LanguageId.Value) ??
-                                   (LocaleController.Instance.GetLocale(request.Code) ?? new Locale { Code = request.Code });
-                    language.Fallback = request.Fallback;
-                    language.Text = CultureInfo.GetCultureInfo(language.Code).NativeName;
-                    Localization.SaveLanguage(language);
+                                       (LocaleController.Instance.GetLocale(request.Code) ??
+                                        new Locale { Code = request.Code });
+                    if (UserInfo.IsSuperUser)
+                    {
+                        language.Fallback = request.Fallback;
+                        language.Text = CultureInfo.GetCultureInfo(language.Code).NativeName;
+                        Localization.SaveLanguage(language);
+                    }
 
                     Dictionary<string, Locale> enabledLanguages = LocaleController.Instance.GetLocales(pid);
                     var localizedTabs = PortalSettings.ContentLocalizationEnabled
-                        ? TabController.Instance.GetTabsByPortal(PortalId).WithCulture(request.Code, false).AsList()
+                        ? TabController.Instance.GetTabsByPortal(pid).WithCulture(request.Code, false).AsList()
                         : new List<TabInfo>();
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(pid);
                     string redirectUrl = string.Empty;
@@ -2220,7 +2222,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         if (!enabledLanguages.ContainsKey(request.Code))
                         {
                             //Add language to portal
-                            Localization.AddLanguageToPortal(PortalId, language.LanguageId, true);
+                            Localization.AddLanguageToPortal(pid, language.LanguageId, true);
                         }
 
                         //restore the tabs and modules
@@ -2240,7 +2242,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     else
                     {
                         //remove language from portal
-                        Localization.RemoveLanguageFromPortal(PortalId, language.LanguageId);
+                        Localization.RemoveLanguageFromPortal(pid, language.LanguageId);
 
                         //if the disable language is current language, should redirect to default language.
                         if (
@@ -2261,7 +2263,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         }
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, RedirectUrl = redirectUrl });
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, RedirectUrl = pid == PortalId ? redirectUrl : "" });
                 }
                 else
                 {
@@ -2701,7 +2703,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             string status = "";
             if (!IsDefaultLanguage(portalSettings, code) && IsLocalized(portalSettings, code))
             {
-                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
+                int translatedCount = (from t in TabController.Instance.GetTabsByPortal(portalSettings.PortalId).WithCulture(code, false).Values where t.IsTranslated && !t.IsDeleted select t).Count();
                 status = translatedCount.ToString(CultureInfo.InvariantCulture);
             }
             return status;

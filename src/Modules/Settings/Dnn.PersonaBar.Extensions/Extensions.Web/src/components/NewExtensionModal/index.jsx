@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
@@ -171,7 +171,7 @@ class NewExtensionModal extends Component {
         const version = extensionBeingEdited.version.value ? extensionBeingEdited.version.value.split(".") : [0, 0, 0];
         return (
             <div className={styles.newExtensionModal}>
-                <SocialPanelHeader title={Localization.get("CreateExtension.Action")} />
+                <PersonaBarPageHeader title={Localization.get("CreateExtension.Action")} />
                 <SocialPanelBody>
                     <GridCell className="new-extension-box extension-form">
                         <BasicPackageInformation

@@ -9,7 +9,6 @@ import Button from "dnn-button";
 import Localization from "localization";
 import AssignedSelector from "./AssignedSelector";
 import ModuleDefinitions from "./ModuleDefinitions";
-import { AddIcon } from "dnn-svg-icons";
 import styles from "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -89,7 +88,7 @@ class Module extends Component {
     }
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let { extensionBeingEdited } = props;
         return (
             <GridCell className={styles.editModule + (props.className ? " " + props.className : "")}>

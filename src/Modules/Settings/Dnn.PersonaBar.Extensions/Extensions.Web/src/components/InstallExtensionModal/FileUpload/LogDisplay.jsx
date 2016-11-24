@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
-import Button from "dnn-button";
 import Localization from "localization";
 import "./style.less";
 

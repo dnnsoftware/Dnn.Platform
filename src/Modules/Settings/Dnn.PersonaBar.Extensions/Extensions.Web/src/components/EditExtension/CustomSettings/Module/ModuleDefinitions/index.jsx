@@ -2,8 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import { ExtensionActions } from "actions";
 import GridCell from "dnn-grid-cell";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import GridSystem from "dnn-grid-system";
 import Button from "dnn-button";
 import Localization from "localization";
 import { AddIcon } from "dnn-svg-icons";
@@ -13,12 +11,8 @@ import utilities from "utils";
 import { ModuleDefinitionActions } from "actions";
 import DefinitionFields from "./DefinitionFields";
 import utils from "utils";
-import styles from "./style.less";
+import "./style.less";
 
-
-function removeRecordFromArray(arr, index) {
-    return [...arr.slice(0, index), ...arr.slice(index + 1)];
-}
 class ModuleDefinitions extends Component {
     constructor() {
         super();
@@ -164,12 +158,11 @@ class ModuleDefinitions extends Component {
             }));
         }));
     }
-    onDelete(definitionId, index) {
+    onDelete(definitionId) {
         utilities.utilities.confirm("Are you sure you want to delete this module definition?", "Yes", "No", () => {
             const { props } = this;
 
             let extensionBeingUpdated = JSON.parse(JSON.stringify(props.extensionBeingEdited));
-            let moduleDefinitions = extensionBeingUpdated.moduleDefinitions.value;
 
             let actions = { deletedefinition: definitionId.toString() };
 

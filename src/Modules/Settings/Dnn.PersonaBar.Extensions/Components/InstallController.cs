@@ -161,15 +161,15 @@ namespace Dnn.PersonaBar.Extensions.Components
                 var manifestFile = CreateManifest(installer, fileName, legacySkin);
                 //Re-evaluate the package after creating a temporary manifest
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
+
+                //Read the manifest
+                if (installer.InstallerInfo.ManifestFile != null)
+                {
+                    installer.ReadManifest(true);
+                }
             }
 
             installer.InstallerInfo.PortalID = portalId;
-
-            //Read the manifest
-            if (installer.InstallerInfo.ManifestFile != null)
-            {
-                installer.ReadManifest(true);
-            }
             return installer;
         }
 

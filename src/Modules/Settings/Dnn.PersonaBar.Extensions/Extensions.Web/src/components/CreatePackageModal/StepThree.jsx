@@ -1,14 +1,10 @@
 import React, { PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
-import BasicPackageInformation from "../common/BasicPackageInformation";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
-import DropdownWithError from "dnn-dropdown-with-error";
 import MultiLineInput from "dnn-multi-line-input";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Localization from "localization";
 
-const StepThree = ({packageManifest, onCancel, onNext, onBasePathChange, onPrevious, onFileOrAssemblyChange}) => (
+const StepThree = ({packageManifest, onCancel, onNext, onPrevious, onFileOrAssemblyChange}) => (
     <GridCell className="review-assemblies-step">
         <h6 className="box-title">{Localization.get("CreatePackage_ChooseAssemblies.Label")}</h6>
         <p className="box-subtitle">{Localization.get("CreatePackage_ChooseAssemblies.HelpText")}</p>
@@ -31,7 +27,6 @@ StepThree.propTypes = {
     packageManifest: PropTypes.object,
     onCancel: PropTypes.func,
     onNext: PropTypes.func,
-    onBasePathChange: PropTypes.func,
     onPrevious: PropTypes.func,
     onFileOrAssemblyChange: PropTypes.func
 };

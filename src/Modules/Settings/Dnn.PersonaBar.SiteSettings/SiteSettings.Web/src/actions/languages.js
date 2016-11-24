@@ -226,9 +226,9 @@ const languagesActions = {
             });
         };
     },
-    disableLocalizedContent(callback) {
+    disableLocalizedContent(portalId, callback) {
         return (dispatch) => {
-            LanguageEditorService.disableLocalizedContent(callback);
+            LanguageEditorService.disableLocalizedContent(portalId, callback);
         };
     },
     deleteLanguagePages(payload, callback) {
