@@ -4,7 +4,7 @@ import DropdownWithError from "dnn-dropdown-with-error";
 import GridCell from "dnn-grid-cell";
 import { FolderActions, ExtensionActions, VisiblePanelActions } from "actions";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import FromControl from "./FromControl";
 import FromManifest from "./FromManifest";
 import FromNew from "./FromNew";
@@ -148,7 +148,7 @@ class NewModuleModal extends Component {
         return (
             <div className={styles.newModuleModal}>
                 <PersonaBarPageHeader title={Localization.get("CreateModule.Action")} />
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <GridCell className="new-module-box extension-form">
                         <GridCell columnSize={100} style={{ marginBottom: 15, padding: 0 }}>
                             <GridCell className="new-module-dropdown-container">
@@ -170,7 +170,7 @@ class NewModuleModal extends Component {
                             {this.getCreateUI(this.state.selectedType)}
                         </GridCell>
                     </GridCell>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </div>
         );
     }

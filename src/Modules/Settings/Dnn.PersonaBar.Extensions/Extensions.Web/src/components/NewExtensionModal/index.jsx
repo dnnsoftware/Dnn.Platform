@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Localization from "localization";
 import { ExtensionActions, VisiblePanelActions, PaginationActions } from "actions";
 import Button from "dnn-button";
@@ -172,7 +172,7 @@ class NewExtensionModal extends Component {
         return (
             <div className={styles.newExtensionModal}>
                 <PersonaBarPageHeader title={Localization.get("CreateExtension.Action")} />
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <GridCell className="new-extension-box extension-form">
                         <BasicPackageInformation
                             validationMapped={true}
@@ -233,7 +233,7 @@ class NewExtensionModal extends Component {
                             <Button type="primary" onClick={this.onSave.bind(this)}>{Localization.get("CreateExtension_Save.Button")}</Button>
                         </GridCell>
                     </GridCell>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </div>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>

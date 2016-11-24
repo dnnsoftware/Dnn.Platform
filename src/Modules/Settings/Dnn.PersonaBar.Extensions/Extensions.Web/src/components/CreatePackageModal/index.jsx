@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { CreatePackageActions } from "actions";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -298,11 +298,11 @@ class CreatePackage extends Component {
         return (
             <GridCell className={styles.createPackage}>
                 <PersonaBarPageHeader title={Localization.get("CreatePackage_Header.Header")} />
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <GridCell className="extension-form create-package-wizard">
                         {this.getCurrentWizardUI(createPackageStep)}
                     </GridCell>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </GridCell>
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>

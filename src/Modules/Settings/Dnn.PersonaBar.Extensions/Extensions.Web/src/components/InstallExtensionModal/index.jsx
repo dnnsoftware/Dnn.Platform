@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import InstallLog from "./InstallLog";
 import { ExtensionActions, InstallationActions, PaginationActions } from "actions";
 import PackageInformation from "../EditExtension/PackageInformation";
@@ -227,7 +227,7 @@ class InstallExtensionModal extends Component {
         return (
             <GridCell className={styles.installExtensionModal}>
                 <PersonaBarPageHeader title={Localization.get("ExtensionInstall.Action")} />
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
                             <GridCell>
@@ -291,7 +291,7 @@ class InstallExtensionModal extends Component {
 
                         <p className="modal-pagination">{"-- " + (props.wizardStep + 1) + " of 5 --"} </p>
                     </GridCell>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </GridCell>
         );
     }

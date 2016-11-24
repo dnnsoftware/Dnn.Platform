@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions, CreatePackageActions } from "actions";
 import Tabs from "dnn-tabs";
 import License from "./License";
@@ -374,7 +374,7 @@ class EditExtension extends Component {
                         </Button>
                     }
                 </PersonaBarPageHeader>
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <Tabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}
@@ -382,7 +382,7 @@ class EditExtension extends Component {
                         type="primary">
                         {this.getTabUI()}
                     </Tabs>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </GridCell >
         );
         // <p className="modal-pagination"> --1 of 2 -- </p>
