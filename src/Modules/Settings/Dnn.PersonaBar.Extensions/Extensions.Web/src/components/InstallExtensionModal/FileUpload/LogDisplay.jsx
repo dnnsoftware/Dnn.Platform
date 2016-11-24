@@ -7,6 +7,7 @@ import "./style.less";
 
 const licenseBoxStyle = {
     border: "1px solid #c8c8c8",
+    borderBottom: "2px solid #EA2134",
     marginBottom: 25,
     height: 175,
     width: "100%"

@@ -3,6 +3,7 @@ import GridCell from "dnn-grid-cell";
 import { Scrollbars } from "react-custom-scrollbars";
 import Button from "dnn-button";
 import Localization from "localization";
+import Tooltip from "dnn-tooltip";
 import "./style.less";
 
 const licenseBoxStyle = {
@@ -15,15 +16,17 @@ const licenseBoxStyle = {
 class EditExtension extends Component {
     render() {
         const {props} = this;
+        let errorCount = props.logs.filter((log) => { return log.Type === "Failure" || log.Type === "Error"; }).length;
         /* eslint-disable react/no-danger */
         return (
-            <GridCell style={{ padding: 50 }} className="extension-install-logs">
+            <GridCell style={{ padding: 50 }} className={"extension-install-logs" + (errorCount > 0 ? " with-error" : "")}>
                 <h6>{Localization.get("InstallExtension_Logs.Header")}</h6>
+                <Tooltip messages={[Localization.get("InstallationError")]} type="error" rendered={errorCount > 0} className="install-error-tooltip" />
                 <p>{Localization.get("InstallExtension_Logs.HelpText")}</p>
-                <Scrollbars style={licenseBoxStyle}>
+                <Scrollbars style={errorCount > 0 ? Object.assign({borderBottom: "2px solid #EA2134"}, licenseBoxStyle) : licenseBoxStyle}>
                     <div className="package-installation-report">
                         {props.logs.map((log) => {
-                            return <p className={log.substring(0, log.indexOf(":")).toLowerCase()}>{log}</p>;
+                            return <p className={log.Type.toLowerCase()}>{log.Type + " " + log.Description}</p>;
                         })}
                     </div>
                 </Scrollbars>

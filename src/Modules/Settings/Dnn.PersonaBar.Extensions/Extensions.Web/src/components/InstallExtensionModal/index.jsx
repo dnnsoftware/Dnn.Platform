@@ -85,12 +85,21 @@ class InstallExtensionModal extends Component {
 
     installPackage() {
         const {props} = this;
+        this.setState({
+            installingPackage: true
+        });
         if (!props.installingAvailablePackage) {
             props.dispatch(InstallationActions.installExtension(this.state.package, props.parsedInstallationPackage, this.state.selectedLegacyType, () => {
                 this.goToStep(4);
+                this.setState({
+                    installingPackage: false
+                });
             }, !props.parsedInstallationPackage.alreadyInstalled));
         } else {
             props.dispatch(ExtensionActions.installAvailablePackage(props.availablePackage.PackageType, props.availablePackage.FileName, props.parsedInstallationPackage, () => {
+                this.setState({
+                    installingPackage: false
+                });
                 this.goToStep(4);
             }));
         }
@@ -266,7 +275,7 @@ class InstallExtensionModal extends Component {
                                 onSave={this.installPackage.bind(this)}
                                 primaryButtonText={Localization.get("Next.Button")}
                                 disabled={true}
-                                primaryButtonDisabled={!props.licenseAccepted}
+                                primaryButtonDisabled={!props.licenseAccepted || this.state.installingPackage}
                                 acceptLicenseCheckbox={
                                     <Checkbox
                                         label={Localization.get("InstallExtension_AcceptLicense.Label")}

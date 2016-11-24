@@ -1196,4 +1196,7 @@ Common issues with bad installation files:
   <data name="InvalidDNNManifest.Text" xml:space="preserve">
     <value>This package does not appear to be a valid DNN Extension as it does not have a manifest. Old (legacy) Themes and Containers do not contain manifests. If this package is a legacy Theme or Container Package please check the appropriate radio button below, and click Next.</value>
   </data>
+  <data name="InstallationError.Text" xml:space="preserve">
+    <value>There was an error during installation. See log files below for more information.</value>
+  </data>
 </root>
