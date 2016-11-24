@@ -4,7 +4,6 @@ import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
 import LogDisplay from "./LogDisplay";
 import RadioButtons from "dnn-radio-buttons";
-import utils from "utils";
 import "./style.less";
 
 export default class FileUpload extends Component {
@@ -71,7 +70,7 @@ export default class FileUpload extends Component {
         if (error && error.logs && !error.noManifest) {
             const errorCount = this.getErrorCount(error.logs);
             const errorText = error && typeof error === "string" ? error : Localization.get("InstallExtension_UploadFailed") + errorCount + " " + Localization.get("Errors");
-            const { props } = this;
+
             this.setState({ uploading: true, errorText, errorInPackage: true, noManifest: false }, () => {
             });
         } else {
@@ -145,6 +144,7 @@ export default class FileUpload extends Component {
         this.onDragLeave();
     }
     render() {
+        /* eslint-disable quotes */
         const svg = require(`!raw!./img/upload.svg`);
 
         const buttonsStyle = { width: 67 };
@@ -231,4 +231,3 @@ FileUpload.propTypes = {
     //---OPTIONAL PROPS---
     buttons: PropTypes.array
 };
-

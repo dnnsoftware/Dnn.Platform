@@ -2,8 +2,6 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import DropdownWithError from "dnn-dropdown-with-error";
-import GridSystem from "dnn-grid-system";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import Localization from "localization";
 import styles from "./style.less";

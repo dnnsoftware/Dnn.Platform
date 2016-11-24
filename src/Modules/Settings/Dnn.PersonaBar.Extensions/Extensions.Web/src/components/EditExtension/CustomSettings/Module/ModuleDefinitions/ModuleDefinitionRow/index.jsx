@@ -8,7 +8,6 @@ import DefinitionFields from "../DefinitionFields";
 import Button from "dnn-button";
 import "./style.less";
 
-const inputStyle = { width: "100%" };
 
 class ModuleDefinitionRow extends Component {
     constructor() {
@@ -19,7 +18,7 @@ class ModuleDefinitionRow extends Component {
     }
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <GridCell className="module-definition-row">
                 <GridCell columnSize={85} className="module-definition-name">

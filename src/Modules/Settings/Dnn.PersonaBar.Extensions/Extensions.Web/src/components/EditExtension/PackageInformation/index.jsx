@@ -10,7 +10,6 @@ import Localization from "localization";
 import {
     formatVersionNumber,
     validationMapExtensionBeingEdited,
-    valueMapExtensionBeingEdited,
     getVersionDropdownValues
 } from "./helperFunctions";
 import styles from "./style.less";
@@ -38,7 +37,7 @@ class PackageInformation extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         if (!props.extensionBeingEdited) {
             return <p>Empty</p>;

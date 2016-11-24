@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import { CreatePackageActions } from "actions";
 import StepOne from "./StepOne";
@@ -293,11 +293,11 @@ class CreatePackage extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const {createPackageStep} = props;
         return (
             <GridCell className={styles.createPackage}>
-                <SocialPanelHeader title={Localization.get("CreatePackage_Header.Header")} />
+                <PersonaBarPageHeader title={Localization.get("CreatePackage_Header.Header")} />
                 <SocialPanelBody>
                     <GridCell className="extension-form create-package-wizard">
                         {this.getCurrentWizardUI(createPackageStep)}

@@ -10,7 +10,7 @@ import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
 import InstalledExtensions from "./InstalledExtensions";
 import AvailableExtensions from "./AvailableExtensions";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import utilities from "utils";
@@ -66,7 +66,7 @@ class Body extends Component {
     onEditExtension(extensionBeingEditedIndex, packageId) {
         const { props } = this;
         props.dispatch(ExtensionActions.editExtension(packageId, extensionBeingEditedIndex,
-            openEditPanel => {
+            () => {
                 this.selectPanel(4);
             }
         ));
@@ -79,21 +79,21 @@ class Body extends Component {
         _newExtension = Object.assign(newExtension, ExtensionLanguagePack);
         _newExtension = Object.assign(newExtension, { locales: props.locales });
         _newExtension = Object.assign(newExtension, { packages: props.localePackages });
-        props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(_newExtension), openAddPanel => {
+        props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(_newExtension), () => {
             this.selectPanel(2);
         }
         ));
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <GridCell className="extension-body">
-                <SocialPanelHeader title={Localization.get("ExtensionsLabel")}>
+                <PersonaBarPageHeader title={Localization.get("ExtensionsLabel")}>
                     {this.isHost && <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>{Localization.get("ExtensionInstall.Action")}</Button>}
                     {this.isHost && <Button type="secondary" size="large" onClick={this.createExtension.bind(this)}>{Localization.get("CreateExtension.Action")}</Button>}
                     {this.isHost && <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>{Localization.get("CreateModule.Action")}</Button>}
-                </SocialPanelHeader>
+                </PersonaBarPageHeader>
                 <SocialPanelBody>
                     {this.isHost &&
                         <Tabs onSelect={this.handleSelect}

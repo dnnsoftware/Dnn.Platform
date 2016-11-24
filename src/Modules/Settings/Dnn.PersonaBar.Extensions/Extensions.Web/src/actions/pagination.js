@@ -8,7 +8,7 @@ const paginationActions = {
                     index
                 }
             });
-            if(callback){
+            if (callback) {
                 setTimeout(()=>{
                     callback();
                 }, 0);

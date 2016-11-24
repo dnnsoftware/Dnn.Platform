@@ -2,7 +2,7 @@ import { folder as ActionTypes} from "constants/actionTypes";
 import { FolderService } from "services";
 import utilities from "utils";
 
-function errorCallback(message){
+function errorCallback(message) {
     utilities.utilities.notifyError(message);
 }
 const folderActions = {
@@ -32,7 +32,7 @@ const folderActions = {
             }, errorCallback);
         };
     },
-    getModuleFiles(parameters, callback){
+    getModuleFiles(parameters, callback) {
         return (dispatch) => {
             FolderService.getModuleFiles(parameters, (data) => {
                 dispatch({
@@ -47,7 +47,7 @@ const folderActions = {
     },
     createFolder(parameters, type, callback) {
         return (dispatch) => {
-            FolderService.createNewFolder(parameters, (data) => {
+            FolderService.createNewFolder(parameters, () => {
                 dispatch({
                     type: (type === "moduleFolder" ? ActionTypes.CREATED_NEW_MODULE_FOLDER : ActionTypes.CREATED_NEW_OWNER_FOLDER),
                     payload: {

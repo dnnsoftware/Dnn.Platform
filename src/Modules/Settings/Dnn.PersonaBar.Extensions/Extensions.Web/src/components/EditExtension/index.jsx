@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import { ExtensionActions, VisiblePanelActions, ModuleDefinitionActions, CreatePackageActions } from "actions";
 import Tabs from "dnn-tabs";
@@ -14,7 +14,6 @@ import Tooltip from "dnn-tooltip";
 import Button from "dnn-button";
 import Localization from "localization";
 import utilities from "utils";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
 
 
@@ -227,7 +226,6 @@ class EditExtension extends Component {
     }
 
     onSave(close) {
-        const { props } = this;
         if (!this.validateFields()) {
             return;
         }
@@ -365,13 +363,17 @@ class EditExtension extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         const {extensionBeingEdited} = props;
         return (
             <GridCell className={styles.editExtension}>
-                <SocialPanelHeader title={<TextOverflowWrapper maxWidth={500} text={extensionBeingEdited.friendlyName.value + " Extension"} />} >
-                    {this.isHost && <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>{Localization.get("EditExtension_CreatePackage.Button")}</Button>}
-                </SocialPanelHeader>
+                <PersonaBarPageHeader title={extensionBeingEdited.friendlyName.value + " " + Localization.get("Extension.Header")} >
+                    {this.isHost &&
+                        <Button type="secondary" size="large" onClick={this.startCreatePackageWizard.bind(this)}>
+                            {Localization.get("EditExtension_CreatePackage.Button")}
+                        </Button>
+                    }
+                </PersonaBarPageHeader>
                 <SocialPanelBody>
                     <Tabs
                         tabHeaders={this.getTabHeaders()}

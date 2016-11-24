@@ -9,7 +9,7 @@ class ExtensionList extends Component {
         super();
     }
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <GridCell  style={{ padding: "5px 20px" }}>

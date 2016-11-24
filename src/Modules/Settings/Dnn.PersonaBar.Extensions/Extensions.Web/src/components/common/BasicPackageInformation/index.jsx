@@ -1,15 +1,10 @@
-import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
+import React, { PropTypes } from "react";
 import DropdownWithError from "dnn-dropdown-with-error";
-import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
 import Localization from "localization";
 import Dropdown from "dnn-dropdown";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
-import Button from "dnn-button";
 import { getVersionDropdownValues, formatVersionNumber } from "utils/helperFunctions";
 import styles from "./style.less";
 

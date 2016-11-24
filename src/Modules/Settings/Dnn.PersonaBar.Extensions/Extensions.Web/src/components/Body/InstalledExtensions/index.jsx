@@ -9,7 +9,6 @@ import Localization from "localization";
 import ExtensionList from "./ExtensionList";
 import GridCell from "dnn-grid-cell";
 import DropdownWithError from "dnn-dropdown-with-error";
-import utilities from "utils";
 import "./style.less";
 
 class InstalledExtensions extends Component {
@@ -63,7 +62,7 @@ class InstalledExtensions extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <GridCell className="extension-list">
                 <GridCell className="collapse-section">

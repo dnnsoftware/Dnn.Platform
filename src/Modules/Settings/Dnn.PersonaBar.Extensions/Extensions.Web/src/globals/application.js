@@ -1,10 +1,10 @@
 import utilities from "../utils";
 const extensions = {
-    init(initCallback) {
-        // This setting is required and define the public path 
-        // to allow the web application to download assets on demand 
+    init() {
+        // This setting is required and define the public path
+        // to allow the web application to download assets on demand
         // eslint-disable-next-line no-undef
-        // __webpack_public_path__ = options.publicPath;        
+        // __webpack_public_path__ = options.publicPath;
         let options = window.dnn.initExtensions();
         utilities.init(options);
 

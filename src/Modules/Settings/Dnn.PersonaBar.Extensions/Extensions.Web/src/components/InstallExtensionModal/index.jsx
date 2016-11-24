@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import SocialPanelBody from "dnn-social-panel-body";
 import InstallLog from "./InstallLog";
 import { ExtensionActions, InstallationActions, PaginationActions } from "actions";
@@ -226,7 +226,7 @@ class InstallExtensionModal extends Component {
             legacyTypeIsInstalled = this.getSelectedLegacyTypeIsInstalled();
         return (
             <GridCell className={styles.installExtensionModal}>
-                <SocialPanelHeader title={Localization.get("ExtensionInstall.Action")} />
+                <PersonaBarPageHeader title={Localization.get("ExtensionInstall.Action")} />
                 <SocialPanelBody>
                     <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
