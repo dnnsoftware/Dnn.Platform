@@ -21,6 +21,8 @@
 #region Usings
 
 using System.Collections.Generic;
+using System.Linq;
+using DotNetNuke.Services.Installer.Log;
 using Newtonsoft.Json;
 
 #endregion
@@ -40,28 +42,28 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public string Message { get; set; }
 
         [JsonProperty("logs")]
-        public IList<string> Logs { get; set; } = new List<string>();
+        public IList<InstallerLogEntry> Logs { get; set; } = new List<InstallerLogEntry>();
 
-        public void Failed(string message, IList<string> logs = null)
+        public void Failed(string message)
         {
             Success = false;
             Message = message;
-            
-            if (logs != null)
-            {
-                Logs = logs;
-            }
         }
 
-        public void Succeed(IList<string> logs)
+        public void Succeed()
         {
             Success = true;
             Message = string.Empty;
-            
-            if (logs != null)
-            {
-                Logs = logs;
-            }
+        }
+
+        public void AddLogs(IEnumerable<LogEntry> logs)
+        {
+            Logs = logs?.Select(
+                l => new InstallerLogEntry
+                {
+                    Type = l.Type.ToString(),
+                    Description = l.Description
+                }).ToList() ?? new List<InstallerLogEntry>();
         }
     }
 }

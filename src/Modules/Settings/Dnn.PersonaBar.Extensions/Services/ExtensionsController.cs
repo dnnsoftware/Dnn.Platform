@@ -458,16 +458,24 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage DeletePackage(DeletePackageDto deletePackage)
         {
-            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == deletePackage.Id);
-            if (package == null)
+            try
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Empty);
+                var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == deletePackage.Id);
+                if (package == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Empty);
+                }
+
+                var installer = new Installer(package, Globals.ApplicationMapPath);
+                installer.UnInstall(deletePackage.DeleteFiles);
+
+                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
             }
-
-            var installer = new Installer(package, Globals.ApplicationMapPath);
-            installer.UnInstall(deletePackage.DeleteFiles);
-
-            return Request.CreateResponse(HttpStatusCode.OK, new {});
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         #endregion

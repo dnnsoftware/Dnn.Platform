@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             if (extension != ".zip" && extension != ".resources")
             {
-                    installResult.Failed("InvalidExt");
+                installResult.Failed("InvalidExt");
             }
             else
             {
@@ -120,17 +120,17 @@ namespace Dnn.PersonaBar.Extensions.Components
                             //Install
                             installer.Install();
 
-                            var logs = installer.InstallerInfo.Log.Logs.Select(l => l.ToString()).ToList();
+                            installResult.AddLogs(installer.InstallerInfo.Log.Logs);
                             if (!installer.IsValid)
                             {
-                                installResult.Failed("InstallError", logs);
+                                installResult.Failed("InstallError");
                             }
                             else
                             {
                                 installResult.NewPackageId = installer.Packages.Count == 0
                                     ? Null.NullInteger
                                     : installer.Packages.First().Value.Package.PackageID;
-                                installResult.Succeed(logs);
+                                installResult.Succeed();
                                 DeleteInstallFile(filePath);
                             }
                         }
