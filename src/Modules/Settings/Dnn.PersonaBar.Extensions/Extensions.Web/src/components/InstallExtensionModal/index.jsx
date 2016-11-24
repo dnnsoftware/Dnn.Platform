@@ -61,6 +61,9 @@ class InstallExtensionModal extends Component {
                         selectedLegacyType: "Skin"
                     });
                 }
+                if (data.alreadyInstalled) {
+                    this.setAlreadyInstalled(true);
+                }
                 if (callback) {
                     callback(data);
                 }
@@ -113,7 +116,8 @@ class InstallExtensionModal extends Component {
         props.dispatch(InstallationActions.toggleAcceptLicense(false));
         this.setState({
             package: null,
-            selectedLegacyType: null
+            selectedLegacyType: null,
+            alreadyInstalled: false
         });
     }
 
@@ -128,7 +132,14 @@ class InstallExtensionModal extends Component {
     getPackageInformationStep() {
         const {props} = this;
         const parsedInstallationPackageCopy = utilities.utilities.getObjectCopy(props.parsedInstallationPackage);
-        let parsedInstallationPackage = this.state.selectedLegacyType ? Object.assign(parsedInstallationPackageCopy, { packageType: this.getResxFromLegacyType() }) : parsedInstallationPackageCopy;
+        let parsedInstallationPackage = this.state.selectedLegacyType ?
+            Object.assign(parsedInstallationPackageCopy, {
+                packageType: this.getResxFromLegacyType(),
+                friendlyName: this.state.package && this.state.package.name.replace(".zip", ""),
+                name: this.state.package && this.state.package.name.replace(".zip", ""),
+                version: "1.0.0"
+            })
+            : parsedInstallationPackageCopy;
         if (parsedInstallationPackage) {
             return <PackageInformation
                 extensionBeingEdited={parsedInstallationPackage}
@@ -170,6 +181,7 @@ class InstallExtensionModal extends Component {
         this.props.dispatch(InstallationActions.setViewingLog(value));
     }
     clearParsedInstallationPackage() {
+        this.setAlreadyInstalled(false);
         this.props.dispatch(InstallationActions.clearParsedInstallationPackage());
     }
     cancelInstallationOnUpload() {
@@ -182,9 +194,27 @@ class InstallExtensionModal extends Component {
             selectedLegacyType: value
         });
     }
+    setAlreadyInstalled(value, nextStepIfFalse) {
+        this.setState({
+            alreadyInstalled: value
+        });
+        if (nextStepIfFalse && !value) {
+            this.goToStep(1);
+        }
+    }
+    getSelectedLegacyTypeIsInstalled() {
+        if (this.state.selectedLegacyType === "Skin") {
+            return this.props.parsedInstallationPackage && this.props.parsedInstallationPackage.legacySkinInstalled;
+        }
+        if (this.state.selectedLegacyType === "Container") {
+            return this.props.parsedInstallationPackage && this.props.parsedInstallationPackage.legacyContainerInstalled;
+        }
+    }
     render() {
         const {props} = this;
-        const {wizardStep} = props;
+        const {wizardStep} = props,
+            legacyInstalled = (props.parsedInstallationPackage && (props.parsedInstallationPackage.legacySkinInstalled || props.parsedInstallationPackage.legacyContainerInstalled)),
+            legacyTypeIsInstalled = this.getSelectedLegacyTypeIsInstalled();
         return (
             <GridCell className={styles.installExtensionModal}>
                 <SocialPanelHeader title={Localization.get("ExtensionInstall.Action")} />
@@ -200,6 +230,7 @@ class InstallExtensionModal extends Component {
                                         repairInstall={this.goToStep.bind(this, 1)}
                                         cancelInstall={this.cancelInstall.bind(this)}
                                         parsedInstallationPackage={props.parsedInstallationPackage}
+                                        alreadyInstalled={this.state.alreadyInstalled}
                                         toggleViewLog={this.toggleViewLog.bind(this)}
                                         clearParsedInstallationPackage={this.clearParsedInstallationPackage.bind(this)}
                                         viewingLog={props.viewingLog}
@@ -209,7 +240,7 @@ class InstallExtensionModal extends Component {
                                 </GridCell>
                                 <GridCell className="modal-footer">
                                     <Button onClick={!props.viewingLog ? this.cancelInstallationOnUpload.bind(this) : this.toggleViewLog.bind(this, false)}>{Localization.get("InstallExtension_Cancel.Button")}</Button>
-                                    <Button onClick={this.goToStep.bind(this, 1)} type="primary"
+                                    <Button onClick={legacyInstalled ? this.setAlreadyInstalled.bind(this, legacyTypeIsInstalled, true) : this.goToStep.bind(this, 1)} type="primary"
                                         disabled={(!props.parsedInstallationPackage || !props.parsedInstallationPackage.success)}>
                                         {Localization.get("InstallExtension_Upload.Button")}
                                     </Button>

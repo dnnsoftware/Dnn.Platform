@@ -95,10 +95,10 @@ export default class FileUpload extends Component {
     cancelRepair() {
         this.props.clearParsedInstallationPackage();
         this.setState({
-            alreadyInstalled: false,
             uploading: false,
             errorInPackage: false,
-            errorText: ""
+            errorText: "",
+            noManifest: false
         });
     }
 
@@ -108,7 +108,7 @@ export default class FileUpload extends Component {
     }
 
     uploadComplete(data) {
-        if (data.noManifest) {
+        if (data.noManifest && !this.props.alreadyInstalled) {
             this.setState({
                 uploading: false,
                 noManifest: true
@@ -118,9 +118,8 @@ export default class FileUpload extends Component {
                 this.setState({ uploadComplete: true }, () => {
                     if (data.alreadyInstalled) {
                         this.setState({
-                            alreadyInstalled: true,
                             uploading: false,
-                            noManifest: data.noManifest
+                            noManifest: false
                         });
                     }
                 });
@@ -145,7 +144,6 @@ export default class FileUpload extends Component {
         this.uploadFile(e.dataTransfer.files[0]);
         this.onDragLeave();
     }
-
     render() {
         const svg = require(`!raw!./img/upload.svg`);
 
@@ -153,7 +151,7 @@ export default class FileUpload extends Component {
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
 
         /* eslint-disable react/no-danger */
-        return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.state.alreadyInstalled ? " already-installed" : "") + (this.props.viewingLog ? " viewing-log" : "")}>
+        return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.props.alreadyInstalled ? " already-installed" : "") + (this.props.viewingLog ? " viewing-log" : "")}>
 
             {((!this.state.uploading || this.state.uploadComplete) && !this.props.viewingLog) && <div className="dropzone-container">
                 <div
@@ -209,7 +207,7 @@ export default class FileUpload extends Component {
                         value={this.props.selectedLegacyType} />
                 </div>
             }
-            {this.state.alreadyInstalled &&
+            {this.props.alreadyInstalled &&
                 <AlreadyInstalled
                     fileName={this.state.fileName}
                     cancelRepair={this.cancelRepair.bind(this)}
@@ -229,6 +227,7 @@ FileUpload.propTypes = {
     clearParsedInstallationPackage: PropTypes.func,
     onSelectLegacyType: PropTypes.func,
     selectedLegacyType: PropTypes.string,
+    alreadyInstalled: PropTypes.bool,
     //---OPTIONAL PROPS---
     buttons: PropTypes.array
 };

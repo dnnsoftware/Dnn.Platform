@@ -119,8 +119,9 @@ class SiteAliasesPanel extends Component {
     onDeleteSiteAlias(aliasId) {
         const {props, state} = this;
         util.utilities.confirm(resx.get("SiteAliasDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            const itemList = props.siteAliases.PortalAliases.filter((item) => item.PortalAliasID !== aliasId);
-            props.dispatch(SiteBehaviorActions.deleteSiteAlias(aliasId, itemList, () => {
+            const siteAliases = Object.assign({}, props.siteAliases);
+            siteAliases.PortalAliases = siteAliases.PortalAliases.filter((item) => item.PortalAliasID !== aliasId);
+            props.dispatch(SiteBehaviorActions.deleteSiteAlias(aliasId, siteAliases, () => {
                 util.utilities.notify(resx.get("SiteAliasDeleteSuccess"));
                 this.collapse();
             }, (error) => {

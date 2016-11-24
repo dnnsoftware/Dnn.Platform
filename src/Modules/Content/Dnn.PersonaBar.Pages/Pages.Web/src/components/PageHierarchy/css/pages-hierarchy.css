@@ -474,6 +474,11 @@ div.page-drag-helper.page-drag-multiple span.icon {
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary span.subtitle {
     display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    max-width: 85px;
 }
 .pagePanel .pagehierarchy-container.drag-view .pages-list ul li div.page-item span.drag-area {
     display: none;

@@ -219,7 +219,7 @@ class App extends Component {
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-            <SocialPanelHeader title={titleSettings}>
+            <SocialPanelHeader title={titleSettings} tooltip={titleSettings}>
                 {!this.isNewPage() &&
                     this.getSettingsButtons()
                 }
@@ -317,15 +317,18 @@ class App extends Component {
     render() {
         const {props} = this;
         const additionalPanels = this.getAdditionalPanels();
+        const isListPagesAllowed = securityService.isSuperUser();
         return (
             <div className="pages-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
-                    <SocialPanelHeader title={Localization.get("Pages")}>
-                        <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                        <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
-                    </SocialPanelHeader>
-                    <PageList onPageSettings={this.onPageSettings.bind(this)} />
-                </PersonaBarPage>
+                {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
+                    <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
+                        <SocialPanelHeader title={Localization.get("Pages")}>
+                            <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
+                            <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
+                        </SocialPanelHeader>
+                        <PageList onPageSettings={this.onPageSettings.bind(this)} />
+                    </PersonaBarPage>
+                }
                 {props.selectedView === panels.PAGE_SETTINGS_PANEL && props.selectedPage &&
                     this.getSettingsPage()
                 }

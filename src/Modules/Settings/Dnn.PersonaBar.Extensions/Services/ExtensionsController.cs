@@ -166,72 +166,40 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        /// GET: api/Extensions/GetPortals
-        /// <summary>
-        /// Gets portals list
-        /// </summary>
-        /// <param></param>
-        /// <returns>List of portals</returns>
+//        /// GET: api/Extensions/GetPackageUsage
+//        /// <summary>
+//        /// Gets package usage
+//        /// </summary>
+//        /// <param name="portalId"></param>
+//        /// <param name="packageId"></param>
+//        /// <returns>List of tabs using a specific package</returns>
+//        [HttpGet]
+//        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
+//        {
+//            try
+//            {
+//                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
+//                {
+//                    TabLink = _controller.GetFormattedTabLink(portalId, t)
+//                }).ToList();
+//
+//                var response = new
+//                {
+//                    Success = true,
+//                    Results = packages,
+//                    TotalResults = packages.Count
+//                };
+//                return Request.CreateResponse(HttpStatusCode.OK, response);
+//            }
+//            catch (Exception ex)
+//            {
+//                Logger.Error(ex);
+//                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+//            }
+//        }
+
         [HttpGet]
         [RequireHost]
-        public HttpResponseMessage GetPortals()
-        {
-            try
-            {
-                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
-                var availablePortals = portals.Select(v => new
-                {
-                    v.PortalID,
-                    v.PortalName
-                }).ToList();
-                var response = new
-                {
-                    Success = true,
-                    Results = availablePortals,
-                    TotalResults = availablePortals.Count
-                };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        /// GET: api/Extensions/GetPackageUsage
-        /// <summary>
-        /// Gets package usage
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="packageId"></param>
-        /// <returns>List of tabs using a specific package</returns>
-        [HttpGet]
-        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
-        {
-            try
-            {
-                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
-                {
-                    TabLink = _controller.GetFormattedTabLink(portalId, t)
-                }).ToList();
-
-                var response = new
-                {
-                    Success = true,
-                    Results = packages,
-                    TotalResults = packages.Count
-                };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
         public HttpResponseMessage GetSourceFolders(/*int moduleControlId*/)
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "DesktopModules");
@@ -264,6 +232,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage GetSourceFiles(string root)
         {
             var response = new List<KeyValuePair<string, string>>
@@ -298,6 +267,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         [HttpGet]
+        [RequireHost]
         public HttpResponseMessage LoadIcons(string controlPath)
         {
             var response = new List<KeyValuePair<string, string>>

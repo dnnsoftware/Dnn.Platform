@@ -94,8 +94,8 @@ class SiteAliasEditor extends Component {
 
     getBrowserOptions() {
         let options = [];
-        if (this.props.browsers !== undefined) {
-            options = this.props.browsers.map((item) => {
+        if (this.props.siteAliases.BrowserTypes !== undefined) {
+            options = this.props.siteAliases.BrowserTypes.map((item) => {
                 return { label: item, value: item };
             });
         }
@@ -105,8 +105,8 @@ class SiteAliasEditor extends Component {
     getLanguageOptions() {
         let options = [];
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
-        if (this.props.languages !== undefined) {
-            options = this.props.languages.map((item) => {
+        if (this.props.siteAliases.Languages !== undefined) {
+            options = this.props.siteAliases.Languages.map((item) => {
                 return { label: item.Key, value: item.Value };
             });
             options.unshift({ label: noneSpecifiedText, value: "" });
@@ -117,8 +117,8 @@ class SiteAliasEditor extends Component {
     getSkinOptions() {
         let options = [];
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";
-        if (this.props.skins !== undefined) {
-            options = this.props.skins.map((item) => {
+        if (this.props.siteAliases.Skins !== undefined) {
+            options = this.props.siteAliases.Skins.map((item) => {
                 return { label: item.Key, value: item.Value };
             });
             options.unshift({ label: noneSpecifiedText, value: "" });
@@ -198,7 +198,7 @@ class SiteAliasEditor extends Component {
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
-                {this.props.languages.length > 1 &&
+                {this.props.siteAliases.Languages.length > 1 &&
                     <InputGroup>
                         <Label
                             label={resx.get("Language")}
@@ -253,9 +253,7 @@ SiteAliasEditor.propTypes = {
     dispatch: PropTypes.func.isRequired,
     aliasDetail: PropTypes.object,
     aliasId: PropTypes.number,
-    browsers: PropTypes.array,
-    languages: PropTypes.array,
-    skins: PropTypes.array,
+    siteAliases: PropTypes.object,
     Collapse: PropTypes.func,
     onUpdate: PropTypes.func,
     id: PropTypes.string,
@@ -265,9 +263,7 @@ SiteAliasEditor.propTypes = {
 function mapStateToProps(state) {
     return {
         aliasDetail: state.siteBehavior.aliasDetail,
-        browsers: state.siteBehavior.browsers,
-        languages: state.siteBehavior.languages,
-        skins: state.siteBehavior.skins,
+        siteAliases: state.siteBehavior.siteAliases,
         siteAliasClientModified: state.siteBehavior.siteAliasClientModified
     };
 }

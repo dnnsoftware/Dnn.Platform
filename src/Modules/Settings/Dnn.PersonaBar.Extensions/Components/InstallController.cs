@@ -41,32 +41,43 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
 
-                    if (installer.IsValid)
+                    try
                     {
-                        if (installer.Packages.Count > 0)
+                        if (installer.IsValid)
                         {
-                            parseResult = new ParseResultDto(installer.Packages[0].Package);
-                        }
+                            if (installer.Packages.Count > 0)
+                            {
+                                parseResult = new ParseResultDto(installer.Packages[0].Package);
+                            }
 
-                        parseResult.AzureCompact = AzureCompact(installer).GetValueOrDefault(false);
-                        parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName);
-                        parseResult.LegacyError = installer.InstallerInfo.LegacyError;
-                        parseResult.HasInvalidFiles = !installer.InstallerInfo.HasValidFiles;
-                        parseResult.AlreadyInstalled = installer.InstallerInfo.Installed;
-                        parseResult.AddLogs(installer.InstallerInfo.Log.Logs);
+                            parseResult.AzureCompact = AzureCompact(installer).GetValueOrDefault(false);
+                            parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName);
+                            parseResult.LegacyError = installer.InstallerInfo.LegacyError;
+                            parseResult.HasInvalidFiles = !installer.InstallerInfo.HasValidFiles;
+                            parseResult.AlreadyInstalled = installer.InstallerInfo.Installed;
+                            parseResult.AddLogs(installer.InstallerInfo.Log.Logs);
+                        }
+                        else
+                        {
+                            if (installer.InstallerInfo.ManifestFile == null)
+                            {
+                                parseResult.LegacySkinInstalled = CheckIfSkinALreadyInstalled(fileName, installer, "Skin");
+                                parseResult.LegacyContainerInstalled = CheckIfSkinALreadyInstalled(fileName, installer, "Container");
+                            }
+
+                            parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
+                            parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName);
+                            if (parseResult.NoManifest)
+                            {
+                                // we still can install when the manifest is missing
+                                parseResult.Success = true;
+                            }
+                        }
                     }
-                    else
+                    finally
                     {
-                        parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
-                        parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName);
-                        if (parseResult.NoManifest)
-                        {
-                            // we still can install when the manifest is missing
-                            parseResult.Success = true;
-                        }
+                        DeleteTempInstallFiles(installer);
                     }
-
-                    DeleteTempInstallFiles(installer);
                 }
                 catch (ICSharpCode.SharpZipLib.ZipException)
                 {
@@ -93,40 +104,45 @@ namespace Dnn.PersonaBar.Extensions.Components
                 {
                     var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin);
 
-                    if (installer.IsValid)
+                    try
                     {
-                        //Reset Log
-                        installer.InstallerInfo.Log.Logs.Clear();
-
-                        //Set the IgnnoreWhiteList flag
-                        installer.InstallerInfo.IgnoreWhiteList = true;
-
-                        //Set the Repair flag
-                        installer.InstallerInfo.RepairInstall = true;
-
-                        //Install
-                        installer.Install();
-
-                        var logs = installer.InstallerInfo.Log.Logs.Select(l => l.ToString()).ToList();
-                        if (!installer.IsValid)
+                        if (installer.IsValid)
                         {
-                            installResult.Failed("InstallError", logs);
+                            //Reset Log
+                            installer.InstallerInfo.Log.Logs.Clear();
+
+                            //Set the IgnnoreWhiteList flag
+                            installer.InstallerInfo.IgnoreWhiteList = true;
+
+                            //Set the Repair flag
+                            installer.InstallerInfo.RepairInstall = true;
+
+                            //Install
+                            installer.Install();
+
+                            var logs = installer.InstallerInfo.Log.Logs.Select(l => l.ToString()).ToList();
+                            if (!installer.IsValid)
+                            {
+                                installResult.Failed("InstallError", logs);
+                            }
+                            else
+                            {
+                                installResult.NewPackageId = installer.Packages.Count == 0
+                                    ? Null.NullInteger
+                                    : installer.Packages.First().Value.Package.PackageID;
+                                installResult.Succeed(logs);
+                                DeleteInstallFile(filePath);
+                            }
                         }
                         else
                         {
-                            installResult.NewPackageId = installer.Packages.Count == 0
-                                ? Null.NullInteger
-                                : installer.Packages.First().Value.Package.PackageID;
-                            installResult.Succeed(logs);
-                            DeleteInstallFile(filePath);
+                            installResult.Failed("InstallError");
                         }
                     }
-                    else
+                    finally
                     {
-                        installResult.Failed("InstallError");
+                        DeleteTempInstallFiles(installer);
                     }
-
-                    DeleteTempInstallFiles(installer);
                 }
                 catch (ICSharpCode.SharpZipLib.ZipException)
                 {
@@ -168,6 +184,24 @@ namespace Dnn.PersonaBar.Extensions.Components
             return manifestFile;
         }
 
+        private static bool CheckIfSkinALreadyInstalled(string fileName, Installer installer, string legacySkin)
+        {
+            // this whole thing is to check for if already installed
+            var manifestFile = CreateManifest(installer, fileName, legacySkin);
+            var installer2 = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
+            installer2.InstallerInfo.PortalID = installer.InstallerInfo.PortalID;
+            if (installer2.InstallerInfo.ManifestFile != null)
+            {
+                installer2.ReadManifest(true);
+            }
+            if (installer2.IsValid)
+            {
+                return installer2.InstallerInfo.Installed;
+            }
+
+            return false;
+        }
+
         private static void DeleteTempInstallFiles(Installer installer)
         {
             try
@@ -200,7 +234,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
-        private bool? AzureCompact(Installer installer)
+        private static bool? AzureCompact(Installer installer)
         {
             bool? compact = null;
             string manifestFile = null;
@@ -242,7 +276,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return compact;
         }
 
-        private bool IsAzureDatabase()
+        private static bool IsAzureDatabase()
         {
             return PetaPocoHelper.ExecuteScalar<int>(DataProvider.Instance().ConnectionString, CommandType.Text, "SELECT CAST(ServerProperty('EngineEdition') as INT)") == 5;
         }

@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from "react";
 import Button from "dnn-button";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import utils from "../../utils";
 import styles from "./style.less";
 import Localization from "../../localization";
 import Label from "dnn-label";
