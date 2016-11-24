@@ -31,6 +31,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         // Sample matches:
         // MyResources.ascx.en-US.resx
@@ -322,14 +323,21 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/EnableLocalizedContent?translatePages=true
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage EnableLocalizedContent([FromUri] bool translatePages)
+        public HttpResponseMessage EnableLocalizedContent([FromUri] int? portalId, [FromUri] bool translatePages)
         {
             try
             {
+                var pid = portalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && pid != PortalId)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
                 var progress = new LocalizationProgress { InProgress = true, };
-                var portalSettings = _portalController.GetCurrentPortalSettings();
+                var portal = PortalController.Instance.GetPortal(pid);
+                var portalSettings = new PortalSettings(portal);
                 LanguagesControllerTasks.LocalizeSitePages(
-                    progress, PortalId, translatePages, portalSettings.DefaultLanguage ?? Localization.SystemLocale);
+                    progress, pid, translatePages, portalSettings.DefaultLanguage ?? Localization.SystemLocale);
                 return Request.CreateResponse(HttpStatusCode.OK, progress);
             }
             catch (Exception ex)
@@ -378,24 +386,32 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         // POST /api/personabar/languages/DisableLocalizedContent
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DisableLocalizedContent()
+        public HttpResponseMessage DisableLocalizedContent([FromUri] int? portalId)
         {
             try
             {
-                var portalDefault = PortalSettings.DefaultLanguage;
-                foreach (var locale in _localeController.GetLocales(PortalId).Values)
+                var pid = portalId ?? PortalId;
+                if (!UserInfo.IsSuperUser && pid != PortalId)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var portal = PortalController.Instance.GetPortal(pid);
+                var portalSettings = new PortalSettings(portal);
+                var portalDefault = portalSettings.DefaultLanguage;
+                foreach (var locale in _localeController.GetLocales(pid).Values)
                 {
                     if (locale.Code != portalDefault)
                     {
-                        _localeController.PublishLanguage(PortalId, locale.Code, false);
-                        _tabController.DeleteTranslatedTabs(PortalId, locale.Code, false);
-                        _portalController.RemovePortalLocalization(PortalId, locale.Code, false);
+                        _localeController.PublishLanguage(pid, locale.Code, false);
+                        _tabController.DeleteTranslatedTabs(pid, locale.Code, false);
+                        _portalController.RemovePortalLocalization(pid, locale.Code, false);
                     }
                 }
 
-                _tabController.EnsureNeutralLanguage(PortalId, portalDefault, false);
-                PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "False");
-                DataCache.ClearPortalCache(PortalId, true);
+                _tabController.EnsureNeutralLanguage(pid, portalDefault, false);
+                PortalController.UpdatePortalSetting(pid, "ContentLocalizationEnabled", "False");
+                DataCache.ClearPortalCache(pid, true);
 
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

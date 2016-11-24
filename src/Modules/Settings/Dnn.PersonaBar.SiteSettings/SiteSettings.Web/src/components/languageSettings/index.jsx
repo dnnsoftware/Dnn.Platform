@@ -177,7 +177,7 @@ class LanguageSettingsPanelBody extends Component {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            props.dispatch(LanguagesActions.disableLocalizedContent(() => {
+            props.dispatch(LanguagesActions.disableLocalizedContent(props.portalId, () => {
                 props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode));
             }));
         }

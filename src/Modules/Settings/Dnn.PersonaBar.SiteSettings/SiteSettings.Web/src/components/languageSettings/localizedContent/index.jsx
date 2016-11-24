@@ -28,8 +28,8 @@ class LocalizedContent extends Component {
 
     onEnable(event) {
         const {props, state} = this;
-        props.dispatch(LanguagesActions.disableLocalizedContent());
-        props.dispatch(LanguagesActions.enableLocalizedContent({ translatePages: state.allPagesTranslatable }, (data) => {
+        props.dispatch(LanguagesActions.disableLocalizedContent(props.portalId));
+        props.dispatch(LanguagesActions.enableLocalizedContent({ portalId: props.portalId, translatePages: state.allPagesTranslatable }, (data) => {
             this.setState(data);
             const newState = Object.assign(data, { showProgressBars: true });
             this.setState(newState);
@@ -163,7 +163,8 @@ LocalizedContent.propTypes = {
     closePersonaBarPage: PropTypes.func,
     languages: PropTypes.array,
     isOpen: PropTypes.bool,
-    languageSettings: PropTypes.obj
+    languageSettings: PropTypes.obj,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {
