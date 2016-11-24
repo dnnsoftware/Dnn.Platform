@@ -471,6 +471,9 @@
     height: 20px;
     padding: 6px;
 }
+.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .search-container .search-input-container input {
+    min-height: 30px;
+}
 .dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-content {
     margin: 65px 20px 0 20px;
     border: 1px solid #C8C8C8;

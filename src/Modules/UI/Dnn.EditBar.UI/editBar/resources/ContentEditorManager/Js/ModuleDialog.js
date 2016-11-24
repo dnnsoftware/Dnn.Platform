@@ -951,7 +951,9 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 var $dragContent = $('<div />');
                 $dragHint.append($dragContent);
 
-                var moduleItem = handler.getElement().find('li[data-moduleid="' + handler._addingDesktopModuleId + '"]');
+                var moduleItem = handler._callFromExistingModule ?
+                                    $('.dnnExistingModuleDialog li[data-moduleid="' + handler._addingDesktopModuleId + '"]')
+                                    : handler.getElement().find('li[data-moduleid="' + handler._addingDesktopModuleId + '"]');
 
                 if (moduleItem.length > 0) {
                     var $icon = moduleItem.find('span.icon');
@@ -1072,8 +1074,10 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         },
 
         _motionToNewModule: function(moduleId) {
-            var $listItem = this.getElement().find('li[data-moduleid="' + this._addingDesktopModuleId + '"]');
-            if ($listItem.length == 0) {
+            var $listItem = this._callFromExistingModule ?
+                                $('.dnnExistingModuleDialog li[data-moduleid="' + this._addingDesktopModuleId + '"]')
+                                : this.getElement().find('li[data-moduleid="' + this._addingDesktopModuleId + '"]');
+            if ($listItem.length === 0) {
                 $listItem = this.getModuleManager().getHandler();
             }
 
