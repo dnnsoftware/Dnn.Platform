@@ -13,24 +13,8 @@ import PageTypeSelector from "../PageTypeSelector/PageTypeSelector";
 import PageLocalization from "../PageLocalization/PageLocalization";
 import securityService from "../../services/securityService";
 import permissionTypes from "../../services/permissionTypes";
-import LanguagesActions from "../../actions/languagesActions";
-
 
 class PageSettings extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            AllowContentLocalization: false
-        };
-    } 
-
-    componentWillMount() {
-        LanguagesActions.getLanguageSettings(null, (data) => {
-            const {AllowContentLocalization} = data.Settings;
-            this.state = {AllowContentLocalization};  
-        })();
-    }
 
     hasPageErrors() {
         const {selectedPageErrors} = this.props;
@@ -188,7 +172,7 @@ class PageSettings extends Component {
         }
         if (securityService.userHasPermission(permissionTypes.ADMIN_PAGE)) {
             headers.push(Localization.get("Permissions"));
-            if (this.state.AllowContentLocalization) {
+            if (this.props.AllowContentLocalization) {
                 headers.push(Localization.get("Localization"));
             }
             tabs.push(<div className="dnn-simple-tab-item">                
@@ -197,7 +181,7 @@ class PageSettings extends Component {
                             onPermissionsChanged={this.props.onPermissionsChanged} />
                         {permissionFooter}
                     </div>);
-            if (this.state.AllowContentLocalization) {
+            if (this.props.AllowContentLocalization) {
                 tabs.push(<div className="dnn-simple-tab-item">
                             <PageLocalization
                                 page={selectedPage}
@@ -247,6 +231,7 @@ PageSettings.propTypes = {
     pageDetailsFooterComponents: PropTypes.array.isRequired,
     pageTypeSelectorComponents: PropTypes.array.isRequired,
     selectedPageSettingTab: PropTypes.number,
+    AllowContentLocalization: PropTypes.bool,
     selectPageSettingTab: PropTypes.func
 };
 

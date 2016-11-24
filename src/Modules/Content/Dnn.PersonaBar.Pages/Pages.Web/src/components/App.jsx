@@ -8,7 +8,8 @@ import {
     pageActions as PageActions,
     addPagesActions as AddPagesActions,
     templateActions as TemplateActions,
-    visiblePanelActions as VisiblePanelActions
+    visiblePanelActions as VisiblePanelActions,
+    languagesActions as LanguagesActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -96,6 +97,10 @@ class App extends Component {
         if (viewParams.referral) {
             this.updateReferral(viewParams.referral, viewParams.referralText);
         }
+    }
+
+    componentWillMount() {
+        this.props.getLanguageSettings();
     }
 
     componentWillUnmount() {
@@ -210,6 +215,7 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const backToReferral = this.backToReferral.bind(this, this.state.referral);
+        const AllowContentLocalization = props.languageSettings ? props.languageSettings.AllowContentLocalization : false;
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
@@ -223,6 +229,7 @@ class App extends Component {
                 workSpaceTray={backToPages}
                 workSpaceTrayVisible={securityService.isSuperUser()}>
                 <PageSettings selectedPage={props.selectedPage}
+                    AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
                     selectedPageDirty={props.selectedPageDirty}
                     onCancel={cancelAction}
@@ -371,7 +378,9 @@ App.propTypes = {
     selectPageSettingTab: PropTypes.func,
     additionalPanels: PropTypes.array.isRequired,
     onShowPanel: PropTypes.func.isRequired,
-    onHidePanel: PropTypes.func.isRequired
+    onHidePanel: PropTypes.func.isRequired,
+    languageSettings: PropTypes.object.isRequired,
+    getLanguageSettings: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -388,7 +397,8 @@ function mapStateToProps(state) {
         settingsButtonComponents: state.extensions.settingsButtonComponents,
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
-        additionalPanels: state.extensions.additionalPanels
+        additionalPanels: state.extensions.additionalPanels,
+        languageSettings: state.languages.languageSettings
     };
 }
 
@@ -416,7 +426,9 @@ function mapDispatchToProps(dispatch) {
         onCancelSavePageAsTemplate: TemplateActions.cancelSavePageAsTemplate,
         onDuplicatePage: PageActions.duplicatePage,
         onShowPanel: VisiblePanelActions.showPanel,
-        onHidePanel: VisiblePanelActions.hidePanel
+        onHidePanel: VisiblePanelActions.hidePanel,
+        getLanguageSettings: LanguagesActions.getLanguageSettings
+
     }, dispatch);
 }
 

@@ -9,6 +9,7 @@ import errors from "./errorsReducer";
 import pageSeo from "./pageSeoReducer";
 import extensions from "./extensionsReducer";
 import template from "./templateReducer";
+import languages from "./languagesReducer";
 
 const rootReducer = combineReducers({
     pagination,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     errors,
     pageSeo,
     extensions,
-    template
+    template,
+    languages
 });
 
 export default rootReducer;

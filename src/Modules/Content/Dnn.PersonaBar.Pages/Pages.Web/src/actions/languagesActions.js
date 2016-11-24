@@ -1,4 +1,5 @@
 import LanguageService from "services/languageService";
+import ActionTypes from "../constants/actionTypes/languagesActionTypes";
 import utils from "../utils";
 
 const languagesActions = {
@@ -90,8 +91,14 @@ const languagesActions = {
         };
     },
     getLanguageSettings(portalId, callback) {
-        return () => {
+        return (dispatch) => {
             LanguageService.getLanguageSettings(portalId, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_SETTINGS,
+                    data: {
+                        languageSettings: data.Settings
+                    }
+                });
                 if (callback) {
                     callback(data);
                 }

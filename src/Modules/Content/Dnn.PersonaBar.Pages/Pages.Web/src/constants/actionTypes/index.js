@@ -4,6 +4,7 @@ import addPagesActionTypes from "./addPagesActionTypes";
 import pageSeoTypes from "./pageSeoTypes";
 import templateActionTypes from "./templateActionTypes";
 import visiblePanelActionTypes from "./visiblePanelActionTypes";
+import languagesActionTypes from "./languagesActionTypes";
 
 export {
     pagination,
@@ -11,5 +12,6 @@ export {
     addPagesActionTypes,
     pageSeoTypes,
     templateActionTypes,
-    visiblePanelActionTypes
+    visiblePanelActionTypes,
+    languagesActionTypes
 };
