@@ -38,6 +38,10 @@ class Pager extends Component {
             if (endIndex > totalPages)
                 state.endIndex = totalPages;
         }
+        if (props.resetIndex) {
+            state.currentPage = 0;
+            state.startIndex = 0;
+        }
 
         this.setState({
             state
@@ -163,7 +167,7 @@ class Pager extends Component {
         if (this.props.totalRecords >= 250) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, 250) });
 
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
-            pageSizeOptions =  pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
+            pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
             pageSizeOptions = pageSizeOptions.sort(function (a, b) {
                 let valueA = a.value;
                 let valueB = b.value;
@@ -250,7 +254,8 @@ Pager.propTypes = {
     pageSize: PropTypes.number,
     style: PropTypes.object,
     totalRecords: PropTypes.number.isRequired,
-    onPageChanged: PropTypes.func.isRequired
+    onPageChanged: PropTypes.func.isRequired,
+    resetIndex: PropTypes.bool
 };
 
 Pager.defaultProps = {
@@ -263,7 +268,8 @@ Pager.defaultProps = {
     summaryText: "Showing {0}-{1} of {2}",
     pageInfoText: "Page {0} of {1}",
     pageSizeOptionText: "{0} per page",
-    pageSize: 10
+    pageSize: 10,
+    resetIndex: false
 };
 /*
 showPageSizeOptions and showPageInfo are mutually exclusive.
