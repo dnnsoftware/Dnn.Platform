@@ -67,6 +67,7 @@ const installationActions = {
                 });
                 if (addToList) {
                     _newExtension.packageId = JSON.parse(data).newPackageId;
+                    _newExtension.inUse = "No";
                     dispatch({
                         type: ExtensionActionTypes.INSTALLED_EXTENSION,
                         payload: {
