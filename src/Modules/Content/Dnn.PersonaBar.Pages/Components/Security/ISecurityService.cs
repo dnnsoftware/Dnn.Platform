@@ -1,5 +1,5 @@
 ﻿using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Entities.Tabs;
+using Dnn.PersonaBar.Pages.Services.Dto;
 using Newtonsoft.Json.Linq;
 
 namespace Dnn.PersonaBar.Pages.Components.Security
@@ -12,16 +12,18 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         bool IsPageAdminUser();
 
-        bool CanManagePage(TabInfo tab);
+        bool CanManagePage(int tabId);
 
-        bool CanDeletePage(TabInfo tab);
+        bool CanDeletePage(int tabId);
 
-        bool CanAdminPage(TabInfo tab);
+        bool CanAdminPage(int tabId);
 
-        bool CanAddPage(TabInfo tab);
+        bool CanAddPage(int tabId);
 
-        bool CanCopyPage(TabInfo tab);
+        bool CanCopyPage(int tabId);
 
-        bool CanExportPage(TabInfo tab);
+        bool CanExportPage(int tabId);
+
+        bool CanSavePageDetails(PageSettings pageSettings);
     }
 }
