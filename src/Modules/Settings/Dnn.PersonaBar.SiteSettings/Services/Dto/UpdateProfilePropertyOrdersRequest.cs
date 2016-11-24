@@ -26,12 +26,10 @@ using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
-    public class SwapProfilePropertyOrdersRequest
+    public class UpdateProfilePropertyOrdersRequest
     {
         public int? PortalId { get; set; }
 
-        public int FirstPropertyDefinitionId { get; set; }
-
-        public int SecondPropertyDefinitionId { get; set; }
+        public UpdateProfilePropertyRequest[] Properties { get; set; }
     }
 }

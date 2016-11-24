@@ -60,6 +60,15 @@ class ProfilePropertiesPanel extends Component {
         tableFields.push({ "name": resx.get("Visible.Header"), "id": "Visible" });
     }
 
+    componentWillReceiveProps(props) {
+        tableFields = [];
+        tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
+        tableFields.push({ "name": resx.get("DataType.Header"), "id": "DataType" });
+        tableFields.push({ "name": resx.get("DefaultVisibility.Header"), "id": "DefaultVisibility" });
+        tableFields.push({ "name": resx.get("Required.Header"), "id": "Required" });
+        tableFields.push({ "name": resx.get("Visible.Header"), "id": "Visible" });
+    }
+
     renderHeader() {
         let tableHeaders = tableFields.map((field) => {
             let className = "property-items header-" + field.id;
@@ -134,8 +143,9 @@ class ProfilePropertiesPanel extends Component {
         }
         else {
             util.utilities.confirm(resx.get("PropertyDefinitionDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-                const itemList = props.profileProperties.Properties.filter((item) => item.PropertyDefinitionId !== propertyId);
-                props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, itemList, () => {
+                const profileProperties = Object.assign({}, props.profileProperties);
+                profileProperties.Properties = profileProperties.Properties.filter((item) => item.PropertyDefinitionId !== propertyId);
+                props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, profileProperties, () => {
                     util.utilities.notify(resx.get("DeleteSuccess"));
                     this.collapse();
                 }, (error) => {
@@ -163,21 +173,22 @@ class ProfilePropertiesPanel extends Component {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            const itemList = Object.assign([], props.profileProperties.Properties);
-            let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
+            let profileProperties = Object.assign({}, props.profileProperties);
+            let items = Object.assign([], props.profileProperties.Properties);
+            let index = this.findWithAttr(items, "PropertyDefinitionId", propertyId);
 
             if (index > 0) {
-                let tmp = itemList[index];
-                itemList[index] = itemList[index - 1];
-                itemList[index - 1] = tmp;
-                props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+                let tmp = items[index];
+                items[index] = items[index - 1];
+                items[index - 1] = tmp;
+                profileProperties.Properties = items;
+                props.dispatch(SiteBehaviorActions.updateProfilePropertyOrders(
                     {
                         PortalId: props.portalId,
-                        FirstPropertyDefinitionId: propertyId,
-                        SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
-                    }, itemList, () => {
+                        Properties: items
+                    }, profileProperties, () => {
                         util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
-                        this.collapse();
+                        this.collapse();                        
                     }, (error) => {
                         const errorMessage = JSON.parse(error.responseText);
                         util.utilities.notifyError(errorMessage.Message);
@@ -193,19 +204,20 @@ class ProfilePropertiesPanel extends Component {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
         }
         else {
-            const itemList = Object.assign([], props.profileProperties.Properties);
-            let index = this.findWithAttr(itemList, "PropertyDefinitionId", propertyId);
+            let profileProperties = Object.assign({}, props.profileProperties);
+            let items = Object.assign([], props.profileProperties.Properties);
+            let index = this.findWithAttr(items, "PropertyDefinitionId", propertyId);
 
-            if (index < itemList.length - 1) {
-                let tmp = itemList[index];
-                itemList[index] = itemList[index + 1];
-                itemList[index + 1] = tmp;
-                props.dispatch(SiteBehaviorActions.swapProfilePropertyOrders(
+            if (index < items.length - 1) {
+                let tmp = items[index];
+                items[index] = items[index + 1];
+                items[index + 1] = tmp;
+                profileProperties.Properties = items;
+                props.dispatch(SiteBehaviorActions.updateProfilePropertyOrders(
                     {
                         PortalId: props.portalId,
-                        FirstPropertyDefinitionId: propertyId,
-                        SecondPropertyDefinitionId: itemList[index].PropertyDefinitionId
-                    }, itemList, () => {
+                        Properties: items
+                    }, profileProperties, () => {
                         util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
                         this.collapse();
                     }, (error) => {

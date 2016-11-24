@@ -2,7 +2,7 @@ import { siteBehavior as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
-const siteBehaviorActions = {    
+const siteBehaviorActions = {
     getDefaultPagesSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
             ApplicationService.getDefaultPagesSettings(portalId, cultureCode, data => {
@@ -272,13 +272,13 @@ const siteBehaviorActions = {
             });
         };
     },
-    deleteProfileProperty(propertyId, properties, callback, failureCallback) {
+    deleteProfileProperty(propertyId, object, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.deleteProfileProperty(propertyId, data => {
                 dispatch({
                     type: ActionTypes.DELETED_SITESETTINGS_PROFILE_PROPERTY,
                     data: {
-                        profileProperties: properties
+                        profileProperties: object
                     }
                 });
                 if (callback) {
@@ -521,13 +521,14 @@ const siteBehaviorActions = {
             });
         };
     },
-    swapProfilePropertyOrders(payload, properties, callback, failureCallback) {
+    updateProfilePropertyOrders(payload, object, callback, failureCallback) {
         return (dispatch) => {
-            ApplicationService.swapProfilePropertyOrders(payload, data => {
+            ApplicationService.updateProfilePropertyOrders(payload, data => {
                 dispatch({
-                    type: ActionTypes.SWAPPED_SITESETTINGS_PROFILE_PROPERTY_ORDER,
+                    type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY_ORDER,
                     data: {
-                        profileProperties: properties
+                        profileProperties: object
+
                     }
                 });
                 if (callback) {

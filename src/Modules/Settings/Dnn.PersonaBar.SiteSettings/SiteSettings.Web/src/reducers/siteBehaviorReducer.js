@@ -50,7 +50,7 @@ export default function siteBehavior(state = {
                 profileSettingsClientModified: action.data.profileSettingsClientModified
             };
         case ActionTypes.RETRIEVED_SITESETTINGS_PROFILE_PROPERTIES:
-        case ActionTypes.SWAPPED_SITESETTINGS_PROFILE_PROPERTY_ORDER:
+        case ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY_ORDER:
             return { ...state,
                 profileProperties: action.data.profileProperties
             };

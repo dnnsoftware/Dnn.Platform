@@ -43,6 +43,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
+using Newtonsoft.Json;
 using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -777,7 +778,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage SwapProfilePropertyOrders(SwapProfilePropertyOrdersRequest request)
+        public HttpResponseMessage UpdateProfilePropertyOrders(UpdateProfilePropertyOrdersRequest request)
         {
             try
             {
@@ -787,25 +788,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (request.FirstPropertyDefinitionId != Null.NullInteger && request.SecondPropertyDefinitionId != Null.NullInteger)
+                for (int i = 0; i <= request.Properties.Length - 1; i++)
                 {
-                    var firstProfileProperty = ProfileController.GetPropertyDefinition(request.FirstPropertyDefinitionId, pid);
-                    var secondProfileProperty = ProfileController.GetPropertyDefinition(request.SecondPropertyDefinitionId, pid);
-
-                    int firstViewOrder = firstProfileProperty.ViewOrder;
-
-                    firstProfileProperty.ViewOrder = secondProfileProperty.ViewOrder;
-                    secondProfileProperty.ViewOrder = firstViewOrder;
-
-                    ProfileController.UpdatePropertyDefinition(firstProfileProperty);
-                    ProfileController.UpdatePropertyDefinition(secondProfileProperty);
-                    DataCache.ClearDefinitionsCache(pid);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    var profileProperty = ProfileController.GetPropertyDefinition(request.Properties[i].PropertyDefinitionId.Value, pid);
+                    if (profileProperty.ViewOrder != i)
+                    {
+                        profileProperty.ViewOrder = i;
+                        ProfileController.UpdatePropertyDefinition(profileProperty);
+                    }
                 }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false });
-                }
+
+                DataCache.ClearDefinitionsCache(pid);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {

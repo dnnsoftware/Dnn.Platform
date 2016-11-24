@@ -273,9 +273,9 @@ class ApplicationService {
         sf.post("UpdateOtherSettings", payload, callback, failureCallback);
     }
 
-    swapProfilePropertyOrders(payload, callback, failureCallback) {
+    updateProfilePropertyOrders(payload, callback, failureCallback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.post("SwapProfilePropertyOrders", payload, callback, failureCallback);
+        sf.post("UpdateProfilePropertyOrders", payload, callback, failureCallback);
     }
 
     activateLanguage(payload, callback, failureCallback) {
