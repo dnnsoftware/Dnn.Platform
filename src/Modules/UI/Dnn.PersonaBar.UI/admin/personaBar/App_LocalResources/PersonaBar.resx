@@ -276,4 +276,7 @@
   <data name="txt_ViewIndex.Text" xml:space="preserve">
     <value>Viewing {0} of {1}</value>
   </data>
+  <data name="btn_LoadMore.Text" xml:space="preserve">
+    <value>Load More</value>
+  </data>
 </root>
