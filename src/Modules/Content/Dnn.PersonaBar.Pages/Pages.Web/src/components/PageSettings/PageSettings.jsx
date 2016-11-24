@@ -94,13 +94,16 @@ class PageSettings extends Component {
             onCancelEditingPageModule,
             editingSettingModuleId,
             pageDetailsFooterComponents,
-            pageTypeSelectorComponents
+            pageTypeSelectorComponents,
+            AllowContentLocalization
         } = this.props;
 
         const buttons = this.getButtons();
         const isEditingExistingPage = selectedPage.tabId !== 0;
         const appearanceButtons = [...buttons];
         const permissionsButtons = [...buttons];
+
+        const isLocalizationTabVisible = AllowContentLocalization && selectedPage.tabId !== 0;
 
         if (isEditingExistingPage && selectedPage.hasChild) {
             appearanceButtons.unshift(this.getCopyAppearanceToDescendantPagesButton());
@@ -172,7 +175,7 @@ class PageSettings extends Component {
         }
         if (securityService.userHasPermission(permissionTypes.ADMIN_PAGE)) {
             headers.push(Localization.get("Permissions"));
-            if (this.props.AllowContentLocalization) {
+            if (isLocalizationTabVisible) {
                 headers.push(Localization.get("Localization"));
             }
             tabs.push(<div className="dnn-simple-tab-item">                
@@ -181,7 +184,7 @@ class PageSettings extends Component {
                             onPermissionsChanged={this.props.onPermissionsChanged} />
                         {permissionFooter}
                     </div>);
-            if (this.props.AllowContentLocalization) {
+            if (isLocalizationTabVisible) {
                 tabs.push(<div className="dnn-simple-tab-item">
                             <PageLocalization
                                 page={selectedPage}
