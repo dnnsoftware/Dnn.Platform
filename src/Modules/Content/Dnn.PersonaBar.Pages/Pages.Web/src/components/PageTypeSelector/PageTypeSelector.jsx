@@ -24,6 +24,7 @@ class PageTypeSelector extends Component {
                                 .replace("[CREATEDUSER]", page.created || "System");
         const hierarchy = page.hierarchy === "" ? Localization.get("TopPage") : page.hierarchy;
         const components = this.getComponents(); 
+        const pageNameWidth = (components && components.length > 0) ? (738 - (90 * components.length)) : 738;
 
         return (
             <div className={styles.pageTypeSelector}>
@@ -31,7 +32,7 @@ class PageTypeSelector extends Component {
                     {components}
                 </div>
                 <div>
-                    <div className="page-info-row page-name">
+                    <div className="page-info-row page-name" style={{width: pageNameWidth}}>
                         {page.name}
                     </div>
                     <div className="page-info-row">
