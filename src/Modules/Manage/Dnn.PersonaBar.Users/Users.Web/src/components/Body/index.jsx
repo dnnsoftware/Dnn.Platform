@@ -17,7 +17,8 @@ const searchParameters = {
     pageIndex: 0,
     pageSize: 10,
     sortColumn: "",
-    sortAscending: false
+    sortAscending: false,
+    resetIndex: false
 };
 class Body extends Component {
     constructor() {
@@ -47,8 +48,13 @@ class Body extends Component {
         searchParameters.searchText = searchText;
         searchParameters.filter = option.value;
         searchParameters.pageIndex = 0;
+        searchParameters.resetIndex = true;
         this.props.dispatch(CommonUsersActions.getUsers(searchParameters));
-        this.setState({ searchParameters });
+        this.setState({ searchParameters }, () => {
+            let {searchParameters} = this.state;
+            searchParameters.resetIndex = false;
+            this.setState({ searchParameters });
+        });
     }
 
     onPageChanged(currentPage, pageSize) {
@@ -101,6 +107,7 @@ class Body extends Component {
                                 pageSize={this.state.searchParameters.pageSize}
                                 totalRecords={props.totalUsers}
                                 onPageChanged={this.onPageChanged.bind(this) }
+                                resetIndex={this.state.searchParameters.resetIndex}
                                 />
                         </div>
                     }
