@@ -204,7 +204,6 @@
     <Content Include="admin\personaBar\css\pikaday.css" />
     <Content Include="admin\personaBar\css\tokenInput.css" />
     <Content Include="admin\personaBar\index.html" />
-    <Content Include="admin\personaBar\index.mobi.html" />
     <Content Include="admin\personaBar\scripts\codeEditor.js" />
     <Content Include="admin\personaBar\scripts\eventEmitter.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\datePicker.js" />
@@ -236,7 +235,6 @@
   <ItemGroup>
     <Content Include="admin\personaBar\css\graph.css" />
     <Content Include="admin\personaBar\css\main.css" />
-    <Content Include="admin\personaBar\css\main.mobi.css" />
     <Content Include="admin\personaBar\css\permissionGrid.css" />
     <Content Include="admin\personaBar\css\PersonaBarDialog.css" />
     <Content Include="admin\personaBar\css\tags-input.css" />
@@ -263,7 +261,6 @@
     <Content Include="admin\personaBar\scripts\koBindingHandlers\folderPicker.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\tagsInput.js" />
     <Content Include="admin\personaBar\scripts\main.js" />
-    <Content Include="admin\personaBar\scripts\main.mobi.js" />
     <Content Include="admin\personaBar\scripts\pager.js" />
     <Content Include="admin\personaBar\scripts\permissionGrid.js" />
     <Content Include="admin\personaBar\scripts\permissionGridManager.js" />

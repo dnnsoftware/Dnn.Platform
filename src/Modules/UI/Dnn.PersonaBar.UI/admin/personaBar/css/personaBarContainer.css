@@ -9,13 +9,6 @@ iframe#personaBar-iframe{
 	height: 100%; 
 	z-index: 9999999;
 }
-iframe#personaBar-mobi-iframe{
-	width: 100%; 
-	position: absolute; 
-	left: 0; top: 0; 
-	height: 66px; 
-	z-index: 9999999;
-}
 
 .pb-scroll-wrapper {
     position: absolute;
