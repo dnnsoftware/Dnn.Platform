@@ -14,6 +14,7 @@ import MultiLineInput from "dnn-multi-line-input";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Pager from "dnn-pager";
 import PersonaBarPage from "dnn-persona-bar-page";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PermissionGrid from "dnn-permission-grid";
 import RadioButtons from "dnn-radio-buttons";
 import SearchBox from "dnn-search-box";
@@ -53,6 +54,7 @@ export {
     Pager,
     PermissionGrid,
     PersonaBarPage,
+    PersonaBarPageHeader,
     RadioButtons,
     Modal,
     SearchBox,
