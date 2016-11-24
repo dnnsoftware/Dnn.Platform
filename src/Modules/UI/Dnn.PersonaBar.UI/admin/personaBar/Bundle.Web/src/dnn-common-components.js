@@ -15,6 +15,7 @@ import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Pager from "dnn-pager";
 import PersonaBarPage from "dnn-persona-bar-page";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import PermissionGrid from "dnn-permission-grid";
 import RadioButtons from "dnn-radio-buttons";
 import SearchBox from "dnn-search-box";
@@ -55,6 +56,7 @@ export {
     PermissionGrid,
     PersonaBarPage,
     PersonaBarPageHeader,
+    PersonaBarPageBody,
     RadioButtons,
     Modal,
     SearchBox,
@@ -71,5 +73,5 @@ export {
     TextOverflowWrapper,
     Tooltip,
     NumberSlider,
-    FolderPicker	
+    FolderPicker
 };
