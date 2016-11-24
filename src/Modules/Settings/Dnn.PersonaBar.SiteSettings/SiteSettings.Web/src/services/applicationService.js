@@ -20,7 +20,7 @@ class ApplicationService {
 
     getPortalSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetPortalSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetPortalSettings?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     updatePortalSettings(payload, callback, failureCallback) {
@@ -30,7 +30,7 @@ class ApplicationService {
 
     getDefaultPagesSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetDefaultPagesSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetDefaultPagesSettings?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     updateDefaultPagesSettings(payload, callback, failureCallback) {
@@ -70,7 +70,7 @@ class ApplicationService {
 
     getProfilePropertyLocalization(portalId, propertyName, propertyCategory, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetProfilePropertyLocalization?portalId=" + portalId + "&propertyName=" + propertyName + "&propertyCategory=" + propertyCategory + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetProfilePropertyLocalization?portalId=" + portalId + "&propertyName=" + propertyName + "&propertyCategory=" + propertyCategory + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     updateProfileProperty(payload, callback, failureCallback) {
@@ -155,7 +155,7 @@ class ApplicationService {
 
     getSynonymsGroups(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetSynonymsGroups?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetSynonymsGroups?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     addSynonymsGroup(payload, callback, failureCallback) {
@@ -175,7 +175,7 @@ class ApplicationService {
 
     getIgnoreWords(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetIgnoreWords?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetIgnoreWords?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     addIgnoreWords(payload, callback, failureCallback) {
@@ -195,7 +195,7 @@ class ApplicationService {
 
     getLanguageSettings(portalId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetLanguageSettings?portalId=" + portalId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetLanguageSettings?portalId=" + portalId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     updateLanguageSettings(payload, callback, failureCallback) {
@@ -260,7 +260,7 @@ class ApplicationService {
 
     getRoles(portalId, groupId, cultureCode, callback) {
         const sf = this.getServiceFramework("SiteSettings");
-        sf.get("GetTranslatorRoles?portalId=" + portalId + "&groupId=" + groupId + "&cultureCode=" + cultureCode, {}, callback);
+        sf.get("GetTranslatorRoles?portalId=" + portalId + "&groupId=" + groupId + "&cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback);
     }
 
     getOtherSettings(callback) {
@@ -285,7 +285,7 @@ class ApplicationService {
 
     markAllPagesAsTranslated(cultureCode, callback, failureCallback){
         const sf = this.getServiceFramework("Languages");
-        sf.post("MarkAllPagesTranslated?cultureCode=" + cultureCode, {}, callback, failureCallback);
+        sf.post("MarkAllPagesTranslated?cultureCode=" + (cultureCode ? cultureCode : ""), {}, callback, failureCallback);
     }
 }
 const applicationService = new ApplicationService();
