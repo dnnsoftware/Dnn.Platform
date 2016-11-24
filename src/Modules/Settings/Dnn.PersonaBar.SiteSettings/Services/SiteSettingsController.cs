@@ -1860,10 +1860,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     if (newDefaultLanguage != portalSettings.DefaultLanguage)
                     {
                         var needToRemoveOldDefaultLanguage = LocaleController.Instance.GetLocales(pid).Count == 1;
-                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(portalSettings.DefaultLanguage);
+                        var oldDefaultLanguage = LocaleController.Instance.GetLocale(pid, portalSettings.DefaultLanguage);
                         if (!IsLanguageEnabled(pid, newDefaultLanguage))
                         {
-                            var language = LocaleController.Instance.GetLocale(newDefaultLanguage);
+                            var language = LocaleController.Instance.GetLocale(pid, newDefaultLanguage);
                             Localization.AddLanguageToPortal(pid, language.LanguageId, true);
                         }
 
@@ -2189,7 +2189,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequireHost]
         public HttpResponseMessage UpdateLanguage(UpdateLanguageRequest request)
         {
             try
@@ -2203,10 +2202,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (request.LanguageId != null)
                 {
                     var language = LocaleController.Instance.GetLocale(request.LanguageId.Value) ??
-                                   (LocaleController.Instance.GetLocale(request.Code) ?? new Locale { Code = request.Code });
-                    language.Fallback = request.Fallback;
-                    language.Text = CultureInfo.GetCultureInfo(language.Code).NativeName;
-                    Localization.SaveLanguage(language);
+                                       (LocaleController.Instance.GetLocale(request.Code) ??
+                                        new Locale { Code = request.Code });
+                    if (UserInfo.IsSuperUser)
+                    {
+                        language.Fallback = request.Fallback;
+                        language.Text = CultureInfo.GetCultureInfo(language.Code).NativeName;
+                        Localization.SaveLanguage(language);
+                    }
 
                     Dictionary<string, Locale> enabledLanguages = LocaleController.Instance.GetLocales(pid);
                     var localizedTabs = PortalSettings.ContentLocalizationEnabled
