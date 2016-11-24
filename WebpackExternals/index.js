@@ -37,6 +37,7 @@ module.exports = {
         "dnn-permission-grid": "window.dnn.nodeModules.CommonComponents.PermissionGrid",
         "dnn-persona-bar-page": "window.dnn.nodeModules.CommonComponents.PersonaBarPage",
         "dnn-persona-bar-page-header": "window.dnn.nodeModules.CommonComponents.PersonaBarPageHeader",
+        "dnn-persona-bar-page-body": "window.dnn.nodeModules.CommonComponents.PersonaBarPageBody",
         "dnn-radio-buttons": "window.dnn.nodeModules.CommonComponents.RadioButtons",
         "dnn-search-box": "window.dnn.nodeModules.CommonComponents.SearchBox",
         "dnn-select": "window.dnn.nodeModules.CommonComponents.Select",
