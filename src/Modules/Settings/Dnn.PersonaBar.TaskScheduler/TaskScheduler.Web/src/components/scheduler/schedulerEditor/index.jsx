@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
@@ -6,7 +6,7 @@ import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
-import Select from "dnn-select";
+import Dropdown from "dnn-dropdown";
 import DatePicker from "dnn-date-picker";
 import Input from "dnn-single-line-input";
 import {
@@ -183,7 +183,11 @@ class SchedulerEditor extends Component {
             scheduleItemDetail[key] = event;
         }
         else if (key === "CatchUpEnabled") {
-            scheduleItemDetail[key] = event.target.value === "true" ? true : false;
+            scheduleItemDetail[key] = event.value === "true" ? true : false;
+        }
+        else if (key === "RetainHistoryNum" || key === "TimeLapseMeasurement"
+            || key === "RetryTimeLapseMeasurement" || key === "AttachToEvent") {
+            scheduleItemDetail[key] = event.value;
         }
         else {
             scheduleItemDetail[key] = typeof (event) === "object" ? event.target.value : event;
@@ -237,7 +241,7 @@ class SchedulerEditor extends Component {
         const {props, state} = this;
         if (props.settingsClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
-                props.dispatch(TaskActions.cancelSettingsClientModified());                
+                props.dispatch(TaskActions.cancelSettingsClientModified());
                 props.Collapse();
             });
         }
@@ -255,10 +259,10 @@ class SchedulerEditor extends Component {
                     <SingleLineInputWithError
                         withLabel={true}
                         style={{ width: 100 + '%', float: 'left' }}
-                        label={resx.get("plFriendlyName") }
+                        label={resx.get("plFriendlyName")}
                         error={false}
-                        value={this.getValue("FriendlyName" || "") }
-                        onChange={this.onSettingChange.bind(this, "FriendlyName") }
+                        value={this.getValue("FriendlyName" || "")}
+                        onChange={this.onSettingChange.bind(this, "FriendlyName")}
                         />
                 </div>
                 <div className="editor-row divider">
@@ -267,43 +271,46 @@ class SchedulerEditor extends Component {
                         style={{ width: 100 + '%', float: 'left' }}
                         label={resx.get("plType") + " *"}
                         error={this.state.error.name && this.state.triedToSubmit}
-                        errorMessage={resx.get("TypeRequired") }
+                        errorMessage={resx.get("TypeRequired")}
                         value={this.getValue("TypeFullName") || ""}
-                        onChange={this.onSettingChange.bind(this, "TypeFullName") }
+                        onChange={this.onSettingChange.bind(this, "TypeFullName")}
                         />
                 </div>
                 <div className="editor-row divider">
-                    <Label label={resx.get("plRetainHistoryNum") } style={{ margin: '0 0 5px 0' }} />
-                    <Select options={retainHistoryNumOptions} value={this.getValue("RetainHistoryNum") } onChange={this.onSettingChange.bind(this, "RetainHistoryNum") }
-                        style={{ width: 100 + '%', float: 'left', margin: '0 0 32px 0' }}/>
+                    <Label label={resx.get("plRetainHistoryNum")} style={{ margin: '0 0 5px 0' }} />
+                    <Dropdown
+                        options={retainHistoryNumOptions}
+                        value={this.getValue("RetainHistoryNum")}
+                        onSelect={this.onSettingChange.bind(this, "RetainHistoryNum")}
+                        />
                 </div>
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
                         style={{ width: 100 + '%', float: 'left' }}
-                        label={resx.get("Servers") }
+                        label={resx.get("Servers")}
                         error={false}
                         value={this.getValue("Servers") || ""}
-                        onChange={this.onSettingChange.bind(this, "Servers") }
+                        onChange={this.onSettingChange.bind(this, "Servers")}
                         />
                 </div>
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
                         style={{ width: 100 + '%', float: 'left' }}
-                        label={resx.get("plObjectDependencies") }
+                        label={resx.get("plObjectDependencies")}
                         error={false}
                         value={this.getValue("ObjectDependencies") || ""}
-                        onChange={this.onSettingChange.bind(this, "ObjectDependencies") }
+                        onChange={this.onSettingChange.bind(this, "ObjectDependencies")}
                         />
                 </div>
             </div>;
             const columnTwo = <div className="container right-column">
                 <div className="editor-row divider">
-                    <Label label={resx.get("plScheduleStartDate") } style={{ margin: '0 0 5px 0' }} />
+                    <Label label={resx.get("plScheduleStartDate")} style={{ margin: '0 0 5px 0' }} />
                     <DatePicker
-                        date={this.getValue("ScheduleStartDate") }
-                        updateDate={this.onSettingChange.bind(this, "ScheduleStartDate") }
+                        date={this.getValue("ScheduleStartDate")}
+                        updateDate={this.onSettingChange.bind(this, "ScheduleStartDate")}
                         isDateRange={false}
                         hasTimePicker={true}
                         showClearDateButton={true}
@@ -315,44 +322,58 @@ class SchedulerEditor extends Component {
                         style={{ float: 'left', width: '47.5%' }}
                         label={resx.get("plTimeLapse") + " *"}
                         error={this.state.error.frequency && this.state.triedToSubmit}
-                        errorMessage={resx.get("TimeLapseRequired.ErrorMessage") }
+                        errorMessage={resx.get("TimeLapseRequired.ErrorMessage")}
                         value={this.getValue("TimeLapse") || ""}
-                        onChange={this.onSettingChange.bind(this, "TimeLapse") }
+                        onChange={this.onSettingChange.bind(this, "TimeLapse")}
                         />
                     <div className="text-section">&nbsp; </div>
-                    <Select options={timeLapseMeasurementOptions } value={this.getValue("TimeLapseMeasurement") } onChange={this.onSettingChange.bind(this, "TimeLapseMeasurement") }
-                        style={{ width: 47.5 + '%', float: 'left', margin: '25px 0 0 0' }}/>
+                    <Dropdown
+                        style={{ width: 46 + '%', float: 'right', margin: '25px 0 0 0' }}
+                        options={timeLapseMeasurementOptions}
+                        value={this.getValue("TimeLapseMeasurement")}
+                        onSelect={this.onSettingChange.bind(this, "TimeLapseMeasurement")}
+                        />
                 </div>
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
                         style={{ width: 47.5 + '%', float: 'left' }}
-                        label={resx.get("plRetryTimeLapse") }
+                        label={resx.get("plRetryTimeLapse")}
                         error={this.state.error.retry && this.state.triedToSubmit}
-                        errorMessage={resx.get("RetryTimeLapseValidator.ErrorMessage") }
-                        value={this.getValue("RetryTimeLapse") === "-1" ? "" : this.getValue("RetryTimeLapse") }
-                        onChange={this.onSettingChange.bind(this, "RetryTimeLapse") }
+                        errorMessage={resx.get("RetryTimeLapseValidator.ErrorMessage")}
+                        value={this.getValue("RetryTimeLapse") === "-1" ? "" : this.getValue("RetryTimeLapse")}
+                        onChange={this.onSettingChange.bind(this, "RetryTimeLapse")}
                         />
                     <div className="text-section">&nbsp; </div>
-                    <Select options={timeLapseMeasurementOptions } value={this.getValue("RetryTimeLapseMeasurement") } onChange={this.onSettingChange.bind(this, "RetryTimeLapseMeasurement") }
-                        style={{ width: 47.5 + '%', float: 'left', margin: '25px 0 0 0' }}/>
+                    <Dropdown
+                        style={{ width: 46 + '%', float: 'right', margin: '25px 0 0 0' }}
+                        options={timeLapseMeasurementOptions}
+                        value={this.getValue("RetryTimeLapseMeasurement")}
+                        onSelect={this.onSettingChange.bind(this, "RetryTimeLapseMeasurement")}
+                        />
                 </div>
                 <div className="editor-row divider">
-                    <Label label={resx.get("plAttachToEvent") } style={{ margin: '0 0 5px 0' }} />
-                    <Select options={attachToEventOptions} value={this.getValue("AttachToEvent") } onChange={this.onSettingChange.bind(this, "AttachToEvent") }
-                        style={{ width: 100 + '%', float: 'left', margin: '0 0 35px 0' }}/>
+                    <Label label={resx.get("plAttachToEvent")} style={{ margin: '0 0 5px 0' }} />
+                    <Dropdown
+                        options={attachToEventOptions}
+                        value={this.getValue("AttachToEvent")}
+                        onSelect={this.onSettingChange.bind(this, "AttachToEvent")}
+                        />
                 </div>
                 <div className="editor-row divider">
-                    <Label label={resx.get("plCatchUpEnabled") } style={{ margin: '0 0 5px 0' }}/>
-                    <Select options={catchUpEnabledOptions} value={this.getValue("CatchUpEnabled") } onChange={this.onSettingChange.bind(this, "CatchUpEnabled") }
-                        style={{ width: 100 + '%', float: 'left', margin: '0 0 35px 0' }}/>
+                    <Label label={resx.get("plCatchUpEnabled")} style={{ margin: '0 0 5px 0' }} />
+                    <Dropdown
+                        options={catchUpEnabledOptions}
+                        value={this.getValue("CatchUpEnabled")}
+                        onSelect={this.onSettingChange.bind(this, "CatchUpEnabled")}
+                        />
                 </div>
                 <div className="editor-row divider">
-                    <Label label={resx.get("plEnabled") } style={{ width: '47.5%' }}/>
+                    <Label label={resx.get("plEnabled")} style={{ width: '47.5%' }} />
                     <div className="right">
                         <Switch labelHidden={true}
-                            value={this.getValue("Enabled") === "true" ? true : false }
-                            onChange={this.onSettingChange.bind(this, "Enabled") }
+                            value={this.getValue("Enabled") === "true" ? true : false}
+                            onChange={this.onSettingChange.bind(this, "Enabled")}
                             />
                     </div>
                 </div>
@@ -364,24 +385,24 @@ class SchedulerEditor extends Component {
                 <div className="scheduler-setting-editor">
                     <Grid children={children} numberOfColumns={2} />
                     <div className="buttons-box">
-                        {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId) }>{resx.get("cmdDelete") }</Button>}
+                        {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button
                             type="secondary"
-                            onClick={this.onCancel.bind(this) }>
-                            {resx.get("Cancel") }
+                            onClick={this.onCancel.bind(this)}>
+                            {resx.get("Cancel")}
                         </Button>
-                        {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.runSchedule.bind(this) }>{resx.get("cmdRun") }</Button>}
+                        {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.runSchedule.bind(this)}>{resx.get("cmdRun")}</Button>}
                         <Button
                             disabled={!this.props.settingsClientModified}
                             type="primary"
-                            onClick={this.onUpdateItem.bind(this) }>
-                            {this.props.scheduleId !== undefined ? resx.get("Update") : resx.get("cmdSave") }
+                            onClick={this.onUpdateItem.bind(this)}>
+                            {this.props.scheduleId !== undefined ? resx.get("Update") : resx.get("cmdSave")}
                         </Button>
                     </div>
                 </div>
             );
         }
-        else return <div/>;
+        else return <div />;
     }
 }
 
