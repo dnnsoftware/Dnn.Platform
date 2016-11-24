@@ -77,7 +77,7 @@ class UserRoles extends Component {
     onAddRole() {
         const {state} = this;
         let roleId = state.roleSelectState.roleId;
-        if (roleId === -1) {
+        if (roleId === -1 || roleId=== undefined) {
             return;
         }
         this.saveRole(roleId);
