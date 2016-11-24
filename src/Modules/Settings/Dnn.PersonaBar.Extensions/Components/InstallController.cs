@@ -61,8 +61,8 @@ namespace Dnn.PersonaBar.Extensions.Components
                         {
                             if (installer.InstallerInfo.ManifestFile == null)
                             {
-                                parseResult.LegacySkinInstalled = CheckIfSkinALreadyInstalled(fileName, installer, "Skin");
-                                parseResult.LegacyContainerInstalled = CheckIfSkinALreadyInstalled(fileName, installer, "Container");
+                                parseResult.LegacySkinInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Skin");
+                                parseResult.LegacyContainerInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Container");
                             }
 
                             parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
@@ -155,21 +155,21 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null)
         {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, true, false);
+            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
             if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
             {
                 var manifestFile = CreateManifest(installer, fileName, legacySkin);
                 //Re-evaluate the package after creating a temporary manifest
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
-
-                //Read the manifest
-                if (installer.InstallerInfo.ManifestFile != null)
-                {
-                    installer.ReadManifest(true);
-                }
             }
 
             installer.InstallerInfo.PortalID = portalId;
+
+            //Read the manifest
+            if (installer.InstallerInfo.ManifestFile != null)
+            {
+                installer.ReadManifest(true);
+            }
             return installer;
         }
 
@@ -184,7 +184,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return manifestFile;
         }
 
-        private static bool CheckIfSkinALreadyInstalled(string fileName, Installer installer, string legacySkin)
+        private static bool CheckIfSkinAlreadyInstalled(string fileName, Installer installer, string legacySkin)
         {
             // this whole thing is to check for if already installed
             var manifestFile = CreateManifest(installer, fileName, legacySkin);
@@ -194,12 +194,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 installer2.ReadManifest(true);
             }
-            if (installer2.IsValid)
-            {
-                return installer2.InstallerInfo.Installed;
-            }
-
-            return false;
+            return installer2.IsValid && installer2.InstallerInfo.Installed;
         }
 
         private static void DeleteTempInstallFiles(Installer installer)

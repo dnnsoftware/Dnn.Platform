@@ -118,7 +118,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             Organization = package.Organization;
             Url = package.Url;
             Email = package.Email;
-            CanDelete = !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
+            CanDelete = !package.IsSystemPackage &&
+                package.PackageID > 0 &&
+                PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
             ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
