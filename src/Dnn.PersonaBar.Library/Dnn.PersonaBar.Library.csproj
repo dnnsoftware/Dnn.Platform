@@ -115,9 +115,6 @@
     <Compile Include="Controllers\IPersonaBarUserSettingsController.cs" />
     <Compile Include="Controllers\PersonaBarController.cs" />
     <Compile Include="Controllers\PersonaBarUserSettingsController.cs" />
-    <Compile Include="Exceptions\InvalidConfigurationFileException.cs" />
-    <Compile Include="Exceptions\MissingConfigurationFileException.cs" />
-    <Compile Include="Exceptions\NonDeserializableConfigurationFileException.cs" />
     <Compile Include="Model\MenuItem.cs" />
     <Compile Include="Model\PersonaBarExtension.cs" />
     <Compile Include="Model\PersonaBarMenu.cs" />
