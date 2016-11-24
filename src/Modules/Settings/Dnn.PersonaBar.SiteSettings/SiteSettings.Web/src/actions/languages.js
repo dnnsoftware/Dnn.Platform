@@ -231,9 +231,9 @@ const languagesActions = {
             LanguageEditorService.disableLocalizedContent(callback);
         };
     },
-    deleteLanguagePages(cultureCode, callback) {
+    deleteLanguagePages(payload, callback) {
         return (dispatch) => {
-            LanguageEditorService.deleteLanguagePages(cultureCode, data => {
+            LanguageEditorService.deleteLanguagePages(payload, data => {
                 dispatch({
                     type: ActionTypes.DELETED_LANGUAGE_PAGES,
                     data
@@ -336,9 +336,9 @@ const languagesActions = {
             });
         };
     },
-    getPageList(cultureCode, callback) {
+    getPageList(params, callback) {
         return (dispatch) => {
-            LanguageEditorService.getPageList(cultureCode, data => {
+            LanguageEditorService.getPageList(params, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_PAGES,
                     data: {
@@ -380,9 +380,9 @@ const languagesActions = {
             });
         };
     },
-    markAllPagesAsTranslated(cultureCode, callback) {
+    markAllPagesAsTranslated(payload, callback) {
         return dispatch => {
-            ApplicationService.markAllPagesAsTranslated(cultureCode, () => {
+            ApplicationService.markAllPagesAsTranslated(payload, () => {
                 if (callback) {
                     callback();
                 }

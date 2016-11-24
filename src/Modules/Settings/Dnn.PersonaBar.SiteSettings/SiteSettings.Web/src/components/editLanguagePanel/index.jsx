@@ -78,6 +78,7 @@ class EditLanguagePanel extends Component {
         props.dispatch(LanguageEditorActions.getResxEntries({
             resourceFile: resxFile,
             mode: this.state.selectedMode,
+            portalId: props.portalId,
             locale: props.languageBeingEdited.Code
         }, callback));
     }
@@ -158,7 +159,8 @@ class EditLanguagePanel extends Component {
 
 EditLanguagePanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    languageFolders: PropTypes.array
+    languageFolders: PropTypes.array,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {

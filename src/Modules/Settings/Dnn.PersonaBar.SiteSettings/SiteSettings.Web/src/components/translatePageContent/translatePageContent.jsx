@@ -37,9 +37,10 @@ class TranslatePageContent extends Component {
     }
 
     getPageList() {
-        const {props, state} = this;
+        const {props} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.getPageList(cultureCode, (data) => {
+        const portalId = props.portalId;
+        props.dispatch(LanguagesActions.getPageList({cultureCode, portalId}, (data) => {
             this.setState({ pageList: data });
         }));
     }
@@ -87,7 +88,8 @@ class TranslatePageContent extends Component {
     }
 
     onMarkAllPagesAsTranslated(cultureCode) {
-        this.props.dispatch(LanguagesActions.markAllPagesAsTranslated(cultureCode, () => {
+        const portalId = this.props.portalId;
+        this.props.dispatch(LanguagesActions.markAllPagesAsTranslated({cultureCode, portalId}, () => {
             utils.utilities.notify(resx.get("PagesSuccessfullyTranslated"));
             this.getPageList();
         }));
@@ -96,8 +98,9 @@ class TranslatePageContent extends Component {
     onEraseAllLocalizedPages() {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
+        const portalId = this.props.portalId;
         utils.utilities.confirm(resx.get("EraseTranslatedPagesWarning").replace("{0}", cultureCode), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(LanguagesActions.deleteLanguagePages(cultureCode, (data) => {
+            props.dispatch(LanguagesActions.deleteLanguagePages({portalId, cultureCode}, (data) => {
                 utils.utilities.notify(resx.get("DeletedAllLocalizedPages"));
                 this.getPageList();
             }));
@@ -107,7 +110,8 @@ class TranslatePageContent extends Component {
     onPublishTranslatedPages(enable = true) {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.publishAllPages({ cultureCode, enable }, (data) => {
+        const portalId = props.portalId;
+        props.dispatch(LanguagesActions.publishAllPages({ portalId, cultureCode, enable }, (data) => {
             utils.utilities.notify(resx.get("PublishedAllTranslatedPages"));
         }));
     }
@@ -115,7 +119,8 @@ class TranslatePageContent extends Component {
     addPages() {
         const {props, state} = this;
         const cultureCode = props.languageBeingEdited.Code;
-        props.dispatch(LanguagesActions.localizeContent({ cultureCode }, (data) => {
+        const portalId = props.portalId;
+        props.dispatch(LanguagesActions.localizeContent({ cultureCode, portalId }, (data) => {
             this.getProgressData();
         }));
     }
@@ -152,6 +157,7 @@ class TranslatePageContent extends Component {
     }
     toggleActivateLanguage(languageBeingEdited) {
         this.props.dispatch(LanguagesActions.activateLanguage({
+            portalId: this.props.portalId,
             cultureCode: languageBeingEdited.Code,
             enable: languageBeingEdited.Active
         }));

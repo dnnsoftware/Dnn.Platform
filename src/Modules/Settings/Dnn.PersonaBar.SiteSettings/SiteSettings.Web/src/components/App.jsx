@@ -100,7 +100,7 @@ class App extends Component {
                 
                 {props.selectedPage === Pages.LanguageEditor && <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageEditor}>
                     <SocialPanelHeader title={resx.get("LanguageEditor.Header")} />
-                    <EditLanguagePanel backToSiteSettings={this.closePersonaBarPage.bind(this)} />
+                    <EditLanguagePanel portalId={state.portalId} backToSiteSettings={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>}
                 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguagePack}>

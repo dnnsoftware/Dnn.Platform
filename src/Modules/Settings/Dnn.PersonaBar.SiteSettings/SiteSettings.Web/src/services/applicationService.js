@@ -283,9 +283,9 @@ class ApplicationService {
         sf.post("ActivateLanguage?" + serializeQueryStringParameters(payload), {}, callback, failureCallback);
     }
 
-    markAllPagesAsTranslated(cultureCode, callback, failureCallback){
+    markAllPagesAsTranslated(payload, callback, failureCallback){
         const sf = this.getServiceFramework("Languages");
-        sf.post("MarkAllPagesTranslated?cultureCode=" + cultureCode, {}, callback, failureCallback);
+        sf.post("MarkAllPagesTranslated?" + serializeQueryStringParameters(payload), {}, callback, failureCallback);
     }
 }
 const applicationService = new ApplicationService();

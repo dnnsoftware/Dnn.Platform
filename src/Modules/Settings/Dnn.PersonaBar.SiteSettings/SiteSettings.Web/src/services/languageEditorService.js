@@ -57,14 +57,14 @@ class ApplicationService {
         sf.post("SaveResxEntries", payload, callback, failureCallback);
     }
 
-    getPageList(cultureCode, callback) {
+    getPageList(params, callback) {
         const sf = this.getServiceFramework("Languages");
-        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters({ cultureCode }), {}, callback);
+        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters(params), {}, callback);
     }
 
-    deleteLanguagePages(cultureCode, callback) {
+    deleteLanguagePages(payload, callback) {
         const sf = this.getServiceFramework("Languages");
-        sf.post(`DeleteLanguagePages?${serializeQueryStringParameters({ cultureCode })}`, {}, callback);
+        sf.post(`DeleteLanguagePages?${serializeQueryStringParameters(payload)}`, {}, callback);
     }
 
     publishAllPages(payload, callback) {
