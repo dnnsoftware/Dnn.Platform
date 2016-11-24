@@ -54,6 +54,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("alreadyInstalled")]
         public bool AlreadyInstalled { get; set; }
 
+        [JsonProperty("legacySkinInstalled")]
+        public bool LegacySkinInstalled { get; set; }
+
+        [JsonProperty("legacyContainerInstalled")]
+        public bool LegacyContainerInstalled { get; set; }
+
         [JsonProperty("message")]
         public string Message { get; set; }
 
