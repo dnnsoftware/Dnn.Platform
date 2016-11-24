@@ -27,6 +27,13 @@ const PageService = function () {
                 parentId: utils.getCurrentPageId() 
             };
         }
+        if (page.url === "/" + page.name) {
+            request = {
+                ...request,
+                url: ""
+            };
+        }   
+
         return api.post("SavePageDetails", toBackEndPage(request));
     };
     
