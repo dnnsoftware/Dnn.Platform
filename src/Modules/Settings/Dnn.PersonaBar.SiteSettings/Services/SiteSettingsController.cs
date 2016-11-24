@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -43,7 +42,6 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.Internals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
 using FileInfo = System.IO.FileInfo;
 
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -1015,6 +1013,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Success = true,
                     PortalAlias = new
                     {
+                        alias.PortalID,
                         alias.PortalAliasID,
                         alias.HTTPAlias,
                         BrowserType = alias.BrowserType.ToString(),
