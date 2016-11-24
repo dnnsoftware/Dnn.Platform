@@ -12,10 +12,16 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         bool IsPageAdminUser();
 
-        bool IsUserAllowed(string permission);
-
         bool CanManagePage(TabInfo tab);
-        bool CanDeletePage(TabInfo getTabById);
-        bool CanAdminPage(TabInfo getTabById);
+
+        bool CanDeletePage(TabInfo tab);
+
+        bool CanAdminPage(TabInfo tab);
+
+        bool CanAddPage(TabInfo tab);
+
+        bool CanCopyPage(TabInfo tab);
+
+        bool CanExportPage(TabInfo tab);
     }
 }

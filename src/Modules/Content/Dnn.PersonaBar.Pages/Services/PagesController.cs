@@ -163,10 +163,10 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage GetPageList(int parentId = -1, string searchKey = "")
         {
-            /*if (!_securityService.IsPageAdminUser())
+            if (!_securityService.IsPageAdminUser())
             {
                 return GetForbiddenResponse();
-            }*/
+            }
 
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, false, true, false, true);
@@ -303,6 +303,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpGet]
         public HttpResponseMessage EditModeForPage(int id)
         {
+            if (!_securityService.CanManagePage(GetTabById(id)))
+            {
+                return GetForbiddenResponse();
+            }
+
             _pagesController.EditModeForPage(id, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -311,6 +316,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SavePageDetails(PageSettings pageSettings)
         {
+            if (!CanSavePageDetails(pageSettings))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var tab = _pagesController.SavePageDetails(pageSettings);
@@ -393,6 +403,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveBulkPages(BulkPage bulkPage)
         {
+            if (!_securityService.IsPageAdminUser())
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var bulkPageResponse = _bulkPagesController.AddBulkPages(bulkPage);
@@ -413,6 +428,11 @@ namespace Dnn.PersonaBar.Pages.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SavePageAsTemplate(PageTemplate pageTemplate)
         {
+            if (!_securityService.CanExportPage(GetTabById(pageTemplate.TabId)))
+            {
+                return GetForbiddenResponse();
+            }
+
             try
             {
                 var templateFilename = _templateController.SaveAsTemplate(pageTemplate);
@@ -1079,7 +1099,25 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private TabInfo GetTabById(int pageId)
         {
-            return _tabController.GetTab(pageId, PortalId, false);
+            return pageId <= 0 ? null : _tabController.GetTab(pageId, PortalId, false);
+        }
+
+        private bool CanSavePageDetails(PageSettings pageSettings)
+        {
+            var tabId = pageSettings.TabId;
+            var parentId = pageSettings.ParentId ?? 0;
+            var creatingPage = parentId > 0 && tabId <= 0 && pageSettings.TemplateId <= 0;
+            var creatingTemplate = tabId <= 0 && pageSettings.TemplateId > 0;
+            var updatingPage = tabId > 0;
+            var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0;
+
+            return (
+                _securityService.IsPageAdminUser() ||
+                creatingPage && _securityService.CanAddPage(GetTabById(parentId)) ||
+                creatingTemplate && _securityService.CanExportPage(GetTabById(pageSettings.TemplateId)) ||
+                updatingPage && _securityService.CanManagePage(GetTabById(tabId)) ||
+                duplicatingPage && _securityService.CanCopyPage(GetTabById(pageSettings.TemplateTabId))
+            );
         }
     }
 }

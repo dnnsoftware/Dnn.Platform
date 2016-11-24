@@ -64,24 +64,34 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             return () => new SecurityService();
         }
 
-        public virtual bool IsUserAllowed(string permission)
+        public bool CanAdminPage(TabInfo tab)
         {
-            return IsPageAdminUser() || (bool) GetCurrentPagePermissions().GetValue(permission);
+            return IsPageAdminUser() || TabPermissionController.CanAdminPage(tab);
         }
 
-        public virtual bool CanManagePage(TabInfo tab)
+        public bool CanManagePage(TabInfo tab)
         {
-            return IsPageAdminUser() || tab == null || TabPermissionController.CanManagePage(tab);
+            return CanAdminPage(tab) || TabPermissionController.CanManagePage(tab);
         }
 
-        public virtual bool CanAdminPage(TabInfo tab)
+        public bool CanDeletePage(TabInfo tab)
         {
-            return IsPageAdminUser() || tab == null || TabPermissionController.CanAdminPage(tab);
+            return CanAdminPage(tab) || TabPermissionController.CanDeletePage(tab);
         }
 
-        public virtual bool CanDeletePage(TabInfo tab)
+        public bool CanAddPage(TabInfo tab)
         {
-            return IsPageAdminUser() || tab == null || TabPermissionController.CanDeletePage(tab);
+            return CanAdminPage(tab) || TabPermissionController.CanAddPage(tab);
+        }
+
+        public bool CanCopyPage(TabInfo tab)
+        {
+            return CanAdminPage(tab) || TabPermissionController.CanCopyPage(tab);
+        }
+
+        public bool CanExportPage(TabInfo tab)
+        {
+            return CanAdminPage(tab) || TabPermissionController.CanExportPage(tab);
         }
 
     }
