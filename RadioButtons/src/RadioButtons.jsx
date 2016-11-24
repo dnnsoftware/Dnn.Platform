@@ -29,7 +29,7 @@ class RadioButtons extends Component {
             return (
                 <li key={uniqueKey} className={radioButtonClass} style={{ width: props.buttonWidth }}>
                     <input type="radio" id={uniqueKey} onChange={this.onChange.bind(this)} value={button.value} name={props.buttonGroup} checked={checked} disabled={props.disabled} />
-                    <div className="check"><div className="inside"></div></div>
+                    <div className="check"></div>
                     <label htmlFor={uniqueKey} disabled={props.disabled}>{button.label}</label>
                 </li>);
         });
