@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import "./style.less";
 import Collapse from "react-collapse";
@@ -65,33 +65,34 @@ class RoleRow extends Component {
         if (props.visible) {
             return (
                 <div className={"collapsible-component1"} id={uniqueId}>
-                    <div className={"collapsible-header1 " + !opened} >
+                    {!props.addIsClosed && <div className={"collapsible-header1 " + !opened}>
                         <GridCell title={props.roleName} columnSize={40} >
                             {props.roleName}</GridCell>
-                        <GridCell  columnSize={20} >
+                        <GridCell columnSize={20} >
                             {props.groupName}</GridCell>
-                        <GridCell  columnSize={15} >
+                        <GridCell columnSize={15} >
                             {props.userCount}</GridCell>
-                        <GridCell  columnSize={15} >
+                        <GridCell columnSize={15} >
                             {props.auto ? <IconButton className="icon-flat" type="checkmark" /> : <div>&nbsp; </div>} </GridCell>
-                        <GridCell  columnSize={10} >
+                        <GridCell columnSize={10} >
                             {props.id !== "add" && props.roleIsApproved &&
                                 <IconButton type="user"
-                                    className={"edit-icon " + !(opened && props.currentIndex === 0) }
-                                    onClick={this.toggleUsers.bind(this) } />
+                                    className={"edit-icon " + !(opened && props.currentIndex === 0)}
+                                    onClick={this.toggleUsers.bind(this)} />
                             }
                             <IconButton type="Edit"
-                                className={"edit-icon " + !(opened && props.currentIndex === 1) }
-                                onClick={this.toggleEditRole.bind(this) } />
+                                className={"edit-icon " + !(opened && props.currentIndex === 1)}
+                                onClick={this.toggleEditRole.bind(this)} />
                         </GridCell>
                     </div>
+                    }
                     <Collapse accordion={true} isOpened={opened}>
-                        {opened && props.children }
+                        {opened && props.children}
                     </Collapse>
                 </div>
             );
         } else {
-            return <div/>;
+            return <div />;
         }
     }
 }

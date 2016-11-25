@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 //import "react-widgets/lib/less/react-widgets.less";
 import "./style.less";
@@ -142,7 +142,7 @@ class RolesPanel extends Component {
             return <GridCell columnSize={field.width} style={{ fontWeight: "bolder" }}>
                 {
                     field.name !== "" ?
-                        <span>{resx.get(field.name + ".Header") }</span>
+                        <span>{resx.get(field.name + ".Header")}</span>
                         : <span>&nbsp; </span>
                 }
             </GridCell>;
@@ -158,31 +158,31 @@ class RolesPanel extends Component {
                 let id = "row-" + i++;
                 let children = [
                     <UsersInRole
-                        Collapse={this.collapse.bind(this) } roleDetails={role} />,
+                        Collapse={this.collapse.bind(this)} roleDetails={role} />,
                     <RoleEditor
                         roleDetails={role}
                         roleGroupOptions={roleGroupOptions}
                         securityModeOptions={securityModeOptions}
                         statusOptions={statusOptions}
-                        refreshRolesList={this.refreshRolesList.bind(this) }
+                        refreshRolesList={this.refreshRolesList.bind(this)}
                         roleId={role.id}
-                        Collapse={this.collapse.bind(this) }
+                        Collapse={this.collapse.bind(this)}
                         currentGroupId={this.state.parameter.groupId}
                         />];
                 return (
                     <RoleRow
                         roleName={role.name}
-                        groupName={this.GetGroupName(role.groupId) }
+                        groupName={this.GetGroupName(role.groupId)}
                         userCount={role.usersCount}
                         auto={role.autoAssign}
                         index={index}
                         key={"role-" + index}
                         closeOnClick={true}
-                        openId={this.state.openId }
+                        openId={this.state.openId}
                         currentIndex={this.state.renderIndex}
-                        OpenCollapseUsers={this.toggle.bind(this, id, 0) }
-                        OpenCollapseEditRoles={this.toggle.bind(this, id, 1) }
-                        Collapse={this.collapse.bind(this, id) }
+                        OpenCollapseUsers={this.toggle.bind(this, id, 0)}
+                        OpenCollapseEditRoles={this.toggle.bind(this, id, 1)}
+                        Collapse={this.collapse.bind(this, id)}
                         roleIsApproved={role.status === 1}
                         id={id}>
                         <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />
@@ -191,7 +191,7 @@ class RolesPanel extends Component {
             });
         }
         else {
-            return <div className="no-users-row">{resx.get("NoData") }</div>;
+            return <div className="no-users-row">{resx.get("NoData")}</div>;
         }
     }
     render() {
@@ -215,43 +215,43 @@ class RolesPanel extends Component {
                 securityModeOptions={securityModeOptions}
                 statusOptions={statusOptions}
                 roleId={-1}
-                Collapse={this.collapse.bind(this) }
+                Collapse={this.collapse.bind(this)}
                 currentGroupId={this.state.parameter.groupId}
                 />];
         return (
             props.roleGroups &&
             <div className="roles-list-container">
-                <FiltersBar onRoleGroupChanged={this.onRoleGroupChanged.bind(this) }
-                    roleGroups={this.props.roleGroups }
-                    onKeywordChanged={this.onKeywordChanged.bind(this) }
+                <FiltersBar onRoleGroupChanged={this.onRoleGroupChanged.bind(this)}
+                    roleGroups={this.props.roleGroups}
+                    onKeywordChanged={this.onKeywordChanged.bind(this)}
                     DeleteAllowed={state.deleteAllowed}
                     />
                 <div className="container">
-                    {this.renderHeader() }
-                    {opened && <div className="add-setting-editor">
+                    {this.renderHeader()}
+                    <div className="add-setting-editor">
                         <RoleRow
                             roleName={"-"}
-                            groupName={"-" }
+                            groupName={"-"}
                             userCount={0}
                             auto={false}
                             index={"add"}
                             key={"role-add"}
                             closeOnClick={true}
-                            openId={this.state.openId }
+                            openId={this.state.openId}
                             currentIndex={this.state.renderIndex}
-                            OpenCollapseUsers={this.toggle.bind(this, "add", 1) }
-                            OpenCollapseEditRoles={this.toggle.bind(this, "add", 1) }
-                            Collapse={this.collapse.bind(this, "add") }
-                            id={"add"}>
-                            <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />
+                            OpenCollapseUsers={this.toggle.bind(this, "add", 1)}
+                            OpenCollapseEditRoles={this.toggle.bind(this, "add", 1)}
+                            Collapse={this.collapse.bind(this, "add")}
+                            id={"add"}
+                            addIsClosed={!opened}>
+                            {opened && <CollapsibleSwitcher children={children} renderIndex={this.state.renderIndex} />}
                         </RoleRow>
                     </div>
-                    }
-                    {this.renderedRolesList(roleGroupOptions, securityModeOptions, statusOptions) }
+                    {this.renderedRolesList(roleGroupOptions, securityModeOptions, statusOptions)}
                 </div>
                 {props.loadMore && <div className="loadMore">
-                    <a href="#" onClick={this.onPageChanged.bind(this) }>
-                        {resx.get("LoadMore") }
+                    <a href="#" onClick={this.onPageChanged.bind(this)}>
+                        {resx.get("LoadMore")}
                     </a>
                 </div>}
             </div>

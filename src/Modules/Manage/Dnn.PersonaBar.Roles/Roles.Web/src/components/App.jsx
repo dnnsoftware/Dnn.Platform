@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPage from "dnn-persona-bar-page";
 import RolesPanel from "./roles";
 import {
@@ -34,9 +34,9 @@ class Root extends Component {
         return (
             <div className="roles-app">
                 <PersonaBarPage isOpen={true}>
-                    <SocialPanelHeader title={resx.get("Roles") }>
+                    <PersonaBarPageHeader title={resx.get("Roles") }>
                         <Button type="primary" size="large" onClick={this.onCreate.bind(this) }>{resx.get("Create") }</Button>
-                    </SocialPanelHeader>
+                    </PersonaBarPageHeader>
                     <RolesPanel ref="rolesPanel" />
                 </PersonaBarPage>
             </div>
