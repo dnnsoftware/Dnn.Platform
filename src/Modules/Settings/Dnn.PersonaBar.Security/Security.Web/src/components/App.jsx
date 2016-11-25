@@ -1,13 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import resx from "../resources";
-require('es6-object-assign').polyfill();
-require('array.prototype.find').shim();
-require('array.prototype.findindex').shim();
 
 class App extends Component {
     constructor() {
@@ -19,8 +16,8 @@ class App extends Component {
         return (
             <div className="securitySettings-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={resx.get("nav_Security")}>
-                    </SocialPanelHeader>
+                    <PersonaBarPageHeader title={resx.get("nav_Security")}>
+                    </PersonaBarPageHeader>
                     <Body />
                 </PersonaBarPage>
             </div>
