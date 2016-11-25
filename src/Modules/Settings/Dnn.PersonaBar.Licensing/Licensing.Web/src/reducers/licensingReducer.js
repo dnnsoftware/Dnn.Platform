@@ -1,4 +1,4 @@
-import {licensing as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { licensing as ActionTypes } from "../constants/actionTypes";
 
 export default function licensingSettings(state = {
 }, action) {

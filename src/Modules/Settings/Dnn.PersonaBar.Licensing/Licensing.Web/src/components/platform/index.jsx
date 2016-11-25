@@ -1,14 +1,9 @@
-import React, { Component, PropTypes } from "react";
-import Tabs from "dnn-tabs";
-import { connect } from "react-redux";
-import SocialPanelBody from "dnn-social-panel-body";
-import {
-    pagination as PaginationActions
-} from "../../actions";
+import React, { Component } from "react";
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";
 
+/*eslint-disable quotes*/
 const starIcon = require(`!raw!./../svg/star_circle.svg`);
 const evoqIcon = require(`!raw!./../svg/evoq.svg`);
 const infoIcon = require(`!raw!./../svg/info_circle.svg`);
@@ -36,15 +31,15 @@ class Platform extends Component {
     }
 
     onEvoqClick() {
-        window.open('http://www.dnnsoftware.com/cms-features', '_blank');
+        window.open("http://www.dnnsoftware.com/cms-features", "_blank");
     }
 
     onUpgradeClick() {
-        window.open('http://www.dnnsoftware.com/about/contact-dnn', '_blank');
+        window.open("http://www.dnnsoftware.com/about/contact-dnn", "_blank");
     }
 
     onDocCenterClick() {
-        window.open('http://www.dnnsoftware.com/docs/', '_blank');
+        window.open("http://www.dnnsoftware.com/docs/", "_blank");
     }
 
     /* eslint-disable react/no-danger */
