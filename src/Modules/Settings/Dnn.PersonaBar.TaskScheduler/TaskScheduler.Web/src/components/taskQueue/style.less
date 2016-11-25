@@ -1,27 +1,22 @@
 @import "~dnn-global-styles/index";
 #scheduler-container {
-    .socialpanelbody {
-        > div {
-            .normalPanel {
-                .searchpanel {
-                    .react-tabs {
-                        [hidden] { display: none; }
-                        .taskStatusList-title {
-                            padding: 10px 0 10px 0;
-                            margin: 0 15px 0 15px;
-                            border-bottom: solid 1px @alto;
-                            font-weight: bolder;
-                            color: @thunder;
-                        }
-                        .noTasks,
-                        .taskStatusList-disabled {
-                            padding: 10px 0 10px 0;
-                            margin: 0 15px 0 15px;                            
-                            font-weight: bolder;
-                            color: @thunder;
-                        }                        
-                    }
-                }
+    .dnn-persona-bar-page-body {
+        .react-tabs {
+            [hidden] {
+                display: none;
+            }
+            .taskStatusList-title {
+                padding: 10px 0 10px 0;
+                margin: 0 15px 0 15px;
+                border-bottom: solid 1px @alto;
+                font-weight: bolder;
+                color: @thunder;
+            }
+            .noTasks, .taskStatusList-disabled {
+                padding: 10px 0 10px 0;
+                margin: 0 15px 0 15px;
+                font-weight: bolder;
+                color: @thunder;
             }
         }
     }

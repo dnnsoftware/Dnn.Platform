@@ -9,7 +9,7 @@ import TaskQueue from "../taskQueue";
 import History from "../history";
 import Scheduler from "../scheduler";
 import TopPane from "../topPane";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import resx from "../../resources";
 import util from "../../utils";
@@ -37,7 +37,7 @@ export class Body extends Component {
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <SocialPanelBody>
+            <PersonaBarPageBody>
                 <TopPane />
                 <Tabs
                     onSelect={this.handleSelect.bind(this)}
@@ -48,7 +48,7 @@ export class Body extends Component {
                     <Scheduler />
                     <History title={resx.get("TabHistoryTitle")} />
                 </Tabs>
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

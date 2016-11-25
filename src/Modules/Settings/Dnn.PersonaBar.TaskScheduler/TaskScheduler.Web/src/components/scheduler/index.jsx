@@ -191,7 +191,7 @@ class SchedulerPanel extends Component {
                     </div>
                     <div className="schedule-items-grid">
                         {this.renderHeader() }
-                        <Collapse isOpened={opened} style={{ float: "left" }}>
+                        <Collapse isOpened={opened} style={{ float: "left" }} fixedHeight={630}>
                             <SchedulerRow
                                 name={"-"}
                                 frequency={"-"}    
