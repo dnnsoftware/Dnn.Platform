@@ -38,11 +38,13 @@ class Application extends Component {
                         tooltip={Localization.get("plVersion.Help")} 
                         text={props.applicationInfo.version || defaultPlaceHolder} /> 
 
-                    <div className="tooltipAdjustment">
-                        <InfoBlock label={Localization.get("plGUID")} 
-                            tooltip={Localization.get("plGUID.Help")} 
-                            text={props.applicationInfo.guid || defaultPlaceHolder} /> 
-                    </div>
+                    {utils.isHostUser() && 
+                        <div className="tooltipAdjustment">
+                            <InfoBlock label={Localization.get("plGUID")} 
+                                tooltip={Localization.get("plGUID.Help")} 
+                                text={props.applicationInfo.guid || defaultPlaceHolder} /> 
+                        </div>
+                    }
                     
                     <InfoBlock label={Localization.get("HostInfo_HtmlEditorProvider")} 
                         tooltip={Localization.get("HostInfo_HtmlEditorProvider.Help")} 
