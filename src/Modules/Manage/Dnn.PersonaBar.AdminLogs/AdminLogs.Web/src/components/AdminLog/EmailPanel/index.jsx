@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import Collapse from "react-collapse";
-import Scrollbars from "react-custom-scrollbars";
 import SingleLineInput from "dnn-single-line-input";
 import MultiLineInput from "dnn-multi-line-input";
 import Button from "dnn-button";
@@ -88,7 +87,7 @@ class EmailPanel extends Component {
         this.SetErrorState();
     }
 
-    onCloseEmailPanel(event) {
+    onCloseEmailPanel() {
         const {props} = this;
         props.onCloseEmailPanel();
     }

@@ -150,17 +150,17 @@ class LogSettingEditor extends Component {
         if (state.formModified) {
             let {logSettingDetail} = this.state;
             if (props.logTypeSettingId !== "") {
-                props.dispatch(LogSettingActions.updateLogSetting(logSettingDetail, (data) => {
+                props.dispatch(LogSettingActions.updateLogSetting(logSettingDetail, () => {
                     util.utilities.notify(Localization.get("ConfigUpdated"));
                     props.Collapse(event);
-                }, (error) => {
+                }, () => {
                     util.utilities.notify(Localization.get("ConfigUpdateError"));
                 }));
             } else {
-                props.dispatch(LogSettingActions.addLogSetting(logSettingDetail, (data) => {
+                props.dispatch(LogSettingActions.addLogSetting(logSettingDetail, () => {
                     util.utilities.notify(Localization.get("ConfigAdded"));
                     props.Collapse(event);
-                }, (error) => {
+                }, () => {
                     util.utilities.notify(Localization.get("ConfigAddError"));
                 }));
             }
@@ -173,10 +173,10 @@ class LogSettingEditor extends Component {
         const {props} = this;
         if (props.logTypeSettingId !== "") {
             util.utilities.confirm(Localization.get("ConfigDeletedWarning"), Localization.get("yes"), Localization.get("no"), () => {
-                props.dispatch(LogSettingActions.deleteLogSetting({ LogTypeConfigId: props.logTypeSettingId }, (data) => {
+                props.dispatch(LogSettingActions.deleteLogSetting({ LogTypeConfigId: props.logTypeSettingId }, () => {
                     util.utilities.notify(Localization.get("ConfigDeleted"));
                     props.Collapse(event);
-                }, (error) => {
+                }, () => {
                     util.utilities.notify(Localization.get("DeleteError"));
                 })
                 );
@@ -206,18 +206,18 @@ class LogSettingEditor extends Component {
             <div className="editor-row divider" title={Localization.get("plLogTypeKey.Help") }>
                 <label>{Localization.get("plLogTypeKey") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.logTypeList } value={this.getValue("LogType") } onSelect={this.onDropDownChange.bind(this, "LogTypeKey") }
-                    style={{ width: 100 + '%', float: 'left' }}/>
+                    style={{ width: 100 + "%", float: "left" }}/>
             </div>
             <div className="editor-row divider" title={Localization.get("plLogTypePortalID.Help") }>
                 <label>{Localization.get("plLogTypePortalID") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
-                    style={{ width: 100 + '%', float: 'left' }}/>
+                    style={{ width: 100 + "%", float: "left" }}/>
             </div>
 
             <div className="editor-row divider" >
                 <label>{Localization.get("plKeepMostRecent") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.keepMostRecentOptions }  value={this.getValue("Recent") } onSelect={this.onDropDownChange.bind(this, "KeepMostRecent") }
-                    style={{ width: 100 + '%', float: 'left' }}/>
+                    style={{ width: 100 + "%", float: "left" }}/>
             </div>
         </div>;
 
@@ -236,13 +236,13 @@ class LogSettingEditor extends Component {
             <div className="editor-row divider">
                 <label>{Localization.get("plThreshold") }</label>
                 <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.thresholdsOptions} value={this.getValue("Threshold") } onSelect={this.onDropDownChange.bind(this, "NotificationThreshold") }
-                    style={{ width: 40 + '%', float: 'left' }}/>
+                    style={{ width: 40 + "%", float: "left" }}/>
                 <div className="text-section">in</div>
                 <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimesOptions } value={this.getValue("ThresholdNotificationTime") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTime") }
-                    style={{ width: 25 + '%', float: 'left' }}/>
+                    style={{ width: 25 + "%", float: "left" }}/>
                 <div className="text-section">&nbsp; </div>
                 <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimeTypesOptions } value={this.getValue("ThresholdNotificationTimeType") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTimeType") }
-                    style={{ width: 25 + '%', float: 'left' }}/>
+                    style={{ width: 25 + "%", float: "left" }}/>
             </div>
             <div className="editor-row divider"  title={Localization.get("plMailToAddress.Help") }>
                 <label>{Localization.get("plMailToAddress") } *</label>
