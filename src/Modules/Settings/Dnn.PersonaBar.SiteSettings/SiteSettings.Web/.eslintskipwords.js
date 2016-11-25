@@ -131,5 +131,8 @@ module.exports = [
     "ctrl",
     "resx",
     "getsilence",
-    "postsilence"
+    "postsilence",
+    "english",
+    "fallbacks",
+    "localizable"
 ]

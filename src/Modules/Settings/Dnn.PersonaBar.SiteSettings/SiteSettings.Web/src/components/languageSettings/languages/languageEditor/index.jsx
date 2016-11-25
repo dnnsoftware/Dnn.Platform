@@ -1,17 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
-import Select from "dnn-select";
-import DropdownWithError from "dnn-dropdown-with-error";
-import MultiLineInput from "dnn-multi-line-input";
-import RadioButtons from "dnn-radio-buttons";
 import InputGroup from "dnn-input-group";
-import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import Roles from "./roles";
 import {
@@ -50,12 +44,9 @@ class LanguageEditor extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         if (!props.languageDetail) {
             return;
         }
-
         this.setState({
             languageDetail: Object.assign({}, props.languageDetail)
         });

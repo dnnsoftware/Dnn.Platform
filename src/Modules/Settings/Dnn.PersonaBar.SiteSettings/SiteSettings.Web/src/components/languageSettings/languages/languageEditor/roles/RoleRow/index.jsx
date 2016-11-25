@@ -10,7 +10,6 @@ import {
 class RoleRow extends Component {
     constructor() {
         super();
-
         this.state = {
             selected: false
         };
