@@ -124,7 +124,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             var results = new List<TabInfo>();
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId)
-                .Where(kvp => kvp.Value.CultureCode == defaultLocale && !kvp.Value.IsDeleted && !kvp.Value.IsSystem && !kvp.Value.TabPath.StartsWith("//Admin"));
+                .Where(kvp => (kvp.Value.CultureCode == defaultLocale || string.IsNullOrEmpty(kvp.Value.CultureCode))
+                && !kvp.Value.IsDeleted && !kvp.Value.IsSystem && !kvp.Value.TabPath.StartsWith("//Admin"));
 
             foreach (var kvp in portalTabs)
             {
@@ -176,13 +177,17 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 progress.TimeEstimated = (total - stepNo) * 100;
 
                 SaveProgressToFile(progress);
-
+                
                 if (locale.Code == defaultLocale || string.IsNullOrEmpty(locale.Code))
                 {
                     TabController.Instance.LocalizeTab(currentTab, locale, true);
                 }
                 else
                 {
+                    if (currentTab.IsNeutralCulture)
+                    {
+                        TabController.Instance.LocalizeTab(currentTab, LocaleController.Instance.GetLocale(defaultLocale), true);
+                    }
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
             }
