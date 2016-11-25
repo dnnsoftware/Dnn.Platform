@@ -12,7 +12,7 @@ export default class DateInput extends Component {
         const year = this.props.date ? this.props.date.getFullYear() : "";
         const hours = this.props.date ? this.getHour(this.props.date.getHours()) : "";
         const minutes = this.props.date ? this.addZero(this.props.date.getMinutes()) : "";
-        const period = this.props.date ? this.getPeriod(this.props.date.getHours()) : "";
+        const period = this.props.date ? this.getPeriod(this.props.date.getHours()) : this.getPeriod(false);
 
         this.state = { month, day, year, hours, minutes, period };
 
@@ -24,7 +24,7 @@ export default class DateInput extends Component {
         const year = props.date ? props.date.getFullYear() : "";
         const hours = props.date ? this.getHour(props.date.getHours()) : "";
         const minutes = props.date ? this.addZero(props.date.getMinutes()) : "";
-        const period = props.date ? this.getPeriod(props.date.getHours()) : "";
+        const period = props.date ? this.getPeriod(props.date.getHours()) : this.getPeriod(false);
 
         this.state = { month, day, year, hours, minutes, period };
     }
@@ -162,6 +162,10 @@ export default class DateInput extends Component {
     }
 
     getPeriod(hour) {
+        if (hour === false && this.state && this.state.period) {
+            return this.state.period;
+        }
+        
         if (hour > 11) {
             return "PM";
         }
@@ -169,14 +173,18 @@ export default class DateInput extends Component {
     }
 
     setPeriod(e) {
-        const value = e.target.value;
-        this.setState({ period: value });
-        let date = this.props.date || new Date();
+        e.preventDefault();
+        const period = Periods.find(p => p !== this.state.period);
+        this.setState({ period });
+        let date = this.props.date;
+        if (!date) {
+            return;
+        }
         let hours = date.getHours();
-        if (value === "PM" && hours < 12) {
+        if (period === "PM" && hours < 12) {
             hours = +hours + 12;
         }
-        if (value === "AM" && hours >= 12) {
+        if (period === "AM" && hours >= 12) {
             hours -= 12;
         }
         date.setHours(hours);
@@ -184,9 +192,8 @@ export default class DateInput extends Component {
     }
 
     render() {
-        const options = Periods.map(p => <option key={p} value={p}>{p}</option>);
-        return <div className="date-input">
-
+        const className = "date-input" + (this.props.hasTimePicker ? " with-time-picker" : "" );
+        return <div className={className}>
             <input type="text" value={this.state.month} onBlur={this.setMonth.bind(this) } onChange={this.updateValue.bind(this, "month") } placeholder="MM"/>
             <span>/</span>
             <input type="text" value={this.state.day} onBlur={this.setDay.bind(this) } onChange={this.updateValue.bind(this, "day") } placeholder="DD"/>
@@ -198,9 +205,9 @@ export default class DateInput extends Component {
                 <span>: </span>
                 <input type="text" value={this.state.minutes} onBlur={this.setMinutes.bind(this) } onChange={this.updateValue.bind(this, "minutes") } placeholder="mm"/>
                 <span>&nbsp; </span>
-                <select value={this.state.period} onChange={this.setPeriod.bind(this) }>
-                    {options}
-                </select>
+                <div className="select-container" onClick={this.setPeriod.bind(this)}>
+                    <span>{this.state.period}</span>
+                </div>
             </div>}
         </div >;
     }

@@ -231,7 +231,7 @@ export default class DatePicker extends Component {
     }
 
     showCalendar(e) {
-        if (e.target.tagName === "SELECT") {
+        if (e.target.tagName === "SELECT"|| hasClass(e.target, "select-container") || e.target.tagName === "SPAN") {
             return;
         }
         this.setState({ isCalendarVisible: true });
@@ -295,7 +295,7 @@ export default class DatePicker extends Component {
             displayDate += " - " + displaySecondDate;
         }
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
-        const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " show" : "");
+        const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " show" : " hidden");
 
         firstDate = firstDate ? new Date(firstDate) : null;
         secondDate = secondDate ? new Date(secondDate) : null;
@@ -311,10 +311,11 @@ export default class DatePicker extends Component {
 
         const style = this.props.isDateRange && this.props.hasTimePicker ? {width: 380} : {}; 
         const buttonStyle = this.props.isDateRange ? {} : {margin: "10px auto", float: "none"};
+        const inputClassName = "calendar-text" + ( this.props.hasTimePicker ? " with-time-picker" : "");
 
         /* eslint-disable react/no-danger */
         return <div className="dnn-day-picker">
-            {showInput && <div className="calendar-text" style={style} onClick={this.showCalendar.bind(this) }>
+            {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
                 {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
                 {this.props.isInputReadOnly && displayDate}
                 {!this.props.isInputReadOnly && <div style={{ float: "right" }}>

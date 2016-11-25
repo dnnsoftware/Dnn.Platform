@@ -31,6 +31,11 @@
         z-index: 1;
         background: white;
         text-align: center;
+        &.hidden {
+            * {
+                pointer-events: none !important;
+            }
+        }
         & > div {
             width: 256px;
             float: left;
@@ -76,6 +81,10 @@
         text-overflow: ellipsis;
         float: left;
         width: 204px;
+        position: relative;
+        &.with-time-picker {
+            padding-right: 40px;
+        }
         div, span {
             float: left;
             }
@@ -199,12 +208,32 @@
         span {
             float: left;
         }
-        select {
-            padding: 0px;
-            border: none;
-            background: none;
-            outline: none !important;
-            margin: -1px;
+        .select-container {
+            overflow: hidden;
+            position: absolute;
+            width: 36px;
+            right: 0px;
+            height: 100%;
+            top: 0;
+            span {
+                padding-top: 6px;
+            }
+            &:after {
+                content: "";
+                position: absolute;
+                top: 12px;
+                right: 5px;
+                width: 0;
+                height: 0;
+                border-left: 4.88px solid transparent;
+                border-right: 4.88px solid transparent;
+                border-top: 4.34px solid #6f7273;
+                z-index: 2;
+                pointer-events: none;
+            }
+            &, * {
+                .prefixes(user-select, none);
+            }
         }
         input[type="text"] {
             float: left;
