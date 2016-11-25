@@ -11,7 +11,7 @@ function errorCallback(message) {
 }
 const portalActions = {
     getPortalLocales(portalId, callback) {
-        return (dispatch) => {
+        return () => {
             PortalService.getPortalLocales(portalId, data => {
                 if (callback) {
                     callback(data);

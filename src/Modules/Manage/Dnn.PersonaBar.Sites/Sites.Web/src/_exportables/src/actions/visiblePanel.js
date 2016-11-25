@@ -1,4 +1,5 @@
-import {visiblePanel as ActionTypes}  from "../actionTypes";
+import { visiblePanel as ActionTypes } from "../actionTypes";
+
 const visiblePanelActions = {
     selectPanel(panel) {
         return dispatch => {

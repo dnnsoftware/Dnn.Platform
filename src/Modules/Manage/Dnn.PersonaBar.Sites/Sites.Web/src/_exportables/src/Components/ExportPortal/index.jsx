@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {ExportPortalActions} from "../../actions";
 import Label from "dnn-label";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
@@ -42,6 +41,8 @@ const scrollAreaStyle = {
     border: "1px solid #c8c8c8"
 };
 const keysToValidate = ["fileName", "description"];
+
+/* eslint-disable eqeqeq */
 class ExportPortal extends Component {
     constructor() {
         super();

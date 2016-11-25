@@ -3,13 +3,11 @@ import { connect } from "react-redux";
 import Button from "dnn-button";
 import { ListView } from "dnn-sites-common-components";
 import Localization from "localization";
-import utilities from "utils";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import GridCell from "dnn-grid-cell";
 import { CommonPaginationActions, CommonPortalListActions } from "dnn-sites-common-actions";
 import styles from "./style.less";
-import Moment from "moment";
 
 class PortalList extends Component {
     componentWillMount() {

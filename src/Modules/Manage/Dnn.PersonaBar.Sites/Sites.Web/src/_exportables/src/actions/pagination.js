@@ -6,7 +6,7 @@ const paginationActions = {
             dispatch({
                 type: ActionTypes.LOAD_MORE
             });
-            if(callback){
+            if (callback) {
                 utilities.throttleExecution(callback);
             }
         };
