@@ -26,7 +26,7 @@ using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Roles.Services
 {
-    [MenuPermission(MenuName = "Roles")]
+    [MenuPermission(Scope  = ServiceScope.Admin)]
     public class RolesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RolesController));
@@ -95,7 +95,16 @@ namespace Dnn.PersonaBar.Roles.Services
                 }
                 else
                 {
-                    if (RoleController.Instance.GetRole(PortalId,
+                    var existingRole = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
+                    if (existingRole.IsSystemRole)
+                    {
+                        if (role.Description != existingRole.Description)//In System roles only description can be updated.
+                        {
+                            existingRole.Description = role.Description;
+                            RoleController.Instance.UpdateRole(existingRole, assignExistUsers);
+                        }
+                    }
+                    else if (RoleController.Instance.GetRole(PortalId,
                         r =>
                             rolename.Equals(r.RoleName, StringComparison.InvariantCultureIgnoreCase) &&
                             r.RoleID != roleDto.Id) == null)
@@ -135,6 +144,12 @@ namespace Dnn.PersonaBar.Roles.Services
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound,
                     Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
+            }
+            if (role.IsSystemRole)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                   Localization.GetString("SecurityRoleDeleteNotAllowed", Components.Constants.LocalResourcesFile));
+
             }
 
             if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin())

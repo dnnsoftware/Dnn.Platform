@@ -354,4 +354,7 @@
   <data name="InvalidRequest.Text" xml:space="preserve">
     <value>Invalid request.</value>
   </data>
+  <data name="SecurityRoleDeleteNotAllowed.Text" xml:space="preserve">
+    <value>System roles cannot be deleted.</value>
+  </data>
 </root>
