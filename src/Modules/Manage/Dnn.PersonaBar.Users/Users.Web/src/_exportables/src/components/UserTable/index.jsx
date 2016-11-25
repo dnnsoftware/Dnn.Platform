@@ -105,12 +105,12 @@ class UserTable extends Component {
         const {props} = this;
         let i = 0;
         let opened = (this.state.openId === "add");
+        const addIsOpened = opened && canAddUser(this.props.appSettings.applicationSettings.settings);
         const headers = this.getHeaders();
         return (
             <GridCell className={styles.usersList}>
                 <HeaderRow headers={headers}/>
-                {opened && canAddUser(this.props.appSettings.applicationSettings.settings) 
-                    && <DetailRow
+                <DetailRow
                     Collapse={this.collapse.bind(this) }
                     OpenCollapse={this.toggle.bind(this) }
                     currentIndex={this.state.renderIndex}
@@ -118,10 +118,10 @@ class UserTable extends Component {
                     key={"user-add"}
                     appSettings={props.appSettings}
                     columnSizes={props.columnSizes}
-                    id={"add"}>
-                    <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
+                    id={"add"}
+                    addIsOpened={addIsOpened ? "add-opened" : "closed"}>
+                 <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
                 </DetailRow>
-                }
                 {
                     props.users && props.users.length>0 && props.users.map((user, index) => {
                         let id = "row-" + i++;
