@@ -34,9 +34,8 @@ App.PropTypes = {
 };
 
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 
