@@ -7,6 +7,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Library.Common
@@ -26,6 +27,17 @@ namespace Dnn.PersonaBar.Library.Common
         {
             var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
             return UserController.Instance.GetUserProfilePictureUrl(userId, width, height);
+        }
+
+        /// <summary>
+        /// Get User's standard Profile avatar. The Url is resolved to current portal
+        /// </summary>
+        /// <param name="userId">user Id</param>
+        /// <returns>user profile picture url</returns>
+        public static string GetProfileAvatar(int userId)
+        {
+            var url = UserController.Instance.GetUserProfilePictureUrl(userId, Constants.AvatarWidth, Constants.AvatarHeight);
+            return Globals.ResolveUrl(url);
         }
 
         // test sample
