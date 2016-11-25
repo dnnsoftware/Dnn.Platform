@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     languages as LanguagesActions,
     visiblePanel as VisiblePanelActions,
     languageEditor as LanguageEditorActions
@@ -9,7 +8,6 @@ import {
 import LanguageRow from "./languageRow";
 import LanguageEditor from "./languageEditor";
 import Collapse from "react-collapse";
-import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";
@@ -46,7 +44,7 @@ class LanguagesPanel extends Component {
     }
 
     componentWillMount() {
-        const {props, state} = this;
+        const {props} = this;
 
         this.getHeaderColumns(props.contentLocalizationEnabled);
 
@@ -69,7 +67,7 @@ class LanguagesPanel extends Component {
         let {state} = this;        
 
         if (state.contentLocalizationEnabled !== props.contentLocalizationEnabled) {
-            props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
+            props.dispatch(LanguagesActions.getLanguages(props.portalId, () => {
                 this.getHeaderColumns(props.contentLocalizationEnabled);
                 this.setState({
                     contentLocalizationEnabled: props.contentLocalizationEnabled
@@ -121,7 +119,7 @@ class LanguagesPanel extends Component {
     }
 
     toggle(openId, mode) {
-        const {props, state} = this;
+        const {props} = this;
         if (props.languageClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(LanguagesActions.cancelLanguageClientModified());
@@ -144,7 +142,7 @@ class LanguagesPanel extends Component {
     }
 
     onUpdateLanguage(languageDetail) {
-        const {props, state} = this;
+        const {props} = this;
         if (languageDetail.LanguageId && languageDetail.LanguageId !== -1) {
             props.dispatch(LanguagesActions.updateLanguage(languageDetail, (data) => {
                 util.utilities.notify(resx.get("LanguageUpdateSuccess"));
@@ -161,7 +159,7 @@ class LanguagesPanel extends Component {
             }));
         }
         else {
-            props.dispatch(LanguagesActions.addLanguage(languageDetail, (data) => {
+            props.dispatch(LanguagesActions.addLanguage(languageDetail, () => {
                 util.utilities.notify(resx.get("LanguageCreateSuccess"));
                 this.collapse();
                 props.dispatch(LanguagesActions.getLanguages(props.portalId));
@@ -175,8 +173,8 @@ class LanguagesPanel extends Component {
     }
 
     onUpdateLanguageRoles(roles) {
-        const {props, state} = this;
-        props.dispatch(LanguagesActions.updateLanguageRoles(roles, (data) => {
+        const {props} = this;
+        props.dispatch(LanguagesActions.updateLanguageRoles(roles, () => {
             util.utilities.notify(resx.get("LanguageUpdateSuccess"));
             this.collapse();
         }, (error) => {
@@ -195,7 +193,7 @@ class LanguagesPanel extends Component {
         this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
     }
 
-    onLocalizePages(language) {
+    onLocalizePages() {
         //
     }
 

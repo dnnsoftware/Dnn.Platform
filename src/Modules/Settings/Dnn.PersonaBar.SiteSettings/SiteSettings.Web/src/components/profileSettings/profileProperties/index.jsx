@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
 import Collapse from "react-collapse";
-import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";
@@ -60,7 +58,7 @@ class ProfilePropertiesPanel extends Component {
         tableFields.push({ "name": resx.get("Visible.Header"), "id": "Visible" });
     }
 
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps() {
         tableFields = [];
         tableFields.push({ "name": resx.get("Name.Header"), "id": "Name" });
         tableFields.push({ "name": resx.get("DataType.Header"), "id": "DataType" });
@@ -111,7 +109,7 @@ class ProfilePropertiesPanel extends Component {
     }
 
     onDeleteProperty(propertyId) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (props.profilePropertyClientModified) {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
@@ -123,7 +121,7 @@ class ProfilePropertiesPanel extends Component {
                 props.dispatch(SiteBehaviorActions.deleteProfileProperty(propertyId, profileProperties, () => {
                     util.utilities.notify(resx.get("DeleteSuccess"));
                     this.collapse();
-                }, (error) => {
+                }, () => {
                     util.utilities.notify(resx.get("DeleteError"));
                 }));
             });
@@ -142,7 +140,7 @@ class ProfilePropertiesPanel extends Component {
     }
 
     onMovePropertyUp(propertyId) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (props.profilePropertyClientModified) {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));
@@ -173,7 +171,7 @@ class ProfilePropertiesPanel extends Component {
     }
 
     onMovePropertyDown(propertyId) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (props.profilePropertyClientModified) {
             util.utilities.notifyError(resx.get("SaveOrCancelWarning"));

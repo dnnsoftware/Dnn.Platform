@@ -1,15 +1,9 @@
 import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
 import resx from "resources";
-import DropdownWithError from "dnn-dropdown-with-error";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
 import GridCell from "dnn-grid-cell";
-import { Scrollbars } from "react-custom-scrollbars";
-import { ArrowDownIcon } from "dnn-svg-icons";
-import Folder from "./folder";
-import Collapse from "react-collapse";
 import ResourceTree from "./resourceTree";
 
 class LanguageInfoView extends Component {

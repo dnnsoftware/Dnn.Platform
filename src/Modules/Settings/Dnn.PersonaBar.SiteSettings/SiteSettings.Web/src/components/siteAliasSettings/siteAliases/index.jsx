@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../../actions";
 import SiteAliasRow from "./siteAliasRow";
 import SiteAliasEditor from "./siteAliasEditor";
 import Collapse from "react-collapse";
-import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";
@@ -48,7 +46,6 @@ class SiteAliasesPanel extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
         if (tableFields.length === 0) {
             tableFields.push({ "name": resx.get("Alias.Header"), "id": "Alias" });
             tableFields.push({ "name": resx.get("Browser.Header"), "id": "Browser" });
@@ -93,9 +90,9 @@ class SiteAliasesPanel extends Component {
     }
 
     onUpdateSiteAlias(aliasDetail) {
-        const {props, state} = this;
+        const {props} = this;
         if (aliasDetail.PortalAliasID) {
-            props.dispatch(SiteBehaviorActions.updateSiteAlias(aliasDetail, (data) => {
+            props.dispatch(SiteBehaviorActions.updateSiteAlias(aliasDetail, () => {
                 util.utilities.notify(resx.get("SiteAliasUpdateSuccess"));
                 this.collapse();
                 props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
@@ -107,7 +104,7 @@ class SiteAliasesPanel extends Component {
         else {
             const alias = Object.assign({}, aliasDetail);
             alias["PortalId"] = props.portalId;
-            props.dispatch(SiteBehaviorActions.addSiteAlias(alias, (data) => {
+            props.dispatch(SiteBehaviorActions.addSiteAlias(alias, () => {
                 util.utilities.notify(resx.get("SiteAliasCreateSuccess"));
                 this.collapse();
                 props.dispatch(SiteBehaviorActions.getSiteAliases(props.portalId));
@@ -119,14 +116,14 @@ class SiteAliasesPanel extends Component {
     }
 
     onDeleteSiteAlias(aliasId) {
-        const {props, state} = this;
+        const {props} = this;
         util.utilities.confirm(resx.get("SiteAliasDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const siteAliases = Object.assign({}, props.siteAliases);
             siteAliases.PortalAliases = siteAliases.PortalAliases.filter((item) => item.PortalAliasID !== aliasId);
             props.dispatch(SiteBehaviorActions.deleteSiteAlias(aliasId, siteAliases, () => {
                 util.utilities.notify(resx.get("SiteAliasDeleteSuccess"));
                 this.collapse();
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("SiteAliasDeleteError"));
             }));
         });

@@ -141,5 +141,10 @@ module.exports = [
     "firstname",
     "preferredtimezone",
     "preferredlocale",
-    "verifier"
+    "verifier",
+    "cmd",
+    "pid",
+    "attr",
+    "tmp",
+    "reindex"
 ]

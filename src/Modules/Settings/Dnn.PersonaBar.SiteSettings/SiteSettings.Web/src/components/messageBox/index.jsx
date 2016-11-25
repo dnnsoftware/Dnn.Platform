@@ -1,9 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { connect } from "react-redux";
 import Modal from "react-modal";
-import Scrollbars from "react-custom-scrollbars";
-import styles from "./style.less";
-import resx from "../../resources";
 import { XThinIcon, CheckMarkIcon } from "dnn-svg-icons";
 
 const modalStyles = {
@@ -34,7 +30,7 @@ class MessageBox extends Component {
         super();
     }
 
-    onClose(event) {
+    onClose() {
         const {props} = this;
         props.onClose();
     }
@@ -47,7 +43,7 @@ class MessageBox extends Component {
                 fixedHeight={props.fixedHeight}
                 isOpen={props.isOpened}
                 style={modalStyles}>
-                <div className="dnn-messagebox">
+                <div className="dnn-message-box">
                     <div className="top-bar">
                         <div className="close-button" dangerouslySetInnerHTML={{ __html: XThinIcon }} onClick={this.onClose.bind(this)} />
                     </div>
