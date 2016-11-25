@@ -263,12 +263,15 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                Dictionary<string, string> temps = new Dictionary<string, string>();
+                var defaultTemplate = _controller.GetDefaultTemplate();
+                var temps = new Dictionary<string, string>();
                 var templates = _controller.GetPortalTemplates();
                 foreach (var template in templates)
                 {
                     var item = _controller.CreateListItem(template);
                     temps.Add(item.Text, item.Value);
+                    if (item.Value.StartsWith(defaultTemplate))
+                        defaultTemplate = item.Value;
                 }
 
                 var response = new
@@ -281,7 +284,7 @@ namespace Dnn.PersonaBar.Sites.Services
                             Name = t.Key,
                             t.Value
                         }),
-                        DefaultTemplate = _controller.GetDefaultTemplate()
+                        DefaultTemplate = defaultTemplate
                     },
                     TotalResults = 1
                 };
