@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Tags from "dnn-tags";
 import InputGroup from "dnn-input-group";
-import Input from "dnn-single-line-input";
 import {
     search as SearchActions
 } from "../../../actions";
@@ -84,7 +81,7 @@ class SynonymsGroupEditor extends Component {
         props.dispatch(SearchActions.synonymsGroupClientModified(group));
     }
 
-    onSave(event) {
+    onSave() {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -96,8 +93,8 @@ class SynonymsGroupEditor extends Component {
         props.onUpdate(state.group);
     }
     
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         if (props.synonymsGroupClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(SearchActions.cancelSynonymsGroupClientModified());
@@ -120,7 +117,7 @@ class SynonymsGroupEditor extends Component {
                             label={resx.get("Synonyms")}
                             />
                         <Tags
-                            tags={this.state.group.SynonymsTags ? this.state.group.SynonymsTags.split(',') : []}
+                            tags={this.state.group.SynonymsTags ? this.state.group.SynonymsTags.split(",") : []}
                             onUpdateTags={this.onSettingChange.bind(this, "SynonymsTags")}
                             />
                     </InputGroup>

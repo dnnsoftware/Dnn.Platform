@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon } from "dnn-svg-icons";
+import { EditIcon, TrashIcon } from "dnn-svg-icons";
 
 class IgnoreWordsRow extends Component {
     componentWillMount() {
@@ -23,11 +22,11 @@ class IgnoreWordsRow extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
-            <div className={"collapsible-component-ignorewords" + (opened ? " row-opened" : "")}>
-                <div className={"collapsible-header-ignorewords " + !opened} >
+            <div className={"collapsible-component-ignore-words" + (opened ? " row-opened" : "")}>
+                <div className={"collapsible-header-ignore-words " + !opened} >
                     <div className={"row"}>
                         <div className="words-item item-row-tags">
                             {props.tags}</div>                        

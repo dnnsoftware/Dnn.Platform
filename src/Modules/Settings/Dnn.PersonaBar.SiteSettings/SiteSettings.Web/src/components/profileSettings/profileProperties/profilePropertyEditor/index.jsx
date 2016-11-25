@@ -6,11 +6,9 @@ import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
-import Select from "dnn-select";
 import DropdownWithError from "dnn-dropdown-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import InputGroup from "dnn-input-group";
-import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import {
     siteBehavior as SiteBehaviorActions
@@ -19,7 +17,6 @@ import util from "../../../../utils";
 import resx from "../../../../resources";
 
 const re = /^([0-9]+|[1-9])$/;
-let retainHistoryNumOptions = [];
 
 class ProfilePropertyEditor extends Component {
     constructor() {
@@ -40,7 +37,7 @@ class ProfilePropertyEditor extends Component {
                 name: false,
                 category: false,
                 datatype: false,
-                localename: false,
+                localeName: false,
                 length: false
             },
             triedToSubmit: false,
@@ -88,10 +85,10 @@ class ProfilePropertyEditor extends Component {
 
         if (props.propertyLocalization) {
             if (props.propertyLocalization["PropertyName"] === "" || props.propertyLocalization["PropertyName"] === undefined) {
-                state.error["localename"] = true;
+                state.error["localeName"] = true;
             }
             else if (props.propertyLocalization["PropertyName"] !== "" && props.propertyLocalization["PropertyName"] !== undefined) {
-                state.error["localename"] = false;
+                state.error["localeName"] = false;
             }
         }
 
@@ -104,7 +101,7 @@ class ProfilePropertyEditor extends Component {
     }
 
     isValidLength(val) {
-        let {state, props} = this;
+        let {props} = this;
         if (props.profileProperty) {
             if (props.profileProperty["DataType"] !== "" && props.profileProperty["DataType"] !== undefined) {
                 if (props.profileProperty["DataType"] === 349) {
@@ -188,10 +185,10 @@ class ProfilePropertyEditor extends Component {
         let propertyLocalization = Object.assign({}, state.propertyLocalization);
 
         if (propertyLocalization[key] === "" && key === "PropertyName") {
-            state.error["localename"] = true;
+            state.error["localeName"] = true;
         }
         else if (propertyLocalization[key] !== "" && key === "PropertyName") {
-            state.error["localename"] = false;
+            state.error["localeName"] = false;
         }
 
         propertyLocalization[key] = typeof (event) === "object" ? event.target.value : event;
@@ -256,7 +253,7 @@ class ProfilePropertyEditor extends Component {
         }
     }
 
-    onNext(event) {
+    onNext() {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -269,26 +266,26 @@ class ProfilePropertyEditor extends Component {
             if (props.id === "add") {
                 const property = Object.assign({}, state.profileProperty);
                 property["PortalId"] = props.portalId;
-                props.dispatch(SiteBehaviorActions.addProfileProperty(property, (data) => {
+                props.dispatch(SiteBehaviorActions.addProfileProperty(property, () => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false
                     });
-                }, (error) => {
+                }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
                 }));
             }
             else {
-                props.dispatch(SiteBehaviorActions.updateProfileProperty(state.profileProperty, (data) => {
+                props.dispatch(SiteBehaviorActions.updateProfileProperty(state.profileProperty, () => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
                     this.setState({
                         showFirstPage: false
                     });
-                }, (error) => {
+                }, () => {
                     util.utilities.notifyError(resx.get("SettingsError"));
                 }));
             }
@@ -304,12 +301,12 @@ class ProfilePropertyEditor extends Component {
         }
     }
 
-    onSave(event) {
+    onSave() {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
         });
-        if (state.error.localename) {
+        if (state.error.localeName) {
             return;
         }
 
@@ -325,16 +322,16 @@ class ProfilePropertyEditor extends Component {
             CategoryNameString: state.propertyLocalization.CategoryName
         };
 
-        props.dispatch(SiteBehaviorActions.updateProfilePropertyLocalization(localization, (data) => {
+        props.dispatch(SiteBehaviorActions.updateProfilePropertyLocalization(localization, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             props.Collapse();
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         if (props.profilePropertyClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(SiteBehaviorActions.cancelProfilePropertyClientModified());
@@ -353,7 +350,7 @@ class ProfilePropertyEditor extends Component {
             const columnOne = <div className="left-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyName.Help")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyName.Help") }
                         label={resx.get("ProfilePropertyDefinition_PropertyName") + "*"}
                         />
                     <SingleLineInputWithError
@@ -361,49 +358,49 @@ class ProfilePropertyEditor extends Component {
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={this.state.error.name && this.state.triedToSubmit}
-                        errorMessage={resx.get("ProfilePropertyDefinition_PropertyName.Required")}
+                        errorMessage={resx.get("ProfilePropertyDefinition_PropertyName.Required") }
                         value={this.state.profileProperty ? this.state.profileProperty.PropertyName : ""}
-                        onChange={this.onSettingChange.bind(this, "PropertyName")}
+                        onChange={this.onSettingChange.bind(this, "PropertyName") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Help")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Help") }
                         label={resx.get("ProfilePropertyDefinition_PropertyCategory") + "*"}
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={this.state.error.category && this.state.triedToSubmit}
-                        errorMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Required")}
+                        errorMessage={resx.get("ProfilePropertyDefinition_PropertyCategory.Required") }
                         value={this.state.profileProperty ? this.state.profileProperty.PropertyCategory : ""}
-                        onChange={this.onSettingChange.bind(this, "PropertyCategory")}
+                        onChange={this.onSettingChange.bind(this, "PropertyCategory") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_DefaultValue.Help")}
-                        label={resx.get("ProfilePropertyDefinition_DefaultValue")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_DefaultValue.Help") }
+                        label={resx.get("ProfilePropertyDefinition_DefaultValue") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
                         value={this.state.profileProperty ? this.state.profileProperty.DefaultValue : ""}
-                        onChange={this.onSettingChange.bind(this, "DefaultValue")}
+                        onChange={this.onSettingChange.bind(this, "DefaultValue") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <div className="profileProperty-row_switch">
                         <Label
                             labelType="inline"
-                            tooltipMessage={resx.get("ProfilePropertyDefinition_Required.Help")}
-                            label={resx.get("ProfilePropertyDefinition_Required")}
+                            tooltipMessage={resx.get("ProfilePropertyDefinition_Required.Help") }
+                            label={resx.get("ProfilePropertyDefinition_Required") }
                             />
                         <Switch
                             labelHidden={true}
                             value={this.state.profileProperty ? this.state.profileProperty.Required : false}
-                            onChange={this.onSettingChange.bind(this, "Required")}
+                            onChange={this.onSettingChange.bind(this, "Required") }
                             />
                     </div>
                 </InputGroup>
@@ -411,88 +408,88 @@ class ProfilePropertyEditor extends Component {
                     <div className="profileProperty-row_switch">
                         <Label
                             labelType="inline"
-                            tooltipMessage={resx.get("ProfilePropertyDefinition_Visible.Help")}
-                            label={resx.get("ProfilePropertyDefinition_Visible")}
+                            tooltipMessage={resx.get("ProfilePropertyDefinition_Visible.Help") }
+                            label={resx.get("ProfilePropertyDefinition_Visible") }
                             />
                         <Switch
                             labelHidden={true}
                             value={this.state.profileProperty ? this.state.profileProperty.Visible : false}
-                            onChange={this.onSettingChange.bind(this, "Visible")}
+                            onChange={this.onSettingChange.bind(this, "Visible") }
                             />
                     </div>
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_DefaultVisibility.Help")}
-                        label={resx.get("ProfilePropertyDefinition_DefaultVisibility")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_DefaultVisibility.Help") }
+                        label={resx.get("ProfilePropertyDefinition_DefaultVisibility") }
                         />
                     <Dropdown
-                        options={this.getProfileVisibilityOptions()}
-                        value={this.getDefaultVisibility()}
-                        onSelect={this.onSettingChange.bind(this, "DefaultVisibility")}
+                        options={this.getProfileVisibilityOptions() }
+                        value={this.getDefaultVisibility() }
+                        onSelect={this.onSettingChange.bind(this, "DefaultVisibility") }
                         />
                 </InputGroup>
             </div>;
             const columnTwo = <div className="right-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_DataType.Help")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_DataType.Help") }
                         label={resx.get("ProfilePropertyDefinition_DataType") + "*"}
                         />
                     <DropdownWithError
-                        options={this.getProfileDataTypeOptions()}
+                        options={this.getProfileDataTypeOptions() }
                         value={this.state.profileProperty ? this.state.profileProperty.DataType : ""}
-                        onSelect={this.onSettingChange.bind(this, "DataType")}
+                        onSelect={this.onSettingChange.bind(this, "DataType") }
                         error={this.state.error.datatype && this.state.triedToSubmit}
-                        errorMessage={resx.get("ProfilePropertyDefinition_DataType.Required")}
+                        errorMessage={resx.get("ProfilePropertyDefinition_DataType.Required") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_Length.Help")}
-                        label={resx.get("ProfilePropertyDefinition_Length")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_Length.Help") }
+                        label={resx.get("ProfilePropertyDefinition_Length") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={this.state.error.length && this.state.triedToSubmit}
-                        errorMessage={resx.get("RequiredTextBox")}
+                        errorMessage={resx.get("RequiredTextBox") }
                         value={this.state.profileProperty ? this.state.profileProperty.Length : 0}
-                        onChange={this.onSettingChange.bind(this, "Length")}
+                        onChange={this.onSettingChange.bind(this, "Length") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_ValidationExpression.Help")}
-                        label={resx.get("ProfilePropertyDefinition_ValidationExpression")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_ValidationExpression.Help") }
+                        label={resx.get("ProfilePropertyDefinition_ValidationExpression") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
                         value={this.state.profileProperty ? this.state.profileProperty.ValidationExpression : ""}
-                        onChange={this.onSettingChange.bind(this, "ValidationExpression")}
+                        onChange={this.onSettingChange.bind(this, "ValidationExpression") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <div className="profileProperty-row_switch">
                         <Label
                             labelType="inline"
-                            tooltipMessage={resx.get("ProfilePropertyDefinition_ReadOnly.Help")}
-                            label={resx.get("ProfilePropertyDefinition_ReadOnly")}
+                            tooltipMessage={resx.get("ProfilePropertyDefinition_ReadOnly.Help") }
+                            label={resx.get("ProfilePropertyDefinition_ReadOnly") }
                             />
                         <Switch
                             labelHidden={true}
                             value={this.state.profileProperty ? this.state.profileProperty.ReadOnly : false}
-                            onChange={this.onSettingChange.bind(this, "ReadOnly")}
+                            onChange={this.onSettingChange.bind(this, "ReadOnly") }
                             />
                     </div>
                 </InputGroup>
                 <InputGroup>
                     <Label
                         style={{ width: "90%" }}
-                        tooltipMessage={resx.get("ProfilePropertyDefinition_ViewOrder.Help")}
-                        label={resx.get("ProfilePropertyDefinition_ViewOrder")}
+                        tooltipMessage={resx.get("ProfilePropertyDefinition_ViewOrder.Help") }
+                        label={resx.get("ProfilePropertyDefinition_ViewOrder") }
                         />
                     <div style={{ float: "right", marginTop: "2px" }}>{this.props.id === "add" ? 0 : this.state.profileProperty.ViewOrder}</div>
                 </InputGroup>
@@ -501,24 +498,24 @@ class ProfilePropertyEditor extends Component {
             const columnThree = <div className="left-column2">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plPropertyName.Help")}
+                        tooltipMessage={resx.get("plPropertyName.Help") }
                         label={resx.get("plPropertyName") + "*"}
                         />
                     {this.state.propertyLocalization &&
                         <SingleLineInputWithError
                             inputStyle={{ margin: "0" }}
                             withLabel={false}
-                            error={this.state.error.localename && this.state.triedToSubmit}
-                            errorMessage={resx.get("valPropertyName.ErrorMessage")}
+                            error={this.state.error.localeName && this.state.triedToSubmit}
+                            errorMessage={resx.get("valPropertyName.ErrorMessage") }
                             value={this.state.propertyLocalization.PropertyName}
-                            onChange={this.onLocaleSettingChange.bind(this, "PropertyName")}
+                            onChange={this.onLocaleSettingChange.bind(this, "PropertyName") }
                             />
                     }
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plCategoryName.Help")}
-                        label={resx.get("plCategoryName")}
+                        tooltipMessage={resx.get("plCategoryName.Help") }
+                        label={resx.get("plCategoryName") }
                         />
                     {this.state.propertyLocalization &&
                         <SingleLineInputWithError
@@ -526,14 +523,14 @@ class ProfilePropertyEditor extends Component {
                             withLabel={false}
                             error={false}
                             value={this.state.propertyLocalization.CategoryName}
-                            onChange={this.onLocaleSettingChange.bind(this, "CategoryName")}
+                            onChange={this.onLocaleSettingChange.bind(this, "CategoryName") }
                             />
                     }
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plPropertyValidation.Help")}
-                        label={resx.get("plPropertyValidation")}
+                        tooltipMessage={resx.get("plPropertyValidation.Help") }
+                        label={resx.get("plPropertyValidation") }
                         />
                     {this.state.propertyLocalization &&
                         <SingleLineInputWithError
@@ -541,7 +538,7 @@ class ProfilePropertyEditor extends Component {
                             withLabel={false}
                             error={false}
                             value={this.state.propertyLocalization.PropertyValidation}
-                            onChange={this.onLocaleSettingChange.bind(this, "PropertyValidation")}
+                            onChange={this.onLocaleSettingChange.bind(this, "PropertyValidation") }
                             />
                     }
                 </InputGroup>
@@ -549,21 +546,21 @@ class ProfilePropertyEditor extends Component {
             const columnFour = <div className="right-column2">
                 <InputGroup style={{ paddingTop: "10px" }}>
                     <Label
-                        tooltipMessage={resx.get("plPropertyHelp.Help")}
-                        label={resx.get("plPropertyHelp")}
+                        tooltipMessage={resx.get("plPropertyHelp.Help") }
+                        label={resx.get("plPropertyHelp") }
                         />
                     {this.state.propertyLocalization &&
                         <MultiLineInput
                             value={this.state.propertyLocalization.PropertyHelp}
-                            onChange={this.onLocaleSettingChange.bind(this, "PropertyHelp")}
+                            onChange={this.onLocaleSettingChange.bind(this, "PropertyHelp") }
                             style={{ padding: "8px 16px 75px" }}
                             />
                     }
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plPropertyRequired.Help")}
-                        label={resx.get("plPropertyRequired")}
+                        tooltipMessage={resx.get("plPropertyRequired.Help") }
+                        label={resx.get("plPropertyRequired") }
                         />
                     {this.state.propertyLocalization &&
                         <SingleLineInputWithError
@@ -571,7 +568,7 @@ class ProfilePropertyEditor extends Component {
                             withLabel={false}
                             error={false}
                             value={this.state.propertyLocalization.PropertyRequired}
-                            onChange={this.onLocaleSettingChange.bind(this, "PropertyRequired")}
+                            onChange={this.onLocaleSettingChange.bind(this, "PropertyRequired") }
                             />
                     }
                 </InputGroup>
@@ -584,42 +581,42 @@ class ProfilePropertyEditor extends Component {
                         <div className="editor-buttons-box">
                             <Button
                                 type="secondary"
-                                onClick={this.onCancel.bind(this)}>
-                                {resx.get("Cancel")}
+                                onClick={this.onCancel.bind(this) }>
+                                {resx.get("Cancel") }
                             </Button>
                             <Button
                                 type="primary"
-                                onClick={this.onNext.bind(this)}>
-                                {resx.get("Next")}
+                                onClick={this.onNext.bind(this) }>
+                                {resx.get("Next") }
                             </Button>
                         </div>
                     </div>
                     {this.state.propertyLocalization &&
                         <div className={this.state.showFirstPage ? "property-editor-page-hidden" : "property-editor-page"}>
-                            <div className="topMessage">{resx.get("Localization.Help")}</div>
+                            <div className="topMessage">{resx.get("Localization.Help") }</div>
                             <InputGroup>
                                 <Label
-                                    tooltipMessage={resx.get("plLocales.Help")}
-                                    label={resx.get("plLocales")}
+                                    tooltipMessage={resx.get("plLocales.Help") }
+                                    label={resx.get("plLocales") }
                                     />
                                 <Dropdown
-                                    options={this.getProfileLanguageOptions()}
+                                    options={this.getProfileLanguageOptions() }
                                     value={this.state.propertyLocalization.Language}
-                                    onSelect={this.onLanguageChange.bind(this)}
+                                    onSelect={this.onLanguageChange.bind(this) }
                                     />
                             </InputGroup>
                             <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
                             <div className="editor-buttons-box">
                                 <Button
                                     type="secondary"
-                                    onClick={this.onCancel.bind(this)}>
-                                    {resx.get("Cancel")}
+                                    onClick={this.onCancel.bind(this) }>
+                                    {resx.get("Cancel") }
                                 </Button>
                                 <Button
                                     disabled={!this.props.propertyLocalizationClientModified}
                                     type="primary"
-                                    onClick={this.onSave.bind(this)}>
-                                    {resx.get("Save")}
+                                    onClick={this.onSave.bind(this) }>
+                                    {resx.get("Save") }
                                 </Button>
                             </div>
                         </div>

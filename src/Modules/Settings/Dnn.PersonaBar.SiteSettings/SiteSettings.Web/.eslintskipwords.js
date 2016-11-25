@@ -136,5 +136,10 @@ module.exports = [
     "fallbacks",
     "localizable",
     "unassign",
-    "deletable"
+    "deletable",
+    "lastname",
+    "firstname",
+    "preferredtimezone",
+    "preferredlocale",
+    "verifier"
 ]

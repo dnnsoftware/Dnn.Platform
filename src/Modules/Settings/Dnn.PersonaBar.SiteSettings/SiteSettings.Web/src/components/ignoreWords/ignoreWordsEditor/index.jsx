@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Tags from "dnn-tags";
 import InputGroup from "dnn-input-group";
-import Input from "dnn-single-line-input";
 import {
     search as SearchActions
 } from "../../../actions";
@@ -84,7 +81,7 @@ class IgnoreWordsEditor extends Component {
         props.dispatch(SearchActions.ignoreWordsClientModified(words));
     }
 
-    onSave(event) {
+    onSave() {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -96,8 +93,8 @@ class IgnoreWordsEditor extends Component {
         props.onUpdate(state.words, state.culture);
     }
     
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         if (props.ignoreWordsClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(SearchActions.cancelIgnoreWordsClientModified());
@@ -120,7 +117,7 @@ class IgnoreWordsEditor extends Component {
                             label={resx.get("IgnoreWords")}
                             />
                         <Tags
-                            tags={this.state.words.StopWords ? this.state.words.StopWords.split(',') : []}
+                            tags={this.state.words.StopWords ? this.state.words.StopWords.split(",") : []}
                             onUpdateTags={this.onSettingChange.bind(this, "StopWords")}
                             />
                     </InputGroup>

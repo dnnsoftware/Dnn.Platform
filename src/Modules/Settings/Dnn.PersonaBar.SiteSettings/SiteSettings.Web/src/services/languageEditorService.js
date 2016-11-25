@@ -57,9 +57,9 @@ class ApplicationService {
         sf.post("SaveResxEntries", payload, callback, failureCallback);
     }
 
-    getPageList(params, callback) {
+    getPageList(payload, callback) {
         const sf = this.getServiceFramework("Languages");
-        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters(params), {}, callback);
+        sf.getsilence("GetTabsForTranslation?" + serializeQueryStringParameters(payload), {}, callback);
     }
 
     deleteLanguagePages(payload, callback) {
