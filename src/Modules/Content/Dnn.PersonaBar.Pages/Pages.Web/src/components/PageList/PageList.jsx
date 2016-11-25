@@ -32,8 +32,7 @@ class PageList extends Component {
                     itemTemplate={this.props.itemTemplate}
                     searchKeyword={this.props.searchKeyword} 
                     onPageSettings={this.props.onPageSettings}
-                    createdPage={this.props.createdPage}
-                    createdPages={this.props.createdPages} />
+                    createdPage={this.props.createdPage} />
             </SocialPanelBody>
         );
     }
@@ -45,7 +44,6 @@ PageList.propTypes = {
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
     createdPage: PropTypes.object,
-    createdPages: PropTypes.array,
     toolbarComponents: PropTypes.array
 };
 
@@ -54,7 +52,6 @@ function mapStateToProps(state) {
         searchKeyword: state.pageHierarchy.searchKeyword,
         itemTemplate: state.pageHierarchy.itemTemplate,
         createdPage: state.pageHierarchy.createdPage,
-        createdPages: state.addPages.createdPages,
         toolbarComponents: state.extensions.toolbarComponents
     };
 }

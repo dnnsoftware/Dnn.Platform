@@ -6,19 +6,21 @@ import "./css/pages-hierarchy.css";
 
 class PageHierarchy extends Component {
     componentDidMount() {
+        const {itemTemplate, searchKeyword} = this.props;
+
         this.node = ReactDOM.findDOMNode(this);
         pageHierarchyManager.utility = utils.getUtilities();
         pageHierarchyManager.resx = pageHierarchyManager.utility.resx.Pages;
         pageHierarchyManager._viewModel = {};
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
-        pageHierarchyManager.setItemTemplate(this.props.itemTemplate);
-        pageHierarchyManager.setSearchKeyword(this.props.searchKeyword);   
+        pageHierarchyManager.setItemTemplate(itemTemplate);
+        pageHierarchyManager.setSearchKeyword(searchKeyword);   
         pageHierarchyManager.setCurrentTabIdAndSiteRoot(utils.getCurrentPageId(), utils.getSiteRoot());
     }
 
     componentWillReceiveProps(nextProps) {
-        const {itemTemplate, searchKeyword, createdPage, createdPages} = this.props;
+        const {itemTemplate, searchKeyword} = this.props;
         if (itemTemplate !== nextProps.itemTemplate) {
             pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
         }    
@@ -26,17 +28,14 @@ class PageHierarchy extends Component {
         if (searchKeyword !== nextProps.searchKeyword) {
             pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
         }
-
-        if (createdPage !== nextProps.createdPage) {
-            pageHierarchyManager.addPage(nextProps.createdPage);
-        }
-
-        if (createdPages !== nextProps.createdPages && nextProps.createdPages !== null) {
-            pageHierarchyManager._loadRootPageList();
-        }    
     }
     
     initCallback() {
+        const {createdPage} = this.props;
+
+        if (createdPage !== null) {
+            pageHierarchyManager.addPage(createdPage);
+        }
     }
 
     callPageSettings(action, params) {
@@ -54,8 +53,7 @@ PageHierarchy.propTypes = {
     itemTemplate: PropTypes.string.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     onPageSettings: PropTypes.func.isRequired,
-    createdPage: PropTypes.object,
-    createdPages: PropTypes.array 
+    createdPage: PropTypes.object
 };
 
 PageHierarchy.defaultProps = {
