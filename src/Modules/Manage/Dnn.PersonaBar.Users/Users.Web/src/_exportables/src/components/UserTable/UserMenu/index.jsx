@@ -127,19 +127,19 @@ class UserMenu extends Component {
         }
     }
     
-    onViewProfile(){
+    onViewProfile() {
         utilities.closePersonaBar(() => {
             window.top.location = this.state.userDetails.profileUrl;
         });
     }
     onSendPasswordLink() {
-        this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, () => {
             utilities.notify(Localization.get("PasswordSent"), 10000);
         }));
     }
     deleteUser() {
         utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, (data) => {
+            this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, () => {
                 utilities.notify(Localization.get("UserDeleted"), 3000);
                 this.reload();
             }));
@@ -151,25 +151,25 @@ class UserMenu extends Component {
         });
     }
     restoreUser() {
-        this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, () => {
             utilities.notify(Localization.get("UserRestored"), 3000);
             this.reload();
         }));
     }
     forcePasswordChange() {
-        this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, (data) => {
+        this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, () => {
             utilities.notify(Localization.get("UserPasswordUpdateChanged"), 10000);
             this.reload();
         }));
     }
     updateAuthorizeStatus(authorized) {
-        this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, (data) => {
+        this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, () => {
             utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
             this.reload();
         }));
     }
     updateSuperUserStatus(setSuperUser) {
-        this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, (data) => {
+        this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, () => {
             this.reload();
         }));
     }
@@ -186,7 +186,7 @@ class UserMenu extends Component {
         
         if (canPromoteDemote(this.props.appSettings.applicationSettings.settings, this.state.userDetails.userId))
         {
-            if (!this.state.userDetails.isSuperUser){
+            if (!this.state.userDetails.isSuperUser) {
                 visibleMenus = [{ key:"PromoteToSuperUser", title:  Localization.get("PromoteToSuperUser"), index: 80 }].concat(visibleMenus);
             }
             else if (this.state.userDetails.isSuperUser)

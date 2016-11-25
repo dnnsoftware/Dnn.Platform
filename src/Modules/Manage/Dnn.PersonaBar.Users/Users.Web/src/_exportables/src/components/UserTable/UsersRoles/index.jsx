@@ -10,8 +10,6 @@ import "./style.less";
 import Pager from "dnn-pager";
 import { AddIcon } from "dnn-svg-icons";
 import { CommonUsersActions } from "../../../actions";
-import utilities from "utils";
-
 class UserRoles extends Component {
     constructor(props) {
         super(props);

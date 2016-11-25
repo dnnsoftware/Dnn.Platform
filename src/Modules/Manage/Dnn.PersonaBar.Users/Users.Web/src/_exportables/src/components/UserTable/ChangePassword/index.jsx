@@ -63,7 +63,7 @@ class ChangePassword extends Component {
     }
     save() {
         if (this.validateForm()) {
-            this.props.dispatch(CommonUsersActions.changePassword(this.state.changePassword, (data) => {
+            this.props.dispatch(CommonUsersActions.changePassword(this.state.changePassword, () => {
                 this.cancel();
                 utilities.notify(Localization.get("ChangeSuccessful"), 3000);
             }));

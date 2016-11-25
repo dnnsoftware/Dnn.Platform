@@ -61,7 +61,7 @@ class CreateUserBox extends Component {
     save() {
         this.submitted = true;
         if (this.validateForm()) {
-            this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, (data) => {
+            this.props.dispatch(CommonUsersActions.createUser(this.state.UserDetails, () => {
                 this.cancel();
                 utilities.notify(Localization.get("UserCreated"), 3000);
             }));
@@ -240,9 +240,8 @@ CreateUserBox.propTypes = {
     style: PropTypes.object
 };
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(CreateUserBox);

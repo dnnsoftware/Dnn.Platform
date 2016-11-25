@@ -32,14 +32,11 @@ class RoleRow extends Component {
             props.dispatch(CommonUsersActions.removeUserRole(userRole));
         });
     }
-    onTimeClick(userRole, index) {
-
-    }
     isEmptyDate(date) {
         return !date || new Date(date).getFullYear() < 1970;
     }
 
-    onChange(userRole, command, FirstDate, SecondDate, cancel) {
+    onChange(userRole, command, FirstDate) {
         const {state} = this;
         state.editIndex = -1;
         state.editCommand = "";
@@ -129,9 +126,8 @@ RoleRow.propTypes = {
     saveRole: PropTypes.func.isRequired,
     deleteRole: PropTypes.func.isRequired
 };
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 
