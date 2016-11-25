@@ -1,7 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     task as TaskActions
 } from "../../actions";
 import SchedulerRow from "./schedulerRow";
@@ -100,9 +99,9 @@ class SchedulerPanel extends Component {
     }
 
     onUpdateSchedulerItem(scheduleItemDetail) {
-        const {props, state} = this;
+        const {props} = this;
         if (scheduleItemDetail.ScheduleID) {
-            props.dispatch(TaskActions.updateScheduleItem(scheduleItemDetail, (data) => {
+            props.dispatch(TaskActions.updateScheduleItem(scheduleItemDetail, () => {
                 util.utilities.notify(resx.get("ScheduleItemUpdateSuccess"));
                 this.collapse();
                 props.dispatch(TaskActions.getSchedulerItemList());
@@ -112,7 +111,7 @@ class SchedulerPanel extends Component {
             }));
         }
         else {
-            props.dispatch(TaskActions.createScheduleItem(scheduleItemDetail, (data) => {
+            props.dispatch(TaskActions.createScheduleItem(scheduleItemDetail, () => {
                 util.utilities.notify(resx.get("ScheduleItemCreateSuccess"));
                 this.collapse();
                 props.dispatch(TaskActions.getSchedulerItemList());
@@ -125,13 +124,13 @@ class SchedulerPanel extends Component {
     }
 
     onDeleteSchedulerItem(scheduleId) {
-        const {props, state} = this;
+        const {props} = this;
         util.utilities.confirm(resx.get("ScheduleItemDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.schedulerItemList.filter((item) => item.ScheduleID !== scheduleId);
             props.dispatch(TaskActions.deleteSchedule({ "ScheduleId": scheduleId }, itemList, () => {
                 util.utilities.notify(resx.get("DeleteSuccess"));
                 this.collapse();
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("DeleteError"));
             }));
         });
@@ -180,7 +179,7 @@ class SchedulerPanel extends Component {
                 <div className="schedule-items">
                     <div className="servergroup-filter-container">
                         {serverOptions.length > 2 && <Select options={serverOptions} value={this.state.currentServerId} onChange={this.onSelectServer.bind(this) }
-                            style={{ border: 'none', margin: '-5px 0 0 0', padding: '5px 5px', width: '150px', height: '30px' }}
+                            style={{ border: "none", margin: "-5px 0 0 0", padding: "5px 5px", width: "150px", height: "30px" }}
                             />}
                     </div>
                     <div className="AddItemRow">

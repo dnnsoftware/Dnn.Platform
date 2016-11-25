@@ -1,23 +1,15 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     task as TaskActions
 } from "../../actions";
 import TaskHistoryItemRow from "./taskHistoryItemRow";
 import "./style.less";
-import util from "../../utils";
 import Pager from "dnn-pager";
 import resx from "../../resources";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../svg/history.svg`);
-
-const pageSizeStyle = {
-    float: "right",
-    margin: "0 60px 0 0",
-    width: "175px"
-};
 
 let pageSizeOptions = [];
 let tableFields = [];
@@ -70,7 +62,6 @@ class HistoryPanelBody extends Component {
     }
 
     renderedHistoryListHeader() {
-        const {props} = this;
         let tableHeaders = tableFields.map((field, index) => {
             let className = "historyHeader historyHeader-" + field.id;
             return <div className={className} key={"historyHeader-" + index}>
@@ -126,7 +117,7 @@ class HistoryPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div>
                 <div>

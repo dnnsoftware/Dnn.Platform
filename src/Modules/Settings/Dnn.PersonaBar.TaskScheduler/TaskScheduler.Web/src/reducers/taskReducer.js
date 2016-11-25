@@ -1,4 +1,4 @@
-import {task as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { task as ActionTypes } from "../constants/actionTypes";
 
 export default function taskList(state = {
     taskStatusList: [],
@@ -48,8 +48,8 @@ export default function taskList(state = {
             return { ...state,
                 scheduleItemDetail: action.data.scheduleItemDetail,
                 settingsClientModified: action.data.settingsClientModified
-            };      
-        case ActionTypes.CREATED_SCHEDULE_ITEM:            
+            };
+        case ActionTypes.CREATED_SCHEDULE_ITEM:
         case ActionTypes.UPDATED_SCHEDULE_ITEM:
         case ActionTypes.CANCELED_SCHEDULE_ITEM_SETTINS_CLIENT_MODIFIED:
             return { ...state,
@@ -59,7 +59,7 @@ export default function taskList(state = {
             return { ...state,
                 scheduleItemDetail: action.data.scheduleItemDetail,
                 settingsClientModified: action.data.settingsClientModified
-            };  
+            };
         case ActionTypes.UPDATED_SCHEDULE_SETTINGS_PENDING:
             return { ...state,
                 schedulerMode: action.data.schedulerMode

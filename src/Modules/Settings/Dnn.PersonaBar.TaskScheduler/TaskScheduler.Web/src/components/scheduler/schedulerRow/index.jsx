@@ -1,10 +1,10 @@
 import React, {Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
 import { EditIcon } from "dnn-svg-icons";
 import ItemHistory from "../itemHistory";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../../svg/checkmark.svg`);
 const svgIcon2 = require(`!raw!./../../svg/history.svg`);
 

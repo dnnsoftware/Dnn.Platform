@@ -1,12 +1,9 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
-import Collapse from "react-collapse";
 import styles from "./style.less";
-import {
-    task as TaskActions
-} from "../../../actions";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./svg/checkmark.svg`);
 
 class TaskHistoryItemRow extends Component {
@@ -34,6 +31,7 @@ class TaskHistoryItemRow extends Component {
         this._isMounted = false;
     }
 
+    /*eslint-disable eqeqeq*/
     handleClick(event) {
         // Note: this workaround is needed in IE. The remove event listener in the componentWillUnmount is called
         // before the handleClick handler is called, but in spite of that, the handleClick is executed. To avoid
@@ -85,12 +83,11 @@ class TaskHistoryItemRow extends Component {
     }
 
     render() {
-        const {props, state} = this;
         return (
             <div className={styles.taskHistoryItemRow}>
                 <div className="term-label-logNotes">
                     <div className="term-label-wrapper">
-                        {this.getLogNotesDisplay() }
+                        {this.getLogNotesDisplay()}
                     </div>
                 </div>
                 <div className="term-label-server">
@@ -105,12 +102,12 @@ class TaskHistoryItemRow extends Component {
                 </div>
                 <div className="term-label-succeeded">
                     <div className="term-label-wrapper">
-                        {this.getSucceededDisplay() }
+                        {this.getSucceededDisplay()}
                     </div>
                 </div>
                 <div className="term-label-startEnd">
                     <div className="term-label-wrapper">
-                        {this.getStartEndDisplay() }
+                        {this.getStartEndDisplay()}
                     </div>
                 </div>
             </div>
@@ -130,10 +127,8 @@ TaskHistoryItemRow.propTypes = {
     children: PropTypes.node
 };
 
-function mapStateToProps(state) {
-    return {
-
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(TaskHistoryItemRow);

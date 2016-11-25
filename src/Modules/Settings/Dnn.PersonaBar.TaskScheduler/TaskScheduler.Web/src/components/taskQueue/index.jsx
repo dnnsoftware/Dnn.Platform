@@ -1,21 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import {
-    pagination as PaginationActions,
-    task as TaskActions
-} from "../../actions";
 import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
-import util from "../../utils";
 import resx from "../../resources";
 
 class TaskQueuePanelBody extends Component {
     constructor() {
         super();
     }
-
-
 
     /* eslint-disable react/no-danger */
     renderedTaskStatusList() {
@@ -61,8 +53,9 @@ class TaskQueuePanelBody extends Component {
         }
     }
 
+    /*eslint-disable eqeqeq*/
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div>
                 <div>

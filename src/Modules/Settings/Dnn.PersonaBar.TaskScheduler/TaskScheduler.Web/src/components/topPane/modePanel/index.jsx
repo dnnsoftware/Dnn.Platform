@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import Collapse from "react-collapse";
 import Button from "dnn-button";
 import Select from "dnn-select";
-import Input from "dnn-single-line-input";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import styles from "./style.less";
+import "./style.less";
 import {
     task as TaskActions
 } from "../../../actions";
@@ -48,7 +47,6 @@ class ModePanel extends Component {
     onSave(event) {
         event.preventDefault();
         const {props, state} = this;
-        const { updateRequest } = this.state;
 
         this.setState({
             triedToSubmit: true
@@ -60,7 +58,7 @@ class ModePanel extends Component {
 
         props.dispatch(TaskActions.updateSchedulerSettings(state.updateRequest, () => {
             util.utilities.notify(resx.get("SchedulerUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notify(resx.get("SchedulerUpdateError"));
         }));
 
@@ -92,7 +90,7 @@ class ModePanel extends Component {
         });
     }
 
-    onClose(event) {
+    onClose() {
         const {props, state} = this;
         state.error["schedulerDelay"] = false;
         this.setState({

@@ -1,5 +1,4 @@
 import React, {Component, PropTypes } from "react";
-import Collapsible from "react-collapse";
 import styles from "./style.less";
 import resx from "../../../resources";
 

@@ -1,16 +1,11 @@
 import React, {PropTypes, Component} from "react";
-import { connect } from "react-redux";
 import Modal from "react-modal";
 import Scrollbars from "react-custom-scrollbars";
-import SingleLineInput from "dnn-single-line-input";
-import MultiLineInput from "dnn-multi-line-input";
-import Button from "dnn-button";
-import InputGroup from "dnn-input-group";
-import Select from "dnn-select";
-import styles from "./style.less";
+import "./style.less";
 import History from "../../history";
 import resx from "../../../resources";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../../svg/x_thin.svg`);
 
 const modalStyles = {
@@ -49,14 +44,14 @@ class ItemHistoryPanel extends Component {
         super();
     }
 
-    onClose(event) {
+    onClose() {
         const {props} = this;
         props.onClose();
     }
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <Modal
                 fixedHeight={props.fixedHeight}

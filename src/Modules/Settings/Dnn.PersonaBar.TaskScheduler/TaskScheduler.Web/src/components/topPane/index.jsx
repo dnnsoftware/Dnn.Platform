@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Collapsible from "react-collapse";
 import {
     task as TaskActions
 } from "../../actions";
@@ -10,6 +9,7 @@ import ModePanel from "./modePanel";
 import util from "../../utils";
 import resx from "../../resources";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../svg/edit.svg`);
 
 class TopPane extends Component {
@@ -43,7 +43,7 @@ class TopPane extends Component {
             props.dispatch(TaskActions.startSchedule(() => {
                 util.utilities.notify(resx.get("SchedulerStartSuccess"));
                 props.dispatch(TaskActions.getTaskStatusList());
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("SchedulerStartError"));
             }));
         }
@@ -51,7 +51,7 @@ class TopPane extends Component {
             props.dispatch(TaskActions.stopSchedule(() => {
                 util.utilities.notify(resx.get("SchedulerStopSuccess"));
                 props.dispatch(TaskActions.getTaskStatusList());
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("SchedulerStopError"));
             }));
         }

@@ -1,8 +1,8 @@
 import React, {Component, PropTypes } from "react";
-import Collapsible from "react-collapse";
 import styles from "./style.less";
 import resx from "../../../resources";
 
+/*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../taskStatusItemRow/svg/clock_stop.svg`);
 const svgIcon2 = require(`!raw!./../taskStatusItemRow/svg/cycle.svg`);
 
