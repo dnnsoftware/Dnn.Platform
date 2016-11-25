@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Web;
@@ -92,8 +91,6 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("logOff", Globals.NavigateURL("Logoff"));
             settings.Add("visible", Visible);
             settings.Add("userMode", portalSettings.UserMode.ToString());
-            settings.Add("privacyPolicyLink", Globals.NavigateURL(portalSettings.ActiveTab.TabID, "Privacy"));
-            settings.Add("termsAndConditionsLink", Globals.NavigateURL(portalSettings.ActiveTab.TabID, "Terms"));
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());
             settings.Add("menuStructure", JObject.FromObject(menuStructure));
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
