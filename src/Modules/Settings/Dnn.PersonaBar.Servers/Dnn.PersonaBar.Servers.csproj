@@ -134,7 +134,8 @@
     <Compile Include="Services\ServerSettingsPerformanceController.cs" />
     <Compile Include="Services\ServerSettingsSmtpAdminController.cs" />
     <Compile Include="Services\ServerSettingsSmtpHostController.cs" />
-    <Compile Include="Services\SystemInfoApplicationController.cs" />
+    <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
+    <Compile Include="Services\SystemInfoApplicationHostController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
     <Compile Include="Services\SystemInfoWebController.cs" />
   </ItemGroup>

@@ -24,7 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
+using Dnn.PersonaBar.Library.DTO;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Pages.Components.Dto;
 using Dnn.PersonaBar.Pages.Components.Exceptions;
@@ -42,10 +42,8 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-using DotNetNuke.Web.Common;
 using PermissionsNotMetException = DotNetNuke.Entities.Tabs.PermissionsNotMetException;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -365,7 +363,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //Validate for uniqueness
-            urlPath = FriendlyUrlController.ValidateUrl(urlPath, tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
+            FriendlyUrlController.ValidateUrl(urlPath, tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
             if (modified)
             {
                 errorMessage = "UrlPathNotUnique";
@@ -512,7 +510,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                     .Where(v => v.Name == PageTagsVocabulary))
                                     .SingleOrDefault();
 
-                var vocabularyId = Null.NullInteger;
+                int vocabularyId;
                 if (vocabulary == null)
                 {
                     var scopeType = Util.GetScopeTypeController().GetScopeTypes().SingleOrDefault(s => s.ScopeType == "Portal");
@@ -861,12 +859,11 @@ namespace Dnn.PersonaBar.Pages.Components
         public void SavePagePermissions(TabInfo tab, PagePermissions permissions)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var hasAdmin = permissions.RolePermissions?.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId) ?? false;
 
             tab.TabPermissions.Clear();
 
-            //add default permissions for administrators
-            if (!hasAdmin || (permissions.RolePermissions.Count == 0 && permissions.UserPermissions.Count == 0))
+            //add default permissions for administrators if needed
+            if (!HasAdminPermissions(permissions))
             {
                 //add default permissions
                 var permissionController = new PermissionController();
@@ -882,14 +879,13 @@ namespace Dnn.PersonaBar.Pages.Components
                         RoleName = portalSettings.AdministratorRoleName
                     };
                     tab.TabPermissions.Add(permission);
-
                 }
             }
 
             //add role permissions
             if (permissions.RolePermissions != null)
             {
-                foreach (var rolePermission in permissions.RolePermissions)
+                foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
                 {
                     foreach (var permission in rolePermission.Permissions)
                     {
@@ -922,6 +918,20 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+        }
+
+        private static Func<RolePermission, bool> NoLocked()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return r => !(r.Locked && r.RoleId != portalSettings.AdministratorRoleId);
+        }
+
+        private static bool HasAdminPermissions(PagePermissions permissions)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return permissions.RolePermissions != null && (bool) permissions.RolePermissions?.Any(permission =>
+                permission.RoleId == portalSettings.AdministratorRoleId &&
+                permission.Permissions.Count != 0);
         }
 
         public virtual PageSettings GetDefaultSettings()

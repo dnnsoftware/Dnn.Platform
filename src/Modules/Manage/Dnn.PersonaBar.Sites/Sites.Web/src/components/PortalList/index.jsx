@@ -3,13 +3,11 @@ import { connect } from "react-redux";
 import Button from "dnn-button";
 import { ListView } from "dnn-sites-common-components";
 import Localization from "localization";
-import utilities from "utils";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import GridCell from "dnn-grid-cell";
 import { CommonPaginationActions, CommonPortalListActions } from "dnn-sites-common-actions";
 import styles from "./style.less";
-import Moment from "moment";
 
 class PortalList extends Component {
     componentWillMount() {
@@ -41,10 +39,10 @@ class PortalList extends Component {
         const {props} = this;
         return (
             <GridCell className={styles.sitesPortalList}>
-                <SocialPanelHeader title={"Sites"}>
+                <PersonaBarPageHeader title={"Sites"}>
                     <Button type="primary" onClick={props.onAddNewSite.bind(this)}>{"Add New Site"}</Button>
-                </SocialPanelHeader>
-                <SocialPanelBody>
+                </PersonaBarPageHeader>
+                <PersonaBarPageBody>
                     <ListView
                         onAddNewSite={props.onAddNewSite.bind(this)}
                         />
@@ -54,7 +52,7 @@ class PortalList extends Component {
                             <Button type="primary" onClick={this.loadMore.bind(this)}>{Localization.get("LoadMore.Button")}</Button>
                         </GridCell>
                     }
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </GridCell>
         );
     }

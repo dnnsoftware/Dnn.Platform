@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { CommonPortalListActions } from "dnn-sites-common-actions";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
@@ -34,14 +34,14 @@ function extractDomain(url) {
     let domain;
     //find & remove protocol (http, ftp, etc.) and get domain
     if (url.indexOf("://") > -1) {
-        domain = url.split('/')[2];
+        domain = url.split("/")[2];
     }
     else {
-        domain = url.split('/')[0];
+        domain = url.split("/")[0];
     }
 
     //find & remove port number
-    domain = domain.split(':')[0];
+    domain = domain.split(":")[0];
 
     return domain;
 }
@@ -90,13 +90,14 @@ class CreatePortal extends Component {
     resolveSiteUrl(isChildSite) {
         let rootDomain = extractDomain(window.location.href);
         if (isChildSite) {
-            let { newPortal } = this.state;
+            let { newPortal, error } = this.state;
             if (newPortal.SiteAlias !== "" && newPortal.SiteAlias.indexOf(rootDomain) === -1) {
                 newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteAlias;
             } else {
                 newPortal.SiteAlias = rootDomain + "/" + newPortal.SiteName;
             }
-            this.setState({ newPortal });
+            error.SiteAlias = this.resolveSiteAliasError(newPortal.SiteAlias, isChildSite);
+            this.setState({ newPortal, error });
         } else {
             let { newPortal } = this.state;
             newPortal.SiteAlias = newPortal.SiteAlias.replace(rootDomain + "/", "");
@@ -235,8 +236,8 @@ class CreatePortal extends Component {
 
         return (
             <div className="create-portal">
-                <SocialPanelHeader title={Localization.get("AddNewSite.Header")} />
-                <SocialPanelBody>
+                <PersonaBarPageHeader title={Localization.get("AddNewSite.Header")} />
+                <PersonaBarPageBody>
                     <GridCell className="create-site-container">
                         <GridCell>
                             <SingleLineInputWithError
@@ -380,7 +381,7 @@ class CreatePortal extends Component {
                             <Button type="primary" onClick={this.createPortal.bind(this)}>{Localization.get("cmdCreateSite")}</Button>
                         </GridCell>
                     </GridCell>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </div>
         );
     }

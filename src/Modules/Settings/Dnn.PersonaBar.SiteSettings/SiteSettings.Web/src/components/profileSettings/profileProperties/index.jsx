@@ -110,31 +110,6 @@ class ProfilePropertiesPanel extends Component {
         }
     }
 
-    onUpdateProperty(propertyDetail) {
-        const {props, state} = this;
-        if (propertyDetail.DefinitionId) {
-            props.dispatch(SiteBehaviorActions.UpdateProfileProperty(propertyDetail, (data) => {
-                util.utilities.notify(resx.get("PropertyDefinitionUpdateSuccess"));
-                this.collapse();
-                props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
-            }, (error) => {
-                const errorMessage = JSON.parse(error.responseText);
-                util.utilities.notifyError(errorMessage.Message);
-            }));
-        }
-        else {
-            props.dispatch(SiteBehaviorActions.AddProfileProperty(propertyDetail, (data) => {
-                util.utilities.notify(resx.get("PropertyDefinitionCreateSuccess"));
-                this.collapse();
-                props.dispatch(SiteBehaviorActions.getProfileProperties(props.portalId));
-            }, (error) => {
-                util.utilities.notify(resx.get("PropertyDefinitionCreateError"));
-                const errorMessage = JSON.parse(error.responseText);
-                util.utilities.notifyError(errorMessage.Message);
-            }));
-        }
-    }
-
     onDeleteProperty(propertyId) {
         const {props, state} = this;
 
@@ -257,7 +232,6 @@ class ProfilePropertiesPanel extends Component {
                             cultureCode={this.props.cultureCode}
                             propertyId={item.PropertyDefinitionId}
                             Collapse={this.collapse.bind(this)}
-                            onUpdate={this.onUpdateProperty.bind(this)}
                             id={id}
                             openId={this.state.openId} />
                     </ProfilePropertyRow>
@@ -299,7 +273,6 @@ class ProfilePropertiesPanel extends Component {
                                     portalId={this.props.portalId}
                                     cultureCode={this.props.cultureCode}
                                     Collapse={this.collapse.bind(this)}
-                                    onUpdate={this.onUpdateProperty.bind(this)}
                                     id={"add"}
                                     openId={this.state.openId} />
                             </ProfilePropertyRow>

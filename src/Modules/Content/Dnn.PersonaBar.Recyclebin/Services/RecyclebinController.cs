@@ -46,11 +46,9 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpGet]
         public HttpResponseMessage GetDeletedPageList()
         {
-            var adminTabId = PortalSettings.AdminTabId;
-            var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, true, true, true, true);
+            var tabs = Components.RecyclebinController.Instance.GetDeletedTabs();
             var deletedtabs = from t in tabs
-                              where (t.ParentId != adminTabId && t.IsDeleted)
-                              select ConvertToPageItem(t, tabs);
+                select ConvertToPageItem(t, tabs);
             return Request.CreateResponse(HttpStatusCode.OK, deletedtabs);
         }
 
@@ -75,18 +73,17 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RemoveModule(List<ModuleItem> modules)
         {
-            if (modules != null && modules.Any()){
-                foreach (var module in modules.Select(mod => ModuleController.Instance.GetModule(mod.Id, mod.TabID, true)))
+            var errors = new StringBuilder();
+
+            Components.RecyclebinController.Instance.DeleteModules(modules, errors);
+
+            if (errors.Length > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    if (module == null)
-                    {
-                        return Request.CreateResponse(HttpStatusCode.NotFound);
-                    }
-                    if (module.IsDeleted)
-                    {
-                        Components.RecyclebinController.Instance.HardDeleteModule(module);
-                    }
-                }
+                    Status = 1,
+                    Message = string.Format(Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"), errors)
+                });
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });

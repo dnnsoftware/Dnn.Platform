@@ -8,7 +8,7 @@ const switchCase = [{
     functionToRun: (state, action) => {
         return {
             selectedPage: action.payload.selectedPage
-            };
+        };
     }
 }];
 export default function getReducer(initialState, additionalCases) {

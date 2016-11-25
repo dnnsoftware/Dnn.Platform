@@ -21,6 +21,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors);
 
+        void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors);
+
         void HardDeleteTab(TabInfo tab, bool deleteDescendants);
 
         void HardDeleteModule(ModuleInfo module);

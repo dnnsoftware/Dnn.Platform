@@ -6,7 +6,6 @@ import { CommonVisiblePanelActions, CommonPortalListActions, CommonExportPortalA
 import GridCell from "dnn-grid-cell";
 import utilities from "utils";
 import Moment from "moment";
-import Button from "dnn-button";
 import {
     TrashIcon,
     PreviewIcon,
@@ -54,7 +53,7 @@ class ListView extends Component {
             window.open(portal.PortalAliases[0].link);
         }
     }
-    navigateMap(page, event) {
+    navigateMap(page) {
         const {props} = this;
         props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }

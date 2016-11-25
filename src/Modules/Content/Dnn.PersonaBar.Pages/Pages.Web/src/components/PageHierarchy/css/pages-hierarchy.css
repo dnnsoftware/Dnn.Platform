@@ -150,6 +150,11 @@
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.subtitle, li.page-drag-helper div.page-item span.summary span.subtitle {
     display: block;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    max-width: 280px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status {
     display: inline-block;
@@ -362,9 +367,20 @@ div.page-drag-helper span.icon {
     width: 20px;
     height: 20px;
     vertical-align: middle;
-    background: url('../images/icon-pages-drag.png') no-repeat;
+    background: url('../images/icon-pages-drag.png') no-repeat;    
     margin-right: 4px;
+    margin-bottom: 30px;
 }
+
+div.page-drag-helper span.drag-page-name {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    max-width: 150px;
+}
+
 div.page-drag-helper.page-drag-multiple span.icon {
     background-position: 0 -20px;
 }

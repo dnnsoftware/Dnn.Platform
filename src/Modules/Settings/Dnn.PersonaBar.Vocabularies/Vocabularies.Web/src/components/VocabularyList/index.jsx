@@ -11,7 +11,7 @@ import GridSystem from "dnn-grid-system";
 import LeftPane from "./LeftPane";
 import RightPane from "./RightPane";
 import util from "../../utils";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Tabs from "dnn-tabs";
 import LocalizedResources from "../../resources";
 import "./style.less";
@@ -190,7 +190,7 @@ class VocabularyListComponent extends Component {
         const loadMoreEnabled = props.vocabularyList.length < props.totalCount;
         return (
             <div className="vocabulary-list">
-                <SocialPanelBody>
+                <PersonaBarPageBody>
                     <Tabs onSelect={this.handleSelect.bind(this) }
                         selectedIndex={props.tabIndex}
                         tabHeaders={["All", "Global", "Website"]}
@@ -199,7 +199,7 @@ class VocabularyListComponent extends Component {
                         {(renderedVocabularyList.length > 0 && renderedVocabularyList) || <p className="vocabulary-error">{LocalizedResources.get("NoVocabularyTerms.Error")}</p>}
                         {(renderedVocabularyList.length > 0 && renderedVocabularyList) || <p className="vocabulary-error">{LocalizedResources.get("NoVocabularyTerms.Error")}</p>}
                     </Tabs>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
                 {loadMoreEnabled && <Button type="primary" style={loadMoreButtonStyle} onClick={this.onLoadMore.bind(this) }>{LocalizedResources.get("LoadMore") }</Button>}
             </div>
         );

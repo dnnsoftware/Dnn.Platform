@@ -10,7 +10,7 @@ const PageToTestParameters = {
     isMultiLanguage: false,
     excludeAdminTabs: false,
     disabledNotSelectable: false,
-    roles: "0",
+    roles: "",
     sortOrder: 0
 };
 

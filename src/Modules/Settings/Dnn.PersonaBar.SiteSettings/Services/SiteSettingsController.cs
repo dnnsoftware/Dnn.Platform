@@ -52,7 +52,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
-        private const string ProfileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         //Field Boost Settings - they are scaled down by 10.
@@ -528,6 +527,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Success = true,
                     ProfileProperty = profileProperty != null ? new
                     {
+                        profileProperty.PortalId,
                         profileProperty.PropertyDefinitionId,
                         profileProperty.PropertyName,
                         profileProperty.DataType,
@@ -592,18 +592,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
-                
+                var resourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
                 var response = new
                 {
                     Success = true,
                     PropertyLocalization = new
                     {
                         Language = cultureCode,
-                        PropertyName = Localization.GetString("ProfileProperties_" + propertyName, ProfileResourceFile, cultureCode),
-                        PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", ProfileResourceFile, cultureCode),
-                        PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", ProfileResourceFile, cultureCode),
-                        PropertyValidation = Localization.GetString("ProfileProperties_" + propertyName + ".Validation", ProfileResourceFile, cultureCode),
-                        CategoryName = Localization.GetString("ProfileProperties_" + propertyCategory + ".Header", ProfileResourceFile, cultureCode)
+                        PropertyName = Localization.GetString("ProfileProperties_" + propertyName, resourceFile, cultureCode) ?? "",
+                        PropertyHelp = Localization.GetString("ProfileProperties_" + propertyName + ".Help", resourceFile, cultureCode) ?? "",
+                        PropertyRequired = Localization.GetString("ProfileProperties_" + propertyName + ".Required", resourceFile, cultureCode) ?? "",
+                        PropertyValidation = Localization.GetString("ProfileProperties_" + propertyName + ".Validation", resourceFile, cultureCode) ?? "",
+                        CategoryName = Localization.GetString("ProfileProperties_" + propertyCategory + ".Header", resourceFile, cultureCode) ?? ""
                     }
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);

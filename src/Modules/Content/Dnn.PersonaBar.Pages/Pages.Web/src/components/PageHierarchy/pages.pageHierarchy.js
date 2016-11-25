@@ -838,7 +838,7 @@ window.dnn.pages = window.dnn.pages || {};
 
                         $dragItem = $('<div class="page-drag-helper"></div>')
                                             .append('<span class="icon" />')
-                                            .append(ui.find('span.field-name').html())
+                                            .append('<span class="drag-page-name">'+ ui.find('span.field-name').html() + '</span>')
                                             .appendTo(handler.container);
 
                         data = ko.dataFor(ui[0]);

@@ -110,6 +110,24 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             
         }
 
+        public void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors)
+        {
+            if (modules != null && modules.Any())
+            {
+                foreach (var module in modules.Select(mod => ModuleController.Instance.GetModule(mod.Id, mod.TabID, true)))
+                {
+                    if (module == null)
+                    {
+                        continue;
+                    }
+                    if (ModulePermissionController.CanDeleteModule(module) && module.IsDeleted)
+                    {
+                        HardDeleteModule(module);
+                    }
+                }
+            }
+        }
+
         public void HardDeleteTab(TabInfo tab, bool deleteDescendants)
         {
             //get tab modules before deleting page
@@ -208,16 +226,16 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         {
             var adminTabId = PortalSettings.AdminTabId;
             var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, adminTabId, true, true, true, true);
-            var deletedtabs = tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted).ToList();
+            var deletedtabs = tabs.Where(t => t.ParentId != adminTabId && t.IsDeleted && TabPermissionController.CanDeletePage(t)).ToList();
             return deletedtabs;
         }
 
         public List<ModuleInfo> GetDeletedModules()
         {
             var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
-                                    .Cast<ModuleInfo>()
-                                    .Where(module => module.IsDeleted)
-                                    .ToList();
+                .Cast<ModuleInfo>()
+                .Where(module => module.IsDeleted && ModulePermissionController.CanDeleteModule(module))
+                .ToList();
             return deletedModules;
         }
 

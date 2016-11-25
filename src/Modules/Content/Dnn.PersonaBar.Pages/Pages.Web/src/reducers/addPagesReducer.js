@@ -22,19 +22,13 @@ function changeField(state, field, value) {
 }
 
 export default function addPagesReducer(state = { 
-    bulkPage: getEmptyBulkPage(),
-    createdPages: null
+    bulkPage: getEmptyBulkPage()
 }, action) {
 
     switch (action.type) {
         case ActionTypes.LOAD_ADD_MULTIPLE_PAGES:
             return { ...state,                
                 bulkPage: getEmptyBulkPage()
-            };
-
-        case ActionTypes.SAVED_MULTIPLE_PAGES:
-            return { ...state,                
-                createdPages: action.data.response
             };
         
         case ActionTypes.CHANGE_MULTIPLE_PAGE_VALUE:

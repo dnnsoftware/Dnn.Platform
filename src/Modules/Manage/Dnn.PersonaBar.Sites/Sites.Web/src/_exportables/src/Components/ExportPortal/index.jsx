@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {ExportPortalActions} from "../../actions";
 import Label from "dnn-label";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import CheckBox from "dnn-checkbox";
 import GridCell from "dnn-grid-cell";
 import { CommonExportPortalActions} from "../../actions";
@@ -42,6 +41,8 @@ const scrollAreaStyle = {
     border: "1px solid #c8c8c8"
 };
 const keysToValidate = ["fileName", "description"];
+
+/* eslint-disable eqeqeq */
 class ExportPortal extends Component {
     constructor() {
         super();
@@ -202,8 +203,8 @@ class ExportPortal extends Component {
         };
         return (
             <GridCell className="export-portal-container">
-                <SocialPanelHeader title={Localization.get("ControlTitle_template") } />
-                <SocialPanelBody>
+                <PersonaBarPageHeader title={Localization.get("ControlTitle_template") } />
+                <PersonaBarPageBody>
                     <div className="export-portal">
                         <GridCell className="export-site-container">
                             <h3 className="site-template-info-title">{Localization.get("titleTemplateInfo") }</h3>
@@ -314,7 +315,7 @@ class ExportPortal extends Component {
                             </GridCell>
                         </GridCell>
                     </div>
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </GridCell>
         );
     }

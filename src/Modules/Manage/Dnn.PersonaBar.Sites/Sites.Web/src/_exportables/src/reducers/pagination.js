@@ -5,7 +5,7 @@ import { getFinalSwitchCase } from "./helpers";
 
 const switchCase = [{
     condition: ActionTypes.LOAD_MORE,
-    functionToRun: (state, action) => {
+    functionToRun: (state/*, action*/) => {
         return {
             pageIndex: state.pageIndex + 1
         };

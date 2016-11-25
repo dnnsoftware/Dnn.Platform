@@ -50,7 +50,7 @@ class ProfilePropertyEditor extends Component {
 
     componentWillMount() {
         const {props} = this;
-        props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId));
+        props.dispatch(SiteBehaviorActions.getProfileProperty(props.propertyId, props.portalId));
     }
 
     componentWillReceiveProps(props) {
@@ -261,13 +261,15 @@ class ProfilePropertyEditor extends Component {
         this.setState({
             triedToSubmit: true
         });
-        if (state.error.name || state.error.category || state.error.datatype || state.error.length) {
-            return;
-        }
 
         if (props.profilePropertyClientModified) {
+            if (state.error.name || state.error.category || state.error.datatype || state.error.length) {
+                return;
+            }
             if (props.id === "add") {
-                props.dispatch(SiteBehaviorActions.addProfileProperty(state.profileProperty, (data) => {
+                const property = Object.assign({}, state.profileProperty);
+                property["PortalId"] = props.portalId;
+                props.dispatch(SiteBehaviorActions.addProfileProperty(property, (data) => {
                     util.utilities.notify(resx.get("SettingsUpdateSuccess"));
                     props.dispatch(SiteBehaviorActions.getProfileProperties());
                     props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
@@ -292,10 +294,13 @@ class ProfilePropertyEditor extends Component {
             }
         }
         else {
-            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId, state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode));
-            this.setState({
-                showFirstPage: false
-            });
+            props.dispatch(SiteBehaviorActions.getProfilePropertyLocalization(props.portalId,
+                state.profileProperty.PropertyName, state.profileProperty.PropertyCategory, props.cultureCode, (data) => {
+                    this.setState({
+                        propertyLocalization: data.PropertyLocalization,
+                        showFirstPage: false
+                    });
+                }));
         }
     }
 
@@ -309,6 +314,7 @@ class ProfilePropertyEditor extends Component {
         }
 
         let localization = {
+            PortalId: props.portalId,
             PropertyName: state.profileProperty.PropertyName,
             PropertyCategory: state.profileProperty.PropertyCategory,
             Language: state.propertyLocalization.Language,
@@ -634,7 +640,6 @@ ProfilePropertyEditor.propTypes = {
     languageOptions: PropTypes.array,
     propertyId: PropTypes.number,
     Collapse: PropTypes.func,
-    onUpdate: PropTypes.func,
     id: PropTypes.string,
     profilePropertyClientModified: PropTypes.bool,
     propertyLocalizationClientModified: PropTypes.bool,

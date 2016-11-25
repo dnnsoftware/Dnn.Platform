@@ -27,7 +27,7 @@ class App extends Component {
         props.dispatch(CommonExportPortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
     }
 
-    navigateMap(page, event) {
+    navigateMap(page) {
         const {props} = this;
         props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
@@ -42,7 +42,7 @@ class App extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div className="sites-Root">
                 <PersonaBarPage isOpen={props.selectedPage === 0 || props.selectedPage === 2}>
