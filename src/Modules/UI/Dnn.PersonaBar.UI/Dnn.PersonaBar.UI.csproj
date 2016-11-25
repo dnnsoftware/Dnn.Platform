@@ -161,8 +161,6 @@
     <Compile Include="Components\Controllers\ILocalizationController.cs" />
     <Compile Include="Components\Controllers\LocalizationController.cs" />
     <Compile Include="Components\EventHandlers\TabEventsHandler.cs" />
-    <Compile Include="Components\FileUploadService.cs" />
-    <Compile Include="Components\IFileUploadService.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
     <Compile Include="MenuControllers\LinkMenuController.cs" />
     <Compile Include="MenuControllers\EditMenuController.cs" />

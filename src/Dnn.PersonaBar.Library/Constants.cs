@@ -33,9 +33,5 @@ namespace Dnn.PersonaBar.Library
         public const string DisallowedCharacters = "%?*&;:'\\";
 
         public const string AdminsRoleName = "Administrators";
-
-        // Js resources
-
-        public static readonly string[] DefaultDocumentExtensions = { "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", "txt" };
     }
 }
