@@ -197,7 +197,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return _tabsController.GetTabByCulture(tabId, portalId, cultureCode);
         }
 
-        public string ExportPortalTemplate(ExportTemplateRequest request, out bool success)
+        public string ExportPortalTemplate(ExportTemplateRequest request, UserInfo userInfo, out bool success)
         {
             var locales = request.Locales.ToList();
             var pages = request.Pages.ToList();
@@ -270,7 +270,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
 
                 //Serialize tabs
-                SerializeTabs(writer, portal, request.IsMultilanguage, pages, request.IncludeContent, locales, request.LocalizationCulture);
+                SerializeTabs(writer, portal, request.IsMultilanguage, pages, userInfo, request.IncludeContent, locales, request.LocalizationCulture);
 
                 if (request.IncludeFiles)
                 {
@@ -299,12 +299,12 @@ namespace Dnn.PersonaBar.Sites.Components
             return string.Format(Localization.GetString("ExportedMessage", LocalResourcesFile), filename);
         }
 
-        private IEnumerable<TabDto> GetTabsToExport(int portalId, string cultureCode, bool isMultiLanguage,
+        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
             IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
         {
             if (tabsCollection == null)
             {
-                var tab = _tabsController.GetPortalTabs(portalId, cultureCode, isMultiLanguage);
+                var tab = _tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
                 tabsCollection = tab.ChildTabs;
                 tab.ChildTabs = null;
                 tab.HasChildren = false;
@@ -340,7 +340,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
-                    selectedTabs.AddRange(GetTabsToExport(portalId, cultureCode, isMultiLanguage, selectedTabs,
+                    selectedTabs.AddRange(GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
                         descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
                 }
             }
@@ -982,14 +982,14 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteEndElement();
         }
 
-        private void SerializeTabs(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<TabDto> pages,
+        private void SerializeTabs(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<TabDto> pages, UserInfo userInfo,
             bool includeContent, IEnumerable<string> locales, string localizationCulture = "")
         {
             //supporting object to build the tab hierarchy
             var tabs = new Hashtable();
 
             writer.WriteStartElement("tabs");
-            var tabsToExport = GetTabsToExport(portal.PortalID, portal.DefaultLanguage, isMultilanguage, pages, null).ToList();
+            var tabsToExport = GetTabsToExport(userInfo, portal.PortalID, portal.DefaultLanguage, isMultilanguage, pages, null).ToList();
 
             if (isMultilanguage)
             {

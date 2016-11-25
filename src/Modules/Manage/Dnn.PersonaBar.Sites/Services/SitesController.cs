@@ -19,6 +19,7 @@ using Dnn.PersonaBar.Sites.Services.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
@@ -172,7 +173,7 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 bool success;
-                var message = _controller.ExportPortalTemplate(request, out success);
+                var message = _controller.ExportPortalTemplate(request, UserInfo, out success);
 
                 if (!success)
                 {
