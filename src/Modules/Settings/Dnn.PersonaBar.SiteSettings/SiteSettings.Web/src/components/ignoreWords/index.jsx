@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     search as SearchActions
 } from "../../actions";
 import IgnoreWordsRow from "./ignoreWordsRow";
@@ -62,8 +61,6 @@ class IgnoreWordsPanel extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         if (props.ignoreWords) {
             this.setState({
                 ignoreWords: props.ignoreWords
@@ -105,10 +102,10 @@ class IgnoreWordsPanel extends Component {
     }
 
     onUpdateIgnoreWords(words) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (words.StopWordsId) {
-            props.dispatch(SearchActions.updateIgnoreWords(words, (data) => {
+            props.dispatch(SearchActions.updateIgnoreWords(words, () => {
                 util.utilities.notify(resx.get("IgnoreWordsUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -117,7 +114,7 @@ class IgnoreWordsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SearchActions.addIgnoreWords(words, (data) => {
+            props.dispatch(SearchActions.addIgnoreWords(words, () => {
                 util.utilities.notify(resx.get("IgnoreWordsCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -128,19 +125,19 @@ class IgnoreWordsPanel extends Component {
     }
 
     onDeleteIgnoreWords(words) {
-        const {props, state} = this;
+        const {props} = this;
         util.utilities.confirm(resx.get("IgnoreWordsDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SearchActions.deleteIgnoreWords(words, () => {
                 util.utilities.notify(resx.get("IgnoreWordsDeleteSuccess"));
                 this.collapse();
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("IgnoreWordsDeleteError"));
             }));
         });
     }
 
     onSelectCulture(event) {
-        let {state, props} = this;
+        let {props} = this;
 
         this.setState({
             culture: event.value
@@ -154,7 +151,7 @@ class IgnoreWordsPanel extends Component {
     }
 
     getCultureOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.cultures !== undefined) {
             options = props.cultures.map((item) => {
@@ -173,7 +170,7 @@ class IgnoreWordsPanel extends Component {
 
     /* eslint-disable react/no-danger */
     renderedIgnoreWords() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.ignoreWords) {
             return (
                 <IgnoreWordsRow

@@ -146,5 +146,6 @@ module.exports = [
     "pid",
     "attr",
     "tmp",
-    "reindex"
+    "reindex",
+    "lable"
 ]

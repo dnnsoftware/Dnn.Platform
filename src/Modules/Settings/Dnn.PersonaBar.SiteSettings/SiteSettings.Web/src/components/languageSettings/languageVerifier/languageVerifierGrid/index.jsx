@@ -1,15 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import LanguageVerifierRow from "./languageVerifierRow";
-import Collapse from "react-collapse";
-import Select from "dnn-select";
 import "./style.less";
-import { AddIcon } from "dnn-svg-icons";
-import util from "../../../../utils";
 import resx from "../../../../resources";
 import styles from "./style.less";
-
-let tableFields = [];
 
 class LanguageVerifierGridPanel extends Component {
     constructor() {
@@ -36,14 +30,13 @@ class LanguageVerifierGridPanel extends Component {
     }
 
     toggle(openId) {
-        const {props, state} = this;
         if (openId !== "") {
             this.uncollapse(openId);
         }
     }
 
     renderBody(list) {
-        return list.map((item, index) => {
+        return list.map((item) => {
             return (
                 <div className="resx-file">{item}</div>
             );
@@ -52,7 +45,7 @@ class LanguageVerifierGridPanel extends Component {
 
     /* eslint-disable react/no-danger */
     renderedGrid() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div>
                 <div className="verifier-grid">
@@ -140,10 +133,9 @@ class LanguageVerifierGridPanel extends Component {
     }
 
     render() {
-        const {props, state} = this;
         return (
             <div>
-                <div className={styles.verifieritems}>
+                <div className={styles.verifierItems}>
                     <div className="verifier-items-grid">
                         {this.renderedGrid()}
                     </div>
@@ -167,7 +159,7 @@ LanguageVerifierGridPanel.propTypes = {
     malformedFiles: PropTypes.array
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {
 
     };

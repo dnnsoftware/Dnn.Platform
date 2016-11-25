@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
     search as SearchActions
 } from "../../actions";
 import SynonymsGroupRow from "./synonymsGroupRow";
@@ -62,8 +61,6 @@ class SynonymsGroupsPanel extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         if (props.synonymsGroups) {
             this.setState({
                 synonymsGroups: props.synonymsGroups
@@ -105,10 +102,10 @@ class SynonymsGroupsPanel extends Component {
     }
 
     onUpdateSynonymsGroup(group) {
-        const {props, state} = this;
+        const {props} = this;
         const synonymsGroups = Object.assign({}, props.synonymsGroups);
         if (group.SynonymsGroupId) {
-            synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.map((item, index) => {
+            synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.map((item) => {
                 if (item.SynonymsGroupId === group.SynonymsGroupId) {
                     return group;
                 }
@@ -117,7 +114,7 @@ class SynonymsGroupsPanel extends Component {
                 }
             });
 
-            props.dispatch(SearchActions.updateSynonymsGroup(group, synonymsGroups, (data) => {
+            props.dispatch(SearchActions.updateSynonymsGroup(group, synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -126,7 +123,7 @@ class SynonymsGroupsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SearchActions.addSynonymsGroup(group, props.synonymsGroups, (data) => {
+            props.dispatch(SearchActions.addSynonymsGroup(group, props.synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -137,21 +134,21 @@ class SynonymsGroupsPanel extends Component {
     }
 
     onDeleteSynonymsGroup(group) {
-        const {props, state} = this;
+        const {props} = this;
         util.utilities.confirm(resx.get("SynonymsGroupDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const synonymsGroups = Object.assign({}, props.synonymsGroups);
             synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.filter((item) => item.SynonymsGroupId !== group.SynonymsGroupId);
             props.dispatch(SearchActions.deleteSynonymsGroup(group, synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupDeleteSuccess"));
                 this.collapse();
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(resx.get("SynonymsGroupDeleteError"));
             }));
         });
     }
 
     onSelectCulture(event) {
-        let {state, props} = this;
+        let {props} = this;
 
         this.setState({
             culture: event.value
@@ -165,7 +162,7 @@ class SynonymsGroupsPanel extends Component {
     }
 
     getCultureOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.cultures !== undefined) {
             options = props.cultures.map((item) => {
@@ -196,15 +193,15 @@ class SynonymsGroupsPanel extends Component {
                         key={"synonymsItem-" + index}
                         closeOnClick={true}
                         openId={this.state.openId}
-                        OpenCollapse={this.toggle.bind(this)}
-                        Collapse={this.collapse.bind(this)}
-                        onDelete={this.onDeleteSynonymsGroup.bind(this, item)}
+                        OpenCollapse={this.toggle.bind(this) }
+                        Collapse={this.collapse.bind(this) }
+                        onDelete={this.onDeleteSynonymsGroup.bind(this, item) }
                         id={id}>
                         <SynonymsGroupEditor
                             group={item}
                             culture={this.state.culture}
-                            Collapse={this.collapse.bind(this)}
-                            onUpdate={this.onUpdateSynonymsGroup.bind(this)}
+                            Collapse={this.collapse.bind(this) }
+                            onUpdate={this.onUpdateSynonymsGroup.bind(this) }
                             id={id}
                             openId={this.state.openId} />
                     </SynonymsGroupRow>
@@ -219,10 +216,10 @@ class SynonymsGroupsPanel extends Component {
             <div>
                 <div className="synonyms-group-items">
                     <div className="AddItemRow">
-                        <div className="sectionTitle">{resx.get("Synonyms")}</div>
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                        <div className="sectionTitle">{resx.get("Synonyms") }</div>
+                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> {resx.get("cmdAddGroup")}
+                            </div> {resx.get("cmdAddGroup") }
                         </div>
                         {this.props.cultures && this.props.cultures.length > 1 &&
                             <div className="synonyms-filter">
@@ -230,15 +227,15 @@ class SynonymsGroupsPanel extends Component {
                                     value={this.state.culture}
                                     fixedHeight={200}
                                     style={{ width: "auto" }}
-                                    options={this.getCultureOptions()}
+                                    options={this.getCultureOptions() }
                                     withBorder={false}
-                                    onSelect={this.onSelectCulture.bind(this)}
+                                    onSelect={this.onSelectCulture.bind(this) }
                                     />
                             </div>
                         }
                     </div>
                     <div className="synonyms-items-grid">
-                        {this.renderHeader()}
+                        {this.renderHeader() }
                         <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
                             <SynonymsGroupRow
                                 tags={"-"}
@@ -246,19 +243,19 @@ class SynonymsGroupsPanel extends Component {
                                 key={"aliasItem-add"}
                                 closeOnClick={true}
                                 openId={this.state.openId}
-                                OpenCollapse={this.toggle.bind(this)}
-                                Collapse={this.collapse.bind(this)}
-                                onDelete={this.onDeleteSynonymsGroup.bind(this)}
+                                OpenCollapse={this.toggle.bind(this) }
+                                Collapse={this.collapse.bind(this) }
+                                onDelete={this.onDeleteSynonymsGroup.bind(this) }
                                 id={"add"}>
                                 <SynonymsGroupEditor
-                                    Collapse={this.collapse.bind(this)}
+                                    Collapse={this.collapse.bind(this) }
                                     culture={this.state.culture}
-                                    onUpdate={this.onUpdateSynonymsGroup.bind(this)}
+                                    onUpdate={this.onUpdateSynonymsGroup.bind(this) }
                                     id={"add"}
                                     openId={this.state.openId} />
                             </SynonymsGroupRow>
                         </Collapse>
-                        {this.renderedSynonymsGroups()}
+                        {this.renderedSynonymsGroups() }
                     </div>
                 </div>
 

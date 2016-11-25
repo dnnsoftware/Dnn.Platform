@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import Button from "dnn-button";
@@ -79,17 +77,17 @@ class MoreSettingsPanelBody extends Component {
         }
         const {props, state} = this;
 
-        props.dispatch(SiteBehaviorActions.updateOtherSettings(state.otherSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateOtherSettings(state.otherSettings, () => {
 
-        }, (error) => {
+        }, () => {
             this.setState({
                 errorInSave: true
             });
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteBehaviorActions.getOtherSettings((data) => {
                 this.setState({

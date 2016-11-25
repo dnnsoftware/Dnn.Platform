@@ -1,14 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     languages as LanguagesActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import Languages from "./languages";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
 import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
 import RadioButtons from "dnn-radio-buttons";
@@ -49,7 +45,7 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (!this.loadData()) {
             this.setState({
                 languageSettings: props.languageSettings
@@ -98,19 +94,19 @@ class LanguageSettingsPanelBody extends Component {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, (data) => {
+        props.dispatch(LanguagesActions.updateLanguageSettings(state.languageSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             defaultAllowContentLocalization = state.languageSettings.AllowContentLocalization;
             this.setState({
 
             });
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(LanguagesActions.getLanguageSettings(props.portalId, props.cultureCode, (data) => {
                 this.setState({
