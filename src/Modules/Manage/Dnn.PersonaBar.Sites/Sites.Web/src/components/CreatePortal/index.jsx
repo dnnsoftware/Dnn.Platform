@@ -194,6 +194,11 @@ class CreatePortal extends Component {
             return true;
         }
     }
+    setCreatingPortal(creatingPortal){
+        this.setState({
+            creatingPortal
+        });
+    }
     createPortal() {
         const { props, state } = this;
         let {triedToSave} = state;
@@ -210,7 +215,9 @@ class CreatePortal extends Component {
             if (withError) {
                 return;
             }
+            this.setCreatingPortal(true);
             props.dispatch(CommonPortalListActions.createPortal(state.newPortal, () => {
+                this.setCreatingPortal(false);
                 this.resetNewPortal();
                 props.onCancel();
             }));
