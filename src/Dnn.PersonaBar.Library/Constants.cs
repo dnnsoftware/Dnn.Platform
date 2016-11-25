@@ -30,8 +30,6 @@ namespace Dnn.PersonaBar.Library
         public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
         public static readonly TimeSpan OneWeek = TimeSpan.FromDays(7);
         
-        public const string DisallowedCharacters = "%?*&;:'\\";
-
         public const string AdminsRoleName = "Administrators";
     }
 }
