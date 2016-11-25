@@ -1,15 +1,7 @@
 ﻿const webpack = require("webpack");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
-const languages = {
-    "en": null
-    // TODO: create locallizaton files per language 
-    // "de": require("./localizations/de.json"),
-    // "es": require("./localizations/es.json"),
-    // "fr": require("./localizations/fr.json"),
-    // "it": require("./localizations/it.json"),
-    // "nl": require("./localizations/nl.json")
-};
+const path = require("path");
 
 const webpackExternals = require("dnn-webpack-externals");
 
@@ -34,10 +26,14 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"]
+        extensions: ["", ".js", ".json", ".jsx"],
+        root: [
+            path.resolve('./src'),          // Look in src first
+            path.resolve('./node_modules')  // Last fallback to node_modules
+        ]
     },
-	
-	externals: require("dnn-webpack-externals"),
+
+    externals: webpackExternals,
 
     plugins: isProduction ? [
         new webpack.optimize.UglifyJsPlugin(),
