@@ -40,7 +40,7 @@ class TranslatePageContent extends Component {
         const {props} = this;
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = props.portalId;
-        props.dispatch(LanguagesActions.getPageList({cultureCode, portalId}, (data) => {
+        props.dispatch(LanguagesActions.getPageList({ cultureCode, portalId }, (data) => {
             this.setState({ pageList: data });
         }));
     }
@@ -89,7 +89,7 @@ class TranslatePageContent extends Component {
 
     onMarkAllPagesAsTranslated(cultureCode) {
         const portalId = this.props.portalId;
-        this.props.dispatch(LanguagesActions.markAllPagesAsTranslated({cultureCode, portalId}, () => {
+        this.props.dispatch(LanguagesActions.markAllPagesAsTranslated({ cultureCode, portalId }, () => {
             utils.utilities.notify(resx.get("PagesSuccessfullyTranslated"));
             this.getPageList();
         }));
@@ -100,7 +100,7 @@ class TranslatePageContent extends Component {
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = this.props.portalId;
         utils.utilities.confirm(resx.get("EraseTranslatedPagesWarning").replace("{0}", cultureCode), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(LanguagesActions.deleteLanguagePages({portalId, cultureCode}, (data) => {
+            props.dispatch(LanguagesActions.deleteLanguagePages({ portalId, cultureCode }, (data) => {
                 utils.utilities.notify(resx.get("DeletedAllLocalizedPages"));
                 this.getPageList();
             }));
@@ -155,6 +155,7 @@ class TranslatePageContent extends Component {
             document.dispatchEvent(event);
         }
     }
+
     toggleActivateLanguage(languageBeingEdited) {
         this.props.dispatch(LanguagesActions.activateLanguage({
             portalId: this.props.portalId,
@@ -162,6 +163,7 @@ class TranslatePageContent extends Component {
             enable: languageBeingEdited.Active
         }));
     }
+
     onToggleActive(active) {
         if (!active) {
             let {languageBeingEdited} = this.state;
@@ -178,10 +180,11 @@ class TranslatePageContent extends Component {
             this.setState({ languageBeingEdited });
         }
     }
+
     render() {
         const {props, state} = this;
         const language = state.languageBeingEdited;
-        const isEnabled = !!this.state.pageList.length && language.Enabled;
+        const isEnabled = language.Enabled;
         return <SocialPanelBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
