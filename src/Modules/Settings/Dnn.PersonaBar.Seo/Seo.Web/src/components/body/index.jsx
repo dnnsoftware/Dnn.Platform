@@ -10,7 +10,7 @@ import RegexSettings from "../regexSettings";
 import SitemapSettings from "../sitemapSettings";
 import TestUrl from "../testUrl";
 import Tooltip from "dnn-tooltip";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -69,9 +69,9 @@ export class Body extends Component {
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <SocialPanelBody>
+            <PersonaBarPageBody>
                 {this.renderTabs()}
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

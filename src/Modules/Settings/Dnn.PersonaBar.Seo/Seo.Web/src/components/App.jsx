@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import resx from "../resources";
@@ -19,8 +19,8 @@ class App extends Component {
         return (
             <div className="seo-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={resx.get("nav_Seo")}>
-                    </SocialPanelHeader>
+                    <PersonaBarPageHeader title={resx.get("nav_Seo")}>
+                    </PersonaBarPageHeader>
                     <Body />
                 </PersonaBarPage>
             </div>
