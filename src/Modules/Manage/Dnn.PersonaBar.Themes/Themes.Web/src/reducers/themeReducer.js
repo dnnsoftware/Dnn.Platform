@@ -1,19 +1,19 @@
-import {theme as ActionTypes}  from "../constants/actionTypes";
+import { theme as ActionTypes } from "../constants/actionTypes";
 export default function theme(state = {
-    currentTheme: {SiteLayout: {}, SiteContainer: {}, EditLayout: {}, EditContainer: {}},
-    themes: {layouts: [], containers: []},
+    currentTheme: { SiteLayout: {}, SiteContainer: {}, EditLayout: {}, EditContainer: {} },
+    themes: { layouts: [], containers: [] },
     currentThemeFiles: [[], []],
     editableThemeFiles: [],
     editableTokens: [],
     editableSettings: [],
-    editableValue: ''
+    editableValue: ""
 }, action) {
     switch (action.type) {
         case ActionTypes.RETRIEVED_CURRENT_THEMES:
             return { ...state,
                 currentTheme: action.data.currentTheme
             };
-        case ActionTypes.RETRIEVED_CURRENT_THEMEFILES:{
+        case ActionTypes.RETRIEVED_CURRENT_THEMEFILES: {
             let currentThemeFiles = Object.assign([], state.currentThemeFiles);
             currentThemeFiles[action.data.themeType] = action.data.themeFiles;
             return { ...state,
@@ -26,7 +26,7 @@ export default function theme(state = {
             };
         case ActionTypes.RETRIEVED_THEMES:
             return { ...state,
-                themes: {layouts: action.data.layouts, containers: action.data.containers}
+                themes: { layouts: action.data.layouts, containers: action.data.containers }
             };
         case ActionTypes.RETRIEVED_EDITABLE_THEMEFILES:
             return { ...state,
@@ -45,9 +45,9 @@ export default function theme(state = {
                 editableValue: action.data.values
             };
         case ActionTypes.UPDATE_THEME:
-            return { ...state};
+            return { ...state };
         case ActionTypes.PARSE_THEME:
-            return { ...state};
+            return { ...state };
         case ActionTypes.RESTORE_THEME:
             return { ...state,
                 currentTheme: action.data.currentTheme,
@@ -62,7 +62,6 @@ export default function theme(state = {
             {
                 let deletedTheme = action.data.theme;
                 let layouts = state.themes.layouts;
-                let index = -1;
                 if (layouts.some(l => l.packageName === deletedTheme.packageName)) {
                     layouts = layouts.filter(l => {
                         return l.packageName !== deletedTheme.packageName;
@@ -77,7 +76,7 @@ export default function theme(state = {
                 }
 
                 return { ...state,
-                    themes: {layouts: layouts, containers: containers}
+                    themes: { layouts: layouts, containers: containers }
                 };
             }
         default:

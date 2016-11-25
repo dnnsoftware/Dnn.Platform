@@ -6,8 +6,6 @@ import {
 } from "actions";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import Label from "dnn-label";
 
 import CurrentTheme from "./CurrentTheme";
 import ThemeFileList from "./ThemeFileList";
@@ -29,7 +27,7 @@ class SiteTheme extends Component {
     }
 
     hasData() {
-        const {props, state} = this;
+        const {props} = this;
 
         let source = props.themes.layouts;
         let isHost = utils.params.settings.isHost;
@@ -46,7 +44,7 @@ class SiteTheme extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <GridCell className="site-theme">

@@ -1,13 +1,6 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
-import Localization from "localization";
 import GridSystem from "dnn-grid-system";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-import RadioButtons from "dnn-radio-buttons";
 import utils from "utils";
 
 import EditThemeAttributes from "./EditThemeAttributes";
@@ -23,22 +16,20 @@ class ThemeSettings extends Component {
         };
     }
 
-    renderLeftColumn(){
+    renderLeftColumn() {
         return <div className="left-column">
             <EditThemeAttributes />
         </div>;
     }
 
-    renderRightColumn(){
+    renderRightColumn() {
         let isHost = utils.params.settings.isHost;
         return isHost && <div className="right-column">
             <ParseThemePackage />
         </div>;
     }
-    
-    render() {
-        const {props, state} = this;
 
+    render() {
         return (
             <GridSystem className="theme-settings" children={[this.renderLeftColumn(), this.renderRightColumn()]}>
             </GridSystem>
@@ -50,9 +41,8 @@ ThemeSettings.propTypes = {
     dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(ThemeSettings);

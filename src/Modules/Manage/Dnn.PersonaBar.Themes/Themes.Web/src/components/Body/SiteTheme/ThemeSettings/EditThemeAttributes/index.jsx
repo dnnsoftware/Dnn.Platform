@@ -1,10 +1,9 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import GridSystem from "dnn-grid-system";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
@@ -14,16 +13,17 @@ import Collapsible from "react-collapse";
 import utils from "utils";
 import "./style.less";
 
+/*eslint-disable eqeqeq*/
 class EditThemeAttributes extends Component {
     constructor() {
         super();
         this.state = {
             themeType: "layout",
-            themeName: '',
-            path: '',
-            token: '',
-            setting: '',
-            value: '',
+            themeName: "",
+            path: "",
+            token: "",
+            setting: "",
+            value: "",
             openEditPopup: false,
             level: 3,
             startSave: false
@@ -31,82 +31,79 @@ class EditThemeAttributes extends Component {
 
     }
 
-    componentWillMount()
-    {
-        const {props, state} = this;
-        
-        if(props.tokens.length === 0){
+    componentWillMount() {
+        const {props} = this;
+
+        if (props.tokens.length === 0) {
             props.dispatch(ThemeActions.getEditableTokens());
         }
     }
 
-    getThemeType(){
-        const {props, state} = this;
+    getThemeType() {
+        const {state} = this;
 
         return state.themeType == "container" ? 1 : 0;
     }
 
-    getThemeOptions(){
-        const {props, state} = this;
+    getThemeOptions() {
+        const {props} = this;
 
         let type = this.getThemeType();
         let source = type == 1 ? props.themes.containers : props.themes.layouts;
         let isHost = utils.params.settings.isHost;
         return source.filter(l => {
             return isHost || l.level === 1;
-        }).map(function(t){
-            return {value: t.packageName, label: t.packageName};
+        }).map(function (t) {
+            return { value: t.packageName, label: t.packageName };
         });
     }
 
-    
-    getThemeFileOptions(){
+
+    getThemeFileOptions() {
         const {props, state} = this;
 
-        if(!state.themeName){
+        if (!state.themeName) {
             return [];
         }
 
-        return props.themeFiles.map(function(f){
-            return {value: f.path, label: f.name};
+        return props.themeFiles.map(function (f) {
+            return { value: f.path, label: f.name };
         });
     }
 
-    getTokenOptions(){
+    getTokenOptions() {
         const {props, state} = this;
 
-        if(!state.path){
+        if (!state.path) {
             return [];
         }
 
-        return props.tokens.map(function(t){
-            return {value: t.value, label: t.text};
+        return props.tokens.map(function (t) {
+            return { value: t.value, label: t.text };
         });
     }
 
-    getSettingOptions(){
+    getSettingOptions() {
         const {props, state} = this;
 
-        if(!state.path || !state.token){
+        if (!state.path || !state.token) {
             return [];
         }
 
-        return props.settings.map(function(t){
-            return {value: t.value, label: t.text};
+        return props.settings.map(function (t) {
+            return { value: t.value, label: t.text };
         });
     }
 
-        onThemeTypeChanged(type){
-        const {props, state} = this;
-
-        this.setState({themeType: type, themeName: '', path: '', token: '', setting: '', value: ''});
+    onThemeTypeChanged(type) {
+        this.setState({ themeType: type, themeName: "", path: "", token: "", setting: "", value: "" });
     }
 
 
-    onThemeChanged(themeName){
+    onThemeChanged(themeName) {
         const {props, state} = this;
 
-        this.setState({themeName: themeName.value, path: '', token: '', setting: '', value: ''}, function(){
+        this.setState({ themeName: themeName.value, path: "", token: "", setting: "", value: "" }, function () {
             let themeName = this.state.themeName;
             let type = this.getThemeType();
             let level = state.level;
@@ -115,26 +112,24 @@ class EditThemeAttributes extends Component {
         });
     }
 
-    onThemeFileChanged(themeFile){
-        const {props, state} = this;
-
-        this.setState({path: themeFile.value, token: '', setting: '', value: ''});
+    onThemeFileChanged(themeFile) {
+        this.setState({ path: themeFile.value, token: "", setting: "", value: "" });
     }
 
-    onTokenChanged(token){
-        const {props, state} = this;
+    onTokenChanged(token) {
+        const {props} = this;
 
-        this.setState({token: token.value, setting: '', value: ''}, function(){
+        this.setState({ token: token.value, setting: "", value: "" }, function () {
             let token = this.state.token;
 
             props.dispatch(ThemeActions.getEditableSettings(token));
         });
     }
 
-    onSettingChanged(setting){
-        const {props, state} = this;
+    onSettingChanged(setting) {
+        const {props} = this;
 
-        this.setState({setting: setting.value, value: ''}, function(){
+        this.setState({ setting: setting.value, value: "" }, function () {
             let token = this.state.token;
             let setting = this.state.setting;
 
@@ -142,72 +137,72 @@ class EditThemeAttributes extends Component {
         });
     }
 
-    startEdit(){
-        this.setState({openEditPopup: true, themeName: '', path: '', token: '', setting: '', value: ''});
+    startEdit() {
+        this.setState({ openEditPopup: true, themeName: "", path: "", token: "", setting: "", value: "" });
     }
 
-    cancelEdit(){
-        this.setState({openEditPopup: false, themeName: '', path: '', token: '', setting: '', value: ''});
+    cancelEdit() {
+        this.setState({ openEditPopup: false, themeName: "", path: "", token: "", setting: "", value: "" });
     }
 
-    Save(){
+    Save() {
         const {props, state} = this;
 
-        this.setState({startSave: true}, function(){
+        this.setState({ startSave: true }, function () {
 
-            if(!state.path || !state.token || !state.setting || !state.value){
+            if (!state.path || !state.token || !state.setting || !state.value) {
                 return;
             }
 
             let self = this;
-            props.dispatch(ThemeActions.updateTheme(state.path, state.token, state.setting, state.value, function(){
-                self.setState({openEditPopup: false});
+            props.dispatch(ThemeActions.updateTheme(state.path, state.token, state.setting, state.value, function () {
+                self.setState({ openEditPopup: false });
                 utils.utilities.notify(Localization.get("Successful"));
             }));
         });
     }
 
-    renderValueField(){
+    renderValueField() {
         const {props, state} = this;
 
-        let onFieldChange = function(value){
+        let onFieldChange = function (value) {
             let editValue = value.value;
-            if(value.target){
-                editValue= value.target.value;
+            if (value.target) {
+                editValue = value.target.value;
             }
 
-            this.setState({value: editValue});
+            this.setState({ value: editValue });
         };
 
-        if(!props.value){
-            return <SingleLineInputWithError 
-                        value={state.value} 
-                        onChange={onFieldChange.bind(this)} 
-                        error={state.startSave && !state.value}
-                        label={Localization.get("Value")}/>;
+        if (!props.value) {
+            return <SingleLineInputWithError
+                value={state.value}
+                onChange={onFieldChange.bind(this)}
+                error={state.startSave && !state.value}
+                label={Localization.get("Value")} />;
         }
 
-        if(props.value.toLowerCase() === "pages"){
+        if (props.value.toLowerCase() === "pages") {
             //TODO: use combo box.
         }
 
-        let options = props.value.split(',').map(function(value){
-            if(value){
-                return {value: value, label: value};
+        let options = props.value.split(",").map(function (value) {
+            if (value) {
+                return { value: value, label: value };
             }
         });
 
         return <DropdownWithError
-                    options={options}
-                    value={state.value}
-                    onSelect={onFieldChange.bind(this)}
-                    fixedHeight={100}
-                    error={state.startSave && !state.value}
-                    label={Localization.get("Value")}/>;
+            options={options}
+            value={state.value}
+            onSelect={onFieldChange.bind(this)}
+            fixedHeight={100}
+            error={state.startSave && !state.value}
+            label={Localization.get("Value")} />;
     }
 
     render() {
-        const {props, state} = this;
+        const {state} = this;
 
         return (
             <div className="edit-theme-attributes">
@@ -217,31 +212,31 @@ class EditThemeAttributes extends Component {
                         <h3>{Localization.get("EditThemeAttributes")}</h3>
                         <GridCell>
                             <GridCell columnSize="50">
-                                <DropdownWithError 
+                                <DropdownWithError
                                     options={this.getThemeOptions()}
                                     value={state.themeName}
                                     onSelect={this.onThemeChanged.bind(this)}
                                     fixedHeight={100}
                                     error={state.startSave && !state.themeName}
-                                    label={Localization.get("Theme")}/>
+                                    label={Localization.get("Theme")} />
                             </GridCell>
                             <GridCell columnSize="50" className="right-column">
-                                <RadioButtons 
-                                    options={[{value: "layout", label: Localization.get("Layout")}, {value: "container", label: Localization.get("Container")}]} 
+                                <RadioButtons
+                                    options={[{ value: "layout", label: Localization.get("Layout") }, { value: "container", label: Localization.get("Container") }]}
                                     onChange={this.onThemeTypeChanged.bind(this)}
                                     value={this.state.themeType}
-                                    float="none"/>
+                                    float="none" />
                             </GridCell>
                             <div className="clear split" />
                             <GridCell columnSize="50">
-                                <DropdownWithError 
+                                <DropdownWithError
                                     options={this.getThemeFileOptions()}
                                     value={state.path}
                                     onSelect={this.onThemeFileChanged.bind(this)}
                                     enabled={state.themeName}
                                     fixedHeight={100}
                                     error={state.startSave && !state.path}
-                                    label={Localization.get("File")}/>
+                                    label={Localization.get("File")} />
                             </GridCell>
                             <GridCell columnSize="50" className="right-column">
                                 <DropdownWithError
@@ -251,17 +246,17 @@ class EditThemeAttributes extends Component {
                                     enabled={state.path && state.token}
                                     fixedHeight={100}
                                     error={state.startSave && !state.setting}
-                                    label={Localization.get("Setting")}/>
+                                    label={Localization.get("Setting")} />
                             </GridCell>
                             <GridCell columnSize="50">
-                                <DropdownWithError 
+                                <DropdownWithError
                                     options={this.getTokenOptions()}
                                     value={state.token}
                                     onSelect={this.onTokenChanged.bind(this)}
                                     enabled={state.path}
                                     fixedHeight={100}
                                     error={state.startSave && !state.token}
-                                    label={Localization.get("Token")}/>
+                                    label={Localization.get("Token")} />
                             </GridCell>
                             <GridCell columnSize="50" className="right-column">
                                 {this.renderValueField()}

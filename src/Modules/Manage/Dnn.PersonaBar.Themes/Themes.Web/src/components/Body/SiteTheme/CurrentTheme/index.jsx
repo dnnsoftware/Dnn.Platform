@@ -1,12 +1,5 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
-import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
-
 import SvgIcon from "../../SvgIcon";
 
 import "./style.less";
@@ -17,22 +10,22 @@ class CurrentTheme extends Component {
         this.state = {};
     }
 
-    
+
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <div className="current-theme">
-            {
-                (function(){
-                    if(props.theme && props.theme.SiteLayout.thumbnail){
-                        return <img src={props.theme.SiteLayout.thumbnail} />;
-                    }
-                    else{
-                        return <SvgIcon name="EmptyThumbnail" />;
-                    }
-                })()
-            }
+                {
+                    (function () {
+                        if (props.theme && props.theme.SiteLayout.thumbnail) {
+                            return <img src={props.theme.SiteLayout.thumbnail} />;
+                        }
+                        else {
+                            return <SvgIcon name="EmptyThumbnail" />;
+                        }
+                    })()
+                }
             </div>
         );
     }

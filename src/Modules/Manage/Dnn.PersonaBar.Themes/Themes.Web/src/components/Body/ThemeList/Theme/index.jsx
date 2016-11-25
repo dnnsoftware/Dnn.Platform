@@ -1,13 +1,10 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     theme as ThemeActions
 } from "actions";
 import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 import OverflowText from "dnn-text-overflow-wrapper";
-
 import SvgIcon from "../../SvgIcon";
 import utils from "utils";
 
@@ -19,92 +16,88 @@ class Theme extends Component {
         this.state = {};
     }
 
-    selectedAsSite(){
-        const {props, state} = this;
+    selectedAsSite() {
+        const {props} = this;
         let theme = props.theme;
         let currentTheme = props.currentTheme;
 
-        if(theme.type === 0){
+        if (theme.type === 0) {
             return currentTheme.SiteLayout.themeName === theme.packageName;
         } else {
             return currentTheme.SiteContainer.themeName === theme.packageName;
         }
     }
 
-    getClassName(){
-        const {props, state} = this;
+    getClassName() {
+        const {props} = this;
         let theme = props.theme;
-        let currentTheme = props.currentTheme;
-        let className = theme.type === 0 ? 'theme-skin' : 'theme-container';
+        let className = theme.type === 0 ? "theme-skin" : "theme-container";
 
-        let selected = false;
-
-        if(this.selectedAsSite()){
+        if (this.selectedAsSite()) {
             className += " selected";
         }
 
         return className;
     }
 
-    applyDefaultTheme(){
-        const {props, state} = this;
+    applyDefaultTheme() {
+        const {props} = this;
         let theme = props.theme;
 
-        utils.utilities.confirm(Localization.get("ApplyConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function(){
+        utils.utilities.confirm(Localization.get("ApplyConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function () {
             props.dispatch(ThemeActions.applyDefaultTheme(theme.packageName));
         });
     }
 
-    deleteTheme(){
-        const {props, state} = this;
+    deleteTheme() {
+        const {props} = this;
         let theme = props.theme;
 
-        utils.utilities.confirm(Localization.get("DeleteConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function(){
+        utils.utilities.confirm(Localization.get("DeleteConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function () {
             props.dispatch(ThemeActions.deleteTheme(theme));
         });
     }
 
-    previewTheme(){
-        const {props, state} = this;
+    previewTheme() {
+        const {props} = this;
         let theme = props.theme;
 
         let previewUrl = utils.params.settings.previewUrl;
         window.open(previewUrl + "?SkinSrc=" + theme.defaultThemeFile);
     }
 
-    renderActions(){
-        const {props, state} = this;
+    renderActions() {
+        const {props} = this;
         let theme = props.theme;
-        let type = theme.type;
 
-        if(this.selectedAsSite()){
+        if (this.selectedAsSite()) {
             return <span className="checkmark"><SvgIcon name="Checkmark" /></span>;
         }
 
         let isHost = utils.params.settings.isHost;
         return <span className="actions">
-            <ul className={(isHost || theme.level === 1) ? '' : 'short'}>
+            <ul className={(isHost || theme.level === 1) ? "" : "short"}>
                 <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
                 <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
-                {((isHost || theme.level === 1) && theme.canDelete)  && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
+                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }
 
-    renderThumbnail(){
-        const {props, state} = this;
+    renderThumbnail() {
+        const {props} = this;
 
         let theme = props.theme;
-        let className = 'thumbnail' + (theme.thumbnail ? '' : ' empty');
+        let className = "thumbnail" + (theme.thumbnail ? "" : " empty");
 
         return <span className={className}>
             {theme.thumbnail ? <img src={theme.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
             {this.renderActions()}
         </span>;
     }
-    
+
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <div className={this.getClassName()}>

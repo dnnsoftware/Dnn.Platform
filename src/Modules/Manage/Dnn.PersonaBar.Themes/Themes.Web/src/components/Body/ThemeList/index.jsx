@@ -1,11 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
-import Localization from "localization";
 import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 import { Scrollbars } from "react-custom-scrollbars";
 
 import Theme from "./Theme";
@@ -19,7 +14,7 @@ class ThemeList extends Component {
     }
     
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <Scrollbars
@@ -28,7 +23,7 @@ class ThemeList extends Component {
                     autoHeightMin={0}
                     autoHeightMax={480}>
                 <GridCell>
-                    {props.dataSource.map((theme, index) => {
+                    {props.dataSource.map((theme) => {
                         return <GridCell columnSize="25"><Theme theme={theme} /></GridCell>;
                     }) }
                 </GridCell>

@@ -1,11 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
-import Localization from "localization";
-import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 import "./style.less";
 
 const SvgIcons = {
@@ -59,7 +53,7 @@ class SvgIcon extends Component {
 
     
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             SvgIcons[props.name]
@@ -71,9 +65,8 @@ SvgIcon.propTypes = {
     name: PropTypes.string
 };
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(SvgIcon);

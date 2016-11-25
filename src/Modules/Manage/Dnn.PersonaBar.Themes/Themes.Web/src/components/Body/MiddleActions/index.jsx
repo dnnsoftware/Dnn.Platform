@@ -1,11 +1,7 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-    theme as ThemeActions
-} from "actions";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
-import Button from "dnn-button";
 import SearchBox from "dnn-search-box";
 
 import RestoreTheme from "./RestoreTheme";
@@ -18,21 +14,14 @@ class MiddleActions extends Component {
         this.state = {};
     }
 
-    componentWillMount(){
-        const {props, state} = this;
-
-    }
-
-    onKeywordChanged(value){
-        const {props, state} = this;
+    onKeywordChanged(value) {
+        const {props} = this;
 
         props.onSearch.call(this, value);
     }
 
-    
-    render() {
-        const {props, state} = this;
 
+    render() {
         return (
             <GridCell className="middle-actions">
                 <GridCell columnSize="70">
@@ -41,7 +30,7 @@ class MiddleActions extends Component {
                 <GridCell columnSize="30">
                     <div className="search-filter">
                         {
-                            <SearchBox placeholder={Localization.get("SearchPlaceHolder") } onSearch={this.onKeywordChanged.bind(this) } maxLength={50} />
+                            <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} />
                         }
                         <div className="clear"></div>
                     </div>
@@ -56,9 +45,8 @@ MiddleActions.propTypes = {
     onSearch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(MiddleActions);

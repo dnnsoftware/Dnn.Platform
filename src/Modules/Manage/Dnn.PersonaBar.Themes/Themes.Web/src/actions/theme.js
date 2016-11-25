@@ -1,11 +1,11 @@
-import {theme as ActionTypes}  from "constants/actionTypes";
+import { theme as ActionTypes } from "constants/actionTypes";
 import ThemeService from "services/themeService";
 import Localization from "localization";
 
 function errorCallback(xhr) {
-    let response = eval('(' + xhr.responseText + ')');
+    let response = eval("(" + xhr.responseText + ")");
     let message = xhr.responseText;
-    if(response && response.Message){
+    if (response && response.Message) {
         message = response.Message;
     }
 
@@ -137,7 +137,7 @@ const themeActions = {
     },
     updateTheme(path, token, setting, value, callback) {
         return (dispatch) => {
-            ThemeService.updateTheme(path, token, setting, value, data => {
+            ThemeService.updateTheme(path, token, setting, value, () => {
                 dispatch({
                     type: ActionTypes.UPDATE_THEME,
                     data: {
@@ -148,66 +148,66 @@ const themeActions = {
                 }
             }, errorCallback);
         };
-     },
-     parseTheme(themeName, parseType, callback) {
-         return (dispatch) => {
-             ThemeService.parseTheme(themeName, parseType, data => {
-                 dispatch({
-                     type: ActionTypes.PARSE_THEME,
-                     data: {
-                     }
-                 });
-                 if (callback) {
-                     callback();
-                 }
-             }, errorCallback);
-         };
-     },
-     restoreTheme(callback) {
-         return (dispatch) => {
-             ThemeService.restoreTheme(data => {
-                 dispatch({
-                     type: ActionTypes.RESTORE_THEME,
-                     data: {
-                         currentTheme: data
-                     }
-                 });
-                 if (callback) {
-                     callback();
-                 }
-             }, errorCallback);
-         };
-     },
-     applyDefaultTheme(themeName, callback) {
-         return (dispatch) => {
-             ThemeService.applyDefaultTheme(themeName, data => {
-                 dispatch({
-                     type: ActionTypes.APPLY_DEFAULT_THEME,
-                     data: {
-                         currentTheme: data
-                     }
-                 });
-                 if (callback) {
-                     callback();
-                 }
-             }, errorCallback);
-         };
-     },
-     deleteTheme(theme, callback) {
-         return (dispatch) => {
-             ThemeService.deleteTheme(theme, data => {
-                 dispatch({
-                     type: ActionTypes.DELETE_THEME,
-                     data: {
-                         theme: theme
-                     }
-                 });
-                 if (callback) {
-                     callback();
-                 }
-             }, errorCallback);
-         };
-     }
+    },
+    parseTheme(themeName, parseType, callback) {
+        return (dispatch) => {
+            ThemeService.parseTheme(themeName, parseType, () => {
+                dispatch({
+                    type: ActionTypes.PARSE_THEME,
+                    data: {
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
+    restoreTheme(callback) {
+        return (dispatch) => {
+            ThemeService.restoreTheme(data => {
+                dispatch({
+                    type: ActionTypes.RESTORE_THEME,
+                    data: {
+                        currentTheme: data
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
+    applyDefaultTheme(themeName, callback) {
+        return (dispatch) => {
+            ThemeService.applyDefaultTheme(themeName, data => {
+                dispatch({
+                    type: ActionTypes.APPLY_DEFAULT_THEME,
+                    data: {
+                        currentTheme: data
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
+    deleteTheme(theme, callback) {
+        return (dispatch) => {
+            ThemeService.deleteTheme(theme, () => {
+                dispatch({
+                    type: ActionTypes.DELETE_THEME,
+                    data: {
+                        theme: theme
+                    }
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    }
 };
 
 export default themeActions;

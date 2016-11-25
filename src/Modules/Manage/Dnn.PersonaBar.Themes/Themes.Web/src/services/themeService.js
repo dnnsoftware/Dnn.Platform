@@ -1,13 +1,3 @@
-
-function serializeQueryStringParameters(obj) {
-    let s = [];
-    for (let p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
-    }
-    return s.join("&");
-}
 class ThemeService {
     getServiceFramework(controller) {
         let sf = window.dnn.initThemes().utility.sf;
@@ -23,61 +13,61 @@ class ThemeService {
         sf.get("GetCurrentTheme", {}, callback, errorCallback);
     }
 
-    getThemes(level, callback, errorCallback){
+    getThemes(level, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetThemes", {level: level}, callback, errorCallback);
+        sf.get("GetThemes", { level: level }, callback, errorCallback);
     }
 
-    getThemeFiles(themeName, themeType, themeLevel, callback, errorCallback){
+    getThemeFiles(themeName, themeType, themeLevel, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetThemeFiles", {themeName: themeName, type: themeType, level: themeLevel}, callback, errorCallback);
+        sf.get("GetThemeFiles", { themeName: themeName, type: themeType, level: themeLevel }, callback, errorCallback);
     }
 
-    applyTheme(themeFile, scope, callback, errorCallback){
+    applyTheme(themeFile, scope, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ApplyTheme", {themeFile: themeFile, scope: scope}, callback, errorCallback);
+        sf.post("ApplyTheme", { themeFile: themeFile, scope: scope }, callback, errorCallback);
     }
 
-    getEditableTokens(callback, errorCallback){
+    getEditableTokens(callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
         sf.get("GetEditableTokens", {}, callback, errorCallback);
     }
 
-    getEditableSettings(token, callback, errorCallback){
+    getEditableSettings(token, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetEditableSettings", {token: token}, callback, errorCallback);
+        sf.get("GetEditableSettings", { token: token }, callback, errorCallback);
     }
 
-    getEditableValues(token, setting, callback, errorCallback){
+    getEditableValues(token, setting, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetEditableValues", {token: token, setting: setting}, callback, errorCallback);
+        sf.get("GetEditableValues", { token: token, setting: setting }, callback, errorCallback);
     }
 
-    updateTheme(path, token, setting, value, callback, errorCallback){
+    updateTheme(path, token, setting, value, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("UpdateTheme", {path: path, token: token, setting: setting, value: value}, callback, errorCallback);
+        sf.post("UpdateTheme", { path: path, token: token, setting: setting, value: value }, callback, errorCallback);
     }
 
-    parseTheme(themeName, parseType, callback, errorCallback){
+    parseTheme(themeName, parseType, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ParseTheme", {themeName: themeName, parseType: parseType}, callback, errorCallback);
+        sf.post("ParseTheme", { themeName: themeName, parseType: parseType }, callback, errorCallback);
     }
 
-    restoreTheme(callback, errorCallback){
+    restoreTheme(callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
         sf.post("RestoreTheme", {}, callback, errorCallback);
     }
 
-    applyDefaultTheme(themeName, callback, errorCallback){
+    applyDefaultTheme(themeName, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ApplyDefaultTheme", {themeName: themeName}, callback, errorCallback);
+        sf.post("ApplyDefaultTheme", { themeName: themeName }, callback, errorCallback);
     }
 
-    deleteTheme(theme, callback, errorCallback){
+    deleteTheme(theme, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
         sf.post("DeleteThemePackage", theme, callback, errorCallback);
     }
 }
-    
+
 const themeService = new ThemeService();
 export default themeService;

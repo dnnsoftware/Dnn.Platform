@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
-import {visiblePanel as VisiblePanelActions, portal as PortalActions } from "../actions";
 import PersonaBarPage from "dnn-persona-bar-page";
 import Body from "./Body";
 
@@ -14,7 +13,7 @@ class App extends Component {
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div className="themes-Root">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
