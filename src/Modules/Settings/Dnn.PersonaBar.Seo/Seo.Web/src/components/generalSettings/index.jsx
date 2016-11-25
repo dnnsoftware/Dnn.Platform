@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     seo as SeoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
 import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
@@ -29,7 +25,7 @@ class GeneralSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (props.generalSettings) {
             this.setState({
                 generalSettings: props.generalSettings
@@ -44,8 +40,6 @@ class GeneralSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             generalSettings: Object.assign({}, props.generalSettings),
             triedToSubmit: false
@@ -88,15 +82,15 @@ class GeneralSettingsPanelBody extends Component {
             triedToSubmit: true
         });
 
-        props.dispatch(SeoActions.updateGeneralSettings(state.generalSettings, (data) => {
+        props.dispatch(SeoActions.updateGeneralSettings(state.generalSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SeoActions.getGeneralSettings((data) => {
                 this.setState({

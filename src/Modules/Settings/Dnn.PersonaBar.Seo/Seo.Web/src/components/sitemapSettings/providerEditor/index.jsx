@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
 import "./style.less";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import InputGroup from "dnn-input-group";
 import Button from "dnn-button";
 import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
-import util from "../../../utils";
 import resx from "../../../resources";
 import styles from "./style.less";
 
@@ -45,7 +42,6 @@ class ProviderEditor extends Component {
     }
 
     onSettingChange(key, event) {
-        let {state} = this;
         let {settings} = this.state;
 
         if (key === "Priority") {
@@ -62,13 +58,13 @@ class ProviderEditor extends Component {
 
     onUpdateItem(event) {
         event.preventDefault();
-        const {props, state} = this;
+        const {state} = this;
         this.props.onUpdate(state.settings);
     }
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {state} = this;
         if (state.settings) {            
             const columnOne = <div className="left-column">
                 <InputGroup>

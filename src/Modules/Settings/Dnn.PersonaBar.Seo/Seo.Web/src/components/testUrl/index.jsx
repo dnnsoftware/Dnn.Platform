@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     seo as SeoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
@@ -10,7 +8,6 @@ import PagePicker from "dnn-page-picker";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInput from "dnn-multi-line-input";
 import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import "./style.less";
@@ -41,13 +38,13 @@ class TestUrlPanelBody extends Component {
 
         if (key === "PageToTest") {
             test[key] = event;
-            if(test[key] === "-1"){
+            if (test[key] === "-1") {
                 props.dispatch(SeoActions.clearUrlTestResults());
             }
         }
-        else if(key === "UrlToTest") {
+        else if (key === "UrlToTest") {
             test[key] = typeof (event) === "object" ? event.target.value : event;
-            if(test[key] === ""){
+            if (test[key] === "") {
                 props.dispatch(SeoActions.clearUrlRewritingTestResults());
             }
         }

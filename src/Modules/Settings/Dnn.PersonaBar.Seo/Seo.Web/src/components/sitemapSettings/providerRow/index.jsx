@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
 import { EditIcon, CheckMarkIcon } from "dnn-svg-icons";
-import resx from "../../../resources";
 
 class ProviderRow extends Component {
     constructor() {
@@ -44,7 +42,7 @@ class ProviderRow extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         if (props.visible) {
             return (

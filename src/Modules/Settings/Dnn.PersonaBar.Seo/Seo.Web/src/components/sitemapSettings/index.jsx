@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     seo as SeoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
@@ -10,7 +8,6 @@ import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Grid from "dnn-grid-system";
 import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
-import RadioButtons from "dnn-radio-buttons";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
 import ProviderRow from "./providerRow";
@@ -43,7 +40,7 @@ class SitemapSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (props.sitemapSettings) {
             this.setState({
                 sitemapSettings: props.sitemapSettings
@@ -93,8 +90,6 @@ class SitemapSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             sitemapSettings: Object.assign({}, props.sitemapSettings),
             triedToSubmit: false,
@@ -138,15 +133,15 @@ class SitemapSettingsPanelBody extends Component {
             triedToSubmit: true
         });
 
-        props.dispatch(SeoActions.updateSitemapSettings(state.sitemapSettings, (data) => {
+        props.dispatch(SeoActions.updateSitemapSettings(state.sitemapSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SeoActions.getSitemapSettings((data) => {
                 this.setState({
@@ -157,14 +152,14 @@ class SitemapSettingsPanelBody extends Component {
     }
 
     onClearCache() {
-        const {props, state} = this;
+        const {props} = this;
         props.dispatch(SeoActions.clearCache());
     }
 
     onUpdateProvider(settings) {
-        const {props, state} = this;
+        const {props} = this;
 
-        props.dispatch(SeoActions.updateProvider(settings, (data) => {
+        props.dispatch(SeoActions.updateProvider(settings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
             props.dispatch(SeoActions.getProviders((data) => {
                 this.setState({
@@ -172,7 +167,7 @@ class SitemapSettingsPanelBody extends Component {
                 });
             }));
             this.collapse();
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
@@ -210,7 +205,6 @@ class SitemapSettingsPanelBody extends Component {
     }
 
     renderedProviders() {
-        let i = 0;
         if (this.props.providers) {
             return this.props.providers.map((item, index) => {
                 return (
@@ -237,8 +231,6 @@ class SitemapSettingsPanelBody extends Component {
     }
 
     onSearchEngineChange(event) {
-        let {state, props} = this;
-
         this.setState({
             searchEngine: event.value
         });
@@ -247,7 +239,7 @@ class SitemapSettingsPanelBody extends Component {
     onSearchEngineSubmit() {
         let {state, props} = this;
         let url = props.searchEngineUrls.filter((item) => item.Key === state.searchEngine)[0].Value;
-        window.open(url, '_blank');
+        window.open(url, "_blank");
     }
 
     onVerificationChange(event) {

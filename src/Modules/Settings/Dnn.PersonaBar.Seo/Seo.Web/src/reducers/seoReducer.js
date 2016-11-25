@@ -1,4 +1,4 @@
-import { seo as ActionTypes, pagination as PaginationActionTypes } from "../constants/actionTypes";
+import { seo as ActionTypes } from "../constants/actionTypes";
 
 export default function seoSettings(state = {
 }, action) {
@@ -64,7 +64,7 @@ export default function seoSettings(state = {
                 clientModified: action.data.clientModified
             };
         case ActionTypes.RETRIEVED_SEO_SITEMAP_PROVIDERS:
-        return { ...state,
+            return { ...state,
                 providers: action.data.providers
             };
         default:

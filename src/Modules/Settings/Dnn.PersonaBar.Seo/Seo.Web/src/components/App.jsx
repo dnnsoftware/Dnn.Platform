@@ -1,19 +1,15 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Button from "dnn-button";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import Body from "./body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import resx from "../resources";
-require('es6-object-assign').polyfill();
-require('array.prototype.find').shim();
-require('array.prototype.findindex').shim();
 
 class App extends Component {
     constructor() {
         super();
     }
-    
+
     render() {
         const {props} = this;
         return (

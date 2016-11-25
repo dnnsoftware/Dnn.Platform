@@ -1,19 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     seo as SeoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
 import Tooltip from "dnn-tooltip";
-import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
-import RadioButtons from "dnn-radio-buttons";
-import Switch from "dnn-switch";
 import Button from "dnn-button";
 import "./style.less";
 import util from "../../utils";
@@ -42,7 +35,7 @@ class RegexSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (props.regexSettings) {
             this.setState({
                 regexSettings: props.regexSettings
@@ -57,8 +50,6 @@ class RegexSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             regexSettings: Object.assign({}, props.regexSettings),
             triedToSubmit: false
@@ -98,7 +89,7 @@ class RegexSettingsPanelBody extends Component {
             }
         });
 
-        props.dispatch(SeoActions.updateRegexSettings(state.regexSettings, (data) => {
+        props.dispatch(SeoActions.updateRegexSettings(state.regexSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, (error) => {
             const errorMessage = JSON.parse(error.responseText);
@@ -112,66 +103,66 @@ class RegexSettingsPanelBody extends Component {
     }
 
     handleValidationErrors(errors) {
-        let {state} = this;       
+        let {state} = this;
 
-        if(errors.filter(error => { return error.Key === "IgnoreRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "IgnoreRegex"; }).length > 0) {
             state.error["IgnoreRegex"] = true;
         }
-        else{
+        else {
             state.error["IgnoreRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "DoNotRewriteRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "DoNotRewriteRegex"; }).length > 0) {
             state.error["DoNotRewriteRegex"] = true;
         }
-        else{
+        else {
             state.error["DoNotRewriteRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "UseSiteUrlsRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "UseSiteUrlsRegex"; }).length > 0) {
             state.error["UseSiteUrlsRegex"] = true;
         }
-        else{
+        else {
             state.error["UseSiteUrlsRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "DoNotRedirectRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "DoNotRedirectRegex"; }).length > 0) {
             state.error["DoNotRedirectRegex"] = true;
         }
-        else{
+        else {
             state.error["DoNotRedirectRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "DoNotRedirectSecureRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "DoNotRedirectSecureRegex"; }).length > 0) {
             state.error["DoNotRedirectSecureRegex"] = true;
         }
-        else{
+        else {
             state.error["DoNotRedirectSecureRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "ForceLowerCaseRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "ForceLowerCaseRegex"; }).length > 0) {
             state.error["ForceLowerCaseRegex"] = true;
         }
-        else{
+        else {
             state.error["ForceLowerCaseRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "NoFriendlyUrlRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "NoFriendlyUrlRegex"; }).length > 0) {
             state.error["NoFriendlyUrlRegex"] = true;
         }
-        else{
+        else {
             state.error["NoFriendlyUrlRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "DoNotIncludeInPathRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "DoNotIncludeInPathRegex"; }).length > 0) {
             state.error["DoNotIncludeInPathRegex"] = true;
         }
-        else{
+        else {
             state.error["DoNotIncludeInPathRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "ValidExtensionlessUrlsRegex"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "ValidExtensionlessUrlsRegex"; }).length > 0) {
             state.error["ValidExtensionlessUrlsRegex"] = true;
         }
-        else{
+        else {
             state.error["ValidExtensionlessUrlsRegex"] = false;
         }
-        if(errors.filter(error => { return error.Key === "RegexMatch"; }).length > 0){
+        if (errors.filter(error => { return error.Key === "RegexMatch"; }).length > 0) {
             state.error["RegexMatch"] = true;
         }
-        else{
+        else {
             state.error["RegexMatch"] = false;
         }
 
@@ -180,8 +171,8 @@ class RegexSettingsPanelBody extends Component {
         });
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SeoActions.getRegexSettings((data) => {
                 this.setState({
@@ -193,7 +184,7 @@ class RegexSettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {state} = this;
         if (state.regexSettings) {
             return (
                 <div className={styles.regexSettings}>
