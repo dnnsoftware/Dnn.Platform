@@ -96,6 +96,12 @@ namespace Dnn.PersonaBar.Roles.Services
                 else
                 {
                     var existingRole = RoleController.Instance.GetRoleById(PortalId, roleDto.Id);
+                    if (existingRole == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                            Localization.GetString("RoleNotFound", Components.Constants.LocalResourcesFile));
+                    }
+
                     if (existingRole.IsSystemRole)
                     {
                         if (role.Description != existingRole.Description)//In System roles only description can be updated.
