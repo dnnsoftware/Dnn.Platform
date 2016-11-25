@@ -12,6 +12,7 @@ using DotNetNuke.Entities.Modules;
 namespace Dnn.PersonaBar.Library.Model
 {
     [DataContract]
+    [Serializable]
     public class PersonaBarExtension : IHydratable
     {
         [DataMember]
