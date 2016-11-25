@@ -82,8 +82,8 @@ class TranslatePageContent extends Component {
         return pageList.map((page) => {
             return <div className="page-list-item">
                 <span>{page.PageName}</span>
-                <a className="float-right" onClick={this.goToPageSettings.bind(this, page.PageId)}>{resx.get("EditPageSettings")}</a>
-                <a className="float-right" target="_blank" href={page.ViewUrl}>{resx.get("ViewPage")}</a>
+                <a className="float-right" onClick={this.goToPageSettings.bind(this, page.PageId) }>{resx.get("EditPageSettings") }</a>
+                <a className="float-right" target="_blank" href={page.ViewUrl}>{resx.get("ViewPage") }</a>
             </div>;
         });
     }
@@ -190,11 +190,12 @@ class TranslatePageContent extends Component {
         const {props, state} = this;
         const language = state.languageBeingEdited;
         const isEnabled = language.Enabled;
+        const pagesNumber = state.pageList ? state.pageList.length : 0;
         return <SocialPanelBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
             workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage}>
-                {resx.get("BackToLanguages")}
+                {resx.get("BackToLanguages") }
             </div>}
             workSpaceTrayVisible={true}>
 
@@ -209,50 +210,50 @@ class TranslatePageContent extends Component {
                         <div className="activate-pages-switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("ActivatePages.Help")}
-                                label={resx.get("ActivatePages")} />
+                                tooltipMessage={resx.get("ActivatePages.Help") }
+                                label={resx.get("ActivatePages") } />
                             <Switch
                                 labelHidden={true}
                                 value={language.Active}
                                 readOnly={!isEnabled}
-                                onChange={this.onToggleActive.bind(this)}
+                                onChange={this.onToggleActive.bind(this) }
                                 />
                         </div>
                     </InputGroup>
                     <div className="button-block">
                         <Button
                             type="secondary"
-                            disabled={!language.Active || !isEnabled}
-                            onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code)}>
-                            {resx.get("MarkAllPagesAsTranslated")}
+                            disabled={!isEnabled}
+                            onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code) }>
+                            {resx.get("MarkAllPagesAsTranslated") }
                         </Button>
                         <Button
-                            disabled={!language.Active || !isEnabled}
+                            disabled={!isEnabled}
                             type="secondary"
-                            onClick={this.onEraseAllLocalizedPages.bind(this)}>
-                            {resx.get("EraseAllLocalizedPages")}
+                            onClick={this.onEraseAllLocalizedPages.bind(this) }>
+                            {resx.get("EraseAllLocalizedPages") }
                         </Button>
                         <Button
                             disabled={!language.Active || !isEnabled}
                             type="primary"
                             className="float-right"
-                            onClick={this.onPublishTranslatedPages.bind(this, true)}>
-                            {resx.get("PublishTranslatedPages")}
+                            onClick={this.onPublishTranslatedPages.bind(this, true) }>
+                            {resx.get("PublishTranslatedPages") }
                         </Button>
                         <Button
                             type="secondary"
                             disabled={!language.Active || !isEnabled}
                             className="float-right"
-                            onClick={this.onPublishTranslatedPages.bind(this, false)}>
-                            {resx.get("UnpublishTranslatedPages")}
+                            onClick={this.onPublishTranslatedPages.bind(this, false) }>
+                            {resx.get("UnpublishTranslatedPages") }
                         </Button>
                     </div>
                 </div>}
 
                 <div className="list-header">
-                    <span>{resx.get("PagesToTranslate")} <span>{state.pageList ? state.pageList.length : 0}</span></span>
-                    <span className="float-right" onClick={this.addPages.bind(this)}>
-                        <em>+</em>{resx.get("AddAllUnlocalizedPages")}
+                    <span>{resx.get("PagesToTranslate") } <span>{pagesNumber}</span></span>
+                    <span className="float-right" onClick={this.addPages.bind(this) }>
+                        <em>+</em>{resx.get("AddAllUnlocalizedPages") }
                     </span>
                 </div>
 
@@ -273,7 +274,7 @@ class TranslatePageContent extends Component {
                         autoHeight
                         autoHeightMin={0}
                         autoHeightMax={500}>
-                        {this.renderPageList()}
+                        {this.renderPageList() }
                     </Scrollbars>
                 </div>}
             </div>
