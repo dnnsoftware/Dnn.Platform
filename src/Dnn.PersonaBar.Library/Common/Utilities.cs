@@ -5,6 +5,8 @@
 // All Rights Reserved
 #endregion
 
+using System;
+using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Library.Common
@@ -25,5 +27,20 @@ namespace Dnn.PersonaBar.Library.Common
             var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
             return UserController.Instance.GetUserProfilePictureUrl(userId, width, height);
         }
+
+        // test sample
+        //"&agrave;&aacute;&acirc;&atilde;&auml;&aring;&aelig;&ccedil;&egrave;&eacute;&ecirc;&euml;&igrave;&iacute;&icirc;&iuml;&Alpha;
+        //&ETH;&ntilde;&ograve;&oacute;&ocirc;&otilde;&ouml;&oslash;&ugrave;&uacute;&ucirc;&uuml;&yacute;&yuml;&szlig;&thorn;&omicron;"
+        private const string HtmlEntitiesPattern = @"&amp;([a-z]{2,10}|#\d{1,10}|#x[0-9a-f]{1,8});";
+        private static readonly Regex HtmlEntitiesPatternRegex =
+            new Regex(HtmlEntitiesPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2));
+
+        public static string FixDoublEntityEncoding(string document)
+        {
+            return string.IsNullOrEmpty(document)
+                       ? document
+                       : HtmlEntitiesPatternRegex.Replace(document, "&$1;");
+        }
+
     }
 }
