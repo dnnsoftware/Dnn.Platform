@@ -363,7 +363,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             node.InnerXml = HttpUtility.HtmlEncode(text);
         }
 
-        private string GetResourceFile(string type, string language, int portalId)
+        public string GetResourceFile(string type, string language, int portalId)
         {
             string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
             if (language != Localization.SystemLocale)
