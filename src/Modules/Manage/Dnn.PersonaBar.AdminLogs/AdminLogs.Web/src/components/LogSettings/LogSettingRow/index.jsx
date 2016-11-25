@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import GridCell from "dnn-grid-cell";
@@ -57,29 +57,26 @@ class LogSettingRow extends Component {
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         let uniqueId = "settingrow-" + Math.random() + Date.now();
 
-        if (props.visible) {
-            return (
-                <div className={"collapsible-component-log" + (opened ? " row-opened" : "")} id={uniqueId}>
-                    <div className={"collapsible-header-log " + !opened} >
-                        <GridCell title={props.typeName} columnSize={40} >
-                            {props.typeName}</GridCell>
-                        <GridCell  columnSize={20} >
-                            {props.website}</GridCell>
-                        <GridCell  columnSize={15} >
-                            {props.activeStatus}</GridCell>
-                        <GridCell  columnSize={20} >
-                            {props.fileName}&nbsp; </GridCell>
-                        <GridCell  columnSize={5} >
-                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
-                            </div>
-                        </GridCell>
-                    </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left" }}>{opened && props.children }</Collapse>
+        return (
+            <div className={"collapsible-component-log" + (opened ? " row-opened" : "")} id={uniqueId}>
+                {props.visible && <div className={"collapsible-header-log " + !opened} >
+                    <GridCell title={props.typeName} columnSize={40} >
+                        {props.typeName}</GridCell>
+                    <GridCell columnSize={20} >
+                        {props.website}</GridCell>
+                    <GridCell columnSize={15} >
+                        {props.activeStatus}</GridCell>
+                    <GridCell columnSize={20} >
+                        {props.fileName}&nbsp; </GridCell>
+                    <GridCell columnSize={5} >
+                        <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this)}>
+                        </div>
+                    </GridCell>
                 </div>
-            );
-        } else {
-            return <div/>;
-        }
+                }
+                <Collapse accordion={true} isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>
+            </div>
+        );
     }
 }
 

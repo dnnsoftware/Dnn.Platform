@@ -10,7 +10,7 @@ import DropDown from "dnn-dropdown";
 import Pager from "dnn-pager";
 import "./style.less";
 import util from "../../utils";
-import resx from "../../resources";
+import Localization from "localization";
 import {
     createPortalOptions,
     createLogTypeOptions
@@ -117,7 +117,7 @@ class AdminLogPanelBody extends Component {
 
     onClearLog() {
         const {props} = this;
-        util.utilities.confirm(resx.get("ClearLog"), resx.get("yes"), resx.get("no"), () => {
+        util.utilities.confirm(Localization.get("ClearLog"), Localization.get("yes"), Localization.get("no"), () => {
             let getNextPageParam = this.getNextPage();
 
             props.dispatch(LogActions.clearLog(() => {
@@ -129,7 +129,7 @@ class AdminLogPanelBody extends Component {
     onDeleteLogItems() {
         const {props, state} = this;
         if (props.selectedRowIds.length > 0) {
-            util.utilities.confirm(resx.get("LogDeleteWarning"), resx.get("yes"), resx.get("no"), () => {
+            util.utilities.confirm(Localization.get("LogDeleteWarning"), Localization.get("yes"), Localization.get("no"), () => {
                 if (props.excludedRowIds.length == 0 && this.isLastPage()) {
                     this.setState({
                         pageIndex: state.pageIndex > 0 ? state.pageIndex - 1 : 0
@@ -149,7 +149,7 @@ class AdminLogPanelBody extends Component {
             });
         }
         else {
-            util.utilities.notifyError(resx.get("SelectException"));
+            util.utilities.notifyError(Localization.get("SelectException"));
         }
     }
 
@@ -193,11 +193,11 @@ class AdminLogPanelBody extends Component {
 
         const tableFields = [
             { "name": "", "id": "LogTypeCSSClass" },
-            { "name": resx.get("Date"), "id": "LogCreateDate" },
-            { "name": resx.get("Type"), "id": "LogTypeFriendlyName" },
-            { "name": resx.get("Username"), "id": "LogUserName" },
-            { "name": resx.get("Portal"), "id": "LogPortalName" },
-            { "name": resx.get("Summary"), "id": "Summary" }
+            { "name": Localization.get("Date"), "id": "LogCreateDate" },
+            { "name": Localization.get("Type"), "id": "LogTypeFriendlyName" },
+            { "name": Localization.get("Username"), "id": "LogUserName" },
+            { "name": Localization.get("Portal"), "id": "LogPortalName" },
+            { "name": Localization.get("Summary"), "id": "Summary" }
         ];
 
         let tableHeaders = tableFields.map((field) => {
@@ -285,16 +285,16 @@ class AdminLogPanelBody extends Component {
 
     renderedLogLegend() {
         const legendItems = [
-            { "name": resx.get("ExceptionCode"), "id": "Exception" },
-            { "name": resx.get("ItemCreatedCode"), "id": "ItemCreated" },
-            { "name": resx.get("ItemUpdatedCode"), "id": "ItemUpdated" },
-            { "name": resx.get("ItemDeletedCode"), "id": "ItemDeleted" },
-            { "name": resx.get("SuccessCode"), "id": "OperationSuccess" },
-            { "name": resx.get("FailureCode"), "id": "OperationFailure" },
-            { "name": resx.get("AdminOpCode"), "id": "GeneralAdminOperation" },
-            { "name": resx.get("AdminAlertCode"), "id": "AdminAlert" },
-            { "name": resx.get("HostAlertCode"), "id": "HostAlert" },
-            { "name": resx.get("SecurityException"), "id": "SecurityException" }
+            { "name": Localization.get("ExceptionCode"), "id": "Exception" },
+            { "name": Localization.get("ItemCreatedCode"), "id": "ItemCreated" },
+            { "name": Localization.get("ItemUpdatedCode"), "id": "ItemUpdated" },
+            { "name": Localization.get("ItemDeletedCode"), "id": "ItemDeleted" },
+            { "name": Localization.get("SuccessCode"), "id": "OperationSuccess" },
+            { "name": Localization.get("FailureCode"), "id": "OperationFailure" },
+            { "name": Localization.get("AdminOpCode"), "id": "GeneralAdminOperation" },
+            { "name": Localization.get("AdminAlertCode"), "id": "AdminAlert" },
+            { "name": Localization.get("HostAlertCode"), "id": "HostAlert" },
+            { "name": Localization.get("SecurityException"), "id": "SecurityException" }
         ];
         let legend = legendItems.map((item) => {
             return <div className="logLegend-item">
@@ -342,7 +342,7 @@ class AdminLogPanelBody extends Component {
                         </div>
                     }
                     <div className="toolbar-button toolbar-button-actions">
-                        <span onClick={this.toggleEmailPanel.bind(this) }>{resx.get("btnEmail") } </span>
+                        <span onClick={this.toggleEmailPanel.bind(this) }>{Localization.get("btnEmail") } </span>
                         <div className="collapsible-content">
                             <EmailPanel
                                 fixedHeight={370}
@@ -352,8 +352,8 @@ class AdminLogPanelBody extends Component {
                             </EmailPanel>
                         </div>
                     </div>
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) }>{resx.get("btnDelete") } </div> }
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) }>{resx.get("btnClear") } </div> }
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) }>{Localization.get("btnDelete") } </div> }
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) }>{Localization.get("btnClear") } </div> }
                 </div>
                 <div className="logContainer">
                     <div className="logContainerBox">

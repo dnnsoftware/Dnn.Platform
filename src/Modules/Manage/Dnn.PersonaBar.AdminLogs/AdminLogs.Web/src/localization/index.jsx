@@ -1,9 +1,9 @@
 import util from "../utils";
 
-const resx = {
+const Localization = {
     get(key) {
         let moduleName = util.moduleName;
         return util.utilities.getResx(moduleName, key);
     }
 };
-export default resx;
+export default Localization;

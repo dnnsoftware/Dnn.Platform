@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from "react";
-import PersonaBarPagesContainer from "../containers/personaBarPagesContainer";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Tabs from "dnn-tabs";
+import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import { visiblePanel as VisiblePanelActions } from "../actions";
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
-import resx from "../resources";
+import Localization from "localization";
 import AdminLogs from "./AdminLog";
 import LogSettings from "./LogSettings";
 import {
@@ -37,31 +34,27 @@ class App extends Component {
     render() {
         const {props} = this;
         return (
-            <PersonaBarPagesContainer pages={[
-                <div>
-                    <SocialPanelHeader title={("Admin Logs")}>
-                    </SocialPanelHeader>
-                    <SocialPanelBody>
-                        {isHost &&
-                            <Tabs onSelect={this.handleSelect.bind(this)}
-                                tabHeaders={[resx.get("AdminLogs.Header"), resx.get("LogSettings.Header")]}
-                                type="primary">
-                                <AdminLogs />
-                                <LogSettings />
-                            </Tabs>
-                        }
-                        {!isHost &&
-                            <Tabs onSelect={this.handleSelect.bind(this)}
-                                tabHeaders={[resx.get("AdminLogs.Header")]}
-                                type="primary">
-                                <AdminLogs />
-                            </Tabs>
-                        }
-                    </SocialPanelBody>
-                </div>]}
-                selectedPage={props.selectedPage}
-                selectedPageVisibleIndex={props.selectedPageVisibleIndex}
-                repaintChildren={true} />
+            <GridCell>
+                <PersonaBarPageHeader title={("Admin Logs")}>
+                </PersonaBarPageHeader>
+                <PersonaBarPageBody>
+                    {isHost &&
+                        <Tabs onSelect={this.handleSelect.bind(this)}
+                            tabHeaders={[Localization.get("AdminLogs.Header"), Localization.get("LogSettings.Header")]}
+                            type="primary">
+                            <AdminLogs />
+                            <LogSettings />
+                        </Tabs>
+                    }
+                    {!isHost &&
+                        <Tabs onSelect={this.handleSelect.bind(this)}
+                            tabHeaders={[Localization.get("AdminLogs.Header")]}
+                            type="primary">
+                            <AdminLogs />
+                        </Tabs>
+                    }
+                </PersonaBarPageBody>
+            </GridCell>
         );
     }
 }

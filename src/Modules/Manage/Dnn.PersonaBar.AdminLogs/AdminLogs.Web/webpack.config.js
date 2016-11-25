@@ -1,6 +1,7 @@
 ﻿const webpack = require("webpack");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
+const path = require("path");
 const languages = {
     "en": null
     // TODO: create locallizaton files per language 
@@ -32,7 +33,11 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"]
+        extensions: ["", ".js", ".json", ".jsx"],        
+        root: [
+            path.resolve('./src'),          // Look in src first
+            path.resolve('./node_modules')  // Last fallback to node_modules
+        ]
     },
 
     externals: require("dnn-webpack-externals"),

@@ -10,7 +10,7 @@ import {
     logSettings as LogSettingActions
 } from "../../../actions";
 import util from "../../../utils";
-import resx from "../../../resources";
+import Localization from "localization";
 
 class LogSettingEditor extends Component {
     constructor() {
@@ -151,17 +151,17 @@ class LogSettingEditor extends Component {
             let {logSettingDetail} = this.state;
             if (props.logTypeSettingId !== "") {
                 props.dispatch(LogSettingActions.updateLogSetting(logSettingDetail, (data) => {
-                    util.utilities.notify(resx.get("ConfigUpdated"));
+                    util.utilities.notify(Localization.get("ConfigUpdated"));
                     props.Collapse(event);
                 }, (error) => {
-                    util.utilities.notify(resx.get("ConfigUpdateError"));
+                    util.utilities.notify(Localization.get("ConfigUpdateError"));
                 }));
             } else {
                 props.dispatch(LogSettingActions.addLogSetting(logSettingDetail, (data) => {
-                    util.utilities.notify(resx.get("ConfigAdded"));
+                    util.utilities.notify(Localization.get("ConfigAdded"));
                     props.Collapse(event);
                 }, (error) => {
-                    util.utilities.notify(resx.get("ConfigAddError"));
+                    util.utilities.notify(Localization.get("ConfigAddError"));
                 }));
             }
         } else {
@@ -172,20 +172,20 @@ class LogSettingEditor extends Component {
     deleteLogSetting(event) {
         const {props} = this;
         if (props.logTypeSettingId !== "") {
-            util.utilities.confirm(resx.get("ConfigDeletedWarning"), resx.get("yes"), resx.get("no"), () => {
+            util.utilities.confirm(Localization.get("ConfigDeletedWarning"), Localization.get("yes"), Localization.get("no"), () => {
                 props.dispatch(LogSettingActions.deleteLogSetting({ LogTypeConfigId: props.logTypeSettingId }, (data) => {
-                    util.utilities.notify(resx.get("ConfigDeleted"));
+                    util.utilities.notify(Localization.get("ConfigDeleted"));
                     props.Collapse(event);
                 }, (error) => {
-                    util.utilities.notify(resx.get("DeleteError"));
+                    util.utilities.notify(Localization.get("DeleteError"));
                 })
                 );
             }, () => {
-                util.utilities.notify(resx.get("ConfigDeleteCancelled"));
+                util.utilities.notify(Localization.get("ConfigDeleteCancelled"));
             });
         }
         else {
-            util.utilities.notify(resx.get("ConfigDeleteInconsistency"));
+            util.utilities.notify(Localization.get("ConfigDeleteInconsistency"));
         }
     }
 
@@ -193,29 +193,29 @@ class LogSettingEditor extends Component {
     render() {
         const columnOne = <div className="editor-container left-column">
             <div className="title-row divider">
-                {resx.get("Settings") }
+                {Localization.get("Settings") }
             </div>
             <div className="status-row divider">
-                <div className="left" title={resx.get("plIsActive.Help") }>
-                    { resx.get("plIsActive") }
+                <div className="left" title={Localization.get("plIsActive.Help") }>
+                    { Localization.get("plIsActive") }
                 </div>
                 <div className="right">
                     <Switch labelHidden={true} value={this.getEnabledStatus("Logging") } onChange={this.OnCheckboxChanged.bind(this, "LoggingIsActive") }/>
                 </div>
             </div>
-            <div className="editor-row divider" title={resx.get("plLogTypeKey.Help") }>
-                <label>{resx.get("plLogTypeKey") } </label>
+            <div className="editor-row divider" title={Localization.get("plLogTypeKey.Help") }>
+                <label>{Localization.get("plLogTypeKey") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.logTypeList } value={this.getValue("LogType") } onSelect={this.onDropDownChange.bind(this, "LogTypeKey") }
                     style={{ width: 100 + '%', float: 'left' }}/>
             </div>
-            <div className="editor-row divider" title={resx.get("plLogTypePortalID.Help") }>
-                <label>{resx.get("plLogTypePortalID") } </label>
+            <div className="editor-row divider" title={Localization.get("plLogTypePortalID.Help") }>
+                <label>{Localization.get("plLogTypePortalID") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
                     style={{ width: 100 + '%', float: 'left' }}/>
             </div>
 
             <div className="editor-row divider" >
-                <label>{resx.get("plKeepMostRecent") } </label>
+                <label>{Localization.get("plKeepMostRecent") } </label>
                 <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.keepMostRecentOptions }  value={this.getValue("Recent") } onSelect={this.onDropDownChange.bind(this, "KeepMostRecent") }
                     style={{ width: 100 + '%', float: 'left' }}/>
             </div>
@@ -223,18 +223,18 @@ class LogSettingEditor extends Component {
 
         const columnTwo = <div className="editor-container">
             <div className="title-row divider">
-                { resx.get("EmailSettings") }
+                { Localization.get("EmailSettings") }
             </div>
             <div className="status-row divider">
-                <div className="left" title={resx.get("plEmailNotificationStatus.Help") }>
-                    {  resx.get("plEmailNotificationStatus") }
+                <div className="left" title={Localization.get("plEmailNotificationStatus.Help") }>
+                    {  Localization.get("plEmailNotificationStatus") }
                 </div>
                 <div className="right">
                     <Switch labelHidden={true} value={this.getEnabledStatus("EmailNotification") } onChange={this.OnCheckboxChanged.bind(this, "EmailNotificationIsActive") }/>
                 </div>
             </div>
             <div className="editor-row divider">
-                <label>{resx.get("plThreshold") }</label>
+                <label>{Localization.get("plThreshold") }</label>
                 <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.thresholdsOptions} value={this.getValue("Threshold") } onSelect={this.onDropDownChange.bind(this, "NotificationThreshold") }
                     style={{ width: 40 + '%', float: 'left' }}/>
                 <div className="text-section">in</div>
@@ -244,11 +244,11 @@ class LogSettingEditor extends Component {
                 <DropDown enabled={this.getEnabledStatus("EmailNotification") } options={this.props.notificationTimeTypesOptions } value={this.getValue("ThresholdNotificationTimeType") } onSelect={this.onDropDownChange.bind(this, "NotificationThresholdTimeType") }
                     style={{ width: 25 + '%', float: 'left' }}/>
             </div>
-            <div className="editor-row divider"  title={resx.get("plMailToAddress.Help") }>
-                <label>{resx.get("plMailToAddress") } *</label>
+            <div className="editor-row divider"  title={Localization.get("plMailToAddress.Help") }>
+                <label>{Localization.get("plMailToAddress") } *</label>
                 <SingleLineInputWithError
                     error={this.state.error.mailToAddress && this.state.triedToSubmit}
-                    errorMessage={resx.get("MailToAddress.Message") }
+                    errorMessage={Localization.get("MailToAddress.Message") }
                     enabled={this.getEnabledStatus("EmailNotification") } value={this.getValue("MailToAddress") }
                     onChange={this.onTextChange.bind(this, "MailToAddress") }/>
             </div>
@@ -261,9 +261,9 @@ class LogSettingEditor extends Component {
             <div className="log-setting-editor">
                 <Grid children={children} numberOfColumns={2} />
                 <div className="buttons-box">
-                    {this.props.logTypeSettingId !== "" && <Button type="secondary" onClick={this.deleteLogSetting.bind(this) }>{resx.get("ConfigBtnDelete") }</Button>}
-                    <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{resx.get("ConfigBtnCancel") }</Button>
-                    <Button type="primary" onClick={this.addUpdateLogSetting.bind(this) }>{resx.get("ConfigBtnSave") }</Button>
+                    {this.props.logTypeSettingId !== "" && <Button type="secondary" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
+                    <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{Localization.get("ConfigBtnCancel") }</Button>
+                    <Button type="primary" onClick={this.addUpdateLogSetting.bind(this) }>{Localization.get("ConfigBtnSave") }</Button>
                 </div>
             </div>
         );
