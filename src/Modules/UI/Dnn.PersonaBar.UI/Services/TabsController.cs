@@ -7,7 +7,7 @@ using System.Web.Http;
 using DotNetNuke.Instrumentation;
 namespace Dnn.PersonaBar.UI.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TabsController));
@@ -26,10 +26,12 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="sortOrder"></param>
         /// <param name="selectedTabId">Currently Selected tab id</param>
         /// <param name="validateTab"></param>
+        /// <param name="includeHostPages"></param>
+        /// <param name="includeDisabled"></param>
         /// <returns>List of portal tabs</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage = false,
-            bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab="")
+            bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab="", bool includeHostPages = false, bool includeDisabled = false)
         {
             try
             {
@@ -37,9 +39,9 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetPortalTabs(portalId <= 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
+                        _controller.GetPortalTabs(UserInfo, portalId <= 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
                             excludeAdminTabs, roles,
-                            disabledNotSelectable, sortOrder, selectedTabId, validateTab)
+                            disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -60,9 +62,11 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="disabledNotSelectable"></param>
         /// <param name="sortOrder"></param>
         /// <param name="validateTab"></param>
+        /// <param name="includeHostPages"></param>
+        /// <param name="includeDisabled"></param>
         /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "")
+        public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
         {
             try
             {
@@ -70,7 +74,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.SearchPortalTabs(searchText, portalId <= 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab)
+                        _controller.SearchPortalTabs(UserInfo, searchText, portalId <= 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -121,10 +125,12 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="disabledNotSelectable"></param>
         /// <param name="sortOrder"></param>
         /// <param name="validateTab"></param>
+        /// <param name="includeHostPages"></param>
+        /// <param name="includeDisabled"></param>
         /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetTabsDescendants(int portalId, int parentId, string cultureCode,
-            bool isMultiLanguage = false, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "")
+            bool isMultiLanguage = false, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
         {
             try
             {
@@ -133,7 +139,7 @@ namespace Dnn.PersonaBar.UI.Services
                     Success = true,
                     Results =
                         _controller.GetTabsDescendants(portalId <= 0 ? PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
-                            disabledNotSelectable, sortOrder, validateTab)
+                            disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
