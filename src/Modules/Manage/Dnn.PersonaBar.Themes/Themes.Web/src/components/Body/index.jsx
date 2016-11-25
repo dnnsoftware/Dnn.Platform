@@ -4,9 +4,9 @@ import Tabs from "dnn-tabs";
 import {
     theme as ThemeActions
 } from "actions";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import Localization from "localization";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import SiteTheme from "./SiteTheme";
@@ -56,13 +56,13 @@ class Body extends Component {
         const {props, state} = this;
         return (
             <GridCell className="themes-body">
-                <SocialPanelHeader title={Localization.get("Themes") }>
-                </SocialPanelHeader>
-                <SocialPanelBody>
+                <PersonaBarPageHeader title={Localization.get("Themes") }>
+                </PersonaBarPageHeader>
+                <PersonaBarPageBody>
                     <SiteTheme />
                     <MiddleActions onSearch={this.onSearch.bind(this)} />
                     <ThemeList dataSource={this.getThemesData()}/>
-                </SocialPanelBody >
+                </PersonaBarPageBody >
 
             </GridCell>
         );
