@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import VocabularyList from "./VocabularyList";
 import CreateVocabulary from "./CreateVocabulary";
 import PersonaBarPage from "dnn-persona-bar-page";
@@ -34,13 +34,13 @@ class App extends Component {
         return (
             <div className="taxonomy-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={LocalizedResources.get("ControlTitle_") }>
+                    <PersonaBarPageHeader title={LocalizedResources.get("ControlTitle_") }>
                         <Button type="primary" size="large" onClick={this.openCreateVocabulary.bind(this) }>{LocalizedResources.get("Create") }</Button>
-                    </SocialPanelHeader>
+                    </PersonaBarPageHeader>
                     <VocabularyList />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
-                    <SocialPanelHeader
+                    <PersonaBarPageHeader
                         title={LocalizedResources.get("Create") }
                         onCreateVocabulary={this.openCreateVocabulary.bind(this) }
                         />
