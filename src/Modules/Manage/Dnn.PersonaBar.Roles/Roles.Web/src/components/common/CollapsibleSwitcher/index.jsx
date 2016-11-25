@@ -1,5 +1,4 @@
-import React, {Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
+import { Component, PropTypes } from "react";
 import "./style.less";
 
 class CollapsibleSwitcher extends Component {

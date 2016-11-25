@@ -153,10 +153,8 @@ RoleGroupEditor.defaultProps = {
     }
 };
 
-function mapStateToProps(state) {
-    return {
-        //roleGroups: state.roles.roleGroups
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(RoleGroupEditor);

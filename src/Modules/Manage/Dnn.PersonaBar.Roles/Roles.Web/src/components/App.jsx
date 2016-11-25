@@ -1,16 +1,13 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPage from "dnn-persona-bar-page";
 import RolesPanel from "./roles";
 import {
-    roles as RolesActions, visiblePanelActions as VisiblePanelActions
+    visiblePanelActions as VisiblePanelActions
 } from "../actions";
 import resx from "../resources";
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
 
 class Root extends Component {
     constructor() {
@@ -24,18 +21,15 @@ class Root extends Component {
     }
 
     onCreate() {
-        const {props, state} = this;
-
         this.refs["rolesPanel"].getWrappedInstance().onAddRole();
     }
 
     render() {
-        const {props} = this;
         return (
             <div className="roles-app">
                 <PersonaBarPage isOpen={true}>
-                    <PersonaBarPageHeader title={resx.get("Roles") }>
-                        <Button type="primary" size="large" onClick={this.onCreate.bind(this) }>{resx.get("Create") }</Button>
+                    <PersonaBarPageHeader title={resx.get("Roles")}>
+                        <Button type="primary" size="large" onClick={this.onCreate.bind(this)}>{resx.get("Create")}</Button>
                     </PersonaBarPageHeader>
                     <RolesPanel ref="rolesPanel" />
                 </PersonaBarPage>
@@ -51,9 +45,8 @@ Root.PropTypes = {
 };
 
 
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 

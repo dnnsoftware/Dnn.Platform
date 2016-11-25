@@ -1,6 +1,5 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import "./style.less";
 import GridCell from "dnn-grid-cell";
 import IconButton from "../../../common/IconButton";
@@ -57,14 +56,11 @@ class UserRow extends Component {
             props.dispatch(RoleUsersActions.removeUserFromRole(userRole));
         });
     }
-    onTimeClick(userRole, index) {
-
-    }
     isEmptyDate(date) {
         return !date || new Date(date).getFullYear() < 1970;
     }
 
-    onChange(userRole, command, FirstDate, SecondDate, cancel) {
+    onChange(userRole, command, FirstDate) {
         const {state} = this;
         state.editIndex = -1;
         state.editCommand = "";
@@ -153,9 +149,8 @@ UserRow.propTypes = {
 UserRow.defaultProps = {
     roleUsersList: []
 };
-function mapStateToProps(state) {
-    return {
-    };
+function mapStateToProps() {
+    return {};
 }
 
 

@@ -31,13 +31,13 @@ class FiltersBar extends Component {
     }
     componentWillUnmount() {
     }
-    componentWillReceiveProps(newProps) {
+    componentWillReceiveProps() {
     }
     onDeleteGroup() {
-        const {props, state} = this;
+        const {props} = this;
         this.closeDropDown();
         util.utilities.confirm(resx.get("DeleteRoleGroup.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
-            props.dispatch(RolesActions.deleteRoleGroup(this.getCurrentGroup(), (group) => {
+            props.dispatch(RolesActions.deleteRoleGroup(this.getCurrentGroup(), () => {
                 util.utilities.notify(resx.get("DeleteRoleGroup.Message"));
                 let {selectedGroup} = this.state;
                 selectedGroup.value = -1;
@@ -95,6 +95,7 @@ class FiltersBar extends Component {
         let selectedGroup = Object.assign({}, this.state.selectedGroup);
         let value = selectedGroup.value;
         let label = selectedGroup.label;
+        /*eslint-disable no-unused-vars*/
         let group = { id: value, name: label };
         if (props.roleGroups.some(group => group.id === this.state.selectedGroup.value)) {
             group = Object.assign({}, props.roleGroups.filter(group => group.id === value)[0]);

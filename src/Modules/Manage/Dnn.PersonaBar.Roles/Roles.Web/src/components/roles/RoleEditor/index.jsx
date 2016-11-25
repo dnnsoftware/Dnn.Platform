@@ -119,10 +119,10 @@ class RolesEditor extends Component {
                 successMsg = resx.get("RoleUpdated.Message");
                 errorMsg = resx.get("RoleUpdated.Error");
             }
-            props.dispatch(RolesActions.saveRole(this.props.currentGroupId, state.assignToUsers, roleDetails, (data) => {
+            props.dispatch(RolesActions.saveRole(this.props.currentGroupId, state.assignToUsers, roleDetails, () => {
                 util.utilities.notify(successMsg);
                 props.Collapse(event);
-            }, (error) => {
+            }, () => {
                 util.utilities.notify(errorMsg);
             }));
         }
@@ -157,7 +157,7 @@ class RolesEditor extends Component {
         const {props} = this;
         if (props.roleId > 0) {
             util.utilities.confirm(resx.get("DeleteRole.Confirm"), resx.get("Delete"), resx.get("Cancel"), () => {
-                props.dispatch(RolesActions.deleteRole(roleDetails, (data) => {
+                props.dispatch(RolesActions.deleteRole(roleDetails, () => {
                     util.utilities.notify(resx.get("DeleteRole.Message"));
                     props.Collapse(event);
                 }));
@@ -235,7 +235,7 @@ class RolesEditor extends Component {
                 <Label label={resx.get("plRoleGroups") } tooltipMessage={resx.get("plRoleGroups.Help") } tooltipPlace={"top"} />
 
                 <Select  value={this.getValue("RoleGroup") } enabled={!state.roleDetails.isSystem  } options={this.getRoleGroupOptions() }
-                    style={{ width: 100 + '%', float: 'left' }}
+                    style={{ width: 100 + "%", float: "left" }}
                     onSelect={this.onDropDownChange.bind(this, "groupId") }
                     />
                 <div className="new-group-container">
@@ -251,14 +251,14 @@ class RolesEditor extends Component {
             <div className="editor-row divider">
                 <Label label={resx.get("securityModeListLabel") } tooltipMessage={resx.get("securityModeListLabel.Help") } tooltipPlace={"top"} />
                 <Select   value={this.getValue("SecurityMode") } enabled={!state.roleDetails.isSystem } options={this.props.securityModeOptions}
-                    style={{ width: 100 + '%', float: 'left' }}
+                    style={{ width: 100 + "%", float: "left" }}
                     onSelect={this.onDropDownChange.bind(this, "securityMode") }
                     />
             </div>
             <div className="editor-row divider">
                 <Label label={resx.get("statusListLabel") } tooltipMessage={resx.get("statusListLabel.Help") } tooltipPlace={"top"} />
                 <Select value={this.getValue("Status") } enabled={!state.roleDetails.isSystem } options={this.props.statusOptions}
-                    style={{ width: 100 + '%', float: 'left' }}
+                    style={{ width: 100 + "%", float: "left" }}
                     onSelect={this.onDropDownChange.bind(this, "status") }
                     />
             </div>

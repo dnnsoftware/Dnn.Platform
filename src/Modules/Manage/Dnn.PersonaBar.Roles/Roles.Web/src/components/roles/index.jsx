@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-//import "react-widgets/lib/less/react-widgets.less";
 import "./style.less";
-import util from "../../utils";
 import resx from "../../resources";
 import {
     roles as RolesActions

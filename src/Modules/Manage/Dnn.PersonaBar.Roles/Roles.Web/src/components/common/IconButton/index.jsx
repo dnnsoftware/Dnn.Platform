@@ -24,7 +24,7 @@ class IconButton extends Component {
     }
 
     getIcon() {
-        const {props, state} = this;
+        const {props} = this;
 
         switch (props.type.toLowerCase()) {
             case "add":

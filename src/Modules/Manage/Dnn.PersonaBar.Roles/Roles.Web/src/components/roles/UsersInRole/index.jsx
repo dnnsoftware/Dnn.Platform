@@ -1,10 +1,8 @@
 import React, {Component, PropTypes } from "react";
 import {debounce} from "throttle-debounce";
 import { connect } from "react-redux";
-import util from "../../../utils";
 import resx from "../../../resources";
 import SearchBox from "dnn-search-box";
-import Button from "dnn-button";
 import Combobox from "react-widgets/lib/Combobox";
 import UserRow from "./UserRow";
 import GridCell from "dnn-grid-cell";
@@ -90,7 +88,7 @@ class UsersInRole extends Component {
         this.setState({ userSelectState: { userId: -1, keyword: "" } });
     }
     saveUser(isAdd, userId, startTime, expiresTime) {
-        const {props, state} = this;
+        const {props} = this;
 
         let parameter = { userId: userId, roleId: props.roleDetails.id, startTime: startTime, expiresTime: expiresTime, isAdd: isAdd };
         props.dispatch(RoleUsersActions.addUserToRole(parameter, this.state.sendEmail, this.state.isOwner));
