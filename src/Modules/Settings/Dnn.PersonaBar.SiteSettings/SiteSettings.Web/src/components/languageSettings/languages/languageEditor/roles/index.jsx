@@ -9,7 +9,6 @@ import Label from "dnn-label";
 import RoleRow from "./RoleRow";
 import GridCell from "dnn-grid-cell";
 import DropDown from "dnn-dropdown";
-import styles from "./style.less";
 
 const tableFields = [
     { name: "RoleName", width: 60 },
@@ -32,10 +31,6 @@ class RolesPanel extends Component {
             props.dispatch(LanguagesActions.getRoleGroups(props.portalId));
         }
         props.dispatch(LanguagesActions.getRoles(props.portalId, state.groupId, props.cultureCode));
-    }
-
-    componentWillReceiveProps(props) {
-
     }
 
     onRoleGroupChanged(group) {
@@ -62,7 +57,7 @@ class RolesPanel extends Component {
     }
 
     renderedRolesList() {
-        const {props, state} = this;
+        const {props} = this;
         let i = 0;
         if (props.rolesList) {
             return props.rolesList.map((role, index) => {
@@ -83,7 +78,7 @@ class RolesPanel extends Component {
     }
 
     getRoleGroupOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.roleGroups !== undefined) {
             options = props.roleGroups.map((item) => {
@@ -109,10 +104,10 @@ class RolesPanel extends Component {
                         label={resx.get("Translators")}
                         />
                 </div>
-                {this.props.roleGroups && this.props.roleGroups.length > 0 &&
+                {props.roleGroups && props.roleGroups.length > 0 &&
                     <div className="group-filter">
                         <DropDown
-                            value={this.state.groupId}
+                            value={state.groupId}
                             fixedHeight={200}
                             style={{ width: "150px" }}
                             options={this.getRoleGroupOptions()}

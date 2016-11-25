@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
 import { CheckMarkIcon, SettingsIcon, UsersIcon, LanguagesIcon, LanguagesPageIcon, PreviewIcon } from "dnn-svg-icons";

@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import "./style.less";
-import Collapse from "react-collapse";
 import GridCell from "dnn-grid-cell";
 import Checkbox from "dnn-checkbox";
 import { connect } from "react-redux";
@@ -33,19 +31,16 @@ class RoleRow extends Component {
     }
 
     onChange(role, event) {
-        let {state, props} = this;
-
+        let {props} = this;
         this.setState({
             selected: event
         });
-
         props.dispatch(LanguagesActions.SelectLanguageRoles(props.rolesList, role, event));
-
         props.onSelectChange(role, event);
     }
 
     render() {
-        const {props, state} = this;
+        const {props} = this;
 
         return (
             <div className={"collapsible-component1"}>
@@ -56,7 +51,7 @@ class RoleRow extends Component {
                         <Checkbox
                             style={{ float: "left" }}
                             value={props.selected}
-                            onChange={this.onChange.bind(this, props.roleName)} /></GridCell>
+                            onChange={this.onChange.bind(this, props.roleName) } /></GridCell>
                 </div>
             </div>
         );
