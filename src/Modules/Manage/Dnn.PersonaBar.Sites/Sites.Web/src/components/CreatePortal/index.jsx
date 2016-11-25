@@ -194,7 +194,7 @@ class CreatePortal extends Component {
             return true;
         }
     }
-    setCreatingPortal(creatingPortal){
+    setCreatingPortal(creatingPortal) {
         this.setState({
             creatingPortal
         });
