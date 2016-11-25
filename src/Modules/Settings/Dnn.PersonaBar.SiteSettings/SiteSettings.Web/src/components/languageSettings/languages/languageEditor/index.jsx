@@ -103,7 +103,7 @@ class LanguageEditor extends Component {
     }
 
     getFallbackOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.fallbacks !== undefined) {
             options = props.fallbacks.map((item) => {
@@ -149,18 +149,18 @@ class LanguageEditor extends Component {
         props.dispatch(LanguagesActions.languageClientModified(languageDetail));
     }
 
-    onSave(event) {
+    onSave() {
         const {props, state} = this;
         props.onUpdate(state.languageDetail);
     }
 
-    onSaveRoles(event) {
+    onSaveRoles() {
         const {props, state} = this;
         props.onUpdateRoles(state.languageDetail);
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         if (props.languageClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(LanguagesActions.cancelLanguageClientModified());
@@ -184,7 +184,7 @@ class LanguageEditor extends Component {
     }
 
     getLanguageValue(code) {
-        let {props, state} = this;
+        let {state} = this;
         if (code) {
             return code;
         }
@@ -219,7 +219,7 @@ class LanguageEditor extends Component {
         let {state, props} = this;
         let languageDetail = Object.assign({}, state.languageDetail);
 
-        let roles = languageDetail.Roles.split(';');
+        let roles = languageDetail.Roles.split(";");
         if (!roles) {
             roles = [];
         }
@@ -236,7 +236,7 @@ class LanguageEditor extends Component {
             }
         }
 
-        languageDetail.Roles = roles.join(';');
+        languageDetail.Roles = roles.join(";");
 
         this.setState({
             languageDetail: languageDetail
@@ -295,7 +295,7 @@ class LanguageEditor extends Component {
     }
 
     renderEditForm() {
-        let {state, props} = this;
+        let {state} = this;
         const columnOne = <div className="left-column">
             <InputGroup>
                 <Label
@@ -356,7 +356,7 @@ class LanguageEditor extends Component {
     }
 
     renderRoleForm() {
-        let {state, props} = this;
+        let {props} = this;
         return (
             <div className="language-editor">
                 {props.code &&
