@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
 import { CheckMarkIcon, EditIcon, TrashIcon } from "dnn-svg-icons";
@@ -34,7 +33,7 @@ class SiteAliasRow extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         return (
             <div className={"collapsible-component-alias" + (opened ? " row-opened" : "")}>

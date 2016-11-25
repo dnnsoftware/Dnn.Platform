@@ -5,12 +5,7 @@ import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
-import Switch from "dnn-switch";
-import Select from "dnn-select";
-import DropdownWithError from "dnn-dropdown-with-error";
-import MultiLineInput from "dnn-multi-line-input";
 import InputGroup from "dnn-input-group";
-import Input from "dnn-single-line-input";
 import Dropdown from "dnn-dropdown";
 import {
     siteBehavior as SiteBehaviorActions
@@ -126,7 +121,7 @@ class SiteAliasEditor extends Component {
         return options;
     }
 
-    onSave(event) {
+    onSave() {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -138,7 +133,7 @@ class SiteAliasEditor extends Component {
         props.onUpdate(state.aliasDetail);
     }
 
-    onChangePrimary(isPrimary, event) {
+    onChangePrimary(isPrimary) {
         const {props, state} = this;
         this.setState({
             triedToSubmit: true
@@ -155,8 +150,8 @@ class SiteAliasEditor extends Component {
         });
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         if (props.siteAliasClientModified) {
             util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
                 props.dispatch(SiteBehaviorActions.cancelSiteAliasClientModified());

@@ -134,5 +134,7 @@ module.exports = [
     "postsilence",
     "english",
     "fallbacks",
-    "localizable"
+    "localizable",
+    "unassign",
+    "deletable"
 ]
