@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Library.Common
 {
-    internal class Utilities
+    public class Utilities
     {
         /// <summary>
         /// Returns a relative URL for the user profile image while removing that of the deleted and super users
@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Library.Common
         /// <param name="showSuperUsers">true if want show super users user profile picture, false otherwise</param>
         /// <returns>relative user profile picture url</returns>
         /// <returns></returns>
-        internal static string GetProfileAvatar(UserInfo user, int width = Constants.AvatarWidth, int height = Constants.AvatarHeight, bool showSuperUsers = true)
+        public static string GetProfileAvatar(UserInfo user, int width = Constants.AvatarWidth, int height = Constants.AvatarHeight, bool showSuperUsers = true)
         {
             var userId = user != null && user.UserID > 0 && !user.IsDeleted && (showSuperUsers || !user.IsSuperUser) ? user.UserID : 0;
             return UserController.Instance.GetUserProfilePictureUrl(userId, width, height);
