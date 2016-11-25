@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Web;
-using DotNetNuke.Security.Roles;
+﻿using System.Runtime.Serialization;
 
 namespace Dnn.PersonaBar.UI.Services.DTO
 {

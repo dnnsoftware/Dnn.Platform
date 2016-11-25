@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Threading;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.PersonaBar.Library.Attributes

@@ -11,25 +11,22 @@ using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Library.Repository
 {
     public class PersonaBarRepository : ServiceLocator<IPersonaBarRepository, PersonaBarRepository>,
         IPersonaBarRepository
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(PersonaBarRepository));
-
-        private IDataService _dataService = new DataService();
+        private readonly IDataService _dataService = new DataService();
         private const string PersonaBarMenuCacheKey = "PersonaBarMenu";
-        private static object _threadLocker = new object();
+        private static readonly object ThreadLocker = new object();
 
         public PersonaBarMenu GetMenu()
         {
             var menu = DataCache.GetCache<PersonaBarMenu>(PersonaBarMenuCacheKey);
             if (menu == null)
             {
-                lock (_threadLocker)
+                lock (ThreadLocker)
                 {
                     menu = DataCache.GetCache<PersonaBarMenu>(PersonaBarMenuCacheKey);
                     if (menu == null)

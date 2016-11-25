@@ -11,7 +11,6 @@ using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
 
 namespace Dnn.PersonaBar.Library.Repository
 {
@@ -19,13 +18,9 @@ namespace Dnn.PersonaBar.Library.Repository
         IPersonaBarExtensionRepository
     {
         #region Fields
-
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(PersonaBarExtensionRepository));
-
-        private IDataService _dataService = new DataService();
+        private readonly IDataService _dataService = new DataService();
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
-        private static object _threadLocker = new object();
-
+        private static readonly object ThreadLocker = new object();
         #endregion
 
         private void ClearCache()
@@ -71,7 +66,7 @@ namespace Dnn.PersonaBar.Library.Repository
             var extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
             if (extensions == null)
             {
-                lock (_threadLocker)
+                lock (ThreadLocker)
                 {
                     extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
                     if (extensions == null)

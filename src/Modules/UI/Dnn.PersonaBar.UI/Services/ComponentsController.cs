@@ -7,7 +7,6 @@ using Dnn.PersonaBar.Library.Attributes;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.PersonaBar.UI.Services.DTO;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;

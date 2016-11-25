@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 #region Usings
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,17 +26,14 @@ using System.Web.Caching;
 using Dnn.PersonaBar.Library.Data;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
-
 #endregion
 
 namespace Dnn.PersonaBar.Library.Permissions
@@ -47,11 +43,10 @@ namespace Dnn.PersonaBar.Library.Permissions
         #region Private Members
 
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
-
-        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
-        private static IDataService _dataService = new DataService();
-        private static object _threadLocker = new object();
-        private static object _defaultPermissionLocker = new object();
+        
+        private static readonly IDataService DataService = new DataService();
+        private static readonly object ThreadLocker = new object();
+        private static readonly object DefaultPermissionLocker = new object();
 
         private const string PersonaBarMenuPermissionsCacheKey = "PersonaBarMenuPermissions{0}";
         private const string PersonaBarPermissionsCacheKey = "PersonaBarPermissions";
@@ -70,7 +65,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public static void DeleteMenuPermissions(int portalId, MenuItem menu)
         {
-            _dataService.DeletePersonbaBarMenuPermissionsByMenuId(portalId, menu.MenuId);
+            DataService.DeletePersonbaBarMenuPermissionsByMenuId(portalId, menu.MenuId);
             ClearCache(portalId);
         }
 
@@ -80,14 +75,14 @@ namespace Dnn.PersonaBar.Library.Permissions
             var permissions = DataCache.GetCache<MenuPermissionCollection>(cacheKey);
             if (permissions == null)
             {
-                lock (_threadLocker)
+                lock (ThreadLocker)
                 {
                     permissions = DataCache.GetCache<MenuPermissionCollection>(cacheKey);
                     if (permissions == null)
                     {
                         permissions = new MenuPermissionCollection();
                         EnsureMenuDefaultPermissions(portalId);
-                        var reader = _dataService.GetPersonbaBarMenuPermissionsByPortal(portalId);
+                        var reader = DataService.GetPersonbaBarMenuPermissionsByPortal(portalId);
                         try
                         {
                             while (reader.Read())
@@ -162,7 +157,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            permissionInfo.MenuPermissionId = _dataService.SavePersonaBarMenuPermission(
+            permissionInfo.MenuPermissionId = DataService.SavePersonaBarMenuPermission(
                 portalId, 
                 menu.MenuId, 
                 permissionInfo.PermissionID,
@@ -201,7 +196,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            _dataService.SavePersonaBarPermission(menuId, permissionKey, permissionName, user.UserID);
+            DataService.SavePersonaBarPermission(menuId, permissionKey, permissionName, user.UserID);
 
             ClearCache(Null.NullInteger);
         }
@@ -212,7 +207,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
             if (permission != null)
             {
-                _dataService.DeletePersonaBarPermission(permission.PermissionId);
+                DataService.DeletePersonaBarPermission(permission.PermissionId);
             }
 
             ClearCache(Null.NullInteger);
@@ -239,7 +234,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 var permissionInitialized = PermissionAlreadyInitialized(portalId);
                 if (!permissionInitialized)
                 {
-                    lock (_defaultPermissionLocker)
+                    lock (DefaultPermissionLocker)
                     {
                         permissionInitialized = PermissionAlreadyInitialized(portalId);
                         if (!permissionInitialized)
@@ -363,7 +358,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             var cacheItemArgs = new CacheItemArgs(PersonaBarPermissionsCacheKey, 20, CacheItemPriority.AboveNormal);
             return CBO.GetCachedObject<IList<PermissionInfo>>(cacheItemArgs, c =>
-                CBO.FillCollection<PermissionInfo>(_dataService.GetPersonaBarPermissions()));
+                CBO.FillCollection<PermissionInfo>(DataService.GetPersonaBarPermissions()));
         }
 
         #endregion
