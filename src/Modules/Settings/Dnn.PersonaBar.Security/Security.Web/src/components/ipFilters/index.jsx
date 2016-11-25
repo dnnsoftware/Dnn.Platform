@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     security as SecurityActions
 } from "../../actions";
 import IpFilterRow from "./ipFilterRow";
@@ -11,8 +9,8 @@ import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
 import { AddIcon } from "dnn-svg-icons";
-import Collapse from "react-collapse";
 
+/*eslint-disable quotes*/
 const warningIcon = require(`!raw!./../svg/error.svg`);
 
 let tableFields = [];
@@ -66,29 +64,29 @@ class IpFiltersPanelBody extends Component {
     toggle(openId) {
         if (openId !== "") {
             this.uncollapse(openId);
-        } 
+        }
     }
 
     onUpdateIpFilter(ipFilter) {
-        const {props, state} = this;
+        const {props} = this;
 
-        props.dispatch(SecurityActions.updateIpFilter(ipFilter, (data) => {
+        props.dispatch(SecurityActions.updateIpFilter(ipFilter, () => {
             util.utilities.notify(resx.get("IpFilterUpdateSuccess"));
             this.collapse();
             props.dispatch(SecurityActions.getIpFilters());
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("IpFilterUpdateError"));
         }));
     }
 
     onDeleteIpFilter(ipFilterId) {
-        const {props, state} = this;
+        const {props} = this;
         util.utilities.confirm(resx.get("IpFilterDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const itemList = props.ipFilters.filter((item) => item.IPFilterID !== ipFilterId);
             props.dispatch(SecurityActions.deleteIpFilter(ipFilterId, itemList, () => {
                 util.utilities.notify(resx.get("DeleteSuccess"));
                 this.collapse();
-            }, (error) => {
+            }, () => {
                 util.utilities.notifyError(resx.get("DeleteError"));
             }));
         });
@@ -140,7 +138,7 @@ class IpFiltersPanelBody extends Component {
                                 <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                                     <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                                     </div> {resx.get("cmdAdd")}
-                            </div>
+                                </div>
                             </div>
                         </div>
                         <div className="ip-filter-items-grid">

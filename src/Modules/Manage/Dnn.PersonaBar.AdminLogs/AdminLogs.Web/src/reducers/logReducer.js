@@ -1,4 +1,4 @@
-import {log as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { log as ActionTypes }  from "../constants/actionTypes";
 
 export default function logList(state = {
     logList: [],
@@ -24,6 +24,7 @@ export default function logList(state = {
             return { ...state,
                 logTypeList: action.data.logTypeList
             };
+        /*eslint-disable eqeqeq*/
         case ActionTypes.SELECTED_ROW:
             return {...state,
                 selectedRowIds: state.selectedRowIds.concat(action.data.rowId),

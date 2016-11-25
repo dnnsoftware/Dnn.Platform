@@ -1,4 +1,4 @@
-import {logSettings as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { logSettings as ActionTypes }  from "../constants/actionTypes";
 import {
     updateLogSettingList,
     removeLogSetting,

@@ -7,13 +7,10 @@ import Label from "dnn-label";
 import InputGroup from "dnn-input-group";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";
-import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
-import SingleLineInput from "dnn-single-line-input";
 import {
     security as SecurityActions
 } from "../../../actions";
-import util from "../../../utils";
 import resx from "../../../resources";
 
 let specificityOptions = [];
@@ -148,9 +145,10 @@ class IpFilterEditor extends Component {
 
     onUpdateItem(event) {
         event.preventDefault();
-        const {props, state} = this;
+        const {state} = this;
         let {ipFilter} = this.state;
 
+        /*eslint-disable eqeqeq*/
         if (this.state.ipFilter.RuleType == undefined) {
             ipFilter["RuleType"] = 1;
             this.setState({

@@ -1,6 +1,5 @@
-import {licensing as ActionTypes}  from "../constants/actionTypes";
+import { licensing as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
-import util from "../utils";
 
 const licensingActions = {
     getProduct(callback) {

@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import {
     pagination as PaginationActions,
     licensing as LicensingActions
 } from "../../actions";
 import Platform from "../platform";
 import "./style.less";
-import resx from "../../resources";
 
 export class Body extends Component {
     constructor() {
@@ -24,16 +22,16 @@ export class Body extends Component {
     componentWillMount() {
         const {props} = this;
         props.dispatch(LicensingActions.getProduct());
-    }    
+    }
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <SocialPanelBody>
-            {this.props.productName === "DNNCORP.CE" &&
-                <Platform/>
-            }
-            </SocialPanelBody>
+            <PersonaBarPageBody>
+                {this.props.productName === "DNNCORP.CE" &&
+                    <Platform />
+                }
+            </PersonaBarPageBody>
         );
     }
 }

@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
-    security as SecurityActions
+    pagination as PaginationActions
 } from "../../actions";
 import BasicSettings from "../basicSettings";
 import SslSettings from "../sslSettings";
@@ -12,7 +11,7 @@ import IpFilters from "../ipFilters";
 import Tooltip from "dnn-tooltip";
 import MemberManagement from "../memberManagement";
 import RegistrationSettings from "../registrationSettings";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import SecurityBulletins from "../securityBulletins";
 import SuperuserActivity from "../superuserActivity";
 import AuditCheck from "../auditCheck";
@@ -36,7 +35,6 @@ export class Body extends Component {
     }
 
     renderTabs() {
-        const {props} = this;
         if (isHost) {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabLoginSettings"),
@@ -113,9 +111,9 @@ export class Body extends Component {
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <SocialPanelBody>
+            <PersonaBarPageBody>
                 {this.renderTabs()}
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

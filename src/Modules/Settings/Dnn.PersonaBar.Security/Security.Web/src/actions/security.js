@@ -1,4 +1,4 @@
-import {security as ActionTypes}  from "../constants/actionTypes";
+import { security as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import util from "../utils";
 
@@ -400,7 +400,7 @@ const securityActions = {
             });
         };
     },
-    updatefileSystemAndDatabaseSearchKeyword(keyword){
+    updatefileSystemAndDatabaseSearchKeyword(keyword) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.UPDATED_SECURITY_SEARCH_FILE_SYSTEM_DATABASE_KEYWORD,
@@ -411,7 +411,7 @@ const securityActions = {
             });
         };
     },
-    updatefileSystemAndDatabaseActiveTab(tab){
+    updatefileSystemAndDatabaseActiveTab(tab) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.UPDATED_SECURITY_SEARCH_FILE_SYSTEM_DATABASE_ACTIVE_TAB,

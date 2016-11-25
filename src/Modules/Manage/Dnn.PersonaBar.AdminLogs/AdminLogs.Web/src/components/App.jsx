@@ -32,7 +32,6 @@ class App extends Component {
         props.dispatch(VisiblePanelActions.selectPanel(page, index));
     }
     render() {
-        const {props} = this;
         return (
             <GridCell>
                 <PersonaBarPageHeader title={("Admin Logs")}>

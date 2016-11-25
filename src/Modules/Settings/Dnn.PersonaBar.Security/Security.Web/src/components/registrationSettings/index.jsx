@@ -1,15 +1,11 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     security as SecurityActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import SingleLineInput from "dnn-single-line-input";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import SearchableTags from "dnn-searchable-tags";
-import Dropdown from "dnn-dropdown";
 import Switch from "dnn-switch";
 import RadioButtons from "dnn-radio-buttons";
 import Label from "dnn-label";
@@ -20,8 +16,7 @@ import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
-const svgIcon = require(`!raw!./../svg/global.svg`);
-
+/*eslint-disable eqeqeq*/
 class RegistrationSettingsPanelBody extends Component {
     constructor() {
         super();
@@ -52,8 +47,6 @@ class RegistrationSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             registrationSettings: Object.assign({}, props.registrationSettings),
             triedToSubmit: false
@@ -63,10 +56,10 @@ class RegistrationSettingsPanelBody extends Component {
     onSettingChange(key, event) {
         let {state, props} = this;
 
-        if(state.resetPagePicker){
+        if (state.resetPagePicker) {
             return;
         }
-        
+
         let registrationSettings = Object.assign({}, state.registrationSettings);
 
         if (key === "UserRegistration" || key === "RegistrationFormType") {
@@ -98,7 +91,7 @@ class RegistrationSettingsPanelBody extends Component {
             triedToSubmit: true
         });
 
-        props.dispatch(SecurityActions.updateRegistrationSettings(state.registrationSettings, (data) => {
+        props.dispatch(SecurityActions.updateRegistrationSettings(state.registrationSettings, () => {
             util.utilities.notify(resx.get("RegistrationSettingsUpdateSuccess"));
         }, (error) => {
             util.utilities.notifyError(resx.get("RegistrationSettingsError"));
@@ -110,8 +103,8 @@ class RegistrationSettingsPanelBody extends Component {
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("RegistrationSettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SecurityActions.getRegistrationSettings((data) => {
                 let registrationSettings = Object.assign({}, data.Results.Settings);
@@ -139,7 +132,7 @@ class RegistrationSettingsPanelBody extends Component {
     }
 
     isCustomFormType() {
-        const {props, state} = this;
+        const {state} = this;
         if (state.registrationSettings != undefined && state.registrationSettings.RegistrationFormType === 1) {
             return true;
         }
@@ -149,7 +142,7 @@ class RegistrationSettingsPanelBody extends Component {
     getRegistrationFields(fields) {
         let fieldList = [];
         if (fields !== undefined) {
-            fieldList = fields.split(',').map((item) => {
+            fieldList = fields.split(",").map((item) => {
                 return { id: item, name: item };
             });
         }
@@ -188,90 +181,90 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-options">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("plUserRegistration.Help") }
-                                label={resx.get("plUserRegistration") }
+                                tooltipMessage={resx.get("plUserRegistration.Help")}
+                                label={resx.get("plUserRegistration")}
                                 />
                             <RadioButtons
-                                onChange={this.onSettingChange.bind(this, "UserRegistration") }
-                                options={this.keyValuePairsToOptions(props.userRegistrationOptions) }
+                                onChange={this.onSettingChange.bind(this, "UserRegistration")}
+                                options={this.keyValuePairsToOptions(props.userRegistrationOptions)}
                                 buttonGroup="registrationType"
-                                value={state.registrationSettings.UserRegistration}/>
+                                value={state.registrationSettings.UserRegistration} />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-options">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("registrationFormTypeLabel.Help") }
-                                label={resx.get("registrationFormTypeLabel") }
+                                tooltipMessage={resx.get("registrationFormTypeLabel.Help")}
+                                label={resx.get("registrationFormTypeLabel")}
                                 />
                             <RadioButtons
-                                onChange={this.onSettingChange.bind(this, "RegistrationFormType") }
-                                options={this.keyValuePairsToOptions(props.registrationFormTypeOptions) }
+                                onChange={this.onSettingChange.bind(this, "RegistrationFormType")}
+                                options={this.keyValuePairsToOptions(props.registrationFormTypeOptions)}
                                 buttonGroup="formType"
-                                value={state.registrationSettings.RegistrationFormType}/>
+                                value={state.registrationSettings.RegistrationFormType} />
 
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
-                                tooltipMessage={resx.get("Security_DisplayNameFormat.Help") }
-                                label={resx.get("Security_DisplayNameFormat") }
+                                tooltipMessage={resx.get("Security_DisplayNameFormat.Help")}
+                                label={resx.get("Security_DisplayNameFormat")}
                                 />
                             <SingleLineInput
                                 value={state.registrationSettings.DisplayNameFormat}
-                                onChange={this.onSettingChange.bind(this, "DisplayNameFormat") }
+                                onChange={this.onSettingChange.bind(this, "DisplayNameFormat")}
                                 />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
-                                tooltipMessage={resx.get("Security_UserNameValidation.Help") }
-                                label={resx.get("Security_UserNameValidation") }
+                                tooltipMessage={resx.get("Security_UserNameValidation.Help")}
+                                label={resx.get("Security_UserNameValidation")}
                                 />
                             <SingleLineInput
                                 value={state.registrationSettings.UserNameValidation}
-                                onChange={this.onSettingChange.bind(this, "UserNameValidation") }
+                                onChange={this.onSettingChange.bind(this, "UserNameValidation")}
                                 />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
-                                tooltipMessage={resx.get("Security_EmailValidation.Help") }
-                                label={resx.get("Security_EmailValidation") }
+                                tooltipMessage={resx.get("Security_EmailValidation.Help")}
+                                label={resx.get("Security_EmailValidation")}
                                 />
                             <SingleLineInput
                                 value={state.registrationSettings.EmailAddressValidation}
-                                onChange={this.onSettingChange.bind(this, "EmailAddressValidation") }
+                                onChange={this.onSettingChange.bind(this, "EmailAddressValidation")}
                                 />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
-                                tooltipMessage={resx.get("Registration_ExcludeTerms.Help") }
-                                label={resx.get("Registration_ExcludeTerms") }
+                                tooltipMessage={resx.get("Registration_ExcludeTerms.Help")}
+                                label={resx.get("Registration_ExcludeTerms")}
                                 />
                             <SingleLineInput
                                 value={state.registrationSettings.ExcludedTerms}
-                                onChange={this.onSettingChange.bind(this, "ExcludedTerms") }
+                                onChange={this.onSettingChange.bind(this, "ExcludedTerms")}
                                 />
                         </div>
                     </InputGroup>
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
-                                tooltipMessage={resx.get("Redirect_AfterRegistration.Help") }
-                                label={resx.get("Redirect_AfterRegistration") }
+                                tooltipMessage={resx.get("Redirect_AfterRegistration.Help")}
+                                label={resx.get("Redirect_AfterRegistration")}
                                 />
                             <PagePicker
                                 serviceFramework={util.utilities.sf}
                                 style={{ width: "100%", zIndex: 1 }}
                                 selectedTabId={state.registrationSettings.RedirectAfterRegistrationTabId}
-                                OnSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId") }
+                                OnSelect={this.onSettingChange.bind(this, "RedirectAfterRegistrationTabId")}
                                 defaultLabel={state.registrationSettings.RedirectAfterRegistrationTabName !== "" ? state.registrationSettings.RedirectAfterRegistrationTabName : noneSpecifiedText}
                                 noneSpecifiedText={noneSpecifiedText}
                                 CountText={"{0} Results"}
@@ -284,13 +277,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("plEnableRegisterNotification.Help") }
-                                label={resx.get("plEnableRegisterNotification") }
+                                tooltipMessage={resx.get("plEnableRegisterNotification.Help")}
+                                label={resx.get("plEnableRegisterNotification")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.EnableRegisterNotification }
-                                onChange={this.onSettingChange.bind(this, "EnableRegisterNotification") }
+                                value={state.registrationSettings.EnableRegisterNotification}
+                                onChange={this.onSettingChange.bind(this, "EnableRegisterNotification")}
                                 />
                         </div>
                     </InputGroup>
@@ -298,13 +291,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Registration_UseAuthProviders.Help") }
-                                label={resx.get("Registration_UseAuthProviders") }
+                                tooltipMessage={resx.get("Registration_UseAuthProviders.Help")}
+                                label={resx.get("Registration_UseAuthProviders")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.UseAuthenticationProviders }
-                                onChange={this.onSettingChange.bind(this, "UseAuthenticationProviders") }
+                                value={state.registrationSettings.UseAuthenticationProviders}
+                                onChange={this.onSettingChange.bind(this, "UseAuthenticationProviders")}
                                 />
                         </div>
                     </InputGroup>
@@ -312,13 +305,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Registration_UseProfanityFilter.Help") }
-                                label={resx.get("Registration_UseProfanityFilter") }
+                                tooltipMessage={resx.get("Registration_UseProfanityFilter.Help")}
+                                label={resx.get("Registration_UseProfanityFilter")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.UseProfanityFilter }
-                                onChange={this.onSettingChange.bind(this, "UseProfanityFilter") }
+                                value={state.registrationSettings.UseProfanityFilter}
+                                onChange={this.onSettingChange.bind(this, "UseProfanityFilter")}
                                 />
                         </div>
                     </InputGroup>
@@ -327,13 +320,13 @@ class RegistrationSettingsPanelBody extends Component {
                             <div className="registrationSettings-row_switch">
                                 <Label
                                     labelType="inline"
-                                    tooltipMessage={resx.get("Registration_UseEmailAsUserName.Help") }
-                                    label={resx.get("Registration_UseEmailAsUserName") }
+                                    tooltipMessage={resx.get("Registration_UseEmailAsUserName.Help")}
+                                    label={resx.get("Registration_UseEmailAsUserName")}
                                     />
                                 <Switch
                                     labelHidden={true}
-                                    value={state.registrationSettings.UseEmailAsUsername }
-                                    onChange={this.onSettingChange.bind(this, "UseEmailAsUsername") }
+                                    value={state.registrationSettings.UseEmailAsUsername}
+                                    onChange={this.onSettingChange.bind(this, "UseEmailAsUsername")}
                                     />
                             </div>
                         </InputGroup>
@@ -342,15 +335,15 @@ class RegistrationSettingsPanelBody extends Component {
                         <InputGroup>
                             <div className="registrationSettings-row-input">
                                 <Label
-                                    tooltipMessage={resx.get("registrationFieldsLabel.Help") }
-                                    label={resx.get("registrationFieldsLabel") }
+                                    tooltipMessage={resx.get("registrationFieldsLabel.Help")}
+                                    label={resx.get("registrationFieldsLabel")}
                                     />
                                 <SearchableTags
                                     utils={util}
-                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields) }
-                                    onUpdateTags={this.onUpdateTags.bind(this) }
+                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields)}
+                                    onUpdateTags={this.onUpdateTags.bind(this)}
                                     error={this.state.error.registrationFields !== ""}
-                                    errorMessage={this.state.error.registrationFields }
+                                    errorMessage={this.state.error.registrationFields}
                                     />
                             </div>
                         </InputGroup>
@@ -359,13 +352,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Registration_RequireUniqueDisplayName.Help") }
-                                label={resx.get("Registration_RequireUniqueDisplayName") }
+                                tooltipMessage={resx.get("Registration_RequireUniqueDisplayName.Help")}
+                                label={resx.get("Registration_RequireUniqueDisplayName")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.RequireUniqueDisplayName }
-                                onChange={this.onSettingChange.bind(this, "RequireUniqueDisplayName") }
+                                value={state.registrationSettings.RequireUniqueDisplayName}
+                                onChange={this.onSettingChange.bind(this, "RequireUniqueDisplayName")}
                                 />
                         </div>
                     </InputGroup>
@@ -374,13 +367,13 @@ class RegistrationSettingsPanelBody extends Component {
                             <div className="registrationSettings-row_switch">
                                 <Label
                                     labelType="inline"
-                                    tooltipMessage={resx.get("Registration_RandomPassword.Help") }
-                                    label={resx.get("Registration_RandomPassword") }
+                                    tooltipMessage={resx.get("Registration_RandomPassword.Help")}
+                                    label={resx.get("Registration_RandomPassword")}
                                     />
                                 <Switch
                                     labelHidden={true}
-                                    value={state.registrationSettings.UseRandomPassword }
-                                    onChange={this.onSettingChange.bind(this, "UseRandomPassword") }
+                                    value={state.registrationSettings.UseRandomPassword}
+                                    onChange={this.onSettingChange.bind(this, "UseRandomPassword")}
                                     />
                             </div>
                         </InputGroup>
@@ -390,13 +383,13 @@ class RegistrationSettingsPanelBody extends Component {
                             <div className="registrationSettings-row_switch">
                                 <Label
                                     labelType="inline"
-                                    tooltipMessage={resx.get("Registration_RequireConfirmPassword.Help") }
-                                    label={resx.get("Registration_RequireConfirmPassword") }
+                                    tooltipMessage={resx.get("Registration_RequireConfirmPassword.Help")}
+                                    label={resx.get("Registration_RequireConfirmPassword")}
                                     />
                                 <Switch
                                     labelHidden={true}
-                                    value={state.registrationSettings.RequirePasswordConfirmation }
-                                    onChange={this.onSettingChange.bind(this, "RequirePasswordConfirmation") }
+                                    value={state.registrationSettings.RequirePasswordConfirmation}
+                                    onChange={this.onSettingChange.bind(this, "RequirePasswordConfirmation")}
                                     />
                             </div>
                         </InputGroup>
@@ -405,13 +398,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_RequireValidProfile.Help") }
-                                label={resx.get("Security_RequireValidProfile") }
+                                tooltipMessage={resx.get("Security_RequireValidProfile.Help")}
+                                label={resx.get("Security_RequireValidProfile")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.RequireValidProfile }
-                                onChange={this.onSettingChange.bind(this, "RequireValidProfile") }
+                                value={state.registrationSettings.RequireValidProfile}
+                                onChange={this.onSettingChange.bind(this, "RequireValidProfile")}
                                 />
                         </div>
                     </InputGroup>
@@ -419,13 +412,13 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("Security_CaptchaRegister.Help") }
-                                label={resx.get("Security_CaptchaRegister") }
+                                tooltipMessage={resx.get("Security_CaptchaRegister.Help")}
+                                label={resx.get("Security_CaptchaRegister")}
                                 />
                             <Switch
                                 labelHidden={true}
-                                value={state.registrationSettings.UseCaptchaRegister }
-                                onChange={this.onSettingChange.bind(this, "UseCaptchaRegister") }
+                                value={state.registrationSettings.UseCaptchaRegister}
+                                onChange={this.onSettingChange.bind(this, "UseCaptchaRegister")}
                                 />
                         </div>
                     </InputGroup>
@@ -433,11 +426,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("RequiresUniqueEmail.Help") }
-                                label={resx.get("RequiresUniqueEmail") }
+                                tooltipMessage={resx.get("RequiresUniqueEmail.Help")}
+                                label={resx.get("RequiresUniqueEmail")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.RequiresUniqueEmail }
+                                {state.registrationSettings.RequiresUniqueEmail}
                             </div>
                         </div>
                     </InputGroup>
@@ -445,11 +438,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordFormat.Help") }
-                                label={resx.get("PasswordFormat") }
+                                tooltipMessage={resx.get("PasswordFormat.Help")}
+                                label={resx.get("PasswordFormat")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.PasswordFormat }
+                                {state.registrationSettings.PasswordFormat}
                             </div>
                         </div>
                     </InputGroup>
@@ -457,11 +450,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordRetrievalEnabled.Help") }
-                                label={resx.get("PasswordRetrievalEnabled") }
+                                tooltipMessage={resx.get("PasswordRetrievalEnabled.Help")}
+                                label={resx.get("PasswordRetrievalEnabled")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.PasswordRetrievalEnabled }
+                                {state.registrationSettings.PasswordRetrievalEnabled}
                             </div>
                         </div>
                     </InputGroup>
@@ -469,23 +462,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordResetEnabledTitle.Help") }
-                                label={resx.get("PasswordResetEnabledTitle") }
+                                tooltipMessage={resx.get("PasswordResetEnabledTitle.Help")}
+                                label={resx.get("PasswordResetEnabledTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.PasswordResetEnabled }
-                            </div>
-                        </div>
-                    </InputGroup>                    
-                    <InputGroup>
-                        <div className="registrationSettings-row-static">
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("MinPasswordLengthTitle.Help") }
-                                label={resx.get("MinPasswordLengthTitle") }
-                                />
-                            <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.MinPasswordLength }
+                                {state.registrationSettings.PasswordResetEnabled}
                             </div>
                         </div>
                     </InputGroup>
@@ -493,11 +474,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("MinNonAlphanumericCharactersTitle.Help") }
-                                label={resx.get("MinNonAlphanumericCharactersTitle") }
+                                tooltipMessage={resx.get("MinPasswordLengthTitle.Help")}
+                                label={resx.get("MinPasswordLengthTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.MinNonAlphanumericCharacters }
+                                {state.registrationSettings.MinPasswordLength}
                             </div>
                         </div>
                     </InputGroup>
@@ -505,11 +486,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("RequiresQuestionAndAnswerTitle.Help") }
-                                label={resx.get("RequiresQuestionAndAnswerTitle") }
+                                tooltipMessage={resx.get("MinNonAlphanumericCharactersTitle.Help")}
+                                label={resx.get("MinNonAlphanumericCharactersTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.RequiresQuestionAndAnswer }
+                                {state.registrationSettings.MinNonAlphanumericCharacters}
                             </div>
                         </div>
                     </InputGroup>
@@ -517,11 +498,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordStrengthRegularExpressionTitle.Help") }
-                                label={resx.get("PasswordStrengthRegularExpressionTitle") }
+                                tooltipMessage={resx.get("RequiresQuestionAndAnswerTitle.Help")}
+                                label={resx.get("RequiresQuestionAndAnswerTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.PasswordStrengthRegularExpression }
+                                {state.registrationSettings.RequiresQuestionAndAnswer}
                             </div>
                         </div>
                     </InputGroup>
@@ -529,11 +510,11 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("MaxInvalidPasswordAttemptsTitle.Help") }
-                                label={resx.get("MaxInvalidPasswordAttemptsTitle") }
+                                tooltipMessage={resx.get("PasswordStrengthRegularExpressionTitle.Help")}
+                                label={resx.get("PasswordStrengthRegularExpressionTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.MaxInvalidPasswordAttempts }
+                                {state.registrationSettings.PasswordStrengthRegularExpression}
                             </div>
                         </div>
                     </InputGroup>
@@ -541,11 +522,23 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row-static">
                             <Label
                                 labelType="inline"
-                                tooltipMessage={resx.get("PasswordAttemptWindowTitle.Help") }
-                                label={resx.get("PasswordAttemptWindowTitle") }
+                                tooltipMessage={resx.get("MaxInvalidPasswordAttemptsTitle.Help")}
+                                label={resx.get("MaxInvalidPasswordAttemptsTitle")}
                                 />
                             <div className="registrationSettings-row-static-text">
-                                {state.registrationSettings.PasswordAttemptWindow }
+                                {state.registrationSettings.MaxInvalidPasswordAttempts}
+                            </div>
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
+                        <div className="registrationSettings-row-static">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("PasswordAttemptWindowTitle.Help")}
+                                label={resx.get("PasswordAttemptWindowTitle")}
+                                />
+                            <div className="registrationSettings-row-static-text">
+                                {state.registrationSettings.PasswordAttemptWindow}
                             </div>
                         </div>
                     </InputGroup>
@@ -553,20 +546,20 @@ class RegistrationSettingsPanelBody extends Component {
                         <Button
                             disabled={!this.props.registrationSettingsClientModified}
                             type="secondary"
-                            onClick={this.onCancel.bind(this) }>
-                            {resx.get("Cancel") }
+                            onClick={this.onCancel.bind(this)}>
+                            {resx.get("Cancel")}
                         </Button>
                         <Button
                             disabled={!this.props.registrationSettingsClientModified}
                             type="primary"
-                            onClick={this.onUpdate.bind(this) }>
-                            {resx.get("Save") }
+                            onClick={this.onUpdate.bind(this)}>
+                            {resx.get("Save")}
                         </Button>
                     </div>
                 </div>
             );
         }
-        else return <div/>;
+        else return <div />;
     }
 }
 

@@ -1,4 +1,4 @@
-import {security as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { security as ActionTypes } from "../constants/actionTypes";
 
 export default function securitySettings(state = {
 }, action) {

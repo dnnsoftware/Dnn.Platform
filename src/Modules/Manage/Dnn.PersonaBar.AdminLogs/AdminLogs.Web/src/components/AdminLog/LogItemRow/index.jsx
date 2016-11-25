@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
@@ -8,6 +8,7 @@ import {
     log as LogActions
 } from "../../../actions";
 
+/*eslint-disable eqeqeq*/
 class LogItemRow extends Component {
     constructor() {
         super();
@@ -20,15 +21,13 @@ class LogItemRow extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillReceiveProps(props){
-        this.setState({
-            
-        });
+    componentWillReceiveProps() {
+        this.setState({});
     }
 
     componentDidMount() {
         document.addEventListener("click", this.handleClick);
-        this._isMounted = true;        
+        this._isMounted = true;
     }
 
     componentWillUnmount() {
@@ -85,55 +84,54 @@ class LogItemRow extends Component {
     }
 
     isRowSelected() {
-        const {state, props} = this;
+        const { props } = this;
         return props.selectedRowIds.some((id) => id === props.logId);
     }
 
     render() {
         const {props, state} = this;
-        let isSelected = this.isRowSelected(this.props.logId);
         return (
-            <div className={"collapsible-logitemdetail" + (props.className ? (" " + props.className) : "") }>
+            <div className={"collapsible-logitemdetail" + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-logitemdetail-header " + state.collapsed} >
                     <div className="term-header">
                         <div data-index="0" className="term-label-checkbox">
                             <div className="term-label-wrapper">
-                                <Checkbox value={this.isRowSelected()} onChange={this.onSelectRow.bind(this, this.props.logId) }/>
+                                <Checkbox value={this.isRowSelected()} onChange={this.onSelectRow.bind(this, this.props.logId)} />
                             </div>
                         </div>
-                        <div className="term-label-cssclass" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-cssclass" onClick={this.toggle.bind(this)}>
                             <div className="logItemIndicator">
                                 <span className={this.props.cssClass}></span>
                             </div>
                         </div>
-                        <div className="term-label-createdate" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-createdate" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span>{this.props.createDate}</span>
                             </div>
                         </div>
-                        <div className="term-label-typename" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-typename" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span>{this.props.typeName}</span>
                             </div>
                         </div>
-                        <div className="term-label-username" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-username" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span>{this.props.userName}&nbsp; </span>
                             </div>
                         </div>
-                        <div className="term-label-portalname" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-portalname" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span>{this.props.portalName}&nbsp; </span>
                             </div>
                         </div>
-                        <div className="term-label-summary" onClick={this.toggle.bind(this) }>
+                        <div className="term-label-summary" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span>{this.props.summary}&nbsp; </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={!this.state.collapsed} style={{ height: "auto", float: "left", width: "100%" }}>{!state.collapsed && props.children }</Collapse>
+                <Collapse isOpened={!this.state.collapsed} style={{ height: "auto", float: "left", width: "100%" }}>{!state.collapsed && props.children}</Collapse>
             </div>
         );
     }

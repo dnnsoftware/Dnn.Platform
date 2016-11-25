@@ -19,11 +19,7 @@ import {
 
 let pageSizeOptions = [];
 
-const pageSizeStyle = {
-    float: "right",
-    margin: "0 60px 0 0"
-};
-
+/*eslint-disable eqeqeq*/
 class AdminLogPanelBody extends Component {
     constructor() {
         super();
@@ -186,7 +182,7 @@ class AdminLogPanelBody extends Component {
     }
 
     renderLogListHeader() {
-        const {props, state} = this;
+        const {props} = this;
         if (!props.excludedRowIds) {
             return;
         }
