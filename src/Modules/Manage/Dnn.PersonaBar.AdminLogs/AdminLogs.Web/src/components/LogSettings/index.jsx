@@ -9,7 +9,7 @@ import LogSettingEditor from "./LogSettingEditor";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import GridCell from "dnn-grid-cell";
-import resx from "../../resources";
+import Localization from "localization";
 import {
     createPortalOptions,
     createLogTypeOptions
@@ -40,10 +40,10 @@ class LogSettingsPanel extends Component {
 
     renderHeader() {
         const tableFields = [
-            { "name": resx.get("LogType.Header"), "width": 40 },
-            { "name": resx.get("Portal.Header"), "width": 20 },
-            { "name": resx.get("Active.Header"), "width": 15 },
-            { "name": resx.get("FileName.Header"), "width": 20 },
+            { "name": Localization.get("LogType.Header"), "width": 40 },
+            { "name": Localization.get("Portal.Header"), "width": 20 },
+            { "name": Localization.get("Active.Header"), "width": 15 },
+            { "name": Localization.get("FileName.Header"), "width": 20 },
             { "name": "", "width": 5 }
         ];
         let tableHeaders = tableFields.map((field) => {
@@ -58,7 +58,7 @@ class LogSettingsPanel extends Component {
             this.setState({
                 openId: id
             });
-        }, this.timeout);
+        }, 0);
     }
     collapse() {
         if (this.state.openId !== "") {
@@ -85,7 +85,7 @@ class LogSettingsPanel extends Component {
                 <SettingRow
                     typeName={logSetting.LogTypeFriendlyName}
                     website={logSetting.LogTypePortalName}
-                    activeStatus={logSetting.LoggingIsActive ? resx.get("True") : resx.get("False") }
+                    activeStatus={logSetting.LoggingIsActive ? Localization.get("True") : Localization.get("False") }
                     fileName={logSetting.LogFileName}
                     logTypeKey={logSetting.LogTypeKey}
                     index={index}
@@ -118,7 +118,7 @@ class LogSettingsPanel extends Component {
                     <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
                         <div className={"add-setting-box " + !opened}>
                             <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> {resx.get("AddContent.Action") }
+                            </div> {Localization.get("AddContent.Action") }
                         </div>
                     </div>
                     <div className="container">

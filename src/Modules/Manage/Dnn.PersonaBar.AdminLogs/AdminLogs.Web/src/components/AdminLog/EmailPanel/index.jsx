@@ -11,7 +11,7 @@ import "./style.less";
 import {
     log as LogActions
 } from "../../../actions";
-import resx from "../../../resources";
+import Localization from "localization";
 import util from "../../../utils";
 
 class EmailPanel extends Component {
@@ -20,8 +20,8 @@ class EmailPanel extends Component {
         this.state = {
             emailRequest: {
                 Email: "",
-                Subject: resx.get("LogEntryDefaultSubject"),
-                Message: resx.get("LogEntryDefaultMsg"),
+                Subject: Localization.get("LogEntryDefaultSubject"),
+                Message: Localization.get("LogEntryDefaultMsg"),
                 LogIds: []
             },
             error: {
@@ -62,7 +62,7 @@ class EmailPanel extends Component {
             return;
         }
         if (props.logIds.length <= 0) {
-            util.utilities.notifyError(resx.get("SelectException"));
+            util.utilities.notifyError(Localization.get("SelectException"));
             return;
         }
         props.dispatch(LogActions.emailLogItems(state.emailRequest, (data) => {
@@ -107,16 +107,16 @@ class EmailPanel extends Component {
                             <div className="emailpanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
                                 <div className="">
                                     <InputGroup>
-                                        <label title={resx.get("plEmailAddress.Help")}>{resx.get("plEmailAddress")}</label>
+                                        <label title={Localization.get("plEmailAddress.Help")}>{Localization.get("plEmailAddress")}</label>
                                         <SingleLineInputWithError
                                             error={state.error.email && state.triedToSubmit}
-                                            errorMessage={resx.get("Email.Message")}
+                                            errorMessage={Localization.get("Email.Message")}
                                             inputStyle={{ marginBottom: "0px" }}
                                             value={state.emailRequest.Email}
                                             onChange={this.onEmailValueChange.bind(this, "Email")} />
                                     </InputGroup>
                                     <InputGroup>
-                                        <label title={resx.get("plSubject.Help")}>{resx.get("plSubject")}</label>
+                                        <label title={Localization.get("plSubject.Help")}>{Localization.get("plSubject")}</label>
                                         <div>
                                             <SingleLineInput
                                                 value={state.emailRequest.Subject}
@@ -125,15 +125,15 @@ class EmailPanel extends Component {
                                         </div>
                                     </InputGroup>
                                     <InputGroup>
-                                        <label title={resx.get("SendMessage.Help")}>{resx.get("SendMessage")}</label>
+                                        <label title={Localization.get("SendMessage.Help")}>{Localization.get("SendMessage")}</label>
                                         <MultiLineInput
                                             value={state.emailRequest.Message}
                                             onChange={this.onEmailValueChange.bind(this, "Message")}
                                             />
                                     </InputGroup>
                                     <div className="action-buttons">
-                                        <Button type="secondary" onClick={this.onCloseEmailPanel.bind(this)}>{resx.get("btnCancel")}</Button>
-                                        <Button type="primary" onClick={this.onSendEmail.bind(this)}>{resx.get("btnSend")}</Button>
+                                        <Button type="secondary" onClick={this.onCloseEmailPanel.bind(this)}>{Localization.get("btnCancel")}</Button>
+                                        <Button type="primary" onClick={this.onSendEmail.bind(this)}>{Localization.get("btnSend")}</Button>
                                     </div>
                                 </div>
                             </div>

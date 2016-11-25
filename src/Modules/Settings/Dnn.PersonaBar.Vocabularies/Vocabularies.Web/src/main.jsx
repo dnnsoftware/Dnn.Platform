@@ -10,7 +10,7 @@ let store = configureStore();
 taxonomy.dispatch = store.dispatch;
 taxonomy.init();
 
-const appContainer = document.getElementById("taxonomy-container");
+const appContainer = document.getElementById("vocabularies-panel");
 render(
     <Provider store={store}>
         <App />
