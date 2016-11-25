@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             var results = new List<TabInfo>();
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId)
-                .Where(kvp => kvp.Value.CultureCode == defaultLocale && !kvp.Value.IsDeleted);
+                .Where(kvp => (kvp.Value.CultureCode == defaultLocale || string.IsNullOrEmpty(kvp.Value.CultureCode)) && !kvp.Value.IsDeleted);
 
             foreach (var kvp in portalTabs)
             {
