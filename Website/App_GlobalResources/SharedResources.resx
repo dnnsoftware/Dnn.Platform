@@ -1907,7 +1907,7 @@ the modified URL.</value>
     <value>&lt;div class="invalidFiles"&gt;&lt;p&gt;[COUNT] of [TOTAL] file(s) were not extracted because their file types are not supported:&lt;/p&gt;[FILELIST]&lt;/div&gt;</value>
   </data>
   <data name="FileUpload.UnzipFileSuccessPromptBody.Text" xml:space="preserve">
-    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) were extracted successfully.&lt;/div&gt;</value>
+    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) were extracted successfully.&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="AuthorizeUser.Text" xml:space="preserve">
     <value>Authorize</value>
