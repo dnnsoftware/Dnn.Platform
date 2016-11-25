@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import Localization from "localization";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import { UserTable, FiltersBar } from "dnn-users-common-components";
 import Pager from "dnn-pager";
 import "./style.less";
@@ -87,15 +87,15 @@ class Body extends Component {
         const panelBodyMargin = state.createBoxVisible ? "without-margin" : "";
         return (
             <GridCell>
-                <SocialPanelHeader title={Localization.get("nav_Users") }>
+                <PersonaBarPageHeader title={Localization.get("nav_Users") }>
                  {
                     this.canAddUser() &&  
                     <Button type="primary" size="large" onClick={this.toggleCreateBox.bind(this) } title={Localization.get("btnCreateUser")}>
                         {Localization.get("btnCreateUser") }
                     </Button>
                 }
-                </SocialPanelHeader>
-                <SocialPanelBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
+                </PersonaBarPageHeader>
+                <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable" appSettings={appSettings}/>
                     {
                         (state.searchParameters.filter === 0 || state.searchParameters.filter === 3) && <div className="users-paging">
@@ -111,7 +111,7 @@ class Body extends Component {
                                 />
                         </div>
                     }
-                </SocialPanelBody >
+                </PersonaBarPageBody >
             </GridCell>
         );
     }
