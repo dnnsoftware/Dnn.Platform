@@ -1,13 +1,10 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     security as SecurityActions
 } from "../../actions";
 import SearchBox from "dnn-search-box";
 import "./style.less";
-import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
@@ -21,7 +18,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("FileName"), "id": "FileName" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -34,7 +30,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedFileList() {
         const {props} = this;
-        return props.searchResults.FoundInFiles.map((term, index) => {
+        return props.searchResults.FoundInFiles.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-name">
@@ -57,7 +53,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("DatabaseInstance"), "id": "DatabaseInstance" },
             { "name": resx.get("DatabaseValue"), "id": "DatabaseValue" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -70,7 +65,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedDatabaseList() {
         const {props} = this;
-        return props.searchResults.FoundInDatabase.map((term, index) => {
+        return props.searchResults.FoundInDatabase.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-columnname">
@@ -93,7 +88,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("FileName"), "id": "FileName" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -110,7 +104,7 @@ class ScannerCheckPanelBody extends Component {
         if (risk === "low") {
             list = props.modifiedFiles.LowRiskFiles;
         }
-        return list.map((term, index) => {
+        return list.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-name">
@@ -136,7 +130,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -149,7 +142,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedPortalSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.PortalSettings.map((term, index) => {
+        return props.modifiedSettings.PortalSettings.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-id">
@@ -189,7 +182,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -202,7 +194,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedHostSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.PortalSettings.map((term, index) => {
+        return props.modifiedSettings.PortalSettings.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-name">
@@ -239,7 +231,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -252,7 +243,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedTabSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.TabSettings.map((term, index) => {
+        return props.modifiedSettings.TabSettings.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-tab">
@@ -300,7 +291,6 @@ class ScannerCheckPanelBody extends Component {
             { "name": resx.get("UserId"), "id": "UserId" },
             { "name": resx.get("LastWriteTime"), "id": "LastWriteTime" }
         ];
-        const {props} = this;
         let tableHeaders = fileTableFields.map((field) => {
             let className = "scannerCheckHeader scannerCheckHeader-" + field.id;
             return <div className={className}>
@@ -313,7 +303,7 @@ class ScannerCheckPanelBody extends Component {
 
     renderedModuleSettingsList() {
         const {props} = this;
-        return props.modifiedSettings.ModuleSettings.map((term, index) => {
+        return props.modifiedSettings.ModuleSettings.map((term) => {
             return (
                 <div className="scannerCheckItem">
                     <div className="label-type">
@@ -357,7 +347,7 @@ class ScannerCheckPanelBody extends Component {
     }
 
     onKeywordChanged(keyword) {
-        const {props, state} = this;
+        const {props} = this;
 
         if (keyword === "" && props.scannerCheckKeyword !== "") {
             keyword = props.scannerCheckKeyword;
@@ -369,7 +359,7 @@ class ScannerCheckPanelBody extends Component {
         }
 
         if (keyword && keyword !== "") {
-            props.dispatch(SecurityActions.searchFileSystemAndDatabase({ term: keyword }, (data) => {
+            props.dispatch(SecurityActions.searchFileSystemAndDatabase({ term: keyword }, () => {
             }));
         }
         else {
@@ -379,7 +369,7 @@ class ScannerCheckPanelBody extends Component {
     }
 
     getModifiedSettings() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.scannerCheckActiveTab === "settings") {
             return;
         }
@@ -388,12 +378,12 @@ class ScannerCheckPanelBody extends Component {
             props.dispatch(SecurityActions.updatefileSystemAndDatabaseActiveTab("settings"));
             return;
         }
-        props.dispatch(SecurityActions.getLastModifiedSettings((data) => {
+        props.dispatch(SecurityActions.getLastModifiedSettings(() => {
         }));
     }
 
     getModifiedFiles() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.scannerCheckActiveTab === "files") {
             return;
         }
@@ -402,12 +392,12 @@ class ScannerCheckPanelBody extends Component {
             props.dispatch(SecurityActions.updatefileSystemAndDatabaseActiveTab("files"));
             return;
         }
-        props.dispatch(SecurityActions.getLastModifiedFiles((data) => {
+        props.dispatch(SecurityActions.getLastModifiedFiles(() => {
         }));
     }
 
     showSearchResults() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.searchResults && props.scannerCheckActiveTab === "search") {
             return true;
         }
@@ -415,7 +405,7 @@ class ScannerCheckPanelBody extends Component {
     }
 
     showModifiedSettings() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.modifiedSettings && props.scannerCheckActiveTab === "settings") {
             return true;
         }
@@ -423,7 +413,7 @@ class ScannerCheckPanelBody extends Component {
     }
 
     showModifiedFiles() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.modifiedFiles && props.scannerCheckActiveTab === "files") {
             return true;
         }
@@ -432,7 +422,7 @@ class ScannerCheckPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         return (
             <div className={styles.scannerCheckResults}>
                 <div className="scannercheck-topbar">

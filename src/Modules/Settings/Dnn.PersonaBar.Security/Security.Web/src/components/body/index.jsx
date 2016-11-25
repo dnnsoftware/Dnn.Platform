@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Tabs from "dnn-tabs";
 import { connect } from "react-redux";
 import {
-    pagination as PaginationActions,
-    security as SecurityActions
+    pagination as PaginationActions
 } from "../../actions";
 import BasicSettings from "../basicSettings";
 import SslSettings from "../sslSettings";
@@ -36,7 +35,6 @@ export class Body extends Component {
     }
 
     renderTabs() {
-        const {props} = this;
         if (isHost) {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabLoginSettings"),

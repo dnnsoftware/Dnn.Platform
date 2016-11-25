@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import "./style.less";
-import { EditIcon } from "dnn-svg-icons";
 import resx from "../../../resources";
 
+/*eslint-disable quotes*/
 const allowIcon = require(`!raw!./../../svg/checkbox.svg`);
 const denyIcon = require(`!raw!./../../svg/cross_out.svg`);
 const editIcon = require(`!raw!./../../svg/edit.svg`);
@@ -58,7 +57,7 @@ class IpFilterRow extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         if (props.visible) {
             return (

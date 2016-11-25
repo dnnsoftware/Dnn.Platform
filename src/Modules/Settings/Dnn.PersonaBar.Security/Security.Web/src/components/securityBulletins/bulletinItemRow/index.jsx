@@ -1,8 +1,6 @@
 import React, {Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
-import styles from "./style.less";
+import "./style.less";
 
 class BulletinItemRow extends Component {
     constructor() {

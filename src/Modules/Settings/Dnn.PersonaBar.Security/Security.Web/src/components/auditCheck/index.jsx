@@ -1,12 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     security as SecurityActions
 } from "../../actions";
 import "./style.less";
-import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.less";
 
@@ -20,8 +17,7 @@ class AuditCheckPanelBody extends Component {
         if (props.auditCheckResults) {
             return;
         }
-        props.dispatch(SecurityActions.getAuditCheckResults((data) => {
-        }));
+        props.dispatch(SecurityActions.getAuditCheckResults());
     }
 
     renderHeader() {
@@ -30,7 +26,6 @@ class AuditCheckPanelBody extends Component {
             { "name": resx.get("Result"), "id": "Result" },
             { "name": resx.get("Notes"), "id": "Notes" }
         ];
-        const {props} = this;
         let tableHeaders = tableFields.map((field) => {
             let className = "auditCheckHeader auditCheckHeader-" + field.id;
             return <div className={className}>
@@ -102,7 +97,7 @@ class AuditCheckPanelBody extends Component {
 
     renderedList() {
         const {props} = this;
-        return props.auditCheckResults.map((term, index) => {
+        return props.auditCheckResults.map((term) => {
             return (
                 <div className="auditCheckItem">
                     <div className="label-name">
@@ -127,7 +122,7 @@ class AuditCheckPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {props} = this;
         if (props.auditCheckResults) {
             return (
                 <div className={styles.auditCheckResults}>
