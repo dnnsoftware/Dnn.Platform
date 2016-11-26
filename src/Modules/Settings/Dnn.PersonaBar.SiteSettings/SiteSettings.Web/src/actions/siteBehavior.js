@@ -1,6 +1,5 @@
 import { siteBehavior as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
-import util from "../utils";
 
 const siteBehaviorActions = {
     getDefaultPagesSettings(portalId, cultureCode, callback) {

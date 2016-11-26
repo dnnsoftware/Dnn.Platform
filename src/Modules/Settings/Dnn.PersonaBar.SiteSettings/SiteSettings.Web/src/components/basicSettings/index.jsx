@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     siteInfo as SiteInfoActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
@@ -46,12 +44,12 @@ class BasicSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (!this.loadData()) {
-             this.setState({
-                 basicSettings: props.basicSettings
-             });
-             return;
+            this.setState({
+                basicSettings: props.basicSettings
+            });
+            return;
         }
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
@@ -84,7 +82,7 @@ class BasicSettingsPanelBody extends Component {
 
         if (key === "LogoFile" || key === "FavIcon") {
             basicSettings[key] = event;
-        }        
+        }
         else if (key === "TimeZone" || key === "IconSets") {
             basicSettings[key] = event.value;
         }
@@ -139,15 +137,15 @@ class BasicSettingsPanelBody extends Component {
             return;
         }
 
-        props.dispatch(SiteInfoActions.updatePortalSettings(state.basicSettings, (data) => {
+        props.dispatch(SiteInfoActions.updatePortalSettings(state.basicSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteInfoActions.getPortalSettings((data) => {
                 this.setState({
@@ -159,41 +157,41 @@ class BasicSettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {state} = this;
         if (state.basicSettings) {
             const columnOne = <div className="left-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plDescription.Help")}
-                        label={resx.get("plDescription")}
+                        tooltipMessage={resx.get("plDescription.Help") }
+                        label={resx.get("plDescription") }
                         />
                     <MultiLineInput
                         value={state.basicSettings.Description}
-                        onChange={this.onSettingChange.bind(this, "Description")}
+                        onChange={this.onSettingChange.bind(this, "Description") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plTimeZone.Help")}
-                        label={resx.get("plTimeZone")}
+                        tooltipMessage={resx.get("plTimeZone.Help") }
+                        label={resx.get("plTimeZone") }
                         />
                     <Dropdown
-                        options={this.getTimeZoneOptions()}
+                        options={this.getTimeZoneOptions() }
                         value={state.basicSettings.TimeZone}
-                        onSelect={this.onSettingChange.bind(this, "TimeZone")}
+                        onSelect={this.onSettingChange.bind(this, "TimeZone") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plFooterText.Help")}
-                        label={resx.get("plFooterText")}
+                        tooltipMessage={resx.get("plFooterText.Help") }
+                        label={resx.get("plFooterText") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
                         withLabel={false}
                         error={false}
                         value={state.basicSettings.FooterText}
-                        onChange={this.onSettingChange.bind(this, "FooterText")}
+                        onChange={this.onSettingChange.bind(this, "FooterText") }
                         style={{ width: "100%" }}
                         />
                 </InputGroup>
@@ -201,18 +199,18 @@ class BasicSettingsPanelBody extends Component {
             const columnTwo = <div className="right-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plKeyWords.Help")}
-                        label={resx.get("plKeyWords")}
+                        tooltipMessage={resx.get("plKeyWords.Help") }
+                        label={resx.get("plKeyWords") }
                         />
                     <MultiLineInput
                         value={state.basicSettings.KeyWords}
-                        onChange={this.onSettingChange.bind(this, "KeyWords")}
+                        onChange={this.onSettingChange.bind(this, "KeyWords") }
                         />
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plGUID.Help")}
-                        label={resx.get("plGUID")}
+                        tooltipMessage={resx.get("plGUID.Help") }
+                        label={resx.get("plGUID") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
@@ -225,8 +223,8 @@ class BasicSettingsPanelBody extends Component {
                 </InputGroup>
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plHomeDirectory.Help")}
-                        label={resx.get("plHomeDirectory")}
+                        tooltipMessage={resx.get("plHomeDirectory.Help") }
+                        label={resx.get("plHomeDirectory") }
                         />
                     <SingleLineInputWithError
                         inputStyle={{ margin: "0" }}
@@ -241,29 +239,29 @@ class BasicSettingsPanelBody extends Component {
             const columnThree = <div className="left-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plLogo.Help")}
-                        label={resx.get("plLogo")}
+                        tooltipMessage={resx.get("plLogo.Help") }
+                        label={resx.get("plLogo") }
                         />
                     <FileUpload
                         utils={util}
                         selectedFile={state.basicSettings.LogoFile}
                         folderName={state.basicSettings.LogoFile ? state.basicSettings.LogoFile.FolderName : null}
-                        onSelectFile={this.onSettingChange.bind(this, "LogoFile")}
-                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpe"]}
+                        onSelectFile={this.onSettingChange.bind(this, "LogoFile") }
+                        fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg"]}
                         />
                 </InputGroup>
             </div>;
             const columnFour = <div className="right-column">
                 <InputGroup>
                     <Label
-                        tooltipMessage={resx.get("plFavIcon.Help")}
-                        label={resx.get("plFavIcon")}
+                        tooltipMessage={resx.get("plFavIcon.Help") }
+                        label={resx.get("plFavIcon") }
                         />
                     <FileUpload
                         utils={util}
                         selectedFile={state.basicSettings.FavIcon}
                         folderName={state.basicSettings.FavIcon ? state.basicSettings.FavIcon.FolderName : null}
-                        onSelectFile={this.onSettingChange.bind(this, "FavIcon")}
+                        onSelectFile={this.onSettingChange.bind(this, "FavIcon") }
                         fileFormats={["image/x-icon"]}
                         />
                 </InputGroup>
@@ -273,16 +271,16 @@ class BasicSettingsPanelBody extends Component {
                 <div className={styles.basicSettings}>
                     <InputGroup>
                         <Label
-                            tooltipMessage={resx.get("plPortalName.Help")}
-                            label={resx.get("plPortalName")}
+                            tooltipMessage={resx.get("plPortalName.Help") }
+                            label={resx.get("plPortalName") }
                             />
                         <SingleLineInputWithError
                             inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.title && this.state.triedToSubmit}
-                            errorMessage={resx.get("valPortalName.ErrorMessage")}
+                            errorMessage={resx.get("valPortalName.ErrorMessage") }
                             value={state.basicSettings.PortalName}
-                            onChange={this.onSettingChange.bind(this, "PortalName")}
+                            onChange={this.onSettingChange.bind(this, "PortalName") }
                             style={{ width: "100%" }}
                             />
                     </InputGroup>
@@ -290,33 +288,33 @@ class BasicSettingsPanelBody extends Component {
                     <InputGroup>
                         <Label
                             className={"sectionLabel"}
-                            label={resx.get("plLogoIcon")}
+                            label={resx.get("plLogoIcon") }
                             />
                     </InputGroup>
                     <Grid children={[columnThree, columnFour]} numberOfColumns={2} />
                     <InputGroup style={{ paddingTop: "10px" }}>
                         <Label
-                            tooltipMessage={resx.get("plIconSet.Help")}
-                            label={resx.get("plIconSet")}
+                            tooltipMessage={resx.get("plIconSet.Help") }
+                            label={resx.get("plIconSet") }
                             />
                         <Dropdown
-                            options={this.getIconSetOptions()}
+                            options={this.getIconSetOptions() }
                             value={state.basicSettings.IconSet}
-                            onSelect={this.onSettingChange.bind(this, "IconSets")}
+                            onSelect={this.onSettingChange.bind(this, "IconSets") }
                             />
                     </InputGroup>
                     <div className="buttons-box">
                         <Button
                             disabled={!this.props.clientModified}
                             type="secondary"
-                            onClick={this.onCancel.bind(this)}>
-                            {resx.get("Cancel")}
+                            onClick={this.onCancel.bind(this) }>
+                            {resx.get("Cancel") }
                         </Button>
                         <Button
                             disabled={!this.props.clientModified}
                             type="primary"
-                            onClick={this.onUpdate.bind(this)}>
-                            {resx.get("Save")}
+                            onClick={this.onUpdate.bind(this) }>
+                            {resx.get("Save") }
                         </Button>
                     </div>
                 </div>

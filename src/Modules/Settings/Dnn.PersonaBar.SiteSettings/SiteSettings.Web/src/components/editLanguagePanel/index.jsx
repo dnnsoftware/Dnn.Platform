@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import SocialPanelBody from "dnn-social-panel-body";
-import GridCell from "dnn-grid-cell";
 import LanguageInfoView from "./languageInfoView";
 import { visiblePanel as VisiblePanelActions, languageEditor as LanguageEditorActions } from "actions";
 import resx from "resources";
@@ -37,7 +36,7 @@ function generateList(list, isGlobalMode) {
     if (!list) {
         return;
     }
-    utilities.utilities.getObjectCopy(list).forEach(function (item, index) {
+    utilities.utilities.getObjectCopy(list).forEach(function (item) {
         let splitValue = item.NewValue.split("/");
         if (splitValue.length === 1 || isGlobalMode) {
             _list.push(item);
@@ -89,16 +88,16 @@ class EditLanguagePanel extends Component {
             this.refreshFileList();
         });
     }
-    onResxChange(updatedList){
+    onResxChange(updatedList) {
         this.props.dispatch(LanguageEditorActions.updateResxEntry(updatedList));
     }
-    onSaveTranslations(){
+    onSaveTranslations() {
         const {props} = this;
         const payload = {
             Mode: this.state.selectedMode,
             Locale: props.languageBeingEdited.Code,
             ResourceFile: props.resxBeingEdited,
-            Entries: Object.keys(props.translations).map((key)=>{
+            Entries: Object.keys(props.translations).map((key) => {
                 return {
                     Name: key,
                     DefaultValue: props.translations[key].Second,
@@ -107,11 +106,11 @@ class EditLanguagePanel extends Component {
             })
         };
 
-        props.dispatch(LanguageEditorActions.saveTranslations(payload, (data)=>{
+        props.dispatch(LanguageEditorActions.saveTranslations(payload, (data) => {
             utilities.utilities.notify(data.Message);
         }));
     }
-    onHighlightPendingTranslations(){
+    onHighlightPendingTranslations() {
         this.setState({
             highlightPendingTranslations: !this.state.highlightPendingTranslations
         });
@@ -134,24 +133,24 @@ class EditLanguagePanel extends Component {
             <SocialPanelBody
                 className="edit-language-panel"
                 workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this)}>{resx.get("BackToLanguages")}</div>}
+                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this) }>{resx.get("BackToLanguages") }</div>}
                 workSpaceTrayVisible={true}>
                 <LanguageInfoView
                     languageBeingEdited={languageBeingEdited}
                     ModeOptions={ModeOptions}
                     languageFolders={languageFolders}
                     languageFiles={props.languageFiles}
-                    getResxEntries={this.getResxEntries.bind(this)}
-                    getChildFolders={this.getChildFolders.bind(this)}
+                    getResxEntries={this.getResxEntries.bind(this) }
+                    getChildFolders={this.getChildFolders.bind(this) }
                     resxBeingEdited={props.resxBeingEdited}
                     resxBeingEditedDisplay={props.resxBeingEditedDisplay}
                     selectedMode={this.state.selectedMode}
-                    onSelectMode={this.onSelectMode.bind(this)} 
-                    onCancel={this.backToSiteSettings.bind(this)}
-                    onSaveTranslations={this.onSaveTranslations.bind(this)}
-                    onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this)}
+                    onSelectMode={this.onSelectMode.bind(this) }
+                    onCancel={this.backToSiteSettings.bind(this) }
+                    onSaveTranslations={this.onSaveTranslations.bind(this) }
+                    onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this) }
                     highlightPendingTranslations={this.state.highlightPendingTranslations}/>
-                <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this)}/>
+                <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this) }/>
             </SocialPanelBody>
         );
     }

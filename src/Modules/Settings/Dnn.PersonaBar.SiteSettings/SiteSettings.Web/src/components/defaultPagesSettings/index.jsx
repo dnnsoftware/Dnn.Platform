@@ -1,15 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
 import MultiLineInput from "dnn-multi-line-input";
 import PagePicker from "dnn-page-picker";
 import Grid from "dnn-grid-system";
-import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import "./style.less";
@@ -45,7 +42,7 @@ class DefaultPagesSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (!this.loadData()) {
             this.setState({
                 defaultPagesSettings: props.defaultPagesSettings
@@ -60,8 +57,6 @@ class DefaultPagesSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             defaultPagesSettings: Object.assign({}, props.defaultPagesSettings)
         });
@@ -99,15 +94,15 @@ class DefaultPagesSettingsPanelBody extends Component {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteBehaviorActions.updateDefaultPagesSettings(state.defaultPagesSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateDefaultPagesSettings(state.defaultPagesSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteBehaviorActions.getDefaultPagesSettings(props.portalId, props.cultureCode, (data) => {
                 let defaultPagesSettings = Object.assign({}, data.Settings);

@@ -60,7 +60,6 @@ class LanguageSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
         this.setState({
             languageSettings: Object.assign({}, props.languageSettings)
         });

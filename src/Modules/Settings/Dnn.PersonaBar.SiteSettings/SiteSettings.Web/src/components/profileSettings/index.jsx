@@ -1,14 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import ProfileProperties from "./profileProperties";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import PagePicker from "dnn-page-picker";
 import Grid from "dnn-grid-system";
 import Switch from "dnn-switch";
 import Dropdown from "dnn-dropdown";
@@ -43,7 +40,7 @@ class ProfileSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
         if (!this.loadData()) {
             this.setState({
                 profileSettings: props.profileSettings
@@ -58,8 +55,6 @@ class ProfileSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             profileSettings: Object.assign({}, props.profileSettings)
         });
@@ -96,15 +91,15 @@ class ProfileSettingsPanelBody extends Component {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteBehaviorActions.updateProfileSettings(state.profileSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateProfileSettings(state.profileSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteBehaviorActions.getProfileSettings(props.portalId, (data) => {
                 let profileSettings = Object.assign({}, data.Settings);

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
     languages as LanguagesActions
 } from "../../../actions";
@@ -39,7 +38,7 @@ class LanguagePackPanelBody extends Component {
     }
 
     getLanguageOptions() {
-        const {props, state} = this;
+        const {props} = this;
         let options = [];
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {

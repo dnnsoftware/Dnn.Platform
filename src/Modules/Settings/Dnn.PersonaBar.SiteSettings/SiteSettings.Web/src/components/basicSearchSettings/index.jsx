@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     search as SearchActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
@@ -11,7 +9,6 @@ import DropdownWithError from "dnn-dropdown-with-error";
 import NumberSlider from "dnn-slider";
 import Grid from "dnn-grid-system";
 import Switch from "dnn-switch";
-import Dropdown from "dnn-dropdown";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import Tooltip from "dnn-tooltip";
@@ -37,7 +34,7 @@ class BasicSearchSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const {props} = this;
 
         isHost = util.settings.isHost;
         if (isHost) {
@@ -143,15 +140,15 @@ class BasicSearchSettingsPanelBody extends Component {
             return;
         }
 
-        props.dispatch(SearchActions.updateBasicSearchSettings(state.basicSearchSettings, (data) => {
+        props.dispatch(SearchActions.updateBasicSearchSettings(state.basicSearchSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SearchActions.getBasicSearchSettings((data) => {
                 this.setState({
@@ -161,22 +158,22 @@ class BasicSearchSettingsPanelBody extends Component {
         });
     }
 
-    onReindexContent(event) {
-        const {props, state} = this;
+    onReindexContent() {
+        const {props} = this;
         util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SearchActions.portalSearchReindex(props.portalId));
         });
     }
 
-    onReindexHostContent(event) {
-        const {props, state} = this;
+    onReindexHostContent() {
+        const {props} = this;
         util.utilities.confirm(resx.get("ReIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SearchActions.hostSearchReindex());
         });
     }
 
-    onCompactIndex(event) {
-        const {props, state} = this;
+    onCompactIndex() {
+        const {props} = this;
         util.utilities.confirm(resx.get("CompactIndexConfirmationMessage"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SearchActions.compactSearchIndex());
         });
@@ -184,7 +181,7 @@ class BasicSearchSettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {state} = this;
         if (isHost) {
             if (state.basicSearchSettings) {
                 const columnOne = <div className="left-column">
@@ -431,7 +428,7 @@ class BasicSearchSettingsPanelBody extends Component {
                                         />
                                     <Label
                                         labelType="inline"
-                                        label={state.basicSearchSettings.SearchIndexLastModifedOn}
+                                        label={state.basicSearchSettings.SearchIndexLastModifiedOn}
                                         />
                                 </InputGroup>
                                 <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>

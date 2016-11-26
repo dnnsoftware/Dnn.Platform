@@ -1,7 +1,6 @@
 import { languages as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 import LanguageEditorService from "services/languageEditorService";
-import util from "../utils";
 
 const languagesActions = {
     getLanguageSettings(portalId, cultureCode, callback) {
@@ -227,7 +226,7 @@ const languagesActions = {
         };
     },
     disableLocalizedContent(portalId, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageEditorService.disableLocalizedContent(portalId, callback);
         };
     },
@@ -298,7 +297,7 @@ const languagesActions = {
         };
     },
     getLocalizationProgress(callback) {
-        return (dispatch) => {
+        return () => {
             LanguageEditorService.getLocalizationProgress(data => {
                 if (callback) {
                     callback(data);
@@ -336,9 +335,9 @@ const languagesActions = {
             });
         };
     },
-    getPageList(params, callback) {
+    getPageList(payload, callback) {
         return (dispatch) => {
-            LanguageEditorService.getPageList(params, data => {
+            LanguageEditorService.getPageList(payload, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_PAGES,
                     data: {
@@ -353,7 +352,7 @@ const languagesActions = {
     },
     SelectLanguageRoles(roles, role, selected) {
         return (dispatch) => {
-            let list = roles.map((item, index) => {
+            let list = roles.map((item) => {
                 if (item.RoleName === role) {
                     return { RoleID: item.RoleID, RoleName: item.RoleName, Selected: selected };
                 }
@@ -372,7 +371,7 @@ const languagesActions = {
         };
     },
     activateLanguage(payload, callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.activateLanguage(payload, () => {
                 if (callback) {
                     callback();
@@ -381,7 +380,7 @@ const languagesActions = {
         };
     },
     markAllPagesAsTranslated(payload, callback) {
-        return dispatch => {
+        return () => {
             ApplicationService.markAllPagesAsTranslated(payload, () => {
                 if (callback) {
                     callback();

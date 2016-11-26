@@ -1,6 +1,5 @@
 import { siteInfo as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
-import util from "../utils";
 
 const siteInfoActions = {
     getPortalSettings(portalId, cultureCode, callback) {

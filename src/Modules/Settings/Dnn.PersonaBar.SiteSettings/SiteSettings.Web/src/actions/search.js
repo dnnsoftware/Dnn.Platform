@@ -1,6 +1,5 @@
 import { search as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
-import util from "../utils";
 
 const searchActions = {    
     getBasicSearchSettings(callback) {
@@ -50,7 +49,7 @@ const searchActions = {
         };
     },
     compactSearchIndex(callback, failureCallback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.compactSearchIndex(data => {
                 if (callback) {
                     callback(data);
@@ -63,7 +62,7 @@ const searchActions = {
         };
     },
     hostSearchReindex(callback, failureCallback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.hostSearchReindex(data => {
                 if (callback) {
                     callback(data);
@@ -76,7 +75,7 @@ const searchActions = {
         };
     },
     portalSearchReindex(portalId, callback, failureCallback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.portalSearchReindex(portalId, data => {
                 if (callback) {
                     callback(data);
@@ -106,7 +105,7 @@ const searchActions = {
     addSynonymsGroup(payload, groups, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.addSynonymsGroup(payload, data => {
-                let updatedGroups = groups.SynonymsGroups.map((item, index) => {
+                let updatedGroups = groups.SynonymsGroups.map((item) => {
                     return item;
                 });                
                 updatedGroups.unshift({SynonymsGroupId: data.Id, SynonymsTags: payload.SynonymsTags});

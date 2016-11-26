@@ -78,6 +78,7 @@ module.exports = [
     "jpeg",
     "gif",
     "pdf",
+    "bmp",
     "png",
     "ppt",
     "txt",
@@ -147,5 +148,18 @@ module.exports = [
     "attr",
     "tmp",
     "reindex",
-    "lable"
+    "lable",
+    "minlength",
+    "maxlength",
+    "lbl",
+    "wildcard",
+    "url",
+    "urls",
+    "msg",
+    "vanily",
+    "fav",
+    "selectable",
+    "params",
+    "lang",
+    "auth"
 ]

@@ -1,7 +1,7 @@
 import { languageEditor as ActionTypes } from "constants/actionTypes";
 import LanguageEditorService from "services/languageEditorService";
 const languageEditorActions = {
-    setLanguageBeingEdited(language, callback) {
+    setLanguageBeingEdited(language) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SET_LANGUAGE_BEING_EDITED,
@@ -60,7 +60,7 @@ const languageEditorActions = {
         };
     },
     saveTranslations(payload, callback) {
-        return (dispatch) => {
+        return () => {
             LanguageEditorService.saveTranslations(payload, (data) => {
                 if (callback) {
                     callback(data);

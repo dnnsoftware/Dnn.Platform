@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
@@ -43,7 +41,7 @@ class MessagingSettingsPanelBody extends Component {
     }
 
     componentWillMount() {
-        const {state, props} = this;
+        const { props} = this;
         if (!this.loadData()) {
             this.setState({
                 messagingSettings: props.messagingSettings
@@ -82,8 +80,6 @@ class MessagingSettingsPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
-
         this.setState({
             messagingSettings: Object.assign({}, props.messagingSettings)
         });
@@ -111,15 +107,15 @@ class MessagingSettingsPanelBody extends Component {
         event.preventDefault();
         const {props, state} = this;
 
-        props.dispatch(SiteBehaviorActions.updateMessagingSettings(state.messagingSettings, (data) => {
+        props.dispatch(SiteBehaviorActions.updateMessagingSettings(state.messagingSettings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-        }, (error) => {
+        }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
         }));
     }
 
-    onCancel(event) {
-        const {props, state} = this;
+    onCancel() {
+        const {props} = this;
         util.utilities.confirm(resx.get("SettingsRestoreWarning"), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(SiteBehaviorActions.getMessagingSettings(props.portalId, (data) => {
                 this.setState({
@@ -131,7 +127,7 @@ class MessagingSettingsPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const {state} = this;
         if (state.messagingSettings) {
             const columnOne = <div className="left-column">
                 <InputGroup>

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import "./style.less";
 import resx from "../../resources";
 import { Scrollbars } from "react-custom-scrollbars";
-import Tooltip from "dnn-tooltip";
 import InputGroup from "dnn-input-group";
 import Switch from "dnn-switch";
 import Label from "dnn-label";
@@ -29,7 +28,7 @@ class TranslatePageContent extends Component {
     }
 
     componentWillMount() {
-        const {props, state} = this;
+        const {props} = this;
         this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited) });
         this.getPageList();
         this.getBasicSettings();
@@ -46,7 +45,7 @@ class TranslatePageContent extends Component {
     }
 
     getBasicSettings() {
-        const {props, state} = this;
+        const {props} = this;
         props.dispatch(SiteInfoActions.getPortalSettings(props.portalId, props.cultureCode, (data) => {
             this.setState({
                 basicSettings: Object.assign(data.Settings)
@@ -55,7 +54,7 @@ class TranslatePageContent extends Component {
     }
 
     getProgressData() {
-        const {props, state} = this;
+        const {props} = this;
         props.dispatch(LanguagesActions.getLocalizationProgress((data) => {
             this.setState(data);
             this.getPageList();
@@ -98,11 +97,11 @@ class TranslatePageContent extends Component {
     }
 
     onEraseAllLocalizedPages() {
-        const {props, state} = this;
+        const {props} = this;
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = this.props.portalId;
         utils.utilities.confirm(resx.get("EraseTranslatedPagesWarning").replace("{0}", cultureCode), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(LanguagesActions.deleteLanguagePages({ portalId, cultureCode }, (data) => {
+            props.dispatch(LanguagesActions.deleteLanguagePages({ portalId, cultureCode }, () => {
                 utils.utilities.notify(resx.get("DeletedAllLocalizedPages"));
                 this.getPageList();
                 this.props.dispatch(LanguagesActions.getLanguages(this.props.portalId));
@@ -111,19 +110,19 @@ class TranslatePageContent extends Component {
     }
 
     onPublishTranslatedPages(enable = true) {
-        const {props, state} = this;
+        const {props} = this;
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = props.portalId;
-        props.dispatch(LanguagesActions.publishAllPages({ portalId, cultureCode, enable }, (data) => {
+        props.dispatch(LanguagesActions.publishAllPages({ portalId, cultureCode, enable }, () => {
             utils.utilities.notify(resx.get("PublishedAllTranslatedPages"));
         }));
     }
 
     addPages() {
-        const {props, state} = this;
+        const {props} = this;
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = props.portalId;
-        props.dispatch(LanguagesActions.localizeContent({ cultureCode, portalId }, (data) => {
+        props.dispatch(LanguagesActions.localizeContent({ cultureCode, portalId }, () => {
             this.getProgressData();
         }));
     }
@@ -135,7 +134,7 @@ class TranslatePageContent extends Component {
     goToPageSettings(pageId) {
         let personaBar = window.parent.dnn ? window.parent.dnn.PersonaBar : null;
         if (personaBar) {
-            personaBar.openPanel('Pages',
+            personaBar.openPanel("Pages",
                 {
                     viewParams:
                     {
