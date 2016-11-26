@@ -167,7 +167,7 @@ class PageLocalization extends Component {
 
     render() {
         const {Pages} = this.state;
-        const isNeutral = Pages[0] ? Pages[0].DefaultLanguageGuid ==="00000000-0000-0000-0000-000000000000" : true;
+        const isNeutral = Pages ? !Pages.length : true;
         
         const Languages = this.getAllLanguages();
         const containerStyle = { width: (Languages.length - 1) * 250 };
