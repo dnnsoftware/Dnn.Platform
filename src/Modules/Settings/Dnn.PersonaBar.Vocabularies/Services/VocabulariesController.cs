@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 int vocabularyId = _controller.AddVocabulary(vocabulary);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, VocabularyId = vocabularyId });
             }
-            catch (VocabularyNameAlreadyExistsException exc)
+            catch (VocabularyNameAlreadyExistsException)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("VocabularyExists.Error", localResourcesFile), vocabularyDto.Name));
             }
@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 int termId = _controller.AddTerm(term);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, TermId = termId });
             }
-            catch (TermValidationException exc)
+            catch (TermValidationException)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", localResourcesFile), termDto.Name));
             }
@@ -272,7 +272,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 _controller.UpdateTerm(term);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
-            catch (TermValidationException exc)
+            catch (TermValidationException)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", localResourcesFile), termDto.Name));
             }

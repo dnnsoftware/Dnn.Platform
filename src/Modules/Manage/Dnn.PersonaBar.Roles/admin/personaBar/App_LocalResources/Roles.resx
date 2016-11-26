@@ -357,4 +357,7 @@
   <data name="SecurityRoleDeleteNotAllowed.Text" xml:space="preserve">
     <value>System roles cannot be deleted.</value>
   </data>
+  <data name="CannotAssginUserToUnApprovedRole.Text" xml:space="preserve">
+    <value>Cannot assign user to an un-approved role.</value>
+  </data>
 </root>

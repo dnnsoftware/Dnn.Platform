@@ -457,14 +457,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(portal);
                 var portalDefault = portalSettings.DefaultLanguage;
-                foreach (var locale in _localeController.GetLocales(pid).Values)
+                foreach (var locale in _localeController.GetLocales(pid).Values.Where(l => l.Code != portalDefault))
                 {
-                    if (locale.Code != portalDefault)
-                    {
-                        _localeController.PublishLanguage(pid, locale.Code, false);
-                        _tabController.DeleteTranslatedTabs(pid, locale.Code, false);
-                        _portalController.RemovePortalLocalization(pid, locale.Code, false);
-                    }
+                    _localeController.PublishLanguage(pid, locale.Code, false);
+                    _tabController.DeleteTranslatedTabs(pid, locale.Code, false);
+                    _portalController.RemovePortalLocalization(pid, locale.Code, false);
                 }
 
                 _tabController.EnsureNeutralLanguage(pid, portalDefault, false);

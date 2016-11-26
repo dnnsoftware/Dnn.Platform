@@ -142,7 +142,10 @@
     <Content Include="admin\personaBar\App_LocalResources\Recyclebin.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dnn.PersonaBar.Pages.nuspec" />
+    <Content Include="Dnn.PersonaBar.Recyclebin.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

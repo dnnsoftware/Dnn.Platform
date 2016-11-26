@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Security.Components
                 {
                     FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install\\" + file));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //do nothing.
                 }

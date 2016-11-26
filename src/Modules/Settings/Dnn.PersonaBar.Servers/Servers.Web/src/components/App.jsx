@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import Body from "./Body/Body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import localization from "../localization";
@@ -35,7 +35,7 @@ class App extends Component {
         return (
             <div className="servers-app personaBar-mainContainer">
                 <PersonaBarPage isOpen={true}>
-                    <SocialPanelHeader title="Servers">
+                    <PersonaBarPageHeader title="Servers">
                         {buttonVisible && 
                             <Button type="secondary" size="large" 
                                 onClick={props.onClearCacheClicked}>{localization.get("clearCacheButtonLabel")}</Button>
@@ -45,7 +45,7 @@ class App extends Component {
                                 onClick={props.onRestartApplicationClicked} 
                                 style={restartAppButtonStyle}>{localization.get("restartApplicationButtonLabel")}</Button>
                         }                        
-                    </SocialPanelHeader>
+                    </PersonaBarPageHeader>
                     <Body />
                 </PersonaBarPage>                
             </div>

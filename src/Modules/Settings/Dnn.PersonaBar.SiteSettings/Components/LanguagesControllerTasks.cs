@@ -21,39 +21,37 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
         private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
 
-        public static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLocale)
+        public static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLanguage)
         {
             Task.Factory.StartNew(() =>
             {
                 try
                 {
                     var languageCount = LocaleController.Instance.GetLocales(portalId).Count;
-                    var pageList = GetPages(portalId);
                     var languageCounter = 0;
 
-                    if (translatePages)
-                    {
-                        ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLocale),
-                            defaultLocale, languageCounter, languageCount, progress);
-                    }
+                    var pageList = GetPages(portalId).Where(p => p.CultureCode == null).ToList();
+                    ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
+                        defaultLanguage, languageCounter, languageCount, progress);
 
-                    PublishLanguage(defaultLocale, portalId, true);
+                    PublishLanguage(defaultLanguage, portalId, true);
 
                     PortalController.UpdatePortalSetting(portalId, "ContentLocalizationEnabled", "True");
 
-                    // populate other languages
-                    foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
+                    if (translatePages)
                     {
-                        if (locale.Code != defaultLocale)
+                        // populate other languages
+                        pageList = GetPages(portalId).Where(p => p.CultureCode == defaultLanguage).ToList();
+
+                        foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values.Where(l => l.Code != defaultLanguage))
                         {
                             languageCounter++;
-                            pageList = GetPages(portalId).Where(p => p.CultureCode == defaultLocale).ToList();
 
                             //add translator role
                             Localization.AddTranslatorRole(portalId, locale);
 
                             //populate pages
-                            ProcessLanguage(pageList, locale, defaultLocale, languageCounter, languageCount, progress);
+                            ProcessLanguage(pageList, locale, defaultLanguage, languageCounter, languageCount, progress);
 
                             //Map special pages
                             PortalController.Instance.MapLocalizedSpecialPages(portalId, locale.Code);

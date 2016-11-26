@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

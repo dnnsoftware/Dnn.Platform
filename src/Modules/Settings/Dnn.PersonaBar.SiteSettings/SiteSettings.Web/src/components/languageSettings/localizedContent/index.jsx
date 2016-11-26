@@ -28,7 +28,6 @@ class LocalizedContent extends Component {
 
     onEnable() {
         const {props, state} = this;
-        props.dispatch(LanguagesActions.disableLocalizedContent(props.portalId));
         props.dispatch(LanguagesActions.enableLocalizedContent({ portalId: props.portalId, translatePages: state.allPagesTranslatable }, (data) => {
             this.setState(data);
             const newState = Object.assign(data, { showProgressBars: true });
