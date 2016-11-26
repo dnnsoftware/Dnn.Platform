@@ -490,7 +490,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 }
 
                 var defaultLocale = _localeController.GetDefaultLocale(PortalId);
-                _tabController.LocalizeTab(currentTab, defaultLocale, false);
+                _tabController.LocalizeTab(currentTab, defaultLocale, true);
                 _tabController.AddMissingLanguages(PortalId, tabId);
                 _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -565,7 +565,13 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
-                var pages = GetNonLocalizedPages(tabId);
+                var currentTab = _tabController.GetTab(tabId, PortalId, false);
+                var locales = new List<LocaleInfoDto>();
+                var pages = new DnnPagesDto(locales);
+                if (!currentTab.IsNeutralCulture)
+                {
+                    pages = GetNonLocalizedPages(tabId);
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, pages);
             }
             catch (Exception ex)
