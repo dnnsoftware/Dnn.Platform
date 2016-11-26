@@ -13,8 +13,8 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class PersonaBarMenu
     {
-        [IgnoreDataMember]
-        public IList<MenuItem> _allItems;
+        private IList<MenuItem> _allItems;
+
         [DataMember]
         public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
