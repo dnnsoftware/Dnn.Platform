@@ -650,7 +650,7 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
-                if (!_securityService.IsPageAdminUser())
+                if (!TabPermissionController.CanManagePage())
                 {
                     return GetForbiddenResponse();
                 }
