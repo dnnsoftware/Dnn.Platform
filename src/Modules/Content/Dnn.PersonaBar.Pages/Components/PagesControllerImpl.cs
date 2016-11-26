@@ -775,6 +775,7 @@ namespace Dnn.PersonaBar.Pages.Components
             page.PrimaryAliasId = GetPrimaryAliasId(portalSettings.PortalId, portalSettings.CultureCode);
             page.Locales = GetLocales(portalSettings.PortalId);
             page.HasParent = tab.ParentId > -1;
+            page.IsContentLocalizationEnabled = portalSettings.ContentLocalizationEnabled;
             return page;
         }
 
