@@ -100,7 +100,7 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.getLanguageSettings();
+        this.props.getContentLocalizationEnabled();
     }
 
     componentWillUnmount() {
@@ -215,7 +215,7 @@ class App extends Component {
         const cancelAction = this.onCancelSettings.bind(this);
         const deleteAction = this.onDeleteSettings.bind(this);
         const backToReferral = this.backToReferral.bind(this, this.state.referral);
-        const AllowContentLocalization = props.languageSettings ? props.languageSettings.AllowContentLocalization : false;
+        const AllowContentLocalization = !!props.isContentLocalizationEnabled;
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
@@ -382,8 +382,8 @@ App.propTypes = {
     additionalPanels: PropTypes.array.isRequired,
     onShowPanel: PropTypes.func.isRequired,
     onHidePanel: PropTypes.func.isRequired,
-    languageSettings: PropTypes.object.isRequired,
-    getLanguageSettings: PropTypes.func.isRequired
+    isContentLocalizationEnabled: PropTypes.object.isRequired,
+    getContentLocalizationEnabled: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -401,7 +401,7 @@ function mapStateToProps(state) {
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
         additionalPanels: state.extensions.additionalPanels,
-        languageSettings: state.languages.languageSettings
+        isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled
     };
 }
 
@@ -430,7 +430,7 @@ function mapDispatchToProps(dispatch) {
         onDuplicatePage: PageActions.duplicatePage,
         onShowPanel: VisiblePanelActions.showPanel,
         onHidePanel: VisiblePanelActions.hidePanel,
-        getLanguageSettings: LanguagesActions.getLanguageSettings
+        getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled
 
     }, dispatch);
 }

@@ -90,14 +90,12 @@ const languagesActions = {
             });
         };
     },
-    getLanguageSettings(portalId, callback) {
+    getContentLocalizationEnabled(callback) {
         return (dispatch) => {
-            LanguageService.getLanguageSettings(portalId, data => {
+            LanguageService.getContentLocalizationEnabled(data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_LANGUAGE_SETTINGS,
-                    data: {
-                        languageSettings: data.Settings
-                    }
+                    data
                 });
                 if (callback) {
                     callback(data);
