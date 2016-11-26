@@ -58,16 +58,18 @@ namespace Dnn.PersonaBar.Library.Controllers
             string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
             int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false)
         {
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+
             var rootNode = new TabDto
             {
-                Name = PortalSettings.PortalName,
+                Name = portalInfo.PortalName,
                 ImageUrl = IconPortal,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ChildTabs = new List<TabDto>(),
                 HasChildren = true
             };
             List<TabInfo> tabs = new List<TabInfo>();
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            
             cultureCode = string.IsNullOrEmpty(cultureCode) ? portalInfo.CultureCode : cultureCode;
             if (portalId > -1)
             {

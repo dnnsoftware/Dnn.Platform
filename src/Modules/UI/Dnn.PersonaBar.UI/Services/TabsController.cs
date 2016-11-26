@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetPortalTabs(UserInfo, portalId <= 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
+                        _controller.GetPortalTabs(UserInfo, portalId < 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
                             excludeAdminTabs, roles,
                             disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled)
                 };
@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.SearchPortalTabs(UserInfo, searchText, portalId <= 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
+                        _controller.SearchPortalTabs(UserInfo, searchText, portalId < 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -102,7 +102,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var response = new
                 {
                     Success = true,
-                    Results = _controller.GetTabByCulture(tabId, portalId <= 0 ? PortalId : portalId, cultureCode)
+                    Results = _controller.GetTabByCulture(tabId, portalId < 0 ? PortalId : portalId, cultureCode)
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -138,7 +138,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetTabsDescendants(portalId <= 0 ? PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
+                        _controller.GetTabsDescendants(portalId < 0 ? PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
                             disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled)
                 };
 
