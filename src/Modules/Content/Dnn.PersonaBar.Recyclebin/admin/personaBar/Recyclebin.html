@@ -37,8 +37,8 @@
             </table>
         </div>
         <div data-bind="visible: deletedpagesList().length > 0" class="actions">
-            <a class="secondarybtn" id="RestoreSelectedPages" data-bind="html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedPages"></a>
-            <a class="primarybtn" id="RemoveSelectedPages" data-bind="html: $root.resx.recyclebin_Delete, click: $root.removeSelectedPages"></a>
+            <a class="secondarybtn" id="RestoreSelectedPages" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedPages"></a>
+            <a class="primarybtn" id="RemoveSelectedPages" data-bind="attr: { title:  $root.resx.recyclebin_Delete}, html: $root.resx.recyclebin_Delete, click: $root.removeSelectedPages"></a>
         </div>
     </div>
     <div id="modules" data-bind="visible: deletedModulesReady() && activeTab() == 1"
@@ -60,8 +60,8 @@
             </table>
         </div>
         <div data-bind="visible: deletedmodulesList().length > 0" class="actions">
-            <a class="secondarybtn" id="RestoreSelectedModules" data-bind="html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedModules "></a>
-            <a class="primarybtn" id="RemoveSelectedModules" data-bind="html: $root.resx.recyclebin_Delete, click: $root.removeSelectedModules"></a>
+            <a class="secondarybtn" id="RestoreSelectedModules" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedModules "></a>
+            <a class="primarybtn" id="RemoveSelectedModules" data-bind="attr: { title:  $root.resx.recyclebin_Delete }, html: $root.resx.recyclebin_Delete, click: $root.removeSelectedModules"></a>
         </div>
     </div>
 </div>
@@ -96,8 +96,8 @@
 
         </td>
         <td class="actions" data-bind="setWhenHover: mouseOver, css: {'hover': mouseOver() || selected() }">
-            <span class="restore" data-bind="click: $root.restorePage, clickBubble: false, visible: mouseOver"></span>
-            <span class="remove" data-bind="click: $root.removePage, clickBubble: false, visible: mouseOver"></span>
+            <span class="restore" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, click: $root.restorePage, clickBubble: false, visible: mouseOver"></span>
+            <span class="remove" data-bind="attr: { title:  $root.resx.recyclebin_Delete }, click: $root.removePage, clickBubble: false, visible: mouseOver"></span>
         </td>
     </tr>
     <!-- ko if: children -->
