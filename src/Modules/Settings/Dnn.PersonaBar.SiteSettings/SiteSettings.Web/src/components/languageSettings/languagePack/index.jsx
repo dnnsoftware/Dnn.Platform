@@ -94,12 +94,12 @@ class LanguagePackPanelBody extends Component {
     }
 
     isModuleSelected(id) {
-        const {props, state} = this;
+        const { state} = this;
         return state.languagePack.ModuleIds.indexOf(id) > -1 ? true : false;
     }
 
     onModuleSelectionChange(id, event) {
-        let {state, props} = this;
+        let {state} = this;
         let languagePack = Object.assign({}, state.languagePack);
 
         let index = languagePack.ModuleIds.indexOf(id);

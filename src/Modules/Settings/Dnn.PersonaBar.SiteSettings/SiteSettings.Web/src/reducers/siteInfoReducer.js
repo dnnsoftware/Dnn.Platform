@@ -1,6 +1,5 @@
 import { 
-    siteInfo as ActionTypes, 
-    pagination as PaginationActionTypes 
+    siteInfo as ActionTypes
 } from "../constants/actionTypes";
 
 export default function siteInfo(state = {

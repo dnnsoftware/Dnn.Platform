@@ -1,6 +1,5 @@
 import {
-    search as ActionTypes,
-    pagination as PaginationActionTypes
+    search as ActionTypes
 } from "../constants/actionTypes";
 
 export default function search(state = {

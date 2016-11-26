@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Button from "dnn-button";
 import SocialPanelHeader from "dnn-social-panel-header";
 import {
     visiblePanel as VisiblePanelActions
@@ -15,9 +14,9 @@ import TranslatePageContent from "./translatePageContent/translatePageContent";
 import EditLanguagePanel from "./editLanguagePanel";
 import utilities from "utils";
 import resx from "../resources";
-require('es6-object-assign').polyfill();
-require('array.prototype.find').shim();
-require('array.prototype.findindex').shim();
+require("es6-object-assign").polyfill();
+require("array.prototype.find").shim();
+require("array.prototype.findindex").shim();
 
 const Pages = {
     Default: 0,
@@ -51,7 +50,7 @@ class App extends Component {
 
     componentWillMount() {
         // // Listen for the event.
-        document.addEventListener('portalIdChanged', (e) => {
+        document.addEventListener("portalIdChanged", (e) => {
             if (this.state.portalId !== e.portalId) {
                 this.changePortalId(e.portalId);
             }

@@ -13,7 +13,6 @@ import BasicSearchSettings from "../basicSearchSettings";
 import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
-import Tooltip from "dnn-tooltip";
 import SocialPanelBody from "dnn-social-panel-body";
 import MoreSettings from "../moreSettings";
 import "./style.less";

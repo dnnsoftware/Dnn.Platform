@@ -1,14 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import {
-    pagination as PaginationActions,
     languages as LanguagesActions
 } from "../../../actions";
 import LanguageVerifierGrid from "./languageVerifierGrid";
-import Button from "dnn-button";
 import "./style.less";
-import util from "../../../utils";
 import resx from "../../../resources";
 import styles from "./style.less";
 
@@ -22,7 +18,6 @@ class LanguageVerifierPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        let {state} = this;
         if (props.selectedPage === 2) {
             if (props.verificationResults) {
                 this.setState({
@@ -39,9 +34,8 @@ class LanguageVerifierPanelBody extends Component {
     }
 
     renderedResults() {
-        let i = 0;
         if (this.props.verificationResults) {
-            return this.props.verificationResults.map((item, index) => {
+            return this.props.verificationResults.map((item) => {
                 return (
                     <LanguageVerifierGrid
                         language={item.Language}
@@ -61,7 +55,6 @@ class LanguageVerifierPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
         return (
             <div className={styles.languageVerifier}>
                 <div className="languageVerifier-back" onClick={this.props.closeLanguageVerifier.bind(this)}>{resx.get("BackToLanguages")}</div>

@@ -161,5 +161,14 @@ module.exports = [
     "selectable",
     "params",
     "lang",
-    "auth"
+    "auth",
+    "seperator",
+    "unpublish",
+    "unlocalized",
+    "iframe",
+    "portalid",
+    "portpop",
+    "polyfill",
+    "findindex",
+    "nav"
 ]

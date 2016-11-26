@@ -1,6 +1,5 @@
 import { 
-    siteBehavior as ActionTypes, 
-    pagination as PaginationActionTypes 
+    siteBehavior as ActionTypes
 } from "../constants/actionTypes";
 
 export default function siteBehavior(state = {

@@ -26,7 +26,7 @@ class LocalizedContent extends Component {
         this.getProgressData = this.getProgressData.bind(this);
     }
 
-    onEnable(event) {
+    onEnable() {
         const {props, state} = this;
         props.dispatch(LanguagesActions.disableLocalizedContent(props.portalId));
         props.dispatch(LanguagesActions.enableLocalizedContent({ portalId: props.portalId, translatePages: state.allPagesTranslatable }, (data) => {
@@ -46,7 +46,7 @@ class LocalizedContent extends Component {
     }
 
     getProgressData() {
-        const {props, state} = this;
+        const {props} = this;
         props.dispatch(LanguagesActions.getLocalizationProgress((data) => {
             this.setState(data);
             if (data.InProgress && !data.Error) {
@@ -80,7 +80,6 @@ class LocalizedContent extends Component {
     }
 
     onChange(event) {
-        let {state, props} = this;
         const allPagesTranslatable = typeof (event) === "object" ? event.target.value : event;
         this.setState({ allPagesTranslatable });
     }

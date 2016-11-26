@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import Button from "dnn-button";
-import "./style.less";
-import util from "../../../utils";
 import resx from "../../../resources";
 import styles from "./style.less";
+import "./style.less";
 
 class HtmlEditorManagerPanelBody extends Component {
     constructor() {
@@ -18,7 +15,6 @@ class HtmlEditorManagerPanelBody extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
         return (
             <div className={styles.htmlEditorManager}>
                 <div className="htmlEditor-back" onClick={this.props.closeHtmlEditorManager.bind(this)}>{resx.get("BackToSiteBehavior")}</div>

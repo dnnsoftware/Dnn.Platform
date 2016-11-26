@@ -1,6 +1,5 @@
 import {
-    languages as ActionTypes,
-    pagination as PaginationActionTypes
+    languages as ActionTypes
 } from "../constants/actionTypes";
 
 export default function languages(state = {
