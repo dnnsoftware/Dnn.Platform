@@ -215,6 +215,8 @@ namespace Dnn.PersonaBar.Users.Services
                 var user = GetUser(userId, out response);
                 if (user == null)
                     return response;
+                if (IsCurrentUser(userId, out response))
+                    return response;
 
                 if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                 {
@@ -306,6 +308,8 @@ namespace Dnn.PersonaBar.Users.Services
                 HttpResponseMessage response;
                 var user = GetUser(userId, out response);
                 if (user == null)
+                    return response;
+                if (IsCurrentUser(userId, out response))
                     return response;
 
                 user.Membership.Approved = authorized;
@@ -663,6 +667,18 @@ namespace Dnn.PersonaBar.Users.Services
             if (user.IsSuperUser)
                 user = UserController.Instance.GetUserById(Null.NullInteger, userId);
             return user;
+        }
+
+        private bool IsCurrentUser(int userId, out HttpResponseMessage response)
+        {
+            response = null;
+            if (userId == UserInfo.UserID)
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                    Localization.GetString("InSufficientPermissions", Components.Constants.LocalResourcesFile));
+                return true;
+            }
+            return false;
         }
     }
 }
