@@ -30,10 +30,14 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     var languageCount = LocaleController.Instance.GetLocales(portalId).Count;
                     var languageCounter = 0;
 
-                    var pageList = GetPages(portalId).Where(p => p.CultureCode == null).ToList();
-                    ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
-                        defaultLanguage, languageCounter, languageCount, progress);
+                    var pageList = GetPages(portalId).Where(p => string.IsNullOrEmpty(p.CultureCode)).ToList();
 
+                    if (translatePages)
+                    {
+                        // populate default language
+                        ProcessLanguage(pageList, LocaleController.Instance.GetLocale(defaultLanguage),
+                            defaultLanguage, languageCounter, languageCount, progress);
+                    }
                     PublishLanguage(defaultLanguage, portalId, true);
 
                     PortalController.UpdatePortalSetting(portalId, "ContentLocalizationEnabled", "True");
