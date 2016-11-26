@@ -493,7 +493,10 @@ namespace Dnn.PersonaBar.Users.Services
                 var roles = RoleController.Instance.GetRoles(PortalId,
                     x => x.RoleName.ToUpperInvariant().Contains(keyword.ToUpperInvariant()));
                 var matchedRoles = roles
-                    .Where(r => isAdmin || r.RoleID != PortalSettings.AdministratorRoleId)
+                    .Where(
+                        r =>
+                            (isAdmin || r.RoleID != PortalSettings.AdministratorRoleId) &&
+                            r.Status == RoleStatus.Approved)
                     .ToList().Take(count).Select(u => new UserRoleInfo
                     {
                         RoleID = u.RoleID,

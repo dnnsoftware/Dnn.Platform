@@ -534,4 +534,7 @@
   <data name="UserRestoreError.Text" xml:space="preserve">
     <value>Can not restore the user.</value>
   </data>
+  <data name="RoleIsNotApproved.Text" xml:space="preserve">
+    <value>Cannot assign a role which is not approved.</value>
+  </data>
 </root>

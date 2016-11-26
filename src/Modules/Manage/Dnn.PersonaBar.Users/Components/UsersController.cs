@@ -228,6 +228,11 @@ namespace Dnn.PersonaBar.Users.Components
 
             var user = UserController.Instance.GetUserById(portalId, userRoleDto.UserId);
             var role = RoleController.Instance.GetRoleById(portalId, userRoleDto.RoleId);
+            if (role == null || role.Status != RoleStatus.Approved)
+            {
+                throw new Exception(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
+            }
+
             if (userInfo.IsSuperUser || userInfo.Roles.Contains(PortalSettings.AdministratorRoleName) ||
                 (!userInfo.IsSuperUser && !userInfo.Roles.Contains(PortalSettings.AdministratorRoleName) &&
                  role.RoleType != RoleType.Administrator))
