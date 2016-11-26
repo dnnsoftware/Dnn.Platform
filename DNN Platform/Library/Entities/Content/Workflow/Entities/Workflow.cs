@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     /// </summary>
     [PrimaryKey("WorkflowID")]
     [TableName("ContentWorkflows")]
+    [Serializable]
     public class Workflow
     {
         /// <summary>

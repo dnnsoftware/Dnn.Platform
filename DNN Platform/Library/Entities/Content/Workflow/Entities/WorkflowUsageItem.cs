@@ -19,11 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     /// <summary>
     /// This entity represents an item which is using a Workflow
     /// </summary>
+    [Serializable]
     public class WorkflowUsageItem
     {
         /// <summary>

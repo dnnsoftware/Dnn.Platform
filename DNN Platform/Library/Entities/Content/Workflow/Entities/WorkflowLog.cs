@@ -30,6 +30,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     /// </summary>
     [PrimaryKey("WorkflowLogID")]
     [TableName("ContentWorkflowLogs")]
+    [Serializable]
     public class WorkflowLog
     {
         /// <summary>
