@@ -370,6 +370,12 @@ namespace Dnn.PersonaBar.Roles.Services
                 var role = RoleController.Instance.GetRoleById(PortalId, userRoleDto.RoleId);
                 if (role.SecurityMode != SecurityMode.SocialGroup && role.SecurityMode != SecurityMode.Both)
                     isOwner = false;
+                if (role.Status != RoleStatus.Approved)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        Localization.GetString("CannotAssginUserToUnApprovedRole",
+                            Components.Constants.LocalResourcesFile));
+                }
 
                 RoleController.AddUserRole(user, role, PortalSettings, RoleStatus.Approved, userRoleDto.StartTime,
                     userRoleDto.ExpiresTime, notifyUser, isOwner);
