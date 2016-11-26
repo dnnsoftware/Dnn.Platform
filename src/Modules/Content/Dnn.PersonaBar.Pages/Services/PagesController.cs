@@ -640,6 +640,29 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        // GET /api/personabar/pages/GetContentLocalizationEnabled
+        /// <summary>
+        /// Gets ContentLocalizationEnabled 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetContentLocalizationEnabled()
+        {
+            try
+            {
+                if (!_securityService.IsPageAdminUser())
+                {
+                    return GetForbiddenResponse();
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, PortalSettings.ContentLocalizationEnabled });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding

@@ -161,8 +161,5 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "parentId")]
         public int? ParentId { get; set; }
-
-        [DataMember(Name = "isContentLocalizationEnabled")]
-        public bool IsContentLocalizationEnabled { get; set; }
     }
 }
