@@ -52,7 +52,7 @@ class PageLanguage extends Component {
         const modules = this.props.modules || [];
         const moduleComponents = modules.map((module, index) => {
             return <Module
-                isDefault={page.Default}
+                isDefault={this.props.isDefault}
                 module={module}
                 onUpdateModules={this.props.onUpdateModules}
                 onDeleteModule={this.props.onDeleteModule}
@@ -77,7 +77,7 @@ class PageLanguage extends Component {
                     <div className="page-language-row-header">
                         <span className="icon" dangerouslySetInnerHTML={{ __html: ModuleIcon }} />
                         <span>{Localization.get("ModulesOnThisPage") }</span>
-                        {!page.Default && <div className="icons-container">
+                        {!this.props.isDefault && <div className="icons-container">
                             <span
                             className={`icon float-left ${(this.state.allModulesLinked ? " blue" : "")}`}
                             onClick={this.linkAllModules.bind(this)  }
@@ -116,7 +116,8 @@ PageLanguage.propTypes = {
     onUpdatePages: PropTypes.func,
     onUpdateModules: PropTypes.func,
     onDeleteModule: PropTypes.func,
-    onRestoreModule: PropTypes.func
+    onRestoreModule: PropTypes.func,
+    isDefault: PropTypes.bool
 };
 
 export default PageLanguage;

@@ -118,11 +118,12 @@ class PageLocalization extends Component {
         }));
     }
 
-    renderPageLanguage(local, modules, page) {
+    renderPageLanguage(local, modules, page, isDefault=false) {
         return <PageLanguage
             local={local}
             modules={modules}
             page={page}
+            isDefault={isDefault}
             onDeleteModule={this.onDeleteModule.bind(this) }
             onRestoreModule={this.onRestoreModule.bind(this) }
             onUpdatePages={this.onUpdatePages.bind(this) }
@@ -135,7 +136,7 @@ class PageLocalization extends Component {
         const modules = Modules.map((module) => {
             return module.Modules[0];
         });
-        return this.renderPageLanguage(Locales[0], modules, Pages[0]);
+        return this.renderPageLanguage(Locales[0], modules, Pages[0], true);
     }
 
     getAllLanguages() {
