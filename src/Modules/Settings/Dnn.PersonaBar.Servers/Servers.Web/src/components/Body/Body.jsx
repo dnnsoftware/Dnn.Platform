@@ -4,7 +4,7 @@ import Tabs from "dnn-tabs";
 import {
     pagination as PaginationActions
 } from "../../actions";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import Localization from "../../localization";
 import ApplicationTab from "../Tabs/Application";
@@ -105,7 +105,7 @@ class Body extends Component {
             }), "order", "component");
 
         return (
-            <SocialPanelBody>
+            <PersonaBarPageBody>
                 <Tabs className="dnn-servers-tab-panel" 
                     onSelect={this.handleSelect}
                     selectedIndex={props.tabIndex}
@@ -113,7 +113,7 @@ class Body extends Component {
                        {mainTabBody}                   
                 </Tabs>
                 
-            </SocialPanelBody >
+            </PersonaBarPageBody >
         );
     }
 }
