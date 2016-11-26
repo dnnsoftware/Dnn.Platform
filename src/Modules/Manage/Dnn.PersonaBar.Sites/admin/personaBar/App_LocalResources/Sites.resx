@@ -138,6 +138,36 @@
   <data name="ExportedMessage.Text" xml:space="preserve">
     <value>The new site template has been saved in folder:&lt;br/&gt;&lt;b&gt;{0}&lt;/b&gt;</value>
   </data>
+  <data name="ErrorAncestorPages.Text" xml:space="preserve">
+    <value>You must select all ancestors from root level in order to include a child page.</value>
+  </data>
+  <data name="ChildExists.Text" xml:space="preserve">
+    <value>The child site name you specified already exists.  Please enter a different child site name.</value>
+  </data>
+  <data name="DuplicatePortalAlias.Text" xml:space="preserve">
+    <value>The site alias name you specified already exists. Please choose a different site alias.</value>
+  </data>
+  <data name="DuplicateWithTab.Text" xml:space="preserve">
+    <value>There is already a page with the same name as you entered for the site alias for this site.  Please change the site alias and try again.</value>
+  </data>
+  <data name="InvalidHomeFolder.Text" xml:space="preserve">
+    <value>The home folder you specified is not valid.</value>
+  </data>
+  <data name="InvalidName.Text" xml:space="preserve">
+    <value>The site alias must not contain spaces or punctuation.</value>
+  </data>
+  <data name="InvalidPassword.Text" xml:space="preserve">
+    <value>The password values entered do not match.</value>
+  </data>
+  <data name="SendMail.Error" xml:space="preserve">
+    <value>There was an error sending confirmation emails - {0}  However, the site was created. &lt;a href='{1}' {2}&gt;Click Here To Access The New Site&lt;/a&gt;</value>
+  </data>
+  <data name="UnknownEmailAddress.Error" xml:space="preserve">
+    <value>There is no email address set on Site and/or Host level.</value>
+  </data>
+  <data name="UnknownSendMail.Error" xml:space="preserve">
+    <value>There was an error sending confirmation emails, however the site was still created. &lt;a href='{0}' {1}&gt;Click Here To Access The New Site&lt;/a&gt;</value>
+  </data>
   <data name="lblAdminOnly.Text" xml:space="preserve">
     <value>Visible to Administrators only</value>
   </data>

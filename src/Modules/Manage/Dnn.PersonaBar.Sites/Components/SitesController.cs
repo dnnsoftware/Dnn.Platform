@@ -347,7 +347,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return selectedTabs;
         }
 
-        public int CreatePortal(ref ArrayList errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
+        public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
             string siteDescription, string siteKeywords,
             bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email,
             string password,
@@ -364,7 +364,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var xval = new PortalTemplateValidator();
             if (!xval.Validate(xmlFilename, schemaFilename))
             {
-                errors.AddRange(xval.Errors);
+                errors.AddRange(xval.Errors.OfType<string>());
                 return intPortalId;
             }
 
@@ -376,9 +376,11 @@ namespace Dnn.PersonaBar.Sites.Components
                 ? PortalController.GetPortalFolder(siteAlias)
                 : siteAlias;
 
+            var error = false;
             var message = string.Empty;
             if (!PortalAliasController.ValidateAlias(strPortalAlias, isChildSite))
             {
+                error = true;
                 message = Localization.GetString("InvalidName", LocalResourcesFile);
             }
 
@@ -387,12 +389,14 @@ namespace Dnn.PersonaBar.Sites.Components
             if (TabController.GetTabByTabPath(PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
                 || TabController.GetTabByTabPath(Null.NullInteger, checkTabPath, string.Empty) != Null.NullInteger)
             {
+                error = true;
                 message = Localization.GetString("DuplicateWithTab", LocalResourcesFile);
             }
 
             //Validate Password
             if (password != confirm)
             {
+                error = true;
                 if (!string.IsNullOrEmpty(message)) message += "<br/>";
                 message += Localization.GetString("InvalidPassword", LocalResourcesFile);
             }
@@ -406,6 +410,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
                     if (Directory.Exists(strChildPath))
                     {
+                        error = true;
                         message = Localization.GetString("ChildExists", LocalResourcesFile);
                     }
                     else
@@ -423,10 +428,12 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (string.IsNullOrEmpty(string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, homeDir).Replace("/", "\\")))
                 {
+                    error = true;
                     message = Localization.GetString("InvalidHomeFolder", LocalResourcesFile);
                 }
                 if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.ToLowerInvariant() == "portals/")
                 {
+                    error = true;
                     message = Localization.GetString("InvalidHomeFolder", LocalResourcesFile);
                 }
             }
@@ -446,12 +453,13 @@ namespace Dnn.PersonaBar.Sites.Components
 
                 if (portalAlias != null)
                 {
+                    error = true;
                     message = Localization.GetString("DuplicatePortalAlias", LocalResourcesFile);
                 }
             }
 
             //Create Portal
-            if (string.IsNullOrEmpty(message))
+            if (!error)
             {
                 //Attempt to create the portal
                 var adminUser = new UserInfo();
@@ -1123,25 +1131,25 @@ namespace Dnn.PersonaBar.Sites.Components
             return Globals.ResolveUrl(imagePath);
         }
 
-        private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
-        {
-            try
-            {
-                var originalPath = Path.Combine(Globals.HostMapPath, oldTemplateImg.Replace("/", @"\"));
-                if (File.Exists(originalPath))
-                {
-                    var newPath = Path.ChangeExtension(templatePath, ImageExtensions.First());
-                    if (!File.Exists(newPath))
-                    {
-                        File.Copy(originalPath, newPath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
+        //private void CreateThumbnailFromOriginal(string templatePath, string oldTemplateImg)
+        //{
+        //    try
+        //    {
+        //        var originalPath = Path.Combine(Globals.HostMapPath, oldTemplateImg.Replace("/", @"\"));
+        //        if (File.Exists(originalPath))
+        //        {
+        //            var newPath = Path.ChangeExtension(templatePath, ImageExtensions.First());
+        //            if (!File.Exists(newPath))
+        //            {
+        //                File.Copy(originalPath, newPath);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error(ex);
+        //    }
+        //}
 
         private class TemplateDisplayComparer : IComparer<PortalController.PortalTemplateInfo>
         {

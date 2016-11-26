@@ -95,8 +95,8 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                var errors = new ArrayList();
-                var portalId = _controller.CreatePortal(ref errors, GetDomainName(), GetAbsoluteServerPath(),
+                var errors = new List<string>();
+                var portalId = _controller.CreatePortal(errors, GetDomainName(), GetAbsoluteServerPath(),
                     request.SiteTemplate, request.SiteName,
                     request.SiteAlias, request.SiteDescription, request.SiteKeywords,
                     request.IsChildSite, request.HomeDirectory, request.SiteGroupId, request.UseCurrentUserAsAdmin,
