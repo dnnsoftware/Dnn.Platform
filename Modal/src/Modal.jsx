@@ -20,8 +20,8 @@ class Modal extends Component {
         if (document.getElementsByClassName("socialpanel") && document.getElementsByClassName("socialpanel").length > 0 && !props.modalWidth) {
             modalWidth = document.getElementsByClassName("socialpanel")[0].offsetWidth;
         }
-        if (document.getElementsByClassName("socialpanelheader") && document.getElementsByClassName("socialpanelheader").length > 0 && !props.modalHeight) {
-            modalTopMargin = document.getElementsByClassName("socialpanelheader")[0].offsetHeight;
+        if (document.getElementsByClassName("dnn-persona-bar-page-header") && document.getElementsByClassName("dnn-persona-bar-page-header").length > 0 && !props.modalHeight) {
+            modalTopMargin = document.getElementsByClassName("dnn-persona-bar-page-header")[0].offsetHeight;
         }
         return (props.style || {
             overlay: {
