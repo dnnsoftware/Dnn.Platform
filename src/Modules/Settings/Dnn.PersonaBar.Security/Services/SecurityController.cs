@@ -487,7 +487,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [RequireHost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
