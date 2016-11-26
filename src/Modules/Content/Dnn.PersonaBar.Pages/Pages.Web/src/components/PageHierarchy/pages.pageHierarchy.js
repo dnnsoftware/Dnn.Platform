@@ -532,7 +532,7 @@ window.dnn.pages = window.dnn.pages || {};
         },
 
         _resizeContentContainer: function(resetContainer) {
-            var $body = this.panel.closest(".dnn-social-panel-body");             
+            var $body = this.panel.closest(".dnn-persona-bar-page-body");             
             var pageHierarchyContainer = $body.find(".pagehierarchy-container");
             var restHeight = pageHierarchyContainer.position().top;
 

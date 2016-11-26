@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import SocialPanelHeader from "dnn-social-panel-header";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import PersonaBarPage from "dnn-persona-bar-page";
 import {
     pageActions as PageActions,
@@ -219,12 +219,12 @@ class App extends Component {
         const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
-            <SocialPanelHeader title={titleSettings} tooltip={titleSettings}>
+            <PersonaBarPageHeader title={titleSettings} tooltip={titleSettings}>
                 {!this.isNewPage() &&
                     this.getSettingsButtons()
                 }
-            </SocialPanelHeader>
-            <SocialPanelBody
+            </PersonaBarPageHeader>
+            <PersonaBarPageBody
                 workSpaceTrayOutside={true}
                 workSpaceTray={backToPages}
                 workSpaceTrayVisible={securityService.isSuperUser()}>
@@ -248,7 +248,7 @@ class App extends Component {
                     onCopyPermissionsToDescendantPages={props.onCopyPermissionsToDescendantPages}
                     pageDetailsFooterComponents={props.pageDetailsFooterComponents}
                     pageTypeSelectorComponents={props.pageTypeSelectorComponents} />
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         </PersonaBarPage>);
     }
 
@@ -257,9 +257,9 @@ class App extends Component {
         const backToPages = <BackTo onClick={props.onCancelAddMultiplePages} label={Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
-            <SocialPanelHeader title={Localization.get("AddMultiplePages")}>
-            </SocialPanelHeader>
-            <SocialPanelBody
+            <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
+            </PersonaBarPageHeader>
+            <PersonaBarPageBody
                 workSpaceTrayOutside={true}
                 workSpaceTray={backToPages}
                 workSpaceTrayVisible={securityService.isSuperUser()}>
@@ -269,7 +269,7 @@ class App extends Component {
                     onSave={props.onSaveMultiplePages}
                     onChangeField={props.onChangeAddMultiplePagesField}
                     components={props.multiplePagesComponents} />
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         </PersonaBarPage>);
     }
 
@@ -280,15 +280,15 @@ class App extends Component {
         const backToPageSettings = <BackTo onClick={props.onCancelSavePageAsTemplate} label={backToLabel} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
-            <SocialPanelHeader title={Localization.get("SaveAsTemplate")}>
-            </SocialPanelHeader>
-            <SocialPanelBody
+            <PersonaBarPageHeader title={Localization.get("SaveAsTemplate")}>
+            </PersonaBarPageHeader>
+            <PersonaBarPageBody
                 workSpaceTrayOutside={true}
                 workSpaceTray={backToPageSettings}
                 workSpaceTrayVisible={true}>
                 <SaveAsTemplate
                     onCancel={props.onCancelSavePageAsTemplate} />
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         </PersonaBarPage>);
     }
 
@@ -322,10 +322,10 @@ class App extends Component {
             <div className="pages-app personaBar-mainContainer">
                 {props.selectedView === panels.MAIN_PANEL && isListPagesAllowed &&
                     <PersonaBarPage isOpen={props.selectedView === panels.MAIN_PANEL}>
-                        <SocialPanelHeader title={Localization.get("Pages")}>
+                        <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
-                        </SocialPanelHeader>
+                        </PersonaBarPageHeader>
                         <PageList onPageSettings={this.onPageSettings.bind(this)} />
                     </PersonaBarPage>
                 }

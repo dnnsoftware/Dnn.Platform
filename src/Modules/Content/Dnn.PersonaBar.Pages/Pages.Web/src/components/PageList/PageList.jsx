@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import GridCell from "dnn-grid-cell";
 import SearchBox from "dnn-search-box";
 import PageHierarchy from "../PageHierarchy/PageHierarchy";
@@ -15,7 +15,7 @@ class PageList extends Component {
 
     render() {
         return (
-            <SocialPanelBody className={styles.pageListBody}>                  
+            <PersonaBarPageBody className={styles.pageListBody}>                  
                 <div className="search-container">      
                     <GridCell columnSize={65}>
                         <div>{this.props.toolbarComponents}</div>
@@ -33,7 +33,7 @@ class PageList extends Component {
                     searchKeyword={this.props.searchKeyword} 
                     onPageSettings={this.props.onPageSettings}
                     createdPage={this.props.createdPage} />
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }
