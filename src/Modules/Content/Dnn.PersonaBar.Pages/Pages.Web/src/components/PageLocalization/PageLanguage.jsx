@@ -39,7 +39,7 @@ class PageLanguage extends Component {
     } 
 
     onUpdatePages(key, e) {
-        const value = e.target.value;
+        const value = e.target ? e.target.value: e;
         const CultureCode = this.props.local.CultureCode;
         this.props.onUpdatePages(CultureCode, key, value);
     }
