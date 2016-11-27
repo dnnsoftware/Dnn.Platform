@@ -23,6 +23,7 @@ define(['jquery',
                 window.dnn.initVocabularies = function initializeVocabularies() {
                     return {
                         utility: utility,
+                        settings: params.settings,
                         moduleName: 'Vocabularies'
                     };
                 };
