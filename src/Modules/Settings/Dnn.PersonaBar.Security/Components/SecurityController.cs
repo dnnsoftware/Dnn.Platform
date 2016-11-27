@@ -129,7 +129,8 @@ namespace Dnn.PersonaBar.Security.Components
             if (parentNode.ChildTabs != null)
             {
                 parentNode.ChildTabs.Clear();
-                var parentId = int.Parse(parentNode.TabId);
+                int parentId;
+                int.TryParse(parentNode.TabId, out parentId);
                 var tabs = GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
 
                 foreach (var tab in tabs)

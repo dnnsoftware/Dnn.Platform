@@ -217,10 +217,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     foreach (var permission in userPermission.Permissions)
                     {
+                        int roleId;
+                        int.TryParse(Globals.glbRoleNothing, out roleId);
                         desktopModulePermissions.Add(new DesktopModulePermissionInfo()
                         {
                             PermissionID = permission.PermissionId,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            RoleID = roleId,
                             UserID = userPermission.UserId,
                             PortalDesktopModuleID = portalModule.PortalDesktopModuleID,
                             AllowAccess = permission.AllowAccess

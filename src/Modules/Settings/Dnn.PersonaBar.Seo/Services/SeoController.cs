@@ -264,7 +264,10 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var regex = new Regex(regexPattern);
+                if (Regex.IsMatch("", regexPattern))
+                {
+                }
+
                 return true;
             }
             catch
@@ -285,35 +288,41 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var portalAlias = !String.IsNullOrEmpty(PortalSettings.DefaultPortalAlias)
+                var portalAlias = !string.IsNullOrEmpty(PortalSettings.DefaultPortalAlias)
                                 ? PortalSettings.DefaultPortalAlias
                                 : PortalSettings.PortalAlias.HTTPAlias;
+
+                var str = PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1");
+                float sitemapMinPriority;
+                if (!float.TryParse(str, out sitemapMinPriority))
+                {
+                    sitemapMinPriority = 0.1f;
+                }
+
+                str = PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1");
+                float sitemapExcludePriority;
+                if (!float.TryParse(str, out sitemapExcludePriority))
+                {
+                    sitemapExcludePriority = 0.1f;
+                }
+
 
                 var settings = new
                 {
                     SitemapUrl = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx",
-                    SitemapLevelMode =
-                        bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", PortalId,
-                            "False")),
-                    SitemapMinPriority =
-                        float.Parse(
-                            PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1"),
-                            NumberFormatInfo.InvariantInfo),
-                    SitemapIncludeHidden =
-                        bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", PortalId,
-                            "False")),
-                    SitemapExcludePriority =
-                        float.Parse(
-                            PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1"),
-                            NumberFormatInfo.InvariantInfo),
-                    SitemapCacheDays =
-                        int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalId, "1"))
+                    SitemapLevelMode = PortalController.GetPortalSettingAsBoolean("SitemapLevelMode", PortalId, false),
+                    SitemapMinPriority = sitemapMinPriority,
+                    SitemapIncludeHidden = PortalController.GetPortalSettingAsBoolean("SitemapIncludeHidden", PortalId, false),
+                    SitemapExcludePriority = sitemapExcludePriority,
+                    SitemapCacheDays = PortalController.GetPortalSettingAsInteger("SitemapCacheDays", PortalId, 1)
                 };
 
-                var searchEngineUrls = new List<KeyValuePair<string, string>>();
-                searchEngineUrls.Add(new KeyValuePair<string, string>("Google", _controller.GetSearchEngineSubmissionUrl("google")));
-                searchEngineUrls.Add(new KeyValuePair<string, string>("Bing", _controller.GetSearchEngineSubmissionUrl("bing")));
-                searchEngineUrls.Add(new KeyValuePair<string, string>("Yahoo!", _controller.GetSearchEngineSubmissionUrl("yahoo!")));
+                var searchEngineUrls = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("Google", _controller.GetSearchEngineSubmissionUrl("google")),
+                    new KeyValuePair<string, string>("Bing", _controller.GetSearchEngineSubmissionUrl("bing")),
+                    new KeyValuePair<string, string>("Yahoo!", _controller.GetSearchEngineSubmissionUrl("yahoo!"))
+                };
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {

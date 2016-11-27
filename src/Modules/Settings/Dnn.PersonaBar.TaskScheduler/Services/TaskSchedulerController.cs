@@ -174,7 +174,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             try
             {
                 var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(HostController.Instance.GetString("SchedulerMode"));
-                var newSchedulerMode = (SchedulerMode)Enum.Parse(typeof(SchedulerMode), request.SchedulerMode);
+                SchedulerMode newSchedulerMode;
+                Enum.TryParse(request.SchedulerMode, true, out newSchedulerMode);
                 if (originalSchedulerMode != newSchedulerMode)
                 {
                     switch (newSchedulerMode)

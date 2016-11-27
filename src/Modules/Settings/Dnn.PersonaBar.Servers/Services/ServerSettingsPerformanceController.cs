@@ -189,7 +189,10 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
                 }
                 HostController.Instance.Update("PerformanceSetting", request.CacheSetting, false);
-                Host.PerformanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), request.CacheSetting);
+
+                Globals.PerformanceSettings perfSetting;
+                Enum.TryParse(request.CacheSetting, false, out perfSetting);
+                Host.PerformanceSetting = perfSetting;
 
                 HostController.Instance.Update("AuthenticatedCacheability", request.AuthCacheability, false);
                 HostController.Instance.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);

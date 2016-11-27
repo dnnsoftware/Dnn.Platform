@@ -136,7 +136,15 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static int? CacheDuration(TabInfo tab)
         {
-            return tab.TabSettings["CacheDuration"] != null ? int.Parse((string)tab.TabSettings["CacheDuration"]) : (int?)null;
+            int i;
+            var duration = (int?)null;
+
+            if (tab.TabSettings["CacheDuration"] != null && int.TryParse((string) tab.TabSettings["CacheDuration"], out i))
+            {
+                duration = i;
+            }
+
+            return duration;
         }
 
         private static bool? CacheIncludeExclude(TabInfo tab)
@@ -151,7 +159,15 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static int? MaxVaryByCount(TabInfo tab)
         {
-            return tab.TabSettings["MaxVaryByCount"] != null ? int.Parse((string)tab.TabSettings["MaxVaryByCount"]) : (int?)null;
+            int i;
+            var maxVaryBy = (int?)null;
+
+            if (tab.TabSettings["MaxVaryByCount"] != null && int.TryParse((string)tab.TabSettings["MaxVaryByCount"], out i))
+            {
+                maxVaryBy = i;
+            }
+
+            return maxVaryBy;
         }
 
         private static bool AllowIndex(TabInfo tab)

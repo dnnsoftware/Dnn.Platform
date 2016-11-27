@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI;
 
 namespace Dnn.PersonaBar.Pages.Components
@@ -149,13 +147,17 @@ namespace Dnn.PersonaBar.Pages.Components
             });
 
             var files = Globals.GetFileList(portalId, "page.template", false, folder.FolderPath);
-            templates.AddRange(from FileItem file in files
-                               select new Template
-                               {
-                                   Id = file.Text.Replace(".page.template", ""),
-                                   Value = int.Parse(file.Value)
-                               });
-            
+            foreach (FileItem file in files)
+            {
+                int i;
+                int.TryParse(file.Value, out i);
+                templates.Add(new Template
+                {
+                    Id = file.Text.Replace(".page.template", ""),
+                    Value = i
+                });
+            }
+
             return templates;
         }
 
@@ -183,6 +185,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 var tabIndex = 0;
                 var exceptions = string.Empty;
+                // ReSharper disable once PossibleNullReferenceException
                 foreach (XmlNode tabNode in xmlDoc.SelectSingleNode("//portal/tabs").ChildNodes)
                 {
                     //Create second tab onward tabs. Note first tab is already created above.

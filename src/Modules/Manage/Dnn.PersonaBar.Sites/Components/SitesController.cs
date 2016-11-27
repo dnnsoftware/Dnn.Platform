@@ -609,7 +609,8 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 parentNode.ChildTabs.Clear();
 
-                var parentId = int.Parse(parentNode.TabId);
+                int tabId;
+                int.TryParse(parentNode.TabId, out tabId);
 
                 var tabs =
                     GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID)

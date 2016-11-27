@@ -50,7 +50,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 if (packageSettings.EditorActions.TryGetValue("supportsPartialRendering", out value)
                     && !string.IsNullOrEmpty(value))
                 {
-                    skinControl.SupportsPartialRendering = bool.Parse(value);
+                    bool b;
+                    bool.TryParse(value, out b);
+                    skinControl.SupportsPartialRendering = b;
                 }
 
                 SkinControlController.SaveSkinControl(skinControl);

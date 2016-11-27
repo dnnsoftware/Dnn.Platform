@@ -908,10 +908,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 {
                     foreach (var permission in userPermission.Permissions)
                     {
+                        int roleId;
+                        int.TryParse(Globals.glbRoleNothing, out roleId);
+
                         tab.TabPermissions.Add(new TabPermissionInfo
                         {
                             PermissionID = permission.PermissionId,
-                            RoleID = int.Parse(Globals.glbRoleNothing),
+                            RoleID = roleId,
                             UserID = userPermission.UserId,
                             AllowAccess = permission.AllowAccess
                         });

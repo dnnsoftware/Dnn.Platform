@@ -329,7 +329,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
             foreach (var url in tab.TabUrls.Where(u => u.IsSystem == isSystem).OrderBy(u => u.SeqNum))
             {
-                var statusCode = Int32.Parse(url.HttpStatus);
+                int statusCode;
+                int.TryParse(url.HttpStatus, out statusCode);
 
                 //27133 : Only show a custom URL 
                 if (url.PortalAliasUsage == PortalAliasUsageType.Default)

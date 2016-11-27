@@ -31,9 +31,7 @@ namespace Dnn.PersonaBar.Pages.Components
             var rootTab = TabController.Instance.GetTab(parentId, portalId, true);
 
             var strValue = page.BulkPages;
-            strValue = strValue.Replace("\r", "\n");
-            strValue = strValue.Replace(Environment.NewLine, "\n");
-            strValue = strValue.Replace("\n" + "\n", "\n").Trim();
+            strValue = strValue.Replace("\r", "\n").Replace("\n\n", "\n").Trim();
 
             string invalidType;
             if (!TabController.IsValidTabName(strValue, out invalidType))
@@ -46,7 +44,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 throw new BulkPagesException("endDate", Localization.GetString("StartDateAfterEndDate"));
             }
 
-            var pages = strValue.Split(char.Parse("\n"));
+            var pages = strValue.Split('\n');
             var tabs = new List<TabInfo>();
 
             foreach (var strLine in pages)
