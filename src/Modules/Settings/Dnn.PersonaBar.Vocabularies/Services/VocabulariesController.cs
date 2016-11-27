@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
         private Components.VocabulariesController _controller = new Components.VocabulariesController();
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Vocabularies.resx");
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         /// GET: api/Vocabularies/GetVocabularies
         /// <summary>
@@ -114,6 +115,11 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
+                if (_controller.IsSystemVocabulary(vocabularyDto.VocabularyId) && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                }
+
                 var vocabulary = new Vocabulary(vocabularyDto.Name, vocabularyDto.Description);
                 vocabulary.Type = vocabularyDto.Type == Constants.VocabularyTypeSimple ? VocabularyType.Simple : VocabularyType.Hierarchy;
                 vocabulary.ScopeTypeId = vocabularyDto.ScopeTypeId;
@@ -145,6 +151,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
+                if (_controller.IsSystemVocabulary(vocabularyId))
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
+                }
                 _controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -232,6 +242,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
+                if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 if (termDto.ParentTermId != Null.NullInteger)
                 {
@@ -263,6 +277,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
+                if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 term.TermId = termDto.TermId;
                 if (termDto.ParentTermId != Null.NullInteger)
@@ -296,6 +314,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             try
             {
                 var term = _controller.GetTerm(termId);
+                if (_controller.IsSystemVocabulary(term.VocabularyId) && !UserInfo.IsSuperUser)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                }
                 _controller.DeleteTerm(term);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }

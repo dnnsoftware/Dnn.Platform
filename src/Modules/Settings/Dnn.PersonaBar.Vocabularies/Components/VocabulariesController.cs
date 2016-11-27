@@ -60,6 +60,11 @@ namespace Dnn.PersonaBar.Vocabularies.Components
             return vocabularies.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
+        public bool IsSystemVocabulary(int vocabularyId)
+        {
+            return _vocabularyController.GetVocabularies().Any(v => v.VocabularyId == vocabularyId && v.IsSystem);
+        }
+
         public int AddVocabulary(Vocabulary vocabulary)
         {
             if (vocabulary.ScopeType.ScopeType == Constants.VocabularyScopeTypeWebsite)
