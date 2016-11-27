@@ -107,13 +107,16 @@ class CreatePortal extends Component {
 
     resolveSiteAliasError(value, isChildSite) {
         let rootDomain = extractDomain(window.location.href);
+        let subUrl = value.replace(rootDomain + "/", "");
         if (!isChildSite) {
-            return value === "";
+            let regex = /[^\/a-z0-9.:]/i;
+            return value === "" || regex.test(value) || value.indexOf(" ") > 0;
         } else {
-            if ((value.lastIndexOf("/") < value.length - 1) && value.indexOf(rootDomain) >= 0) {
-                return false;
+            let regex = /[^\/a-z0-9_-]/i;
+            if (((regex.test(subUrl) && subUrl !== "") || (value.indexOf(rootDomain + "/")) === -1) || subUrl === "" || value.indexOf(" ") > 0) {
+                return true;
             }
-            return true;
+            return false;
         }
     }
 

@@ -379,7 +379,11 @@
     <value>Password is required. Please enter a minimum of 7 characters.</value>
   </data>
   <data name="SiteAliasRequired.Error" xml:space="preserve">
-    <value>Site Alias is required.</value>
+    <value>Site Alias is required. &lt;ul style="
+    word-break: normal;
+    margin: 10px auto;
+    list-style: none;
+"&gt;&lt;li style="margin-bottom:10px"&gt;Domain requirements: No spaces, no special characters (: , . only). &lt;/li&gt;&lt;li&gt;Directory requirements: No spaces, no special characters (_ , - only). &lt;/li&gt;&lt;/ul&gt;</value>
   </data>
   <data name="SiteTitleRequired.Error" xml:space="preserve">
     <value>Site Title is required.</value>
