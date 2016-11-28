@@ -10,6 +10,8 @@ import "./style.less";
 import Pager from "dnn-pager";
 import { AddIcon } from "dnn-svg-icons";
 import { CommonUsersActions } from "../../../actions";
+import utilities from "utils";
+
 class UserRoles extends Component {
     constructor(props) {
         super(props);
@@ -168,6 +170,7 @@ class UserRoles extends Component {
                 pageSize={this.state.pageSize}
                 totalRecords={this.props.totalRecords}
                 onPageChanged={this.onPageChanged.bind(this) }
+                culture={utilities.getCulture()}
                 />;
     }
     render() {

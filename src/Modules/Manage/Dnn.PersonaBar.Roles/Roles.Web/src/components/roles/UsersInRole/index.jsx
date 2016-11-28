@@ -13,6 +13,7 @@ import IconButton from "../../common/IconButton";
 import {
     roleUsers as RoleUsersActions
 } from "../../../actions";
+import util from "../../../utils";
 
 class UsersInRole extends Component {
     constructor(props) {
@@ -165,6 +166,7 @@ class UsersInRole extends Component {
                 pageSize={this.state.pageSize}
                 totalRecords={this.props.totalRecords}
                 onPageChanged={this.onPageChanged.bind(this) }
+                culture={util.utilities.getCulture()}
                 />;
     }
     render() {

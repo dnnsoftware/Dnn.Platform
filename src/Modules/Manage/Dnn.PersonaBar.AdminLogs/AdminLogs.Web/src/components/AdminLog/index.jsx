@@ -274,6 +274,7 @@ class AdminLogPanelBody extends Component {
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
+                    culture={util.utilities.getCulture()}
                     />
             </div>
         );
@@ -327,7 +328,6 @@ class AdminLogPanelBody extends Component {
                     {state.logTypeList.length > 0 &&
                         <div className="sitegroup-filter-container">
                             <DropDown
-                                fixedHeight={300}
                                 value={state.currentLogTypeKey}
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}
