@@ -329,6 +329,8 @@
     padding: 10px;
     line-height: 100%;
     border: 1px solid #e6e6e6;
+    max-width: 150px;
+    word-wrap: break-word;
 }
 
 .sqlconsolePanel .tables-container table thead th.table-sortable {
