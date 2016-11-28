@@ -119,6 +119,7 @@
     <Compile Include="Exceptions\TermValidationException.cs" />
     <Compile Include="Exceptions\VocabularyNameAlreadyExistsException.cs" />
     <Compile Include="Exceptions\VocabularyValidationException.cs" />
+    <Compile Include="MenuControllers\VocabulariesMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Dto\TermDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
