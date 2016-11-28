@@ -483,15 +483,14 @@ window.dnn.pages = window.dnn.pages || {};
         },
 
         _clonePageData: function(data) {
-            return {
-                id: data.id,
-                parentId: data.parentId,
-                name: data.name,
-                childCount: data.childCount,
-                isspecial: data.isspecial,
-                pages: data.pages,
-                timestamp: (new Date()).getTime()
-            };
+            var clone = {};
+
+            for (var prop in data) {
+                clone[prop] = data[prop];
+            }  
+            clone.timestamp = (new Date()).getTime();
+
+            return clone;
         },
 
         _scrollToSelectedPage: function() {
