@@ -10,6 +10,7 @@ import Pager from "dnn-pager";
 import "./style.less";
 import {CommonUsersActions } from "dnn-users-common-actions";
 import appSettings from "utils/applicationSettings";
+import utilities from "utils";
 
 const searchParameters = {
     searchText: "",
@@ -108,6 +109,7 @@ class Body extends Component {
                                 totalRecords={props.totalUsers}
                                 onPageChanged={this.onPageChanged.bind(this) }
                                 resetIndex={this.state.searchParameters.resetIndex}
+                                culture={utilities.getCulture() }
                                 />
                         </div>
                     }
