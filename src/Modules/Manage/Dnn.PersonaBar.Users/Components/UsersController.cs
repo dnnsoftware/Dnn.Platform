@@ -50,6 +50,7 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
@@ -72,7 +73,9 @@ namespace Dnn.PersonaBar.Users.Components
 
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
-            return !string.IsNullOrEmpty(usersContract.SearchText) && usersContract.Filter == UserFilters.All
+            return !string.IsNullOrEmpty(usersContract.SearchText) 
+                        && usersContract.Filter == UserFilters.All
+                        && !HostController.Instance.GetBoolean("DisableUserCrawling", false)
                 ? GetUsersFromLucene(usersContract, out totalRecords)
                 : GetUsersFromDb(usersContract, isSuperUser, out totalRecords);
         }
@@ -269,24 +272,29 @@ namespace Dnn.PersonaBar.Users.Components
             var users = new List<UserBasicDto>();
             ArrayList dbUsers = null;
             IEnumerable<UserInfo> userInfos = null;
+
+            var portalId = usersContract.PortalId;
+            var pageIndex = usersContract.PageIndex;
+            var pageSize = usersContract.PageSize;
+            var searchText = usersContract.SearchText;
+
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    dbUsers = UserController.GetUsers(usersContract.PortalId, usersContract.PageIndex,
-                        usersContract.PageSize, ref totalRecords, true,
-                        false);
+                    dbUsers = string.IsNullOrEmpty(searchText)
+                                ? UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, false)
+                                : UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize, ref totalRecords, true, false);
                     users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, usersContract.PageIndex,
-                            usersContract.PageSize, ref totalRecords, true, true);
+                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
                         users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
                     break;
                 case UserFilters.UnAuthorized:
-                    dbUsers = UserController.GetUnAuthorizedUsers(usersContract.PortalId, true, false);
+                    dbUsers = UserController.GetUnAuthorizedUsers(portalId, true, false);
                     userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     if (!isSuperUser)
                     {
@@ -295,7 +303,7 @@ namespace Dnn.PersonaBar.Users.Components
                     users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 case UserFilters.Deleted:
-                    dbUsers = UserController.GetDeletedUsers(usersContract.PortalId);
+                    dbUsers = UserController.GetDeletedUsers(portalId);
                     userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     if (!isSuperUser)
                     {
@@ -307,8 +315,7 @@ namespace Dnn.PersonaBar.Users.Components
 //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
 //                        break;
                 case UserFilters.RegisteredUsers:
-                    userInfos = RoleController.Instance.GetUsersByRole(usersContract.PortalId,
-                        PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                    userInfos = RoleController.Instance.GetUsersByRole(portalId, PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
                     if (!isSuperUser)
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
