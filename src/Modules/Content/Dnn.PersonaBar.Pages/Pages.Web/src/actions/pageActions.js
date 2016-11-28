@@ -91,6 +91,7 @@ const pageActions = {
 
             PagesService.getNewPage().then(page => {
                 if (previousPage && !securityService.isSuperUser()) {
+                    page.hierarchy = previousPage.name;
                     page.permissions = cloneDeep(previousPage.permissions);
                 }
                 

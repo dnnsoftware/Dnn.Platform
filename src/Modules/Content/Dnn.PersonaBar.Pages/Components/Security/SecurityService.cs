@@ -107,11 +107,12 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         public virtual bool CanSavePageDetails(PageSettings pageSettings)
         {
             var tabId = pageSettings.TabId;
+            var pageType = pageSettings.PageType;
             var parentId = pageSettings.ParentId ?? 0;
-            var creatingPage = parentId > 0 && tabId <= 0 && pageSettings.TemplateId <= 0;
-            var creatingTemplate = tabId <= 0 && pageSettings.TemplateId > 0;
-            var updatingPage = tabId > 0;
-            var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0;
+            var creatingPage = parentId > 0 && tabId <= 0 && pageType == "normal";
+            var updatingPage = tabId > 0 && pageType == "normal";
+            var creatingTemplate = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "template";
+            var duplicatingPage = tabId <= 0 && pageSettings.TemplateTabId > 0 && pageType == "normal";
 
             return (
                 IsPageAdminUser() ||
