@@ -46,6 +46,12 @@ class ProviderEditor extends Component {
 
         if (key === "Priority") {
             settings[key] = parseFloat(event.value);
+            if (parseFloat(event.value) !== -1) {
+                settings["OverridePriority"] = true;
+            }
+            else {
+                settings["OverridePriority"] = false;
+            }
         }
         else {
             settings[key] = typeof (event) === "object" ? event.target.value : event;
@@ -65,7 +71,7 @@ class ProviderEditor extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {state} = this;
-        if (state.settings) {            
+        if (state.settings) {
             const columnOne = <div className="left-column">
                 <InputGroup>
                     <div className="providerSettings-row_switch">
@@ -93,7 +99,7 @@ class ProviderEditor extends Component {
                         <Dropdown
                             fixedHeight={100}
                             options={priorityOptions}
-                            value={!state.settings.OverridePriority ? -1: state.settings.Priority}
+                            value={!state.settings.OverridePriority ? -1 : state.settings.Priority}
                             onSelect={this.onSettingChange.bind(this, "Priority")}
                             />
                     </div>
@@ -103,7 +109,7 @@ class ProviderEditor extends Component {
             /* eslint-disable react/no-danger */
             return (
                 <div className={styles.providerSettingEditor}>
-                    <div style={{height: "15px"}}/>
+                    <div style={{ height: "15px" }} />
                     <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                     <div className="buttons-box-secondary">
                         <Button
