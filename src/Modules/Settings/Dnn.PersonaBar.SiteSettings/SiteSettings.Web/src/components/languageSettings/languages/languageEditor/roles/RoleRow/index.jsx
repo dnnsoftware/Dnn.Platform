@@ -42,8 +42,8 @@ class RoleRow extends Component {
         const {props} = this;
 
         return (
-            <div className={"collapsible-component1"}>
-                <div className={"collapsible-header1 "} >
+            <div className={"collapsible-component-language-roles"}>
+                <div className={"collapsible-header-language-roles "} >
                     <GridCell title={props.roleName} columnSize={60} >
                         {props.roleName}</GridCell>
                     <GridCell columnSize={40} >
