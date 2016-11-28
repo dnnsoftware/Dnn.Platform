@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import AddTermBox from "./AddTermBox";
 import Term from "./Term";
@@ -6,7 +6,7 @@ import util from "../../../utils";
 import LocalizedResources from "../../../resources";
 import styles from "./style.less";
 
-import {AddIcon} from "dnn-svg-icons";
+import { AddIcon } from "dnn-svg-icons";
 
 function findInChildren(list, parentTermId) {
     if (!list) {
@@ -281,7 +281,7 @@ class RightPane extends Component {
             let children = this.getChildTerms(term, this.onEditTerm.bind(this), true);
             return <Term
                 term={term}
-                onClick={this.onEditTerm.bind(this) }
+                onClick={this.onEditTerm.bind(this)}
                 isEditable={true}
                 key={"term-" + term.TermId}
                 >
@@ -297,7 +297,7 @@ class RightPane extends Component {
             let children = this.getChildTerms(term, this.onSelectParent.bind(this), false);
             return <Term
                 term={term}
-                onClick={this.onSelectParent.bind(this) }
+                onClick={this.onSelectParent.bind(this)}
                 isEditable={false}
                 key={"term-" + term.TermId}
                 >
@@ -317,21 +317,25 @@ class RightPane extends Component {
                         editMode={state.editMode}
                         error={state.triedToSubmitTerm && state.nameError}
                         termBeingEdited={state.termBeingEdited}
-                        termTreeVisible={(props.type === "Hierarchy" && vocabularyTerms.length > 0 && (!state.editMode || state.termBeingEdited.ParentTermId > 0)) }
+                        termTreeVisible={(props.type === "Hierarchy" && vocabularyTerms.length > 0 && (!state.editMode || state.termBeingEdited.ParentTermId > 0))}
                         parentDisplay={parentDisplay}
                         parentTermTree={parentTermTree}
                         parentTreeOpened={state.parentTreeOpened}
-                        toggleParentTree={this.toggleParentTree.bind(this) }
-                        onTermValueChange={this.onTermValueChange.bind(this) }
-                        deleteTerm={this.deleteTerm.bind(this) }
-                        closeAddTerm={this.closeAddTerm.bind(this) }
-                        onUpdateTerm={this.onUpdateTerm.bind(this) }
+                        toggleParentTree={this.toggleParentTree.bind(this)}
+                        onTermValueChange={this.onTermValueChange.bind(this)}
+                        deleteTerm={this.deleteTerm.bind(this)}
+                        closeAddTerm={this.closeAddTerm.bind(this)}
+                        onUpdateTerm={this.onUpdateTerm.bind(this)}
                         />
-                    <div className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed") }>
+                    <div className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed")}>
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
-                        <div className="add-term-button do-not-close" dangerouslySetInnerHTML={{ __html: AddIcon + " " + LocalizedResources.get("AddTerm") }} onClick={this.openAddTerm.bind(this, false, props.type) }>
-                        </div>
-                        <Scrollbars style={{ width: "345px", height: "300px", border: "1px solid #DBDBDB" }}>
+                        {util.settings.isHost &&
+                            <div className="add-term-button do-not-close"
+                                dangerouslySetInnerHTML={{ __html: AddIcon + " " + LocalizedResources.get("AddTerm") }}
+                                onClick={this.openAddTerm.bind(this, false, props.type)}>
+                            </div>
+                        }
+                        <Scrollbars style={{ width: "345px", height: "300px", border: "1px solid #DBDBDB", marginTop: 10 }}>
                             <ul className={"term-ul root-level term-list-level " + props.type}>
                                 {terms}
                             </ul>

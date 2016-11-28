@@ -1,6 +1,7 @@
 import React, {Component, PropTypes } from "react";
 import EditableWithLabel from "dnn-editable-field";
 import LocalizedResources from "../../../resources";
+import util from "utils";
 import styles from "./style.less";
 
 
@@ -21,6 +22,7 @@ class LeftPane extends Component {
                     value={props.description}
                     onEnter={this.onEnter.bind(this, "Description") }
                     inputType="textArea"
+                    editable={util.settings.isHost}
                     />
                 <EditableWithLabel
                     label={LocalizedResources.get("Type") }

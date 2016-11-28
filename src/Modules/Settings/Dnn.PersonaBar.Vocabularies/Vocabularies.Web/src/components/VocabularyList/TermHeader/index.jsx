@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
-
+import util from "utils";
 import { TrashIcon } from "dnn-svg-icons";
 
 /* eslint-disable quotes */
@@ -91,7 +91,7 @@ class TermHeader extends Component {
 
                             <TextOverflowWrapper text={props.header} maxWidth={200}/>
 
-                            {(!this.state.collapsed && !props.term.IsSystem) &&
+                            {(!this.state.collapsed && !props.term.IsSystem) && util.settings.isHost &&
                                 <div dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={this.onDelete.bind(this) } className="delete-button"></div>
                             }
                         </div>

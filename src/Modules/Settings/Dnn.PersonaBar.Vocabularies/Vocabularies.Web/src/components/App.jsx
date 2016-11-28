@@ -1,15 +1,13 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import VocabularyList from "./VocabularyList";
 import CreateVocabulary from "./CreateVocabulary";
 import PersonaBarPage from "dnn-persona-bar-page";
-import {visiblePanel as VisiblePanelActions } from "../actions";
+import { visiblePanel as VisiblePanelActions } from "../actions";
 import LocalizedResources from "../resources";
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
+import util from "utils";
 
 class App extends Component {
     constructor() {
@@ -34,17 +32,17 @@ class App extends Component {
         return (
             <div className="taxonomy-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <PersonaBarPageHeader title={LocalizedResources.get("ControlTitle_") }>
-                        <Button type="primary" size="large" onClick={this.openCreateVocabulary.bind(this) }>{LocalizedResources.get("Create") }</Button>
+                    <PersonaBarPageHeader title={LocalizedResources.get("ControlTitle_")}>
+                        {util.settings.isHost && <Button type="primary" size="large" onClick={this.openCreateVocabulary.bind(this)}>{LocalizedResources.get("Create")}</Button>}
                     </PersonaBarPageHeader>
                     <VocabularyList />
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
                     <PersonaBarPageHeader
-                        title={LocalizedResources.get("Create") }
-                        onCreateVocabulary={this.openCreateVocabulary.bind(this) }
+                        title={LocalizedResources.get("Create")}
+                        onCreateVocabulary={this.openCreateVocabulary.bind(this)}
                         />
-                    <CreateVocabulary onCloseVocabulary={this.closeCreateVocabulary.bind(this) } isOpen={props.selectedPage === 1}/>
+                    <CreateVocabulary onCloseVocabulary={this.closeCreateVocabulary.bind(this)} isOpen={props.selectedPage === 1} />
                 </PersonaBarPage>
             </div>
         );
