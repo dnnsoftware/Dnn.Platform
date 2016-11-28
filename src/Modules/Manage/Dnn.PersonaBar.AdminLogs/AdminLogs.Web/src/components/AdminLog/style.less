@@ -1,3 +1,4 @@
+@import "~dnn-global-styles/index";
 #adminlogs-container {
     .dnn-persona-bar-page-body {
         border-bottom: 0;
@@ -147,51 +148,31 @@
                 float: left;
             }
             .logContainerBox {
-                border: solid 1px #ddd;
+                border: solid 1px @alto;
                 float: left;
             }
             .toolbar {
-                border-bottom: solid 1px #ddd;
+                border-bottom: solid 1px @alto;
                 display: block;
                 float: left;
                 width: 758px;
                 margin: 0 0px 0 20px;
                 .sitegroup-filter-container {
-                    width: 175px;
-                    font-weight: bolder;
-                    margin: 10px 0 5px 0;
+                    width: 23%;
+                    height: 32px;
+                    margin-top: 10px;
+                    border-right: 1px solid @alto;
                     float: left;
-                    border-right: solid 1px #ddd;
-                    .collapsible-label {
-                        white-space: nowrap;
-                    }
-                    .collapsible-content {
-                        -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
-                        -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
-                        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
-                        margin-top: 13px;
-                    }
-                    ul.site-group-filter {
-                        li {
-                            padding: 7px 15px;
-                            text-indent: 0px;
-                        }
-                    }
-                    > div:first-child {
-                        float: left;
-                        width: 100%;
-                    }
-                    &:hover {
-                        .dropdown-label {
-                            color: #0087C6;
+                    .dnn-dropdown {
+                        .collapsible-toggle {
+                            width: auto;
                         }
                     }
                 }
                 .toolbar-button {
-                    font-weight: bolder;
                     margin: 10px 0 5px 20px;
                     float: right;
-                    border-left: solid 1px #ddd;
+                    border-left: solid 1px @alto;
                     padding-left: 20px;
                     text-align: right;
                     cursor: pointer;
@@ -228,7 +209,7 @@
                 float: left;
                 padding: 20px 0 10px 0;
                 margin: 0 20px 0 20px;
-                border-top: solid 1px #ddd;
+                border-top: solid 1px @alto;
                 margin-top: 10px;
                 .logLegend-item {
                     float: left;
