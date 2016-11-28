@@ -1,6 +1,6 @@
 {
   "name": "dnn-searchable-tags",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "DNN Searchible Tags",
   "main": "index.js",
   "scripts": {
