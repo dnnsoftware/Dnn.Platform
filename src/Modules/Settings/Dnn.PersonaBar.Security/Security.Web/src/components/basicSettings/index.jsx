@@ -202,7 +202,7 @@ class BasicSettingsPanelBody extends Component {
                             />
                     </InputGroup>
                     <InputGroup>
-                        <div className="loginSettings-row_switch">
+                        <div className="loginSettings-row_switch" style={{margin: "0"}}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("Security_RequireValidProfileAtLogin.Help")}

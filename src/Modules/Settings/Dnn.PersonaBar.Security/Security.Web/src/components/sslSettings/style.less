@@ -1,25 +1,26 @@
-
 @import "~dnn-global-styles/index";
 :local(.sslSettings) {
     margin: 30px 30px;
-    .sslSettings-row_switch {
-        border-bottom: 1px solid @alto;
-        margin: 10px 0 0 0;
-        display: table;
-        width: 100%;
-        padding: 0 0 10px 0;
+    * {
+        box-sizing: border-box;
     }
     .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;
         label {
             font-weight: bolder;
             float: left;
         }
-        .dnn-dropdown {
-            width: 92%;
-        }
         .dnn-switch-container {
             float: right;
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+        .sslSettings-row_switch {
+            border-bottom: 1px solid @alto;
+            margin: 0 0 20px 0;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
         }
     }
     .buttons-box {

@@ -9,6 +9,7 @@ import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
 import { AddIcon } from "dnn-svg-icons";
+import styles from "./style.less";
 
 /*eslint-disable quotes*/
 const warningIcon = require(`!raw!./../svg/error.svg`);
@@ -125,8 +126,7 @@ class IpFiltersPanelBody extends Component {
         let opened = (this.state.openId === "add");
         if (this.props.ipFilters) {
             return (
-                <div>
-                    <div className="ip-filter-items">
+                    <div className={styles.ipFilterItems}>
                         <div className="ip-filter-topbar">
                             {!this.props.enableIPChecking &&
                                 <div className="warning-container">
@@ -167,8 +167,6 @@ class IpFiltersPanelBody extends Component {
                             {this.renderedIpFilters()}
                         </div>
                     </div>
-
-                </div >
             );
         }
         else return <div />;

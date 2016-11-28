@@ -24,8 +24,8 @@
                     color: @mountainMist;
                     margin: 0 0 0 -15px;
                     .allow-icon, .deny-icon {
+                        padding-left: 15px;
                         > svg {
-                            padding: 0 15px 0 15px;
                             width: 16px;
                             float: left;
                             height: 16px;
@@ -43,6 +43,8 @@
                 float: left;
                 .edit-icon {
                     cursor: pointer;
+                    float: right;
+                    margin-right: 5px;
                     > svg {
                         width: 16px;
                         float: right;
@@ -54,7 +56,7 @@
                     }
                 }
                 .edit-icon-active {
-                    margin-right: 15px;
+                    float: right;
                     cursor: pointer;
                     > svg {
                         width: 16px;
@@ -68,8 +70,8 @@
                 }
                 .delete-icon {
                     cursor: pointer;
+                    float: right;
                     > svg {
-                        padding: 0 15px 0 5px;
                         width: 16px;
                         float: right;
                         height: 16px;

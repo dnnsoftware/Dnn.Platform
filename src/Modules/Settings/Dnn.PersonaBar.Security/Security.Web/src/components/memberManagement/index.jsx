@@ -195,7 +195,6 @@ class MemberManagementPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.membershipResetLinkValidity && this.state.triedToSubmit}
                             errorMessage={resx.get("MembershipResetLinkValidity.ErrorMessage")}
@@ -215,7 +214,6 @@ class MemberManagementPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.adminMembershipResetLinkValidity && this.state.triedToSubmit}
                             errorMessage={resx.get("AdminMembershipResetLinkValidity.ErrorMessage")}
@@ -224,7 +222,7 @@ class MemberManagementPanelBody extends Component {
                             />
                     </InputGroup>
                     <InputGroup>
-                        <div className="memberSettings-row_switch">
+                        <div className="memberSettings-row_switch" style={{margin: "0 0 20px 0"}}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plEnablePasswordHistory.Help")}
@@ -255,7 +253,6 @@ class MemberManagementPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.membershipNumberPasswords && this.state.triedToSubmit}
                             errorMessage={resx.get("MembershipNumberPasswords.ErrorMessage")}
@@ -264,7 +261,7 @@ class MemberManagementPanelBody extends Component {
                             />
                     </InputGroup>
                     <InputGroup>
-                        <div className="memberSettings-row_switch">
+                        <div className="memberSettings-row_switch" style={{margin: "0 0 20px 0"}}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plEnableBannedList.Help")}
@@ -284,7 +281,7 @@ class MemberManagementPanelBody extends Component {
                         </div>
                     </InputGroup>
                     <InputGroup>
-                        <div className="memberSettings-row_switch">
+                        <div className="memberSettings-row_switch" style={{margin: "0"}}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plEnableStrengthMeter.Help")}
@@ -304,7 +301,7 @@ class MemberManagementPanelBody extends Component {
                         </div>
                     </InputGroup>
                     <InputGroup>
-                        <div className="memberSettings-row_switch">
+                        <div className="memberSettings-row_switch" style={{margin: "20px 0 20px 0"}}>
                             <Label
                                 labelType="inline"
                                 tooltipMessage={resx.get("plEnableIPChecking.Help")}
@@ -335,7 +332,6 @@ class MemberManagementPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.passwordExpiry && this.state.triedToSubmit}
                             errorMessage={resx.get("PasswordExpiry.ErrorMessage")}
@@ -355,7 +351,6 @@ class MemberManagementPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.passwordExpiryReminder && this.state.triedToSubmit}
                             errorMessage={resx.get("PasswordExpiryReminder.ErrorMessage")}

@@ -4,7 +4,7 @@ import {
     security as SecurityActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
-import SingleLineInput from "dnn-single-line-input";
+import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Switch from "dnn-switch";
 import Label from "dnn-label";
 import Button from "dnn-button";
@@ -110,7 +110,9 @@ class SslSettingsPanelBody extends Component {
                             tooltipMessage={resx.get("plSSLURL.Help")}
                             label={resx.get("plSSLURL")}
                             />
-                        <SingleLineInput
+                        <SingleLineInputWithError
+                            withLabel={false}
+                            error={false}
                             value={state.sslSettings.SSLURL}
                             onChange={this.onSettingChange.bind(this, "SSLURL")}
                             />
@@ -120,7 +122,9 @@ class SslSettingsPanelBody extends Component {
                             tooltipMessage={resx.get("plSTDURL.Help")}
                             label={resx.get("plSTDURL")}
                             />
-                        <SingleLineInput
+                        <SingleLineInputWithError
+                            withLabel={false}
+                            error={false}
                             value={state.sslSettings.STDURL}
                             onChange={this.onSettingChange.bind(this, "STDURL")}
                             />
@@ -139,7 +143,9 @@ class SslSettingsPanelBody extends Component {
                                         style={{ float: "left", position: "static" }}
                                         />}
                                 />
-                            <SingleLineInput
+                            <SingleLineInputWithError
+                                withLabel={false}
+                                error={false}
                                 value={state.sslSettings.SSLOffloadHeader}
                                 onChange={this.onSettingChange.bind(this, "SSLOffloadHeader")}
                                 />

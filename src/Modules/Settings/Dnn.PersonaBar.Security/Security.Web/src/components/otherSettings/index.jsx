@@ -8,7 +8,7 @@ import Switch from "dnn-switch";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import MultiLineInput from "dnn-multi-line-input";
+import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import Tooltip from "dnn-tooltip";
 import "./style.less";
 import util from "../../utils";
@@ -242,7 +242,6 @@ class OtherSettingsPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.autoAccountUnlockDuration && this.state.triedToSubmit}
                             errorMessage={resx.get("AutoAccountUnlockDuration.ErrorMessage")}
@@ -262,7 +261,6 @@ class OtherSettingsPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.asyncTimeout && this.state.triedToSubmit}
                             errorMessage={resx.get("AsyncTimeout.ErrorMessage")}
@@ -282,7 +280,6 @@ class OtherSettingsPanelBody extends Component {
                                     />}
                             />
                         <SingleLineInputWithError
-                            inputStyle={{ margin: "0" }}
                             withLabel={false}
                             error={this.state.error.maxUploadSize && this.state.triedToSubmit}
                             errorMessage={resx.get("maxUploadSize.Error").replace("{0}", state.otherSettings.RangeUploadSize)}
@@ -301,7 +298,7 @@ class OtherSettingsPanelBody extends Component {
                                     style={{ float: "left", position: "static" }}
                                     />}
                             />
-                        <MultiLineInput
+                        <MultiLineInputWithError
                             value={state.otherSettings.AllowedExtensionWhitelist}
                             onChange={this.onSettingChange.bind(this, "AllowedExtensionWhitelist")}
                             />

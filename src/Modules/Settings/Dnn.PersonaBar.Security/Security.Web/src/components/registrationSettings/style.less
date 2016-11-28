@@ -2,8 +2,10 @@
 @import "~dnn-global-styles/index";
 :local(.registrationSettings) {
     margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
     .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;
         label {
             font-weight: bolder;
             float: left;
@@ -16,11 +18,11 @@
         .registrationSettings-row-input {
             float: left;
             width: 100%;
-            padding: 0 0 10px 0;
         }
         .registrationSettings-row-static {
             float: left;
             width: 100%;
+            margin: 20px 0 0 0;
             padding: 0 0 20px 0;
             border-bottom: solid 1px @alto;
             .registrationSettings-row-static-text {
@@ -38,7 +40,7 @@
         .dnn-radio-buttons {
             float: left;
             width: 450px;
-            margin: 9px 0 0 30px;
+            margin: 5px 0 0 0;
             label {
                 font-size: 14px;
                 float: left;
@@ -49,13 +51,16 @@
         }
         .registrationSettings-row_switch {
             border-bottom: 1px solid @alto;
-            margin: 10px 0 0 0;
+            margin: 20px 0 0 0;
             display: table;
             width: 100%;
             padding: 0 0 20px 0;
             .dnn-switch-container {
                 float: right;
             }
+        }
+        .dnn-single-line-input-with-error {
+            width: 100%;
         }
     }
     .buttons-box {

@@ -4,7 +4,7 @@ import {
     security as SecurityActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
-import SingleLineInput from "dnn-single-line-input";
+import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import SearchableTags from "dnn-searchable-tags";
 import Switch from "dnn-switch";
 import RadioButtons from "dnn-radio-buttons";
@@ -212,7 +212,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("Security_DisplayNameFormat.Help")}
                                 label={resx.get("Security_DisplayNameFormat")}
                                 />
-                            <SingleLineInput
+                            <SingleLineInputWithError
+                                error={false}
                                 value={state.registrationSettings.DisplayNameFormat}
                                 onChange={this.onSettingChange.bind(this, "DisplayNameFormat")}
                                 />
@@ -224,7 +225,8 @@ class RegistrationSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("Security_UserNameValidation.Help")}
                                 label={resx.get("Security_UserNameValidation")}
                                 />
-                            <SingleLineInput
+                            <SingleLineInputWithError
+                                error={false}
                                 value={state.registrationSettings.UserNameValidation}
                                 onChange={this.onSettingChange.bind(this, "UserNameValidation")}
                                 />
@@ -236,7 +238,9 @@ class RegistrationSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("Security_EmailValidation.Help")}
                                 label={resx.get("Security_EmailValidation")}
                                 />
-                            <SingleLineInput
+                            <SingleLineInputWithError
+                                error={false}
+                                withLabel={false}
                                 value={state.registrationSettings.EmailAddressValidation}
                                 onChange={this.onSettingChange.bind(this, "EmailAddressValidation")}
                                 />
@@ -248,7 +252,9 @@ class RegistrationSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("Registration_ExcludeTerms.Help")}
                                 label={resx.get("Registration_ExcludeTerms")}
                                 />
-                            <SingleLineInput
+                            <SingleLineInputWithError
+                                error={false}
+                                withLabel={false}
                                 value={state.registrationSettings.ExcludedTerms}
                                 onChange={this.onSettingChange.bind(this, "ExcludedTerms")}
                                 />

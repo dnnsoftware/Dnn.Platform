@@ -1,28 +1,32 @@
-
 @import "~dnn-global-styles/index";
 :local(.otherSettings) {
     margin: 30px 30px;
-    .otherSettings-row_switch {
-        border-bottom: 1px solid @alto;
-        margin: 10px 0 0 0;
-        display: table;
-        width: 100%;
-        padding: 0 0 10px 0;
+    * {
+        box-sizing: border-box;
     }
     .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;
         label {
             font-weight: bolder;
             float: left;
-        }
-        .dnn-dropdown {
-            width: 92%;
         }
         .dnn-switch-container {
             float: right;
         }
         .dnn-single-line-input-with-error {
             width: 100%;
+        }
+        .dnn-multi-line-input-with-error {
+            width: 100%;
+            .dnn-ui-common-multi-line-input  {
+                margin-bottom: 0 !important;
+            }
+        }
+        .otherSettings-row_switch {
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid @alto;
+            display: table;
+            width: 100%;
+            padding: 0 0 10px 0;
         }
     }
     .buttons-box {
