@@ -4,7 +4,7 @@ import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
 import InputGroup from "dnn-input-group";
-import MultiLineInput from "dnn-multi-line-input";
+import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import PagePicker from "dnn-page-picker";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
@@ -288,7 +288,7 @@ class DefaultPagesSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("plPageHeadText.Help")}
                                 label={resx.get("plPageHeadText")}
                                 />
-                            <MultiLineInput
+                            <MultiLineInputWithError
                                 value={state.defaultPagesSettings.PageHeadText}
                                 onChange={this.onSettingChange.bind(this, "PageHeadText")}
                                 />

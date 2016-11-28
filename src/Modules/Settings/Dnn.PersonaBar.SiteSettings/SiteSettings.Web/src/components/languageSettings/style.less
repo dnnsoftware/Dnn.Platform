@@ -2,6 +2,9 @@
 @import "~dnn-global-styles/index";
 :local(.languageSettings) {
     margin: 30px 30px;
+    * {
+        box-sizing: border-box;
+    }
     .dnn-ui-common-input-group {
         padding: 0 0 15px 0;
         label {
@@ -36,7 +39,7 @@
             }
             li {
                 float: left;
-                width: 308px;
+                width: 100%;
             }
         }
         .default-language {
