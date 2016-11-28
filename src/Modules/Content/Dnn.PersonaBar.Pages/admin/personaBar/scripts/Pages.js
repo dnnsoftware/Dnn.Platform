@@ -38,7 +38,10 @@
     };
 
     var load = function (params, callback) {
-        window.dnn.pages.pageHierarchyManager._resizeContentContainer(true);
+        if (window.dnn.pages.pageHierarchyManager &&
+            window.dnn.pages.pageHierarchyManager._initialized) {
+            window.dnn.pages.pageHierarchyManager._resizeContentContainer(true);
+        }
         if (typeof callback === 'function') {
             callback();
         }

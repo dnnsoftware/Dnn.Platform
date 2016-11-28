@@ -29,6 +29,8 @@ window.dnn.pages = window.dnn.pages || {};
     pageHierarchyManager.prototype = {
         constructor: pageHierarchyManager,
 
+        _initialized: false,
+
         init: function(panel, initCallback) {
             var handler, viewModel;
 
@@ -56,7 +58,8 @@ window.dnn.pages = window.dnn.pages || {};
             this._initCallback = initCallback;
             this._currentTabId = null;
             this._siteRoot = null;
-            this._loadRootPageList();            
+            this._loadRootPageList();       
+            this._initialized = true;     
         },
 
         getElement: function() {
