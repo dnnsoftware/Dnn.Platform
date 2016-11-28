@@ -280,10 +280,13 @@ namespace Dnn.PersonaBar.Roles.Services
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
+                var totalRecords2 = 0;
                 var isAdmin = IsAdmin();
 
                 var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false)
+                    ref totalRecords, false, false);
+                matchedUsers.AddRange(UserController.GetUsersByUserName(PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
+                var finalUsers = matchedUsers
                     .Cast<UserInfo>()
                     .Where(x => isAdmin || !x.Roles.Contains(PortalSettings.AdministratorRoleName))
                     .Select(u => new UserRoleDto()
@@ -292,7 +295,8 @@ namespace Dnn.PersonaBar.Roles.Services
                         DisplayName = $"{u.DisplayName} ({u.Username})"
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, matchedUsers);
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    finalUsers.ToList().GroupBy(x => x.UserId).Select(group => group.First()));
             }
             catch (Exception ex)
             {
