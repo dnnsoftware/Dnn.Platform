@@ -243,6 +243,9 @@ define(['jquery'], function ($) {
 
                     return this.formatCommaSeparate(size.toFixed(1)) + ' ' + suffix;
                 },
+                getCulture(){
+                    return config.culture;
+                },
                 getNumbersSeparatorByLocale: function () {
                     var numberWithSeparator = (1000).toLocaleString(config.culture);
                     return numberWithSeparator.indexOf(",") > 0 ? "," : ".";
