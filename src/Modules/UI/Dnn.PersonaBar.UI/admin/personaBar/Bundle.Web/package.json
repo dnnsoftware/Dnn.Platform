@@ -56,7 +56,7 @@
     "dnn-tabs": "0.0.4",
     "dnn-tags": "0.0.4",
     "dnn-text-overflow-wrapper": "0.0.4",
-    "dnn-tooltip": "0.0.9",
+    "dnn-tooltip": "^0.1.0",
     "es6-object-assign": "1.0.3",
     "es6-promise": "4.0.5",
     "eslint": "2.9.0",
