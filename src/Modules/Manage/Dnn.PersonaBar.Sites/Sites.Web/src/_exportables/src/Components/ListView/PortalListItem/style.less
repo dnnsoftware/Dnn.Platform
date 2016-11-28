@@ -13,7 +13,7 @@
     .portal-main-info {
         border-right: 1px solid @alto;
         .portal-name-info {
-            label {
+            .dnn-text-overflow-wrapper {
                 font-weight: bold;
                 display: block;
                 margin-bottom: 5px;
@@ -23,6 +23,9 @@
                 max-width: 100%;
                 word-wrap: break-word;
                 display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
         &:hover {
