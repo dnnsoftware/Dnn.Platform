@@ -131,6 +131,11 @@ function getCurrentPagePermissions() {
     return settings.currentPagePermissions;
 }
 
+function getCurrentPageName() {
+    checkInit();
+    return settings.currentPageName;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -151,7 +156,8 @@ const utils = {
     getPortalName,
     getTemplateFolder,
     getIsSuperUser,
-    getCurrentPagePermissions
+    getCurrentPagePermissions,
+    getCurrentPageName
 };
 
 export default utils;

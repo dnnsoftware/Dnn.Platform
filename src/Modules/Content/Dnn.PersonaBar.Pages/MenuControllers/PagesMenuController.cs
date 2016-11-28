@@ -50,7 +50,8 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
             {
                 {"isSuperUser", _securityService.IsPageAdminUser()},
                 {"portalName", PortalSettings.Current.PortalName},
-                {"currentPagePermissions", _securityService.GetCurrentPagePermissions()}
+                {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
+                {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName }
             };
 
             return settings;

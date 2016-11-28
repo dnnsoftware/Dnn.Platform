@@ -6,6 +6,7 @@ import Localization from "../localization";
 import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../services/securityService";
+import permissionTypes from "../services/permissionTypes";
 
 function updateUrlPreview(value, dispatch) {
     PagesService.getPageUrlPreview(value).then(response => {
@@ -28,6 +29,19 @@ const loadPage = function (dispatch, pageId) {
     dispatch({
         type: ActionTypes.LOAD_PAGE
     });
+
+    if (!securityService.userHasPermission(permissionTypes.MANAGE_PAGE)) {
+        dispatch({
+            type: ActionTypes.LOADED_PAGE,
+            data: {
+                page: {
+                    tabId: utils.getCurrentPageId(),
+                    name: utils.getCurrentPageName()
+                }
+            }
+        });
+        return;
+    }
 
     PagesService.getPage(pageId).then(response => {
         dispatch({
