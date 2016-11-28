@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Tag from "../Tag/Tag";
+import Tag from "./Tag";
 import "./style.less";
 
 const KEY = {
@@ -9,45 +9,46 @@ const KEY = {
     COMMA: 188
 };
 
-/**
- *  
- */
 export default class Tags extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             newTagText: "",
-            inputWidth: 0,
+            tags: this.props.tags || [],
+            inputWidth: 13,
             isInputVisible: true,
-            focus: false
+            tagInputActive: false
         };
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     componentDidMount() {
-        this.state = {
-            tags: this.props.tags,
-            newTagText: "",
-            inputWidth: this.refs.tagsField.getBoundingClientRect().width
-        };
-        setTimeout(this.resizeInputField.bind(this), 0);
+        document.addEventListener("keypress", this.onKeyDown, false);
+        this.resizeInputField();
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keypress", this.onKeyDown, false);
     }
 
     hasClass(className, element) {
         return (" " + element.className + " ").indexOf(" " + className + " ") > -1;
     }
 
+    onTagFocus() {
+        this.setState({ tagInputActive: true });
+    }
+
+    onTagBlur() {
+        this.setState({ tagInputActive: false });
+    }
+
     resizeInputField() {
-        const fieldWidth = this.refs.tagsField.getBoundingClientRect().width;
-        let tagsWidth = 0;
-        [].forEach.call(this.refs.tagsField.childNodes[0].childNodes, (tag) => {
-            if (this.hasClass("dnn-uicommon-tag-input", tag)) {
-                tagsWidth = tagsWidth + tag.getBoundingClientRect().width + 8;
-                if ((fieldWidth - tagsWidth) < 60) {
-                    tagsWidth = 0;
-                }
-            }
-        });
-        this.setState({ inputWidth: fieldWidth - tagsWidth - 25, isInputVisible: true });
+        let width = this.refs.tagsField.getBoundingClientRect().width - 30;
+        if (this.state.tags.length) {
+            width = this.state.newTagText.length ? this.state.newTagText.length * 7 + 6 : 13;
+        }
+        this.setState({ inputWidth: width, isInputVisible: true });
     }
 
     addTag() {
@@ -83,8 +84,10 @@ export default class Tags extends Component {
     }
 
     updateTags(tags) {
-        this.props.onUpdateTags(tags);
-        setTimeout(this.resizeInputField.bind(this), 0);
+        this.setState({ tags, newTagText: ""}, () => {
+            this.resizeInputField();
+            this.props.onUpdateTags(tags);
+        });
     }
 
     onKeyDown(event) {
@@ -103,33 +106,43 @@ export default class Tags extends Component {
     }
 
     onChange(event) {
-        event;
-        this.setState({ newTagText: event.target.value });
+        this.setState({ newTagText: event.target.value }, this.resizeInputField.bind(this));
+    }
+    
+    focusInput() {
+        this.refs.inputField.focus();
     }
 
     render() {
         const Tags = this.props.tags.map((tag, index) => {
-            return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this) }/>;
+            return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) }/>;
         });
         const inputStyle = {
             width: this.state.inputWidth,
             display: (this.state.isInputVisible === false ? "none" : "block")
         };
+        const placeholderText =  this.state.tags.length ? "" : "Add Tags";
+
+        let className = "dnn-uicommon-tags-field-input" +
+            (this.state.tagInputActive ? " active " : "");
+        
         return (
-            <div className={"dnn-uicommon-tags-field-input" + (this.state.focus ? " focus" : "")} 
+            <div className={className} 
+                onClick={this.focusInput.bind(this) }
                 ref="tagsField" style={this.props.style}>
                 <div type="text">
                     {Tags}
                     <input
                         ref="inputField"
                         type="text"
-                        placeholder="Add Tag"
+                        placeholder={placeholderText}
                         style={inputStyle}
-                        onKeyDown={this.onKeyDown.bind(this) }
+                        onKeyDown={this.onKeyDown}
                         value={this.state.newTagText}
                         onChange={this.onChange.bind(this) }
-                        onFocus={() => this.setState({focus: true})}
-                        onBlur={() => { this.addTag(); this.setState({focus: false});}} />
+                        onFocus={this.onTagFocus.bind(this) }
+                        onBlur={this.onTagBlur.bind(this) }
+                       />
                 </div>                
             </div>
         );

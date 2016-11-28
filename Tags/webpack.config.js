@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./src/Tags/Tags.jsx",
+    entry: "./src/Tags.jsx",
     output: {
         path: "./lib/",
         filename: "Tags.js",
