@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import Collapse from "react-collapse";
-import SingleLineInput from "dnn-single-line-input";
 import MultiLineInput from "dnn-multi-line-input";
 import Button from "dnn-button";
+import Label from "dnn-label";
 import InputGroup from "dnn-input-group";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import "./style.less";
@@ -71,7 +71,7 @@ class EmailPanel extends Component {
             }
         }));
     }
-    
+
     validateEmail(value) {
         const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(value);
@@ -103,28 +103,40 @@ class EmailPanel extends Component {
                     isOpened={props.isOpened}>
                     {props.fixedHeight &&
                         <div>
-                            <div className="emailpanel-content-wrapper" style={{ height: "calc(100% - 100px)" }}>
+                            <div className="emailpanel-content-wrapper" style={{ height: "100%" }}>
                                 <div className="">
                                     <InputGroup>
-                                        <label title={Localization.get("plEmailAddress.Help")}>{Localization.get("plEmailAddress")}</label>
+                                        <Label
+                                            labelType="inline"
+                                            tooltipMessage={Localization.get("plEmailAddress.Help")}
+                                            label={Localization.get("plEmailAddress")}
+                                            />
                                         <SingleLineInputWithError
                                             error={state.error.email && state.triedToSubmit}
+                                            inputStyle={{ marginBottom: "15px" }}
                                             errorMessage={Localization.get("Email.Message")}
-                                            inputStyle={{ marginBottom: "0px" }}
                                             value={state.emailRequest.Email}
                                             onChange={this.onEmailValueChange.bind(this, "Email")} />
                                     </InputGroup>
                                     <InputGroup>
-                                        <label title={Localization.get("plSubject.Help")}>{Localization.get("plSubject")}</label>
-                                        <div>
-                                            <SingleLineInput
-                                                value={state.emailRequest.Subject}
-                                                onChange={this.onEmailValueChange.bind(this, "Subject")}
-                                                />
-                                        </div>
+                                        <Label
+                                            labelType="inline"
+                                            tooltipMessage={Localization.get("plSubject.Help")}
+                                            label={Localization.get("plSubject")}
+                                            />
+                                        <SingleLineInputWithError
+                                            error={false}
+                                            inputStyle={{ marginBottom: "15px" }}
+                                            value={state.emailRequest.Subject}
+                                            onChange={this.onEmailValueChange.bind(this, "Subject")}
+                                            />
                                     </InputGroup>
                                     <InputGroup>
-                                        <label title={Localization.get("SendMessage.Help")}>{Localization.get("SendMessage")}</label>
+                                        <Label
+                                            labelType="inline"
+                                            tooltipMessage={Localization.get("SendMessage.Help")}
+                                            label={Localization.get("SendMessage")}
+                                            />
                                         <MultiLineInput
                                             value={state.emailRequest.Message}
                                             onChange={this.onEmailValueChange.bind(this, "Message")}

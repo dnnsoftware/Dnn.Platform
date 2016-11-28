@@ -317,7 +317,6 @@ class AdminLogPanelBody extends Component {
                         <div className="sitegroup-filter-container">
                             <DropDown
                                 value={state.currentPortalId}
-                                fixedHeight={200}
                                 style={{ width: "100%" }}
                                 options={portalOptions}
                                 withBorder={false}
@@ -328,8 +327,8 @@ class AdminLogPanelBody extends Component {
                     {state.logTypeList.length > 0 &&
                         <div className="sitegroup-filter-container">
                             <DropDown
+                                fixedHeight={300}
                                 value={state.currentLogTypeKey}
-                                fixedHeight={200}
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}
                                 withBorder={false}
@@ -341,7 +340,7 @@ class AdminLogPanelBody extends Component {
                         <span onClick={this.toggleEmailPanel.bind(this) }>{Localization.get("btnEmail") } </span>
                         <div className="collapsible-content">
                             <EmailPanel
-                                fixedHeight={370}
+                                fixedHeight={450}
                                 isOpened={state.emailPanelOpen}
                                 logIds={props.selectedRowIds}
                                 onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>
