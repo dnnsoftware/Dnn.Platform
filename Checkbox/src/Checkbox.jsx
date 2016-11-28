@@ -92,6 +92,6 @@ Checkbox.propTypes = {
 
 Checkbox.defaultProps = {
     enabled: true,
-    size: 17,
+    size: 13,
     labelPlace: "right"
 };

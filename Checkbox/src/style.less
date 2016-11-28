@@ -23,8 +23,8 @@
         display: inline;
         margin-right: 15px;
         > label {
-            width: 17px;
-            height: 17px;
+            width: 13px;
+            height: 13px;
         }
         input[type="checkbox"] {
             opacity: 0;
@@ -33,10 +33,10 @@
                 position: absolute;
                 top: 0px;
                 left: 0px;
-                background: #f2f2f2;
-                border: 1px solid #dfdfdf;
+                background: white;
+                border: 1px solid @thunder;
                 cursor: pointer;
-                border-radius: 2px;
+                border-radius: 0px;
                 &:after {
                     transform: rotate(-45deg);
                     opacity: 0;
@@ -58,26 +58,22 @@
                 }
             }
             &:checked + label {
-                background: #01ace0;
-                border-color: #01ace0;
+                background: white !important;
+                border-color: @thunder;
                 &:after {
-                    opacity: 1 !important;
-                    border-color: white;
-                    border-color: #fff;
-                    width: 45%;
-                    height: 20%;
-                    top: 25%;
-                    left: 20.5%;
-                    top: 3.5px;
-                    left: 2.5px;
+                    opacity: 1!important;
+                    border-color: @thunder;
+                    width: 72%;
+                    height: 36%;
+                    top: 1.5px;
+                    left: 0.5px;
                     border-width: 2px;
+                    opacity: 1 !important;
                 }
             }
         }
         &.deselect-state {
             input[type="checkbox"]:checked + label[for] {
-                background: #01ace0;
-                border-color: #01ace0;
                 &:after {
                     transform: none;
                     height: 0px;
@@ -90,6 +86,22 @@
     &.disabled {
         background: @mercury;
         color: @mountainMist;
+        cursor: default;
+        * {
+            cursor: default;
+        }
+        .checkbox {
+            input[type="checkbox"] {
+                & + label {
+                    background: @gallery;
+                    border-color: @alto;
+                    cursor: default;
+                    &:after {
+                        border-color: @alto;
+                    }
+                }
+            }
+        }
         svg {
             fill: @mountainMist;
         }
