@@ -27,6 +27,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Xml;
 using Dnn.PersonaBar.Extensions.Components.Dto;
 using DotNetNuke.Common;
@@ -332,28 +333,28 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (package.PackageType.ToLowerInvariant())
             {
                 case "module":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
                 case "container":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultContainerImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultContainerImage;
                 case "skin":
                 case "skinobject":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultSkinImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultSkinImage;
                 case "authenticationsystem":
                 case "auth_system":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultAuthenicationImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultAuthenicationImage;
                 case "corelanguagepack":
                 case "extensionlanguagepack":
-                    return !string.IsNullOrEmpty(package.IconFile) && package.IconFile != "N\\A" ? package.IconFile : Globals.ImagePath + Constants.DefaultLanguageImage;
+                    return package.IconFile != "N\\A"  && IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLanguageImage;
                 case "provider":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultProviderImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultProviderImage;
                 case "widget":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultWidgetImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultWidgetImage;
                 case "dashboardcontrol":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultDashboardImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultDashboardImage;
                 case "library":
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLibraryImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLibraryImage;
                 default:
-                    return !string.IsNullOrEmpty(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
+                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
             }
         }
 
@@ -388,6 +389,25 @@ namespace Dnn.PersonaBar.Extensions.Components
                     AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
                 }
             }
+        }
+
+        private static bool IconExists(string imagePath)
+        {
+            if (string.IsNullOrWhiteSpace(imagePath) || HttpContext.Current == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                var path = HttpContext.Current.Server.MapPath(imagePath);
+                return File.Exists(path);
+            }
+            catch (HttpException)
+            {
+                return false;
+            }
+
         }
 
         #endregion
