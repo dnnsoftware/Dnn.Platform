@@ -80,7 +80,7 @@ define(['jquery',
 
                     reader.readAsText(file);
                 } else {
-                    utility.notify('File not supported');
+                    utility.notifyError('File not supported');
                 }
 
                 $uploadControl.val('');
