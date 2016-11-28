@@ -23,7 +23,17 @@ class Pager extends Component {
     componentWillReceiveProps(newProps) {
         this.calculateTotalPages(newProps);
     }
-
+    formatCommaSeparate(number) {
+        let numbersSeparatorByLocale = this.getNumbersSeparatorByLocale();
+        while (/(\d+)(\d{3})/.test(number.toString())) {
+            number = number.toString().replace(/(\d+)(\d{3})/, '$1' + numbersSeparatorByLocale + '$2');
+        }
+        return number;
+    }
+    getNumbersSeparatorByLocale() {
+        let numberWithSeparator = (1000).toLocaleString(this.props.culture);
+        return numberWithSeparator.indexOf(",") > 0 ? "," : ".";
+    }
     calculateTotalPages(props) {
         const {state} = this;
         if (state.pageSize >= props.totalRecords || props.totalRecords === 0) {
@@ -133,7 +143,7 @@ class Pager extends Component {
             if (end > props.totalRecords) {
                 end = props.totalRecords;
             }
-            return this.format(this.props.summaryText, start, end, props.totalRecords);
+            return this.format(this.props.summaryText,this.formatCommaSeparate(start), this.formatCommaSeparate(end), this.formatCommaSeparate(props.totalRecords));
         }
         return "&nbsp;";
     }
@@ -147,27 +157,27 @@ class Pager extends Component {
             for (let i = startIndex; i < endIndex; i++) {
                 let step = i + 1;
                 if (i !== currentPage) {
-                    pagingBoxes = pagingBoxes.concat(<li className="pages do-not-close" onClick={this.onPageChanged.bind(this, i) }>{step}</li>);
+                    pagingBoxes = pagingBoxes.concat(<li className="pages do-not-close" onClick={this.onPageChanged.bind(this, i) }>{this.formatCommaSeparate(step)}</li>);
                 } else {
-                    pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close"> {i + 1}</li>);
+                    pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close">{this.formatCommaSeparate(i + 1)}</li>);
                 }
             }
         }
         else if (this.props.numericCounters === 1) {
-            pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close"> {currentPage + 1}</li>);
+            pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close">{this.formatCommaSeparate(currentPage + 1)}</li>);
         }
         return pagingBoxes;
     }
     getPageSizeDropDown() {
         let pageSizeOptions = [];
-        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText, 10) });
-        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText, 25) });
-        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText, 50) });
-        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText, 100) });
-        if (this.props.totalRecords >= 250) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, 250) });
+        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 10)) });
+        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 25)) });
+        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 50)) });
+        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 100)) });
+        if (this.props.totalRecords >= 250) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 250)) });
 
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
-            pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.props.pageSize) });
+            pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( this.props.pageSize)) });
             pageSizeOptions = pageSizeOptions.sort(function (a, b) {
                 let valueA = a.value;
                 let valueB = b.value;
@@ -228,7 +238,7 @@ class Pager extends Component {
                     </div>
                     {this.props.showPageInfo && !this.props.showPageSizeOptions &&
                         <div className="dnn-pager-options-info-box">
-                            {this.format(this.props.pageInfoText, state.currentPage + 1, state.totalPages) }
+                            {this.format(this.props.pageInfoText,this.formatCommaSeparate(state.currentPage + 1), this.formatCommaSeparate(state.totalPages)) }
                         </div>
                     }
                     {
@@ -255,7 +265,8 @@ Pager.propTypes = {
     style: PropTypes.object,
     totalRecords: PropTypes.number.isRequired,
     onPageChanged: PropTypes.func.isRequired,
-    resetIndex: PropTypes.bool
+    resetIndex: PropTypes.bool,
+    culture: PropTypes.string
 };
 
 Pager.defaultProps = {
@@ -265,11 +276,12 @@ Pager.defaultProps = {
     numericCounters: 1,
     showSummary: true,
     showPageInfo: false,
-    summaryText: "Showing {0}-{1} of {2}",
+    summaryText: "Showing {0} - {1} of {2}",
     pageInfoText: "Page {0} of {1}",
     pageSizeOptionText: "{0} per page",
     pageSize: 10,
-    resetIndex: false
+    resetIndex: false,
+    culture: "en-US"
 };
 /*
 showPageSizeOptions and showPageInfo are mutually exclusive.
