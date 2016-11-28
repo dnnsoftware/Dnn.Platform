@@ -17,9 +17,9 @@ class ApplicationService {
         return sf;
     }
 
-    getRootResourcesFolder(mode, callback) {
+    getRootResourcesFolder(portalId, mode, callback) {
         const sf = this.getServiceFramework("Languages");
-        sf.get("GetRootResourcesFolders?mode=" + mode, {}, callback);
+        sf.get("GetRootResourcesFolders?portalId=" + portalId+"&mode=" + mode, {}, callback);
     }
 
     getSubRootResources(folder, callback) {

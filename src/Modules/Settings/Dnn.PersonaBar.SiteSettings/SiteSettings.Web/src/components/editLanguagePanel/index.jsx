@@ -56,7 +56,8 @@ class EditLanguagePanel extends Component {
         };
     }
     refreshFileList() {
-        this.props.dispatch(LanguageEditorActions.getRootResourcesFolder(this.state.selectedMode));
+        console.log(this.props.portalId);
+        this.props.dispatch(LanguageEditorActions.getRootResourcesFolder(this.props.portalId, this.state.selectedMode));
     }
     componentWillMount() {
         this.refreshFileList();
@@ -95,6 +96,7 @@ class EditLanguagePanel extends Component {
         const {props} = this;
         const payload = {
             Mode: this.state.selectedMode,
+            PortalId: props.portalId,
             Locale: props.languageBeingEdited.Code,
             ResourceFile: props.resxBeingEdited,
             Entries: Object.keys(props.translations).map((key) => {
