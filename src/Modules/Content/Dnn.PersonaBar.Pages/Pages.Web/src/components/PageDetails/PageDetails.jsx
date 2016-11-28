@@ -14,7 +14,7 @@ class PageDetail extends Component {
             case "file":
                 return PageUrl;
             default: 
-                throw "invalid page type";                                                                        
+                throw "invalid page type";                                                                  
         }        
     }
 

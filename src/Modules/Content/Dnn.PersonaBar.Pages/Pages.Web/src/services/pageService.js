@@ -17,7 +17,7 @@ const PageService = function () {
             .then(response => toFrontEndPage(response));
     };
 
-    const savePage = function (page) {
+    const savePage = function (page, hasChangeUrl) {
         const api = getOverridablePagesApi();
         let request = page;
         
@@ -27,7 +27,7 @@ const PageService = function () {
                 parentId: utils.getCurrentPageId() 
             };
         }
-        if (page.url === "/" + page.name) {
+        if (!hasChangeUrl) {
             request = {
                 ...request,
                 url: ""

@@ -147,12 +147,13 @@ const pageActions = {
         };
     },
     savePage(page) {
-        return (dispatch) => {
+        return (dispatch, getState) => {
             dispatch({
                 type: ActionTypes.SAVE_PAGE
             });
+            const {pages} = getState();
 
-            PagesService.savePage(page).then(response => {
+            PagesService.savePage(page, pages.urlChanged).then(response => {
 
                 if (response.Status === responseStatus.ERROR) {
                     utils.notifyError(Localization.get("Error_" + response.Message), 3000);
