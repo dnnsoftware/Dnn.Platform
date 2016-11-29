@@ -1,4 +1,3 @@
-
 @import "~dnn-global-styles/index";
 :local(.registrationSettings) {
     margin: 30px 30px;
@@ -11,8 +10,23 @@
             float: left;
         }
         .registrationSettings-row-options {
+            float: left;
+            width: 100%;
             .dnn-label {
-                width: 220px;
+                width: 30%;
+                margin-right: 0;
+            }
+            .dnn-radio-buttons {
+                float: left;
+                width: 70%;
+                margin: 5px 0 0 0;
+                label {
+                    font-size: 14px;
+                    float: left;
+                }
+                li {
+                    margin: 0 20px 0 0;
+                }
             }
         }
         .registrationSettings-row-input {
@@ -31,22 +45,10 @@
                 float: right;
             }
         }
-        .tags-field{
+        .tags-field {
             width: 100%;
-            .tag-search-results{
+            .tag-search-results {
                 z-index: 99;
-            }
-        }
-        .dnn-radio-buttons {
-            float: left;
-            width: 450px;
-            margin: 5px 0 0 0;
-            label {
-                font-size: 14px;
-                float: left;
-            }
-            li {
-                margin: 0 20px 0 0;
             }
         }
         .registrationSettings-row_switch {
