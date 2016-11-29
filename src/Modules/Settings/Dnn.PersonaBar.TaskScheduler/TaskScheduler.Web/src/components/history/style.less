@@ -19,10 +19,14 @@
                 color: @thunder;
             }
             .taskHistoryList-pager {
-                width: 96%;
-                padding: 0 0 0 15px;
+                width: 100%;
+                padding: 0 15px;
                 margin-bottom: 15px;
+                box-sizing: border-box;
                 float: left;
+                * {
+                    box-sizing: border-box;
+                }
             }
             .taskHistoryList-grid {
                 border: solid 1px @alto;

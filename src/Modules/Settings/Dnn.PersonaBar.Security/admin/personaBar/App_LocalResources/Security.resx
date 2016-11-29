@@ -664,7 +664,7 @@
     <value>Maximum size of file that can be uploaded to the site.  The minimum is 12 MB.</value>
   </data>
   <data name="plMaxUploadSize.Text" xml:space="preserve">
-    <value>Max Upload Size</value>
+    <value>Max Upload Size (MB)</value>
   </data>
   <data name="maxUploadSize.Error" xml:space="preserve">
     <value>Maximum upload size must be between 12 and {0}</value>

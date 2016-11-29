@@ -3,9 +3,9 @@
     * {
         box-sizing: border-box;
     }
-    .socialpanelbody {
+    &.dnn-persona-bar-page-body {
         border: none;
-        .normalPanel, .searchpanel {
+        .persona-bar-page-body {
             background-color: transparent;
             border: none;
         }
@@ -29,7 +29,7 @@
                 }
                 .mode-container {
                     padding-top: 2px;
-                    .dnn-radio-buttons {
+                    .dnn-radio-buttons, .dnn-label {
                         float: right;
                         /* text-align: right; */
                         width: auto;
@@ -48,6 +48,11 @@
                                     margin-top: 2px;
                                 }
                             }
+                        }
+                    }
+                    .dnn-label {
+                        .dnn-ui-common-tooltip{
+                            float: right;
                         }
                     }
                 }

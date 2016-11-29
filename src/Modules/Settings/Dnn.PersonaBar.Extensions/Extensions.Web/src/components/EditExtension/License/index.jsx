@@ -20,9 +20,9 @@ class License extends Component {
         const {value} = props;
         /* eslint-disable react/no-danger */
         return (
-            <GridCell  className="extension-license extension-form">
+            <GridCell className="extension-license extension-form">
                 {props.installationMode && <h6>{Localization.get("InstallExtension_License.Header")}</h6>}
-                {props.installationMode && <p>{Localization.get("InstallExtension_License.HelpText")}</p>}
+                {props.installationMode && <p dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_License.HelpText").replace("\\n", "<br/>") }}></p>}
                 {!props.readOnly &&
                     <MultiLineInputWithError
                         label={!props.installationMode && Localization.get("InstallExtension_License.Header")}

@@ -1,18 +1,22 @@
-@import "../../less/globals.less";
 @import "~dnn-global-styles/index";
 #siteSettings-container {
-    .socialpanelbody {
-        > div {
-            .normalPanel {
-                .searchpanel {
-                    border-bottom: 0;
-                    .row-opened {
-                        margin-top: -1px;
-                        margin-bottom: -1px;
-                        border-top: 1px solid @curiousBlue;
-                        border-bottom: 1px solid @curiousBlue !important;
-                    }
-                }
+    .dnn-persona-bar-page-body {
+        border-bottom: 0;
+        .row-opened {
+            margin-top: -1px;
+            margin-bottom: -1px;
+            border-top: 1px solid @curiousBlue;
+            border-bottom: 1px solid @curiousBlue !important;
+        }
+        .back-to-referrer {
+            background-color: @alabaster;
+            padding: 10px 1px;
+            margin: -1px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            &:hover {
+                color: @curiousBlue;
             }
         }
     }

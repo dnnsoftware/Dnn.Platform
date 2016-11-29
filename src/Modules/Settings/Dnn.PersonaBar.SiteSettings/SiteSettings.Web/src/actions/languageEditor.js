@@ -9,9 +9,9 @@ const languageEditorActions = {
             });
         };
     },
-    getRootResourcesFolder(mode, callback) {
+    getRootResourcesFolder(portalId, mode, callback) {
         return (dispatch) => {
-            LanguageEditorService.getRootResourcesFolder(mode, (data) => {
+            LanguageEditorService.getRootResourcesFolder(portalId, mode, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_ROOT_RESOURCES_FOLDER,
                     payload: data

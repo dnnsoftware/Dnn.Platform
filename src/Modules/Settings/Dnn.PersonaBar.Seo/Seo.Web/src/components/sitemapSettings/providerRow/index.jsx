@@ -17,7 +17,7 @@ class ProviderRow extends Component {
 
     toggle() {
         if ((this.props.openId !== "" && this.props.name === this.props.openId)) {
-            this.props.Collapse();
+            //this.props.Collapse();
         } else {
             this.props.OpenCollapse(this.props.name);
         }

@@ -531,9 +531,6 @@
   <data name="StartEndColumn.Text" xml:space="preserve">
     <value>START/END</value>
   </data>
-  <data name="TaskQueueTitle.Text" xml:space="preserve">
-    <value>Task Listed by Most Current</value>
-  </data>
   <data name="nav_TaskScheduler.Text" xml:space="preserve">
     <value>Scheduler</value>
   </data>

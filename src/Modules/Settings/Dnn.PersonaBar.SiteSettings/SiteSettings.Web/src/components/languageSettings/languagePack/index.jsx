@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
     languages as LanguagesActions
 } from "../../../actions";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import InputGroup from "dnn-input-group";
 import Checkbox from "dnn-checkbox";
@@ -200,7 +200,7 @@ class LanguagePackPanelBody extends Component {
         const {props, state} = this;
         return (
             <div className={styles.languagePack}>
-                <SocialPanelBody
+                <PersonaBarPageBody
                     className="create-language-pack-panel"
                     workSpaceTrayOutside={true}
                     workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closeLanguagePack.bind(this)}>
@@ -281,7 +281,7 @@ class LanguagePackPanelBody extends Component {
                         onClose={this.closeMessageBox.bind(this)}
                         collapsibleWidth={485}
                         />
-                </SocialPanelBody>
+                </PersonaBarPageBody>
             </div>
         );
     }

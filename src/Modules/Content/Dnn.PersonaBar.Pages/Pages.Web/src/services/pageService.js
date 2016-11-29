@@ -38,7 +38,7 @@ const PageService = function () {
     };
     
     const deletePage = function (page) {
-        const api = getOverridablePagesApi();
+        const api = getPagesApi();
         return api.post("DeletePage", {id: page.tabId});
     };
 

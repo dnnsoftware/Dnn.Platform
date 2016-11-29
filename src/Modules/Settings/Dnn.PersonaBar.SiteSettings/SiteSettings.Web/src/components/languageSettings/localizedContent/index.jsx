@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
     languages as LanguagesActions
 } from "../../../actions";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import InputGroup from "dnn-input-group";
 import Label from "dnn-label";
 import Button from "dnn-button";
@@ -88,7 +88,7 @@ class LocalizedContent extends Component {
         const defaultLanguage = this.getDefaultLanguage() || {};
         const {props, state} = this;
         return (
-            <SocialPanelBody
+            <PersonaBarPageBody
                 className="create-language-pack-panel enable-localized-content-panel"
                 workSpaceTrayOutside={true}
                 workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage }>
@@ -151,7 +151,7 @@ class LocalizedContent extends Component {
                         closePersonaBarPage={props.closePersonaBarPage}
                         />}
                 </div>
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

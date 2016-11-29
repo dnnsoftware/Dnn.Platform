@@ -156,6 +156,9 @@
   <data name="DragPageTooltip.Text" xml:space="preserve">
     <value>Drag Page into Location</value>
   </data>
+  <data name="DragInvalid.Text" xml:space="preserve">
+    <value>You can't drag a page as a child of itself.</value>
+  </data>
   <data name="DeletePageConfirm.Text" xml:space="preserve">
     <value>&lt;p&gt;Please confirm you wish to delete this page.&lt;/p&gt;</value>
   </data>

@@ -46,6 +46,8 @@ namespace Dnn.PersonaBar.Themes.Components
         internal static readonly IList<string> DefaultLayoutNames = new List<string>() {"Default", "2-Col", "Home", "Index", "Main"};
         internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default"};
 
+        private static readonly object _threadLocker = new object();
+
         protected override Func<IThemesController> GetFactory()
         {
             return () => new ThemesController();
@@ -552,8 +554,6 @@ namespace Dnn.PersonaBar.Themes.Components
 
         internal static string CreateThumbnail(string strImage)
         {
-            var blnCreate = true;
-
             var imageFileName = Path.GetFileName(strImage);
             if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
             {
@@ -564,73 +564,74 @@ namespace Dnn.PersonaBar.Themes.Components
             
             var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);
 
-
-            //check if image has changed
-            if (File.Exists(strThumbnail))
+            if (NeedCreateThumbnail(strThumbnail, strImage))
             {
-                if (File.GetLastWriteTime(strThumbnail) == File.GetLastWriteTime(strImage))
+                lock (_threadLocker)
                 {
-                    blnCreate = false;
+                    if (NeedCreateThumbnail(strThumbnail, strImage))
+                    {
+                        const int intSize = 150; //size of the thumbnail 
+                        try
+                        {
+                            var objImage = Image.FromFile(strImage);
+
+                            //scale the image to prevent distortion
+                            int intHeight;
+                            int intWidth;
+                            double dblScale;
+                            if (objImage.Height > objImage.Width)
+                            {
+                                //The height was larger, so scale the width 
+                                dblScale = (double)intSize / objImage.Height;
+                                intHeight = intSize;
+                                intWidth = Convert.ToInt32(objImage.Width * dblScale);
+                            }
+                            else
+                            {
+                                //The width was larger, so scale the height 
+                                dblScale = (double)intSize / objImage.Width;
+                                intWidth = intSize;
+                                intHeight = Convert.ToInt32(objImage.Height * dblScale);
+                            }
+
+                            //create the thumbnail image
+                            var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
+
+                            //delete the old file ( if it exists )
+                            if (File.Exists(strThumbnail))
+                            {
+                                File.Delete(strThumbnail);
+                            }
+
+                            //save the thumbnail image 
+                            objThumbnail.Save(strThumbnail, objImage.RawFormat);
+
+                            //set the file attributes
+                            File.SetAttributes(strThumbnail, FileAttributes.Normal);
+                            File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
+
+                            //tidy up
+                            objImage.Dispose();
+                            objThumbnail.Dispose();
+                        }
+                        catch (Exception ex) //problem creating thumbnail
+                        {
+                            Logger.Error(ex);
+                        }
+                    }
                 }
             }
-            if (blnCreate)
-            {
-                const int intSize = 150; //size of the thumbnail 
-                Image objImage;
-                try
-                {
-                    objImage = Image.FromFile(strImage);
-
-                    //scale the image to prevent distortion
-                    int intHeight;
-                    int intWidth;
-                    double dblScale;
-                    if (objImage.Height > objImage.Width)
-                    {
-                        //The height was larger, so scale the width 
-                        dblScale = (double)intSize / objImage.Height;
-                        intHeight = intSize;
-                        intWidth = Convert.ToInt32(objImage.Width * dblScale);
-                    }
-                    else
-                    {
-                        //The width was larger, so scale the height 
-                        dblScale = (double)intSize / objImage.Width;
-                        intWidth = intSize;
-                        intHeight = Convert.ToInt32(objImage.Height * dblScale);
-                    }
-
-                    //create the thumbnail image
-                    var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
-
-                    //delete the old file ( if it exists )
-                    if (File.Exists(strThumbnail))
-                    {
-                        File.Delete(strThumbnail);
-                    }
-
-                    //save the thumbnail image 
-                    objThumbnail.Save(strThumbnail, objImage.RawFormat);
-
-                    //set the file attributes
-                    File.SetAttributes(strThumbnail, FileAttributes.Normal);
-                    File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
-
-                    //tidy up
-                    objImage.Dispose();
-                    objThumbnail.Dispose();
-                }
-                catch (Exception ex) //problem creating thumbnail
-                {
-                    Logger.Error(ex);
-                }
-            }
-
+            
             strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
             strThumbnail = strThumbnail.Replace("\\", "/");
 
             //return thumbnail filename
             return strThumbnail;
+        }
+
+        private static bool NeedCreateThumbnail(string thumbnailPath, string imagePath)
+        {
+            return !File.Exists(thumbnailPath) || File.GetLastWriteTime(thumbnailPath) != File.GetLastWriteTime(imagePath);
         }
 
         private static bool IsFallbackContainer(string skinPath)

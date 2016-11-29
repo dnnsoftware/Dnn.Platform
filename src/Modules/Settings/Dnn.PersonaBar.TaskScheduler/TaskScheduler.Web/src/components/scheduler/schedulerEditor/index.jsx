@@ -61,6 +61,7 @@ class SchedulerEditor extends Component {
         retainHistoryNumOptions.push({ "value": "10", "label": "10" });
         retainHistoryNumOptions.push({ "value": "25", "label": "25" });
         retainHistoryNumOptions.push({ "value": "50", "label": "50" });
+        retainHistoryNumOptions.push({ "value": "60", "label": "60" });
         retainHistoryNumOptions.push({ "value": "100", "label": "100" });
         retainHistoryNumOptions.push({ "value": "250", "label": "250" });
         retainHistoryNumOptions.push({ "value": "500", "label": "500" });
@@ -142,7 +143,7 @@ class SchedulerEditor extends Component {
             case "TypeFullName":
                 return state.scheduleItemDetail.TypeFullName !== undefined ? state.scheduleItemDetail.TypeFullName.toString() : "";
             case "RetainHistoryNum":
-                return state.scheduleItemDetail.RetainHistoryNum !== undefined ? state.scheduleItemDetail.RetainHistoryNum.toString() : "";
+                return state.scheduleItemDetail.RetainHistoryNum !== undefined ? state.scheduleItemDetail.RetainHistoryNum.toString() : "0";
             case "Servers":
                 return state.scheduleItemDetail.Servers !== undefined ? state.scheduleItemDetail.Servers.toString() : "";
             case "ObjectDependencies":
@@ -157,11 +158,11 @@ class SchedulerEditor extends Component {
             case "TimeLapse":
                 return state.scheduleItemDetail.TimeLapse !== undefined ? state.scheduleItemDetail.TimeLapse.toString() : "";
             case "TimeLapseMeasurement":
-                return state.scheduleItemDetail.TimeLapseMeasurement !== undefined ? state.scheduleItemDetail.TimeLapseMeasurement.toString() : "";
+                return state.scheduleItemDetail.TimeLapseMeasurement !== undefined ? state.scheduleItemDetail.TimeLapseMeasurement.toString() : "s";
             case "RetryTimeLapse":
                 return state.scheduleItemDetail.RetryTimeLapse !== undefined ? state.scheduleItemDetail.RetryTimeLapse.toString() : "";
             case "RetryTimeLapseMeasurement":
-                return state.scheduleItemDetail.RetryTimeLapseMeasurement !== undefined ? state.scheduleItemDetail.RetryTimeLapseMeasurement.toString() : "";
+                return state.scheduleItemDetail.RetryTimeLapseMeasurement !== undefined ? state.scheduleItemDetail.RetryTimeLapseMeasurement.toString() : "s";
             case "AttachToEvent":
                 return state.scheduleItemDetail.AttachToEvent !== undefined ? state.scheduleItemDetail.AttachToEvent.toString() : "";
             case "CatchUpEnabled":

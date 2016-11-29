@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import LanguageInfoView from "./languageInfoView";
 import { visiblePanel as VisiblePanelActions, languageEditor as LanguageEditorActions } from "actions";
 import resx from "resources";
@@ -56,7 +56,8 @@ class EditLanguagePanel extends Component {
         };
     }
     refreshFileList() {
-        this.props.dispatch(LanguageEditorActions.getRootResourcesFolder(this.state.selectedMode));
+        console.log(this.props.portalId);
+        this.props.dispatch(LanguageEditorActions.getRootResourcesFolder(this.props.portalId, this.state.selectedMode));
     }
     componentWillMount() {
         this.refreshFileList();
@@ -95,6 +96,7 @@ class EditLanguagePanel extends Component {
         const {props} = this;
         const payload = {
             Mode: this.state.selectedMode,
+            PortalId: props.portalId,
             Locale: props.languageBeingEdited.Code,
             ResourceFile: props.resxBeingEdited,
             Entries: Object.keys(props.translations).map((key) => {
@@ -130,7 +132,7 @@ class EditLanguagePanel extends Component {
         ];
         const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host");
         return (
-            <SocialPanelBody
+            <PersonaBarPageBody
                 className="edit-language-panel"
                 workSpaceTrayOutside={true}
                 workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this) }>{resx.get("BackToLanguages") }</div>}
@@ -143,6 +145,7 @@ class EditLanguagePanel extends Component {
                     getResxEntries={this.getResxEntries.bind(this) }
                     getChildFolders={this.getChildFolders.bind(this) }
                     resxBeingEdited={props.resxBeingEdited}
+                    portalName={props.portalName}
                     resxBeingEditedDisplay={props.resxBeingEditedDisplay}
                     selectedMode={this.state.selectedMode}
                     onSelectMode={this.onSelectMode.bind(this) }
@@ -151,7 +154,7 @@ class EditLanguagePanel extends Component {
                     onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this) }
                     highlightPendingTranslations={this.state.highlightPendingTranslations}/>
                 <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this) }/>
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

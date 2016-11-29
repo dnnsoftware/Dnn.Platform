@@ -6,7 +6,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import InputGroup from "dnn-input-group";
 import Switch from "dnn-switch";
 import Label from "dnn-label";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import TranslationProgressBars from "../languageSettings/TranslationProgressBars";
 import Button from "dnn-button";
 import {
@@ -190,7 +190,7 @@ class TranslatePageContent extends Component {
         const language = state.languageBeingEdited;
         const isEnabled = language.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
-        return <SocialPanelBody
+        return <PersonaBarPageBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
             workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage}>
@@ -277,7 +277,7 @@ class TranslatePageContent extends Component {
                     </Scrollbars>
                 </div>}
             </div>
-        </SocialPanelBody>;
+        </PersonaBarPageBody>;
     }
 }
 
