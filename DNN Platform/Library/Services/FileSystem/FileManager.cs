@@ -409,6 +409,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                 var contentFileName = fileName;
                 if (needToWriteFile)
                 {
+                    file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                     if (!fileContent.CanSeek)
                     {
                         fileContent = GetSeekableStream(fileContent);
@@ -425,8 +426,7 @@ public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fil
                     if (folderWorkflow != null)
                     {
                         SetContentItem(file);
-
-                        file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
+                        
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
                             if (file.FileId == Null.NullInteger)
