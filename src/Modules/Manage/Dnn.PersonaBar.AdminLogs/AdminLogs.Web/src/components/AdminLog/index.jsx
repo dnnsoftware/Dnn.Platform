@@ -312,7 +312,7 @@ class AdminLogPanelBody extends Component {
         let portalOptions = createPortalOptions(state.portalList);
         let logTypeOptions = createLogTypeOptions(state.logTypeList);
         return (
-            <div>
+            <div style={{margin: "0 20px", float: "left"}}>
                 <div className="toolbar">
                     {util.settings.isHost && state.portalList.length > 0 &&
                         <div className="sitegroup-filter-container">

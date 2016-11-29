@@ -3,6 +3,9 @@
     .dnn-persona-bar-page-body {
         border-bottom: 0;
         .react-tabs {
+            * {
+                box-sizing: border-box;
+            }
             .log-detail {
                 margin: 0px 10px 10px 58px;
                 * {
@@ -12,7 +15,7 @@
             }
             .logHeader-wrapper {
                 &:not(:last-child) {
-                    border-bottom: 1px solid #ddd;
+                    border-bottom: 1px solid @alto;
                 }
                 width: 100%;
                 float: left;
@@ -144,7 +147,7 @@
                 margin: 0px 6px 0 0;
             }
             .logContainer {
-                padding: 10px 20px 10px 20px;
+                padding: 20px 0;
                 float: left;
             }
             .logContainerBox {
@@ -155,8 +158,8 @@
                 border-bottom: solid 1px @alto;
                 display: block;
                 float: left;
-                width: 758px;
-                margin: 0 0px 0 20px;
+                width: 100%;
+                padding: 5px 0;
                 .sitegroup-filter-container {
                     width: 23%;
                     height: 32px;
@@ -199,18 +202,20 @@
                 .toolbar-button-actions {
                     margin-top: 10px;
                     padding-top: 8px;
+                    font-weight: bold;
+                    color: @thunder;
                 }
             }
             .logPager {
-                margin: 0 2px 0 2px;
-                padding: 18px;
+                margin: 0 0 20px 0;
+                float: left;
+                width: 100%;
             }
             .logLegend-wrapper {
                 float: left;
-                padding: 20px 0 10px 0;
-                margin: 0 20px 0 20px;
                 border-top: solid 1px @alto;
-                margin-top: 10px;
+                width: 100%;
+                padding: 20px 0;
                 .logLegend-item {
                     float: left;
                     width: 250px;
