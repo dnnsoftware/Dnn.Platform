@@ -176,12 +176,13 @@ class App extends Component {
     getSettingsButtons() {
         const {settingsButtonComponents, onLoadSavePageAsTemplate, onDuplicatePage, onShowPanel, onHidePanel} = this.props;
         const SaveAsTemplateButton = settingsButtonComponents.SaveAsTemplateButton || Button;
+        const deleteAction = this.onDeleteSettings.bind(this);
 
         return (
-            <div className="heading-buttons">
+            <div className="heading-buttons">                
                 <Sec permission={permissionTypes.ADD_PAGE} onlyForNotSuperUser={true}>
                     <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
-                </Sec>
+                </Sec>                
                 <Sec permission={permissionTypes.EXPORT_PAGE}>
                     <SaveAsTemplateButton
                         type="secondary"
@@ -200,6 +201,14 @@ class App extends Component {
                         onClick={onDuplicatePage}>
                         {Localization.get("DuplicatePage")}
                     </Button>
+                </Sec>
+                <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
+                    <Button
+                        type="secondary"
+                        size="large"
+                        onClick={deleteAction}>
+                        {Localization.get("Delete")}
+                    </Button>    
                 </Sec>
             </div>
         );

@@ -153,6 +153,10 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.DELETED_PAGE
                 });
+                if (page.tabId !== 0 && page.tabId === utils.getCurrentPageId()) {
+                    window.top.location.href = utils.getDefaultPageUrl();
+                }
+
             }).catch((error) => {
                 dispatch({
                     type: ActionTypes.ERROR_DELETING_PAGE,

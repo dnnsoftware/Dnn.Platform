@@ -136,6 +136,11 @@ function getCurrentPageName() {
     return settings.currentPageName;
 }
 
+function getDefaultPageUrl() {
+    checkInit();
+    return config.siteRoot;
+}
+
 const utils = {
     init,
     formatDateNoTime,
@@ -157,7 +162,8 @@ const utils = {
     getTemplateFolder,
     getIsSuperUser,
     getCurrentPagePermissions,
-    getCurrentPageName
+    getCurrentPageName,
+    getDefaultPageUrl
 };
 
 export default utils;
