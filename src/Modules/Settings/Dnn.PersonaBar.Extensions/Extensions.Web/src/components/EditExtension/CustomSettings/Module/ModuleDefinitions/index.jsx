@@ -6,7 +6,7 @@ import Button from "dnn-button";
 import Localization from "localization";
 import { AddIcon } from "dnn-svg-icons";
 import ModuleDefinitionRow from "./ModuleDefinitionRow";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import utilities from "utils";
 import { ModuleDefinitionActions } from "actions";
 import DefinitionFields from "./DefinitionFields";

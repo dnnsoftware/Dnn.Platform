@@ -5,7 +5,7 @@ import {
 } from "../../actions";
 import SchedulerRow from "./schedulerRow";
 import SchedulerEditor from "./schedulerEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";

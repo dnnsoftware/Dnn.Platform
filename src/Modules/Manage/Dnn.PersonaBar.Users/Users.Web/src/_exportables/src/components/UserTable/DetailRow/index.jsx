@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import GridCell from "dnn-grid-cell";
 import styles from "./style.less";
 import {formatDate, sort} from "../../../helpers";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import UserMenu from "../UserMenu";
 import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";

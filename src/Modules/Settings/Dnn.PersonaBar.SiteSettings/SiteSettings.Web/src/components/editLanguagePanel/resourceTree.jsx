@@ -6,7 +6,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { ArrowDownIcon } from "dnn-svg-icons";
 import Folder from "./folder";
 import Label from "dnn-label";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 const parentTermTreeStyle = {
     width: "100%",
     height: "250px",

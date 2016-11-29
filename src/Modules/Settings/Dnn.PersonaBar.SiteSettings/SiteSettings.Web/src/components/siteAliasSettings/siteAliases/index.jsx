@@ -5,7 +5,7 @@ import {
 } from "../../../actions";
 import SiteAliasRow from "./siteAliasRow";
 import SiteAliasEditor from "./siteAliasEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";

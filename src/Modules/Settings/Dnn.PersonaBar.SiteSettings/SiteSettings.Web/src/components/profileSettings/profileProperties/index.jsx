@@ -5,7 +5,7 @@ import {
 } from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";

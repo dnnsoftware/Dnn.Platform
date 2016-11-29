@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import Localization from "../../../localization";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import RadioButtons from "dnn-radio-buttons";

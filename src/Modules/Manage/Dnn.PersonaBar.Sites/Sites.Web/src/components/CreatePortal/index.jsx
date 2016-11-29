@@ -12,7 +12,7 @@ import Button from "dnn-button";
 import DropdownWithError from "dnn-dropdown-with-error";
 import Switch from "dnn-switch";
 import Localization from "localization";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 const emptyNewPortal = {
     SiteTemplate: "",

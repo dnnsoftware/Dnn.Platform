@@ -7,7 +7,7 @@ import {
 } from "../../../actions";
 import LanguageRow from "./languageRow";
 import LanguageEditor from "./languageEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../../utils";

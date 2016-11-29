@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 import { CheckMarkIcon, EditIcon, TrashIcon, ArrowMoveUpIcon, ArrowMoveDownIcon } from "dnn-svg-icons";
 

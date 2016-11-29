@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
 import util from "utils";

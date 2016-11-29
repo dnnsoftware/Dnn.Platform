@@ -5,7 +5,7 @@ import {
 } from "../../actions";
 import IgnoreWordsRow from "./ignoreWordsRow";
 import IgnoreWordsEditor from "./ignoreWordsEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import "./style.less";
 import DropDown from "dnn-dropdown";
 import { AddIcon } from "dnn-svg-icons";

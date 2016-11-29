@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import { FolderIcon, PagesIcon, ArrowRightIcon, ArrowDownIcon } from "dnn-svg-icons";
 class Folder extends Component {
     constructor() {

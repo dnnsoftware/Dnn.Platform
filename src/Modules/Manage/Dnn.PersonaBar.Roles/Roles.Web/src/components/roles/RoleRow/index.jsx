@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import "./style.less";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import GridCell from "dnn-grid-cell";
 import IconButton from "../../common/IconButton";
 

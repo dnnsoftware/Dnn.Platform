@@ -4,7 +4,7 @@ import GridCell from "dnn-grid-cell";
 import Localization from "localization";
 import { AddIcon } from "dnn-svg-icons";
 import ControlRow from "./ControlRow";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import utilities from "utils";
 import { ModuleDefinitionActions, ExtensionActions } from "actions";
 import ControlFields from "./ControlFields";

@@ -5,7 +5,7 @@ import {
 } from "../../actions";
 import SynonymsGroupRow from "./synonymsGroupRow";
 import SynonymsGroupEditor from "./synonymsGroupEditor";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import DropDown from "dnn-dropdown";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";

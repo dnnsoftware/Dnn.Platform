@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import MultiLineInput from "dnn-multi-line-input";
 import Button from "dnn-button";
 import Label from "dnn-label";

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import Button from "dnn-button";
 import Select from "dnn-select";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
-import Collapse from "react-collapse";
+import Collapse from "dnn-collapsible";
 import GridCell from "dnn-grid-cell";
 import "./style.less";
 import { EditIcon } from "dnn-svg-icons";
