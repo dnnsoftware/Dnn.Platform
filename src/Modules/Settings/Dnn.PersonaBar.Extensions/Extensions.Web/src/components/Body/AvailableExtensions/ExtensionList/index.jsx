@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import GridCell from "dnn-grid-cell";
 import ExtensionHeader from "../common/ExtensionHeader";
 import ExtensionDetailRow from "../common/ExtensionDetailRow";
@@ -12,16 +12,17 @@ class ExtensionList extends Component {
         const {props} = this;
 
         return (
-            <GridCell  style={{ padding: "5px 20px" }}>
+            <GridCell style={{ padding: "5px 20px" }}>
                 <ExtensionHeader />
                 {props.packages.map((_package, index) => {
                     return <ExtensionDetailRow
                         _package={_package}
                         type={props.type}
                         onInstall={props.onInstall.bind(this)}
+                        doingOperation={props.doingOperation}
                         onDeploy={props.onDeploy.bind(this, index)}
                         />;
-                }) }
+                })}
             </GridCell>
         );
     }
@@ -35,7 +36,8 @@ ExtensionList.propTypes = {
     type: PropTypes.string,
     onDownload: PropTypes.func,
     onInstall: PropTypes.func,
-    onDeploy: PropTypes.func
+    onDeploy: PropTypes.func,
+    doingOperation: PropTypes.bool
 };
 
 

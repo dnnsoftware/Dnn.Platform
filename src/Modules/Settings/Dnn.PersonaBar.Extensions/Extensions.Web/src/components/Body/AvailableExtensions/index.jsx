@@ -10,9 +10,13 @@ import GridCell from "dnn-grid-cell";
 import ExtensionList from "./ExtensionList";
 import DropdownWithError from "dnn-dropdown-with-error";
 import "./style.less";
+
 class AvailableExtensions extends Component {
     constructor() {
         super();
+        this.state = {
+            doingOperation: false
+        };
     }
     checkIfAvailablePackageTypesEmpty(props) {
         return !props.availablePackageTypes || props.availablePackageTypes.length === 0;
@@ -49,7 +53,9 @@ class AvailableExtensions extends Component {
             event.preventDefault();
         }
         const {props} = this;
+        this.setDoingOperation(true);
         props.dispatch(ExtensionActions.parseAvailablePackage(name, props.selectedAvailablePackageType, () => {
+            this.setDoingOperation(false);
             props.dispatch(InstallationActions.setInstallingAvailablePackage(name, props.selectedAvailablePackageType, () => {
                 props.dispatch(InstallationActions.navigateWizard(1, () => {
                     props.dispatch(VisiblePanelActions.selectPanel(3));
@@ -58,14 +64,23 @@ class AvailableExtensions extends Component {
         }));
     }
 
+    setDoingOperation(doingOperation) {
+        this.setState({
+            doingOperation
+        });
+    }
+
     onDeploy(index, _package, event) {
         if (event) {
             event.preventDefault();
         }
         const {props} = this;
 
+        this.setDoingOperation(true);
         props.dispatch(ExtensionActions.deployAvailablePackage(_package, index, () => {
-            props.dispatch(ExtensionActions.getAvailablePackages(props.selectedAvailablePackageType));
+            props.dispatch(ExtensionActions.getAvailablePackages(props.selectedAvailablePackageType, () => {
+                this.setDoingOperation(false);
+            }));
         }));
     }
 
@@ -88,6 +103,7 @@ class AvailableExtensions extends Component {
                 {(props.availablePackages && props.availablePackages.length > 0) &&
                     <ExtensionList
                         packages={props.availablePackages}
+                        doingOperation={this.state.doingOperation}
                         type={props.selectedAvailablePackageType}
                         onInstall={this.onInstall.bind(this)}
                         onDeploy={this.onDeploy.bind(this)} />
