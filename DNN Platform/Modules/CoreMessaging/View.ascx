@@ -222,7 +222,7 @@
                 </div>
                 <div id="loadingNotifications" data-bind="visible: loadingData"><img src='<%= ResolveUrl("images/ajax-loader.gif") %>' alt="" /> <%=LocalizeString("LoadingContent") %></div>
                 <div class="smListings" data-bind="visible: !loadingData()">
-                    <ul class="messages" data-bind="foreach: { data: notifications, beforeRemove: hideNotification }">
+                    <ul class="messages" data-bind="foreach: { data: notifications }">
                         <li class="active">
                             <ul>
                                 <li class="ListCol-1"></li>
