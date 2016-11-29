@@ -338,7 +338,7 @@ class RegistrationSettingsPanelBody extends Component {
                         </InputGroup>
                     }
                     {this.isCustomFormType() &&
-                        <InputGroup>
+                        <InputGroup style={{marginTop: "20px"}}>
                             <div className="registrationSettings-row-input">
                                 <Label
                                     tooltipMessage={resx.get("registrationFieldsLabel.Help")}
