@@ -52,7 +52,7 @@ class SchedulerPanel extends Component {
 
     renderHeader() {
         let tableHeaders = tableFields.map((field) => {
-            let className = "schedule-items header-" + field.id;
+            let className = "header-" + field.id;
             return <div className={className} key={"header-" + field.id}>
                 <span>{field.name}&nbsp; </span>
             </div>;

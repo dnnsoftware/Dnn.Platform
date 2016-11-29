@@ -16,7 +16,7 @@
         cursor: auto;
         .row {    
             float: left;
-            width: 768px;      
+            width: 100%;      
             .item-row-name {
                 width: 28%;
                 float: left;
@@ -51,11 +51,6 @@
             .item-row-editButton {
                 width: 3%;
                 float: right;
-                margin-right: 5px;
-                &:not(:last-child) {
-                   float: left; 
-                   margin-right: 0px;                  
-                }
                 .edit-icon {
                     cursor: pointer;
                     > svg {
@@ -79,7 +74,8 @@
             }
             .item-row-historyButton {
                 width: 3%;
-                float: left;               
+                float: right;     
+                margin-right: 5px;          
                 .collapsible-content {
                     -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);
                     -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2);

@@ -65,11 +65,7 @@ class SchedulerRow extends Component {
                         <div className="schedule-item item-row-nextStart">
                             {props.nextStart}&nbsp; </div>
                         <div className="schedule-item item-row-enabled">
-                            {this.getEnabledDisplay() }</div>
-                        <div className="schedule-item item-row-editButton">
-                            <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
-                            </div>
-                        </div>
+                            {this.getEnabledDisplay() }</div>                        
                         { props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
                                 <div className="history-icon" dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggleHistoryPanel.bind(this) }>
@@ -85,6 +81,10 @@ class SchedulerRow extends Component {
                                 </div>
                             </div>
                         }
+                        <div className="schedule-item item-row-editButton">
+                            <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <Collapse autoScroll={true} isOpened={opened} style={{ float: "left" }} fixedHeight={580}>{opened && props.children }</Collapse>
