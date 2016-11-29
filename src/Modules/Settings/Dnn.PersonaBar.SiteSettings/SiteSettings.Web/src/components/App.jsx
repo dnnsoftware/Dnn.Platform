@@ -14,9 +14,6 @@ import TranslatePageContent from "./translatePageContent/translatePageContent";
 import EditLanguagePanel from "./editLanguagePanel";
 import utilities from "utils";
 import resx from "../resources";
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
 
 const Pages = {
     Default: 0,
@@ -33,10 +30,25 @@ class App extends Component {
         super();
         this.state = {
             portalId: utilities.settings.PortalID,
+            referrer: utilities.settings.referrer,
+            referrerText: utilities.settings.referrerText,
+            backToReferrerFunc: this.backToReferrer.bind(this, utilities.settings.backToReferrerFunc),
             bodyShowing: true
         };
         this.changePortalId = this.changePortalId.bind(this);
     }
+
+    backToReferrer(callback) {
+        if (typeof callback === "function") {
+            callback();
+        }
+        this.setState({
+            referrer: "",
+            referrerText: "",
+            backToReferrerFunc: null
+        });
+    }
+
     changePortalId(portalId) {
         this.setState({
             bodyShowing: false
@@ -48,12 +60,21 @@ class App extends Component {
         });
     }
 
+    updateReferrerInfo(event) {
+        this.setState({
+            referrer: event.referrer,
+            referrerText: event.referrerText,
+            backToReferrerFunc: this.backToReferrer.bind(this, event.backToReferrerFunc)
+        });
+    }
+
     componentWillMount() {
         // // Listen for the event.
         document.addEventListener("portalIdChanged", (e) => {
             if (this.state.portalId !== e.portalId) {
                 this.changePortalId(e.portalId);
             }
+            this.updateReferrerInfo(e);
         }, false);
     }
 
@@ -77,6 +98,9 @@ class App extends Component {
                     <Body
                         portalId={state.portalId}
                         showing={state.bodyShowing}
+                        referrer={state.referrer}
+                        referrerText={state.referrerText}
+                        backToReferrerFunc={state.backToReferrerFunc}
                         openLanguagePack={this.openPersonaBarPage.bind(this, Pages.LanguagePack)}
                         openLanguageVerifier={this.openPersonaBarPage.bind(this, Pages.LanguageVerifier)}
                         openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager)}
@@ -84,38 +108,38 @@ class App extends Component {
                         cultureCode={props.cultureCode}
                         />
                 </PersonaBarPage>
-                
+
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
                     <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
                     </SocialPanelHeader>
                     <HtmlEditorManager portalId={state.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
-                
+
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageVerifier}>
                     <SocialPanelHeader title={resx.get("ResourceFileVerifier")}>
                     </SocialPanelHeader>
                     <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
-                
+
                 {props.selectedPage === Pages.LanguageEditor && <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageEditor}>
                     <SocialPanelHeader title={resx.get("LanguageEditor.Header")} />
                     <EditLanguagePanel portalId={state.portalId} backToSiteSettings={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>}
-                
+
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguagePack}>
                     <SocialPanelHeader title={resx.get("CreateLanguagePack")} />
                     <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
-                
+
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LocalizedContent}>
                     <SocialPanelHeader title={resx.get("EnableLocalizedContent")} />
                     <LocalizedContent portalId={state.portalId} closePersonaBarPage={this.closePersonaBarPage.bind(this)} isOpen={props.selectedPage === Pages.LocalizedContent} />
                 </PersonaBarPage>
-                
+
                 <PersonaBarPage isOpen={props.selectedPage === Pages.TranslatePageContent}>
                     <SocialPanelHeader title={resx.get("TranslatePageContent")} />
                     {props.selectedPage === Pages.TranslatePageContent &&
-                        <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId}/> 
+                        <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId} />
                     }
                 </PersonaBarPage>
 

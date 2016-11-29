@@ -89,10 +89,13 @@ export class Body extends Component {
         </Tabs>;
     }
 
+
+
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
             <SocialPanelBody>
+                {this.props.referrer && <div className="back-to-referrer" onClick={this.props.backToReferrerFunc}>{this.props.referrerText}</div>}
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("TabSiteInfo"),
                     resx.get("TabSiteBehavior"),
@@ -124,7 +127,10 @@ Body.propTypes = {
     openLanguageVerifier: PropTypes.func,
     openLanguagePack: PropTypes.func,
     openLocalizedContent: PropTypes.func,
-    showing: PropTypes.bool
+    showing: PropTypes.bool,
+    referrer: PropTypes.string,
+    referrerText: PropTypes.string,
+    backToReferrerFunc: PropTypes.func
 };
 
 function mapStateToProps(state) {
