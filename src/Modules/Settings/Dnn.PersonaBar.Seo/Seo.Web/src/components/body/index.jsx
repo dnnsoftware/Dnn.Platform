@@ -35,10 +35,10 @@ export class Body extends Component {
                 resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("GeneralSettingsTab"), <div style={{ fontSize: "9pt" }}>{resx.get("ExpressionsTab")} <Tooltip
+                    tabHeaders={[resx.get("GeneralSettingsTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
                         type="global"
-                        style={{ float: "right", height: "20", position: "static", margin: "-5px 0 0 5px" }}
+                        style={{ position: "absolute", right: 0, top: 15, float: "right" }}
                         /></div>, resx.get("TestURLTab")]}
                     type="secondary">
                     <GeneralSettings />
