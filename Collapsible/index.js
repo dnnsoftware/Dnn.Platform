@@ -1,3 +1,3 @@
 "use strict";
 
-module.exports = require("./lib/Collapsable");
+module.exports = require("./lib/Collapsible");

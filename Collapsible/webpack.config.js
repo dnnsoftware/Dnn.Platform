@@ -1,8 +1,8 @@
 module.exports = {
-    entry: "./src/Collapsable.jsx",
+    entry: "./src/Collapsible.jsx",
     output: {
         path: "./lib/",
-        filename: "Collapsable.js",
+        filename: "Collapsible.js",
     },
     module: {
         loaders: [

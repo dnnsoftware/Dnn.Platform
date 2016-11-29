@@ -1,8 +1,8 @@
 {
-  "name": "dnn-collapsable",
-  "version": "0.0.2",
+  "name": "dnn-collapsible",
+  "version": "0.0.3",
   "main": "index.js",
-  "description": "DNN Collapsable Component",
+  "description": "DNN Collapsible Component",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "set NODE_ENV=production&&webpack -p"

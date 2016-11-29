@@ -7,18 +7,18 @@ const page = /Firefox/.test(navigator.userAgent) ?
   document.documentElement :
   document.body;
 
-export default class Collapsable extends Component {
+export default class Collapsible extends Component {
 
     scroll(height) {
         if (!this.props.isOpened || this.props.scroll === false ) {
             return;
         }
-        const collapsable = findDOMNode(this.refs.collapsible);
-        const collapsableTop = collapsable.getBoundingClientRect().top;
-        const parentHeight = collapsable.parentNode.getBoundingClientRect().height;
-        const collapsableHeight = this.props.fixedHeight || height;
+        const collapsible = findDOMNode(this.refs.collapsible);
+        const collapsibleTop = collapsible.getBoundingClientRect().top;
+        const parentHeight = collapsible.parentNode.getBoundingClientRect().height;
+        const collapsibleHeight = this.props.fixedHeight || height;
         const bodyTop = document.body.getBoundingClientRect().top;
-        let bottom = collapsableTop - bodyTop + collapsableHeight  + parentHeight;
+        let bottom = collapsibleTop - bodyTop + collapsibleHeight  + parentHeight;
         
         if (bottom > window.innerHeight ) {
             bottom = bottom - window.innerHeight;
@@ -48,7 +48,7 @@ export default class Collapsable extends Component {
     }
 }
 
-Collapsable.propTypes = {
+Collapsible.propTypes = {
     isOpened: PropTypes.bool,
     style: PropTypes.object,
     fixedHeight: PropTypes.number,

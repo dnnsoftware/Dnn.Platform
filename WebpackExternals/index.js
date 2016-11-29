@@ -22,6 +22,7 @@ module.exports = {
         "dnn-button": "window.dnn.nodeModules.CommonComponents.Button",
         "dnn-checkbox": "window.dnn.nodeModules.CommonComponents.Checkbox",
         "dnn-collapsible-row": "window.dnn.nodeModules.CommonComponents.CollapsibleRow",
+        "dnn-collapsable": "window.dnn.nodeModules.CommonComponents.Collapsable",
         "dnn-date-picker": "window.dnn.nodeModules.CommonComponents.DatePicker",
         "dnn-dropdown": "window.dnn.nodeModules.CommonComponents.Dropdown",
         "dnn-dropdown-with-error": "window.dnn.nodeModules.CommonComponents.DropdownWithError",
