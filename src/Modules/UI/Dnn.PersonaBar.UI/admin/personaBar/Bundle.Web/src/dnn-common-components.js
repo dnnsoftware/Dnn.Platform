@@ -1,5 +1,6 @@
 import Button from "dnn-button";
 import Checkbox from "dnn-checkbox";
+import Collapsible from "dnn-collapsible";
 import CollapsibleRow from "dnn-collapsible-row";
 import Dropdown from "dnn-dropdown";
 import DatePicker from "dnn-date-picker";
@@ -39,6 +40,7 @@ import FolderPicker from "dnn-folder-picker";
 export {
     Button,
     Checkbox,
+    Collapsible,
     CollapsibleRow,
     Dropdown,
     DatePicker,
