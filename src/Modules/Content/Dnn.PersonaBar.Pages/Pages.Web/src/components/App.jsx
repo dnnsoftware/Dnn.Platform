@@ -202,14 +202,16 @@ class App extends Component {
                         {Localization.get("DuplicatePage")}
                     </Button>
                 </Sec>
-                <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
-                    <Button
-                        type="secondary"
-                        size="large"
-                        onClick={deleteAction}>
-                        {Localization.get("Delete")}
-                    </Button>    
-                </Sec>
+                {!securityService.userHasPermission(permissionTypes.MANAGE_PAGE) && 
+                    <Sec permission={permissionTypes.DELETE_PAGE} onlyForNotSuperUser={true}>
+                        <Button
+                            type="secondary"
+                            size="large"
+                            onClick={deleteAction}>
+                            {Localization.get("Delete")}
+                        </Button>    
+                    </Sec>
+                }
             </div>
         );
     }
