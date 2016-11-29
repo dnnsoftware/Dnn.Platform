@@ -19,10 +19,10 @@ class TranslationProgressBars extends Component {
 
     getTime() {
         const time = Date.now() - this.currentTime;
-        const seconds = this.normalizeTime(Math.floor(time / 1000));
-        const minutes = this.normalizeTime(Math.floor(seconds / 60));
-        const hours = this.normalizeTime(Math.floor(minutes / 60));
-        return `${hours}:${minutes}:${seconds}s`;
+        const seconds = Math.floor(time / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        return `${this.normalizeTime(hours)}:${this.normalizeTime(minutes % 60)}:${this.normalizeTime(seconds % 60)}s`;
     }
 
     /* eslint-disable react/no-danger */
