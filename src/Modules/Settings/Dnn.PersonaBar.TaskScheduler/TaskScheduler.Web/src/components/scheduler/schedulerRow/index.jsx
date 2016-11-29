@@ -87,7 +87,7 @@ class SchedulerRow extends Component {
                         }
                     </div>
                 </div>
-                <Collapse isOpened={opened} style={{ float: "left" }} fixedHeight={580}>{opened && props.children }</Collapse>
+                <Collapse autoScroll={true} isOpened={opened} style={{ float: "left" }} fixedHeight={580}>{opened && props.children }</Collapse>
             </div>
         );
     }
