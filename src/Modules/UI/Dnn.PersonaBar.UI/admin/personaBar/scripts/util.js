@@ -243,7 +243,7 @@ define(['jquery'], function ($) {
 
                     return this.formatCommaSeparate(size.toFixed(1)) + ' ' + suffix;
                 },
-                getCulture(){
+				getCulture: function () {
                     return config.culture;
                 },
                 getNumbersSeparatorByLocale: function () {
