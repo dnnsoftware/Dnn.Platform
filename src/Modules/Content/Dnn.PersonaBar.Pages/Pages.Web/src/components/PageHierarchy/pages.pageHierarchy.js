@@ -1116,23 +1116,20 @@ window.dnn.pages = window.dnn.pages || {};
 
             selectedPage = this._getViewModel().selectedPage();
             selectedPagePath = this._getViewModel().selectedPagePath;
-            selectedPagePath.removeAll();
 
-            if (selectedPage.id) {
+            var selectedPagePathLenght = selectedPagePath().length;
+            if (!selectedPagePathLenght) {
                 selectedPagePath.push(selectedPage);
-                find = this._findDataPosition(selectedPage.id);
-
-                if (find) {
-                    for (i = find.level; i > 0; i--) {
-                        parentId = this.container.find('.pages-list[data-page-level="' + i + '"]').data('parent-id');
-                        $pageItem = this.container.find('li[data-page-id="' + parentId + '"]');
-                        if ($pageItem && $pageItem[0]) { // cannot read property 'nodeType' of undefined
-                            pageData = ko.dataFor($pageItem[0]);
-                            selectedPagePath.splice(0, 0, pageData);
-                        }                        
-                    }
-                }
+                return;    
             }
+
+            while (selectedPagePathLenght > 0 && 
+                   selectedPagePath()[selectedPagePathLenght - 1].id !== selectedPage.parentId) {
+                selectedPagePath.pop();
+                -- selectedPagePathLenght;           
+            }
+            
+            selectedPagePath.push(selectedPage);
         },
 
         _getViewModel: function() {
