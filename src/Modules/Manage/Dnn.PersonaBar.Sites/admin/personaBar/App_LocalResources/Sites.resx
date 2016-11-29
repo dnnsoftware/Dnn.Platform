@@ -400,4 +400,7 @@
   <data name="LoadMore.Button" xml:space="preserve">
     <value>Load More</value>
   </data>
+  <data name="BackToSites.Text" xml:space="preserve">
+    <value>&lt; Back To Sites</value>
+  </data>
 </root>
