@@ -46,7 +46,7 @@ export default class Tags extends Component {
     resizeInputField() {
         let width = this.refs.tagsField.getBoundingClientRect().width - 30;
         if (this.state.tags.length) {
-            width = this.state.newTagText.length ? this.state.newTagText.length * 7 + 6 : 13;
+            width = this.state.newTagText.length ? this.state.newTagText.length * 8 + 6 : 13;
         }
         this.setState({ inputWidth: width, isInputVisible: true });
     }
