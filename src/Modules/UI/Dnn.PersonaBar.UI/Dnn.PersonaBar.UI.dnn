@@ -34,6 +34,37 @@
                         </resourceFile>
                     </resourceFiles>
                 </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer" action="update" targetpath="/configuration/system.webServer/staticContent" collision="ignore">
+                                        <staticContent>
+                                            <remove fileExtension=".svg" />
+                                            <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                        </staticContent>
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/remove[@fileExtension='.svg']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="remove" collision="overwrite">
+                                        <remove fileExtension=".svg" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/mimeMap[@fileExtension='.svg']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
+                                        <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
                 <component type="Script">
                     <scripts>
                         <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>

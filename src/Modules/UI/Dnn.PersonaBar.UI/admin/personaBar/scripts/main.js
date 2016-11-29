@@ -37,7 +37,8 @@
             name: "codemirror",
             location: "./../../../../../Resources/Shared/components/CodeEditor",
             main: "lib/codemirror"
-        }]
+        }],
+        waitSeconds: 30
     });
     requirejs.onError = function (err) {
         // If requireJs throws a timeout reload the page
