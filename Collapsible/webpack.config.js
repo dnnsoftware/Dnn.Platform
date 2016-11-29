@@ -3,6 +3,8 @@ module.exports = {
     output: {
         path: "./lib/",
         filename: "Collapsible.js",
+        libraryTarget: "umd",
+        library: "Collapsible"
     },
     module: {
         loaders: [
@@ -25,9 +27,6 @@ module.exports = {
         "react-collapse": "react-collapse",
         "react-motion": "react-motion",
         "react-height": "react-height",
-        "react-custom-scrollbars": "react-custom-scrollbars",
-        "dnn-svg-icons": "dnn-svg-icons",
-        "lodash": "lodash"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
