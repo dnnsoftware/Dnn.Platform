@@ -61,7 +61,7 @@ class TaskQueuePanelBody extends Component {
                 <div>
                     {((props.taskStatusList && props.taskStatusList.length > 0) || (props.taskProcessingList && props.taskProcessingList.length > 0)) &&
                         <div className={props.schedulingEnabled === "True" ? "taskStatusList-title" : "taskStatusList-disabled"}>
-                            {props.schedulingEnabled === "True" ? resx.get("TaskQueueTitle") : resx.get("DisabledMessage")}
+                            {props.schedulingEnabled === "True" ? "" : resx.get("DisabledMessage")}
                         </div>
                     }
                     {props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
