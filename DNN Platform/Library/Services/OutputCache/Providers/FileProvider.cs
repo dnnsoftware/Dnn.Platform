@@ -285,9 +285,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     captureStream.Close();
                 }
 
-                StreamWriter oWrite = File.CreateText(attribFile);
-                oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString());
-                oWrite.Close();
+                using (var oWrite = File.CreateText(attribFile))
+                {
+                    oWrite.WriteLine(DateTime.UtcNow.Add(duration).ToString());
+                    oWrite.Close();
+                }
             }
             catch (Exception ex)
             {
