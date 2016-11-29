@@ -10,7 +10,7 @@ const page = /Firefox/.test(navigator.userAgent) ?
 export default class Collapsible extends Component {
 
     scroll(height) {
-        if (!this.props.isOpened || this.props.scroll === false ) {
+        if (!this.props.isOpened || !this.props.autoScroll ) {
             return;
         }
         const collapsible = findDOMNode(this.refs.collapsible);
@@ -52,7 +52,7 @@ Collapsible.propTypes = {
     isOpened: PropTypes.bool,
     style: PropTypes.object,
     fixedHeight: PropTypes.number,
-    scroll: PropTypes.bool,
+    autoScroll: PropTypes.bool,
     onHeightReady: PropTypes.func,
     children: PropTypes.node
 };
