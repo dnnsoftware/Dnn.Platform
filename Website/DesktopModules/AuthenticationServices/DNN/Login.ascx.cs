@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                     try
                     {
-                        UserController.VerifyUser(verificationCode.Replace(".", "+").Replace("-", "/").Replace("_", "="));
+                        UserController.VerifyUser(verificationCode.Replace(".", "+").Replace("-", "/").Replace("*", "="));
 
 						var redirectTabId = PortalSettings.Registration.RedirectAfterRegistration;
 
