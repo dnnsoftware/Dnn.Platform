@@ -56,7 +56,6 @@ class EditLanguagePanel extends Component {
         };
     }
     refreshFileList() {
-        console.log(this.props.portalId);
         this.props.dispatch(LanguageEditorActions.getRootResourcesFolder(this.props.portalId, this.state.selectedMode));
     }
     componentWillMount() {

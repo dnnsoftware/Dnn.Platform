@@ -85,6 +85,7 @@ class LocalizedContent extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
+        
         const defaultLanguage = this.getDefaultLanguage() || {};
         const {props, state} = this;
         return (

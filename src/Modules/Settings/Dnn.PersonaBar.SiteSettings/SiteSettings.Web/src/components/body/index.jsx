@@ -89,8 +89,6 @@ export class Body extends Component {
         </Tabs>;
     }
 
-
-
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (

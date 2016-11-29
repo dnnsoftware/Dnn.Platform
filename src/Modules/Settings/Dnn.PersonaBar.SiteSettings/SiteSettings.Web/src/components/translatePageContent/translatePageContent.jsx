@@ -11,7 +11,8 @@ import TranslationProgressBars from "../languageSettings/TranslationProgressBars
 import Button from "dnn-button";
 import {
     languages as LanguagesActions,
-    siteInfo as SiteInfoActions
+    siteInfo as SiteInfoActions,
+    languageEditor as LanguageEditorActions
 } from "actions";
 import utils from "utils";
 
@@ -33,6 +34,11 @@ class TranslatePageContent extends Component {
         this.getPageList();
         this.getBasicSettings();
         this.getProgressData();
+    }
+
+    componentWillReceiveProps(props) {
+        const {languageBeingEdited} = props;
+        this.setState({ languageBeingEdited });
     }
 
     getPageList() {
@@ -69,8 +75,16 @@ class TranslatePageContent extends Component {
     }
 
     doneProgress() {
+        const {state, props} = this;
         this.getPageList();
-        this.props.dispatch(LanguagesActions.getLanguages(this.props.portalId));
+        props.dispatch(LanguagesActions.getLanguages(props.portalId, (data) => {
+            const languages = data.Languages;
+            if (!languages.length) {
+                return;
+            }
+            const language = languages.find(l => l.Code === state.languageBeingEdited.Code);
+            this.props.dispatch(LanguageEditorActions.setLanguageBeingEdited(language));
+        }));
     }
 
     renderPageList() {
@@ -91,8 +105,7 @@ class TranslatePageContent extends Component {
         const portalId = this.props.portalId;
         this.props.dispatch(LanguagesActions.markAllPagesAsTranslated({ cultureCode, portalId }, () => {
             utils.utilities.notify(resx.get("PagesSuccessfullyTranslated"));
-            this.getPageList();
-            this.props.dispatch(LanguagesActions.getLanguages(this.props.portalId));
+            this.doneProgress();
         }));
     }
 
@@ -103,8 +116,7 @@ class TranslatePageContent extends Component {
         utils.utilities.confirm(resx.get("EraseTranslatedPagesWarning").replace("{0}", cultureCode), resx.get("Yes"), resx.get("No"), () => {
             props.dispatch(LanguagesActions.deleteLanguagePages({ portalId, cultureCode }, () => {
                 utils.utilities.notify(resx.get("DeletedAllLocalizedPages"));
-                this.getPageList();
-                this.props.dispatch(LanguagesActions.getLanguages(this.props.portalId));
+                this.doneProgress();
             }));
         });
     }
@@ -190,6 +202,7 @@ class TranslatePageContent extends Component {
         const language = state.languageBeingEdited;
         const isEnabled = language.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
+        const localizablePages = +language.LocalizablePages;
         return <PersonaBarPageBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
@@ -222,12 +235,12 @@ class TranslatePageContent extends Component {
                     <div className="button-block">
                         <Button
                             type="secondary"
-                            disabled={!isEnabled}
+                            disabled={!isEnabled || !localizablePages}
                             onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code) }>
                             {resx.get("MarkAllPagesAsTranslated") }
                         </Button>
                         <Button
-                            disabled={!isEnabled}
+                            disabled={!isEnabled || !localizablePages}
                             type="secondary"
                             onClick={this.onEraseAllLocalizedPages.bind(this) }>
                             {resx.get("EraseAllLocalizedPages") }
