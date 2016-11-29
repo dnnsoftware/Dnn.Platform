@@ -11,84 +11,84 @@ namespace Dnn.PersonaBar.Library.Data
         public int SavePersonaBarMenu(string identifier, string moduleName, string controller, string resourceKey, string path,
             string link, string cssClass, bool mobileSupport, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenu", identifier, moduleName, controller, resourceKey, path,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", identifier, moduleName, controller, resourceKey, path,
                 Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
                 mobileSupport, Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId);
         }
 
         public IDataReader GetPersonaBarMenu()
         {
-            return DataProvider.ExecuteReader("GetPersonaBarMenu");
+            return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarMenu");
         }
 
         public void DeletePersonaBarMenuByIdentifier(string identifier)
         {
-            DataProvider.ExecuteNonQuery("DeletePersonaBarMenuByIdentifier", identifier);
+            DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarMenuByIdentifier", identifier);
         }
 
         public int SavePersonaBarExtension(string identifier, int menuId, string controller, string container,
             string path, int order, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarExtension", identifier, menuId,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarExtension", identifier, menuId,
                 controller, container, path, order, enabled, currentUserId);
         }
 
         public void DeletePersonaBarExtension(string identifier)
         {
-            DataProvider.ExecuteNonQuery("DeletePersonaBarExtension", identifier);
+            DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarExtension", identifier);
         }
 
         public IDataReader GetPersonaBarExtensions()
         {
-            return DataProvider.ExecuteReader("GetPersonaBarExtensions");
+            return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarExtensions");
         }
 
         public int SavePersonaBarMenuDefaultPermissions(int menuId, string roleNames)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuDefaultPermissions", menuId, roleNames);
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenuDefaultPermissions", menuId, roleNames);
         }
 
         public string GetPersonaBarMenuDefaultPermissions(int menuId)
         {
-            return DataProvider.ExecuteScalar<string>("GetPersonaBarMenuDefaultPermissions", menuId);
+            return DataProvider.ExecuteScalar<string>("PersonaBar_GetPersonaBarMenuDefaultPermissions", menuId);
         }
 
         public int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId, int roleId,
             int userId, bool allowAccees, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
                 GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
         }
 
         public IDataReader GetPersonbaBarMenuPermissionsByPortal(int portalId)
         {
-            return DataProvider.ExecuteReader("GetPersonaBarMenuPermissionsByPortal", portalId);
+            return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarMenuPermissionsByPortal", portalId);
         }
 
         public void DeletePersonbaBarMenuPermissionsByMenuId(int portalId, int menuId)
         {
-            DataProvider.ExecuteNonQuery("DeletePersonaBarMenuPermissionsByMenuId", portalId, menuId);
+            DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarMenuPermissionsByMenuId", portalId, menuId);
         }
 
         public void DeletePersonbaBarMenuPermissionsById(int menuPermissionId)
         {
-            DataProvider.ExecuteNonQuery("DeletePersonaBarMenuPermissionById", menuPermissionId);
+            DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarMenuPermissionById", menuPermissionId);
         }
 
         public int SavePersonaBarPermission(int menuId, string permissionKey, string permissionName, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("SavePersonaBarPermission", 
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarPermission", 
                 Null.GetNull(menuId, DBNull.Value), permissionKey, permissionName, currentUserId);
         }
 
         public void DeletePersonaBarPermission(int permissionId)
         {
-            DataProvider.ExecuteNonQuery("DeletePersonaBarPermission", permissionId);
+            DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarPermission", permissionId);
         }
 
         public IDataReader GetPersonaBarPermissions()
         {
-            return DataProvider.ExecuteReader("GetPersonaBarPermissions");
+            return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarPermissions");
         }
 
         private object GetRoleNull(int roleId)

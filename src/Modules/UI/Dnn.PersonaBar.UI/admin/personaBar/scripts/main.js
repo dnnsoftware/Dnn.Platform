@@ -771,8 +771,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var path = settings.activePath;
                 var identifier = settings.activeIdentifier;
                 var $menuItem = $('ul.personabarnav').find('#' + identifier);
+                var moduleName = $menuItem.data('module-name');
                 var params = {
                     identifier: identifier,
+                    moduleName: moduleName,
                     path: path,
                     query: $menuItem.data('query'),
                     settings: util.findMenuSettings(identifier)

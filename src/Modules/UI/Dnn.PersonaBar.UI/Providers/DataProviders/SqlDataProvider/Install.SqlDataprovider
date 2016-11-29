@@ -36,11 +36,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenu
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenu
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenu]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarMenu]
     @Identifier                   NVARCHAR(50),
     @ModuleName                 NVARCHAR(50),
     @Controller                 NVARCHAR(260),
@@ -120,11 +120,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuByIdentifier') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuByIdentifier
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarMenuByIdentifier]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier]
     @Identifier  NVARCHAR(50)
 AS
     DELETE p FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] p
@@ -135,11 +135,11 @@ AS
         WHERE Identifier = @Identifier
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenu
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenu
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarMenu]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPersonaBarMenu]
 AS
 	SELECT 
         MenuId, 
@@ -176,11 +176,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuDefaultPermissions]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions]
     @MenuId                     INT,
     @RoleNames                  NVARCHAR(260)
 AS
@@ -209,11 +209,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuDefaultPermissions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarMenuDefaultPermissions]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPersonaBarMenuDefaultPermissions]
     @MenuId INT
 AS
 	SELECT RoleNames FROM {databaseOwner}[{objectQualifier}PersonaBarMenuDefaultPermissions] WHERE MenuId = @MenuId
@@ -241,11 +241,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarExtension') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarExtension
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarExtension') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarExtension
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarExtension]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarExtension]
     @Identifier                 NVARCHAR(50),
     @MenuId                     INT,
     @Controller                 NVARCHAR(260),
@@ -295,21 +295,21 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarExtension') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarExtension
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarExtension') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarExtension
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarExtension]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarExtension]
     @Identifier NVARCHAR(50)
 AS
 	DELETE FROM {databaseOwner}[{objectQualifier}PersonaBarExtensions] WHERE Identifier = @Identifier
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarExtensions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarExtensions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarExtensions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarExtensions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarExtensions]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPersonaBarExtensions]
 AS
 	SELECT 
         ExtensionId, 
@@ -347,11 +347,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarPermissions
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarPermissions]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPersonaBarPermissions]
 AS
 	SELECT 
         [PermissionId],
@@ -366,11 +366,11 @@ AS
     FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] ORDER BY ViewOrder ASC
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission
 GO
 
-CREATE PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarPermission
+CREATE PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission
 	@MenuId		        INT,
 	@PermissionKey		VARCHAR(50),
 	@PermissionName		VARCHAR(50),
@@ -413,11 +413,11 @@ AS
     END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarPermission
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarPermission]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarPermission]
     @PermissionId           INT
 AS
     DELETE FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] 
@@ -480,11 +480,11 @@ FROM {databaseOwner}[{objectQualifier}PersonaBarMenuPermission] AS MP
     LEFT  JOIN {databaseOwner}[{objectQualifier}Users]            AS U  ON MP.UserID       = U.UserID
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuPermission
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePersonaBarMenuPermission]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarMenuPermission]
     @PortalId                   INT,
     @MenuId                     INT,
     @PermissionId               INT,
@@ -544,11 +544,11 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionById
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarMenuPermissionById]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById]
 	@MenuPermissionId INT
 AS
 DELETE FROM {databaseOwner}[{objectQualifier}PersonaBarMenuPermission]
@@ -556,11 +556,11 @@ WHERE
 	[MenuPermissionId] = @MenuPermissionId
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionsByMenuId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionsByMenuId
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionsByMenuId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionsByMenuId
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePersonaBarMenuPermissionsByMenuId]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionsByMenuId]
     @PortalId INT,
 	@MenuId INT
 AS
@@ -569,11 +569,11 @@ WHERE
 	[MenuId] = @MenuId AND (PortalId = @PortalId OR @PortalId IS NULL AND PortalId IS NULL)
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuPermissionsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuPermissionsByPortal
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuPermissionsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuPermissionsByPortal
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPersonaBarMenuPermissionsByPortal]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_GetPersonaBarMenuPermissionsByPortal]
 	@PortalID INT
 AS
 	SELECT 
@@ -681,7 +681,7 @@ GO
 
 IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PersonaBarPermission] WHERE PermissionKey = 'VIEW' AND MenuId IS NULL)
 BEGIN
-    EXEC {databaseOwner}{objectQualifier}SavePersonaBarPermission 
+    EXEC {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission 
         @MenuId = NULL,
         @PermissionKey = 'VIEW',
         @PermissionName = 'View Menu',

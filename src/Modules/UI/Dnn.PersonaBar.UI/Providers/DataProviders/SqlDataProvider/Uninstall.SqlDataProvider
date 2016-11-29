@@ -8,60 +8,60 @@
 /*****                                                  *****/
 /************************************************************/
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenu
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenu
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuByIdentifier') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuByIdentifier
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionById
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenu
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenu') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenu
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuPermission
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionById
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarPermissionById') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionById
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionsByMenuId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarMenuPermissionsByMenuId
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionsByMenuId') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarMenuPermissionsByMenuId
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuPermissionsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuPermissionsByPortal
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuPermissionsByPortal') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuPermissionsByPortal
 GO
 
 IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_PersonaBarMenuPermissions'))
     DROP VIEW {databaseOwner}[{objectQualifier}vw_PersonaBarMenuPermissions]
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarMenuDefaultPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarMenuDefaultPermissions
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarMenuDefaultPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarMenuDefaultPermissions
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPersonaBarPermissions
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarPermissions') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_GetPersonaBarPermissions
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}SavePersonaBarPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_SavePersonaBarPermission
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}DeletePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE {databaseOwner}{objectQualifier}DeletePersonaBarPermission
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarPermission') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}PersonaBar_DeletePersonaBarPermission
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}PersonaBarPermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
