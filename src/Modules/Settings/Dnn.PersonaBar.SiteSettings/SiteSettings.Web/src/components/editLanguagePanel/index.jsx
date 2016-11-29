@@ -145,6 +145,7 @@ class EditLanguagePanel extends Component {
                     getResxEntries={this.getResxEntries.bind(this) }
                     getChildFolders={this.getChildFolders.bind(this) }
                     resxBeingEdited={props.resxBeingEdited}
+                    portalName={props.portalName}
                     resxBeingEditedDisplay={props.resxBeingEditedDisplay}
                     selectedMode={this.state.selectedMode}
                     onSelectMode={this.onSelectMode.bind(this) }

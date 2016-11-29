@@ -2,9 +2,11 @@ import React, { PropTypes, Component } from "react";
 import resx from "resources";
 import Switch from "dnn-switch";
 import Button from "dnn-button";
+import Label from "dnn-label";
 import RadioButtons from "dnn-radio-buttons";
 import GridCell from "dnn-grid-cell";
 import ResourceTree from "./resourceTree";
+import util from "utils";
 
 class LanguageInfoView extends Component {
     render() {
@@ -21,7 +23,8 @@ class LanguageInfoView extends Component {
             onCancel,
             onSaveTranslations,
             onHighlightPendingTranslations,
-            highlightPendingTranslations
+            highlightPendingTranslations,
+            portalName
         } = this.props;
         return (
             <GridCell className="edit-language-info">
@@ -31,7 +34,12 @@ class LanguageInfoView extends Component {
                         <p>{languageBeingEdited.NativeName}</p>
                     </GridCell>
                     <GridCell columnSize={60} className="mode-container">
-                        <RadioButtons tooltipMessage={resx.get("Mode.HelpText")} label={resx.get("Mode.Label")} buttonGroup="mode" options={ModeOptions} value={selectedMode} onChange={onSelectMode} />
+                        {
+                            util.settings.isHost && <RadioButtons tooltipMessage={resx.get("Mode.HelpText")} label={resx.get("Mode.Label")} buttonGroup="mode" options={ModeOptions} value={selectedMode} onChange={onSelectMode} />
+                        }
+                        {
+                            !util.settings.isHost && <Label label={portalName} />
+                        }
                     </GridCell>
                 </GridCell>
                 <GridCell className="edit-resource-files">
@@ -69,7 +77,8 @@ LanguageInfoView.propTypes = {
     onCancel: PropTypes.func,
     onSaveTranslations: PropTypes.func,
     onHighlightPendingTranslations: PropTypes.func,
-    highlightPendingTranslations: PropTypes.bool
+    highlightPendingTranslations: PropTypes.bool,
+    portalName: PropTypes.string
 };
 
 export default LanguageInfoView;
