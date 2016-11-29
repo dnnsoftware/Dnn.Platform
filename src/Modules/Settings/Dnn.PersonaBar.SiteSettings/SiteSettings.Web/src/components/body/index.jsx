@@ -13,7 +13,7 @@ import BasicSearchSettings from "../basicSearchSettings";
 import LanguageSettings from "../languageSettings";
 import SynonymsGroups from "../synonymsGroups";
 import IgnoreWords from "../ignoreWords";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import MoreSettings from "../moreSettings";
 import "./style.less";
 import util from "../../utils";
@@ -94,7 +94,7 @@ export class Body extends Component {
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <SocialPanelBody>
+            <PersonaBarPageBody>
                 {this.props.referrer && <div className="back-to-referrer" onClick={this.props.backToReferrerFunc}>{this.props.referrerText}</div>}
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("TabSiteInfo"),
@@ -113,7 +113,7 @@ export class Body extends Component {
                         />}
                     {this.props.showing && this.getSearchSecondaryTabs()}
                 </Tabs>
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }

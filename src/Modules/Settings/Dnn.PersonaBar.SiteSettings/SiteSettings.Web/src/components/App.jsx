@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import SocialPanelHeader from "dnn-social-panel-header";
+import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import {
     visiblePanel as VisiblePanelActions
 } from "../actions";
@@ -42,11 +42,13 @@ class App extends Component {
         if (typeof callback === "function") {
             callback();
         }
-        this.setState({
-            referrer: "",
-            referrerText: "",
-            backToReferrerFunc: null
-        });
+        setTimeout(() => {
+            this.setState({
+                referrer: "",
+                referrerText: "",
+                backToReferrerFunc: null
+            });
+        }, 1500);
     }
 
     changePortalId(portalId) {
@@ -93,8 +95,8 @@ class App extends Component {
         return (
             <div className="siteSettings-app">
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
-                    <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
-                    </SocialPanelHeader>
+                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
+                    </PersonaBarPageHeader>
                     <Body
                         portalId={state.portalId}
                         showing={state.bodyShowing}
@@ -110,34 +112,34 @@ class App extends Component {
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
-                    <SocialPanelHeader title={resx.get("nav_SiteSettings")}>
-                    </SocialPanelHeader>
+                    <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
+                    </PersonaBarPageHeader>
                     <HtmlEditorManager portalId={state.portalId} closeHtmlEditorManager={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageVerifier}>
-                    <SocialPanelHeader title={resx.get("ResourceFileVerifier")}>
-                    </SocialPanelHeader>
+                    <PersonaBarPageHeader title={resx.get("ResourceFileVerifier")}>
+                    </PersonaBarPageHeader>
                     <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
 
                 {props.selectedPage === Pages.LanguageEditor && <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageEditor}>
-                    <SocialPanelHeader title={resx.get("LanguageEditor.Header")} />
+                    <PersonaBarPageHeader title={resx.get("LanguageEditor.Header")} />
                     <EditLanguagePanel portalId={state.portalId} backToSiteSettings={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>}
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguagePack}>
-                    <SocialPanelHeader title={resx.get("CreateLanguagePack")} />
+                    <PersonaBarPageHeader title={resx.get("CreateLanguagePack")} />
                     <LanguagePack closeLanguagePack={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LocalizedContent}>
-                    <SocialPanelHeader title={resx.get("EnableLocalizedContent")} />
+                    <PersonaBarPageHeader title={resx.get("EnableLocalizedContent")} />
                     <LocalizedContent portalId={state.portalId} closePersonaBarPage={this.closePersonaBarPage.bind(this)} isOpen={props.selectedPage === Pages.LocalizedContent} />
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.TranslatePageContent}>
-                    <SocialPanelHeader title={resx.get("TranslatePageContent")} />
+                    <PersonaBarPageHeader title={resx.get("TranslatePageContent")} />
                     {props.selectedPage === Pages.TranslatePageContent &&
                         <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId} />
                     }

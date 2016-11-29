@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import SocialPanelBody from "dnn-social-panel-body";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import LanguageInfoView from "./languageInfoView";
 import { visiblePanel as VisiblePanelActions, languageEditor as LanguageEditorActions } from "actions";
 import resx from "resources";
@@ -132,7 +132,7 @@ class EditLanguagePanel extends Component {
         ];
         const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host");
         return (
-            <SocialPanelBody
+            <PersonaBarPageBody
                 className="edit-language-panel"
                 workSpaceTrayOutside={true}
                 workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this) }>{resx.get("BackToLanguages") }</div>}
@@ -154,7 +154,7 @@ class EditLanguagePanel extends Component {
                     onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this) }
                     highlightPendingTranslations={this.state.highlightPendingTranslations}/>
                 <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this) }/>
-            </SocialPanelBody>
+            </PersonaBarPageBody>
         );
     }
 }
