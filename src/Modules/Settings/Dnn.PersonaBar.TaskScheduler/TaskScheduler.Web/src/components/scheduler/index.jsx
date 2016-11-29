@@ -159,6 +159,7 @@ class SchedulerPanel extends Component {
                         id={id}>
                         <SchedulerEditor
                             serverList={this.props.serverList}
+                            enabled={item.Enabled}
                             scheduleId={item.ScheduleID}
                             Collapse={this.collapse.bind(this) }
                             onDelete={this.onDeleteSchedulerItem.bind(this) }

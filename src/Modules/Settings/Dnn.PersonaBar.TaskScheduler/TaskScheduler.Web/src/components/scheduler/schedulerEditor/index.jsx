@@ -377,12 +377,10 @@ class SchedulerEditor extends Component {
                     </div>
                 </div>
             </div>;
-            let children = [];
-            children.push(columnOne);
-            children.push(columnTwo);
+
             return (
                 <div className="scheduler-setting-editor">
-                    <Grid children={children} numberOfColumns={2} />
+                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                     <div className="buttons-box">
                         {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.props.onDelete.bind(this, this.props.scheduleId)}>{resx.get("cmdDelete")}</Button>}
                         <Button
@@ -390,7 +388,9 @@ class SchedulerEditor extends Component {
                             onClick={this.onCancel.bind(this)}>
                             {resx.get("Cancel")}
                         </Button>
-                        {this.props.scheduleId !== undefined && <Button type="secondary" onClick={this.runSchedule.bind(this)}>{resx.get("cmdRun")}</Button>}
+                        {this.props.scheduleId !== undefined && this.props.scheduleItemDetail.Enabled && this.props.enabled &&
+                            <Button type="secondary" onClick={this.runSchedule.bind(this)}>{resx.get("cmdRun")}</Button>
+                        }
                         <Button
                             disabled={!this.props.settingsClientModified}
                             type="primary"
@@ -408,6 +408,7 @@ class SchedulerEditor extends Component {
 SchedulerEditor.propTypes = {
     dispatch: PropTypes.func.isRequired,
     scheduleItemDetail: PropTypes.object,
+    enabled: PropTypes.bool,
     serverList: PropTypes.array,
     scheduleId: PropTypes.number,
     Collapse: PropTypes.func,
