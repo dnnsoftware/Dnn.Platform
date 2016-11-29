@@ -132,6 +132,7 @@
     <Compile Include="Components\PageManagementController.cs" />
     <Compile Include="Components\PagesController.cs" />
     <Compile Include="Components\PagesControllerImpl.cs" />
+    <Compile Include="Components\XssCleaner.cs" />
     <Compile Include="Components\PageUrlsController.cs" />
     <Compile Include="Components\Security\ISecurityService.cs" />
     <Compile Include="Components\Security\SecurityService.cs" />
