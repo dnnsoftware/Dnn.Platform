@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             return (
                 IsPageAdminUser() ||
                 creatingPage && CanAddPage(parentId) ||
-                creatingTemplate && CanExportPage(pageSettings.TemplateId) ||
+                creatingTemplate && CanExportPage(pageSettings.TemplateTabId) ||
                 updatingPage && CanManagePage(tabId) ||
                 duplicatingPage && CanCopyPage(pageSettings.TemplateTabId)
             );

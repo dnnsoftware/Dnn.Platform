@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 //add file to Files table
                 using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
                 {
-                    FileManager.Instance.AddFile(folder, template.Name + ".page.template", fileContent, true, true, "application/octet-stream");
+                    FileManager.Instance.AddFile(folder, template.Name + ".page.template", fileContent, true, false, "application/octet-stream");
                 }
             }
             catch (DotNetNuke.Services.FileSystem.PermissionsNotMetException)
