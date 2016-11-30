@@ -45,7 +45,7 @@ define(['jquery'], function ($) {
             };
             // Beacon injection
             injectBeacon = function (template) {
-                var beaconUrl = window.parent['personaBarSettings'] !== undefined ? window.parent['personaBarSettings']['beaconUrl'] : undefined;
+                var beaconUrl = config.beaconUrl !== undefined ? config.beaconUrl : undefined;
                 if (beaconUrl != undefined && beaconUrl !== "" && template !== "tasks") {
                     (new Image()).src = beaconUrl + "&f=" + encodeURI(template);
                 }
@@ -245,6 +245,9 @@ define(['jquery'], function ($) {
                 },
 				getCulture: function () {
                     return config.culture;
+				},
+                getSKU: function() {
+                    return config.sku;
                 },
                 getNumbersSeparatorByLocale: function () {
                     var numberWithSeparator = (1000).toLocaleString(config.culture);
