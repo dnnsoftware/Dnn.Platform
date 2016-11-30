@@ -1,6 +1,9 @@
 @import "~dnn-global-styles/index";
 .modepanel-content-wrapper {
     padding: 0 0 20px 0;
+    * {
+        box-sizing: border-box;
+    }
     label {
         float: left;
         margin-right: 15px;
@@ -66,7 +69,7 @@
         float: left;
         width: 96%;
         .historyHeader-wrapper {
-            &:not(:last-child) {
+            &:not(: last-child) {
                 border-bottom: 1px solid @alto;
             }
             width: 100%;

@@ -50,14 +50,16 @@ class HistoryPanelBody extends Component {
         alert("You pressed enter! My value is: " + state[key]);
     }
 
-    onPageChange(startIndex) {
-        const {props, state} = this;
-        let pageIndex = startIndex / state.pageSize;
+    onPageChange(currentPage, pageSize) {
+        let {state, props} = this;
+        if (pageSize !== undefined && state.pageSize !== pageSize) {
+            state.pageSize = pageSize;
+        }
+        state.pageIndex = currentPage;
         this.setState({
-            pageIndex: pageIndex,
-            pageSize: state.pageSize
+            state
         }, () => {
-            props.dispatch(TaskActions.getScheduleItemHistory({ scheduleId: props.scheduleId, pageIndex: pageIndex, pageSize: state.pageSize }));
+            props.dispatch(TaskActions.getScheduleItemHistory({ scheduleId: props.scheduleId, pageIndex: state.pageIndex, pageSize: state.pageSize }));
         });
     }
 
