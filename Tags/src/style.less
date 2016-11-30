@@ -39,6 +39,7 @@
         float: left;
         box-sizing: content-box !important;
         outline: none !important;
+        max-width: calc(100% - 24px);
     }
     .dnn-uicommon-tag-input {
         float: left;
@@ -50,12 +51,17 @@
         color: white;
         font-size: 11px;
         border-radius: 0px;
+        max-width: calc(100% - 18px);
+        overflow: hidden;
+        text-overflow: ellipsis;
         .close {
             position: absolute;
             padding: 0 5px;
             font-size: 16px;
             line-height: 15px;
             cursor: pointer;
+            top: 5px;
+            right: 0px;
         }
     }
     .tag-search-results {
