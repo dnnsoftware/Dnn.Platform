@@ -55,6 +55,7 @@ const XThinIcon = require(`!raw!./svg/x_thin.svg`);
 const ModuleIcon = require(`!raw!./svg/module.svg`);
 const ArrowMoveUpIcon = require(`!raw!./svg/arrow_moveup.svg`);
 const ArrowMoveDownIcon = require(`!raw!./svg/arrow_movedown.svg`);
+const TableEmptyState = require(`!raw!./svg/table_empty.svg`);
 export {
     ActivityIcon, 
     AddIcon,
@@ -111,5 +112,6 @@ export {
     XThinIcon,
 	ModuleIcon,
     ArrowMoveUpIcon,
-    ArrowMoveDownIcon
+    ArrowMoveDownIcon,
+    TableEmptyState
 };
