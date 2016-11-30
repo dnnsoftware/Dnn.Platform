@@ -1,12 +1,11 @@
 @import "~dnn-global-styles/index";
-.dnn-servers-tab-panel
-{
+.dnn-servers-tab-panel {
     .dnn-servers-info-panel {
-        margin: 30px 80px;
-        display: inline-block;          
+        padding: 30px 80px 45px;
+        display: inline-block;
     }
     .dnn-servers-info-panel-big {
-        margin: 30px 30px;
+        margin: 30px 30px 45px;
         display: inline-block;
         width: 93%;
         .dnn-switch-container {
@@ -14,7 +13,7 @@
         }
     }
     .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;        
+        padding: 0 0 15px 0;
         .title label {
             font-weight: bolder;
             float: left;
@@ -24,29 +23,37 @@
             display: block;
         }
     }
-
     .tooltipAdjustment {
         div.tooltip-text {
             max-width: 320px;
             word-break: normal;
         }
     }
-
+    .log-file-cell {
+        padding: 7px 0;
+        .dnn-dropdown {
+            border-right: 1px solid @alto;
+            .collapsible-label {
+                padding: 3px 0;
+            }
+            .dropdown-icon {
+                top: 5px;
+                right: 17px;
+            }
+        }
+    }
     .leftPane {
-        padding-right:30px;
+        padding-right: 30px;
         border-right: 1px solid @alto;
     }
-
     .rightPane {
-        padding-left:30px;
-        padding-right:30px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
-
     .border-bottom {
         border-bottom: 1px solid @alto;
         margin-bottom: 25px;
     }
-
     .dnn-radio-buttons ul li {
         padding-top: 10px;
         div.check {
@@ -54,38 +61,34 @@
         }
         label {
             margin-bottom: 10px;
-        }        
+        }
     }
-
     .buttons-panel {
         text-align: center;
         margin-top: 25px;
         .dnn-ui-common-button {
-            margin-right:10px;
+            margin-right: 10px;
         }
     }
-
     .dnn-servers-grid-panel {
-        margin: 10px 30px 0px;
-        display: inline-block;
+        padding: 0 30px 55px;
         width: 100%;
         .header-title label {
             font-weight: bolder;
             text-transform: uppercase;
             margin-bottom: 10px;
-        } 
+        }
         .grid {
             display: block;
             float: left;
-            width: 93%;
-            margin-bottom: 20px;
+            width: 100%;
             margin-top: 10px;
             border-left: 1px solid @alto;
             border-right: 1px solid @alto;
             box-sizing: border-box;
             .row {
                 display: table;
-                width: 100%;            
+                width: 100%;
                 position: relative;
                 padding: 15px 20px;
                 box-sizing: border-box;
@@ -96,64 +99,58 @@
                     font-weight: bolder;
                 }
             }
-            .header {            
+            .header {
                 border-top: 1px solid @alto;
                 text-transform: uppercase;
                 .dnn-grid-cell {
                     font-weight: bolder;
                 }
-            }       
+            }
         }
     }
 }
-
 
 .dnn-servers-tab-panel .dnn-servers-info-panel-big {
     &.logsTab {
         .dnn-label {
             width: auto;
-            margin-top: 8px;   
+            margin-top: 8px;
         }
-        
         .leftPane {
             margin-bottom: 15px;
         }
-        
-        .dnn-ui-common-input-group{
+        .dnn-ui-common-input-group {
             padding: 0px;
         }
-        
         .dnn-ui-common-multi-line-input {
             height: 400px;
         }
-        
         .dnn-dropdown {
             width: 70%;
         }
-        .dnn-ui-common-input-group .title label { 
+        .dnn-ui-common-input-group .title label {
             text-transform: none;
         }
     }
-    
     &.performanceSettingTab {
         .title.lowerCase label {
             text-transform: none;
-        }        
+        }
         .dnn-servers-grid-panel.newSection {
             padding-top: 20px;
             padding-bottom: 10px;
         }
-        .borderSeparation { 
+        .borderSeparation {
             > div {
                 border-bottom: 1px solid @alto;
                 margin-top: 10px;
-                padding-bottom: 10px;                
+                padding-bottom: 10px;
             }
             :first-child {
                 margin-top: 0;
             }
         }
-        .dnn-ui-common-input-group .title label { 
+        .dnn-ui-common-input-group .title label {
             text-transform: none;
         }
         .currentHostVersion .dnn-label {
@@ -163,9 +160,8 @@
             }
         }
     }
-
     &.smtpServerSettingsTab {
-        .dnn-ui-common-input-group .title label { 
+        .dnn-ui-common-input-group .title label {
             text-transform: none;
         }
     }

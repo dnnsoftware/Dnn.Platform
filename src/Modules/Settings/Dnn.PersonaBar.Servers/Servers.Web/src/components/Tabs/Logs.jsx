@@ -1,8 +1,6 @@
-import React, {Component, PropTypes } from "react";
-import Label from "dnn-label";
-import GridSystem from "dnn-grid-system";
+import React, { Component, PropTypes } from "react";
+import GridCell from "dnn-grid-cell";
 import Dropdown from "dnn-dropdown";
-import InputGroup from "dnn-input-group";
 import MultiLineInput from "dnn-multi-line-input";
 import Localization from "../../localization";
 import { connect } from "react-redux";
@@ -11,12 +9,12 @@ import LogsTabActions from "../../actions/logsTab";
 import utils from "../../utils";
 import "./tabs.less";
 
-class Logs extends Component {   
+class Logs extends Component {
     componentDidMount() {
         if (this.props.logs.length > 0) {
             return;
         }
-        
+
         this.props.onRetrieveLogsServerInfo();
     }
 
@@ -25,29 +23,22 @@ class Logs extends Component {
             utils.notifyError(newProps.errorMessage);
         }
     }
-        
+
     render() {
         const {props} = this;
 
         return <div className="dnn-servers-info-panel-big logsTab">
-            <GridSystem className="border-bottom">
-                <div className="leftPane">
-                    <InputGroup>
-                        <Label className="title" 
-                            label={Localization.get("Logs_LogFiles")} 
-                            tooltipMessage={Localization.get("Logs_LogFilesTooltip")}/>
-                        {props.logs.length > 0 && 
-                        <Dropdown withBorder={false}
-                            label={Localization.get("Logs_LogFilesDefaultOption")}
-                            options={props.logs}
-                            value={props.selectedLog}
-                            onSelect={this.props.onSelectedLog}
-                            />}
-                    </InputGroup>
-                </div>
-                <div className="rightPane">
-                </div>
-            </GridSystem>
+            <GridCell columnSize={60} className="log-file-cell">
+                {props.logs.length > 0 &&
+                    <Dropdown
+                        withBorder={false}
+                        label={Localization.get("Logs_LogFilesDefaultOption")}
+                        options={props.logs}
+                        value={props.selectedLog}
+                        prependWith={Localization.get("Logs_LogFiles")}
+                        onSelect={this.props.onSelectedLog}
+                        />}
+            </GridCell>
             <div className="clear" />
             <div>
                 <MultiLineInput
@@ -55,10 +46,10 @@ class Logs extends Component {
                     />
             </div>
         </div>;
-    }    
+    }
 }
 
-Logs.propTypes = {   
+Logs.propTypes = {
     logs: PropTypes.arrayOf(PropTypes.object),
     errorMessage: PropTypes.string,
     selectedLog: PropTypes.string,
@@ -67,7 +58,7 @@ Logs.propTypes = {
     logData: PropTypes.func
 };
 
-function mapStateToProps(state) {    
+function mapStateToProps(state) {
     return {
         logs: state.logsTab.logs,
         errorMessage: state.logsTab.errorMessage,
@@ -78,7 +69,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators ({
+        ...bindActionCreators({
             onRetrieveLogsServerInfo: LogsTabActions.loadLogsServerInfo,
             onSelectedLog: LogsTabActions.loadSelectedLog
         }, dispatch)

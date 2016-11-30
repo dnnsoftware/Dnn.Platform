@@ -14,7 +14,7 @@ export default class DropdownBlock extends Component {
                 tooltipMessage={props.tooltip}
                 label={props.label} style={{width: "auto"}} />
             {props.isGlobal && <GlobalIcon /> }
-            <Dropdown style={{width:"80%"}}
+            <Dropdown style={{width:"100%"}}
                     options={props.options}
                     value={props.value}
                     onSelect={props.onSelect}
