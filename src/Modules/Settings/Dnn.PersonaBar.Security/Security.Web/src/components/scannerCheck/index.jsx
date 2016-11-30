@@ -428,7 +428,7 @@ class ScannerCheckPanelBody extends Component {
                 <div className="scannercheck-topbar">
                     <div className={props.scannerCheckActiveTab === "search" ? "search-filter-active" : "search-filter"}>
                         <SearchBox
-                            placeholder={resx.get("SearchPlaceHolder") }
+                            placeholder={resx.get("ScannerChecks") }
                             initialValue={props.scannerCheckKeyword && props.scannerCheckKeyword.length > 0 ? props.scannerCheckKeyword : null}
                             onSearch={this.onKeywordChanged.bind(this) }
                             maxLength={50} />

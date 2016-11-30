@@ -37,7 +37,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="allow-icon" dangerouslySetInnerHTML={{ __html: allowIcon }} />
-                        <div style={{paddingLeft: "10px", float: "left"}}>{resx.get("AllowIP")}</div>
+                        <div style={{paddingLeft: "10px", paddingTop: 3, float: "left"}}>{resx.get("AllowIP")}</div>
                     </div>
                 );
             }
@@ -45,7 +45,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="deny-icon" dangerouslySetInnerHTML={{ __html: denyIcon }} />
-                        <div style={{paddingLeft: "10px", float: "left"}}>{resx.get("DenyIP")}</div>
+                        <div style={{paddingLeft: "10px", paddingTop: 3, float: "left"}}>{resx.get("DenyIP")}</div>
                     </div>
                 );
             }

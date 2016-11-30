@@ -44,21 +44,49 @@ export class Body extends Component {
                 resx.get("TabMore")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("TabBasicLoginSettings"), <div style={{ fontSize: "9pt" }}>{resx.get("TabIpFilters")} <Tooltip
-                        messages={[resx.get("GlobalSettingsTab")]}
-                        type="global"
-                        style={{ float: "right", height: "20", position: "static", margin: "-5px 0 0 5px" }}
-                        /></div>]}
+                    tabHeaders={[resx.get("TabBasicLoginSettings"),
+                    <div style={{ fontSize: "9pt" }}>
+                        {resx.get("TabIpFilters")}
+                        <Tooltip
+                            messages={[resx.get("GlobalSettingsTab")]}
+                            type="global"
+                            style={{
+                                position: "absolute",
+                                right: -27,
+                                top: 15
+                            }}
+                            />
+                    </div>
+                    ]}
                     type="secondary">
                     <BasicSettings />
                     <IpFilters />
                 </Tabs>
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[<div style={{ fontSize: "9pt" }}>{resx.get("TabMemberSettings")} <Tooltip
-                        messages={[resx.get("GlobalSettingsTab")]}
-                        type="global"
-                        style={{ float: "right", height: "20", position: "static", margin: "-5px 0 0 5px" }}
-                        /></div>, resx.get("TabRegistrationSettings")]}
+                    tabHeaders={[
+                        <div style={{ fontSize: "9pt" }}>
+                            {resx.get("TabMemberSettings")}
+                            <Tooltip
+                                messages={[resx.get("GlobalSettingsTab")]}
+                                type="global"
+                                style={{
+                                    position: "absolute",
+                                    right: -27,
+                                    top: 15
+                                }}
+                                />
+                        </div>,
+                        <div style={{ marginLeft: 35 }}>
+                            <div style={{
+                                width: 35,
+                                height: 3,
+                                position: "absolute",
+                                left: 0,
+                                bottom: -3,
+                                backgroundColor: "white"
+                            }}></div>
+                            {resx.get("TabRegistrationSettings")}
+                        </div>]}
                     type="secondary">
                     <MemberManagement />
                     <RegistrationSettings />
@@ -75,13 +103,17 @@ export class Body extends Component {
                     tabHeaders={[resx.get("TabSslSettings"), <div style={{ fontSize: "9pt" }}>{resx.get("TabMoreSecuritySettings")} <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
                         type="global"
-                        style={{ float: "right", height: "20", position: "static", margin: "-5px 0 0 5px" }}
+                        style={{
+                            position: "absolute",
+                            right: -27,
+                            top: 15
+                        }}
                         /></div>]}
                     type="secondary">
                     <SslSettings />
                     <OtherSettings />
                 </Tabs>
-            </Tabs>;
+            </Tabs >;
         }
         else {
             return <Tabs onSelect={this.handleSelect.bind(this)}

@@ -6,6 +6,7 @@ import {
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";
+import { TableEmptyState } from "dnn-svg-icons";
 
 class AuditCheckPanelBody extends Component {
     constructor() {
@@ -123,7 +124,7 @@ class AuditCheckPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
-        if (props.auditCheckResults) {
+        if (props.auditCheckResults && props.auditCheckResults.length > 0) {
             return (
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
@@ -136,7 +137,7 @@ class AuditCheckPanelBody extends Component {
                 </div>
             );
         }
-        else return <div />;
+        else return <div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />;
     }
 }
 
