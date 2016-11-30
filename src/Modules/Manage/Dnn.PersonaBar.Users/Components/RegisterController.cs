@@ -224,8 +224,8 @@ namespace Dnn.PersonaBar.Users.Components
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
             //because the user need administrators to do the approve action so that he can continue use the website.
-            if (portalSettings.EnableRegisterNotification ||
-                portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PrivateRegistration)
+            if (!registerationDetails.IgnoreRegistrationMode && 
+                    (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PrivateRegistration))
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
                 SendAdminNotification(newUser, portalSettings);
