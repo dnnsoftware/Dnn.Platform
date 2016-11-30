@@ -76,8 +76,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         padding: 8px 40px 8px 15px;
-        &.no-wrap{
+        &.no-wrap {
             white-space: nowrap;
+        }
+        .dropdown-prepend {
+            > strong {
+                margin-right: 5px;
+            }
         }
     }
     .collapsible-content {

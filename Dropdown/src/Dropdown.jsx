@@ -18,6 +18,14 @@ class Dropdown extends Component {
     toggleDropdown() {
         const {props} = this;
         if (props.enabled) {
+
+            //This triggers re-render, showing scrollbar on open.
+            if (!this.state.dropDownOpen) {
+                setTimeout(() => {
+                    this.setState({});
+                }, 250);
+            }
+
             this.setState({
                 dropDownOpen: !this.state.dropDownOpen
             });
@@ -120,10 +128,10 @@ class Dropdown extends Component {
                 label = selectedValue.label;
             }
         }
-        return (props.prependWith ? props.prependWith + " " + label : label);
+        return (props.prependWith ? <span className="dropdown-prepend"><strong>{props.prependWith}</strong> {label}</span> : label);
     }
 
-    getIsMultiLineLabel(){
+    getIsMultiLineLabel() {
         return this.props.labelIsMultiLine ? "" : " no-wrap";
     }
 
@@ -144,7 +152,8 @@ class Dropdown extends Component {
                         fixedHeight={state.fixedHeight}
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
-                        <Scrollbars width={props.collapsibleWidth || "100%"} height={props.collapsibleHeight || "100%"} style={props.scrollAreaStyle}>
+                        <Scrollbars
+                            style={props.scrollAreaStyle}>
                             <div>
                                 <ul>
                                     {options}
