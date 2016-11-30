@@ -206,6 +206,23 @@ class RegistrationSettingsPanelBody extends Component {
 
                         </div>
                     </InputGroup>
+                    {this.isCustomFormType() &&
+                        <InputGroup style={{marginBottom: "30px"}}>
+                            <div className="registrationSettings-row-input">
+                                <Label
+                                    tooltipMessage={resx.get("registrationFieldsLabel.Help")}
+                                    label={resx.get("registrationFieldsLabel")}
+                                    />
+                                <SearchableTags
+                                    utils={util}
+                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields)}
+                                    onUpdateTags={this.onUpdateTags.bind(this)}
+                                    error={this.state.error.registrationFields !== ""}
+                                    errorMessage={this.state.error.registrationFields}
+                                    />
+                            </div>
+                        </InputGroup>
+                    }
                     <InputGroup>
                         <div className="registrationSettings-row-input">
                             <Label
@@ -336,24 +353,7 @@ class RegistrationSettingsPanelBody extends Component {
                                     />
                             </div>
                         </InputGroup>
-                    }
-                    {this.isCustomFormType() &&
-                        <InputGroup style={{marginTop: "20px"}}>
-                            <div className="registrationSettings-row-input">
-                                <Label
-                                    tooltipMessage={resx.get("registrationFieldsLabel.Help")}
-                                    label={resx.get("registrationFieldsLabel")}
-                                    />
-                                <SearchableTags
-                                    utils={util}
-                                    tags={this.getRegistrationFields(state.registrationSettings.RegistrationFields)}
-                                    onUpdateTags={this.onUpdateTags.bind(this)}
-                                    error={this.state.error.registrationFields !== ""}
-                                    errorMessage={this.state.error.registrationFields}
-                                    />
-                            </div>
-                        </InputGroup>
-                    }
+                    }                    
                     <InputGroup>
                         <div className="registrationSettings-row_switch">
                             <Label
