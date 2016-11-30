@@ -34,12 +34,14 @@ export default class Collapsible extends Component {
 
     render() {
         const {isOpened, style, fixedHeight} = this.props;
+        const className = this.props.className || "";
         return (
             <ReactCollapse 
                 isOpened={isOpened}
                 style={style}
                 ref="collapsible"
                 keepCollapsedContent={true}
+                className={className}
                 onHeightReady={this.scroll.bind(this)}
                 fixedHeight={fixedHeight}>
                 {this.props.children}
@@ -54,5 +56,6 @@ Collapsible.propTypes = {
     fixedHeight: PropTypes.number,
     autoScroll: PropTypes.bool,
     onHeightReady: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node,
+    className: PropTypes.string
 };
