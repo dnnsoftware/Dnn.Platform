@@ -45,27 +45,31 @@ class PageDetails extends Component {
                             error={!!errors.name}
                             errorMessage={errors.name}
                             value={page.name} 
-                            onChange={this.onChangeField.bind(this, "name")} />
+                            onChange={this.onChangeField.bind(this, "name")}
+                            maxLength="200" />
                     </GridCell>
                     <GridCell className="right-column">
                         <SingleLineInputWithError
                             label={Localization.get("Title")}
                             tooltipMessage={Localization.get("TitleTooltip")}
                             value={page.title}
-                            onChange={this.onChangeField.bind(this, "title")} />
+                            onChange={this.onChangeField.bind(this, "title")}
+                            maxLength="200" />
                     </GridCell>
                 </GridSystem>
                 <InputGroup>
                     <MultiLineInputWithError
                         label={Localization.get("Description")}
                         value={page.description}
-                        onChange={this.onChangeField.bind(this, "description")} />
+                        onChange={this.onChangeField.bind(this, "description")}
+                        maxLength="500" />
                 </InputGroup>
                 <InputGroup>
                     <MultiLineInputWithError
                         label={Localization.get("Keywords")}
                         value={page.keywords} 
-                        onChange={this.onChangeField.bind(this, "keywords")} />
+                        onChange={this.onChangeField.bind(this, "keywords")}
+                        maxLength="500" />
                 </InputGroup>
                 <GridSystem>
                     <GridCell className="left-column input-cell">

@@ -23,7 +23,8 @@ class PageExternalUrl extends Component {
                         label={Localization.get("ExternalUrl")}
                         tooltipMessage={Localization.get("ExternalUrlTooltip")}    
                         value={page.externalRedirection}
-                        onChange={this.onChangeField.bind(this, "externalRedirection")} />
+                        onChange={this.onChangeField.bind(this, "externalRedirection")}
+                        maxLength="255" />
                 </InputGroup>
                 <PageUrlCommons {...this.props} />
                 <div style={{clear: "both"}}></div>
