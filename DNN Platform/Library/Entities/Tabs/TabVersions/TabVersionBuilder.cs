@@ -334,7 +334,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             if (unPublishedDetail.Action == TabVersionDetailAction.Deleted)
             {
                 var restoredModuleDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
-                RestoreModuleInfo(tabId, restoredModuleDetail);
+                if (restoredModuleDetail != null)
+                {
+                    RestoreModuleInfo(tabId, restoredModuleDetail);
+                }
                 return;
             }
 
@@ -524,8 +527,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private void RestoreModuleInfo(int tabId, TabVersionDetail detailsToRestore )
         {
             var restoredModule = _moduleController.GetModule(detailsToRestore.ModuleId, tabId, true);
-            _moduleController.RestoreModule(restoredModule);            
-            UpdateModuleInfoOrder(restoredModule, detailsToRestore);                  
+            if (restoredModule != null)
+            {
+                _moduleController.RestoreModule(restoredModule);
+                UpdateModuleInfoOrder(restoredModule, detailsToRestore);
+            }
         }
 
         private IEnumerable<TabVersionDetail> GetVersionModulesDetails(int tabId, int version)
