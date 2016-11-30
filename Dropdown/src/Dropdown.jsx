@@ -153,6 +153,7 @@ class Dropdown extends Component {
                         keepCollapsedContent={true}
                         isOpened={state.dropDownOpen}>
                         <Scrollbars
+                            autoHide={true}
                             style={props.scrollAreaStyle}>
                             <div>
                                 <ul>
