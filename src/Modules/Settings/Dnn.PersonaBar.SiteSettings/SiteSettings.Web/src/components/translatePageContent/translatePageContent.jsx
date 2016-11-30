@@ -235,7 +235,7 @@ class TranslatePageContent extends Component {
                     <div className="button-block">
                         <Button
                             type="secondary"
-                            disabled={!isEnabled || !localizablePages}
+                            disabled={!isEnabled || !localizablePages || !pagesNumber}
                             onClick={this.onMarkAllPagesAsTranslated.bind(this, language.Code) }>
                             {resx.get("MarkAllPagesAsTranslated") }
                         </Button>
