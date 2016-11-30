@@ -24,7 +24,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
@@ -63,7 +62,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpAuthentication = HostController.Instance.GetString("SMTPAuthentication"),
                         enableSmtpSsl = HostController.Instance.GetBoolean("SMTPEnableSSL", false),
                         smtpUserName = HostController.Instance.GetString("SMTPUsername"),
-                        smtpPassword = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()),
+                        smtpPassword = GetSmtpPassword(),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
                     },
                     site = new 
@@ -162,12 +161,13 @@ namespace Dnn.PersonaBar.Servers.Services
                     request.SmtpPassword,
                     request.EnableSmtpSsl);
 
+                var success = string.IsNullOrEmpty(strMessage);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    success = string.IsNullOrEmpty(strMessage),
-                    confirmationMessage = 
+                    success,
+                    confirmationMessage = success ?
                         string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
-                        mailFrom, mailTo)
+                        mailFrom, mailTo) : Localization.GetString("errorMessageSendingTestEmail")
                 });
             }
             catch (Exception exc)
@@ -175,6 +175,30 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private static string GetSmtpPassword()
+        {
+            string decryptedText;
+            try
+            {
+                decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+            }
+            catch (Exception)
+            {
+                //fixes case where smtppassword failed to encrypt due to failing upgrade
+                var current = HostController.Instance.GetString("SMTPPassword");
+                if (!string.IsNullOrEmpty(current))
+                {
+                    HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                    decryptedText = current;
+                }
+                else
+                {
+                    decryptedText = string.Empty;
+                }
+            }
+            return decryptedText;
         }
     }
 }
