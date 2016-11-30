@@ -37,6 +37,7 @@ class SingleLineInput extends Component {
                    style={props.style} 
                    placeholder={props.placeholder}
                    autoComplete={props.autoComplete}
+                   maxLength={props.maxLength}
                    {...getOptions(props.enabled)} />
         );
     } 
@@ -58,7 +59,8 @@ SingleLineInput.propTypes = {
     type: PropTypes.string,
     size: PropTypes.oneOf(["large", "small"]),
     className: PropTypes.string,
-    autoComplete: PropTypes.oneOf(["off", "on"])
+    autoComplete: PropTypes.oneOf(["off", "on"]),
+    maxLength: PropTypes.number
 };
 
 SingleLineInput.defaultProps = {

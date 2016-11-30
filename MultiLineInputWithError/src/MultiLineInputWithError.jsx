@@ -42,6 +42,7 @@ class MultiLineInputWithError extends Component {
                         style={Object.assign({ marginBottom: 32 }, props.inputStyle) }
                         placeholder={props.placeholder}
                         enabled={props.enabled}
+                        maxLength={props.maxLength}
                         />
                     <Tooltip
                         messages={errorMessages}
@@ -81,7 +82,8 @@ MultiLineInputWithError.propTypes = {
     placeholder: PropTypes.string,
     style: PropTypes.object,
     labelStyle: PropTypes.object,
-    extraToolTips: PropTypes.node
+    extraToolTips: PropTypes.node,
+    maxLength: PropTypes.number
 };
 MultiLineInputWithError.defaultProps = {
     error: false,

@@ -45,6 +45,7 @@ class SingleLineInputWithError extends Component {
                         enabled={props.enabled}
                         size={props.inputSize}
                         autoComplete={props.autoComplete}
+                        maxLength={props.maxLength}
                         />
                     <Tooltip
                         messages={errorMessages}
@@ -86,7 +87,8 @@ SingleLineInputWithError.propTypes = {
     style: PropTypes.object,
     labelStyle: PropTypes.object,
     extraToolTips: PropTypes.node,
-    autoComplete: PropTypes.oneOf(["off", "on"])
+    autoComplete: PropTypes.oneOf(["off", "on"]),
+    maxLength: PropTypes.number
 };
 SingleLineInputWithError.defaultProps = {
     error: false,
