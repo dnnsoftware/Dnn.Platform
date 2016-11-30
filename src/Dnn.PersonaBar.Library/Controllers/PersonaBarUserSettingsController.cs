@@ -14,8 +14,8 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     public class PersonaBarUserSettingsController : ServiceLocator<IPersonaBarUserSettingsController, PersonaBarUserSettingsController>, IPersonaBarUserSettingsController
     {
-        private const string ContainerName = "PersonaBar";
-        private const string UserSettingsKey = "PersonaBarUserSettings";
+        private const string ContainerName = "AdminPersonaBar";
+        private const string UserSettingsKey = "UserSettings";
 
         #region IUserSettingsController Implementation
         public void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId)

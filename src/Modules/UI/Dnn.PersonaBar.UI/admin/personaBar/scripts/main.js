@@ -747,20 +747,19 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     if ($parentBody.hasClass('dnnEditState')) {
                         $personaBar.css({ left: 0, 'display': 'block' });
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 1, 'linear', onShownPersonaBar);
+                        callback();
                     } else {
                         $personaBar.show();
                         $personaBar.css({ left: -100 });
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 200, 'linear', callback);
                     }
-
-                    callback();
                 },
                 function initCustomModules(callback) {
                     util.initCustomModules(callback);
                 }
         ],
-        function loadPanelFromPersistedSetting() {
+        function loadPanelFromPersistedSetting() {            
             var pageUrl = window.top.location.href.toLowerCase();
             if (pageUrl.indexOf("skinsrc=") > -1 || pageUrl.indexOf("containersrc=") > -1 || pageUrl.indexOf("dnnprintmode=") > -1) {
                 return;
