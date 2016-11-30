@@ -77,9 +77,12 @@ class AvailableExtensions extends Component {
         const {props} = this;
 
         this.setDoingOperation(true);
-        props.dispatch(ExtensionActions.deployAvailablePackage(_package, index, () => {
+        props.dispatch(ExtensionActions.deployAvailablePackage(_package, index, (data) => {
             props.dispatch(ExtensionActions.getAvailablePackages(props.selectedAvailablePackageType, () => {
-                this.setDoingOperation(false);
+                let packageToInstall = this.props.availablePackages.find((_package)=>{
+                    return _package.name === data.name;
+                });
+                this.onInstall(packageToInstall.fileName);
             }));
         }));
     }
