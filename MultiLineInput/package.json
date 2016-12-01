@@ -1,6 +1,6 @@
 {
   "name": "dnn-multi-line-input",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MultiLine Input",
   "main": "index.js",
   "scripts": {
