@@ -27,6 +27,12 @@ namespace Dnn.PersonaBar.Pages.Components
             input.Tags = Clean(input.Tags);
         }
 
+        public static void Clean(this PageTemplate input)
+        {
+            input.Description = Clean(input.Description);
+            input.Name = Clean(input.Name);
+        }
+
         public static string Clean(string input,
             PortalSecurity.FilterFlag filterFlag = PortalSecurity.FilterFlag.NoMarkup)
         {

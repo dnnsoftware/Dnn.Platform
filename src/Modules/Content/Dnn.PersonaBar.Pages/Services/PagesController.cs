@@ -435,6 +435,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
             try
             {
+                pageTemplate.Clean();
                 var templateFilename = _templateController.SaveAsTemplate(pageTemplate);
                 var response = string.Format(Localization.GetString("ExportedMessage"), templateFilename);
 
