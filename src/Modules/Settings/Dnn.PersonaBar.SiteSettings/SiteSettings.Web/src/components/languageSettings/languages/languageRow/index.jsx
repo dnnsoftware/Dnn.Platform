@@ -148,6 +148,10 @@ class LanguageRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
+        console.log(this.state.openedMode);
+        const fixedHeight = this.state.openedMode === 2 ? 800 : 200;
+        const isAddMode = props.openId === "add";
+        
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         if (props.contentLocalizationEnabled) {
             return (
@@ -179,7 +183,9 @@ class LanguageRow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+
+                    {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>}
+                    {!isAddMode && <Collapse autoScroll={true} fixedHeight={fixedHeight} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>}
                 </div>
             );
         }
@@ -203,7 +209,8 @@ class LanguageRow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                    {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{props.children}</Collapse>}
+                    {!isAddMode && <Collapse autoScroll={true} fixedHeight={fixedHeight} isOpened={opened} style={{ float: "left", width: "100%" }}>{props.children}</Collapse>}
                 </div>
             );
         }
