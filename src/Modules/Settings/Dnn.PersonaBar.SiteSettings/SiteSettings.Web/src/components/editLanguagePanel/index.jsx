@@ -23,7 +23,7 @@ function findParent(parentList, item) {
         if (!listItem.ChildFolders) {
             listItem.ChildFolders = [];
         }
-        if (listItem.NewValue === compareValue && !alreadyAChildTerm(listItem.ChildFolders, compareValue)) {
+        if (listItem.NewValue === compareValue || (listItem.NewValue === "" && compareValue === "_") && !alreadyAChildTerm(listItem.ChildFolders, compareValue)) {
             listItem.ChildFolders.push(item);
         } else {
             findParent(listItem.ChildFolders, item);
@@ -31,14 +31,15 @@ function findParent(parentList, item) {
     });
 }
 
-function generateList(list, isGlobalMode) {
+function generateList(list, index) {
     let _list = [];
     if (!list) {
         return;
     }
     utilities.utilities.getObjectCopy(list).forEach(function (item) {
         let splitValue = item.NewValue.split("/");
-        if (splitValue.length === 1 || isGlobalMode) {
+        if (splitValue.length === 1 || item.NewValue.toLowerCase() === "portals/_default") {
+            console.log(item);
             _list.push(item);
         } else {
             findParent(_list, item);
@@ -51,7 +52,7 @@ class EditLanguagePanel extends Component {
     constructor() {
         super();
         this.state = {
-            selectedMode: "Host",
+            selectedMode: "System",
             highlightPendingTranslations: false
         };
     }
@@ -66,7 +67,8 @@ class EditLanguagePanel extends Component {
         this.props.dispatch(VisiblePanelActions.selectPanel(0));
     }
     getChildFolders(folder, callback) {
-        this.props.dispatch(LanguageEditorActions.getSubRootResources(folder, () => {
+        let _folder = folder !== "_" ? folder : "";
+        this.props.dispatch(LanguageEditorActions.getSubRootResources(_folder, () => {
             if (callback) {
                 callback();
             }
@@ -84,8 +86,8 @@ class EditLanguagePanel extends Component {
     onSelectMode(value) {
         this.setState({
             selectedMode: value
-        }, () => {
-            this.refreshFileList();
+        }, ()=>{
+            this.getResxEntries(this.props.resxBeingEdited);
         });
     }
     onResxChange(updatedList) {
@@ -122,14 +124,14 @@ class EditLanguagePanel extends Component {
         const ModeOptions = [
             {
                 label: resx.get("Global"),
-                value: "Host"
+                value: "System"
             },
             {
                 label: props.portalName,
                 value: "Portal"
             }
         ];
-        const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "Host");
+        const { languageBeingEdited } = props, languageFolders = generateList(props.languageFolders.concat(props.languageFiles), this.state.selectedMode === "System");
         return (
             <PersonaBarPageBody
                 className="edit-language-panel"
@@ -161,7 +163,8 @@ class EditLanguagePanel extends Component {
 EditLanguagePanel.propTypes = {
     dispatch: PropTypes.func.isRequired,
     languageFolders: PropTypes.array,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    resxBeingEdited: PropTypes.string
 };
 
 function mapStateToProps(state) {

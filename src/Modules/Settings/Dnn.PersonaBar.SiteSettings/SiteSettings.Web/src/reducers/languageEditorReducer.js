@@ -31,7 +31,6 @@ export default function languageEditor(state = {
         case ActionTypes.RETRIEVED_ROOT_RESOURCES_FOLDER:
             return {...state,
                 languageFolders: insertRecords(state.languageFolders, action.payload.Folders, true),
-                languageFiles: insertRecords(state.languageFiles, action.payload.Files, true),
                 resxBeingEdited: "",
                 resxBeingEditedDisplay: "",
                 translations: []
