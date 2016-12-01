@@ -122,7 +122,13 @@ class VocabularyListComponent extends Component {
                 if (callback) {
                     callback();
                 }
-                props.dispatch(VocabularyActions.deleteVocabulary(vocabulary.VocabularyId, index, --totalCount));
+                props.dispatch(VocabularyActions.deleteVocabulary(vocabulary.VocabularyId, index, --totalCount, () => {
+                    if (props.vocabularyList.length < props.totalCount) {
+                        let {pageIndex} = props.pagination; //copy page index
+                        let currentPage = this.getNextPage(pageIndex, props.pagination.pageSize, props.pagination.scopeTypeId);
+                        props.dispatch(PaginationActions.loadMore(currentPage));
+                    }
+                }));
             });
     }
 

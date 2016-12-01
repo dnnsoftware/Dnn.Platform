@@ -1,7 +1,19 @@
-import {vocabulary as ActionTypes, pagination as PaginationActionTypes}  from "../constants/actionTypes";
+import { vocabulary as ActionTypes, pagination as PaginationActionTypes } from "../constants/actionTypes";
 
 function updateVocabularyList(vocabularyList, index, value) {
     return [...vocabularyList.slice(0, index), value, ...vocabularyList.slice(index + 1)];
+}
+function insertRecords(vocabularyList, addedList) {
+    let newVocabularyList = vocabularyList;
+    addedList.forEach((vocabulary) => {
+        let alreadyThere = vocabularyList.find((_vocabulary) => {
+            return _vocabulary.VocabularyId === vocabulary.VocabularyId;
+        });
+        if (!alreadyThere) {
+            newVocabularyList.push(vocabulary);
+        }
+    });
+    return newVocabularyList;
 }
 
 export default function vocabularyList(state = {
@@ -14,7 +26,7 @@ export default function vocabularyList(state = {
     switch (action.type) {
         case PaginationActionTypes.LOAD_MORE:
             return { ...state,
-                vocabularyList: state.vocabularyList.concat(action.data.vocabularyList),
+                vocabularyList: insertRecords(JSON.parse(JSON.stringify(state.vocabularyList)), action.data.vocabularyList),
                 totalCount: action.data.totalCount
             };
         case PaginationActionTypes.LOAD_TAB_DATA:

@@ -60,7 +60,7 @@ const vocabularyActions = {
             });
         };
     },
-    deleteVocabulary(vocabularyId, index, totalCount) {
+    deleteVocabulary(vocabularyId, index, totalCount, callback) {
         return (dispatch) => {
             VocabularyService.deleteVocabulary(vocabularyId, () => {
                 dispatch({
@@ -70,6 +70,9 @@ const vocabularyActions = {
                         totalCount
                     }
                 });
+                if(callback){
+                    callback();
+                }
             }, (failureMessage) => {
                 const errorMessage = JSON.parse(failureMessage.responseText);
                 utils.utilities.notifyError(errorMessage.Message);

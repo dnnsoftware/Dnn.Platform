@@ -8,7 +8,7 @@ export default function pagination(state = {
     switch (action.type) {
         case ActionTypes.LOAD_MORE:
             return { ...state,
-                pageIndex: state.pageIndex + 1,
+                pageIndex: action.payload.pageIndex,
                 scopeTypeId: action.payload.scopeTypeId
             };
         case ActionTypes.LOAD_TAB_DATA:
