@@ -29,6 +29,7 @@
     <AutoAddPortalAlias>Y</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>
     <ControlPanel>Admin/ControlPanel/ControlBar.ascx</ControlPanel>
+    <IgnoreControlPanelWrapper>Y</IgnoreControlPanelWrapper>
     <Copyright>Y</Copyright>
     <DemoPeriod></DemoPeriod>
     <DemoSignup>N</DemoSignup>
