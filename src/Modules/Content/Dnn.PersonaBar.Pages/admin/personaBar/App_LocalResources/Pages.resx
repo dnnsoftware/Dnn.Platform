@@ -723,4 +723,10 @@
   <data name="MakeNeutralWarning.Text" xml:space="preserve">
     <value>This will delete all translated version of the page. Only the default culture version of the page will remain. Are you sure you want to do this?</value>
   </data>
+  <data name="PageUpdatedMessage.Text" xml:space="preserve">
+    <value>Page updated successfully</value>
+  </data>
+  <data name="PageDeletedMessage.Text" xml:space="preserve">
+    <value>Page deleted successfully</value>
+  </data>
 </root>

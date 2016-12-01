@@ -145,7 +145,7 @@ const pageActions = {
                     utils.notifyError(Localization.get("Error_" + response.Message), 3000);
                     return;
                 }
-                
+
                 if (page.tabId === 0 && !securityService.isSuperUser()) {
                     utils.getUtilities().closePersonaBar();
                 }
@@ -179,11 +179,20 @@ const pageActions = {
                     return;
                 }
                 
+                if (page.tabId > 0 && securityService.isSuperUser()) {
+                    utils.notify(Localization.get("PageUpdatedMessage"));
+                }
+                
                 if (page.tabId === 0 && !securityService.isSuperUser()) {
                     PagesService.openPageInEditMode(response.Page.id, response.Page.url);
                     return;    
                 }
-                
+
+                if (page.tabId > 0 && !securityService.isSuperUser()) {
+                    utils.closePersonaBar();
+                    return;
+                }
+
                 dispatch({
                     type: ActionTypes.SAVED_PAGE,
                     data: {

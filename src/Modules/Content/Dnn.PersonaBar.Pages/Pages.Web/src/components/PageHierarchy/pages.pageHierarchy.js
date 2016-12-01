@@ -305,6 +305,8 @@ window.dnn.pages = window.dnn.pages || {};
 
             this.utility.confirm(confirmText, deleteText, cancelText, function () {
                 handler._getService().post('DeletePage', { id: pageData.id }, function () {
+                    handler.utility.notify(handler.resx['PageDeletedMessage']);
+
                     if (pageData.id === handler._currentTabId) {
                          window.top.location.href = handler._siteRoot;
                          return;

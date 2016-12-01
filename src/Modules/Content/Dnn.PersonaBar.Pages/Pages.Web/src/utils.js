@@ -96,6 +96,11 @@ function getViewName() {
     return viewName;
 }
 
+function closePersonaBar(callback) {
+    checkInit();
+    utilities.closePersonaBar(callback);
+}
+
 function getViewParams() {
     checkInit();
     return viewParams;
@@ -154,6 +159,7 @@ const utils = {
     getModuleName,
     getCurrentPageId,
     getViewName,
+    closePersonaBar,
     getViewParams,
     getResx,
     getSiteRoot,
