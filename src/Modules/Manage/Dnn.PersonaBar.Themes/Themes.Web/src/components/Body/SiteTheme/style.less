@@ -17,13 +17,19 @@
                 margin-left: 13px;
             }
         }
-        .dnn-tabs > ul{
+        .dnn-tabs.react-tabs.secondary > ul{
             float: right;
             width: 100%;
             li{
-                padding: 6px 0 13px;
-                margin: 0 15px;
                 float: right;
+                margin: 0 15px;
+                &:first-child{
+                    margin-right: 0;
+                }
+                &:last-child{
+                    margin-right: 15px;
+                    margin-left: 0;
+                }
             }
         }
     }

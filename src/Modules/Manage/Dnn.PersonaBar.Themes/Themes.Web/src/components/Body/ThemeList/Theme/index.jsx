@@ -7,7 +7,6 @@ import Localization from "localization";
 import OverflowText from "dnn-text-overflow-wrapper";
 import SvgIcon from "../../SvgIcon";
 import utils from "utils";
-
 import "./style.less";
 
 class Theme extends Component {
@@ -77,9 +76,9 @@ class Theme extends Component {
         let isHost = utils.params.settings.isHost;
         return <span className="actions">
             <ul className={(isHost || theme.level === 1) ? "" : "short"}>
-                <li onClick={this.previewTheme.bind(this)}><SvgIcon name="View" /></li>
-                <li onClick={this.applyDefaultTheme.bind(this)}><SvgIcon name="Apply" /></li>
-                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this)}>><SvgIcon name="Trash" /></li>}
+                <li onClick={this.previewTheme.bind(this)} title={Localization.get("PreviewTheme")}><SvgIcon name="View" /></li>
+                <li onClick={this.applyDefaultTheme.bind(this)} title={Localization.get("ApplyTheme")}><SvgIcon name="Apply" /></li>
+                {((isHost || theme.level === 1) && theme.canDelete) && <li onClick={this.deleteTheme.bind(this)} title={Localization.get("DeleteTheme")}><SvgIcon name="Trash" /></li>}
             </ul>
         </span>;
     }
