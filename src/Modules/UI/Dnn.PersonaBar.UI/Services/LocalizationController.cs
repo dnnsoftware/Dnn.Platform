@@ -16,8 +16,10 @@ using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
 namespace Dnn.PersonaBar.UI.Services
@@ -95,7 +97,7 @@ namespace Dnn.PersonaBar.UI.Services
             var lastModifiedTime = jsonFile.LastWriteTime;
             var resourceFiles = GetAllResourceFiles(culture);
 
-            var expired = resourceFiles.Select(file => new FileInfo(file))
+            var expired = resourceFiles.Select(file => new FileInfo(file.Value))
                 .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
             if (!expired)
             {
@@ -115,12 +117,10 @@ namespace Dnn.PersonaBar.UI.Services
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
             var resourceFiles = GetAllResourceFiles(culture);
-            var personaBarResourcesPath = Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources");
             foreach (var resourcesFile in resourceFiles)
             {
-                var key = Path.GetFileNameWithoutExtension(resourcesFile);
-                var filename = Path.GetFileName(resourcesFile);
-                var relativePath = Path.Combine(personaBarResourcesPath, filename);
+                var key = resourcesFile.Key;
+                var relativePath = resourcesFile.Value.Replace(Globals.ApplicationMapPath, "~").Replace("\\", "/");
                 var keys = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
                 resources.Add(key, keys);
             }
@@ -144,11 +144,52 @@ namespace Dnn.PersonaBar.UI.Services
             return HttpContext.Current.Server.MapPath(path);
         }
 
-        private IList<string> GetAllResourceFiles(string culture)
+        private IDictionary<string, string> GetAllResourceFiles(string culture)
         {
             var personaBarResourcesPath = Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources");
             var physicalPath = HttpContext.Current.Server.MapPath(personaBarResourcesPath);
-            return Directory.GetFiles(physicalPath, "*.resx");
+            var allFiles = Directory.GetFiles(physicalPath, "*.resx");
+            var resourceFiles = new Dictionary<string, string>();
+            foreach (var resourceFile in allFiles)
+            {
+                var key = Path.GetFileNameWithoutExtension(resourceFile);
+                var folder = Path.GetDirectoryName(resourceFile);
+                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(folder))
+                {
+                    continue;
+                }
+
+                if (key.Contains("."))
+                {
+                    key = key.Substring(0, key.IndexOf(".", StringComparison.InvariantCultureIgnoreCase));
+                }
+
+                if (resourceFiles.ContainsKey(key))
+                {
+                    continue;
+                }
+
+                var filePath = Path.Combine(folder, key + ".resx");
+                if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var cultureSpecificFileName = $"{key}.{culture}.resx";
+                    var cultureSpecificFile = allFiles.FirstOrDefault(f =>
+                    {
+                        var name = Path.GetFileName(f);
+                        return !string.IsNullOrEmpty(name) 
+                                    && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
+                    });
+
+                    if (!string.IsNullOrEmpty(cultureSpecificFile))
+                    {
+                        filePath = cultureSpecificFile;
+                    }
+                }
+
+                resourceFiles.Add(key, filePath);
+            }
+
+            return resourceFiles;
         } 
 
         #endregion
