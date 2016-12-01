@@ -507,7 +507,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                             }
                                         }
 
-                                        if (checkMenuLink($('li#' + identifier))) {
+                                        if (checkMenuLink($('li[id="' + identifier + '"]'))) {
                                             return;
                                         }
 
@@ -772,7 +772,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             if (settings.expandPersonaBar && settings.activePath) {
                 var path = settings.activePath;
                 var identifier = settings.activeIdentifier;
-                var $menuItem = $('ul.personabarnav').find('#' + identifier);
+                var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
                 var moduleName = $menuItem.data('module-name');
                 var params = {
                     identifier: identifier,
