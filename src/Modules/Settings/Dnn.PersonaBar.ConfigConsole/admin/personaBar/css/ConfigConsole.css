@@ -2,7 +2,7 @@
     line-height: 24px;
     width: 100%;
     clear: both;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
 }
 
 .configConsolePanel .form-item.last {
@@ -74,9 +74,12 @@
 
 .configConsolePanel {
     margin: 130px 30px 30px 30px;
-    padding: 25px;
     border: 1px solid #e6e6e6;
     background-color: #fff;
+}
+
+.configConsolePanel a.primarybtn{
+    padding: 9px 22px;
 }
 
 .configConsolePanel .form-item textarea{ 
