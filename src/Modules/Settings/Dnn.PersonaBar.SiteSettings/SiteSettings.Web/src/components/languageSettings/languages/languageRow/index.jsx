@@ -207,8 +207,8 @@ class LanguageRow extends Component {
                             </div>
                         </div>
                     </div>
-                    {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{props.children}</Collapse>}
-                    {!isAddMode && <Collapse autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ float: "left" }}>{props.children}</Collapse>}
+                    {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>}
+                    {!isAddMode && <Collapse autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>}
                 </div>
             );
         }

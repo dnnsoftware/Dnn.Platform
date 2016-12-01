@@ -278,7 +278,7 @@ class LanguagesPanel extends Component {
                                 onLocalizePages={this.onLocalizePages.bind(this)}
                                 Collapse={this.collapse.bind(this)}
                                 id={"add"}>
-                                <LanguageEditor
+                                {opened && <LanguageEditor
                                     portalId={this.props.portalId}
                                     languageDisplayMode={this.props.languageDisplayMode}
                                     Collapse={this.collapse.bind(this)}
@@ -286,7 +286,7 @@ class LanguagesPanel extends Component {
                                     id={"add"}
                                     openId={this.state.openId}
                                     openMode={this.state.openMode}
-                                    />
+                                    />}
                             </LanguageRow>
                         </Collapse>
                         {this.renderedLanguages()}
