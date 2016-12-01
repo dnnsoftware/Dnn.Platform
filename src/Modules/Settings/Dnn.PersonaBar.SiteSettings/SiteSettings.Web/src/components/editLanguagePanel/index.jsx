@@ -39,7 +39,6 @@ function generateList(list, index) {
     utilities.utilities.getObjectCopy(list).forEach(function (item) {
         let splitValue = item.NewValue.split("/");
         if (splitValue.length === 1 || item.NewValue.toLowerCase() === "portals/_default") {
-            console.log(item);
             _list.push(item);
         } else {
             findParent(_list, item);
@@ -52,7 +51,7 @@ class EditLanguagePanel extends Component {
     constructor() {
         super();
         this.state = {
-            selectedMode: "System",
+            selectedMode: utilities.settings.isHost ? "System" : "Portal",
             highlightPendingTranslations: false
         };
     }
