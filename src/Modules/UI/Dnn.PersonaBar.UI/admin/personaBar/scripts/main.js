@@ -402,6 +402,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 return;
                             }
                         }, document.getElementById('personabar'));
+                        document.addEventListener("click", function(e) {
+                            $('#topLevelMenu .hovermenu').hide();
+                        });
 
                         setTimeout(function () {
 
