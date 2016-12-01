@@ -1,4 +1,4 @@
-import {vocabulary as ActionTypes}  from "../constants/actionTypes";
+import { vocabulary as ActionTypes } from "../constants/actionTypes";
 import VocabularyService from "../services/vocabularyService";
 import utils from "../utils";
 
@@ -70,7 +70,7 @@ const vocabularyActions = {
                         totalCount
                     }
                 });
-                if(callback){
+                if (callback) {
                     callback();
                 }
             }, (failureMessage) => {

@@ -7,7 +7,6 @@ import util from "utils";
 import LocalizedResources from "resources";
 import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
-import { TrashIcon } from "dnn-svg-icons";
 
 /* eslint-disable quotes */
 const SimpleType = require(`!raw!./svg/vocabulary_simple.svg`);
