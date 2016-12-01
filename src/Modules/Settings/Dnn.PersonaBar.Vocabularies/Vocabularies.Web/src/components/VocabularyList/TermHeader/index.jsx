@@ -1,9 +1,12 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import Collapse from "dnn-collapsible";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import styles from "./style.less";
 import util from "utils";
+import LocalizedResources from "resources";
+import GridCell from "dnn-grid-cell";
+import Button from "dnn-button";
 import { TrashIcon } from "dnn-svg-icons";
 
 /* eslint-disable quotes */
@@ -16,7 +19,6 @@ class TermHeader extends Component {
         super();
         this.state = {
             collapsed: true,
-            collapsedClass: true,
             repainting: false
         };
         this.timeout = 0;
@@ -82,28 +84,32 @@ class TermHeader extends Component {
         const {props, state} = this;
         const svgIcon = props.type === 1 ? SimpleType : HierarchyType;
         return (
-            <div className={"" + styles.collapsibleComponent + (props.className ? (" " + props.className) : "") }>
-                <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this) }>
+            <div className={"" + styles.collapsibleComponent + (props.className ? (" " + props.className) : "")}>
+                <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
                         <div className="term-icon" dangerouslySetInnerHTML={{ __html: svgIcon }}>
                         </div>
                         <div className="term-label">
 
-                            <TextOverflowWrapper text={props.header} maxWidth={200}/>
-
-                            {(!this.state.collapsed && !props.term.IsSystem) && util.settings.isHost &&
-                                <div dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={this.onDelete.bind(this) } className="delete-button"></div>
-                            }
+                            <TextOverflowWrapper text={props.header} maxWidth={200} />
                         </div>
                     </div>
                     {!props.disabled &&
                         <span
-                            className={"collapse-icon " + (this.state.collapsed ? "collapsed" : "") }>
+                            className={"collapse-icon " + (this.state.collapsed ? "collapsed" : "")}>
                         </span>
                     }
                 </div>
-                <Collapse isOpened={!this.state.collapsed} style={{ float: "left" }}
-                    fixedHeight={550}>{!state.collapsed && props.children }</Collapse>
+                <Collapse
+                    className={"term-header-collapsible " + state.collapsed}
+                    isOpened={!this.state.collapsed}
+                    style={{ float: "left" }}>
+                    {!state.collapsed && props.children}
+                    {!state.collapsed && <GridCell className="vocab-footer">
+                        {!props.term.IsSystem && util.settings.isHost && <Button type="secondary" onClick={this.onDelete.bind(this)}>{LocalizedResources.get("DeleteTerm")}</Button>}
+                        <Button type="secondary" onClick={this.collapse.bind(this)}>{LocalizedResources.get("Close")}</Button>
+                    </GridCell>}
+                </Collapse>
             </div >
         );
     }

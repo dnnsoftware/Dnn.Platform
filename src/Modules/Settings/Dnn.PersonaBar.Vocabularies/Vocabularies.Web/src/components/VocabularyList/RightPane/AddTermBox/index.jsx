@@ -33,7 +33,6 @@ const AddTermBox = ({
     error
 }) => (
         <Collapsible
-            fixedHeight={505}
             isOpened={isOpened}>
             <div className={styles.addTermBox}>
                 <p className="add-term-title">{editMode ? LocalizedResources.get("CurrentTerm") : LocalizedResources.get("AddTerm") }</p>
