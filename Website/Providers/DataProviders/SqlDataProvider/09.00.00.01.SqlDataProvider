@@ -255,6 +255,15 @@ AS
 
 
 GO
+
+IF EXISTS(SELECT SettingName FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'ControlPanel' AND SettingValue LIKE '%ControlBar.ascx')
+BEGIN
+    EXEC {databaseOwner}[{objectQualifier}UpdateHostSetting] @SettingName = N'IgnoreControlPanelWrapper',
+        @SettingValue = N'Y',
+        @SettingIsSecure = 0,
+        @UserID = -1
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
