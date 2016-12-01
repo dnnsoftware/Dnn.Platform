@@ -99,9 +99,9 @@ class IconButton extends Component {
         const {props} = this;
 
         if (typeof props.onClick === "function") {
-            return <a href="#" className={this.getClassName() } style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} onClick={this.onClick.bind(this) } />;
+            return <a href="#" className={this.getClassName() } style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} title={props.title} onClick={this.onClick.bind(this) } />;
         } else {
-            return <span className="icon-flat"  style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} />;
+            return <span className="icon-flat"  style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} title={props.title}/>;
         }
     }
 }
@@ -110,7 +110,8 @@ IconButton.propTypes = {
     type: PropTypes.string,
     onClick: PropTypes.func,
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    title: PropTypes.string
 };
 
 export default IconButton;

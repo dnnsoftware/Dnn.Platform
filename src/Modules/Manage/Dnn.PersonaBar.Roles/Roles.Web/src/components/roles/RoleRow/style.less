@@ -13,12 +13,21 @@
                 width: 100%;
             }
         }
+        .role-row-collapsible{
+            > div{
+                padding: 25px;
+            }
+            &.true{
+                border-top: 2px solid @curiousBlue;
+                border-bottom: 2px solid @curiousBlue;
+            }
+        }
         div.collapsible-header1 {
             color: @rollingStone;
             width: 100%;
             float: left;
             position: relative;
-            padding: 15px 20px;
+            padding: 15px 18px;
             box-sizing: border-box;
             cursor: auto;
             &.false {
@@ -29,9 +38,9 @@
                 float: right;
                 cursor: pointer;
                 svg {
-                    width: 16px;
+                    width: 18px;
                     float: left;
-                    height: 16px;
+                    height: 18px;
                 }
                 &.false {
                     svg {
@@ -44,8 +53,8 @@
             }
             .icon-flat {
                 display: inline-block;
-                width: 16px;
-                height: 16px;
+                width: 18px;
+                height: 18px;
                 vertical-align: middle;
                 svg {
                     fill: @thunder;

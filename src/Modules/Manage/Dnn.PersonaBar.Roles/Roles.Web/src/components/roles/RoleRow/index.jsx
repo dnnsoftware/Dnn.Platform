@@ -4,7 +4,7 @@ import "./style.less";
 import Collapse from "dnn-collapsible";
 import GridCell from "dnn-grid-cell";
 import IconButton from "../../common/IconButton";
-
+import resx from "resources";
 class RoleRow extends Component {
     constructor() {
         super();
@@ -78,15 +78,17 @@ class RoleRow extends Component {
                             {props.id !== "add" && props.roleIsApproved &&
                                 <IconButton type="user"
                                     className={"edit-icon " + !(opened && props.currentIndex === 0)}
-                                    onClick={this.toggleUsers.bind(this)} />
+                                    onClick={this.toggleUsers.bind(this)} 
+                                    title={resx.get("UsersInRole")}/>
                             }
                             <IconButton type="Edit"
                                 className={"edit-icon " + !(opened && props.currentIndex === 1)}
-                                onClick={this.toggleEditRole.bind(this)} />
+                                onClick={this.toggleEditRole.bind(this)} 
+                                title={resx.get("EditRole")}/>
                         </GridCell>
                     </div>
                     }
-                    <Collapse accordion={true} isOpened={opened}>
+                    <Collapse accordion={true} isOpened={opened} className={"role-row-collapsible " + opened}>
                         {opened && props.children}
                     </Collapse>
                 </div>
