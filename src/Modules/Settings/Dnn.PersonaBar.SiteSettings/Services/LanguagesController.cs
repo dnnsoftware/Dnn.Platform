@@ -74,82 +74,23 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        // GET /api/personabar/languages/GetRootResourcesFolders?mode=Site
+        // GET /api/personabar/languages/GetRootResourcesFolders
         [HttpGet]
-        public HttpResponseMessage GetRootResourcesFolders(int? portalId, string mode)
+        public HttpResponseMessage GetRootResourcesFolders()
         {
             try
             {
-                var pid = portalId ?? PortalId;
-                if (!UserInfo.IsSuperUser && pid != PortalId)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
-                }
-
-                LanguageResourceMode resourceMode;
-                Enum.TryParse(mode ?? "", false, out resourceMode);
-
-                if (!UserInfo.IsSuperUser && (resourceMode == LanguageResourceMode.Host || resourceMode == LanguageResourceMode.System))
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
-                }
-
                 var folders = new List<KeyValuePair<string, string>>();
-                var files = new List<KeyValuePair<string, string>>();
                 var server = HttpContext.Current.Server;
 
-                switch (resourceMode)
-                {
-                    case LanguageResourceMode.Portal:
-                        var portal = PortalController.Instance.GetPortal(pid);
-                        var portalSettings = new PortalSettings(portal);
-                        {
-                            folders.AddRange(new[]
-                            {
-                            "Admin",
-                            "Controls",
-                            "DesktopModules",
-                            "Install",
-                            "Providers"
-                        }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + s))));
-
-                            const string skins = "Skins";
-                            var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);
-
-                            if (Directory.Exists(skinsPath) && HasLocalResources(skinsPath))
-                            {
-                                folders.Add(new KeyValuePair<string, string>(LocalizeString("HostSkins"), skinsPath));
-                            }
-
-                            var portalSkinFolder = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, skins);
-                            if (Directory.Exists(portalSkinFolder) && portalSettings.ActiveTab.ParentId == portalSettings.AdminTabId)
-                            {
-                                folders.Add(new KeyValuePair<string, string>(
-                                    LocalizeString("PortalSkins"), Path.Combine(portalSettings.HomeSystemDirectoryMapPath, skins)));
-                            }
-                            break;
-                        }
-                    case LanguageResourceMode.Host:
-                        folders.Add(new KeyValuePair<string, string>(
-                            LocalizeString("GlobalResources"), server.MapPath("~/App_GlobalResources")));
-                        files.AddRange(GetResxFiles(server.MapPath("~/App_GlobalResources")));
-                        break;
-                    case LanguageResourceMode.System:
-                        folders.Add(new KeyValuePair<string, string>(
-                            LocalizeString("SiteTemplates"), server.MapPath("~/Portals/_default")));
-                        files.AddRange(GetResxFiles(server.MapPath("~/Portals/_default")));
-                        break;
-                    default:
-                        // old system uses "Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId)));"
-                        // value for this but it is not maintained in PersonaBar pages
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "MissingParams");
-                }
+                folders.Add(new KeyValuePair<string, string>(LocalizeString("LocalResources"), "_"));
+                folders.Add(new KeyValuePair<string, string>(LocalizeString("GlobalResources"), server.MapPath("~/App_GlobalResources")));
+                folders.Add(new KeyValuePair<string, string>(LocalizeString("SiteTemplates"), server.MapPath("~/Portals/_default")));
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
-                        Folders = folders.MapEntries(),
-                        Files = files.MapEntries(),
+                        Folders = folders.MapEntries()
                     });
             }
             catch (Exception ex)
@@ -171,11 +112,54 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (string.IsNullOrEmpty(currentFolder))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "MissingResourcesFolder");
-                }
+                    folders.AddRange(new[]
+                    {
+                        "Admin",
+                        "Controls",
+                        "DesktopModules",
+                        "Install",
+                        "Providers"
+                    }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
 
-                folders.AddRange(GetResxDirectories(server.MapPath("~/" + currentFolder)));
-                files.AddRange(GetResxFiles(server.MapPath("~/" + currentFolder)));
+                    const string skins = "Skins";
+                    var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);
+
+                    if (Directory.Exists(skinsPath) && HasLocalResources(skinsPath))
+                    {
+                        folders.Add(new KeyValuePair<string, string>(LocalizeString("HostSkins"), skinsPath));
+                    }
+
+                    var portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins);
+                    if (Directory.Exists(portalSkinFolder) &&
+                        PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId)
+                    {
+                        folders.Add(new KeyValuePair<string, string>(
+                            LocalizeString("PortalSkins"),
+                            Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, skins)));
+                    }
+                }
+                else
+                {
+                    string foldername = currentFolder;
+                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    {
+                        foldername = foldername.Substring(2);
+                    }
+                    var directories = GetResxDirectories(server.MapPath("~/" + foldername));
+                    var directoryFiles = GetResxFiles(server.MapPath("~/" + foldername));
+                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    {
+                        folders.AddRange(directories.Select(
+                                s => new KeyValuePair<string, string>(s.Key, s.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                        files.AddRange(directoryFiles.Select(
+                                f => new KeyValuePair<string, string>(f.Key, f.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                    }
+                    else
+                    {
+                        folders.AddRange(directories);
+                        files.AddRange(directoryFiles);
+                    }
+                }
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     new
@@ -338,9 +322,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     case LanguageResourceMode.System:
                     case LanguageResourceMode.Host:
-                    {
-                        break;
-                    }
+                        {
+                            break;
+                        }
                     case LanguageResourceMode.Portal:
                         language = _localeController.GetLocale(pid, request.Locale);
                         break;
