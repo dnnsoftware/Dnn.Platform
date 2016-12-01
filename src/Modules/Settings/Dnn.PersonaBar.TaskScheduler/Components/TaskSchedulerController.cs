@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
         {
             get
             {
-                return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/TaskScheduler.resx");
+                return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
             }
         }
 

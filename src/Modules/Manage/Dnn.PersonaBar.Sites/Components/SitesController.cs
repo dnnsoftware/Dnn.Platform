@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
-        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Sites.resx");
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
         public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {

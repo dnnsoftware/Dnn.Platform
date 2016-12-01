@@ -11,6 +11,6 @@
         public const string DeleteUser = "DELETE_USER";
         public const string AuthorizeUnAuthorizeUser = "AUTHORIZE_UNAUTHORIZE_USER";
         public const string ManagePassword = "MANAGE_PASSWORD";
-        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Users.resx";
+        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Users/App_LocalResources/Users.resx";
     }
 }

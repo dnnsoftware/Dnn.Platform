@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Security.Components
 
         private string LocalResourceFile
         {
-            get { return "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Security.resx"; }
+            get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
         }
     }
 }

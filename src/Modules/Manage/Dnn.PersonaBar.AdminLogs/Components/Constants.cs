@@ -2,6 +2,6 @@
 {
     public static class Constants
     {
-        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/AdminLogs.resx";
+        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.AdminLogs/App_LocalResources/AdminLogs.resx";
     }
 }

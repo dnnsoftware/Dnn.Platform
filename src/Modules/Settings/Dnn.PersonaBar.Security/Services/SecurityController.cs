@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Security.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController _controller = new Components.SecurityController();
-        private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Security.resx");
+        private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx");
         private const string BULLETIN_XMLNODE_PATH = "//channel/item";
 
         #region Login Settings

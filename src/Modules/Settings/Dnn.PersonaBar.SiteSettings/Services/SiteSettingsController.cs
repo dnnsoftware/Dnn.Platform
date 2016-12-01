@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
-        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SiteSettings.resx";
+        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         //Field Boost Settings - they are scaled down by 10.
