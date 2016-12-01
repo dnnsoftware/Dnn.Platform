@@ -148,7 +148,6 @@ class LanguageRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
-        console.log(this.state.openedMode);
         const fixedHeight = this.state.openedMode === 2 ? 800 : 200;
         const isAddMode = props.openId === "add";
         
@@ -185,7 +184,7 @@ class LanguageRow extends Component {
                     </div>
 
                     {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>}
-                    {!isAddMode && <Collapse autoScroll={true} fixedHeight={fixedHeight} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>}
+                    {!isAddMode && <Collapse autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ float: "left" }}>{opened && props.children}</Collapse>}
                 </div>
             );
         }
@@ -210,7 +209,7 @@ class LanguageRow extends Component {
                         </div>
                     </div>
                     {isAddMode && <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{props.children}</Collapse>}
-                    {!isAddMode && <Collapse autoScroll={true} fixedHeight={fixedHeight} isOpened={opened} style={{ float: "left", width: "100%" }}>{props.children}</Collapse>}
+                    {!isAddMode && <Collapse autoScroll={true} className="language-permission-grid" isOpened={opened} style={{ float: "left" }}>{props.children}</Collapse>}
                 </div>
             );
         }
