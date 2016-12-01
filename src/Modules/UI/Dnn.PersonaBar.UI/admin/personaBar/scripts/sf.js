@@ -1,5 +1,5 @@
 'use strict';
-define(['jquery', '../scripts/loader'], function ($, loader) {
+define(['jquery', 'main/loader'], function ($, loader) {
 
 	return {
 		init: function (siteRoot, tabId, antiForgeryToken) {

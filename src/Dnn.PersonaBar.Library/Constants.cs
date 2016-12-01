@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Library
     public static class Constants
     {
         public const string PersonaBarRelativePath = "~/DesktopModules/admin/Dnn.PersonaBar/";
+        public const string PersonaBarModulesPath = PersonaBarRelativePath + "Modules/";
 
         public const string SharedResources = PersonaBarRelativePath + "/App_LocalResources/SharedResources.resx";
 

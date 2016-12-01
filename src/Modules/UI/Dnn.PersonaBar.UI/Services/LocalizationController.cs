@@ -146,9 +146,8 @@ namespace Dnn.PersonaBar.UI.Services
 
         private IDictionary<string, string> GetAllResourceFiles(string culture)
         {
-            var personaBarResourcesPath = Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources");
-            var physicalPath = HttpContext.Current.Server.MapPath(personaBarResourcesPath);
-            var allFiles = Directory.GetFiles(physicalPath, "*.resx");
+            var physicalPath = HttpContext.Current.Server.MapPath(Constants.PersonaBarRelativePath);
+            var allFiles = Directory.GetFiles(physicalPath, "*.resx", SearchOption.AllDirectories);
             var resourceFiles = new Dictionary<string, string>();
             foreach (var resourceFile in allFiles)
             {

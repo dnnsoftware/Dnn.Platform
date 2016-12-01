@@ -4,7 +4,7 @@
 // All rights reserved.
 
 define(['knockout', 'moment',
-    '../koBindingHandlers/datePicker'], function (ko, moment) {
+    'main/koBindingHandlers/datePicker'], function (ko, moment) {
     'use strict';
 
     function composeDate(datePart, hour, amPm) {

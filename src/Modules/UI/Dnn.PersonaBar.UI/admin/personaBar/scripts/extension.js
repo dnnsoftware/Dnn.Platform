@@ -80,8 +80,8 @@ define(['jquery'], function () {
         var templateSuffix = isMobile ? '.mobi.html' : '.html';
         var cssSuffix = isMobile ? '.mobi.css' : '.css';
         var initMethod = isMobile ? 'initMobile' : 'init';
-        var requiredArray = ['../' + path, 'text!../../' + path + templateSuffix];
-        requiredArray.push('css!../../css/' + path + cssSuffix);
+        var requiredArray = ['../../Modules/' + menuIdentifier + '/scripts/' + path, 'text!../../Modules/' + menuIdentifier + "/" + path + templateSuffix];
+        requiredArray.push('css!../../Modules/' + menuIdentifier + '/css/' + path + cssSuffix);
 
         window.require(requiredArray, function (loader, html) {
             if (loader === undefined) {

@@ -1,5 +1,5 @@
 'use strict';
-define(['knockout', '../scripts/util', '../scripts/config'], function (ko, util, config) {
+define(['knockout', 'main/util', 'main/config'], function (ko, util, config) {
 	return {		
 		init: function(viewModel, pageSize, load, resx, pagerItemFormatDesc, nopagerItemFormatDesc){
 			viewModel.pageSize = pageSize;

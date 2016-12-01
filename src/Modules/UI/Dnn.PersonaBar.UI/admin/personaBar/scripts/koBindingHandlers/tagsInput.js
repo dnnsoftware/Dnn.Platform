@@ -2,8 +2,8 @@
 define([
         'jquery',
         'knockout',
-        '../../../../../Resources/Shared/Scripts/dnn.jquery',
-        'css!../../css/tags-input.css'
+        'dnn.jquery',
+        'css!main/../css/tags-input.css'
 ],
 
 function($, ko) {

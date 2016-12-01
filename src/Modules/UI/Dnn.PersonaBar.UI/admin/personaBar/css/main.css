@@ -900,7 +900,7 @@ transform: rotate(180deg);
 .socialpanelheader {
     padding: 28px 30px 10px 30px;
     position: fixed;
-    width: 800px;
+    width: 860px;
     z-index: 1001;
     background-color: #FFF;
     min-height: 103px;
