@@ -61,7 +61,7 @@ class SiteAliasRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapse fixedHeight={320} keepContent={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
             </div>
         );
     }

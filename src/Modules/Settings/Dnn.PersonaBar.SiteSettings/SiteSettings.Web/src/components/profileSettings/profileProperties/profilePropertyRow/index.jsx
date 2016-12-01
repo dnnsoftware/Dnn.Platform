@@ -72,7 +72,9 @@ class ProfilePropertyRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapse isOpened={opened} autoScroll={true} fixedHeight={520} style={{ float: "left", width: "100%" }}>
+                    {opened && props.children}
+                    </Collapse>
             </div>
         );
     }

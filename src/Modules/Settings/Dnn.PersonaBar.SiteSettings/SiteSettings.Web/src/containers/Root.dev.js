@@ -11,7 +11,6 @@ class Root extends Component {
         return (
             <div className="siteSettings-Root">
                 <App cultureCode={culture}/>
-                <DevTools />
             </div>
         );
     }
