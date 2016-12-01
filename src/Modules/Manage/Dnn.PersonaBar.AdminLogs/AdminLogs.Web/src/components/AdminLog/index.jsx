@@ -11,6 +11,7 @@ import Pager from "dnn-pager";
 import "./style.less";
 import util from "../../utils";
 import Localization from "localization";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import {
     createPortalOptions,
     createLogTypeOptions
@@ -207,7 +208,7 @@ class AdminLogPanelBody extends Component {
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this) } />
+                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
                 <label htmlFor="selectAll"></label>
             </div>
         </div>);
@@ -223,7 +224,7 @@ class AdminLogPanelBody extends Component {
                 <LogItemRow
                     cssClass={term.LogTypeCSSClass}
                     logId={term.LogGUID}
-                    allRowIds={this.props.logList.map((row) => row.LogGUID) }
+                    allRowIds={this.props.logList.map((row) => row.LogGUID)}
                     typeName={term.LogTypeFriendlyName}
                     createDate={term.LogCreateDate}
                     userName={term.LogUserName}
@@ -270,7 +271,7 @@ class AdminLogPanelBody extends Component {
                     numericCounters={4}
                     pageSize={state.pageSize}
                     totalRecords={props.totalCount}
-                    onPageChanged={this.onPageChange.bind(this) }
+                    onPageChanged={this.onPageChange.bind(this)}
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
@@ -312,7 +313,7 @@ class AdminLogPanelBody extends Component {
         let portalOptions = createPortalOptions(state.portalList);
         let logTypeOptions = createLogTypeOptions(state.logTypeList);
         return (
-            <div style={{margin: "0 20px", float: "left"}}>
+            <div style={{ margin: "0 20px", float: "left" }}>
                 <div className="toolbar">
                     {util.settings.isHost && state.portalList.length > 0 &&
                         <div className="sitegroup-filter-container">
@@ -321,7 +322,7 @@ class AdminLogPanelBody extends Component {
                                 style={{ width: "100%" }}
                                 options={portalOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectPortal.bind(this) }
+                                onSelect={this.onSelectPortal.bind(this)}
                                 />
                         </div>
                     }
@@ -332,32 +333,51 @@ class AdminLogPanelBody extends Component {
                                 style={{ width: "100%" }}
                                 options={logTypeOptions}
                                 withBorder={false}
-                                onSelect={this.onSelectLogType.bind(this) }
+                                onSelect={this.onSelectLogType.bind(this)}
                                 />
                         </div>
                     }
                     <div className="toolbar-button toolbar-button-actions">
-                        <span onClick={this.toggleEmailPanel.bind(this) }>{Localization.get("btnEmail") } </span>
+                        <div onClick={this.toggleEmailPanel.bind(this)}>
+                            <TextOverflowWrapper                                
+                                text={Localization.get("btnEmail")}
+                                maxWidth={90}
+                                />
+                        </div>
                         <div className="collapsible-content">
                             <EmailPanel
                                 fixedHeight={450}
                                 isOpened={state.emailPanelOpen}
                                 logIds={props.selectedRowIds}
-                                onCloseEmailPanel={this.toggleEmailPanel.bind(this) }>
+                                onCloseEmailPanel={this.toggleEmailPanel.bind(this)}>
                             </EmailPanel>
                         </div>
                     </div>
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this) }>{Localization.get("btnDelete") } </div> }
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this) }>{Localization.get("btnClear") } </div> }
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)}>
+                        <TextOverflowWrapper
+                            style={{ margin: "0 20px 0 0" }}
+                            text={Localization.get("btnDelete")}
+                            maxWidth={90}
+                            />
+                    </div>
+                    }
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)}>
+                        <TextOverflowWrapper
+                            style={{ margin: "0 20px 0 0" }}
+                            text={Localization.get("btnClear")}
+                            maxWidth={90}
+                            />
+                    </div>
+                    }
                 </div>
                 <div className="logContainer">
                     <div className="logContainerBox">
-                        {this.renderLogListHeader() }
-                        {this.renderedLogList() }
+                        {this.renderLogListHeader()}
+                        {this.renderedLogList()}
                     </div>
                 </div>
-                {this.renderPager() }
-                {this.renderedLogLegend() }
+                {this.renderPager()}
+                {this.renderedLogLegend()}
             </div>
         );
     }
