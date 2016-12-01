@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string MenuName = "Users";
+        public const string MenuName = "Dnn.Users";
         public const string AddUser = "ADD_USER";
         public const string ManageRoles = "MANAGE_ROLES";
         public const string ManageProfile = "MANAGE_PROFILE";
