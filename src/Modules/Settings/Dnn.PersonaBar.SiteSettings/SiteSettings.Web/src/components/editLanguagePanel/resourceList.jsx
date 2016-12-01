@@ -85,7 +85,7 @@ class ResourceList extends Component {
                         const shouldBeHighlighted = (props.highlightPendingTranslations && this.props.list[key].First === this.props.list[key].Second);
                         return <GridCell className="resource-row">
                             <GridCell className="row-detail" columnSize={rowSizes[0]}>
-                                <p>{key}</p>
+                                <div className="key-name">{key}</div>
                             </GridCell>
                             <GridCell className="row-detail" columnSize={rowSizes[1]}>
                                 <SingleLineInput value={this.props.list[key].Second} enabled={false} />
