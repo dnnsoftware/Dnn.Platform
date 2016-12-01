@@ -7,9 +7,10 @@ class Root extends Component {
         super();
     }
     render() {
+        let culture = window.parent["personaBarSettings"]["culture"];
         return (
             <div className="taskScheduler-Root">
-                <App />
+                <App cultureCode={culture} />
                 <DevTools />
             </div>
         );

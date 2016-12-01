@@ -36,9 +36,9 @@ class ApplicationService {
         sf.post("DeleteIpFilter?filterId=" + filterId, {}, callback, failureCallback);
     }    
 
-    getBasicLoginSettings(callback) {
+    getBasicLoginSettings(cultureCode, callback) {
         const sf = this.getServiceFramework("Security");        
-        sf.get("GetBasicLoginSettings", {}, callback);
+        sf.get("GetBasicLoginSettings?cultureCode=" + cultureCode, {}, callback);
     }
 
     updateBasicLoginSettings(payload, callback) {

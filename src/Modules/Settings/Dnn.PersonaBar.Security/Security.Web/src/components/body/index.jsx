@@ -59,7 +59,7 @@ export class Body extends Component {
                     </div>
                     ]}
                     type="secondary">
-                    <BasicSettings />
+                    <BasicSettings cultureCode={this.props.cultureCode} />
                     <IpFilters />
                 </Tabs>
                 <Tabs onSelect={this.handleSelect.bind(this)}
@@ -124,7 +124,7 @@ export class Body extends Component {
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("TabBasicLoginSettings")]}
                     type="secondary">
-                    <BasicSettings />
+                    <BasicSettings cultureCode={this.props.cultureCode} />
                 </Tabs>
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("TabRegistrationSettings")]}
@@ -152,7 +152,8 @@ export class Body extends Component {
 
 Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number
+    tabIndex: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

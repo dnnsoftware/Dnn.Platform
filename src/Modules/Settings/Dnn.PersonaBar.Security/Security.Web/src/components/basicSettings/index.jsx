@@ -31,7 +31,7 @@ class BasicSettingsPanelBody extends Component {
             });
             return;
         }
-        props.dispatch(SecurityActions.getBasicLoginSettings((data) => {
+        props.dispatch(SecurityActions.getBasicLoginSettings(props.cultureCode, (data) => {
             let basicLoginSettings = Object.assign({}, data.Results.Settings);
             this.setState({
                 basicLoginSettings
@@ -298,7 +298,8 @@ BasicSettingsPanelBody.propTypes = {
     authProviders: PropTypes.array,
     adminUsers: PropTypes.array,
     basicLoginSettings: PropTypes.object,
-    basicLoginSettingsClientModified: PropTypes.bool
+    basicLoginSettingsClientModified: PropTypes.bool,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

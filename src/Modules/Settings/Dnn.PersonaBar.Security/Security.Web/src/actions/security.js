@@ -52,9 +52,9 @@ const securityActions = {
             });
         };
     },
-    getBasicLoginSettings(callback) {
+    getBasicLoginSettings(cultureCode, callback) {
         return (dispatch) => {
-            ApplicationService.getBasicLoginSettings(data => {
+            ApplicationService.getBasicLoginSettings(cultureCode, data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SECURITY_BASIC_LOGIN_SETTINS,
                     data: {

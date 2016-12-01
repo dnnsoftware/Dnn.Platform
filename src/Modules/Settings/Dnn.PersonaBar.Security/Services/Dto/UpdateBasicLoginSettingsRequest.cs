@@ -34,6 +34,8 @@ namespace Dnn.PersonaBar.Security.Services.Dto
 {
     public class UpdateBasicLoginSettingsRequest
     {
+        public string CultureCode { get; set; }
+
         public string DefaultAuthProvider { get; set; }
 
         public int PrimaryAdministratorId { get; set; }

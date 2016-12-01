@@ -17,7 +17,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <PersonaBarPageHeader title={resx.get("nav_Security")}>
                     </PersonaBarPageHeader>
-                    <Body />
+                    <Body cultureCode={props.cultureCode}/>
                 </PersonaBarPage>
             </div>
         );
@@ -26,7 +26,8 @@ class App extends Component {
 
 App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
-    selectedPage: PropTypes.number
+    selectedPage: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 

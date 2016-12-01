@@ -53,26 +53,35 @@ namespace Dnn.PersonaBar.Security.Services
         /// <summary>
         /// Gets portal's basic login settings
         /// </summary>
+        /// <param name="cultureCode"></param>
         /// <returns>Portal's basic login settings</returns>
         [HttpGet]
-        public HttpResponseMessage GetBasicLoginSettings()
+        public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
             {
+                cultureCode = string.IsNullOrEmpty(cultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(PortalId).Code
+                    : cultureCode;
+
+                var portal = PortalController.Instance.GetPortal(PortalId, cultureCode);
+                var portalSettings = new PortalSettings(portal);
+
                 dynamic settings = new ExpandoObject();
                 settings.DefaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
                 settings.PrimaryAdministratorId = PortalSettings.Current.AdministratorId;
-                settings.RedirectAfterLoginTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabName = GetTabName(PortalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLogoutTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabName = GetTabName(PortalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLoginTabId = ValidateTabId(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabName = GetTabName(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabPath = GetTabPath(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLogoutTabId = ValidateTabId(portalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabName = GetTabName(portalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabPath = GetTabPath(portalSettings.Registration.RedirectAfterLogout);
                 settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", PortalId, true);
                 settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", PortalId, false);
                 settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", PortalId, false);
                 settings.CaptchaChangePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaChangePassword", PortalId, false);
                 settings.HideLoginControl = PortalSettings.HideLoginControl;
+                settings.cultureCode = cultureCode;
 
                 var authProviders = _controller.GetAuthenticationProviders().Select(v => new
                 {
@@ -118,15 +127,17 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(PortalId).Code;
+                var cultureCode = string.IsNullOrEmpty(request.CultureCode)
+                    ? LocaleController.Instance.GetCurrentLocale(PortalId).Code
+                    : request.CultureCode;
 
                 var portalInfo = PortalController.Instance.GetPortal(PortalId);
                 portalInfo.AdministratorId = Convert.ToInt32(request.PrimaryAdministratorId);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
                 PortalController.UpdatePortalSetting(PortalId, "DefaultAuthProvider", request.DefaultAuthProvider);
-                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), selectedCultureCode);
-                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), selectedCultureCode);
+                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), cultureCode);
+                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), cultureCode);
                 PortalController.UpdatePortalSetting(PortalId, "Security_RequireValidProfile", request.RequireValidProfileAtLogin.ToString(), false);
                 PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaLogin", request.CaptchaLogin.ToString(), false);
                 PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrivePassword.ToString(), false);
