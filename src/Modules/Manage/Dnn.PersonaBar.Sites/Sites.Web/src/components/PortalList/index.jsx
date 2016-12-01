@@ -40,7 +40,7 @@ class PortalList extends Component {
         return (
             <GridCell className={styles.sitesPortalList}>
                 <PersonaBarPageHeader title={"Sites"}>
-                    <Button type="primary" onClick={props.onAddNewSite.bind(this)}>{"Add New Site"}</Button>
+                    <Button type="primary" onClick={props.onAddNewSite.bind(this)} size="large">{"Add New Site"}</Button>
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <ListView

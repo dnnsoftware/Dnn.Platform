@@ -77,24 +77,33 @@ class ListView extends Component {
         let portalButtons = [
             {
                 icon: PreviewIcon,
-                onClick: this.onPreview.bind(this, portal, index)
+                onClick: this.onPreview.bind(this, portal, index),
+                title: Localization.get("ViewSite")
             },
             {
                 icon: SettingsIcon,
-                onClick: this.onSetting.bind(this, portal, index)
+                onClick: this.onSetting.bind(this, portal, index),
+                title: Localization.get("SiteSettings")
             },
             {
                 icon: TemplateIcon,
-                onClick: this.onExport.bind(this, portal, index)
+                onClick: this.onExport.bind(this, portal, index),
+                title: Localization.get("ExportTemplate")
             }
         ];
         if (portal.allowDelete) {
-            portalButtons = portalButtons.concat([{ icon: TrashIcon, onClick: this.onDelete.bind(this, portal, index) }]);
+            portalButtons = portalButtons.concat([
+                {
+                    icon: TrashIcon,
+                    onClick: this.onDelete.bind(this, portal, index),
+                    title: Localization.get("DeleteSite")
+                }
+            ]);
         }
 
         /*eslint-disable react/no-danger*/
         return portalButtons.map((_button) => {
-            return <div dangerouslySetInnerHTML={{ __html: _button.icon }} onClick={_button.onClick}></div>;
+            return <div dangerouslySetInnerHTML={{ __html: _button.icon }} title={_button.title} onClick={_button.onClick}></div>;
         });
     }
     getPortalMapping(portal) {

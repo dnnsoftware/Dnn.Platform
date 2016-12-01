@@ -247,6 +247,7 @@ class CreatePortal extends Component {
         return (
             <div className="create-portal">
                 <PersonaBarPageHeader title={Localization.get("AddNewSite.Header")} />
+                <div className="back-to-button" onClick={this.onCancel.bind(this)}>{Localization.get("BackToSites")}</div>
                 <PersonaBarPageBody>
                     <GridCell className="create-site-container">
                         <GridCell>
