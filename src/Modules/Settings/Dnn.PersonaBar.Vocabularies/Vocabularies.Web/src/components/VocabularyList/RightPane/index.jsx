@@ -5,7 +5,7 @@ import Term from "./Term";
 import util from "../../../utils";
 import LocalizedResources from "../../../resources";
 import styles from "./style.less";
-
+import GridCell from "dnn-grid-cell";
 import { AddIcon } from "dnn-svg-icons";
 
 function findInChildren(list, parentTermId) {
@@ -143,11 +143,11 @@ class RightPane extends Component {
                     Description: "",
                     VocabularyId: props.vocabularyId,
                     ParentTermId: props.type === "Hierarchy" ? ((props.vocabularyTerms.length > 0) && props.vocabularyTerms[0].TermId || -1) : -1
-                }
+                },
+                editBoxOpened: false
             });
         }, 500);
         this.setState({
-            editBoxOpened: false,
             _editBoxOpened: false
         });
     }
@@ -310,9 +310,9 @@ class RightPane extends Component {
         });
         /* eslint-disable react/no-danger */
         return (
-            <div className={styles.vocabulariesRightPane}>
-                <div className="term-list">
-                    <AddTermBox
+            <GridCell className={styles.vocabulariesRightPane}>
+                <GridCell className="term-list">
+                    {state.editBoxOpened && <AddTermBox
                         isOpened={state._editBoxOpened}
                         editMode={state.editMode}
                         error={state.triedToSubmitTerm && state.nameError}
@@ -326,8 +326,8 @@ class RightPane extends Component {
                         deleteTerm={this.deleteTerm.bind(this)}
                         closeAddTerm={this.closeAddTerm.bind(this)}
                         onUpdateTerm={this.onUpdateTerm.bind(this)}
-                        />
-                    <div className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed")}>
+                        />}
+                    {!state._editBoxOpened && <GridCell className={"term-list-content " + (!this.state.editBoxOpened ? "open" : "closed")}>
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
                         {util.settings.isHost &&
                             <div className="add-term-button do-not-close"
@@ -340,9 +340,9 @@ class RightPane extends Component {
                                 {terms}
                             </ul>
                         </Scrollbars>
-                    </div>
-                </div>
-            </div >
+                    </GridCell>}
+                </GridCell>
+            </GridCell >
         );
     }
 }

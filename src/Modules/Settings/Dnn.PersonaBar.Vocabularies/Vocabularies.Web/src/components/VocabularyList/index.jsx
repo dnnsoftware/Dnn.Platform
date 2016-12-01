@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Button from "dnn-button";
 import {
@@ -163,7 +163,7 @@ class VocabularyListComponent extends Component {
                     index={index}
                     key={"vocabularyTerm-" + index}
                     closeOnClick={true}
-                    onDelete={this.onDeleteVocabulary.bind(this) }>
+                    onDelete={this.onDeleteVocabulary.bind(this)}>
                     <GridSystem>
                         <LeftPane
                             description={term.Description}
@@ -174,15 +174,15 @@ class VocabularyListComponent extends Component {
                             />
                         <RightPane
                             vocabularyId={term.VocabularyId}
-                            getVocabularyTerms={this.getVocabularyTerms.bind(this) }
-                            onUpdateTerm={this.onUpdateTerm.bind(this) }
+                            getVocabularyTerms={this.getVocabularyTerms.bind(this)}
+                            onUpdateTerm={this.onUpdateTerm.bind(this)}
                             vocabularyTerms={props.vocabularyTerms}
-                            selectParentTerm={this.selectParentTerm.bind(this) }
+                            selectParentTerm={this.selectParentTerm.bind(this)}
                             totalTermCount={props.totalTermCount}
                             index={index}
                             type={term.Type}
-                            onDeleteTerm={this.onDeleteTerm.bind(this) }
-                            parentTerms={vocabularyList}/>
+                            onDeleteTerm={this.onDeleteTerm.bind(this)}
+                            parentTerms={vocabularyList} />
                     </GridSystem>
                 </TermHeader>
             );
@@ -191,7 +191,7 @@ class VocabularyListComponent extends Component {
         return (
             <div className="vocabulary-list">
                 <PersonaBarPageBody>
-                    <Tabs onSelect={this.handleSelect.bind(this) }
+                    <Tabs onSelect={this.handleSelect.bind(this)}
                         selectedIndex={props.tabIndex}
                         tabHeaders={["All", "Global", "Website"]}
                         type="secondary">
@@ -200,7 +200,7 @@ class VocabularyListComponent extends Component {
                         {(renderedVocabularyList.length > 0 && renderedVocabularyList) || <p className="vocabulary-error">{LocalizedResources.get("NoVocabularyTerms.Error")}</p>}
                     </Tabs>
                 </PersonaBarPageBody>
-                {loadMoreEnabled && <Button type="primary" style={loadMoreButtonStyle} onClick={this.onLoadMore.bind(this) }>{LocalizedResources.get("LoadMore") }</Button>}
+                {loadMoreEnabled && <Button type="primary" style={loadMoreButtonStyle} onClick={this.onLoadMore.bind(this)}>{LocalizedResources.get("LoadMore")}</Button>}
             </div>
         );
     }
