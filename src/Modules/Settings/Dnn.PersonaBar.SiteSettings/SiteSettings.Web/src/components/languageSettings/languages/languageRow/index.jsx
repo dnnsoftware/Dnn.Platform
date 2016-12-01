@@ -148,37 +148,36 @@ class LanguageRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
-        const fixedHeight = this.state.openedMode === 2 ? 800 : 200;
         const isAddMode = props.openId === "add";
-        
+
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
         if (props.contentLocalizationEnabled) {
             return (
-                <div className={"collapsible-component-language" + (opened ? " row-opened" : "") }>
+                <div className={"collapsible-component-language" + (opened ? " row-opened" : "")}>
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name-adv">
-                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault) }
+                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-pages">
-                                {this.getPagesDisplay(props.localizablePages, props.localizedStatus) }&nbsp;
+                                {this.getPagesDisplay(props.localizablePages, props.localizedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-translated">
-                                {this.getPagesDisplay(props.translatedPages, props.translatedStatus) }&nbsp;
+                                {this.getPagesDisplay(props.translatedPages, props.translatedStatus)}&nbsp;
                             </div>
                             <div className="language-item item-row-active">
-                                {this.getActiveDisplay(props.active) }
+                                {this.getActiveDisplay(props.active)}
                             </div>
                             <div className="language-item item-row-enabled-adv">
-                                {this.getEnabledDisplay(props.enabled) }
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
-                                {!props.isDefault && <div className={this.getPageEditorBtnClassName() } dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>}
-                                <div className={this.getEditorBtnClassName() } dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
+                                {!props.isDefault && <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesPageIcon }} onClick={props.onOpenPageList}></div>}
+                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
                                 {!props.isDefault &&
-                                    <div className={this.getTranslatorBtnClassName() } dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2) }></div>
+                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
                                 }
-                                <div className={this.getEditBtnClassName() } dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1) }></div>
+                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
                             </div>
                         </div>
                     </div>
@@ -190,21 +189,21 @@ class LanguageRow extends Component {
         }
         else {
             return (
-                <div className={"collapsible-component-language" + (opened ? " row-opened" : "") }>
+                <div className={"collapsible-component-language" + (opened ? " row-opened" : "")}>
                     <div className={"collapsible-header-language " + !opened} >
                         <div className={"row"}>
                             <div className="language-item item-row-name">
-                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault) }
+                                {this.getLanguageNameDisplay(props.name, props.icon, props.isDefault)}
                             </div>
                             <div className="language-item item-row-enabled">
-                                {this.getEnabledDisplay(props.enabled) }
+                                {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons">
-                                <div className={this.getEditorBtnClassName() } dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
+                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: LanguagesIcon }} onClick={props.onOpenEditor}></div>
                                 {!props.isDefault &&
-                                    <div className={this.getTranslatorBtnClassName() } dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2) }></div>
+                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
                                 }
-                                <div className={this.getEditBtnClassName() } dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1) }></div>
+                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
                             </div>
                         </div>
                     </div>
