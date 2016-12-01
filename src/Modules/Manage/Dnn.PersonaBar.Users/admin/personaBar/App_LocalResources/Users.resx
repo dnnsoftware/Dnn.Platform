@@ -295,13 +295,13 @@
     <value>Locked Out:</value>
   </data>
   <data name="ManageProfile.title" xml:space="preserve">
-    <value>Manage user profile.</value>
+    <value>Profile Settings</value>
   </data>
   <data name="ManageRoles.title" xml:space="preserve">
-    <value>Manage user roles.</value>
+    <value>User Roles</value>
   </data>
   <data name="ManageSettings.title" xml:space="preserve">
-    <value>Manage user settings.</value>
+    <value>Account Settings</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Name</value>

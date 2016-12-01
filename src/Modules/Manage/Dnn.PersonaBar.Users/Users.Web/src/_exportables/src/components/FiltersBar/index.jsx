@@ -73,7 +73,7 @@ class FiltersBar extends Component {
                 <div className="search-filter">
                     {
                         this.state.selectedUserFilter.value === 0 &&
-                        <SearchBox placeholder={Localization.get("SearchPlaceHolder") } onSearch={this.onKeywordChanged.bind(this) } maxLength={50} />
+                        <SearchBox placeholder={Localization.get("SearchPlaceHolder") } onSearch={this.onKeywordChanged.bind(this) } maxLength={50} iconStyle={{right: 0}}/>
                     }
                     <div className="clear"></div>
                 </div>

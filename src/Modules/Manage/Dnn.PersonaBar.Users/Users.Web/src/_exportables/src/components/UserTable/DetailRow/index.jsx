@@ -116,13 +116,13 @@ class DetailsRow extends Component {
             },
             {
                 index: 10,
-                content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={ user.isDeleted ? "deleted" : "" } >
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={"user-emails" + (user.isDeleted ? " deleted" : "") } >
                     <p>{user.email}</p>
                 </GridCell >
             },
             {
                 index: 15,
-                content: <GridCell columnSize={columnSizes.find(x=>x.index===15).size}  className={user.isDeleted ? "deleted" : ""}>
+                content: <GridCell columnSize={columnSizes.find(x=>x.index===15).size}  className={"user-joined" + (user.isDeleted ? " deleted" : "")}>
                     {user.createdOnDate !== "-" && <p>{formatDate(user.createdOnDate) }</p>}
                     {user.createdOnDate === "-" && user.createdOnDate}
                 </GridCell>
@@ -163,7 +163,7 @@ class DetailsRow extends Component {
                         {(!props.addIsOpened || props.addIsOpened === "add-opened") && <GridCell>
                             {userColumns}
                         </GridCell>}
-                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
+                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className={"user-detail-row " + opened}>
                             {opened && props.children }
                         </Collapse>
                     </GridCell>

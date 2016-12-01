@@ -20,14 +20,26 @@
             width: 100%;
             float: left;
         }
+        &.true{
+            border-top: 2px solid @curiousBlue;
+            border-bottom: 2px solid @curiousBlue;
+            margin-top: 10px;
+        }
+    }
+    .user-emails{
+        padding-left: 11px !important;
     }
     .user-names {
+        padding-left: 2px !important;
         h6 {
             font-size: 15px;
         }
         p {
             text-transform: lowercase;
         }
+    }
+    .user-joined{
+        padding-left: 22px !important;
     }
     .deleted {
         text-decoration: line-through;
@@ -39,9 +51,9 @@
         float: none;
         cursor: pointer;
         svg {
-            width: 16px;
+            width: 20px;
             float: left;
-            height: 16px;
+            height: 20px;
         }
         &.false {
             svg {
