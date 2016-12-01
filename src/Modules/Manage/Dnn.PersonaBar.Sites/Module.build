@@ -4,7 +4,7 @@
       <Extension>zip</Extension>
       <DNNFileName>Dnn.PersonaBar.Sites</DNNFileName>
       <PackageName>Dnn.PersonaBar.Sites</PackageName>
-      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
+      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Sites</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

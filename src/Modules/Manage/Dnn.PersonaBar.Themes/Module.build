@@ -4,7 +4,7 @@
       <Extension>zip</Extension>
       <DNNFileName>Dnn.PersonaBar.Themes</DNNFileName>
       <PackageName>Dnn.PersonaBar.Themes</PackageName>
-      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar</ModuleFolderName>
+      <ModuleFolderName>$(WebsitePath)\DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Themes</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
