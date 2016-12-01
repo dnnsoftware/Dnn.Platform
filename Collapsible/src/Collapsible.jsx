@@ -13,23 +13,23 @@ export default class Collapsible extends Component {
         if (!this.props.isOpened || !this.props.autoScroll ) {
             return;
         }
-        const collapsible = findDOMNode(this.refs.collapsible);
-        const collapsibleTop = collapsible.getBoundingClientRect().top;
-        const parentHeight = collapsible.parentNode.getBoundingClientRect().height;
-        const collapsibleHeight = this.props.fixedHeight || height;
-        const bodyTop = document.body.getBoundingClientRect().top;
-        let bottom = collapsibleTop - bodyTop + collapsibleHeight  + parentHeight;
-        
-        if (bottom > window.innerHeight ) {
-            bottom = bottom - window.innerHeight;
-            if (bottom > window.scrollY) {
-                scroll.top(page, bottom);
+        setTimeout(()=> {
+            const collapsible = findDOMNode(this.refs.collapsible);
+            const collapsibleTop = collapsible.getBoundingClientRect().top;
+            const collapsibleHeight = this.props.fixedHeight || height;
+            const bodyTop = document.body.getBoundingClientRect().top;
+            let bottom = collapsibleTop - bodyTop + collapsibleHeight + 40;
+            
+            if (bottom > window.innerHeight ) {
+                bottom = bottom - window.innerHeight;
+                if (bottom > window.scrollY) {
+                    scroll.top(page, bottom);
+                }
             }
-        }
+        }, 0);
         if (typeof this.props.onHeightReady === "function") {
             this.props.onHeightReady(height);
         }
-
     }
 
     render() {
