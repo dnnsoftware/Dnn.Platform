@@ -21,7 +21,7 @@
     "css-loader": "0.23.1",
     "dnn-button": "0.0.6",
     "dnn-checkbox": "0.1.0",
-    "dnn-collapsible": "0.0.6",
+    "dnn-collapsible": "0.0.7",
     "dnn-collapsible-row": "0.0.5",
     "dnn-date-picker": "0.1.8",
     "dnn-dropdown": "^1.0.6",
