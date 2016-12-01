@@ -697,7 +697,13 @@ END
 GO
 
 EXEC {databaseOwner}[{objectQualifier}UpdateHostSetting] @SettingName = N'AllowControlPanelToDetermineVisibility',
-    @SettingValue = N'True',
+    @SettingValue = N'Y',
+    @SettingIsSecure = 0,
+    @UserID = -1
+GO
+
+EXEC {databaseOwner}[{objectQualifier}UpdateHostSetting] @SettingName = N'IgnoreControlPanelWrapper',
+    @SettingValue = N'Y',
     @SettingIsSecure = 0,
     @UserID = -1
 GO

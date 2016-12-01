@@ -302,8 +302,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 }
                             });
                         })(i);
-                        
+
                     }
+                } else {
+                    callback();
                 }
             },
             loadCustomModules: function () {
