@@ -403,4 +403,16 @@
   <data name="BackToSites.Text" xml:space="preserve">
     <value>&lt; Back To Sites</value>
   </data>
+  <data name="DeleteSite.Text" xml:space="preserve">
+    <value>Delete Site</value>
+  </data>
+  <data name="ExportTemplate.Text" xml:space="preserve">
+    <value>Export Template</value>
+  </data>
+  <data name="SiteSettings.Text" xml:space="preserve">
+    <value>Site Settings</value>
+  </data>
+  <data name="ViewSite.Text" xml:space="preserve">
+    <value>View Site</value>
+  </data>
 </root>
