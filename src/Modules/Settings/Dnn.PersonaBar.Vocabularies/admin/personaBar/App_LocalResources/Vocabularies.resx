@@ -273,4 +273,7 @@
   <data name="NoVocabularyTerms.Error" xml:space="preserve">
     <value>No vocabularies found.</value>
   </data>
+  <data name="Close.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
 </root>
