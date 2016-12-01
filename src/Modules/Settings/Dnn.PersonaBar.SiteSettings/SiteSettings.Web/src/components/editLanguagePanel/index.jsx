@@ -102,7 +102,7 @@ class EditLanguagePanel extends Component {
             Mode: this.state.selectedMode,
             PortalId: props.portalId,
             Locale: props.languageBeingEdited.Code,
-            ResourceFile: props.resxBeingEdited,
+            ResourceFile: props.resxBeingEdited.replace("_/", ""),
             Entries: Object.keys(props.translations).map((key) => {
                 return {
                     Name: key,
