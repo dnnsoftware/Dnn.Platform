@@ -1,16 +1,17 @@
+import utils from "utils";
+
 class ThemeService {
     getServiceFramework(controller) {
         let sf = window.dnn.initThemes().utility.sf;
 
         sf.moduleRoot = "PersonaBar";
         sf.controller = controller;
-
         return sf;
     }
 
     getCurrentTheme(callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.get("GetCurrentTheme", {}, callback, errorCallback);
+        sf.get("GetCurrentTheme?language=" + utils.utilities.getCulture(), {}, callback, errorCallback);
     }
 
     getThemes(level, callback, errorCallback) {
@@ -25,7 +26,7 @@ class ThemeService {
 
     applyTheme(themeFile, scope, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ApplyTheme", { themeFile: themeFile, scope: scope }, callback, errorCallback);
+        sf.post("ApplyTheme?language=" + utils.utilities.getCulture(), { themeFile: themeFile, scope: scope }, callback, errorCallback);
     }
 
     getEditableTokens(callback, errorCallback) {
@@ -55,12 +56,12 @@ class ThemeService {
 
     restoreTheme(callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("RestoreTheme", {}, callback, errorCallback);
+        sf.post("RestoreTheme?language=" + utils.utilities.getCulture(), {}, callback, errorCallback);
     }
 
     applyDefaultTheme(themeName, callback, errorCallback) {
         const sf = this.getServiceFramework("Themes");
-        sf.post("ApplyDefaultTheme", { themeName: themeName }, callback, errorCallback);
+        sf.post("ApplyDefaultTheme?language=" + utils.utilities.getCulture(), { themeName: themeName }, callback, errorCallback);
     }
 
     deleteTheme(theme, callback, errorCallback) {

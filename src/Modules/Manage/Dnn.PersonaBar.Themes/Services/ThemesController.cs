@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Themes.Services
         #region Public API
 
         [HttpGet]
-        public HttpResponseMessage GetCurrentTheme()
+        public HttpResponseMessage GetCurrentTheme(string language)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme)
+        public HttpResponseMessage ApplyTheme(ApplyThemeInfo applyTheme, string language)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme)
+        public HttpResponseMessage ApplyDefaultTheme(ApplyDefaultThemeInfo defaultTheme, string language)
         {
             try
             {
@@ -314,7 +314,7 @@ namespace Dnn.PersonaBar.Themes.Services
 
          [HttpPost]
          [ValidateAntiForgeryToken]
-         public HttpResponseMessage RestoreTheme()
+         public HttpResponseMessage RestoreTheme(string language)
          {
              try
              {
