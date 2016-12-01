@@ -957,7 +957,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     Error = errorMessage
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return Request.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, result);
             }
             catch (Exception ex)
             {
