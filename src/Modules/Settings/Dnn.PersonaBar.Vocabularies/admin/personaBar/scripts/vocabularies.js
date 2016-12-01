@@ -1,13 +1,13 @@
 'use strict';
 define(['jquery',
-    '../scripts/config'
+    'main/config'
 ],
     function ($, cf) {
         var utility;
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/vocabulary-bundle.js";
+            var url = "modules/dnn.vocabularies/scripts/bundles/vocabulary-bundle.js";
             $.ajax({
                 dataType: "script",
                 cache: true,

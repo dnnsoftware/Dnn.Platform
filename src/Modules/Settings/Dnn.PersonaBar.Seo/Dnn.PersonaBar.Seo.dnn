@@ -20,9 +20,9 @@
       <components>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo</basePath>
             <resourceFile>
-              <name>Dnn.PersonaBar.Seo.Resources.zip</name>
+              <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
@@ -36,7 +36,7 @@
         </component>
         <component type="PersonaBarMenu">
           <menu>
-            <identifier>Seo</identifier>
+            <identifier>Dnn.Seo</identifier>
             <moduleName>Seo</moduleName>
             <controller>Dnn.PersonaBar.Seo.Components.ExtensionMenuController, Dnn.PersonaBar.Seo</controller>
             <resourceKey>nav_Seo</resourceKey>

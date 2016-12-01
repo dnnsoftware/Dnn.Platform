@@ -20,9 +20,9 @@
       <components>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Vocabularies</basePath>
             <resourceFile>
-              <name>Dnn.PersonaBar.Vocabularies.Resources.zip</name>
+              <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
@@ -36,7 +36,7 @@
         </component>
         <component type="PersonaBarMenu">
           <menu>
-            <identifier>Vocabularies</identifier>
+            <identifier>Dnn.Vocabularies</identifier>
             <moduleName>Vocabularies</moduleName>
             <controller>Dnn.PersonaBar.Vocabularies.MenuControllers.VocabulariesMenuController, Dnn.PersonaBar.Vocabularies</controller>
             <resourceKey>nav_Vocabularies</resourceKey>

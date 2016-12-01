@@ -1,14 +1,13 @@
 ﻿'use strict';
 define(['jquery',
-    '../scripts/config'
+    'main/config'
 ],
     function ($, cf) {
         var utility;
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/task-scheduler-bundle.js";
-            //var url = "http://localhost:8080/dist/task-scheduler-bundle.js";
+            var url = "modules/dnn.taskscheduler/scripts/bundles/task-scheduler-bundle.js";
             $.ajax({
                 dataType: "script",
                 cache: true,

@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.AdminLogs</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.AdminLogs.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>AdminLogs</identifier>
+                        <identifier>Dnn.AdminLogs</identifier>
                         <moduleName>AdminLogs</moduleName>
                         <controller>Dnn.PersonaBar.AdminLogs.MenuControllers.AdminMenuController, Dnn.PersonaBar.AdminLogs</controller>
                         <resourceKey>nav_AdminLogs</resourceKey>

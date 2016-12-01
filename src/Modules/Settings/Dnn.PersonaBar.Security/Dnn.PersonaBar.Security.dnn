@@ -20,9 +20,9 @@
       <components>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security</basePath>
             <resourceFile>
-              <name>Dnn.PersonaBar.Security.Resources.zip</name>
+              <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
@@ -36,7 +36,7 @@
         </component>
         <component type="Script">
           <scripts>
-            <basePath>DesktopModules\admin\Dnn.PersonaBar\Security</basePath>
+            <basePath>DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Security</basePath>
             <script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Install.SqlDataProvider</name>
@@ -51,7 +51,7 @@
         </component>
         <component type="PersonaBarMenu">
           <menu>
-            <identifier>Security</identifier>
+            <identifier>Dnn.Security</identifier>
             <moduleName>Security</moduleName>
             <controller>Dnn.PersonaBar.Security.MenuControllers.SecurityMenuController, Dnn.PersonaBar.Security</controller>
             <resourceKey>nav_Security</resourceKey>

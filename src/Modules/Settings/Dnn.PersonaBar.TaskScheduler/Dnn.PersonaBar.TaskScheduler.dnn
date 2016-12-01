@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.TaskScheduler.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>TaskScheduler</identifier>
+                        <identifier>Dnn.TaskScheduler</identifier>
                         <moduleName>TaskScheduler</moduleName>
                         <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.TaskScheduler</controller>
                         <resourceKey>nav_TaskScheduler</resourceKey>

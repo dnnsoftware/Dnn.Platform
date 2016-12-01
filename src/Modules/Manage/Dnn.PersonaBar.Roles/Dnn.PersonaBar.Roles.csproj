@@ -135,9 +135,7 @@
   <ItemGroup>
     <Content Include="admin\personaBar\App_LocalResources\Roles.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="admin\personaBar\images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>

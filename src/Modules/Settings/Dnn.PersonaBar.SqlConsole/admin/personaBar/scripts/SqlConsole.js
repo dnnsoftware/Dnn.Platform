@@ -11,14 +11,14 @@ All Rights Reserved
 define(['jquery',
             'knockout',
             'knockout.mapping',
-            './codeEditor',
+            'main/codeEditor',
             './sort',
             './exportData',
             './clipboard.min',
             './html2canvas',
             './FileSaver.min',
             'dnn.jquery',
-            './koBindingHandlers/jScrollPane'],
+            'main/koBindingHandlers/jScrollPane'],
     function ($, ko, koMapping, codeEditor, sort, exportData, Clipboard) {
         'use strict';
 

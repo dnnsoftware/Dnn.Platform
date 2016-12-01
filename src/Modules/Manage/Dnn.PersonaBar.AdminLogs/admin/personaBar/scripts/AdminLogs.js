@@ -1,5 +1,5 @@
-﻿define(['jquery', './extension',
-    '../scripts/config'], function ($, ext, cf) {
+﻿define(['jquery', 'main/extension',
+    'main/config'], function ($, ext, cf) {
         'use strict';
         var isMobile;
         var identifier;
@@ -8,7 +8,7 @@
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/adminLogs-bundle.js";
+            var url = "modules/dnn.adminlogs/scripts/bundles/adminLogs-bundle.js";
             $.ajax({
                 dataType: "script",
                 cache: true,

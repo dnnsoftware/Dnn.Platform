@@ -1,14 +1,13 @@
 ﻿'use strict';
 define(['jquery',
-    '../scripts/config'
+    'main/config'
 ],
     function ($, cf) {
         var utility;
         var config = cf.init();
 
         function loadScript() {
-            var url = "scripts/bundles/site-settings-bundle.js";
-            //var url = "http://localhost:8085/dist/site-settings-bundle.js";
+            var url = "modules/dnn.sitesettings/scripts/bundles/site-settings-bundle.js";
             
             $.ajax({
                 dataType: "script",

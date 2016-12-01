@@ -16,12 +16,11 @@
  */
 
 define(['jquery', 'knockout',
-    'text!templatePath/RecycleBin.html',
-    '../scripts/koBindingHandlers/toggle',
-    '../scripts/koBindingHandlers/jScrollPane',
-    '../scripts/koBindingHandlers/tabs',
-    '../scripts/koBindingHandlers/setWhenHover',
-    '../scripts/koBindingHandlers/setWidthFromParentScrollPaneWhen'], function ($, ko) {
+    'main/koBindingHandlers/toggle',
+    'main/koBindingHandlers/jScrollPane',
+    'main/koBindingHandlers/tabs',
+    'main/koBindingHandlers/setWhenHover',
+    'main/koBindingHandlers/setWidthFromParentScrollPaneWhen'], function ($, ko) {
         var DnnPageRecycleBin;
 
         var ModuleInfo = function (requestData) {

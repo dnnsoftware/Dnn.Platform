@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Roles</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.Roles.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>Roles</identifier>
+                        <identifier>Dnn.Roles</identifier>
                         <moduleName>Roles</moduleName>
                         <resourceKey>nav_Roles</resourceKey>
                         <path>Roles</path>

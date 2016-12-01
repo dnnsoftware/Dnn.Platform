@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Licensing</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.Licensing.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>Licensing</identifier>
+                        <identifier>Dnn.Licensing</identifier>
                         <moduleName>Licensing</moduleName>
                         <controller>Dnn.PersonaBar.Licensing.MenuControllers.HostMenuController, Dnn.PersonaBar.Licensing</controller>
                         <resourceKey>nav_Licensing</resourceKey>

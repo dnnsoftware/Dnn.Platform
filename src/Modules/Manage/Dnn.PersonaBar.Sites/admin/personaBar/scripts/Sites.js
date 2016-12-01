@@ -1,11 +1,10 @@
-﻿define(['jquery', './extension', './config', './exportables/Sites/SitesListView'], function ($, ext, cf, slv) {
+﻿define(['jquery', 'main/extension', 'main/config', './exportables/Sites/SitesListView'], function ($, ext, cf, slv) {
     'use strict';
     var isMobile;
     var identifier;
     var config = cf.init();
     function loadScript() {
-        // var url = "http://localhost:8080/dist/sites-bundle.js";
-        var url = "scripts/bundles/sites-bundle.js"
+        var url = "modules/dnn.sites/scripts/bundles/sites-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

@@ -41,12 +41,12 @@ using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
 namespace Dnn.PersonaBar.Pages.Services
 {
-    [MenuPermission(MenuName = "Pages")]
+    [MenuPermission(MenuName = "Dnn.Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
-        private const string LocalResourceFile = Constants.PersonaBarRelativePath + "App_LocalResources/Pages.resx";
+        private const string LocalResourceFile = Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
 
         private readonly IPagesController _pagesController;
         private readonly IBulkPagesController _bulkPagesController;

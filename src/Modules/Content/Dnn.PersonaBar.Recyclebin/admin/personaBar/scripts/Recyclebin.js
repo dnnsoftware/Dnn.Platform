@@ -11,7 +11,7 @@ All Rights Reserved
 define(['jquery',
     'knockout',
     'knockout.mapping',
-    '../scripts/RecycleBin.ViewModel',
+    './RecycleBin.ViewModel',
 	'dnn.jquery',
 	'dnn.extensions',
 	'dnn.jquery.extensions',

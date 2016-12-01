@@ -1,9 +1,9 @@
-﻿define(['./config'], function (cf) {
+﻿define(['main/config'], function (cf) {
     'use strict';
     var isMobile;
     var config = cf.init();
     function loadScript() {
-        var url = "scripts/bundles/servers-bundle.js";
+        var url = "modules/dnn.servers/scripts/bundles/servers-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

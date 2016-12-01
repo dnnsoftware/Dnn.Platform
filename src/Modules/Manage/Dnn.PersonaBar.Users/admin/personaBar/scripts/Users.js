@@ -1,4 +1,4 @@
-﻿define(['jquery', './extension', './config', './exportables/Users/UsersCommon'], function ($, ext, cf) {
+﻿define(['jquery', 'main/extension', 'main/config', './exportables/Users/UsersCommon'], function ($, ext, cf) {
     'use strict';
     var isMobile;
     var identifier;
@@ -6,7 +6,7 @@
     var config = cf.init();
 
     function loadScript() {
-        var url = "scripts/bundles/users-bundle.js";
+        var url = "modules/dnn.users/scripts/bundles/users-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

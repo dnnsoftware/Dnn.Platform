@@ -1,11 +1,11 @@
-﻿define(['jquery', './extension', '../scripts/config'], function ($, ext, cf) {
+﻿define(['jquery', 'main/extension', 'main/config'], function ($, ext, cf) {
     'use strict';
     var isMobile;
     var identifier, utility;
     var config = cf.init();
 
     function loadScript() {
-        var url = "scripts/bundles/roles-bundle.js";
+        var url = "modules/dnn.roles/scripts/bundles/roles-bundle.js";
         $.ajax({
             dataType: "script",
             cache: true,

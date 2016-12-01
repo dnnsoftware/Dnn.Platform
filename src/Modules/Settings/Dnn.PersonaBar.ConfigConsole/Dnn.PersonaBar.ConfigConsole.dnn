@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.ConfigConsole</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.ConfigConsole.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>ConfigConsole</identifier>
+                        <identifier>Dnn.ConfigConsole</identifier>
                         <moduleName>ConfigConsole</moduleName>
                         <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.ConfigConsole</controller>
                         <resourceKey>nav_ConfigConsole</resourceKey>

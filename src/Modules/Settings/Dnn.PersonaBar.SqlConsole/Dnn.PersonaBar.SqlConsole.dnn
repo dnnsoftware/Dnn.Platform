@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SqlConsole</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.SqlConsole.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>SqlConsole</identifier>
+                        <identifier>Dnn.SqlConsole</identifier>
                         <moduleName>SqlConsole</moduleName>
                         <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.SqlConsole</controller>
                         <resourceKey>nav_SqlConsole</resourceKey>

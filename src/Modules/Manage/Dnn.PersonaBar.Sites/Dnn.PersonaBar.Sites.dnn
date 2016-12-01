@@ -20,9 +20,9 @@
             <components>
                 <component type="ResourceFile">
                     <resourceFiles>
-                        <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+                        <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites</basePath>
                         <resourceFile>
-                            <name>Dnn.PersonaBar.Sites.Resources.zip</name>
+                            <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
                 </component>
@@ -36,7 +36,7 @@
                 </component>
                 <component type="PersonaBarMenu">
                     <menu>
-                        <identifier>Sites</identifier>
+                        <identifier>Dnn.Sites</identifier>
                         <moduleName>Sites</moduleName>
                         <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Sites</controller>
                         <resourceKey>nav_Sites</resourceKey>

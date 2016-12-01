@@ -20,9 +20,9 @@
       <components>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/admin/Dnn.PersonaBar</basePath>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.CssEditor</basePath>
             <resourceFile>
-              <name>Dnn.PersonaBar.CssEditor.Resources.zip</name>
+              <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
@@ -36,7 +36,7 @@
         </component>
         <component type="PersonaBarMenu">
           <menu>
-            <identifier>CssEditor</identifier>
+            <identifier>Dnn.CssEditor</identifier>
             <moduleName>CssEditor</moduleName>
             <controller>Dnn.PersonaBar.CssEditor.MenuControllers.AdminMenuController, Dnn.PersonaBar.CssEditor</controller>
             <resourceKey>nav_CssEditor</resourceKey>
