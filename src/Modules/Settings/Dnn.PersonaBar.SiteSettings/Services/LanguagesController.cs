@@ -201,21 +201,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     case LanguageResourceMode.System:
                     case LanguageResourceMode.Host:
-                        {
-                            break;
-                        }
                     case LanguageResourceMode.Portal:
                         {
-                            //this old behaviour is not maintained in the PersonaBar pages
-
-                            //var dbMode = Convert.ToString(Personalization.GetProfile("LanguageEditor", "Mode" + PortalId));
-                            //if (dbMode != resourceMode.ToString())
-                            //    Personalization.SetProfile("LanguageEditor", "Mode" + PortalId, resourceMode.ToString());
-                            //
-                            //var dbHighlight = Convert.ToString(Personalization.GetProfile("LanguageEditor", "HighLight" + PortalId));
-                            //if (dbHighlight != highlight.ToString())
-                            //    Personalization.SetProfile("LanguageEditor", "HighLight" + PortalId, highlight.ToString());
-                            language = _localeController.GetLocale(pid, locale);
+                            
                             break;
                         }
                     default:
@@ -322,11 +310,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     case LanguageResourceMode.System:
                     case LanguageResourceMode.Host:
-                        {
-                            break;
-                        }
                     case LanguageResourceMode.Portal:
-                        language = _localeController.GetLocale(pid, request.Locale);
                         break;
                     default:
                         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "UnsupportedMode");
