@@ -77,7 +77,8 @@ class EditLanguagePanel extends Component {
     getResxEntries(resxFile, callback) {
         const { props } = this;
         props.dispatch(LanguageEditorActions.getResxEntries({
-            resourceFile: resxFile,
+            resourceFile: resxFile.replace("_/", ""),
+            resourceFileActual: resxFile,
             mode: this.state.selectedMode,
             portalId: props.portalId,
             locale: props.languageBeingEdited.Code
@@ -86,8 +87,10 @@ class EditLanguagePanel extends Component {
     onSelectMode(value) {
         this.setState({
             selectedMode: value
-        }, ()=>{
-            this.getResxEntries(this.props.resxBeingEdited);
+        }, () => {
+            if (this.props.resxBeingEdited !== "") {
+                this.getResxEntries(this.props.resxBeingEdited);
+            }
         });
     }
     onResxChange(updatedList) {
@@ -136,25 +139,25 @@ class EditLanguagePanel extends Component {
             <PersonaBarPageBody
                 className="edit-language-panel"
                 workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this) }>{resx.get("BackToLanguages") }</div>}
+                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this)}>{resx.get("BackToLanguages")}</div>}
                 workSpaceTrayVisible={true}>
                 <LanguageInfoView
                     languageBeingEdited={languageBeingEdited}
                     ModeOptions={ModeOptions}
                     languageFolders={languageFolders}
                     languageFiles={props.languageFiles}
-                    getResxEntries={this.getResxEntries.bind(this) }
-                    getChildFolders={this.getChildFolders.bind(this) }
+                    getResxEntries={this.getResxEntries.bind(this)}
+                    getChildFolders={this.getChildFolders.bind(this)}
                     resxBeingEdited={props.resxBeingEdited}
                     portalName={props.portalName}
                     resxBeingEditedDisplay={props.resxBeingEditedDisplay}
                     selectedMode={this.state.selectedMode}
-                    onSelectMode={this.onSelectMode.bind(this) }
-                    onCancel={this.backToSiteSettings.bind(this) }
-                    onSaveTranslations={this.onSaveTranslations.bind(this) }
-                    onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this) }
-                    highlightPendingTranslations={this.state.highlightPendingTranslations}/>
-                <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this) }/>
+                    onSelectMode={this.onSelectMode.bind(this)}
+                    onCancel={this.backToSiteSettings.bind(this)}
+                    onSaveTranslations={this.onSaveTranslations.bind(this)}
+                    onHighlightPendingTranslations={this.onHighlightPendingTranslations.bind(this)}
+                    highlightPendingTranslations={this.state.highlightPendingTranslations} />
+                <ResourceList list={props.translations} highlightPendingTranslations={this.state.highlightPendingTranslations} onResxChange={this.onResxChange.bind(this)} />
             </PersonaBarPageBody>
         );
     }

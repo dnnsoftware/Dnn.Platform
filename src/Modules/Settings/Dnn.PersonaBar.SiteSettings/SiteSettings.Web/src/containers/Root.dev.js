@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import App from "../components/App";
 import DevTools from "./DevTools";
 
@@ -10,7 +10,8 @@ class Root extends Component {
         let culture = window.parent["personaBarSettings"]["culture"];
         return (
             <div className="siteSettings-Root">
-                <App cultureCode={culture}/>
+                <App cultureCode={culture} />
+                <DevTools />
             </div>
         );
     }

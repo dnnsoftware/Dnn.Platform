@@ -37,7 +37,9 @@ const languageEditorActions = {
     },
     getResxEntries(parameters, callback) {
         return (dispatch) => {
-            LanguageEditorService.getResxEntries(parameters, (data) => {
+            let _parameters = Object.assign({}, parameters);
+            delete _parameters.resourceFileActual;
+            LanguageEditorService.getResxEntries(_parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_RESX_ENTRIES,
                     payload: Object.assign(parameters, data)

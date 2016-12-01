@@ -7,7 +7,7 @@ function insertRecords(folders, newFolders, clearArray) {
         let alreadyThere = folders.find((_folder) => {
             return _folder.NewValue === folder.NewValue;
         });
-        if (!alreadyThere) {
+        if (!alreadyThere || clearArray) {
             newFolderList.push(folder);
         }
     });
@@ -43,7 +43,7 @@ export default function languageEditor(state = {
         case ActionTypes.RETRIEVED_RESX_ENTRIES:
             return {...state,
                 translations: action.payload.Translations,
-                resxBeingEdited: action.payload.resourceFile,
+                resxBeingEdited: action.payload.resourceFileActual,
                 resxBeingEditedDisplay: action.payload.File
             };
         case ActionTypes.UPDATED_RESX_ENTRIES:
