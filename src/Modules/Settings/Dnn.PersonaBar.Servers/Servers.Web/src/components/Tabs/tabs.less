@@ -13,7 +13,7 @@
         }
     }
     .dnn-ui-common-input-group {
-        padding: 0 0 15px 0;
+        padding: 0 0 32px 0;
         .title label {
             font-weight: bolder;
             float: left;
@@ -45,10 +45,24 @@
     .leftPane {
         padding-right: 30px;
         border-right: 1px solid @alto;
+        .dnn-radio-buttons {
+            ul {
+                li:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
     }
     .rightPane {
         padding-left: 30px;
         padding-right: 30px;
+        .dnn-radio-buttons {
+            ul {
+                li:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
     }
     .border-bottom {
         border-bottom: 1px solid @alto;
@@ -161,8 +175,14 @@
         }
     }
     &.smtpServerSettingsTab {
-        .dnn-ui-common-input-group .title label {
-            text-transform: none;
+        .dnn-ui-common-input-group {
+            padding-bottom: 0;
+            .dnn-radio-buttons{
+                margin-bottom: 32px;
+            }
+            .title label {
+                text-transform: none;
+            }
         }
     }
 }

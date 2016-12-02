@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import GridSystem from "dnn-grid-system";
+import GridCell from "dnn-grid-cell";
 import InputGroup from "dnn-input-group";
 import Button from "dnn-button";
 import Label from "dnn-label";
@@ -29,7 +30,7 @@ class Performance extends Component {
             utils.notifyError(newProps.errorMessage);
         }
     }
-    
+
     getClientResourcesManagementModeOptions() {
         return [
             {
@@ -42,13 +43,13 @@ class Performance extends Component {
             }
         ];
     }
-    
+
     onSave() {
         const {props} = this;
-        
+
         props.onSave(props.performanceSettings);
     }
-    
+
     confirmHandler() {
         const {props} = this;
         const isGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
@@ -58,18 +59,18 @@ class Performance extends Component {
             props.onIncrementVersion(props.performanceSettings.currentPortalVersion, isGlobalSettings);
         }
     }
-    
+
     cancelHandler() {
-        
+
     }
-    
+
     onIncrementVersion() {
-        utils.confirm(localization.get("PerformanceTab_PortalVersionConfirmMessage"), 
-            localization.get("PerformanceTab_PortalVersionConfirmYes"), 
-            localization.get("PerformanceTab_PortalVersionConfirmNo"), 
+        utils.confirm(localization.get("PerformanceTab_PortalVersionConfirmMessage"),
+            localization.get("PerformanceTab_PortalVersionConfirmYes"),
+            localization.get("PerformanceTab_PortalVersionConfirmNo"),
             this.confirmHandler.bind(this), this.cancelHandler.bind(this));
     }
-    
+
     onChangeField(key, event) {
         let value = event;
         if (event && event.value) {
@@ -77,16 +78,16 @@ class Performance extends Component {
         } else if (event && event.target && event.target.value) {
             value = event.target.value;
         }
-        
+
         this.props.onChangePerformanceSettingsValue(key, value);
     }
-    
+
     render() {
         const {props} = this;
         if (props.isLoading) {
             return null;
         }
-        
+
         const areGlobalSettings = props.performanceSettings.clientResourcesManagementMode === "h";
         let enableCompositeFiles;
         let minifyCss;
@@ -115,21 +116,21 @@ class Performance extends Component {
             version = props.performanceSettings.currentPortalVersion;
             versionLocalizationKey = "PerformanceTab_CurrentPortalVersion";
         }
-                                        
+
         return <div className="dnn-servers-info-panel-big performanceSettingTab">
             <WarningBlock label={localization.get("PerformanceTab_AjaxWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <div className="tooltipAdjustment">
                         {props.performanceSettings.pageStatePersistenceOptions &&
-                        <RadioButtonBlock options={props.performanceSettings.pageStatePersistenceOptions}
-                            label={localization.get("PerformanceTab_PageStatePersistenceMode")}
-                            tooltip={localization.get("PerformanceTab_PageStatePersistenceMode.Help")}
-                            onChange={this.onChangeField.bind(this, "pageStatePersistence")}
-                            value={props.performanceSettings.pageStatePersistence} />
+                            <RadioButtonBlock options={props.performanceSettings.pageStatePersistenceOptions}
+                                label={localization.get("PerformanceTab_PageStatePersistenceMode")}
+                                tooltip={localization.get("PerformanceTab_PageStatePersistenceMode.Help")}
+                                onChange={this.onChangeField.bind(this, "pageStatePersistence")}
+                                value={props.performanceSettings.pageStatePersistence} />
                         }
                         {props.performanceSettings.cacheSettingOptions &&
-                        <DropdownBlock
+                            <DropdownBlock
                                 tooltip={localization.get("PerformanceTab_CachingProvider.Help")}
                                 label={localization.get("PerformanceTab_CachingProvider")}
                                 options={props.performanceSettings.cachingProviderOptions}
@@ -138,7 +139,7 @@ class Performance extends Component {
                                 />
                         }
                         {props.performanceSettings.moduleCacheProviders &&
-                        <DropdownBlock
+                            <DropdownBlock
                                 tooltip={localization.get("PerformanceTab_ModuleCacheProviders.Help")}
                                 label={localization.get("PerformanceTab_ModuleCacheProviders")}
                                 options={props.performanceSettings.moduleCacheProviders}
@@ -147,7 +148,7 @@ class Performance extends Component {
                                 />
                         }
                         {props.performanceSettings.pageCacheProviders &&
-                        <DropdownBlock
+                            <DropdownBlock
                                 tooltip={localization.get("PerformanceTab_PageCacheProviders.Help")}
                                 label={localization.get("PerformanceTab_PageCacheProviders")}
                                 options={props.performanceSettings.pageCacheProviders}
@@ -159,7 +160,7 @@ class Performance extends Component {
                 </div>
                 <div className="rightPane">
                     {props.performanceSettings.cacheSettingOptions &&
-                    <DropdownBlock
+                        <DropdownBlock
                             tooltip={localization.get("PerformanceTab_CacheSetting.Help")}
                             label={localization.get("PerformanceTab_CacheSetting")}
                             options={props.performanceSettings.cacheSettingOptions}
@@ -168,7 +169,7 @@ class Performance extends Component {
                             />
                     }
                     {props.performanceSettings.authCacheabilityOptions &&
-                    <DropdownBlock
+                        <DropdownBlock
                             tooltip={localization.get("PerformanceTab_AuthCacheability.Help")}
                             label={localization.get("PerformanceTab_AuthCacheability")}
                             options={props.performanceSettings.authCacheabilityOptions}
@@ -177,7 +178,7 @@ class Performance extends Component {
                             />
                     }
                     {props.performanceSettings.unauthCacheabilityOptions &&
-                    <DropdownBlock
+                        <DropdownBlock
                             tooltip={localization.get("PerformanceTab_UnauthCacheability.Help")}
                             label={localization.get("PerformanceTab_UnauthCacheability")}
                             options={props.performanceSettings.unauthCacheabilityOptions}
@@ -186,64 +187,64 @@ class Performance extends Component {
                             />
                     }
                     <SwitchBlock label={localization.get("PerformanceTab_SslForCacheSyncrhonization")}
-                            tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
-                            value={props.performanceSettings.sslForCacheSynchronization}
-                            onChange={this.onChangeField.bind(this, "sslForCacheSynchronization")} />
+                        tooltip={localization.get("PerformanceTab_SslForCacheSyncrhonization.Help")}
+                        value={props.performanceSettings.sslForCacheSynchronization}
+                        onChange={this.onChangeField.bind(this, "sslForCacheSynchronization")} />
                 </div>
             </GridSystem>
-            <div className="dnn-servers-grid-panel newSection" style={{marginLeft: 0}}>
+            <GridCell className="dnn-servers-grid-panel newSection" style={{ paddingLeft: 0 }}>
                 <Label className="header-title" label={localization.get("PerformanceTab_ClientResourceManagementTitle")} />
-            </div>
+            </GridCell>
             <WarningBlock label={localization.get("PerformanceTab_MinifactionWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <InputGroup>
                         <Label className="title lowerCase"
-                            label={localization.get("PerformanceTab_ClientResourceManagementInfo")} 
-                            style={{width: "auto"}} />
+                            label={localization.get("PerformanceTab_ClientResourceManagementInfo")}
+                            style={{ width: "auto" }} />
                     </InputGroup>
                     <div className="currentHostVersion">
                         <InfoBlock label={localization.get(versionLocalizationKey)}
                             text={version} />
                     </div>
-                    <Button type="secondary" style={{marginBottom: "75px"}} disable={props.incrementingVersion}
+                    <Button type="secondary" style={{ marginBottom: "75px" }} disable={props.incrementingVersion}
                         onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
                 <div className="rightPane borderSeparation">
                     <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
-                            label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
-                            tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
-                            onChange={this.onChangeField.bind(this, "clientResourcesManagementMode")}
-                            value={props.performanceSettings.clientResourcesManagementMode} />
+                        label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
+                        tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
+                        onChange={this.onChangeField.bind(this, "clientResourcesManagementMode")}
+                        value={props.performanceSettings.clientResourcesManagementMode} />
                     <SwitchBlock label={localization.get("PerformanceTab_EnableCompositeFiles")}
-                            tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
-                            value={enableCompositeFiles}
-                            onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
-                            isGlobal={areGlobalSettings} />
+                        tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
+                        value={enableCompositeFiles}
+                        onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
+                        isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
-                            tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
-                            value={enableCompositeFiles ? minifyCss : false}
-                            readOnly={!enableCompositeFiles}
-                            onChange={this.onChangeField.bind(this, minifyCssKey)}
-                            isGlobal={areGlobalSettings} />
+                        tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
+                        value={enableCompositeFiles ? minifyCss : false}
+                        readOnly={!enableCompositeFiles}
+                        onChange={this.onChangeField.bind(this, minifyCssKey)}
+                        isGlobal={areGlobalSettings} />
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
-                            tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
-                            value={enableCompositeFiles ? minifyJs : false}
-                            readOnly={!enableCompositeFiles}
-                            onChange={this.onChangeField.bind(this, minifyJsKey)}
-                            isGlobal={areGlobalSettings} />
+                        tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
+                        value={enableCompositeFiles ? minifyJs : false}
+                        readOnly={!enableCompositeFiles}
+                        onChange={this.onChangeField.bind(this, minifyJsKey)}
+                        isGlobal={areGlobalSettings} />
                 </div>
             </GridSystem>
             <div className="clear" />
             <div className="buttons-panel">
-                 <Button type="primary" disabled={props.isSaving}
+                <Button type="primary" disabled={props.isSaving}
                     onClick={this.onSave.bind(this)}>{localization.get("SaveButtonText")}</Button>
             </div>
         </div>;
     }
 }
 
-Performance.propTypes = {   
+Performance.propTypes = {
     performanceSettings: PropTypes.object.isRequired,
     loading: PropTypes.bool,
     isSaving: PropTypes.bool,
@@ -256,7 +257,7 @@ Performance.propTypes = {
     infoMessage: PropTypes.string
 };
 
-function mapStateToProps(state) {    
+function mapStateToProps(state) {
     return {
         performanceSettings: state.performanceTab.performanceSettings,
         loading: state.performanceTab.saving,
@@ -269,7 +270,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators ({
+        ...bindActionCreators({
             onRetrievePerformanceSettings: PerformanceTabActions.loadPerformanceSettings,
             onChangePerformanceSettingsValue: PerformanceTabActions.changePerformanceSettingsValue,
             onSave: PerformanceTabActions.save,
