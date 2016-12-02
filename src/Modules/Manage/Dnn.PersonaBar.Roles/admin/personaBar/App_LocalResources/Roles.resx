@@ -337,7 +337,7 @@
     <value>Enter a name of the role group.</value>
   </data>
   <data name="PermissionsByRole.Text" xml:space="preserve">
-    <value>Permissions By Role</value>
+    <value>Users In Role</value>
   </data>
   <data name="SendEmail.Text" xml:space="preserve">
     <value>Send Email</value>
@@ -359,5 +359,11 @@
   </data>
   <data name="CannotAssginUserToUnApprovedRole.Text" xml:space="preserve">
     <value>Cannot assign user to an un-approved role.</value>
+  </data>
+  <data name="EditRole.Text" xml:space="preserve">
+    <value>Edit Role</value>
+  </data>
+  <data name="UsersInRole.Text" xml:space="preserve">
+    <value>Users in Role</value>
   </data>
 </root>
