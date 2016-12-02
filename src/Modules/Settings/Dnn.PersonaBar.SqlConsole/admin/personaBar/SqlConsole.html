@@ -12,7 +12,7 @@
                 <select data-bind="options: savedQueries, optionsText: 'name', optionsValue: 'id', value: selectedQuery"></select>
             </div>
             <span class="fileupload-wrapper">
-                <a class="uploadbtn" data-bind="html: resx.UploadFile"></a>
+                <button class="dnn-ui-common-button uploadbtn large" role="secondary" data-bind="html: resx.UploadFile"></button>
                 <input type="file" />
             </span>
         </div>
@@ -26,8 +26,8 @@
             <textarea data-bind="value: query"></textarea>
         </div>
         <div class="actions">
-            <a class="button cancel secondarybtn" href="#" data-bind="click: startSaveQuery, html: resx.SaveQuery"></a>
-            <a class="button create-page primarybtn" href="#" data-bind="html: resx.RunScript, click: runQuery"></a>
+            <button class="dnn-ui-common-button cancel" data-bind="click: startSaveQuery, html: resx.SaveQuery"></button>
+            <button class="dnn-ui-common-button create-page" role="primary" data-bind="html: resx.RunScript, click: runQuery"></button>
         </div>
         <div class="popup savequery-popup" data-bind="visible: saving">
             <span data-bind="htm: resx.SaveQueryInfo"></span>

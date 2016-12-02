@@ -67,7 +67,7 @@
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    padding: 11px;  
+    padding: 12px;  
     width: 100%;  
 }
 
@@ -130,7 +130,7 @@
 }
 
 .sqlconsolePanel {
-    margin: 130px 30px 30px 30px;
+    margin: 128px 30px 30px 30px;
     padding: 25px;
     border: 1px solid #e6e6e6;
     background-color: #fff;
@@ -157,7 +157,7 @@
     left: 0;
 }
 .sqlconsolePanel .form-item.item-query div {
-    margin: 0 120px;
+    margin: 0 145px 0 120px;
 }
 .sqlconsolePanel .form-item.item-query div select {
     width: 100%;
@@ -261,7 +261,7 @@
 
 
 .sqlconsolePanel .tables-container {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 .sqlconsolePanel .tables-container > div {
     position: relative;
@@ -310,7 +310,6 @@
 }
 .sqlconsolePanel .tables-container > div > div.table-container {
     outline: none;
-    min-height: 532px;
 }
 
 .sqlconsolePanel .tables-container table {
