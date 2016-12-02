@@ -22,6 +22,9 @@ const application = {
     setItemTemplate(template) {
         application.dispatch(PageHierarchyActions.setItemTemplate(template));
     },
+    setDragItemTemplate(template) {
+        application.dispatch(PageHierarchyActions.setDragItemTemplate(template));
+    },
     registerToolbarComponent(component) {        
         application.dispatch(ExtensionsActions.registerToolbarComponent(component));
     },

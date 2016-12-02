@@ -30,6 +30,7 @@ class PageList extends Component {
                 </div>
                 <PageHierarchy
                     itemTemplate={this.props.itemTemplate}
+                    dragItemTemplate={this.props.dragItemTemplate}
                     searchKeyword={this.props.searchKeyword} 
                     onPageSettings={this.props.onPageSettings}
                     createdPage={this.props.createdPage} />
@@ -43,6 +44,7 @@ PageList.propTypes = {
     dispatch: PropTypes.func.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
+    dragItemTemplate: PropTypes.string.isRequired,
     createdPage: PropTypes.object,
     toolbarComponents: PropTypes.array
 };
@@ -51,6 +53,7 @@ function mapStateToProps(state) {
     return {
         searchKeyword: state.pageHierarchy.searchKeyword,
         itemTemplate: state.pageHierarchy.itemTemplate,
+        dragItemTemplate: state.pageHierarchy.dragItemTemplate,
         createdPage: state.pageHierarchy.createdPage,
         toolbarComponents: state.extensions.toolbarComponents
     };

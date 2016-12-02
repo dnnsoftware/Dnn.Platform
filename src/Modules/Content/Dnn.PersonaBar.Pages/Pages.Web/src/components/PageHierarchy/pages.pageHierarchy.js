@@ -146,6 +146,12 @@ window.dnn.pages = window.dnn.pages || {};
             }
         },
 
+        setDragItemTemplate: function (template) {
+            if (template != "pages-drag-item-template") {
+                this._getViewModel().dragItemTemplate(template);
+            }
+        },
+
         setSearchKeyword: function (searchKeyword) {
             if (searchKeyword === this._getViewModel().searchKeyword()) {
                 return;
@@ -1146,6 +1152,7 @@ window.dnn.pages = window.dnn.pages || {};
 
             if (typeof this._viewModel.pagesList == "undefined") {
                 this._viewModel.itemTemplate = ko.observable("pages-list-item-template");
+                this._viewModel.dragItemTemplate = ko.observable("pages-drag-item-template");
                 this._viewModel.pagesList = ko.observableArray([]);
                 this._viewModel.resx = handler.resx;
                 this._viewModel.selectedPage = ko.observable(handler._getEmptyPageData());

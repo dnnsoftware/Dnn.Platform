@@ -6,7 +6,7 @@ import "./css/pages-hierarchy.css";
 
 class PageHierarchy extends Component {
     componentDidMount() {
-        const {itemTemplate, searchKeyword} = this.props;
+        const {itemTemplate, dragItemTemplate, searchKeyword} = this.props;
 
         this.node = ReactDOM.findDOMNode(this);
         pageHierarchyManager.utility = utils.getUtilities();
@@ -15,14 +15,19 @@ class PageHierarchy extends Component {
         pageHierarchyManager.callPageSettings = this.callPageSettings.bind(this);
         pageHierarchyManager.init(this.node, this.initCallback.bind(this));
         pageHierarchyManager.setItemTemplate(itemTemplate);
+        pageHierarchyManager.setDragItemTemplate(dragItemTemplate);
         pageHierarchyManager.setSearchKeyword(searchKeyword);   
         pageHierarchyManager.setCurrentTabIdAndSiteRoot(utils.getCurrentPageId(), utils.getSiteRoot());
     }
 
     componentWillReceiveProps(nextProps) {
-        const {itemTemplate, searchKeyword} = this.props;
+        const {itemTemplate, dragItemTemplate, searchKeyword} = this.props;
         if (itemTemplate !== nextProps.itemTemplate) {
             pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
+        }    
+
+        if (dragItemTemplate !== nextProps.dragItemTemplate) {
+            pageHierarchyManager.setDragItemTemplate(nextProps.dragItemTemplate);
         }    
 
         if (searchKeyword !== nextProps.searchKeyword) {
@@ -51,13 +56,15 @@ class PageHierarchy extends Component {
 
 PageHierarchy.propTypes = {
     itemTemplate: PropTypes.string.isRequired,
+    dragItemTemplate: PropTypes.string.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     onPageSettings: PropTypes.func.isRequired,
     createdPage: PropTypes.object
 };
 
 PageHierarchy.defaultProps = {
-    itemTemplate: "pages-list-item-template"
+    itemTemplate: "pages-list-item-template",
+    dragItemTemplate: "pages-drag-item-template"
 };
 
 export default PageHierarchy; 

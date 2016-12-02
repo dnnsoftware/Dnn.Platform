@@ -13,6 +13,7 @@ application.dispatch = store.dispatch;
 window.dnn.pages = window.dnn.pages || {};
 window.dnn.pages.apiController = window.dnn.pages.apiController || "Pages";
 window.dnn.pages.setItemTemplate = application.setItemTemplate;
+window.dnn.pages.setDragItemTemplate = application.setDragItemTemplate;
 window.dnn.pages.registerToolbarComponent = application.registerToolbarComponent;
 window.dnn.pages.registerPageDetailFooterComponent = application.registerPageDetailFooterComponent;
 window.dnn.pages.registerMultiplePagesComponent = application.registerMultiplePagesComponent;

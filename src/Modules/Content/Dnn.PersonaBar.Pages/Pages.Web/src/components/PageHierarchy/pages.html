@@ -14,7 +14,7 @@
         </div>
         <div class="pages-drag-container" data-bind="visible: inDrag && dragPage().id > 0">
             <div class="pages-list">
-                <ul data-bind="template:{name: 'pages-drag-item-template', data: dragPage }"></ul>
+                <ul data-bind="template:{name: $root.dragItemTemplate, data: dragPage }"></ul>
             </div>
         </div>
     </div>

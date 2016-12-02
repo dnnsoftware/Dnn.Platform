@@ -16,6 +16,11 @@ export default function  pageHierarchyReducer(state = {
             return { ...state,
                 itemTemplate: action.itemTemplate
             };
+
+        case ActionTypes.SET_DRAG_ITEM_TEMPLATE:
+            return { ...state,
+                dragItemTemplate: action.itemTemplate
+            };
         
         case ContentActionTypes.SAVED_PAGE:
             return { ...state,
