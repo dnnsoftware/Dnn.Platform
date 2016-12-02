@@ -159,14 +159,44 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     expandPersonaBar: false
                 }, persistentSaveCallback);
             },
-            loadPanel: function handleLoadPanel(path, params) {
+            loadPanel: function handleLoadPanel(identifier, params) {
                 var savePersistentCallback;
 
                 if (inAnimation) return;
+
+                var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
+                if ($menuItem.length === 0) {
+                    return;
+                }
+
+                if (!params.identifier) {
+                    params.identifier = identifier;
+                }
+
+                if (!params.settings) {
+                    params.settings = util.findMenuSettings(params.identifier);
+                }
+
+                if (!params.moduleName) {
+                    params.moduleName = $menuItem.data('module-name');
+                }
+
+                if (!params.folderName) {
+                    params.folderName = $menuItem.data('folder-name');
+                }
+
+                if (!params.query) {
+                    params.query = $menuItem.data('query');
+                }
+
+                if (!params.path) {
+                    params.path = $menuItem.data('path');
+                }
+
                 var self = this;
-                var moduleName = self.getModuleNameByParams(params);
-                var identifier = self.getIdentifierByParams(params);
-                var folderName = self.getFolderByParams(params) || identifier;
+                var path = params.path;
+                var moduleName = params.moduleName;
+                var folderName = params.folderName || identifier;
 
                 iframe.style.width = "100%";
                 parentBody.style.overflow = "hidden";
@@ -188,10 +218,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 $menuItems.removeClass('selected');
                 $hoverMenuItems.removeClass('selected');
 
-                var $btn = $(".btn_panel[data-path='" + path + "']");
+                var $btn = $(".btn_panel[id='" + identifier + "']");
                 $btn.addClass('selected');
 
-                var hoverMenuItemSelector = ".hovermenu > ul > li[data-path='" + path + "']";
+                var hoverMenuItemSelector = ".hovermenu > ul > li[id='" + identifier + "']";
                 if (moduleName) {
                     hoverMenuItemSelector += "[data-module-name='" + moduleName + "']";
                 } else {
@@ -241,7 +271,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                     self.persistent.save({
                         expandPersonaBar: true,
-                        activePath: path,
                         activeIdentifier: identifier
                     }, savePersistentCallback);
 
@@ -262,7 +291,6 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                 };
                                 self.persistent.save({
                                     expandPersonaBar: true,
-                                    activePath: path,
                                     activeIdentifier: identifier
                                 }, savePersistentCallback);
                             });
@@ -522,7 +550,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                             };
                                         };
 
-                                        util.loadPanel(path, params);
+                                        util.loadPanel(identifier, params);
                                     });
 
                                     var $avatarMenu = $('li.useravatar');
@@ -768,21 +796,9 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             }
 
             var settings = util.persistent.load();
-            if (settings.expandPersonaBar && settings.activePath) {
-                var path = settings.activePath;
+            if (settings.expandPersonaBar && settings.activeIdentifier) {
                 var identifier = settings.activeIdentifier;
-                var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
-                var moduleName = $menuItem.data('module-name');
-                var folderName = $menuItem.data('folder-name');
-                var params = {
-                    identifier: identifier,
-                    moduleName: moduleName,
-                    folderName: folderName,
-                    path: path,
-                    query: $menuItem.data('query'),
-                    settings: util.findMenuSettings(identifier)
-            }
-                util.loadPanel(path, params);
+                util.loadPanel(identifier, {});
             }
         });
         
