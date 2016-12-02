@@ -253,18 +253,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.ContentStaging.Name.Text" xml:space="preserve">
     <value>Content Staging</value>
   </data>
-  <data name="Tab.DevicePreview.Content.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
-  <data name="Tab.DevicePreview.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
-  <data name="Tab.DevicePreview.Description.Text" xml:space="preserve">
-    <value>Device Preview Management.</value>
-  </data>
-  <data name="Tab.DevicePreview.Name.Text" xml:space="preserve">
-    <value>Device Preview Management</value>
-  </data>
   <data name="Tab.DigitalAssetsManagement.Content.Text" xml:space="preserve">
     <value>File Management</value>
   </data>
