@@ -63,7 +63,7 @@ class ProviderRow extends Component {
                             </div>
                         </div>
                     </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left" }} fixedHeight={160}>{opened && props.children}</Collapse>
+                    <Collapse accordion={true} isOpened={opened} style={{ float: "left", overflow: "inherit" }} fixedHeight={160}>{opened && props.children}</Collapse>
                 </div>
             );
         }

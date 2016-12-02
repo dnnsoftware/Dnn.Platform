@@ -179,7 +179,6 @@ class GeneralSettingsPanelBody extends Component {
                 <InputGroup>
                     <div className="generalSettings-row-options">
                         <Label
-                            labelType="inline"
                             tooltipMessage={resx.get("plDeletedPages.Help")}
                             label={resx.get("plDeletedPages")}
                             />

@@ -97,7 +97,6 @@ class ProviderEditor extends Component {
                             label={resx.get("overridePriority")}
                             />
                         <Dropdown
-                            fixedHeight={100}
                             options={priorityOptions}
                             value={!state.settings.OverridePriority ? -1 : state.settings.Priority}
                             onSelect={this.onSettingChange.bind(this, "Priority")}
