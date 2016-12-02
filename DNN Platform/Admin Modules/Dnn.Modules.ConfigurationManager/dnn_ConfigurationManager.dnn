@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Host" common="false">
-                            <name>Configuration Manager</name>
-                            <icon>~/Icons/Sigma/Configuration_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Configuration_32X32_Standard.png</largeIcon>
-                            <description>Modify configuration settings for your site</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Configuration Manager</friendlyName>

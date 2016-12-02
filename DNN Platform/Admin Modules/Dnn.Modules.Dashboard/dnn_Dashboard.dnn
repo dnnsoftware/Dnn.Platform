@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Host" common="true">
-                            <name>Dashboard</name>
-                            <icon>~/images/icon_dashboard_16px.gif</icon>
-                            <largeIcon>~/images/icon_dashboard_32px.gif</largeIcon>
-                            <description>Summary view of application and site settings.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Dashboard</friendlyName>

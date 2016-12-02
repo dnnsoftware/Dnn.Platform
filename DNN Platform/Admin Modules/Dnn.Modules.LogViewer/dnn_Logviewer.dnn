@@ -23,12 +23,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Admin" common="true">
-                            <name>LogViewer</name>
-                            <icon>~/Icons/Sigma/ViewStats_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/ViewStats_32X32_Standard.png</largeIcon>
-                            <description>View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Log Viewer</friendlyName>

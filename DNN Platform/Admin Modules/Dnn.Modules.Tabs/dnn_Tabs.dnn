@@ -22,12 +22,6 @@
 						<supportedFeatures>
 							<supportedFeature type="Upgradeable" />
 						</supportedFeatures>
-                        <page type="Admin" common="true">
-                            <name>Pages</name>
-                            <icon>~/Icons/Sigma/Tabs_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Tabs_32X32_Standard.png</largeIcon>
-                            <description>Page Management</description>
-                        </page>
 						<moduleDefinitions>
 							<moduleDefinition>
 								<friendlyName>Pages</friendlyName>

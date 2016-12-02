@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Host" common="false">
-                            <name>SQL</name>
-                            <icon>~/Icons/Sigma/Sql_16x16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Sql_32x32_Standard.png</largeIcon>
-                            <description>Execute SQL queries against the database.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>SQL</friendlyName>

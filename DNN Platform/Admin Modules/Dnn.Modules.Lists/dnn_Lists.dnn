@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Admin,Host" common="false">
-                            <name>Lists</name>
-                            <icon>~/Icons/Sigma/Lists_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Lists_32X32_Standard.png</largeIcon>
-                            <description>Lists.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Lists</friendlyName>

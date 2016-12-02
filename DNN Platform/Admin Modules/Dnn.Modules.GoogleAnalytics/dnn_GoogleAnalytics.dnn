@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Admin" common="false">
-                            <name>GoogleAnalytics</name>
-                            <icon>~/Icons/Sigma/GoogleAnalytics_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</largeIcon>
-                            <description>Configure Site Google Analytics settings.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Google Analytics</friendlyName>

@@ -22,12 +22,6 @@
             <moduleName>SkinManagement</moduleName>
             <foldername>Admin/SkinManagement</foldername>
             <businessControllerClass>Dnn.Modules.SkinManagement.Components.BusinessController</businessControllerClass>
-            <page type="Admin" common="false">
-              <name>Themes</name>
-              <icon>~/Icons/Sigma/Skins_16X16_Standard.png</icon>
-              <largeIcon>~/Icons/Sigma/Skins_32X32_Standard.png</largeIcon>
-              <description>Manage the installed themes, and how they're applied on the site.</description>
-            </page>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Themes</friendlyName>
