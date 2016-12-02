@@ -146,13 +146,13 @@ class TranslatePageContent extends Component {
     goToPageSettings(pageId) {
         let personaBar = window.parent.dnn ? window.parent.dnn.PersonaBar : null;
         if (personaBar) {
-            personaBar.openPanel("Pages",
+            personaBar.openPanel("Dnn.Pages",
                 {
                     viewParams:
                     {
                         pageId,
                         viewTab: "localization",
-                        referral: utils.moduleName,
+                        referral: utils.identifier,
                         referralText: resx.get("BackToLanguages").substring(1)
                     }
                 }
@@ -163,7 +163,7 @@ class TranslatePageContent extends Component {
 
             event.pageId = pageId;
             event.viewTab = "localization";
-            event.referral = utils.moduleName;
+            event.referral = utils.identifier;
             event.referralText = resx.get("BackToLanguages").substring(1);
 
             document.dispatchEvent(event);

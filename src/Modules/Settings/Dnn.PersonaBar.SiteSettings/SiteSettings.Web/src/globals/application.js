@@ -10,6 +10,7 @@ const boilerPlate = {
         utilities.init(options.utility);
         utilities.moduleName = options.moduleName;
         utilities.settings = options.settings;
+        utilities.identifier = options.identifier;
 
         if (!window.dnn.SiteSettings) {
             window.dnn.SiteSettings = {};
