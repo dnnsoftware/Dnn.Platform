@@ -193,15 +193,15 @@ class SynonymsGroupsPanel extends Component {
                         key={"synonymsItem-" + index}
                         closeOnClick={true}
                         openId={this.state.openId}
-                        OpenCollapse={this.toggle.bind(this) }
-                        Collapse={this.collapse.bind(this) }
-                        onDelete={this.onDeleteSynonymsGroup.bind(this, item) }
+                        OpenCollapse={this.toggle.bind(this)}
+                        Collapse={this.collapse.bind(this)}
+                        onDelete={this.onDeleteSynonymsGroup.bind(this, item)}
                         id={id}>
                         <SynonymsGroupEditor
                             group={item}
                             culture={this.state.culture}
-                            Collapse={this.collapse.bind(this) }
-                            onUpdate={this.onUpdateSynonymsGroup.bind(this) }
+                            Collapse={this.collapse.bind(this)}
+                            onUpdate={this.onUpdateSynonymsGroup.bind(this)}
                             id={id}
                             openId={this.state.openId} />
                     </SynonymsGroupRow>
@@ -216,46 +216,47 @@ class SynonymsGroupsPanel extends Component {
             <div>
                 <div className="synonyms-group-items">
                     <div className="AddItemRow">
-                        <div className="sectionTitle">{resx.get("Synonyms") }</div>
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
+                        <div className="sectionTitle">{resx.get("Synonyms")}</div>
+                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                            </div> {resx.get("cmdAddGroup") }
+                            </div> {resx.get("cmdAddGroup")}
                         </div>
                         {this.props.cultures && this.props.cultures.length > 1 &&
                             <div className="synonyms-filter">
                                 <DropDown
                                     value={this.state.culture}
-                                    fixedHeight={200}
                                     style={{ width: "auto" }}
-                                    options={this.getCultureOptions() }
+                                    options={this.getCultureOptions()}
                                     withBorder={false}
-                                    onSelect={this.onSelectCulture.bind(this) }
+                                    onSelect={this.onSelectCulture.bind(this)}
                                     />
                             </div>
                         }
                     </div>
                     <div className="synonyms-items-grid">
-                        {this.renderHeader() }
-                        <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
-                            <SynonymsGroupRow
-                                tags={"-"}
-                                index={"add"}
-                                key={"aliasItem-add"}
-                                closeOnClick={true}
-                                openId={this.state.openId}
-                                OpenCollapse={this.toggle.bind(this) }
-                                Collapse={this.collapse.bind(this) }
-                                onDelete={this.onDeleteSynonymsGroup.bind(this) }
-                                id={"add"}>
-                                <SynonymsGroupEditor
-                                    Collapse={this.collapse.bind(this) }
-                                    culture={this.state.culture}
-                                    onUpdate={this.onUpdateSynonymsGroup.bind(this) }
-                                    id={"add"}
-                                    openId={this.state.openId} />
-                            </SynonymsGroupRow>
-                        </Collapse>
-                        {this.renderedSynonymsGroups() }
+                        {this.renderHeader()}
+                        {opened &&
+                            <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
+                                <SynonymsGroupRow
+                                    tags={"-"}
+                                    index={"add"}
+                                    key={"aliasItem-add"}
+                                    closeOnClick={true}
+                                    openId={this.state.openId}
+                                    OpenCollapse={this.toggle.bind(this)}
+                                    Collapse={this.collapse.bind(this)}
+                                    onDelete={this.onDeleteSynonymsGroup.bind(this)}
+                                    id={"add"}>
+                                    <SynonymsGroupEditor
+                                        Collapse={this.collapse.bind(this)}
+                                        culture={this.state.culture}
+                                        onUpdate={this.onUpdateSynonymsGroup.bind(this)}
+                                        id={"add"}
+                                        openId={this.state.openId} />
+                                </SynonymsGroupRow>
+                            </Collapse>
+                        }
+                        {this.renderedSynonymsGroups()}
                     </div>
                 </div>
 

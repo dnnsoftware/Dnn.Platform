@@ -214,7 +214,6 @@ class IgnoreWordsPanel extends Component {
                             <div className="language-filter">
                                 <DropDown
                                     value={this.state.culture}
-                                    fixedHeight={200}
                                     style={{ width: "auto" }}
                                     options={this.getCultureOptions()}
                                     withBorder={false}
@@ -225,25 +224,27 @@ class IgnoreWordsPanel extends Component {
                     </div>
                     <div className="words-items-grid">
                         {this.renderHeader()}
-                        <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
-                            <IgnoreWordsRow
-                                tags={"-"}
-                                index={"add"}
-                                key={"wordsItem-add"}
-                                closeOnClick={true}
-                                openId={state.openId}
-                                OpenCollapse={this.toggle.bind(this)}
-                                Collapse={this.collapse.bind(this)}
-                                onDelete={this.onDeleteIgnoreWords.bind(this)}
-                                id={"add"}>
-                                <IgnoreWordsEditor
+                        {opened &&
+                            <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
+                                <IgnoreWordsRow
+                                    tags={"-"}
+                                    index={"add"}
+                                    key={"wordsItem-add"}
+                                    closeOnClick={true}
+                                    openId={state.openId}
+                                    OpenCollapse={this.toggle.bind(this)}
                                     Collapse={this.collapse.bind(this)}
-                                    culture={this.state.culture}
-                                    onUpdate={this.onUpdateIgnoreWords.bind(this)}
-                                    id={"add"}
-                                    openId={state.openId} />
-                            </IgnoreWordsRow>
-                        </Collapse>
+                                    onDelete={this.onDeleteIgnoreWords.bind(this)}
+                                    id={"add"}>
+                                    <IgnoreWordsEditor
+                                        Collapse={this.collapse.bind(this)}
+                                        culture={this.state.culture}
+                                        onUpdate={this.onUpdateIgnoreWords.bind(this)}
+                                        id={"add"}
+                                        openId={state.openId} />
+                                </IgnoreWordsRow>
+                            </Collapse>
+                        }
                         {this.renderedIgnoreWords()}
                     </div>
                 </div>
