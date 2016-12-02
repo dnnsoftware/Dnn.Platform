@@ -26,7 +26,7 @@ define(['jquery',
         var init, load,
             initRecycleBin, viewRecycleBin;
 
-        utility = null;
+        var utility = null;
 
         ko.mapping = koMapping;
 
