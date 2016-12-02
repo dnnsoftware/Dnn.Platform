@@ -703,8 +703,12 @@ transform: rotate(180deg);
     font-size: 12px;
     font-family: sourcecodepro, arial;
     display: block;
-    height: 80px;
-    line-height: 80px;
+    word-wrap: break-word;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50%;
+    transform: translateY(-50%);
 }
 .personabarnav > li.btn_panel.disabled {
     cursor: default;
