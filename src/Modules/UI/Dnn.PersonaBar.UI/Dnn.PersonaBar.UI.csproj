@@ -162,6 +162,7 @@
     <Compile Include="Components\Controllers\LocalizationController.cs" />
     <Compile Include="Components\EventHandlers\TabEventsHandler.cs" />
     <Compile Include="Components\Installers\PersonaBarMenuInstaller.cs" />
+    <Compile Include="HttpModules\PersonaBarModule.cs" />
     <Compile Include="MenuControllers\LinkMenuController.cs" />
     <Compile Include="MenuControllers\EditMenuController.cs" />
     <Compile Include="MenuControllers\PlatformMenuController.cs" />

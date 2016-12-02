@@ -34,16 +34,16 @@
     <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
-        <NoWarn>1591</NoWarn>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Npm_Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,6 +88,11 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AppEvents\EventsController.cs" />
+    <Compile Include="AppEvents\Attributes\IgnoreVersionMatchCheckAttribute.cs" />
+    <Compile Include="AppEvents\IEventsController.cs" />
+    <Compile Include="AppEvents\ISkinEvents.cs" />
+    <Compile Include="AppEvents\IAppEvents.cs" />
     <Compile Include="Attributes\AdvancedPermissionAttribute.cs" />
     <Compile Include="Attributes\MenuPermissionAttribute.cs" />
     <Compile Include="Common\Utilities.cs" />
@@ -110,6 +115,7 @@
     <Compile Include="Helper\IPermissionGridApi.cs" />
     <Compile Include="Helper\PermissionHelper.cs" />
     <Compile Include="HttpRequestMessageExtensions.cs" />
+    <Compile Include="Common\IocUtil.cs" />
     <Compile Include="PersonaBarApiController.cs" />
     <Compile Include="Controllers\IPersonaBarController.cs" />
     <Compile Include="Controllers\IPersonaBarUserSettingsController.cs" />

@@ -54,12 +54,17 @@
                                     <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
                                         <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
                                     </node>
+                                    <node path="/configuration/system.webServer/modules/add[@name='PersonaBarModule']" action="remove" />
+                                    <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+                                        <add name="PersonaBarModule" type="Dnn.PersonaBar.UI.HttpModules.PersonaBarModule, Dnn.PersonaBar.UI" preCondition="managedHandler" />
+                                    </node>
                                 </nodes>
                             </configuration>
                         </install>
                         <uninstall>
                             <configuration>
                                 <nodes>
+                                    <node path="/configuration/system.webServer/modules/add[@name='PersonaBarModule']" action="remove" />
                                 </nodes>
                             </configuration>
                         </uninstall>
