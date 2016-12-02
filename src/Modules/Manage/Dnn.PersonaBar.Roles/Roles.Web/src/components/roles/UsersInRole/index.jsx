@@ -63,7 +63,7 @@ class UsersInRole extends Component {
     }
 
     onUserSelectorChanged(item) {
-        if (item.userId || item.displayName) {
+        if (item.userId || item.displayName || typeof item === "object") {
             return;
         }
         this.setState({ userSelectState: { userId: -1, keyword: item } });
@@ -71,6 +71,9 @@ class UsersInRole extends Component {
     }
 
     onUserSelectorSelected(item) {
+        if (!item.userId || !item.displayName) {
+            return;
+        }
         this.setState({ userSelectState: { userId: item.userId, keyword: item.displayName } }, function () {
             this.getSuggestUsers();
         });
