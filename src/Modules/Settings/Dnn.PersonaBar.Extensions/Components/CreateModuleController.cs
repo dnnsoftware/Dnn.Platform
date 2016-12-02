@@ -353,7 +353,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         private string LoadControlTemplate()
         {
             var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", "");
-            var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "data/ModuleControlTemplate.resources");
+            var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
             return File.ReadAllText(filePath, Encoding.UTF8);
         }
 
