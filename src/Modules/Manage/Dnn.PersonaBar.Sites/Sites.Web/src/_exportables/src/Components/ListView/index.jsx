@@ -27,13 +27,8 @@ class ListView extends Component {
                 props.dispatch(CommonPortalListActions.deletePortal(portal.PortalID, index));
             });
     }
-    backToSites(){
-        utilities.loadPanel(this.props.sitesModule, {
-            identifier: "Dnn.Sites", // This is always SiteSettings, to call the proper GetExtensions method.
-            moduleName: this.props.sitesModule,
-            path: this.props.sitesModule,
-            query: ""
-        });
+    backToSites() {
+        utilities.loadPanel(this.props.sitesModule, {});
     }
     onSetting(portal /*, index*/) {
         let event = document.createEvent("Event");
@@ -42,7 +37,7 @@ class ListView extends Component {
 
         let settings = {
             portalId: portal.PortalID,
-            referrer: this.props.siteSettingModule,  
+            referrer: this.props.sitesModule,  
             referrerText: Localization.get("BackToSites"),
             backToReferrerFunc: this.backToSites.bind(this),
             isHost: true
@@ -51,10 +46,6 @@ class ListView extends Component {
         event = Object.assign(event, settings);
 
         utilities.loadPanel(this.props.siteSettingModule, {
-            identifier: "SiteSettings", // This is always SiteSettings, to call the proper GetExtensions method.
-            moduleName: this.props.siteSettingModule,
-            path: this.props.siteSettingModule,
-            query: "",
             settings
         });
 
@@ -172,8 +163,8 @@ ListView.propTypes = {
 };
 
 ListView.defaultProps = {
-    siteSettingModule: "SiteSettings",
-    sitesModule: "Sites"
+    siteSettingModule: "Dnn.SiteSettings",
+    sitesModule: "Dnn.Sites"
 };
 
 function mapStateToProps(state) {

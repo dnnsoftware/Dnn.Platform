@@ -29,7 +29,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            portalId: utilities.settings.PortalID,
+            portalId: utilities.settings.portalId,
             referrer: utilities.settings.referrer,
             referrerText: utilities.settings.referrerText,
             backToReferrerFunc: this.backToReferrer.bind(this, utilities.settings.backToReferrerFunc),
@@ -48,7 +48,7 @@ class App extends Component {
                 referrerText: "",
                 backToReferrerFunc: null
             });
-        }, 1500);
+        }, 750);
     }
 
     changePortalId(portalId) {
