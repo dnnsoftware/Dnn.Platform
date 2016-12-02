@@ -158,7 +158,7 @@ class TopPane extends Component {
                     <div className="topPane-middle">
                         <div className={props.status === "STOPPED" ? "topPane-middle-name-stopped" : "topPane-middle-name"}>{resx.get(props.status)}</div>
                         <div className="topPane-middle-common">
-                            <div className="topPane-middle-common-title">{resx.get("plSchedulerMode")}</div>
+                            <div className="topPane-middle-common-title" style={{maxWidth: "60%"}}>{resx.get("plSchedulerMode")}</div>
                             <div>
                                 <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} dangerouslySetInnerHTML={{ __html: svgIcon }} onClick={this.toggleModePanel.bind(this)} />
                                 <div className="collapsible-content">
