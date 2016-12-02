@@ -27,7 +27,7 @@ class TopPane extends Component {
         props.dispatch(TaskActions.getSchedulerSettings());
         props.dispatch(TaskActions.getTaskStatusList());
         this.taskListTimeout = setInterval(() => {
-            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "TaskScheduler") {
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.TaskScheduler") {
                 props.dispatch(TaskActions.getTaskStatusList());
             }
         }, 5000);
