@@ -29,7 +29,7 @@ class ListView extends Component {
     }
     backToSites(){
         utilities.loadPanel(this.props.sitesModule, {
-            identifier: "Sites", // This is always SiteSettings, to call the proper GetExtensions method.
+            identifier: "Dnn.Sites", // This is always SiteSettings, to call the proper GetExtensions method.
             moduleName: this.props.sitesModule,
             path: this.props.sitesModule,
             query: ""

@@ -24,7 +24,8 @@ define(['jquery',
                     return {
                         utility: utility,
                         settings: params.settings,
-                        moduleName: 'SiteSettings'
+                        moduleName: 'SiteSettings',
+                        identifier: params.identifier
                     };
                 };
                 loadScript();
