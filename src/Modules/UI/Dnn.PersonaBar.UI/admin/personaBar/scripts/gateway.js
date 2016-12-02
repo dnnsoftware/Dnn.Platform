@@ -55,14 +55,33 @@
         * @param {String} path identifier of the path
         * @param {Object} params parameters for the panel
         */
-        this.openPanel = function openPanel(path, params) {
+        this.openPanel = function openPanel(identifier, params) {
+            var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
+            if ($menuItem.length === 0) {
+                return;
+            }
+
             if (!params.identifier) {
-                params.identifier = path;
+                params.identifier = identifier;
             }
 
             if (!params.settings) {
                 params.settings = util.findMenuSettings(params.identifier);
             }
+
+            if (!params.moduleName) {
+                params.moduleName = $menuItem.data('module-name');
+            }
+
+            if (!params.folderName) {
+                params.folderName = $menuItem.data('folder-name');
+            }
+
+            if (!params.query) {
+                params.query = $menuItem.data('query');
+            }
+
+            var path = $menuItem.data('path');
             params.path = path;
             util.loadPanel(path, params);
         };
