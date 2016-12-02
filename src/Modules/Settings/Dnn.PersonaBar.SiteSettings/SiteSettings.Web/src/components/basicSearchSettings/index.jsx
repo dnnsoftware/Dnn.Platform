@@ -271,104 +271,114 @@ class BasicSearchSettingsPanelBody extends Component {
                         <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
                         <div className="sectionTitle">{resx.get("SearchPriorities")}</div>
                         <InputGroup>
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("lblTitleBoost.Help")}
-                                label={resx.get("lblTitleBoost")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
-                            <NumberSlider
-                                min={0}
-                                max={50}
-                                step={5}
-                                value={state.basicSearchSettings.TitleBoost}
-                                onChange={this.onSettingChange.bind(this, "TitleBoost")}
-                                />
+                            <div className="basicSearchSettings-row_slider">
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblTitleBoost.Help")}
+                                    label={resx.get("lblTitleBoost")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                            />}
+                                    />
+                                <NumberSlider
+                                    min={0}
+                                    max={50}
+                                    step={5}
+                                    value={state.basicSearchSettings.TitleBoost}
+                                    onChange={this.onSettingChange.bind(this, "TitleBoost")}
+                                    />
+                            </div>
                         </InputGroup>
                         <InputGroup>
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("lblTagBoost.Help")}
-                                label={resx.get("lblTagBoost")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
-                            <NumberSlider
-                                min={0}
-                                max={50}
-                                step={5}
-                                value={state.basicSearchSettings.TagBoost}
-                                onChange={this.onSettingChange.bind(this, "TagBoost")}
-                                />
+                            <div className="basicSearchSettings-row_slider">
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblTagBoost.Help")}
+                                    label={resx.get("lblTagBoost")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                            />}
+                                    />
+                                <NumberSlider
+                                    min={0}
+                                    max={50}
+                                    step={5}
+                                    value={state.basicSearchSettings.TagBoost}
+                                    onChange={this.onSettingChange.bind(this, "TagBoost")}
+                                    />
+                            </div>
                         </InputGroup>
                         <InputGroup>
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("lblContentBoost.Help")}
-                                label={resx.get("lblContentBoost")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
-                            <NumberSlider
-                                min={0}
-                                max={50}
-                                step={5}
-                                value={state.basicSearchSettings.ContentBoost}
-                                onChange={this.onSettingChange.bind(this, "ContentBoost")}
-                                />
+                            <div className="basicSearchSettings-row_slider">
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblContentBoost.Help")}
+                                    label={resx.get("lblContentBoost")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                            />}
+                                    />
+                                <NumberSlider
+                                    min={0}
+                                    max={50}
+                                    step={5}
+                                    value={state.basicSearchSettings.ContentBoost}
+                                    onChange={this.onSettingChange.bind(this, "ContentBoost")}
+                                    />
+                            </div>
                         </InputGroup>
                         <InputGroup>
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("v.Help")}
-                                label={resx.get("lblDescriptionBoost")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
-                            <NumberSlider
-                                min={0}
-                                max={50}
-                                step={5}
-                                value={state.basicSearchSettings.DescriptionBoost}
-                                onChange={this.onSettingChange.bind(this, "DescriptionBoost")}
-                                />
+                            <div className="basicSearchSettings-row_slider">
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("v.Help")}
+                                    label={resx.get("lblDescriptionBoost")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                            />}
+                                    />
+                                <NumberSlider
+                                    min={0}
+                                    max={50}
+                                    step={5}
+                                    value={state.basicSearchSettings.DescriptionBoost}
+                                    onChange={this.onSettingChange.bind(this, "DescriptionBoost")}
+                                    />
+                            </div>
                         </InputGroup>
                         <InputGroup>
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={resx.get("lblAuthorBoost.Help")}
-                                label={resx.get("lblAuthorBoost")}
-                                extra={
-                                    <Tooltip
-                                        messages={[resx.get("GlobalSetting")]}
-                                        type="global"
-                                        style={{ float: "left", position: "static" }}
-                                        />}
-                                />
-                            <NumberSlider
-                                min={0}
-                                max={50}
-                                step={5}
-                                value={state.basicSearchSettings.AuthorBoost}
-                                onChange={this.onSettingChange.bind(this, "AuthorBoost")}
-                                />
+                            <div className="basicSearchSettings-row_slider">
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("lblAuthorBoost.Help")}
+                                    label={resx.get("lblAuthorBoost")}
+                                    extra={
+                                        <Tooltip
+                                            messages={[resx.get("GlobalSetting")]}
+                                            type="global"
+                                            style={{ float: "left", position: "static" }}
+                                            />}
+                                    />
+                                <NumberSlider
+                                    min={0}
+                                    max={50}
+                                    step={5}
+                                    value={state.basicSearchSettings.AuthorBoost}
+                                    onChange={this.onSettingChange.bind(this, "AuthorBoost")}
+                                    />
+                            </div>
                         </InputGroup>
 
                         <div className="sectionTitle">{resx.get("SearchIndex")}</div>
