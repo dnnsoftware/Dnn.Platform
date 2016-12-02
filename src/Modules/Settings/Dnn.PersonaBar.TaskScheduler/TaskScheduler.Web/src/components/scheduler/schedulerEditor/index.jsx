@@ -318,7 +318,7 @@ class SchedulerEditor extends Component {
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
-                        style={{ float: "left", width: "47.5%"}}
+                        style={{ float: "left", width: "47.5%", whiteSpace: "pre"}}
                         label={resx.get("plTimeLapse") + " *"}
                         error={this.state.error.frequency && this.state.triedToSubmit}
                         errorMessage={resx.get("TimeLapseRequired.ErrorMessage")}
@@ -336,7 +336,7 @@ class SchedulerEditor extends Component {
                 <div className="editor-row divider">
                     <SingleLineInputWithError
                         withLabel={true}
-                        style={{ width: 47.5 + "%", float: "left"}}
+                        style={{ width: "47.5%", float: "left", whiteSpace: "pre"}}
                         label={resx.get("plRetryTimeLapse")}
                         error={this.state.error.retry && this.state.triedToSubmit}
                         errorMessage={resx.get("RetryTimeLapseValidator.ErrorMessage")}
