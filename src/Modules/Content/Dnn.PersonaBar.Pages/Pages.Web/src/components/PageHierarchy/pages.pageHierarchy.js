@@ -43,10 +43,17 @@ window.dnn.pages = window.dnn.pages || {};
 
             this._selectPageInHierarchyHandler = $.proxy(this._selectPageInHierarchy, this);
 
+            this._lastWindowHeight = $(window).height();
             $(window).resize(function onResizeWindow() {
+                var newHeight = $(window).height();
+                if (handler._lastWindowHeight === newHeight) {
+                    return;
+                }
+                
                 var RESIZE_CONTAINER_DELAY = 400;
                 setTimeout(function onResizeContainer() {
                     handler._resizeContentContainer(true);
+                    handler._lastWindowHeight = newHeight;
                 }, RESIZE_CONTAINER_DELAY);
             });
 
