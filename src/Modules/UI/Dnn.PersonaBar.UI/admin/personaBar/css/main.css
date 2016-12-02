@@ -753,7 +753,7 @@ transform: rotate(180deg);
     /* display: none; IE not apply list-style-type: none; with this active
        it will be applied in js
      */
-	top: 0;
+    top: -1px;
     width: 200px;
     box-sizing: border-box;
 }
