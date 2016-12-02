@@ -41,7 +41,6 @@
                         <controller>Dnn.PersonaBar.SqlConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.SqlConsole</controller>
                         <resourceKey>nav_SqlConsole</resourceKey>
                         <path>SqlConsole</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
                         <order>80</order>
                     </menu>

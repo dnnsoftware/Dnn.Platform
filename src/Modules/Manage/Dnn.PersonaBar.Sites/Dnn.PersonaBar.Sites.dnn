@@ -41,7 +41,6 @@
                         <controller>Dnn.PersonaBar.Sites.MenuControllers.AdminMenuController, Dnn.PersonaBar.Sites</controller>
                         <resourceKey>nav_Sites</resourceKey>
                         <path>Sites</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
                         <order>40</order>
                     </menu>

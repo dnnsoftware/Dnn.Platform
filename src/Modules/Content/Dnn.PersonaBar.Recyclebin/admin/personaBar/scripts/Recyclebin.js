@@ -21,11 +21,9 @@ define(['jquery',
     function ($, ko, koMapping, DnnPageRecycleBin) {
         'use strict';
 
-        var isMobile, utility;
-
         var dnnPageRecycleBin;
 
-        var init, initMobile, load, loadMobile,
+        var init, load,
             initRecycleBin, viewRecycleBin;
 
         utility = null;
@@ -44,22 +42,12 @@ define(['jquery',
             }
         };
 
-        initMobile = function (wrapper, util, params, callback) {
-            isMobile = true;
-            this.init(wrapper, util, params, callback);
-        };
-
         load = function (params, callback) {
             viewRecycleBin();
 
             if (dnn && dnn.dnnPageHierarchy) {
                 dnn.dnnPageHierarchy.load();
             }
-        };
-
-        loadMobile = function (params, callback) {
-            isMobile = true;
-            this.load(params, callback);
         };
 
         initRecycleBin = function (wrapper) {
@@ -76,8 +64,6 @@ define(['jquery',
 
         return {
             init: init,
-            load: load,
-            initMobile: initMobile,
-            loadMobile: loadMobile
+            load: load
         };
     });

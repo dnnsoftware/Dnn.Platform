@@ -41,7 +41,6 @@
                         <controller>Dnn.PersonaBar.TaskScheduler.MenuControllers.HostMenuController, Dnn.PersonaBar.TaskScheduler</controller>
                         <resourceKey>nav_TaskScheduler</resourceKey>
                         <path>TaskScheduler</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
                         <order>60</order>
                     </menu>

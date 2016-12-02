@@ -41,7 +41,6 @@
                         <controller>Dnn.PersonaBar.ConfigConsole.MenuControllers.HostMenuController, Dnn.PersonaBar.ConfigConsole</controller>
                         <resourceKey>nav_ConfigConsole</resourceKey>
                         <path>ConfigConsole</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
                         <order>90</order>
                     </menu>

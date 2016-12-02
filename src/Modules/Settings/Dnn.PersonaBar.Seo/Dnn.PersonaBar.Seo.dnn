@@ -41,7 +41,6 @@
             <controller>Dnn.PersonaBar.Seo.Components.ExtensionMenuController, Dnn.PersonaBar.Seo</controller>
             <resourceKey>nav_Seo</resourceKey>
             <path>Seo</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>30</order>
             <defaultPermissions>Administrators</defaultPermissions>

@@ -40,7 +40,6 @@
                         <moduleName>Roles</moduleName>
                         <resourceKey>nav_Roles</resourceKey>
                         <path>Roles</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Manage</parent>
                         <order>20</order>
                         <defaultPermissions>Administrators</defaultPermissions>

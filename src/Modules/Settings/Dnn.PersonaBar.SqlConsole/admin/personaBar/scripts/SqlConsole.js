@@ -22,7 +22,7 @@ define(['jquery',
     function ($, ko, koMapping, codeEditor, sort, exportData, Clipboard) {
         'use strict';
 
-        var isMobile, identifier, utility, resx, $panel, viewModel, queryEditor, jsPdf;
+        var identifier, utility, resx, $panel, viewModel, queryEditor, jsPdf;
 
         var pagesCount = 7;
 
@@ -708,28 +708,14 @@ define(['jquery',
             }
         };
 
-        var initMobile = function (wrapper, util, params, callback) {
-            isMobile = true;
-            this.init(wrapper, util, params, callback);
-        };
-
         var load = function (params, callback) {
             if (typeof callback === 'function') {
                 callback();
             }
         };
 
-        var loadMobile = function (params, callback) {
-            isMobile = true;
-            this.load(params, callback);
-        };
-
-
-
         return {
             init: init,
-            load: load,
-            initMobile: initMobile,
-            loadMobile: loadMobile
+            load: load
         };
     });

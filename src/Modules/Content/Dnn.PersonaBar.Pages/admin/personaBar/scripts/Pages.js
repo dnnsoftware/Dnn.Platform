@@ -2,7 +2,6 @@
     'use strict';
     window.ko = ko;
 
-    var isMobile;
     var config = cf.init();
     function loadScript() {
         //var url = "http://localhost:8080/dist/pages-bundle.js"
@@ -32,11 +31,6 @@
         }
     };
 
-    var initMobile = function (wrapper, util, params, callback) {
-        isMobile = true;
-        this.init(wrapper, util, params, callback);
-    };
-
     var load = function (params, callback) {
         if (window.dnn.pages.pageHierarchyManager &&
             window.dnn.pages.pageHierarchyManager._initialized) {
@@ -47,15 +41,8 @@
         }
     };
 
-    var loadMobile = function (params, callback) {
-        isMobile = true;
-        this.load(params, callback);
-    };
-
     return {
         init: init,
-        load: load,
-        initMobile: initMobile,
-        loadMobile: loadMobile
+        load: load
     };
 });

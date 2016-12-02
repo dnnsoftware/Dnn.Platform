@@ -56,7 +56,6 @@
             <controller>Dnn.PersonaBar.Users.Components.UsersMenuController, Dnn.PersonaBar.Users</controller>
             <resourceKey>nav_Users</resourceKey>
             <path>Users</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Manage</parent>
             <order>10</order>
             <defaultPermissions>Administrators</defaultPermissions>

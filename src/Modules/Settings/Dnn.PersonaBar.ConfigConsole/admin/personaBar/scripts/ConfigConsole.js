@@ -20,7 +20,7 @@ define(['jquery',
     function ($, ko, koMapping, jqueryUI, codeEditor, cf, jScrollPane) {
         var config = cf.init();
 
-        var isMobile, identifier, utility, $panel, viewModel, configEditor, mergeEditor, curConfigName;
+        var identifier, utility, $panel, viewModel, configEditor, mergeEditor, curConfigName;
 
         var requestService = function (type, method, params, callback, failure) {
             utility.sf.moduleRoot = "personaBar";
@@ -164,26 +164,14 @@ define(['jquery',
             }
         };
 
-        var initMobile = function (wrapper, util, params, callback) {
-            isMobile = true;
-            this.init(wrapper, util, params, callback);
-        };
-
         var load = function (params, callback) {
             if (typeof callback === 'function') {
                 callback();
             }
         };
 
-        var loadMobile = function (params, callback) {
-            isMobile = true;
-            this.load(params, callback);
-        };
-
         return {
             init: init,
-            load: load,
-            initMobile: initMobile,
-            loadMobile: loadMobile
+            load: load
         };
     });

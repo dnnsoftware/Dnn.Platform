@@ -1,7 +1,6 @@
 ﻿define(['jquery', 'main/extension',
     'main/config'], function ($, ext, cf) {
         'use strict';
-        var isMobile;
         var identifier;
 
         var utility;
@@ -34,26 +33,15 @@
             }
         };
 
-        var initMobile = function (wrapper, util, params, callback) {
-            isMobile = true;
-            this.init(wrapper, util, params, callback);
-        };
-
         var load = function (params, callback) {
             if (typeof callback === 'function') {
                 callback();
             }
         };
 
-        var loadMobile = function (params, callback) {
-            isMobile = true;
-            this.load(params, callback);
-        };
 
         return {
             init: init,
-            load: load,
-            initMobile: initMobile,
-            loadMobile: loadMobile
+            load: load
         };
     });

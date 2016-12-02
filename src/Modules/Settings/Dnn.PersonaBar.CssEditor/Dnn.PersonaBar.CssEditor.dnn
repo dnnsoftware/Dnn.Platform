@@ -41,7 +41,6 @@
             <controller>Dnn.PersonaBar.CssEditor.MenuControllers.AdminMenuController, Dnn.PersonaBar.CssEditor</controller>
             <resourceKey>nav_CssEditor</resourceKey>
             <path>CssEditor</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>70</order>
             <defaultPermissions>Administrators</defaultPermissions>

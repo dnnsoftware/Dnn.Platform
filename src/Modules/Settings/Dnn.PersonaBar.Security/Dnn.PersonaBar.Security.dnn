@@ -56,7 +56,6 @@
             <controller>Dnn.PersonaBar.Security.MenuControllers.SecurityMenuController, Dnn.PersonaBar.Security</controller>
             <resourceKey>nav_Security</resourceKey>
             <path>Security</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>20</order>
             <defaultPermissions>Administrators</defaultPermissions>

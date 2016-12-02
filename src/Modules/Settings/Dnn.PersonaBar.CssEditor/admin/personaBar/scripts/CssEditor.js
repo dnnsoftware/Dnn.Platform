@@ -21,7 +21,7 @@ define([
     function($, ko, koMapping, codeEditor, cf, jScrollPane) {
         var config = cf.init();
 
-        var isMobile, identifier, utility, $panel, viewModel, cssEditor, curPortalId;
+        var identifier, utility, $panel, viewModel, cssEditor, curPortalId;
 
         var requestService = function(type, method, controller, params, callback, failure) {
             utility.sf.moduleRoot = "personaBar";
@@ -121,26 +121,14 @@ define([
             viewModel.portal.subscribe(portalChanged);
         };
 
-        var initMobile = function(wrapper, util, params, callback) {
-            isMobile = true;
-            this.init(wrapper, util, params, callback);
-        };
-
         var load = function(params, callback) {
             if (typeof callback === 'function') {
                 callback();
             }
         };
 
-        var loadMobile = function(params, callback) {
-            isMobile = true;
-            this.load(params, callback);
-        };
-
         return {
             init: init,
-            load: load,
-            initMobile: initMobile,
-            loadMobile: loadMobile
+            load: load
         };
     });

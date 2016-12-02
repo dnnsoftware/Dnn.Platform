@@ -41,7 +41,6 @@
                         <controller>Dnn.PersonaBar.Servers.MenuControllers.ServersMenuController, Dnn.PersonaBar.Servers</controller>
                         <resourceKey>nav_Servers</resourceKey>
                         <path>Servers</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Settings</parent>
                         <order>50</order>
                         <defaultPermissions>Administrators</defaultPermissions>

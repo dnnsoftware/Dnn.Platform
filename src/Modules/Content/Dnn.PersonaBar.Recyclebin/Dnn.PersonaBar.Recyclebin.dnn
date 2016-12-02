@@ -40,7 +40,6 @@
                         <moduleName>Recyclebin</moduleName>
                         <resourceKey>nav_Recyclebin</resourceKey>
                         <path>Recyclebin</path>
-                        <mobileSupport>true</mobileSupport>
                         <parent>Content</parent>
                         <order>30</order>
                         <defaultPermissions>Administrators</defaultPermissions>

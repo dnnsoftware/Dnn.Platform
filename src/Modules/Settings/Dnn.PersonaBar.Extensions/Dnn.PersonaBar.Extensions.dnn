@@ -41,7 +41,6 @@
             <controller>Dnn.PersonaBar.Extensions.MenuControllers.ExtensionMenuController, Dnn.PersonaBar.Extensions</controller>
             <resourceKey>nav_Extensions</resourceKey>
             <path>extensions</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>47</order>
             <defaultPermissions>Administrators</defaultPermissions>

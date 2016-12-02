@@ -41,7 +41,6 @@
             <controller>Dnn.PersonaBar.Vocabularies.MenuControllers.VocabulariesMenuController, Dnn.PersonaBar.Vocabularies</controller>
             <resourceKey>nav_Vocabularies</resourceKey>
             <path>vocabularies</path>
-            <mobileSupport>true</mobileSupport>
             <parent>Settings</parent>
             <order>40</order>
             <defaultPermissions>Administrators</defaultPermissions>

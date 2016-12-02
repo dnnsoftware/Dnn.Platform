@@ -33,18 +33,10 @@ define(['jquery',
                 }
             },
 
-            initMobile: function (wrapper, util, params, callback) {
-                this.init(wrapper, util, params, callback);
-            },
-
             load: function (params, callback) {
                 if (typeof callback === 'function') {
                     callback();
                 }
-            },
-
-            loadMobile: function (params, callback) {
-                this.load(params, callback);
             }
         };
     });
