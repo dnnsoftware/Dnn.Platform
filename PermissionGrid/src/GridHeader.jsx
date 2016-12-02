@@ -14,18 +14,18 @@ class GridHeader extends Component {
     componentWillMount() {
         const {props, state} = this;
     }
-    
-    renderHeader(){
+
+    renderHeader() {
         const {props} = this;
         const {roleColumnWidth, columnWidth, actionsWidth} = props;
 
-        return  <GridCell className="grid-header">
-                    <GridCell columnSize={roleColumnWidth}><span>{props.type}</span></GridCell>
-                    {props.definitions.map(function(def){
-                        return <GridCell columnSize={columnWidth}><span>{def.permissionName}</span></GridCell>;
-                    })}
-                    <GridCell columnSize={actionsWidth} />
-                </GridCell>;
+        return <GridCell className="grid-header">
+            <GridCell columnSize={roleColumnWidth}><span title={props.type}>{props.type}</span></GridCell>
+            {props.definitions.map((def) => {
+                return <GridCell columnSize={columnWidth}><span title={def.permissionName}>{def.permissionName}</span></GridCell>;
+            }) }
+            <GridCell columnSize={actionsWidth} />
+        </GridCell>;
     }
 
     render() {

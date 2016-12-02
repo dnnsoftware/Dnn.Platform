@@ -17,56 +17,56 @@ class GridRow extends Component {
         const {props, state} = this;
     }
 
-    getHeaderColumnText(){
+    getHeaderColumnText() {
         const {props, state} = this;
 
         return props.type === "role" ? props.permission.roleName : props.permission.displayName;
     }
 
-    onStatusChanged(def, status){
+    onStatusChanged(def, status) {
         const {props, state} = this;
 
         let permission = Object.assign({}, props.permission);
-        permission.permissions = Object.assign([], props.permission.permissions.filter(p =>{
+        permission.permissions = Object.assign([], props.permission.permissions.filter(p => {
             return p.permissionId !== def.permissionId;
         }));
 
-        if(status > 0){
-            permission.permissions.push(Object.assign({}, def, {allowAccess: status === 1}));
+        if (status > 0) {
+            permission.permissions.push(Object.assign({}, def, { allowAccess: status === 1 }));
         }
 
         this.fixPermissionsStatus(permission, def, status);
 
-        if(typeof props.onChange === "function"){
+        if (typeof props.onChange === "function") {
             props.onChange(permission);
         }
     }
 
-    onDelete(){
+    onDelete() {
         const {props, state} = this;
 
-        if(typeof props.onDeletePermisson === "function"){
+        if (typeof props.onDeletePermisson === "function") {
             props.onDeletePermisson(props.permission);
         }
     }
 
-    fixPermissionsStatus(permission, def, status){
+    fixPermissionsStatus(permission, def, status) {
         const {props, state} = this;
 
         if (def.fullControl) {
-            if(status === 0){
+            if (status === 0) {
                 permission.permissions = [];
             } else {
-                props.definitions.forEach(function(d){
+                props.definitions.forEach(function (d) {
                     let id = d.permissionId;
-                    let p = permission.permissions.filter(function(c){
+                    let p = permission.permissions.filter(function (c) {
                         return c.permissionId === id;
                     });
 
-                    if(p.length){
+                    if (p.length) {
                         p[0].allowAccess = status === 1;
                     } else {
-                        permission.permissions.push(Object.assign({}, d, {allowAccess: status === 1}));
+                        permission.permissions.push(Object.assign({}, d, { allowAccess: status === 1 }));
                     }
                 });
             }
@@ -75,19 +75,19 @@ class GridRow extends Component {
             //Check if View Permission is not allow, then also set other permission
             if (def.view) {
                 if (status !== 1) {
-                    if(status === 0){
+                    if (status === 0) {
                         permission.permissions = [];
                     } else {
-                        props.definitions.forEach(function(d){
+                        props.definitions.forEach(function (d) {
                             let id = d.permissionId;
-                            let p = permission.permissions.filter(function(c){
+                            let p = permission.permissions.filter(function (c) {
                                 return c.permissionId === id;
                             });
 
-                            if(p.length){
+                            if (p.length) {
                                 p[0].allowAccess = status === 1;
                             } else {
-                                permission.permissions.push(Object.assign({}, d, {allowAccess: status === 1}));
+                                permission.permissions.push(Object.assign({}, d, { allowAccess: status === 1 }));
                             }
                         });
                     }
@@ -97,37 +97,37 @@ class GridRow extends Component {
                 if (status === 1) {
                     let permissionName = def.permissionName.toLowerCase();
                     if (permissionName !== 'navigate' && permissionName !== 'browse') {
-                        props.definitions.forEach(function(d){
-                            if(!d.view){
+                        props.definitions.forEach(function (d) {
+                            if (!d.view) {
                                 return;
                             }
 
                             let id = d.permissionId;
-                            let p = permission.permissions.filter(function(c){
+                            let p = permission.permissions.filter(function (c) {
                                 return c.permissionId === id;
                             });
 
-                            if(p.length){
+                            if (p.length) {
                                 p[0].allowAccess = true;
                             } else {
-                                permission.permissions.push(Object.assign({}, d, {allowAccess: true}));
+                                permission.permissions.push(Object.assign({}, d, { allowAccess: true }));
                             }
                         });
                     }
                 }
             }
 
-            if(status > 0){
-                let samePermissionsSet = props.definitions.filter(function(d){
-                    if(d.fullControl){
+            if (status > 0) {
+                let samePermissionsSet = props.definitions.filter(function (d) {
+                    if (d.fullControl) {
                         return false;
                     }
 
-                    let p = permission.permissions.filter(function(c){
+                    let p = permission.permissions.filter(function (c) {
                         return c.permissionId === d.permissionId;
                     });
 
-                    if(!p.length){
+                    if (!p.length) {
                         return true;
                     }
 
@@ -136,57 +136,57 @@ class GridRow extends Component {
                     return (!allowAccess && status === 1) || (allowAccess && status === 2);
                 }).length === 0;
 
-                if(samePermissionsSet){
-                    let d = props.definitions.filter(function(d){
+                if (samePermissionsSet) {
+                    let d = props.definitions.filter(function (d) {
                         return d.fullControl;
                     });
 
-                    if(d.length){
+                    if (d.length) {
                         let id = d[0].permissionId;
-                        let p = permission.permissions.filter(function(c){
+                        let p = permission.permissions.filter(function (c) {
                             return c.permissionId === id;
                         });
 
-                        if(p.length){
+                        if (p.length) {
                             p[0].allowAccess = status === 1;
                         } else {
-                            permission.permissions.push(Object.assign({}, d[0], {allowAccess: status === 1}));
+                            permission.permissions.push(Object.assign({}, d[0], { allowAccess: status === 1 }));
                         }
                     }
                 }
             }
         }
     }
-    
-    renderRow(){
+
+    renderRow() {
         const {props} = this;
         const {roleColumnWidth, columnWidth, actionsWidth} = props;
         let self = this;
 
-        return  <GridCell className="grid-row">
-                    <GridCell columnSize={roleColumnWidth}><span>{this.getHeaderColumnText()}</span></GridCell>
-                    {props.definitions.map(function(def){
-                        let permission = props.permission.permissions.filter(p =>{
-                            return p.permissionId == def.permissionId;
-                        });
-                        
-                        let status = 0;
+        return <GridCell className="grid-row">
+            <GridCell columnSize={roleColumnWidth}><span title={this.getHeaderColumnText() }>{this.getHeaderColumnText() }</span></GridCell>
+            {props.definitions.map(function (def) {
+                let permission = props.permission.permissions.filter(p => {
+                    return p.permissionId == def.permissionId;
+                });
 
-                        if(props.permission.locked){
-                            status = 3;
-                        }
-                        else{
-                            status = permission.length > 0 ? (permission[0].allowAccess ? 1 : 2) : 0;
-                        }
+                let status = 0;
 
-                        return <GridCell columnSize={columnWidth}>
-                                    <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def)} />
-                                </GridCell>;
-                    })}
-                    <GridCell columnSize={actionsWidth} className="col-actions">
-                    {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this)} />}
-                    </GridCell>
+                if (props.permission.locked) {
+                    status = 3;
+                }
+                else {
+                    status = permission.length > 0 ? (permission[0].allowAccess ? 1 : 2) : 0;
+                }
+
+                return <GridCell columnSize={columnWidth}>
+                    <StatusSwitch permission={permission} status={status} onChange={self.onStatusChanged.bind(self, def) } />
                 </GridCell>;
+            }) }
+            <GridCell columnSize={actionsWidth} className="col-actions">
+                {!props.permission.default && <IconButton type="trash" onClick={this.onDelete.bind(this) } />}
+            </GridCell>
+        </GridCell>;
     }
 
     render() {

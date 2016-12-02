@@ -17,7 +17,7 @@ class RoleGroupFilter extends Component {
         super(props);
         this.state = {
             roleGroups: [],
-            selectedGroup: {id: -1, name: props.localization.globalGroupsText}
+            selectedGroup: { id: -1, name: props.localization.globalGroupsText }
         };
     }
 
@@ -48,7 +48,7 @@ class RoleGroupFilter extends Component {
         let service = new Service(this.props.service);
         service.getRoleGroups((data) => {
             this.setState({
-                roleGroups: [{id: -2, name: props.localization.allGroupsText}, {id: -1, name: props.localization.globalGroupsText}].concat(data)
+                roleGroups: [{ id: -2, name: props.localization.allGroupsText }, { id: -1, name: props.localization.globalGroupsText }].concat(data)
             }, () => {
                 if (typeof callback === "function") {
                     callback.call(this);
@@ -70,9 +70,9 @@ class RoleGroupFilter extends Component {
     onSelect(group) {
         const {props, state} = this;
 
-        let selectedGroup = {id: group.value, name: group.label};
-        this.setState({selectedGroup: selectedGroup}, function(){
-            if(typeof props.onChange === "function"){
+        let selectedGroup = { id: group.value, name: group.label };
+        this.setState({ selectedGroup: selectedGroup }, function () {
+            if (typeof props.onChange === "function") {
                 props.onChange(this.state.selectedGroup);
             }
         });
@@ -84,12 +84,14 @@ class RoleGroupFilter extends Component {
         let roleGroupsOptions = this.BuildRoleGroupsOptions();
 
         let GroupsDropDown = <DropDown
-                                withBorder={false}
-                                options={roleGroupsOptions}
-                                value={state.selectedGroup.id}
-                                onSelect={this.onSelect.bind(this)}
-                                ref="groupsDropdown"
-                                />;
+            withBorder={false}
+            options={roleGroupsOptions}
+            value={state.selectedGroup.id}
+            onSelect={this.onSelect.bind(this) }
+            style={{ width: "100%" }}
+            ref="groupsDropdown"
+            prependWith={props.localization.filterByGroup}
+            />;
 
         return GroupsDropDown;
     }
@@ -99,9 +101,8 @@ class RoleGroupFilter extends Component {
         const {props, state} = this;
 
         return (
-            <div className={"groups-filter" + (state.roleGroups.length === 0 ? "no-group" : "")}>
-                <Label label={props.localization.filterByGroup} labelType="inline" />
-                {this.getRoleGroupsDropDown()}
+            <div className={"groups-filter" + (state.roleGroups.length === 0 ? "no-group" : "") }>
+                {this.getRoleGroupsDropDown() }
                 <div className="clear"></div>
             </div>
         );
