@@ -53,16 +53,17 @@ export class Body extends Component {
         else {
             return <Tabs onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabDefaultPages"),
+                resx.get("TabMessaging"),
                 resx.get("TabUserProfiles")]}
                 type="secondary">
                 <DefaultPagesSettings portalId={props.portalId} cultureCode={props.cultureCode} />
+                <MessagingSettings portalId={props.portalId} cultureCode={props.cultureCode} />
                 <ProfileSettings portalId={props.portalId} cultureCode={props.cultureCode} />
             </Tabs>;
         }
     }
 
     getSearchSecondaryTabs() {
-
         const SearchExtras = window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras;
 
         let searchTabHeaders = [resx.get("TabBasicSettings"), resx.get("TabSynonyms"), resx.get("TabIgnoreWords")];
@@ -75,12 +76,11 @@ export class Body extends Component {
                 if (a.RenderOrder < b.RenderOrder) return -1;
                 if (a.RenderOrder > b.RenderOrder) return 1;
                 return 0;
-            }).forEach((searchExtra)=>{
+            }).forEach((searchExtra) => {
                 searchTabHeaders.push(searchExtra.TabHeader);
                 searchTabContent.push(searchExtra.Component);
             });
         }
-
 
         return <Tabs onSelect={this.handleSelect.bind(this)}
             tabHeaders={searchTabHeaders}
