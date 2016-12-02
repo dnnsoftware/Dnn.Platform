@@ -189,7 +189,6 @@ class IpFilterEditor extends Component {
                         onChange={this.toggle.bind(this) }
                         options={specificityOptions}
                         buttonGroup="specificity"
-                        buttonWidth={100}
                         value={2}/>
                 }
                 {!this.state.isIpRange &&
@@ -197,7 +196,6 @@ class IpFilterEditor extends Component {
                         onChange={this.toggle.bind(this) }
                         options={specificityOptions}
                         buttonGroup="specificity"
-                        buttonWidth={100}
                         value={1}/>
                 }
             </InputGroup>

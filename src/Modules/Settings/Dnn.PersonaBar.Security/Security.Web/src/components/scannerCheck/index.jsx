@@ -7,6 +7,7 @@ import SearchBox from "dnn-search-box";
 import "./style.less";
 import resx from "../../resources";
 import styles from "./style.less";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 class ScannerCheckPanelBody extends Component {
     constructor() {
@@ -437,12 +438,12 @@ class ScannerCheckPanelBody extends Component {
                     <div
                         className={this.showModifiedSettings() ? "settings-filter-active" : "settings-filter"}
                         onClick={this.getModifiedSettings.bind(this) }>
-                        {resx.get("ModifiedSettings") }
+                        <TextOverflowWrapper text={resx.get("ModifiedSettings") } maxWidth={150}/>                        
                     </div>
                     <div
                         className={this.showModifiedFiles() ? "files-filter-active" : "files-filter"}
                         onClick={this.getModifiedFiles.bind(this) }>
-                        {resx.get("ModifiedFiles") }
+                        <TextOverflowWrapper text={resx.get("ModifiedFiles") } maxWidth={150}/>   
                     </div>
                 </div>
                 {this.showSearchResults() && props.searchResults.FoundInFiles &&
