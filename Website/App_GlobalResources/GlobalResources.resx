@@ -1187,6 +1187,9 @@ Sincerely,
   <data name="//Admin//GoogleAnalyticsPro.String" xml:space="preserve">
     <value>Google Analytics Pro</value>
   </data>
+  <data name="//Admin//DevicePreviewManagement.String" xml:space="preserve">
+    <value>Device Preview Management</value>
+  </data>
   <data name="//Admin//SiteRedirectionManagement.String" xml:space="preserve">
     <value>Site Redirection Management</value>
   </data>

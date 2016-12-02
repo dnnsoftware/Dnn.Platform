@@ -1,0 +1,89 @@
+﻿.dnnFormSectionHead{ position: relative;}
+.dnnFormSectionHead span{ font-size: 12px;font-family: Arial;font-weight: normal;display: inline-block;border-left:3px #F00 solid;padding-left: 5px;position: absolute;right: 0;}
+div.dnnAddProfile{ padding: 0 0 10px 2%;margin-bottom: 10px;border-bottom: 1px solid #e0e0e0;height: 100%;width: 100%;}
+div.dnnAddProfile .dnnFormItem .dnnPrimaryAction{margin-left: 10px;}
+div.dnnAddProfile .dnnFormItem .dnnPrimaryAction{ margin-top: 23px;}
+a.delete { background-image: url(../../icons/sigma/delete_16X16_standard.png); display: block; width: 15px; height: 15px; background-repeat: no-repeat; }
+table.dnnGrid .dnnFormItem{ text-align: center;}
+table.dnnGrid .dnnGridItem{ height: 30px;}
+table.dnnGrid .userAgent{ width: 200px;}
+
+/* clean some form style */
+.dnnLabel + span {
+    display: inline-block;
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+.dnnFormItem input[type="checkbox"] + span, .dnnFormItem input[type="radio"] + span {
+    display: inline-block;
+    margin: 6px 5px 6px 5px;
+    width: auto;
+}
+
+.dnnFixedSizeComboBox{
+    width: 200px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+.dnnFixedSizeComboBox + a.dnnSecondaryAction{
+    float: left;
+    margin-right: 10px;
+    padding: 6px 6px;
+}
+.dnnGrid{
+    border:1px solid #c9c9c9;
+}
+/* remove td left/right border */
+td.dnnGridHeaderTD-NoBorder{
+    border-right: none !important;
+}
+tr.dnnGridItem td, tr.dnnGridAltItem td{
+    border-right: none;
+}
+tr.dnnGridItem td input{
+    margin-bottom: 0;
+    white-space:pre-line;
+}
+
+span.CommandButton input[type="image"]{
+    display: none;
+}
+
+span.CommandButton{
+    border: none;
+}
+
+a.CommandButton{
+    background: whiteSmoke;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
+    text-shadow: 0px 1px 0px white;
+    color: #555;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    border: 1px solid #C2C2C2;
+    background: #EAEAEA;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+}
+.RadComboBox_Default .rcbInput {
+    width: 100% !important;
+}
+
+.RadGrid img{
+    max-width: 50px !important;
+}
+
+
+
+
+
+
+
