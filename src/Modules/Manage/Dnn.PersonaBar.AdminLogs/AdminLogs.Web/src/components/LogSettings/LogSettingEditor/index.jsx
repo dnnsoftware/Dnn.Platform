@@ -19,7 +19,7 @@ class LogSettingEditor extends Component {
             logSettingDetail: {
                 KeepMostRecent: "*",
                 LogTypeKey: "*",
-                LogTypePortalID: "*",
+                LogTypePortalID: "-1",
                 LoggingIsActive: false,
                 EmailNotificationIsActive: false,
                 MailFromAddress: "",
@@ -56,7 +56,7 @@ class LogSettingEditor extends Component {
             case "LogType":
                 return state.logSettingDetail.LogTypeKey !== undefined ? state.logSettingDetail.LogTypeKey.toString() : "*";
             case "Website":
-                return state.logSettingDetail.LogTypePortalID !== undefined ? state.logSettingDetail.LogTypePortalID.toString() : "*";
+                return state.logSettingDetail.LogTypePortalID !== undefined ? (state.logSettingDetail.LogTypePortalID.toString() == "*" ? "-1" : state.logSettingDetail.LogTypePortalID.toString()) : "-1";
             case "Recent":
                 return state.logSettingDetail.KeepMostRecent !== undefined && state.logSettingDetail.KeepMostRecent > 0 ? state.logSettingDetail.KeepMostRecent.toString() : "*";
             case "Threshold":
@@ -191,6 +191,12 @@ class LogSettingEditor extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
+        const portalList = this.props.portalList !== undefined && this.props.portalList.map(log => {
+            return {
+                label: log.label,
+                value: log.value.toString()
+            };
+        });
         const columnOne = <div className="editor-container left-column">
             <div className="title-row divider">
                 {Localization.get("Settings") }
@@ -210,7 +216,7 @@ class LogSettingEditor extends Component {
             </div>
             <div className="editor-row divider" title={Localization.get("plLogTypePortalID.Help") }>
                 <label>{Localization.get("plLogTypePortalID") } </label>
-                <DropDown enabled={this.getEnabledStatus("Logging") } options={this.props.portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
+                <DropDown enabled={this.getEnabledStatus("Logging") } options={portalList } value={this.getValue("Website") } onSelect={this.onDropDownChange.bind(this, "LogTypePortalID") }
                     style={{ width: 100 + "%", float: "left" }}/>
             </div>
 
