@@ -46,6 +46,7 @@ namespace Dnn.PersonaBar.Library.Model
         {
             ExtensionId = Convert.ToInt32(dr["ExtensionId"]);
             Identifier = dr["Identifier"].ToString();
+            FolderName = Null.SetNullString(dr["FolderName"]);
             MenuId = Convert.ToInt32(dr["MenuId"]);
             Controller = dr["Controller"].ToString();
             Container = dr["Container"].ToString();
