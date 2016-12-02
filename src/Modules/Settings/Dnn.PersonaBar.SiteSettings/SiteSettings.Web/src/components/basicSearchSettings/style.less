@@ -32,10 +32,9 @@
             .dnn-switch-container {
                 float: right;
             }
-            .dnn-label {
-                width: 70%;
+            .dnn-label.inline {                
                 label {
-                    width: 70%;
+                    max-width: 200px;
                     font-weight: bolder;
                     float: left;
                 }
@@ -84,11 +83,10 @@
             border-right: 1px solid @alto;
             .dnn-ui-common-input-group {
                 padding: 0 0 10px 0;
-                .dnn-label {
-                    width: 40%;
+                .dnn-label.inline {
                     label {
                         float: left;
-                        max-width: 80%;
+                        max-width: 220px;
                     }
                     &:last-child {
                         float: right;
@@ -114,6 +112,8 @@
                 margin: 0 30px 15px 0;
                 width: 70%;
                 height: auto;
+                padding-top: 6px;
+                padding-bottom: 6px;
                 &:first-child {
                     margin-top: 40px;
                 }
