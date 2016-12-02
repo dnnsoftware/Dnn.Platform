@@ -9,15 +9,15 @@ namespace Dnn.PersonaBar.Library.Data
 {
     public interface IDataService
     {
-        int SavePersonaBarMenu(string identifier, string moduleName, string controller, string resourceKey, string path,
-            string link, string cssClass, bool mobileSupport, int parentId, int order, bool allowHost, bool enabled, int currentUserId);
+        int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
+            string link, string cssClass, int parentId, int order, bool allowHost, bool enabled, int currentUserId);
 
         IDataReader GetPersonaBarMenu();
 
         void DeletePersonaBarMenuByIdentifier(string identifier);
 
 
-        int SavePersonaBarExtension(string identifier, int menuId, string controller, string container, string path,
+        int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container, string path,
             int order, bool enabled, int currentUserId);
 
         void DeletePersonaBarExtension(string identifier);

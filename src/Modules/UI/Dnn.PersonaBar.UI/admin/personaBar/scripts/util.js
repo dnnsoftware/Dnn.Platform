@@ -6,14 +6,14 @@ define(['jquery'], function ($) {
             var loadTempl;
             var injectBeacon;
 
-            loadTempl = function (identifier, template, wrapper, params, self, cb, isMobile) {
+            loadTempl = function (folder, template, wrapper, params, self, cb) {
                 var callbackInit, moduleFolder, scriptFolder, templateSuffix, cssSuffix, initMethod, moduleJs, loadMethod;
 
                 if (!initializedModules[template]) {
-                    templateSuffix = isMobile ? '.mobi.html' : '.html';
-                    cssSuffix = isMobile ? '.mobi.css' : '.css';
-                    initMethod = isMobile ? 'initMobile' : 'init';
-                    moduleFolder = identifier ? 'modules/' + identifier + '/' : '';
+                    templateSuffix = '.html';
+                    cssSuffix = '.css';
+                    initMethod = 'init';
+                    moduleFolder = folder ? 'modules/' + folder + '/' : '';
                     scriptFolder = moduleFolder ? moduleFolder + 'scripts/' : 'scripts/';
                     var requiredArray = ['../../' + scriptFolder + template, 'text!../../' + moduleFolder + template + templateSuffix];
                     requiredArray.push('css!../../' + moduleFolder + 'css/' + template + cssSuffix);
@@ -25,7 +25,7 @@ define(['jquery'], function ($) {
 
                         // Create objects or Initicialize objects and store
                         if (module.type === 'Class') {
-                            initializedModules[template] = new module(wrapper, self, params, isMobile, cb);
+                            initializedModules[template] = new module(wrapper, self, params, cb);
                         } else {
                             module[initMethod].call(module, wrapper, self, params, cb);
                             initializedModules[template] = module;
@@ -35,10 +35,10 @@ define(['jquery'], function ($) {
                     moduleJs = initializedModules[template];
                     if (typeof moduleJs.load !== 'function') return;
 
-                    loadMethod = isMobile ? 'loadMobile' : 'load';
+                    loadMethod = 'load';
 
                     if (moduleJs.type === 'Class') {
-                        moduleJs.load(moduleJs, params, isMobile, cb);
+                        moduleJs.load(moduleJs, params, cb);
                     } else {
                         moduleJs[loadMethod].call(moduleJs, params, cb);
                     }
@@ -54,9 +54,9 @@ define(['jquery'], function ($) {
             };
 
             return {
-                loadTemplate: function (identifier, template, wrapper, params, cb) {
+                loadTemplate: function (folder, template, wrapper, params, cb) {
                     var self = this;
-                    loadTempl(identifier, template, wrapper, params, self, cb, false);
+                    loadTempl(folder, template, wrapper, params, self, cb, false);
                 },
 
                 loadResx: function (cb) {
@@ -84,6 +84,9 @@ define(['jquery'], function ($) {
 
                 getIdentifierByParams: function (params) {
                     return params ? (params.identifier || '') : '';
+                },
+                getFolderByParams: function (params) {
+                    return params ? (params.folderName || '') : '';
                 },
 
                 asyncParallel: function (deferreds, callback) {
@@ -286,10 +289,9 @@ define(['jquery'], function ($) {
                 *
                 * @method buildMenuViewModel
                 * @param {Object} menuStructure the menu structured stored in config object
-                * @param {Boolean} isMobile flag that tell you if you are in mobile version of the Persona Bar
                 * @return {Object} view model that will be used to build the HTML DOM of the menu 
                 */
-                buildMenuViewModel: function buildMenuViewModel(menuStructure, isMobile) {
+                buildMenuViewModel: function buildMenuViewModel(menuStructure) {
 
                     var menu = {
                         menuItems: []
@@ -297,14 +299,12 @@ define(['jquery'], function ($) {
 
                     var util = this;
                     menuStructure.MenuItems.forEach(function (menuItem) {
-                        if (isMobile && !menuItem.MobileSupport) {
-                            return;
-                        }
                         util.parseQueryParameter(menuItem);
                         var topMenuItem = {
                             id: menuItem.Identifier,
                             resourceKey: menuItem.ResourceKey,
                             moduleName: menuItem.ModuleName,
+                            folderName: menuItem.FolderName,
                             path: menuItem.Path,
                             query: menuItem.Query,
                             link: menuItem.Link,
@@ -315,15 +315,12 @@ define(['jquery'], function ($) {
                         }
                         if (menuItem.Children) {
                             menuItem.Children.forEach(function (menuItem) {
-                                if (isMobile && !menuItem.MobileSupport) {
-                                    return;
-                                }
-
                                 util.parseQueryParameter(menuItem);
                                 var subMenuItem = {
                                     id: menuItem.Identifier,
                                     resourceKey: menuItem.ResourceKey,
                                     moduleName: menuItem.ModuleName,
+                                    folderName: menuItem.FolderName,
                                     path: menuItem.Path,
                                     query: menuItem.Query,
                                     link: menuItem.Link,

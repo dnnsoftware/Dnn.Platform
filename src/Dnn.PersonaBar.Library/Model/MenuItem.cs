@@ -29,6 +29,9 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public string ModuleName { get; set; }
 
+        [DataMember]
+        public string FolderName { get; set; }
+
         [IgnoreDataMember]
         public string Controller { get; set; }
 
@@ -43,9 +46,6 @@ namespace Dnn.PersonaBar.Library.Model
 
         [DataMember]
         public string CssClass { get; set; }
-
-        [DataMember]
-        public bool MobileSupport { get; set; }
 
         [DataMember]
         public int ParentId { get; set; }
@@ -115,12 +115,12 @@ namespace Dnn.PersonaBar.Library.Model
             MenuId = Convert.ToInt32(dr["MenuId"]);
             Identifier = dr["Identifier"].ToString();
             ModuleName = dr["ModuleName"].ToString();
+            FolderName = Null.SetNullString(dr["FolderName"]);
             Controller = dr["Controller"].ToString();
             ResourceKey = dr["ResourceKey"].ToString();
             Path = dr["Path"].ToString();
             Link = dr["Link"].ToString();
             CssClass = dr["CssClass"].ToString();
-            MobileSupport = Convert.ToBoolean(dr["MobileSupport"]);
             AllowHost = Convert.ToBoolean(dr["AllowHost"]);
             Enabled = Convert.ToBoolean(dr["Enabled"]);
             ParentId = Null.SetNullInteger(dr["ParentId"]);

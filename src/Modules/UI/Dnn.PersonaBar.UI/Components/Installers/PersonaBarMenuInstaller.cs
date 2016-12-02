@@ -148,12 +148,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 Identifier = Util.ReadElement(menuNavigator, "identifier"),
                 ModuleName = Util.ReadElement(menuNavigator, "moduleName"),
+                FolderName = Util.ReadElement(menuNavigator, "folderName"),
                 Controller = Util.ReadElement(menuNavigator, "controller"),
                 ResourceKey = Util.ReadElement(menuNavigator, "resourceKey"),
                 Path = Util.ReadElement(menuNavigator, "path"),
                 Link = Util.ReadElement(menuNavigator, "link"),
                 CssClass = Util.ReadElement(menuNavigator, "css"),
-                MobileSupport = Util.ReadElement(menuNavigator, "mobileSupport", "true").ToLowerInvariant() == "true",
                 ParentId = Null.NullInteger,
                 Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
                 AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").ToLowerInvariant() == "true",
@@ -179,6 +179,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             var extension = new PersonaBarExtension()
             {
                 Identifier = Util.ReadElement(menuNavigator, "identifier"),
+                FolderName = Util.ReadElement(menuNavigator, "folderName"),
                 Controller = Util.ReadElement(menuNavigator, "controller"),
                 Container = Util.ReadElement(menuNavigator, "container"),
                 Path = Util.ReadElement(menuNavigator, "path"),

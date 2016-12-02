@@ -79,12 +79,12 @@ namespace Dnn.PersonaBar.Library.Controllers
                     MenuId = menuItem.MenuId,
                     Identifier = menuItem.Identifier,
                     ModuleName = menuItem.ModuleName,
+                    FolderName = menuItem.FolderName,
                     Controller = menuItem.Controller,
                     ResourceKey = menuItem.ResourceKey,
                     Path = menuItem.Path,
                     Link = menuItem.Link,
                     CssClass = menuItem.CssClass,
-                    MobileSupport = menuItem.MobileSupport,
                     AllowHost = menuItem.AllowHost,
                     Order = menuItem.Order,
                     ParentId = menuItem.ParentId

@@ -166,6 +166,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var self = this;
                 var moduleName = self.getModuleNameByParams(params);
                 var identifier = self.getIdentifierByParams(params);
+                var folderName = self.getFolderByParams(params) || identifier;
 
                 iframe.style.width = "100%";
                 parentBody.style.overflow = "hidden";
@@ -223,7 +224,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                             $panel.show().delay(100).animate({ left: personaBarMenuWidth }, 189, 'linear', function () {
                                 inAnimation = false;
                                 $personaBarPlaceholder.show();
-                                self.loadTemplate(identifier, template, $panel, params, function () {
+                                self.loadTemplate(folderName, template, $panel, params, function () {
                                     self.panelLoaded(params);
                                 });
                                 $(document).keyup(function (e) {
@@ -255,7 +256,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                     activePath = path;
                                     activemodule = moduleName;
                                     inAnimation = false;
-                                    self.loadTemplate(identifier, template, $panel, params, function () {
+                                    self.loadTemplate(folderName, template, $panel, params, function () {
                                         self.panelLoaded(params);
                                     });
                                 };
@@ -268,18 +269,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         });
                     } else if (activemodule !== moduleName) {
                         activemodule = moduleName;
-                        self.loadTemplate(identifier, template, $panel, params, function () {
+                        self.loadTemplate(folderName, template, $panel, params, function () {
                             self.panelLoaded(params);
                         });
                     }
                 }
-            },
-            loadModuleDashboard: function handleLoadModuleDashboard(moduleName) {
-                var path = utility.getPathByModuleName(config.menuStructure, moduleName);
-                this.loadPanel(path, { moduleName: moduleName });
-            },
-            loadPageAnalytics: function handleLoadPageAnalytics() {
-                this.loadPanel('page-traffic');
             },
             panelLoaded: function (params) {
                 extension.load(util, params);
@@ -478,8 +472,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         var $this = $(this);
 
                                         if ($this.hasClass('selected')) {
-                                            var path = $this.data('path');
-                                            var panelId = utility.getPanelIdFromPath(path);
+                                            var panelId = utility.getPanelIdFromPath($this.data('path'));
                                             var panelAlreadyOpened = $('#' + panelId + ':not(visible)');
                                             if (panelAlreadyOpened) {
                                                 panelAlreadyOpened.fadeIn('fast');
@@ -492,6 +485,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
                                         var identifier = $this.attr('id');
                                         var moduleName = $this.data('module-name');
+                                        var folderName = $this.data('folder-name');
                                         var query = $this.data('query');
                                         var settings = util.findMenuSettings(identifier);
                                         if (path === '') {
@@ -502,6 +496,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                         var subMenu = menuItems[i].menuItems[0][0];
                                                         identifier = subMenu.id;
                                                         moduleName = subMenu.moduleName;
+                                                        folderName = subMenu.folderName;
                                                         path = subMenu.path;
                                                         query = subMenu.query;
                                                         settings = util.findMenuSettings(identifier);
@@ -519,6 +514,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         if (moduleName !== undefined) {
                                             params = {
                                                 moduleName: moduleName,
+                                                folderName: folderName,
                                                 identifier: identifier,
                                                 path: path,
                                                 query: query,
@@ -777,9 +773,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var identifier = settings.activeIdentifier;
                 var $menuItem = $('ul.personabarnav').find('[id="' + identifier + '"]');
                 var moduleName = $menuItem.data('module-name');
+                var folderName = $menuItem.data('folder-name');
                 var params = {
                     identifier: identifier,
                     moduleName: moduleName,
+                    folderName: folderName,
                     path: path,
                     query: $menuItem.data('query'),
                     settings: util.findMenuSettings(identifier)

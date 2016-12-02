@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Library.Controllers
     public interface IPersonaBarController
     {
         /// <summary>
-        /// Gets the menu structure of the persona bar (for both mobile and desktop)
+        /// Gets the menu structure of the persona bar
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="userInfo">the user that will be used to filter the menu</param>

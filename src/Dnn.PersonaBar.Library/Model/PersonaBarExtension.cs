@@ -24,6 +24,9 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public int MenuId { get; set; }
 
+        [DataMember]
+        public string FolderName { get; set; }
+
         [IgnoreDataMember]
         public string Controller { get; set; }
 

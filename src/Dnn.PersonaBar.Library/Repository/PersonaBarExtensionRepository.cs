@@ -38,6 +38,7 @@ namespace Dnn.PersonaBar.Library.Repository
             _dataService.SavePersonaBarExtension(
                 extension.Identifier,
                 extension.MenuId,
+                extension.FolderName,
                 extension.Controller,
                 extension.Container,
                 extension.Path,

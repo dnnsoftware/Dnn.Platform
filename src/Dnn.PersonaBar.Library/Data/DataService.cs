@@ -8,12 +8,12 @@ namespace Dnn.PersonaBar.Library.Data
     {
         protected static readonly DotNetNuke.Data.DataProvider DataProvider = DotNetNuke.Data.DataProvider.Instance();
 
-        public int SavePersonaBarMenu(string identifier, string moduleName, string controller, string resourceKey, string path,
-            string link, string cssClass, bool mobileSupport, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
+        public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
+            string link, string cssClass, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", identifier, moduleName, controller, resourceKey, path,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", identifier, moduleName, folderName, controller, resourceKey, path,
                 Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
-                mobileSupport, Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId);
+                Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId);
         }
 
         public IDataReader GetPersonaBarMenu()
@@ -26,10 +26,10 @@ namespace Dnn.PersonaBar.Library.Data
             DataProvider.ExecuteNonQuery("PersonaBar_DeletePersonaBarMenuByIdentifier", identifier);
         }
 
-        public int SavePersonaBarExtension(string identifier, int menuId, string controller, string container,
+        public int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container,
             string path, int order, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarExtension", identifier, menuId,
+            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarExtension", identifier, menuId, folderName,
                 controller, container, path, order, enabled, currentUserId);
         }
 

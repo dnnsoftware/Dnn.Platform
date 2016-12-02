@@ -1,12 +1,11 @@
 ﻿'use strict';
 define(['jquery'], function () {
     var loadedExtensions = {};
-    var utility, isMobile;
+    var utility;
 
-    function load(util, params, mobile) {
+    function load(util, params) {
         if (!utility) {
             utility = util;
-            isMobile = mobile;
         }
 
         var menuIdentifier = params.identifier;
@@ -19,7 +18,7 @@ define(['jquery'], function () {
         var $panel = $('#' + util.getPanelIdFromPath(path));
 
         if (loadedExtensions[menuIdentifier]) {
-            reloadExtension($panel, menuIdentifier, params, isMobile);
+            reloadExtension($panel, menuIdentifier, params);
             var extensions = getExtensionsByMenu(menuIdentifier);
             $panel.trigger('load.extension', [extensions]);
             return;
@@ -66,6 +65,7 @@ define(['jquery'], function () {
 
     function initExtension($panel, menuIdentifier, extension, params, callback) {
         var extensionIdentifier = extension.identifier;
+        var extensionFolder = extension.folderName || extensionIdentifier;
         var container = extension.container;
         var path = extension.path;
         var extensionParams = getParams(extension, params);
@@ -77,10 +77,10 @@ define(['jquery'], function () {
         var $wrapper = $('<div />').attr('id', extensionIdentifier + '-extension');
         $wrapper.appendTo($container);
 
-        var templateSuffix = isMobile ? '.mobi.html' : '.html';
-        var cssSuffix = isMobile ? '.mobi.css' : '.css';
-        var initMethod = isMobile ? 'initMobile' : 'init';
-        var extensionFolder = extensionIdentifier;
+        var templateSuffix = '.html';
+        var cssSuffix = '.css';
+        var initMethod = 'init';
+        
         if (extensionFolder.indexOf('_') > -1) {
             extensionFolder = extensionFolder.split('_')[0];
         }
@@ -115,8 +115,8 @@ define(['jquery'], function () {
         });
     }
 
-    function reloadExtension($panel, menuIdentifier, params, isMobile) {
-        var loadMethod = isMobile ? 'loadMobile' : 'load';
+    function reloadExtension($panel, menuIdentifier, params) {
+        var loadMethod = 'load';
         for (var identifier in loadedExtensions[menuIdentifier]) {
             if (loadedExtensions[menuIdentifier].hasOwnProperty(identifier)) {
                 var loadedExtension = loadedExtensions[menuIdentifier][identifier];

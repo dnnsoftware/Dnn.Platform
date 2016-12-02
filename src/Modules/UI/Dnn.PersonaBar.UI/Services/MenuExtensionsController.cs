@@ -48,6 +48,7 @@ namespace Dnn.PersonaBar.UI.Services
                         .Select(t => new
                         {
                             identifier = t.Identifier,
+                            folderName = t.FolderName,
                             container = t.Container,
                             path = GetExtensionPathByController(t),
                             settings = GetExtensionSettings(t)

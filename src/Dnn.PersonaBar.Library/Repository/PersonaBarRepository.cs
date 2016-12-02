@@ -66,12 +66,12 @@ namespace Dnn.PersonaBar.Library.Repository
             item.MenuId = _dataService.SavePersonaBarMenu(
                 item.Identifier,
                 item.ModuleName,
+                item.FolderName,
                 item.Controller,
                 item.ResourceKey,
                 item.Path,
                 item.Link,
                 item.CssClass,
-                item.MobileSupport,
                 item.ParentId,
                 item.Order,
                 item.AllowHost,
