@@ -20,7 +20,7 @@ class IgnoreWordsPanel extends Component {
         this.state = {
             ignoreWords: undefined,
             openId: "",
-            culture: "en-US"
+            culture: ""
         };
     }
 
@@ -53,11 +53,24 @@ class IgnoreWordsPanel extends Component {
             return;
         }
         props.dispatch(SearchActions.getCultureList(props.portalId));
-        props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
+        if (state.culture === "") {
             this.setState({
-                ignoreWords: Object.assign({}, data.IgnoreWords)
+                culture: props.cultureCode
             });
-        }));
+            props.dispatch(SearchActions.getIgnoreWords(props.portalId, props.cultureCode, (data) => {
+                this.setState({
+                    ignoreWords: Object.assign({}, data.IgnoreWords)
+                });
+            }));
+        }
+        else {
+            props.dispatch(SearchActions.getIgnoreWords(props.portalId, state.culture, (data) => {
+                this.setState({
+                    ignoreWords: Object.assign({}, data.IgnoreWords)
+                });
+            }));
+        }
+
     }
 
     componentWillReceiveProps(props) {
@@ -259,7 +272,8 @@ IgnoreWordsPanel.propTypes = {
     tabIndex: PropTypes.number,
     ignoreWords: PropTypes.object,
     portalId: PropTypes.number,
-    cultures: PropTypes.array
+    cultures: PropTypes.array,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {

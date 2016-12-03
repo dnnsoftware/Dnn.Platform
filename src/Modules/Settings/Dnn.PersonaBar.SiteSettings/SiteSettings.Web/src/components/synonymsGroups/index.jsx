@@ -20,7 +20,7 @@ class SynonymsGroupsPanel extends Component {
         this.state = {
             synonymsGroups: undefined,
             openId: "",
-            culture: "en-US"
+            culture: ""
         };
     }
 
@@ -53,11 +53,24 @@ class SynonymsGroupsPanel extends Component {
             return;
         }
         props.dispatch(SearchActions.getCultureList(props.portalId));
-        props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
+
+        if (state.culture === "") {
             this.setState({
-                synonymsGroups: Object.assign({}, data)
+                culture: props.cultureCode
             });
-        }));
+            props.dispatch(SearchActions.getSynonymsGroups(props.portalId, props.cultureCode, (data) => {
+                this.setState({
+                    synonymsGroups: Object.assign({}, data)
+                });
+            }));
+        }
+        else {
+            props.dispatch(SearchActions.getSynonymsGroups(props.portalId, state.culture, (data) => {
+                this.setState({
+                    synonymsGroups: Object.assign({}, data)
+                });
+            }));
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -270,7 +283,8 @@ SynonymsGroupsPanel.propTypes = {
     tabIndex: PropTypes.number,
     synonymsGroups: PropTypes.array,
     cultures: PropTypes.array,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    cultureCode: PropTypes.string
 };
 
 function mapStateToProps(state) {
