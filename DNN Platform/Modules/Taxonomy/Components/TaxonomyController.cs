@@ -45,21 +45,6 @@ namespace DotNetNuke.Modules.Taxonomy
                 switch (Version)
                 {
                     case "01.00.00":
-                        ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Taxonomy Manager");
-
-                        if (moduleDefinition != null)
-                        {
-                            //Add Module to Admin Page for all Portals
-                            Upgrade.AddAdminPages("Taxonomy",
-                                                  "Manage the Taxonomy for your Site",
-                                                  "~/images/icon_tag_16px.gif",
-                                                  "~/images/icon_tag_32px.gif",
-                                                  true,
-                                                  moduleDefinition.ModuleDefID,
-                                                  "Taxonomy Manager",
-                                                  "~/images/icon_tag_32px.gif",
-                                                  true);
-                        }
                         break;
 
                     case "06.00.00":
