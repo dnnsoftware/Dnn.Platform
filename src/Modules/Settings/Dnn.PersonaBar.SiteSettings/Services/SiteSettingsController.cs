@@ -92,6 +92,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : cultureCode;
 
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
                 var portalSettings = new PortalSettings(portal);
                 var logoFile = string.IsNullOrEmpty(portal.LogoFile) ? null : FileManager.Instance.GetFile(pid, portal.LogoFile);
@@ -159,6 +166,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.PortalName = request.PortalName;
 
