@@ -36,57 +36,6 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
         private void RemoveProVersion()
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                //Update Site Redirection management page
-                var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//SiteRedirectionManagement", Null.NullString);
-                TabInfo newTab;
-                if(tabId == Null.NullInteger)
-                {
-                    newTab = Upgrade.AddAdminPage(portal,
-                                                 "Site Redirection Management",
-                                                 "Site Redirection Management.",
-                                                 "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png",
-                                                 "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png",
-                                                 true);
-                }
-                else
-                {
-                    newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
-                    newTab.IconFile = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png";
-                    newTab.IconFileLarge = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png";
-                    TabController.Instance.UpdateTab(newTab);
-                }
-
-                //Remove Pro edition module
-                int moduleID = Null.NullInteger;
-                IDictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(newTab.TabID);
-
-                if (modules != null)
-                {
-                    foreach (ModuleInfo m in modules.Values)
-                    {
-                        if (m.DesktopModule.FriendlyName == "Site Redirection Management")
-                        {
-                            moduleID = m.ModuleID;
-                            break;
-                        }
-                    }
-                }
-
-                if (moduleID != Null.NullInteger)
-                {
-                    ModuleController.Instance.DeleteTabModule(newTab.TabID, moduleID, false);
-                }
-
-                //Add community edition module
-                ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("DNN Site Redirection Management");
-                if (mDef != null)
-                {
-                    Upgrade.AddModuleToPage(newTab, mDef.ModuleDefID, "Site Redirection Management", "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png", true);
-                }
-            }
-
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Professional.MobileManagement");
             if(package != null)
             {
