@@ -39,7 +39,7 @@ namespace DNNConnect.CKEditorProvider.Module
                     pageDescription,
 					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_small.png",
 					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_large.png",
-                    true);
+                    false);
 
                 // Add Module To Page
                 var moduleDefId = GetModuleDefinitionID();
