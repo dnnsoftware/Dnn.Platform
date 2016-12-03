@@ -222,4 +222,7 @@
   <data name="Service_RestoreTabModuleError.Text" xml:space="preserve">
     <value>Error restoring page has occurred:&lt;br/&gt;{0}</value>
   </data>
+  <data name="Service_EmptyRecycleBinError.Text" xml:space="preserve">
+    <value>Some of the items were not deleted.</value>
+  </data>
 </root>

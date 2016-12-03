@@ -19,14 +19,20 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         string GetTabStatus(TabInfo tab);
 
-        void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors);
+        void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false);
+
+        void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false);
+
 
         void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors);
 
-        void HardDeleteTab(TabInfo tab, bool deleteDescendants);
+        void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors);
 
-        void HardDeleteModule(ModuleInfo module);
-        
+
+        //void HardDeleteTab(TabInfo tab, bool deleteDescendants);
+
+        //void HardDeleteModule(ModuleInfo module);
+
         bool RestoreTab(TabInfo tab, out string resultmessage);
 
         bool RestoreModule(int moduleId, int tabId, out string errorMessage);

@@ -153,20 +153,26 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         {
             var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs();
             var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules();
+            var errors = new StringBuilder();
 
-            foreach (var module in deletedModules)
+            Components.RecyclebinController.Instance.DeleteModules(deletedModules, errors);
+
+            Components.RecyclebinController.Instance.DeleteTabs(deletedTabs, errors, true);
+
+            if (errors.Length > 0)
             {
-                Components.RecyclebinController.Instance.HardDeleteModule(module); 
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Status = 1,
+                    Message =
+                        string.Format(
+                            Components.RecyclebinController.Instance.LocalizeString("Service_EmptyRecycleBinError"),
+                            errors)
+                });
             }
 
-            //Delete tabs starting with the deepest children
-            foreach (var tab in deletedTabs.OrderByDescending(t => t.Level))
-            {
-                Components.RecyclebinController.Instance.HardDeleteTab(tab, true);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
-        } 
+            return Request.CreateResponse(HttpStatusCode.OK, new {Status = 0});
+        }
 
         #region Private Methods
 

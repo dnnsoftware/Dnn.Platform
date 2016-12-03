@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return Localization.GetString(key, LocalResourcesFile);
         }
 
-        public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors)
+        public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false)
         {
             if (tabs == null || !tabs.Any())
             {
@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
 
             foreach (
-                var tab in tabs.Select(page => _tabController.GetTab(page.Id, PortalSettings.PortalId)))
+                var tab in tabs.OrderByDescending(t => t.Level).Select(page => _tabController.GetTab(page.Id, PortalSettings.PortalId)))
             {
                 if (tab == null)
                 {
@@ -103,11 +103,40 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     }
                     else
                     {
-                        HardDeleteTab(tab, false);    
+                        HardDeleteTab(tab, deleteDescendants);    
                     }
                 }
             }
             
+        }
+
+        public void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false)
+        {
+            if (tabs == null || !tabs.Any())
+            {
+                return;
+            }
+
+            foreach (
+                var tab in tabs.OrderByDescending(t => t.Level).Select(page => _tabController.GetTab(page.TabID, PortalSettings.PortalId)))
+            {
+                if (tab == null)
+                {
+                    continue;
+                }
+
+                if (TabPermissionController.CanDeletePage(tab) && tab.IsDeleted)
+                {
+                    if (tab.HasChildren)
+                    {
+                        errors.Append(string.Format(LocalizeString("Service_RemoveTabError"), tab.TabName));
+                    }
+                    else
+                    {
+                        HardDeleteTab(tab, deleteDescendants);
+                    }
+                }
+            }
         }
 
         public void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors)
@@ -128,14 +157,34 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        public void HardDeleteTab(TabInfo tab, bool deleteDescendants)
+        public void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors)
+        {
+            if (modules != null && modules.Any())
+            {
+                foreach (
+                    var module in
+                        modules.Select(mod => ModuleController.Instance.GetModule(mod.ModuleID, mod.TabID, true)))
+                {
+                    if (module == null)
+                    {
+                        continue;
+                    }
+                    if (ModulePermissionController.CanDeleteModule(module) && module.IsDeleted)
+                    {
+                        HardDeleteModule(module);
+                    }
+                }
+            }
+        }
+
+        private void HardDeleteTab(TabInfo tab, bool deleteDescendants)
         {
             //get tab modules before deleting page
             var tabModules = _moduleController.GetTabModules(tab.TabID);
 
             //hard delete the tab
             _tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
-            
+
             //delete modules that do not have other instances
             foreach (var kvp in tabModules)
             {
@@ -148,7 +197,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
         }
 
-        public void HardDeleteModule(ModuleInfo module)
+        private void HardDeleteModule(ModuleInfo module)
         {
             //hard-delete Tab Module Instance
             _moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
