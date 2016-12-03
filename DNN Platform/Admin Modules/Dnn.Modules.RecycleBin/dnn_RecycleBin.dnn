@@ -22,12 +22,6 @@
                         <supportedFeatures>
                             <supportedFeature type="Upgradeable" />
                         </supportedFeatures>
-                        <page type="Admin" common="true">
-                            <name>RecycleBin</name>
-                            <icon>~/Icons/Sigma/Trash_16X16_Standard.png</icon>
-                            <largeIcon>~/Icons/Sigma/Trash_16X16_Standard.png</largeIcon>
-                            <description>Send email messages to users, security roles and specific email addresses.</description>
-                        </page>
                         <moduleDefinitions>
                             <moduleDefinition>
                                 <friendlyName>Recycle Bin</friendlyName>
