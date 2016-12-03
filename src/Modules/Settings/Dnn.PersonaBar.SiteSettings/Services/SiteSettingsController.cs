@@ -231,6 +231,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : cultureCode;
 
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var portal = PortalController.Instance.GetPortal(pid, cultureCode);
                 var portalSettings = new PortalSettings(portal);
 
@@ -286,6 +293,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : request.CultureCode;
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
 
                 var portalInfo = PortalController.Instance.GetPortal(pid, cultureCode);
                 portalInfo.SplashTabId = request.SplashTabId;
@@ -607,6 +620,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 cultureCode = string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var resourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
                 var response = new
                 {
@@ -646,6 +667,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (!UserInfo.IsSuperUser && PortalId != pid)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var language = LocaleController.Instance.GetLocale(pid, request.Language);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), request.Language));
                 }
 
                 _controller.SaveLocalizedKeys(pid, request.PropertyName, request.PropertyCategory, request.Language, request.PropertyNameString,
@@ -1494,6 +1522,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var groups = SearchHelper.Instance.GetSynonymsGroups(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
 
                 var response = new
@@ -1535,6 +1570,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 string duplicateWord;
                 var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(request.SynonymsTags, pid, cultureCode, out duplicateWord);
                 if (synonymsGroupId > 0)
@@ -1576,6 +1619,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 if (request.SynonymsGroupID != null)
                 {
                     string duplicateWord;
@@ -1659,6 +1710,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var words = SearchHelper.Instance.GetSearchStopWords(pid, string.IsNullOrEmpty(cultureCode) ? LocaleController.Instance.GetCurrentLocale(pid).Code : cultureCode);
 
                 var response = new
@@ -1702,6 +1760,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 var stopWordsId = SearchHelper.Instance.AddSearchStopWords(request.StopWords, pid, cultureCode);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Id = stopWordsId });
             }
@@ -1733,6 +1799,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 string cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
+                }
+
                 SearchHelper.Instance.UpdateSearchStopWords(request.StopWordsId, request.StopWords, pid, cultureCode);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -2579,6 +2653,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 if (!UserInfo.IsSuperUser && pid != PortalId)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                if (language == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        string.Format(Localization.GetString("InvalidLocale.ErrorMessage", LocalResourcesFile), cultureCode));
                 }
 
                 string defaultRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{cultureCode}", pid, "Administrators");
