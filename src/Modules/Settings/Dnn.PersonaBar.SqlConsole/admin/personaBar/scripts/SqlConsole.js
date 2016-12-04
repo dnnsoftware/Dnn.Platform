@@ -92,7 +92,12 @@ define(['jquery',
 
             $panel.find('.tables-container > div').hide();
             $panel.find('.tables-container > div#result' + index).show();
-            $panel.find('.tables-container > div#result' + index).find('> div.table-container').data('jsp').reinitialise();
+            var $tableContainer = $panel.find('.tables-container > div#result' + index).find('> div.table-container');
+            if ($tableContainer.data('jsp')) {
+                $tableContainer.data('jsp').destroy();
+                $tableContainer = $panel.find('.tables-container > div#result' + index).find('> div.table-container');
+            }
+            $tableContainer.jScrollPane();
 
             $panel.find('.result-tabs ul li').removeClass('selected').eq(index).addClass('selected');
         }
@@ -516,7 +521,7 @@ define(['jquery',
                         }
 
                         if (typeof jsPdf === "undefined") {
-                            require(['../jspdf'], function(pdf) {
+                            require(['main/../modules/dnn.sqlconsole/scripts/jspdf'], function(pdf) {
                                 jsPdf = pdf;
                                 generatePdf();
                             });
