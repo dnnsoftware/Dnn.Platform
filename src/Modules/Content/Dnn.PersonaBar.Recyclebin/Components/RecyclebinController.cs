@@ -6,23 +6,17 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -58,16 +52,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         #region Properties
 
-        private string LocalResourcesFile
-        {
-            get { return Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Recyclebin.resx"); }
-        }
+        private static string LocalResourcesFile => 
+            Path.Combine(Constants.PersonaBarRelativePath, "Modules/Dnn.Recyclebin/App_LocalResources/Recyclebin.resx");
 
-        private PortalSettings PortalSettings
-        {
-            get { return PortalSettings.Current; }
-        }
-
+        private static PortalSettings PortalSettings => PortalSettings.Current;
+        
         #endregion
 
         #region ServiceLocator

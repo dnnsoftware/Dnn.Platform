@@ -70,6 +70,6 @@ namespace Dnn.PersonaBar.Extensions.Components
         internal const string DefaultDashboardImage = "icon_dashboard.png";
 
         internal const string DnnAuthTypeName = "DNN";
-        internal static string SharedResources = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Extensions/App_LocalResources/Extensions.resx";
+        internal const string SharedResources = Library.Constants.PersonaBarRelativePath + "/Modules/Dnn.Extensions/App_LocalResources/Extensions.resx";
     }
 }

@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
         private Components.VocabulariesController _controller = new Components.VocabulariesController();
-        private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Vocabularies.resx");
+        private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         /// GET: api/Vocabularies/GetVocabularies
@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (VocabularyNameAlreadyExistsException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("VocabularyExists.Error", localResourcesFile), vocabularyDto.Name));
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("VocabularyExists.Error", LocalResourcesFile), vocabularyDto.Name));
             }
             catch (Exception exc)
             {
@@ -256,7 +256,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (TermValidationException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", localResourcesFile), termDto.Name));
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
             }
             catch (Exception exc)
             {
@@ -292,7 +292,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (TermValidationException)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", localResourcesFile), termDto.Name));
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("TermExists.Error", LocalResourcesFile), termDto.Name));
             }
             catch (Exception exc)
             {
