@@ -10,6 +10,11 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
     [DataContract]
     public class GetUsersContract
     {
+        public GetUsersContract()
+        {
+            SortColumn = "Joined";
+            SortAscending = false;
+        }
         public int PortalId { get; set; }
         public string SearchText { get; set; }
         public int PageIndex { get; set; }

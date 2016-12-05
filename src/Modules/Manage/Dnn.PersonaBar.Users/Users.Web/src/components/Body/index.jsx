@@ -99,7 +99,7 @@ class Body extends Component {
                 <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
                     <UserTable ref="userTable" appSettings={appSettings}/>
                     {
-                        (state.searchParameters.filter === 0 || state.searchParameters.filter === 3) && <div className="users-paging">
+                        <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 
                                 showSummary={true} 
                                 showPageInfo={false}

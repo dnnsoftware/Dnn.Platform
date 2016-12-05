@@ -269,7 +269,7 @@ namespace Dnn.PersonaBar.Users.Components
         private static IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             totalRecords = 0;
-            var users = new List<UserBasicDto>();
+            List<UserBasicDto> users = null;
             ArrayList dbUsers = null;
             IEnumerable<UserInfo> userInfos = null;
 
@@ -281,15 +281,34 @@ namespace Dnn.PersonaBar.Users.Components
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    dbUsers = string.IsNullOrEmpty(searchText)
-                                ? UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, false)
-                                : UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize, ref totalRecords, true, false);
-                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        var reader = DataProvider.Instance()
+                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
+                                usersContract.SortColumn,
+                                usersContract.SortAscending,
+                                usersContract.PageIndex,
+                                usersContract.PageSize);
+                        if (reader.Read())
+                        {
+                            totalRecords = reader.GetInt32(0);
+                            reader.NextResult();
+                        }
+                        users = CBO.FillCollection<UserBasicDto>(reader);
+                    }
+                    else
+                    {
+                        dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
+                            ref totalRecords, true, false);
+                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    }
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
+                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true,
+                            true);
                         users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
                     break;
@@ -300,7 +319,6 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
                     }
-                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 case UserFilters.Deleted:
                     dbUsers = UserController.GetDeletedUsers(portalId);
@@ -309,23 +327,38 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
                     }
-                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
 //                    case UserFilters.Online:
 //                        dbUsers = UserController.GetOnlineUsers(usersContract.PortalId);
 //                        break;
                 case UserFilters.RegisteredUsers:
-                    userInfos = RoleController.Instance.GetUsersByRole(portalId, PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
+                    userInfos = RoleController.Instance.GetUsersByRole(portalId,
+                        PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleName);
                     if (!isSuperUser)
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
                     }
-                    users = userInfos?.Select(UserBasicDto.FromUserInfo).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+            if (users == null && userInfos != null)
+            {
+                var enumerable = userInfos as UserInfo[] ?? userInfos.ToArray();
+                totalRecords = enumerable.Length;
+                users =
+                    GetPagedData(enumerable, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
+            }
             return users;
+        }
+
+        private static IEnumerable<UserInfo> GetPagedData(IEnumerable<UserInfo> users, int pageSize, int pageIndex)
+        {
+            return
+                users.OrderByDescending(x => x.LastModifiedOnDate)
+                    .ThenByDescending(x => x.CreatedOnDate)
+                    .Skip(pageIndex*pageSize)
+                    .Take(pageSize);
         }
 
         private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, out int totalRecords)
