@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -633,12 +633,15 @@ namespace DotNetNuke.Entities.Modules
                 createdNewPage = true;
             }
 
-            if (desktopModule.Page.IsCommon)
+            if (existTab != null)
             {
-                TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
-            }
+                if (desktopModule.Page.IsCommon)
+                {
+                    TabController.Instance.UpdateTabSetting(existTab.TabID, "ControlBar_CommonTab", "Y");
+                }
 
-            AddDesktopModuleToPage(desktopModule, existTab, ref addedNewModule);
+                AddDesktopModuleToPage(desktopModule, existTab, ref addedNewModule);
+            }
         }
 
         internal static void AddDesktopModuleToPage(DesktopModuleInfo desktopModule, TabInfo tab, ref bool addedNewModule)

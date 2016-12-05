@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -917,7 +917,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFolderAlreadyExists", "The destination folder already exists. The folder has not been renamed."));
             }
 
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, GetParentFolder(folder.PortalID, folder.FolderPath).FolderMappingID);
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
             RenameFolderInFileSystem(folder, newFolderPath);
@@ -2155,6 +2155,19 @@ namespace DotNetNuke.Services.FileSystem
                     else
                     {
                         folderInfo.MappedPath = folderPath;
+                    }
+                }
+                else if (provider.SupportsMappedPaths)
+                {
+                    if (originalFolderPath == folderInfo.MappedPath)
+                    {
+                        folderInfo.MappedPath = folderPath;
+                    }
+                    else if (folderInfo.MappedPath.EndsWith("/" + originalFolderPath, StringComparison.Ordinal))
+                    {
+                        var newMappedPath = PathUtils.Instance.FormatFolderPath(
+                        folderInfo.MappedPath.Substring(0, folderInfo.MappedPath.LastIndexOf("/" + originalFolderPath, StringComparison.Ordinal)) + "/" + folderPath);
+                        folderInfo.MappedPath = newMappedPath;
                     }
                 }
 

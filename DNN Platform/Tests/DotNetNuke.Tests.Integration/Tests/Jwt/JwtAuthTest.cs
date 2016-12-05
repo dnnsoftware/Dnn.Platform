@@ -101,6 +101,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         public void ValidUserLoginShouldPass()
         {
             var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            Assert.IsNotNull(token.UserId);
             Assert.IsNotNull(token.AccessToken);
             Assert.IsNotNull(token.DisplayName);
             Assert.IsNotNull(token.RenewalToken);
@@ -375,7 +376,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
             // These will set a moniker for the Activity Feed module of the user profile
             DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}DeleteTabModuleSetting " + tabModuleId + @", 'Moniker'");
-            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}AddTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
+            DatabaseHelper.ExecuteNonQuery(@"EXEC {objectQualifier}UpdateTabModuleSetting " + tabModuleId + @", 'Moniker', 'myjournal', 1");
             WebApiTestHelper.ClearHostCache();
 
             // Act
@@ -494,6 +495,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [JsonObject]
         public class LoginResultData
         {
+            [JsonProperty("userId")]
+            public int UserId { get; set; }
+
             [JsonProperty("displayName")]
             public string DisplayName { get; set; }
 

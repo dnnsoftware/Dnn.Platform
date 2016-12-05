@@ -173,7 +173,7 @@
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plUserTabId" runat="server" controlname="cboUserTabId" />
-                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True"/>
+                        <dnn:DnnPageDropDownList ID="cboUserTabId" runat="server"  IncludeDisabledTabs="True" IncludeAllTabTypes="True" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -311,6 +311,11 @@ namespace DotNetNuke.Common.Utilities
                 return url;
             }
 
+            if (url.ToLowerInvariant().Contains("data:"))
+            {
+                url = string.Empty;
+            }
+
             //clean the return url to avoid possible XSS attack.
             var cleanUrl = new PortalSecurity().InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
             if (url != cleanUrl)
@@ -319,7 +324,12 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-            if (url.Contains("://"))
+            var urlWithNoQuery = url;
+            if (urlWithNoQuery.Contains("?"))
+            {
+                urlWithNoQuery = urlWithNoQuery.Substring(0, urlWithNoQuery.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (urlWithNoQuery.Contains("://"))
             {
                 var portalSettings = PortalSettings.Current;
                 if (portalSettings == null ||

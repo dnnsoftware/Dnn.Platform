@@ -69,7 +69,7 @@
                     </div>
                     <div class="dnnFormItem">
                         <div class="dnnLabel"></div>
-                        <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Disabled" />
+                        <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Enabled" />
                     </div>
 				</div>    
 				<div id="templateRow1" class="dnnFormItem" runat="server" visible="false">
@@ -97,7 +97,7 @@
 					</div>    	
 					<div id="modulesRow" runat="server" class="dnnFormItem">
 						<dnn:Label ID="plModules" runat="server" ResourceKey="CopyContent" Suffix=":" HelpKey="CopyContentHelp" ControlName="grdModules" />
-                        <asp:DataGrid ID="grdModules" runat="server" DataKeyField="ModuleID" AutoGenerateColumns="false" CssClass="dnnGrid dnnLeft">
+                        <asp:DataGrid ID="grdModules" runat="server" DataKeyField="ModuleID" AutoGenerateColumns="false" CssClass="dnnGrid dnnLeft" OnItemDataBound="grdModules_OnItemDataBound">
 							<headerstyle cssclass="dnnGridHeader" verticalalign="Top" />
 							<itemstyle cssclass="dnnGridItem" horizontalalign="Left" />
 							<alternatingitemstyle cssclass="dnnGridAltItem" />
@@ -119,11 +119,9 @@
 								<asp:BoundColumn DataField="PaneName"  HeaderText="Pane" />
                                 <asp:TemplateColumn ItemStyle-Width="200px"  HeaderText="Action" >
 									<ItemTemplate>
-                                       
 										<asp:RadioButton ID="optNew" runat="server" GroupName="Copy" resourcekey="ModuleNew" />
-										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" Enabled='<%# DataBinder.Eval(Container.DataItem, "IsPortable") %>' Checked="True" />
-										<asp:RadioButton ID="optReference" runat="server" GroupName="Copy" resourcekey="ModuleReference" Enabled='<%# Convert.ToInt32(DataBinder.Eval(Container.DataItem, "ModuleID")) != -1  %>' />
-                                     
+										<asp:RadioButton ID="optCopy" runat="server" GroupName="Copy" resourcekey="ModuleCopy" />
+										<asp:RadioButton ID="optReference" runat="server" GroupName="Copy" resourcekey="ModuleReference" />
 									</ItemTemplate>
 									<ItemStyle Wrap="False"></ItemStyle>
 								</asp:TemplateColumn>

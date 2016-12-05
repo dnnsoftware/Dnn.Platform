@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -717,7 +717,7 @@ namespace DotNetNuke.Entities.Modules
 
 				dr.Close();
 
-				if (settingExist && existValue != settingValue)
+				if (existValue != settingValue)
 	            {
 					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
@@ -726,7 +726,7 @@ namespace DotNetNuke.Entities.Modules
 				}
 				else if (!settingExist)
 				{
-					dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
 					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
 													"ModuleId", moduleId, settingName, settingValue,
 													currentUser.UserID);
@@ -1798,6 +1798,8 @@ namespace DotNetNuke.Entities.Modules
         public void RestoreModule(ModuleInfo objModule)
         {
             dataProvider.RestoreTabModule(objModule.TabID, objModule.ModuleID);
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            TabChangeTracker.Instance.TrackModuleCopy(objModule, 1, objModule.TabID, userId);
             ClearCache(objModule.TabID);
         }
 
@@ -2105,16 +2107,17 @@ namespace DotNetNuke.Entities.Modules
                         EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "TabModuleId", tabModuleId, settingName, settingValue,
                                                         currentUser.UserID);
+                        UpdateTabModuleVersion(tabModuleId);
                     }
                 }
                 else
                 {
-                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
+                    dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
                                                     "TabModuleId", tabModuleId, settingName, settingValue,
                                                     currentUser.UserID);
+                    UpdateTabModuleVersion(tabModuleId);
                 }
-                UpdateTabModuleVersion(tabModuleId);
             }
             catch (Exception ex)
             {
@@ -2256,7 +2259,7 @@ namespace DotNetNuke.Entities.Modules
                     ModuleInfo module = DeserializeModule(nodeModule, nodePane, portalId, tabId, moduleDefinition.ModuleDefID);
                     //if the module is marked as show on all tabs, then check whether the module is exist in current website and it also
                     //still marked as shown on all tabs, this action will make sure there is no duplicate modules created on new tab.
-                    if (mergeTabs != PortalTemplateModuleAction.Replace && module.AllTabs)
+                    if (module.AllTabs)
                     {
                         var existModule = Instance.GetModule(templateModuleID, Null.NullInteger, false);
                         if (existModule != null && !existModule.IsDeleted && existModule.AllTabs && existModule.PortalID == portalId)

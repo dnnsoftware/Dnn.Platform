@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -2534,14 +2534,7 @@ namespace DotNetNuke.Common
             {
                 if (strURL.IndexOf("mailto:") == -1 && strURL.IndexOf("://") == -1 && strURL.IndexOf("~") == -1 && strURL.IndexOf("\\\\") == -1)
                 {
-                    if (HttpContext.Current != null && HttpContext.Current.Request.IsSecureConnection)
-                    {
-                        strURL = "https://" + strURL;
-                    }
-                    else
-                    {
-                        strURL = "http://" + strURL;
-                    }
+                    strURL = ((HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request)) ? "https://" : "http://") + strURL;
                 }
             }
             return strURL;
@@ -2815,48 +2808,59 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Gets the login URL.
         /// </summary>
-        /// <param name="returnURL">The URL to redirect to after logging in.</param>
-        /// <param name="override">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="returnUrl">The URL to redirect to after logging in.</param>
+        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <returns>Formatted URL.</returns>
-        public static string LoginURL(string returnURL, bool @override)
+        public static string LoginURL(string returnUrl, bool overrideSetting)
         {
-            string strURL = "";
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (!string.IsNullOrEmpty(returnURL))
+            return LoginURL(returnUrl, overrideSetting, PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        /// <summary>
+        /// Gets the login URL.
+        /// </summary>
+        /// <param name="returnUrl">The URL to redirect to after logging in.</param>
+        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <returns>Formatted URL.</returns>
+        public static string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
+        {
+            string loginUrl;
+            if (!string.IsNullOrEmpty(returnUrl))
             {
-                returnURL = String.Format("returnurl={0}", returnURL);
+                returnUrl = string.Format("returnurl={0}", returnUrl);
             }
             var popUpParameter = "";
-            if (HttpUtility.UrlDecode(returnURL).Contains("popUp=true"))
+            if (HttpUtility.UrlDecode(returnUrl).Contains("popUp=true"))
             {
                 popUpParameter = "popUp=true";
             }
 
-            if (portalSettings.LoginTabId != -1 && !@override)
+            if (portalSettings.LoginTabId != -1 && !overrideSetting)
             {
                 if (ValidateLoginTabID(portalSettings.LoginTabId))
                 {
-                    strURL = string.IsNullOrEmpty(returnURL)
+                    loginUrl = string.IsNullOrEmpty(returnUrl)
                                         ? NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
-                                        : NavigateURL(portalSettings.LoginTabId, "", returnURL, popUpParameter);
+                                        : NavigateURL(portalSettings.LoginTabId, "", returnUrl, popUpParameter);
                 }
                 else
                 {
-                    string strMessage = String.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
+                    string strMessage = string.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
                     //No account module so use portal tab
-                    strURL = string.IsNullOrEmpty(returnURL)
+                    loginUrl = string.IsNullOrEmpty(returnUrl)
                                  ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
-                                 : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL, strMessage, popUpParameter);
+                                 : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
                 }
             }
             else
             {
                 //portal tab
-                strURL = string.IsNullOrEmpty(returnURL)
+                loginUrl = string.IsNullOrEmpty(returnUrl)
                                 ? NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
-                                : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnURL, popUpParameter);
+                                : NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
             }
-            return strURL;
+            return loginUrl;
         }
 
         /// <summary>
@@ -4242,6 +4246,11 @@ namespace DotNetNuke.Common
         #endregion
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
+
+        internal static void ResetAppStartElapseTime()
+        {
+            AppStopwatch.Restart();
+        }
 
         public static TimeSpan ElapsedSinceAppStart
         {

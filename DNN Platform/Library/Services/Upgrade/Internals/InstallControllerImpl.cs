@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -231,10 +231,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     settingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, "settings", null);
                 }
-                else
-                {
-                    settingsNode.RemoveAll();
-                }
+                // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
+                //else
+                //{
+                //    settingsNode.RemoveAll();
+                //}
 
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {

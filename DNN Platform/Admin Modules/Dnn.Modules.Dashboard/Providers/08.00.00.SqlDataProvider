@@ -18,7 +18,10 @@ IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwne
         ALTER TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls] ADD CONSTRAINT [PK_{objectQualifier}Dashboard] PRIMARY KEY CLUSTERED  ([DashboardControlID])
         ALTER TABLE {databaseOwner}[{objectQualifier}Dashboard_Controls] WITH NOCHECK  ADD CONSTRAINT [FK_{objectQualifier}Dashboard_Controls_{objectQualifier}Packages] FOREIGN KEY ([PackageID]) REFERENCES {databaseOwner}[{objectQualifier}Packages] ([PackageID]) ON DELETE CASCADE ON UPDATE CASCADE
 
-        INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'DashboardControl', N'Dashboard Control', 3, NULL, 0)
+        IF NOT EXISTS(SELECT PackageType FROM {databaseOwner}[{objectQualifier}PackageTypes] WHERE [PackageType] = N'DashboardControl')
+        BEGIN
+            INSERT INTO {databaseOwner}[{objectQualifier}PackageTypes] ([PackageType], [Description], [SecurityAccessLevel], [EditorControlSrc], [SupportsSideBySideInstallation]) VALUES (N'DashboardControl', N'Dashboard Control', 3, NULL, 0)
+        END
 
         DECLARE @PackageId INT
         INSERT INTO {databaseOwner}[{objectQualifier}Packages] ([PortalID], [Name], [FriendlyName], [Description], [PackageType], [Version], [License], [Manifest], [Owner], [Organization], [Url], [Email], [ReleaseNotes], [IsSystemPackage], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [FolderName], [IconFile]) VALUES (NULL, N'DotNetNuke.Dashboard.WebServer', N'WebServer', N'', N'DashboardControl', N'8.0.0', NULL, NULL, N'DotNetNuke', N'DotNetNuke Corporation', N'www.dotnetnuke.com', N'support@dotnetnuke.com', NULL, 1, -1, GETDATE(), -1, GETDATE(), NULL, NULL)

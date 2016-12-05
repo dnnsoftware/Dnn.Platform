@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -195,7 +195,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     //clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
-                if (String.IsNullOrEmpty(redirectURL) || redirectURL=="/")
+
+			    var alias = PortalAlias.HTTPAlias;
+			    var comparison = StringComparison.InvariantCultureIgnoreCase;
+                var isDefaultPage = redirectURL == "/"
+                    || (alias.Contains("/") && redirectURL.Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
+                if (string.IsNullOrEmpty(redirectURL) || isDefaultPage)
 				{
                     if (Convert.ToInt32(setting) != Null.NullInteger)
                     {

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,6 +44,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Web.UI;
 
@@ -509,6 +510,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var content = FileManager.Instance.GetFileContent(file);
             fileName = file.FileName;
             contentType = file.ContentType;
+
+            EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
+                                                    {
+                                                        FileInfo = file,
+                                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                                    });
             return content;
         }
 

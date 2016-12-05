@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -50,6 +50,7 @@ using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Drawing.Imaging;
 
 namespace DotNetNuke.Services.FileSystem
 {
@@ -174,18 +175,107 @@ namespace DotNetNuke.Services.FileSystem
         }
         #endregion
 
+        /// <summary>
+        /// Rotate/Flip the image as per the metadata and reset the metadata.
+        /// </summary>
+        /// <param name="content"></param>
+        private void RotateFlipImage(ref Stream content)
+        {
+            try
+            {
+                using (var image = GetImageFromStream(content))
+                {
+                    if (!image.PropertyIdList.Any(x => x == 274)) return;
+
+                    var orientation = image.GetPropertyItem(274); //Find rotation/flip meta property
+                    if (orientation == null) return;
+
+                    var flip = OrientationToFlipType(orientation.Value[0].ToString());
+                    if (flip == RotateFlipType.RotateNoneFlipNone) return;//No rotation or flip required
+
+                    image.RotateFlip(flip);
+                    var newOrientation = new byte[2];
+                    newOrientation[0] = 1; // little Endian
+                    newOrientation[1] = 0;
+                    orientation.Value = newOrientation;
+                    image.SetPropertyItem(orientation);
+                    content = ToStream(image, GetImageFormat(image));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+        private static ImageFormat GetImageFormat(Image img)
+        {
+            if (img.RawFormat.Equals(ImageFormat.Jpeg))
+                return ImageFormat.Jpeg;
+            if (img.RawFormat.Equals(ImageFormat.Bmp))
+                return ImageFormat.Bmp;
+            if (img.RawFormat.Equals(ImageFormat.Png))
+                return ImageFormat.Png;
+            if (img.RawFormat.Equals(ImageFormat.Emf))
+                return ImageFormat.Emf;
+            if (img.RawFormat.Equals(ImageFormat.Exif))
+                return ImageFormat.Exif;
+            if (img.RawFormat.Equals(ImageFormat.Gif))
+                return ImageFormat.Gif;
+            if (img.RawFormat.Equals(ImageFormat.Icon))
+                return ImageFormat.Icon;
+            if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+                return ImageFormat.Jpeg;
+            if (img.RawFormat.Equals(ImageFormat.Tiff))
+                return ImageFormat.Tiff;
+            else
+                return ImageFormat.Wmf;
+        }
+        private static Stream ToStream(Image image, ImageFormat formaw)
+        {
+            var stream = new MemoryStream();
+            image.Save(stream, formaw);
+            stream.Position = 0;
+            return stream;
+        }
+
+        // Match the orientation code to the correct rotation:
+        private static RotateFlipType OrientationToFlipType(string orientation)
+        {
+            switch (int.Parse(orientation))
+            {
+                case 1:
+                    return RotateFlipType.RotateNoneFlipNone;
+                case 2:
+                    return RotateFlipType.RotateNoneFlipX;
+                case 3:
+                    return RotateFlipType.Rotate180FlipNone;
+                case 4:
+                    return RotateFlipType.Rotate180FlipX;
+                case 5:
+                    return RotateFlipType.Rotate90FlipX;
+                case 6:
+                    return RotateFlipType.Rotate90FlipNone;
+                case 7:
+                    return RotateFlipType.Rotate270FlipX;
+                case 8:
+                    return RotateFlipType.Rotate270FlipNone;
+                default:
+                    return RotateFlipType.RotateNoneFlipNone;
+            }
+        }
+
         #endregion
 
-        #region Public Methods
+#region Public Methods
 
-        /// <summary>
-        /// Adds a file to the specified folder.
-        /// </summary>
-        /// <param name="folder">The folder where to add the file.</param>
-        /// <param name="fileName">The name of the file.</param>
-        /// <param name="fileContent">The content of the file.</param>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
-        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
+/// <summary>
+/// Adds a file to the specified folder.
+/// </summary>
+/// <param name="folder">The folder where to add the file.</param>
+/// <param name="fileName">The name of the file.</param>
+/// <param name="fileContent">The content of the file.</param>
+/// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
 
             return AddFile(folder, fileName, fileContent, true, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
@@ -327,7 +417,7 @@ namespace DotNetNuke.Services.FileSystem
                     CheckFileWritingRestrictions(folder, fileContent.Length, oldFile, createdByUserID);
 
                     // Retrieve Metadata
-                    SetInitialFileMetadata(fileContent, file, folderProvider);
+                    SetInitialFileMetadata(ref fileContent, file, folderProvider);
                     
                     // Workflow
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
@@ -492,7 +582,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void SetInitialFileMetadata(Stream fileContent, FileInfo file, FolderProvider folderProvider)
+        private void SetInitialFileMetadata(ref Stream fileContent, FileInfo file, FolderProvider folderProvider)
         {
             file.Size = (int) fileContent.Length;
             var fileHash = folderProvider.GetHashCode(file, fileContent);
@@ -504,6 +594,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (IsImageFile(file))
             {
+                RotateFlipImage(ref fileContent);
                 SetImageProperties(file, fileContent);
             }
         }
@@ -584,6 +675,7 @@ namespace DotNetNuke.Services.FileSystem
                                                     file.SHA1Hash,
                                                     file.LastModificationTime,
                                                     file.Title,
+                                                    file.Description,
                                                     file.StartDate,
                                                     file.EndDate,
                                                     file.EnablePublishPeriod,
@@ -663,6 +755,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash,
                     DateTime.Now,
                     file.Title,
+                    file.Description,
                     file.StartDate,
                     file.EndDate,
                     file.EnablePublishPeriod,
@@ -1819,6 +1912,7 @@ namespace DotNetNuke.Services.FileSystem
                                                updateLazyload ? file.SHA1Hash : Null.NullString,
                                                file.LastModificationTime,
                                                file.Title,
+                                               file.Description,
                                                file.StartDate,
                                                file.EndDate,
                                                file.EnablePublishPeriod,

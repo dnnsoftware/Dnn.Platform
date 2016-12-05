@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -811,7 +811,8 @@ namespace DotNetNuke.Entities.Tabs
             }
             else
             {
-                _dataProvider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                _dataProvider.UpdateTabSetting(tabId, settingName, settingValue, 
+                                               UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
                                                  "TabId", tabId, settingName, settingValue,
                                                  UserController.Instance.GetCurrentUserInfo().UserID);
@@ -2183,7 +2184,12 @@ namespace DotNetNuke.Entities.Tabs
             {
                 foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
-                    ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    var module = kvp.Value;
+                    //when the modules show on all pages are included by the same import process, it need removed.
+                    if (!module.AllTabs || hModules.ContainsValue(module.ModuleID))
+                    {
+                        ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
+                    }
                 }
             }
 
@@ -2738,7 +2744,10 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     //Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
-                    urlNode.InnerXml = tempTab.TabPath;
+                    if (tempTab != null)
+                    {
+                        urlNode.InnerXml = tempTab.TabPath;
+                    }
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));

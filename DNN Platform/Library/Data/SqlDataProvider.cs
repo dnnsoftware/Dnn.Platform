@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Data
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SqlDataProvider));
         #region Private Members
 
-        private const string _scriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
 		private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)", 
 															RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -100,7 +100,8 @@ namespace DotNetNuke.Data
         {
             string exceptions = "";
 
-            string[] sqlStatements = SqlDelimiterRegex.Split(script);
+            var sqlDelimiterRegex = RegexUtils.GetCachedRegex(ScriptDelimiter, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            string[] sqlStatements = sqlDelimiterRegex.Split(script);
             foreach (string statement in sqlStatements)
             {
                 var sql = statement.Trim();
@@ -308,20 +309,6 @@ namespace DotNetNuke.Data
 			return script;
 		}
 
-        private Regex SqlDelimiterRegex
-        {
-            get
-            {
-                var objRegex = (Regex)DataCache.GetCache("SQLDelimiterRegex");
-                if (objRegex == null)
-                {
-                    objRegex = new Regex(_scriptDelimiterRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                    DataCache.SetCache("SQLDelimiterRegex", objRegex);
-                }
-                return objRegex;
-            }
-        }
-
         #endregion
 
         #region Abstract Methods
@@ -329,6 +316,11 @@ namespace DotNetNuke.Data
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
             PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)

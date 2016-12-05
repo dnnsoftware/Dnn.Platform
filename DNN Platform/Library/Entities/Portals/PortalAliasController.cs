@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -214,7 +214,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string alias, int portalId)
         {
-            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias && pa.Value.PortalID == portalId).Value;
+            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && pa.Value.PortalID == portalId).Value;
         }
 
         /// <summary>

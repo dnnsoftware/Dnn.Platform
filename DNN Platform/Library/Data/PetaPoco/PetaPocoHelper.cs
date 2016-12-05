@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,9 +22,8 @@
 #endregion
 
 using System.Data;
-
+using System.Data.SqlClient;
 using DotNetNuke.Common.Utilities;
-
 using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
@@ -54,6 +53,33 @@ namespace DotNetNuke.Data.PetaPoco
 
 			database.Execute(sql, args);
 		}
+
+        public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable)
+        {
+            BulkInsert(connectionString, Null.NullInteger, procedureName, tableParameterName, dataTable);
+        }
+
+        public static void BulkInsert(string connectionString, int timeout, string procedureName, string tableParameterName, DataTable dataTable)
+		{
+            if (dataTable.Rows.Count > 0)
+            {
+                using (var con = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand(procedureName, con))
+                {
+                    if (!tableParameterName.StartsWith("@"))
+                        tableParameterName = "@" + tableParameterName;
+
+                    if (timeout > 0)
+                        cmd.CommandTimeout = timeout;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue(tableParameterName, dataTable);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+        }
 
 		public static IDataReader ExecuteReader(string connectionString, CommandType type, string sql, params object[] args)
 		{
@@ -98,11 +124,13 @@ namespace DotNetNuke.Data.PetaPoco
 			return database.ExecuteScalar<T>(sql, args);
 		}
 
+        // ReSharper disable once InconsistentNaming
         public static void ExecuteSQL(string connectionString, string sql)
         {
             ExecuteSQL(connectionString, sql, Null.NullInteger);
         }
 
+        // ReSharper disable once InconsistentNaming
 		public static void ExecuteSQL(string connectionString, string sql, int timeout)
 		{
 			var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };

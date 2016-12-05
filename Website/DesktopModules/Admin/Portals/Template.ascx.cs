@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -234,9 +234,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                     {
                         // check if default culture page is selected or default page doesn't exist in tree(which should always export).
                         TabInfo defaultTab = tab.DefaultLanguageTab;
-                        var tabId = defaultTab.TabID.ToString(CultureInfo.InvariantCulture);
                         if (defaultTab == null
-                            || ctlPages.FindNodeByValue(tabId) == null
+                            || ctlPages.FindNodeByValue(defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) == null
                             || ctlPages.CheckedNodes.Count(p => p.Value == defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) > 0)
                         {
                             tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent.Checked);

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -60,7 +60,12 @@ namespace DotNetNuke.Services.Sitemap
 		    {
 			    if (string.IsNullOrEmpty(_cacheFileName))
 			    {
-					var currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
+                    var currentCulture = PortalSettings.CultureCode?.ToLowerInvariant();
+                    if (string.IsNullOrEmpty(currentCulture))
+                    {
+                        currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
+                    }
+
 					_cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);   
 			    }
 
@@ -368,8 +373,6 @@ namespace DotNetNuke.Services.Sitemap
         /// <returns>True is the cached file exists and is still valid, false otherwise</returns>
         private bool CacheIsValid()
         {
-			var currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
-
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalSettings.PortalId, "1"));
             var isValid = File.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + CacheFileName);
 

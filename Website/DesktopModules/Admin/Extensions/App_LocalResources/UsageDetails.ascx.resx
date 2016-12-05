@@ -147,9 +147,6 @@
   <data name="grd.PagerSettings.PreviousPageText" xml:space="preserve">
     <value>&lt; Previous Page   </value>
   </data>
-  <data name="FilterOptionSelect.Text" xml:space="preserve">
-    <value>&lt;select&gt;</value>
-  </data>
   <data name="Msg.NotUsedBy" xml:space="preserve">
     <value>This module does not exist on any {0} pages.</value>
   </data>

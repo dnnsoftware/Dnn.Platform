@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -167,6 +167,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 var targetVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??
                                     TabVersionBuilder.Instance.GetCurrentVersion(module.TabID);
+
+                if (targetVersion == null)
+                {
+                    return;
+                }
 
                 ProcessDeletionDetail(module, moduleVersion, userId, targetVersion);
             }

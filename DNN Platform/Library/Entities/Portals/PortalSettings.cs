@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Common;
 
 #endregion
 
@@ -116,7 +117,10 @@ namespace DotNetNuke.Entities.Portals
 		{
 		    PortalId = portalAliasInfo.PortalID;
 			PortalAlias = portalAliasInfo;
-			var portal = PortalController.Instance.GetPortal(portalAliasInfo.PortalID);
+			var portal = string.IsNullOrEmpty(portalAliasInfo.CultureCode) ? 
+                            PortalController.Instance.GetPortal(portalAliasInfo.PortalID)
+                            : PortalController.Instance.GetPortal(portalAliasInfo.PortalID, portalAliasInfo.CultureCode);
+
             BuildPortalSettings(tabId, portal);
         }
 
@@ -646,7 +650,16 @@ namespace DotNetNuke.Entities.Portals
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
 					break;
-				case "portalid":
+                case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page.
+                    propertyNotFound = false;
+			        var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
+			        if (RegisterTabId > Null.NullInteger)
+			        {
+                        reminderUrl = Globals.RegisterURL(string.Empty, string.Empty);
+			        }
+                    result = PropertyAccess.FormatString(reminderUrl, format);
+                    break;
+                case "portalid":
 					propertyNotFound = false;
 					result = (PortalId.ToString(outputFormat, formatProvider));
 					break;
@@ -819,5 +832,14 @@ namespace DotNetNuke.Entities.Portals
 		}
 
         #endregion
-	}
+
+        #region Public Methods
+
+	    public PortalSettings Clone()
+	    {
+	        return (PortalSettings)MemberwiseClone();
+	    }
+
+        #endregion
+    }
 }

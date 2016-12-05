@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2014
+' Copyright (c) 2002-2016
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -45,8 +45,6 @@ Namespace DotNetNuke.UI.Utilities
     ''' </history>
     ''' -----------------------------------------------------------------------------
     Public Class ClientAPI
-
-        Dim Shared ReadOnly UnsafeJsRegex As Regex = new Regex("(['""\\])", RegexOptions.Compiled)
 
 #Region "Public Constants"
 
@@ -551,11 +549,11 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetSafeJSString(ByVal strString As String) As String
-            If Len(strString) > 0 Then
-                Return UnsafeJsRegex.Replace(strString, "\$1")
-            Else
-                Return strString
+            If String.IsNullOrEmpty(strString) Then
+                Return String.Empty
             End If
+
+            Return HttpUtility.JavaScriptStringEncode(strString)
         End Function
 
         Public Shared Function IsInCallback(ByVal objPage As Page) As Boolean
