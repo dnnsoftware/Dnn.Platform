@@ -770,9 +770,12 @@ transform: rotate(180deg);
     font-family: sourcecodepro_semibold, arial;
     font-size: 14px;
     font-weight: 600;
-    line-height: 28px;
+    margin-top: 12px;
     text-align: left;
     color: #5c5c5c;
+}
+.hovermenu > ul > li:first-child {
+    margin-top: 0;
 }
 .hovermenu > ul > li.disabled {
     cursor: default;
