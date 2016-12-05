@@ -91,8 +91,8 @@ class LogItemRow extends Component {
     render() {
         const {props, state} = this;
         return (
-            <div className={"collapsible-logitemdetail" + (props.className ? (" " + props.className) : "")}>
-                <div className={"collapsible-logitemdetail-header " + state.collapsed} >
+            <div className={"collapsible-logitemdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
+                <div className={"collapsible-logitemdetail-header " + state.collapsed}>
                     <div className="term-header">
                         <div data-index="0" className="term-label-checkbox">
                             <div className="term-label-wrapper">
@@ -131,7 +131,7 @@ class LogItemRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={!this.state.collapsed} style={{ height: "auto", float: "left", width: "100%" }}>{!state.collapsed && props.children}</Collapse>
+                <Collapse className="logitem-collapsible" isOpened={!this.state.collapsed} style={{ float: "left", width: "100%" }}>{!state.collapsed && props.children}</Collapse>
             </div>
         );
     }

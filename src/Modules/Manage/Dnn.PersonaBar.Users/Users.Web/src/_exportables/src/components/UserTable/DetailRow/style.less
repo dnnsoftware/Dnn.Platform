@@ -1,4 +1,12 @@
 @import "~dnn-global-styles/index";
+.collapsible-component-users {
+    .collapsible-header-users.false {
+        border-top: 2px solid @curiousBlue;
+        border-bottom: 2px solid @curiousBlue;
+        margin-top: -2px;
+    }
+}
+
 :local(.extensionDetailRow) {
     &.closed {
         padding: 0;
@@ -20,13 +28,8 @@
             width: 100%;
             float: left;
         }
-        &.true{
-            border-top: 2px solid @curiousBlue;
-            border-bottom: 2px solid @curiousBlue;
-            margin-top: 10px;
-        }
     }
-    .user-emails{
+    .user-emails {
         padding-left: 11px !important;
     }
     .user-names {
@@ -38,7 +41,7 @@
             text-transform: lowercase;
         }
     }
-    .user-joined{
+    .user-joined {
         padding-left: 22px !important;
     }
     .deleted {

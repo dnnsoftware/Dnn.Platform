@@ -12,6 +12,7 @@ import {
 import util from "../../../utils";
 import Localization from "localization";
 
+/*eslint-disable eqeqeq*/
 class LogSettingEditor extends Component {
     constructor() {
         super();

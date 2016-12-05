@@ -13,13 +13,15 @@
                 width: 100%;
             }
         }
-        .role-row-collapsible{
-            > div{
+        &.true {
+            border-top: 2px solid @curiousBlue;
+            border-bottom: 2px solid @curiousBlue;
+            margin-top: -1px;
+        }
+        .role-row-collapsible {
+            background-color: @white;
+            > div {
                 padding: 25px;
-            }
-            &.true{
-                border-top: 2px solid @curiousBlue;
-                border-bottom: 2px solid @curiousBlue;
             }
         }
         div.collapsible-header1 {
@@ -30,9 +32,6 @@
             padding: 15px 18px;
             box-sizing: border-box;
             cursor: auto;
-            &.false {
-                background-color: @alabaster;
-            }
             .edit-icon {
                 margin-left: 5px;
                 float: right;

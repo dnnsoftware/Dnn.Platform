@@ -214,7 +214,7 @@ class Controls extends Component {
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-controls-table">
-                    <Collapse isOpened={isAddMode} style={{ float: "left" }} className="add-control-box">
+                    <Collapse isOpened={isAddMode} style={{ float: "left" }} className={"add-control-box" + (isAddMode ? " row-opened": "")}>
                         <ControlFields
                             controlBeingEdited={state.controlBeingEdited}
                             onChange={this.onChange.bind(this)}

@@ -2,6 +2,12 @@
 :local(.collapsibleComponent) {
     display: table;
     width: 100%;
+    &.false {
+        border-top: 2px solid @curiousBlue;
+        border-bottom: 2px solid @curiousBlue;
+        position: relative;
+        top: -1px;
+    }
     &:not(:last-child) {
         div.collapsible-header {
             border-bottom: 1px solid @alto;
@@ -62,10 +68,6 @@
         }
     }
     .term-header-collapsible {
-        &.false {
-            border-top: 2px solid @curiousBlue;
-            border-bottom: 2px solid @curiousBlue;
-        }
         > div {
             float: left;
             > .dnn-grid-system {

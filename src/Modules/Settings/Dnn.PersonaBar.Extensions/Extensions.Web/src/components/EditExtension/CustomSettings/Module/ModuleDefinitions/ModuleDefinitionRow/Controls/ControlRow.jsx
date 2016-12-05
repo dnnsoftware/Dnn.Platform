@@ -17,7 +17,7 @@ class ControlRow extends Component {
     render() {
         const {props} = this;
         return (
-            <GridCell className="module-control-row">
+            <GridCell className={"module-control-row" + (props.isEditMode ? " row-opened" : "")}>
                 <GridCell columnSize={15} className="module-control-title">
                     {props.moduleControl.title}
                 </GridCell>

@@ -163,7 +163,7 @@ class DetailsRow extends Component {
                         {(!props.addIsOpened || props.addIsOpened === "add-opened") && <GridCell>
                             {userColumns}
                         </GridCell>}
-                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className={"user-detail-row " + opened}>
+                        <Collapse accordion={true} isOpened={opened} keepCollapsedContent={true} className="user-detail-row">
                             {opened && props.children }
                         </Collapse>
                     </GridCell>

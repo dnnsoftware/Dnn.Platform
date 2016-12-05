@@ -20,7 +20,7 @@ class ModuleDefinitionRow extends Component {
     render() {
         const {props} = this;
         return (
-            <GridCell className="module-definition-row">
+            <GridCell className={"module-definition-row " + (props.isEditMode ? " row-opened": "")}>
                 <GridCell columnSize={85} className="module-definition-name">
                     {props.moduleDefinition.name}
                 </GridCell>

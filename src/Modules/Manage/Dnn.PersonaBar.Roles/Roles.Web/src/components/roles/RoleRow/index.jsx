@@ -64,7 +64,7 @@ class RoleRow extends Component {
 
         if (props.visible) {
             return (
-                <div className={"collapsible-component1"} id={uniqueId}>
+                <div className={"collapsible-component1 " + opened} id={uniqueId}>
                     {!props.addIsClosed &&  <div className={"collapsible-header1 " + !opened}>
                         <GridCell title={props.roleName} columnSize={40} >
                             {props.roleName}</GridCell>
@@ -88,7 +88,7 @@ class RoleRow extends Component {
                         </GridCell>
                     </div>
                     }
-                    <Collapse accordion={true} isOpened={opened} className={"role-row-collapsible " + opened}>
+                    <Collapse accordion={true} isOpened={opened} className="role-row-collapsible">
                         {opened && props.children}
                     </Collapse>
                 </div>

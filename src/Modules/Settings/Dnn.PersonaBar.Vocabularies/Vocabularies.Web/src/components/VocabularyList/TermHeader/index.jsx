@@ -83,7 +83,7 @@ class TermHeader extends Component {
         const {props, state} = this;
         const svgIcon = props.type === 1 ? SimpleType : HierarchyType;
         return (
-            <div className={"" + styles.collapsibleComponent + (props.className ? (" " + props.className) : "")}>
+            <div className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
                         <div className="term-icon" dangerouslySetInnerHTML={{ __html: svgIcon }}>
@@ -100,7 +100,7 @@ class TermHeader extends Component {
                     }
                 </div>
                 <Collapse
-                    className={"term-header-collapsible " + state.collapsed}
+                    className={"term-header-collapsible"}
                     isOpened={!this.state.collapsed}
                     style={{ float: "left" }}>
                     {!state.collapsed && props.children}

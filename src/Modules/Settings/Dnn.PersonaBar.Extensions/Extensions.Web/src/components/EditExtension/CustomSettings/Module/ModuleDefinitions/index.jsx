@@ -206,7 +206,7 @@ class ModuleDefinitions extends Component {
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-definitions-table">
                     <Collapse isOpened={isAddMode} fixedHeight={300} style={{ float: "left" }}>
-                        <GridCell className="add-module-definition-box">
+                        <GridCell className={"add-module-definition-box" + (isAddMode ? " row-opened" : "")}>
                             <DefinitionFields
                                 onChange={this.onChange.bind(this)}
                                 onControlSave={this.onSave.bind(this)}
