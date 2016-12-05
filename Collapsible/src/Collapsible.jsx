@@ -3,6 +3,8 @@ import ReactCollapse from "react-collapse";
 import {findDOMNode} from "react-dom";
 import scroll from "scroll";
 
+const defaultDelay = 300;
+
 const page = /Firefox/.test(navigator.userAgent) ?
   document.documentElement :
   document.body;
@@ -10,6 +12,8 @@ const page = /Firefox/.test(navigator.userAgent) ?
 export default class Collapsible extends Component {
 
     scroll(height) {
+        const {scrollDelay} = this.props;
+        const delay = scrollDelay || scrollDelay === 0 ? scrollDelay : defaultDelay;
         if (!this.props.isOpened || !this.props.autoScroll ) {
             return;
         }
@@ -26,7 +30,7 @@ export default class Collapsible extends Component {
                     scroll.top(page, bottom);
                 }
             }
-        }, 0);
+        }, delay);
         if (typeof this.props.onHeightReady === "function") {
             this.props.onHeightReady(height);
         }
@@ -55,6 +59,7 @@ Collapsible.propTypes = {
     style: PropTypes.object,
     fixedHeight: PropTypes.number,
     autoScroll: PropTypes.bool,
+    scrollDelay: PropTypes.number,
     onHeightReady: PropTypes.func,
     children: PropTypes.node,
     className: PropTypes.string
