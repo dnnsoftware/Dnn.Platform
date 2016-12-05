@@ -1,37 +1,16 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
-import MultiLineInputWithError  from "dnn-multi-line-input-with-error";
+import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 import InputGroup from "dnn-input-group";
 import RadioButtons from "dnn-radio-buttons";
-import {vocabulary as VocabularyActions,
+import {
+    vocabulary as VocabularyActions,
     pagination as PaginationActions
 } from "../../actions";
 import LocalizedResources from "../../resources";
 import styles from "./style.less";
-
-const typeOptions = [
-    {
-        label: "Simple",
-        value: 1
-    },
-    {
-        label: "Hierarchy",
-        value: 2
-    }
-];
-
-const scopeOptions = [
-    {
-        label: "Website",
-        value: 2
-    },
-    {
-        label: "Application",
-        value: 1
-    }
-];
 
 class CreateVocabulary extends Component {
     constructor() {
@@ -124,6 +103,27 @@ class CreateVocabulary extends Component {
 
     render() {
         const {props, state} = this;
+        const typeOptions = [
+            {
+                label: LocalizedResources.get("Simple"),
+                value: 1
+            },
+            {
+                label: LocalizedResources.get("Hierarchy"),
+                value: 2
+            }
+        ];
+
+        const scopeOptions = [
+            {
+                label: LocalizedResources.get("Portal"),
+                value: 2
+            },
+            {
+                label: LocalizedResources.get("Application"),
+                value: 1
+            }
+        ];
         return (
             //inline style for height to allow proper calculating
             <div className={styles.createVocabulary} style={{ height: "calc(100% - 100px)" }}>
@@ -135,37 +135,37 @@ class CreateVocabulary extends Component {
                                 withLabel={true}
                                 label={LocalizedResources.get("TermName") + "*"}
                                 error={state.error.name && state.triedToSubmit}
-                                errorMessage={LocalizedResources.get("TermValidationError.Message") }
+                                errorMessage={LocalizedResources.get("TermValidationError.Message")}
                                 value={state.term.Name}
-                                onChange={this.onTermValueChange.bind(this, "Name") }
+                                onChange={this.onTermValueChange.bind(this, "Name")}
                                 />
                         </InputGroup>
                         <InputGroup>
                             <MultiLineInputWithError
                                 inputId={"create-vocabulary-description"}
                                 withLabel={true}
-                                label={LocalizedResources.get("Description") }
+                                label={LocalizedResources.get("Description")}
                                 value={state.term.Description}
-                                onChange={this.onTermValueChange.bind(this, "Description") }/>
+                                onChange={this.onTermValueChange.bind(this, "Description")} />
                         </InputGroup>
                         <RadioButtons
-                            onChange={this.onTermValueChange.bind(this, "TypeId") }
+                            onChange={this.onTermValueChange.bind(this, "TypeId")}
                             options={typeOptions}
                             label={LocalizedResources.get("Type.Header") + ":"}
                             buttonGroup="vocabularyType"
                             buttonWidth={130}
-                            value={state.term.TypeId}/>
+                            value={state.term.TypeId} />
                         <RadioButtons
-                            onChange={this.onTermValueChange.bind(this, "ScopeTypeId") }
+                            onChange={this.onTermValueChange.bind(this, "ScopeTypeId")}
                             options={scopeOptions}
                             label={LocalizedResources.get("Scope.Header") + ":"}
                             buttonGroup="scopeType"
                             buttonWidth={130}
-                            value={state.term.ScopeTypeId}/>
+                            value={state.term.ScopeTypeId} />
                         <div className="action-buttons">
-                            <Button type="secondary" onClick={this.onCloseVocabulary.bind(this) }>{LocalizedResources.get("cancelCreate") }</Button>
-                            <Button type="primary" onClick={this.onAddNewVocabulary.bind(this) }>{LocalizedResources.get("CreateVocabulary") }</Button>
-                            <span className="required-help-text">* {LocalizedResources.get("RequiredField") }</span>
+                            <Button type="secondary" onClick={this.onCloseVocabulary.bind(this)}>{LocalizedResources.get("cancelCreate")}</Button>
+                            <Button type="primary" onClick={this.onAddNewVocabulary.bind(this)}>{LocalizedResources.get("CreateVocabulary")}</Button>
+                            <span className="required-help-text">* {LocalizedResources.get("RequiredField")}</span>
                         </div>
                     </div>
                 }

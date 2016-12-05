@@ -199,7 +199,7 @@ class VocabularyListComponent extends Component {
                 <PersonaBarPageBody>
                     <Tabs onSelect={this.handleSelect.bind(this)}
                         selectedIndex={props.tabIndex}
-                        tabHeaders={["All", "Global", "Website"]}
+                        tabHeaders={[LocalizedResources.get("All"), LocalizedResources.get("Application"), LocalizedResources.get("Portal")]}
                         type="secondary">
                         {(renderedVocabularyList.length > 0 && renderedVocabularyList) || <p className="vocabulary-error">{LocalizedResources.get("NoVocabularyTerms.Error")}</p>}
                         {(renderedVocabularyList.length > 0 && renderedVocabularyList) || <p className="vocabulary-error">{LocalizedResources.get("NoVocabularyTerms.Error")}</p>}
