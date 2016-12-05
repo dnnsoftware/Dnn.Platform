@@ -2493,8 +2493,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Language = Localization.GetLocaleName(locale.Code, GetCultureDropDownType(PortalId)),
                         IsSystemDefault = Localization.SystemLocale == locale.Code,
                         Icon = Globals.ResolveUrl(string.IsNullOrEmpty(locale.Code)
-                            ? "/images/Flags/none.gif"
-                            : $"/images/Flags/{locale.Code}.gif"),
+                            ? "~/images/Flags/none.gif"
+                            : $"~/images/Flags/{locale.Code}.gif"),
                         MissingFiles = tableMissing,
                         FilesWithDuplicateEntries = tableDuplicate,
                         FilesWithMissingEntries = tableEntries,
