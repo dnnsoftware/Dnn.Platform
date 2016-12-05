@@ -40,7 +40,7 @@
             if (advancedEnabled) {
                 markup += '<span class="dnnSearchBox_advanced_query" /><a class="dnnSearchBoxClearAdvanced"></a>';
             }
-            markup += '<input id="' + this.options.id + '_input" type="text" value="' + originalVal + '" autocomplete="off" />' +
+            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" />' +
                             '<a class="dnnSearchBoxClearText"></a>';
 
             markup += '<a class="dnnSearchButton"></a>';
@@ -59,6 +59,8 @@
             this.$wrap = $(markup).insertAfter(this.$el);
             var wrapWidth = this.$wrap.width();
             this.realInput = $('#' + this.options.id + '_input');
+
+            this.realInput.val(originalVal);
 
             var realInputRight = 50;
             var advancedDropdown = $('.dnnSearchBox_advanced_dropdown', this.$wrap);

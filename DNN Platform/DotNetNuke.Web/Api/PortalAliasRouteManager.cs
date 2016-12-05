@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,7 +44,17 @@ namespace DotNetNuke.Web.Api
 
         public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
         {
-            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(portalAlias.HTTPAlias));
+            var alias = portalAlias.HTTPAlias;
+            string appPath = TestableGlobals.Instance.ApplicationPath;
+            if (!string.IsNullOrEmpty(appPath))
+            {
+                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
+                if (i > 0)
+                {
+                    alias = alias.Remove(i, appPath.Length);
+                }
+            }
+            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
         private string GeneratePrefixString(int count)

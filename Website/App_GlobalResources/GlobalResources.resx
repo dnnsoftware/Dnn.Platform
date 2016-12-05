@@ -654,13 +654,29 @@ Please login using the following information:
 Website Address: [Portal:URL]
 Username:   [User:Username]
 
-Link to reset password: http://[Portal:URL]/default.aspx?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken]
+Link to reset password: [Portal:PASSWORDREMINDERURL]?ctl=PasswordReset&amp;resetToken=[Membership:PasswordResetToken]
 
 Sincerely,
 [Portal:PortalName]
 
 *Note: If you did not request a Password Reset Token, please disregard this Message.
 </value>
+  </data>
+  <data name="EMAIL_USER_AUTHORIZED_SUBJECT.Text" xml:space="preserve">
+    <value>Registration has been approved for [Portal:URL]</value>
+  </data>
+  <data name="EMAIL_USER_AUTHORIZED_BODY.Text" xml:space="preserve">
+    <value>Dear [User:DisplayName],
+
+Thank you for registering at [Portal:PortalName]. Your registration has been approved, and your account is now active. 
+
+Website Address: [Portal:URL]
+Username: [User:UserName]
+
+Thank you, we appreciate your support...
+
+[Portal:PortalName]
+    </value>
   </data>
   <data name="EMAIL_PROFILE_UPDATED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Profile Update Notice</value>
@@ -968,7 +984,7 @@ Operation Completed:  [Custom:3]
   </data>
   <data name="License.Text" xml:space="preserve">
     <value>&lt;p&gt;DotNetNuke&amp;reg; - http://www.dotnetnuke.com&lt;br /&gt;
-Copyright (c) 2002-2014&lt;br/&gt;
+Copyright (c) 2002-2016&lt;br/&gt;
     by DotNetNuke Corporation&lt;/p&gt;
     &lt;p&gt;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 

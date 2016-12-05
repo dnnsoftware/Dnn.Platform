@@ -1,0 +1,1442 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Update version number in DesktopModules */
+/*******************************************/
+DECLARE @version NVARCHAR(8)
+SET @version = '08.00.04'
+
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='HostSettings'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Scheduler'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Security'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='SearchResults'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Extensions'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Registration'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Authentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HostSettings'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Scheduler'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchAdmin'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SearchResults'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Security'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONBUTTONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BANNERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.BREADCRUMBSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.COPYRIGHTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CURRENTDATESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DOTNETNUKESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DROPDOWNACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HELPSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.HOSTNAMESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ICONSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LANGUAGESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKACTIONSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LINKSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LOGOSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.MENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.NAVSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRINTMODULESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.PRIVACYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SEARCHSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.SIGNINSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TERMSSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TITLESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TREEVIEWSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.USERSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.VISIBILITYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Extensions'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TEXTSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.STYLESSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.LEFTMENUSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.JQUERYSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.CONTROLPANEL.SkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DefaultAuthentication'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ViewProfile'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.TagsSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Registration'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.ToastSkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNCSSEXCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSINCLUDESkinObject'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.DNNJSEXCLUDESkinObject'
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.WebServer'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Database'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Host'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Portals'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Modules'
+UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Name='DotNetNuke.Dashboard.Skins'
+
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'InstallerFilesRemoved'
+GO
+
+/***** DNN-8529: update help url. *****/
+UPDATE {databaseOwner}{objectQualifier}HostSettings SET SettingValue = N'http://www.dnnsoftware.com/help' WHERE SettingName='HelpURL'
+GO
+
+/* CONTENT-5905 Add/Update RegEx to allow DnnImageHandler and stop throwing 404 Error */
+
+DECLARE @DoNotRedirectUrlRegex_Value NVARCHAR(2000);
+DECLARE @DoNotRewriteRegEx_Value NVARCHAR(2000);
+/* Do it for Portal */
+SELECT @DoNotRedirectUrlRegex_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+SELECT @DoNotRewriteRegEx_Value=SettingValue FROM {databaseOwner}[{objectQualifier}PortalSettings] WHERE SettingName='AUM_DoNotRewriteRegEx'
+IF(CHARINDEX('|\.ashx', @DoNotRedirectUrlRegex_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRedirectUrlRegex_Value + '|\.ashx' WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+END
+IF(CHARINDEX('|/DnnImageHandler\.ashx', @DoNotRewriteRegEx_Value) = 0 AND CHARINDEX('/DnnImageHandler\.ashx|', @DoNotRewriteRegEx_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET SettingValue=@DoNotRewriteRegEx_Value + '|/DnnImageHandler\.ashx' WHERE SettingName='AUM_DoNotRewriteRegEx'
+END
+
+/* Do it for Host */
+SELECT @DoNotRedirectUrlRegex_Value=SettingValue FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+SELECT @DoNotRewriteRegEx_Value=SettingValue FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName='AUM_DoNotRewriteRegEx'
+IF(CHARINDEX('|\.ashx', @DoNotRedirectUrlRegex_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}HostSettings] SET SettingValue=@DoNotRedirectUrlRegex_Value + '|\.ashx' WHERE SettingName='AUM_DoNotRedirectUrlRegex'
+END
+IF(CHARINDEX('|/DnnImageHandler\.ashx', @DoNotRewriteRegEx_Value) = 0 AND CHARINDEX('/DnnImageHandler\.ashx|', @DoNotRewriteRegEx_Value) = 0)
+BEGIN
+	UPDATE {databaseOwner}[{objectQualifier}HostSettings] SET SettingValue=@DoNotRewriteRegEx_Value + '|/DnnImageHandler\.ashx' WHERE SettingName='AUM_DoNotRewriteRegEx'
+END
+
+/* CONTENT-5905 End */
+
+/****************************/
+/* DNN-8563: Return language id before call EnsureLocalizationExists. */
+/****************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalLanguage]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalLanguage
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddPortalLanguage]
+    @PortalId			int,
+    @LanguageId			int,
+    @IsPublished		bit,
+    @CreatedByUserID	int
+
+AS
+    DECLARE @PortalLanguageId INT
+    DECLARE @CultureCode NVARCHAR(50)
+
+    INSERT INTO {databaseOwner}{objectQualifier}PortalLanguages (
+        PortalId,
+        LanguageId,
+        IsPublished,
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    )
+    VALUES (
+        @PortalId,
+        @LanguageId,
+        @IsPublished,
+        @CreatedByUserID,
+        getdate(),
+        @CreatedByUserID,
+        getdate()
+    )
+
+    SELECT @PortalLanguageId = SCOPE_IDENTITY()
+
+	SELECT @CultureCode = CultureCode FROM {databaseOwner}{objectQualifier}Languages WHERE LanguageID = @LanguageId
+
+    SELECT @PortalLanguageId
+
+	EXEC {databaseOwner}{objectQualifier}EnsureLocalizationExists @PortalID = @PortalId, @CultureCode = @CultureCode
+GO
+
+/* ****************************************************************
+   DNN-8659: Adjust size of value column for site and host settings
+             Use same pattern to add and update settings
+   **************************************************************** 
+ */
+DECLARE @colSize smallint = 0;
+
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}HostSettings]', 'U')
+   AND name = N'SettingValue';
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}HostSettings] 
+        ALTER Column SettingValue  nVarChar(Max) Not Null;
+
+-- disallow null values, as DNN cannot distinguish between empty string and null anyways.
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] 
+ SET   SettingValue = N''
+ WHERE SettingValue Is Null;
+
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}PortalSettings]', 'U')
+   AND name = N'SettingValue';
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}PortalSettings] 
+        ALTER Column SettingValue  nVarChar(Max) Not Null;
+  
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}RoleSettings]', 'U')
+   AND name = N'SettingValue';
+
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}RoleSettings] 
+        ALTER Column SettingValue nVarChar(Max) Not Null;
+
+SET @colSize = 0;
+SELECT @colSize = max_length 
+ FROM  sys.columns 
+ WHERE object_id = object_id('{databaseOwner}[{objectQualifier}TabSettings]', 'U')
+   AND name = N'SettingValue';
+
+   
+IF @colSize != -1
+    ALTER Table {databaseOwner}[{objectQualifier}TabSettings] 
+        ALTER Column SettingValue nVarChar(Max) Not Null;
+GO  
+
+-- moved out of GetPortalSettings -  this doesn't need to be processed more than once:
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}HostSettings] WHERE SettingName = 'GUID' )
+    INSERT INTO {databaseOwner}[{objectQualifier}HostSettings]
+            (SettingName, SettingValue, SettingIsSecure) 
+     VALUES ( N'GUID',    NewId(),      0              ); 
+GO
+
+-- Adjust stored procedures:
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetHostSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSettings]
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) Like N'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue,
+		   SettingIsSecure,
+		   CreatedByUserID,
+		   CreatedOnDate,
+	       LastModifiedByUserID,
+		   LastModifiedOnDate
+	 FROM  {databaseOwner}[{objectQualifier}HostSettings];
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetHostSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHostSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHostSetting]
+    @SettingName nvarchar(50)
+AS
+BEGIN
+    SELECT CASE WHEN Lower(SettingValue) Like N'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue
+     FROM  {databaseOwner}[{objectQualifier}HostSettings]
+     WHERE SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF EXISTS (select * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdateHostSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateHostSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateHostSetting]
+	@SettingName	   nvarchar( 50),
+	@SettingValue	   nvarchar(Max),
+	@SettingIsSecure   bit,
+	@UserID	           int
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}HostSettings]
+		 WHERE SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}HostSettings] S
+		 USING (SELECT @SettingName SN, @SettingValue SV, @SettingIsSecure Sec) Q
+		    ON (S.SettingName = Q.SN)
+		 WHEN MATCHED AND (IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') OR S.SettingIsSecure != Q.Sec) THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [SettingIsSecure] = Q.Sec, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( SettingName,  SettingValue,  SettingIsSecure, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@SettingName, @SettingValue, @SettingIsSecure, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateHostSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddHostSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddHostSetting]
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- Null|-1 for neutral language
+AS
+BEGIN
+	SELECT TOP (1)
+		   SettingName,
+		   CASE WHEN Lower(SettingValue) Like N'fileid=%'
+		        THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		        ELSE SettingValue 
+		   END   AS SettingValue,
+		   CreatedByUserID,
+		   CreatedOnDate,
+		   LastModifiedByUserID,
+		   LastModifiedOnDate,
+		   CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	   AND COALESCE(CultureCode, @CultureCode, N'') = IsNull(@CultureCode, N'')
+	 ORDER BY IsNull(CultureCode, N'') DESC
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = N'';
+
+	IF EXISTS (SELECT * 
+                FROM  {databaseOwner}[{objectQualifier}PortalLocalization] L
+			    JOIN  {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+				WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		 FROM  {databaseOwner}[{objectQualifier}Portals] 
+		 WHERE PortalID = @PortalID;
+
+	SELECT PS.SettingName,
+		   CASE WHEN Lower(PS.SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](PS.SettingValue)
+			    ELSE PS.SettingValue 
+           END   AS SettingValue,
+		   PS.CreatedByUserID,
+		   PS.CreatedOnDate,
+		   PS.LastModifiedByUserID,
+		   PS.LastModifiedOnDate,
+		   PS.CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] PS
+     WHERE PortalSettingID = (SELECT Top(1) PortalSettingID FROM {databaseOwner}[{objectQualifier}PortalSettings] S 
+		                       WHERE PS.PortalID = S.PortalID AND PS.SettingName = S.SettingName 
+							   ORDER BY CASE CultureCode WHEN @CultureCode THEN 2 WHEN Null THEN 1 ELSE 0 END DESC)
+	   AND PortalID = @PortalID
+	 ORDER BY SettingName;
+END; -- Procedure
+GO
+
+
+-- prevent duplicates when adding/updating portal setting:
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+--  covers delete, add and update scenarios:
+	@PortalID       Int,		   -- Key, Not Null (unless for delete)
+	@SettingName    nVarChar( 50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(Max), -- Not Null
+	@UserID			Int,		   -- Not Null (editing user)
+	@CultureCode    nVarChar( 10)  -- Key, Null|'' for neutral language 
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+		 WHERE IsNull(PortalID, -1) = IsNull(@PortalID, -1)
+		   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@PortalID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		 USING (SELECT @PortalID PID, @CultureCode CC, @SettingName SN, @SettingValue SV) Q
+		    ON (S.PortalID = Q.PID AND IsNull(S.CultureCode, N'') = IsNull(Q.CC, N'') AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( PortalID,  SettingName,  SettingValue, CultureCode,               CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@PortalID, @SettingName, @SettingValue, NULLIF(@CultureCode, N''), IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+		-- Saving a neutral setting overwrites all localized settings with same name (for current portal):
+		IF IsNull(@CultureCode, N'') = N''
+			DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			 WHERE PortalID = @PortalID AND SettingName = @SettingName AND CultureCode IS Not Null;		       
+	END; -- Else If
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+	@PortalID      Int,          -- Not Null
+	@SettingName   nVarChar(50), -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (SettingName = @SettingName)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeletePortalSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+	@PortalID      Int,          -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, N'') = N'')
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}GetRoleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRoleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRoleSettings]
+	@RoleId     int -- Not Null|-1
+AS
+BEGIN
+	SELECT RoleSettingID,
+		   RoleID,
+		   SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+			    ELSE SettingValue 
+           END    AS SettingValue,
+		   CreatedByUserID,
+		   CreatedOnDate,
+		   LastModifiedByUserID,
+		   LastModifiedOnDate
+	 FROM  {databaseOwner}[{objectQualifier}RoleSettings]
+	 WHERE RoleID = @RoleId
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateRoleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateRoleSetting]
+	@RoleID				int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}RoleSettings]
+		 WHERE IsNull(RoleID, -1) = IsNull(@RoleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@RoleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}RoleSettings] S
+		 USING (SELECT @RoleID RID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.RoleID = Q.RID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( RoleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@RoleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- use same pattern for ModuleSettings, TabModuleSettings, TabSettings:
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSetting]
+    @ModuleId      Int,          -- not null!
+    @SettingName   nVarChar(50)  -- not null or empty!
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] 
+	 WHERE ModuleID    = @ModuleId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettings]
+    @ModuleId Int -- Null: settings from all modules
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue 
+		   END       AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] 
+	 WHERE ModuleID = @ModuleId OR IsNull(@ModuleId, -1) = -1
+	 OPTION (OPTIMIZE FOR (@ModuleId UNKNOWN))
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettingsByTab]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+    @TabId Int -- Not Null
+AS
+BEGIN
+	SELECT S.ModuleID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+			    THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+			    ELSE S.SettingValue 
+		   END		 AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}TabModules]     M ON S.ModuleID = M.ModuleID
+	 WHERE M.TabID = @TabId
+	 ORDER BY S.ModuleID
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateMOduleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleSetting]
+	@ModuleID			int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}ModuleSettings]
+		 WHERE IsNull(ModuleID, -1) = IsNull(@ModuleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@ModuleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}ModuleSettings] S
+		 USING (SELECT @ModuleID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.ModuleID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( ModuleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@ModuleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateModuleSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModuleSetting]
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSetting]
+	@ModuleId      int,          -- Not Null
+	@SettingName   nVarChar(50)  -- Not Null or empty
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings]
+	 WHERE ModuleId    = @ModuleId
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteModuleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteModuleSettings]
+	@ModuleId int -- Not Null
+AS
+BEGIN
+	DELETE 
+	 FROM  {databaseOwner}[{objectQualifier}ModuleSettings]
+	 WHERE ModuleId = @ModuleId
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSetting]
+    @TabModuleId   Int,              -- not null!
+    @SettingName   nVarChar(50)      -- not null or empty!
+AS
+BEGIN
+	SELECT S.SettingName,
+		   CASE WHEN S.SettingValue LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+	 WHERE TabModuleID = @TabModuleId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettings]
+    @TabModuleId Int -- Null: all tabmodules
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN Lower(SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue 
+		   END  AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] 
+	 WHERE TabModuleID = @TabModuleId OR IsNull(@TabModuleId, -1) = -1
+	 OPTION (OPTIMIZE FOR (@TabModuleId UNKNOWN))
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+    @TabId Int -- Not Null
+AS
+BEGIN
+	SELECT S.TabModuleID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END	AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+     JOIN  {databaseOwner}[{objectQualifier}TabModules]        M ON S.TabModuleID = M.TabModuleID
+	 WHERE M.TabID = @TabId
+	 ORDER BY S.TabModuleID
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByName]
+	@PortalId    Int,         -- Not Null
+	@SettingName NVarChar(50) -- Not Null
+AS
+BEGIN
+	SELECT S.TabModuleID, 
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END	AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}TabModules]        M ON S.TabModuleID = M.TabModuleID
+	 JOIN {databaseOwner}[{objectQualifier}Tabs]               T ON M.TabID       = T.TabID AND (T.PortalID = @PortalID OR T.PortalID IS NULL)
+	 WHERE S.SettingName = @SettingName
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleSetting]
+	@TabModuleID		int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}TabModuleSettings]
+		 WHERE IsNull(TabModuleID, -1) = IsNull(@TabModuleID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@TabModuleID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}TabModuleSettings] S
+		 USING (SELECT @TabModuleID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.TabModuleID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( TabModuleID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@TabModuleID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateTabModuleSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabModuleSetting]
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSetting]
+	@TabModuleId   int,
+	@SettingName   nVarChar(50)
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings]
+	 WHERE TabModuleId = @TabModuleId
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabModuleSettings]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabModuleSettings]
+	@TabModuleId Int
+AS
+BEGIN
+	DELETE
+	 FROM  {databaseOwner}[{objectQualifier}TabModuleSettings] 
+	 WHERE TabModuleId = @TabModuleId;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSetting]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSetting]
+    @TabId         Int,         -- not null!
+    @SettingName   nVarChar(50) -- not null or empty!
+AS
+BEGIN
+	SELECT SettingName,
+		   CASE WHEN SettingValue LIKE N'fileid=%'
+				THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+				ELSE SettingValue  
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings] 
+	 WHERE TabID = @TabId 
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @PortalId Int -- Null|-1 for Host Pages
+AS
+BEGIN
+	SELECT S.TabID,
+		   S.SettingName,
+		   CASE WHEN Lower(S.SettingValue) LIKE N'fileid=%'
+			 	THEN {databaseOwner}[{objectQualifier}FilePath](S.SettingValue)
+				ELSE S.SettingValue 
+		   END AS SettingValue
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings] S
+	 JOIN  {databaseOwner}[{objectQualifier}Tabs]        T ON t.TabID = S.TabID
+	 WHERE  ISNull(PortalId, -1) = isNull(@PortalId, -1)
+	 ORDER BY S.TabID;
+END; -- Procedure
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabSetting]
+	@TabID	      	    int,           -- Not Null|-1
+	@SettingName		nvarchar( 50), -- Not Null|''
+	@SettingValue		nvarchar(Max), -- Null: remove setting
+	@UserID				int            -- for logging
+AS
+BEGIN
+	-- empty value: remove setting
+	IF IsNull(@SettingValue, N'') = N'' AND IsNull(@SettingName, N'') != N''
+		DELETE FROM {databaseOwner}[{objectQualifier}TabSettings]
+		 WHERE IsNull(TabID, -1) = IsNull(@TabID, -1)
+		   AND SettingName = @SettingName;
+	ELSE IF IsNull(@SettingName, N'') != N'' AND IsNull(@TabID, -1) != -1 BEGIN -- key must be valid
+		MERGE INTO {databaseOwner}[{objectQualifier}TabSettings] S
+		 USING (SELECT @TabID MID, @SettingName SN, @SettingValue SV) Q
+		    ON (S.TabID = Q.MID AND S.SettingName = Q.SN)
+		 WHEN MATCHED AND IsNull(S.SettingValue, N'') != IsNull(Q.SV, N'') THEN -- update only, if value has been modified:
+			UPDATE SET [SettingValue] = Q.SV, [LastModifiedByUserID] = @UserID, [LastModifiedOnDate] = GetDate()
+		 WHEN NOT MATCHED THEN 
+		    INSERT ( TabID,  SettingName,  SettingValue, CreatedByUserID    , CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+			VALUES (@TabID, @SettingName, @SettingValue, IsNull(@UserID, -1),     GetDate(),  IsNull(@UserID, -1),          GetDate());
+	END; -- Else If
+END; -- Procedure
+GO
+
+-- obsolete, covered by UpdateTabSetting
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}AddTabSetting]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabSetting]
+GO
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabSetting]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSetting]
+	@TabID      	Int,         -- Not Null
+	@SettingName	nVarChar(50) -- Not Null or empty
+AS
+BEGIN
+	DELETE	
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings]
+	 WHERE TabID       = @TabID
+	   AND SettingName = @SettingName;
+END; -- Procedure
+GO
+
+
+IF EXISTS (SELECT * FROM sys.Procedures WHERE object_id = object_id(N'{databaseOwner}[{objectQualifier}DeleteTabSettings]'))
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabSettings]
+	@TabID  Int -- Not Null!
+AS
+BEGIN
+	DELETE	
+	 FROM  {databaseOwner}[{objectQualifier}TabSettings]
+	 WHERE TabID = @TabID;
+END; -- Procedure
+GO
+/***** DNN-8697: add description field for file. *****/
+IF NOT EXISTS
+(SELECT * FROM sys.all_columns c INNER JOIN sys.tables t
+    ON c.object_id = t.object_id AND t.name = '{objectQualifier}Files'
+    WHERE c.name = 'Description')
+BEGIN
+    ALTER TABLE {databaseOwner}[{objectQualifier}Files] ADD Description NVARCHAR(500)        
+END
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+    SELECT    fi.FileId, 
+            fi.PortalId, 
+            fi.FileName, 
+            fi.Extension, 
+            fi.Size, 
+            fi.Width, 
+            fi.Height, 
+            fi.ContentType, 
+            fi.FolderID, 
+            fi.[Content], 
+            fi.CreatedByUserID, 
+            fi.CreatedOnDate, 
+            fi.LastModifiedByUserID, 
+            fi.LastModifiedOnDate, 
+            fi.UniqueId, 
+            fi.VersionGuid, 
+            fi.SHA1Hash, 
+            fi.LastModificationTime, 
+            fi.Title, 
+            fi.Description,
+            fi.StartDate, 
+            fi.EnablePublishPeriod, 
+            fi.EndDate, 
+            fi.ContentItemID, 
+            fi.PublishedVersion, 
+            fo.FolderPath AS Folder,
+            fo.IsCached,
+            fo.FolderMappingID,
+            fo.StorageLocation,
+            fi.HasBeenPublished
+    FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+    INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+        ON fi.FolderID = fo.FolderID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+    SELECT     
+       fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[Description]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+      ,fi.[Folder]
+      ,fi.[IsCached]
+      ,fi.[StorageLocation]
+      ,fi.[FolderMappingID]
+      ,fi.[HasBeenPublished]
+    FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+      WHERE ([EnablePublishPeriod] = 0 AND [HasBeenPublished] = 1)
+         OR ([StartDate] <= GETDATE()
+            AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]) AND [HasBeenPublished] = 1)
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFile]
+	@PortalId   int,
+	@UniqueId   uniqueidentifier,
+	@VersionGuid  uniqueidentifier,
+	@FileName   nvarchar(246),
+	@Extension   nvarchar(100),
+	@Size    int,
+	@Width    int,
+	@Height    int,
+	@ContentType  nvarchar(200),
+	@Folder    nvarchar(246),
+	@FolderID   int,
+	@CreatedByUserID   int,
+	@Hash     varchar(40),
+	@LastModificationTime	datetime, 
+	@Title					nvarchar(256),
+    @Description            nvarchar(500),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,
+	@ContentItemID			int
+AS
+BEGIN
+	
+	SET NOCOUNT OFF;
+	DECLARE @FileID int
+
+	UPDATE {databaseOwner}[{objectQualifier}Files]
+	SET
+		/* retrieves FileId from table */
+		@FileID = FileId,
+		FileName = @FileName,
+		VersionGuid = @VersionGuid,
+		Extension = @Extension,
+		Size = @Size,
+		Width = @Width,
+		Height = @Height,
+		ContentType = @ContentType,
+		FolderID = @FolderID,
+		LastModifiedByUserID = @CreatedByUserID,
+		LastModifiedOnDate = getdate(),
+		SHA1Hash = @Hash,
+		LastModificationTime = @LastModificationTime, 
+		Title = @Title,
+        Description = @Description,
+		EnablePublishPeriod = @EnablePublishPeriod,
+		StartDate = @StartDate,
+		EndDate = @EndDate,
+		ContentItemID = @ContentItemID
+	WHERE
+		FolderID = @FolderID AND FileName = @FileName
+	
+	DECLARE @RowCount int = @@ROWCOUNT;
+	IF @RowCount = 0
+	BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Files] (
+		PortalId,
+		UniqueId,
+		VersionGuid,
+		FileName,
+		Extension,
+		Size,
+		Width,
+		Height,
+		ContentType,
+		FolderID,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		SHA1Hash,
+		LastModificationTime, 
+		Title,
+        Description,
+		EnablePublishPeriod,
+		StartDate,
+		EndDate,
+		ContentItemID
+	)
+	VALUES (
+		@PortalId,
+		@UniqueId,
+		@VersionGuid,
+		@FileName,
+		@Extension,
+		@Size,
+		@Width,
+		@Height,
+		@ContentType,
+		@FolderID,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate(),
+		@Hash,
+		@LastModificationTime, 
+		@Title,
+        @Description,
+		@EnablePublishPeriod,
+		@StartDate,
+		@EndDate,
+		@ContentItemID
+	)
+	SELECT @FileID = SCOPE_IDENTITY()
+	END
+
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LATEST DATE
+	IF((@RowCount>0 OR @@ROWCOUNT>0) AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+	
+	SELECT @FileID
+
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId                 Int,
+    @VersionGuid            UniqueIdentifier,
+    @FileName               nVarChar(246),
+    @Extension              nVarChar(100),
+    @Size                   Int,
+    @Width                  Int,
+    @Height                 Int,
+    @ContentType            nVarChar(200),
+    @FolderID               Int,
+    @LastModifiedByUserID   Int,
+    @Hash                   VarChar(40),
+    @LastModificationTime   DateTime,
+    @Title                  nVarChar(256),
+    @Description            nVarChar(500),
+    @EnablePublishPeriod    Bit,
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @ContentItemID          Int
+AS
+BEGIN
+    SET NOCOUNT OFF;
+    DECLARE @PortalID int;
+    SELECT @PortalID = PortalID FROM {databaseOwner}[{objectQualifier}Folders] WHERE FolderID = @FolderID;
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+     SET   FileName             = @FileName,
+           VersionGuid          = @VersionGuid,
+           Extension            = @Extension,
+           Size                 = @Size,
+           Width                = @Width,
+           Height               = @Height,
+           ContentType          = @ContentType,
+           FolderID             = @FolderID,
+           PortalID             = @PortalID,
+           LastModifiedByUserID = @LastModifiedByUserID,
+           LastModifiedOnDate   = GetDate(),
+           SHA1Hash             = @Hash,
+           LastModificationTime = @LastModificationTime,
+           Title                = @Title,
+           Description          = @Description,
+           EnablePublishPeriod  = @EnablePublishPeriod,
+           StartDate            = @StartDate,
+           EndDate              = @EndDate,
+           ContentItemID        = @ContentItemID
+     WHERE FileId = @FileId
+    
+	--UPDATE THE PARENT FOLDERS UPDATED DATE TO LASTET DATE
+	IF(@@ROWCOUNT>0 AND @FolderID IS NOT NULL)
+	BEGIN
+		EXEC {databaseOwner}[{objectQualifier}UpdateFolderModifiedOnToCurrentDate] @FolderID
+	END
+
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+AS
+BEGIN
+	SELECT   
+	  FileId,  
+	  PortalId,  
+	  [FileName],  
+	  Extension,  
+	  Size,  
+	  Width,  
+	  Height,  
+	  ContentType,  
+	  FolderID,  
+	  Folder,  
+	  StorageLocation,  
+	  IsCached,
+	  UniqueId,
+	  VersionGuid,
+	  SHA1Hash,
+	  FolderMappingID,  
+	  LastModificationTime,  
+	  Title,  
+      Description,
+	  EnablePublishPeriod,  
+	  StartDate,  
+	  EndDate,  
+	  CreatedByUserID,  
+	  CreatedOnDate,  
+	  LastModifiedByUserID,  
+	  LastModifiedOnDate,  
+	  PublishedVersion,  
+	  ContentItemID
+	FROM {databaseOwner}[{objectQualifier}vw_Files] 	
+END
+GO
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+    @FileName nvarchar(246),
+    @FolderID int,
+    @RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+    IF @RetrieveUnpublishedFiles = 0 BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,       
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               Description,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               ContentItemID,
+               PublishedVersion,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]             
+        WHERE [FileName] = @FileName AND FolderID = @FolderID
+    END
+    ELSE BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,       
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               Description,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               ContentItemID,
+               PublishedVersion,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files]
+        WHERE [FileName] = @FileName AND FolderID = @FolderID
+    END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+    @FileId int    ,
+    @RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+    IF @RetrieveUnpublishedFiles = 0 BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               UniqueId,
+               VersionGuid,
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               Description,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               PublishedVersion,
+               ContentItemID,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+        WHERE FileId = @FileId
+    END
+    ELSE BEGIN
+        SELECT FileId,
+               PortalId,
+               [FileName],
+               Extension,
+               Size,
+               Width,
+               Height,
+               ContentType,
+               FolderID,
+               Folder,
+               StorageLocation,
+               IsCached,
+               [UniqueId],
+               [VersionGuid],
+               SHA1Hash,
+               FolderMappingID,
+               LastModificationTime,
+               Title,
+               Description,
+               EnablePublishPeriod,
+               StartDate,
+               EndDate,
+               CreatedByUserID,
+               CreatedOnDate,
+               LastModifiedByUserID,
+               LastModifiedOnDate,
+               PublishedVersion,
+               ContentItemID,
+               HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] 
+        WHERE FileId = @FileId
+    END    
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+    IF @RetrieveUnpublishedFiles = 0 
+    BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F            
+        WHERE F.FolderID = @FolderID
+        ORDER BY [FolderID], [FileName]
+    END
+    ELSE BEGIN
+        SELECT
+            F.FileId,
+            F.PortalId,
+            F.[FileName],
+            F.Extension,
+            F.[Size],
+            F.Width,
+            F.Height,
+            F.ContentType,
+            F.FolderID,
+            F.Folder,
+            F.StorageLocation,
+            F.IsCached,
+            F.FolderMappingID,
+            F.UniqueId,
+            F.VersionGuid,
+            F.SHA1Hash,
+            F.LastModificationTime,
+            F.Title,
+            F.Description,
+            F.EnablePublishPeriod,
+            F.StartDate,
+            F.EndDate,
+            F.CreatedByUserID,
+            F.CreatedOnDate,
+            F.LastModifiedByUserID,
+            F.LastModifiedOnDate,
+            F.PublishedVersion,
+            F.ContentItemID,
+            F.HasBeenPublished
+        FROM {databaseOwner}[{objectQualifier}vw_Files] F            
+        WHERE F.FolderID = @FolderID
+        ORDER BY [FolderID], [FileName]
+    END
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+

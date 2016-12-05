@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -66,10 +66,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((_packageTypes == null))
                 {
                     _packageTypes = new Dictionary<string, string>();
-                    foreach (PackageType packageType in PackageController.Instance.GetExtensionPackageTypes())
+                    foreach (var packageType in PackageController.Instance.GetExtensionPackageTypes())
                     {
                         string installPath;
-                        string type;
+                        var type = packageType.PackageType;
                         switch (packageType.PackageType)
                         {
                             case "Auth_System":
@@ -77,22 +77,21 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                 installPath = Globals.ApplicationMapPath + "\\Install\\AuthSystem";
                                 break;
                             case "JavaScript_Library":
-                                type = "JavaScript_Library";
                                 installPath = Globals.ApplicationMapPath + "\\Install\\JavaScriptLibrary";
                                 break;
                             case "Module":
                             case "Skin":
                             case "Container":
                             case "Provider":
-                                type = packageType.PackageType;
+                            case "Library":
                                 installPath = Globals.ApplicationMapPath + "\\Install\\" + packageType.PackageType;
                                 break;
                             default:
                                 type = String.Empty;
-                                installPath = String.Empty;
+                                installPath = string.Empty;
                                 break;
                         }
-                        if (!String.IsNullOrEmpty(type) && Directory.Exists(installPath) && 
+                        if (!string.IsNullOrEmpty(type) && Directory.Exists(installPath) && 
                             (Directory.GetFiles(installPath, "*.zip").Length > 0 || Directory.GetFiles(installPath, "*.resources").Length > 0))
                         {
                             _packageTypes[type] = installPath;

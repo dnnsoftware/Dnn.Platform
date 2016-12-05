@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Install
                         Initialize.LogStart();
 
                         //Start Scheduler
-                        Initialize.StartScheduler();
+                        Initialize.StartScheduler(true);
                     }
                     else
                     {
@@ -340,6 +340,9 @@ namespace DotNetNuke.Services.Install
                         }
                         Response.Write("<h2>Upgrade Complete</h2>");
                         Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
+
+                        //remove installwizard files
+                        Upgrade.Upgrade.DeleteInstallerFiles();
                     }
                     else
                     {

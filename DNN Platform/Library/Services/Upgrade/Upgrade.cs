@@ -1,8 +1,8 @@
 
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// DotNetNukeÂ® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -2785,9 +2785,7 @@ namespace DotNetNuke.Services.Upgrade
 
                         if (userName != HttpUtility.HtmlDecode(userName))
                         {
-                            
-                            userName = HttpUtility.HtmlDecode(userName);
-                            userName = portalSecurity.InputFilter(userName,
+                            userName = portalSecurity.InputFilter(HttpUtility.HtmlDecode(userName),
                                                                  PortalSecurity.FilterFlag.NoScripting |
                                                                  PortalSecurity.FilterFlag.NoAngleBrackets |
                                                                  PortalSecurity.FilterFlag.NoMarkup);
@@ -4095,9 +4093,32 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void DeleteInstallerFiles()
         {
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config"));
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx"));
-            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx.cs"));
+            var files = new List<string>
+            {
+                "DotNetNuke.install.config",
+                "DotNetNuke.install.config.resources",
+                "InstallWizard.aspx",
+                "InstallWizard.aspx.cs",
+                "InstallWizard.aspx.designer.cs",
+                "UpgradeWizard.aspx",
+                "UpgradeWizard.aspx.cs",
+                "UpgradeWizard.aspx.designer.cs",
+                "Install.aspx",
+                "Install.aspx.cs",
+                "Install.aspx.designer.cs",
+            };
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", file));
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("File deletion failed for [Install\\" + file + "]. PLEASE REMOVE THIS MANUALLY." + ex);
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -4652,9 +4673,14 @@ namespace DotNetNuke.Services.Upgrade
                 // parse Host Settings if available
                 InitialiseHostSettings(xmlDoc, true);
 
-                // parse SuperUser if Available
-                UserInfo superUser = GetSuperUser(xmlDoc, true);
-                UserController.CreateUser(ref superUser);
+                //Create SuperUser only when it's not there (even soft deleted)
+                var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
+                if (superUsers == null || superUsers.Count == 0)
+                {
+                    // parse SuperUser if Available
+                    UserInfo superUser = GetSuperUser(xmlDoc, true);
+                    UserController.CreateUser(ref superUser);
+                }
 
                 // parse File List if available
                 InstallFiles(xmlDoc, true);
@@ -5817,7 +5843,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var portals = PortalController.Instance.GetPortals();
             IDictionary<string, XmlDocument> resourcesDict = new Dictionary<string, XmlDocument>();
-            var localizeFieldRegex = new Regex("^\\[Tab[\\w\\.]+?\\.Text\\]$", RegexOptions.Compiled);
+            var localizeFieldRegex = new Regex("^\\[Tab[\\w\\.]+?\\.Text\\]$");
             foreach (PortalInfo portal in portals)
             {
                 if (portal.AdminTabId > Null.NullInteger)

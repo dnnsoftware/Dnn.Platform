@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,6 +48,8 @@ using DotNetNuke.Services.Search.Entities;
 using Microsoft.ApplicationBlocks.Data;
 
 #endregion
+
+// ReSharper disable InconsistentNaming
 
 namespace DotNetNuke.Data
 {
@@ -169,7 +171,9 @@ namespace DotNetNuke.Data
 
 		public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
 
-		public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
+        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
+
+        public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
 
@@ -446,12 +450,6 @@ namespace DotNetNuke.Data
 		#endregion
 
 		#region Host Settings Methods
-
-		public virtual void AddHostSetting(string SettingName, string SettingValue, bool SettingIsSecure,
-										   int CreatedByUserID)
-		{
-			ExecuteNonQuery("AddHostSetting", SettingName, SettingValue, SettingIsSecure, CreatedByUserID);
-		}
 
 		public virtual IDataReader GetHostSetting(string SettingName)
 		{
@@ -781,10 +779,6 @@ namespace DotNetNuke.Data
                                         tab.IsSystem);
         }
 
-		public virtual void AddTabSetting(int TabId, string SettingName, string SettingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabSetting", TabId, SettingName, SettingValue, createdByUserID);
-		}
 
         public virtual int AddTabToEnd(TabInfo tab, int createdByUserID)
         {
@@ -1085,10 +1079,6 @@ namespace DotNetNuke.Data
 											createdByUserID);
 		}
 
-		public virtual void AddModuleSetting(int moduleId, string settingName, string settingValue, int createdByUserID)
-		{
-			ExecuteNonQuery("AddModuleSetting", moduleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void AddTabModule(int TabId, int ModuleId, string ModuleTitle, string Header, string Footer,
 										 int ModuleOrder, string PaneName, int CacheTime, string CacheMethod,
@@ -1130,11 +1120,6 @@ namespace DotNetNuke.Data
 									  createdByUserID);
 		}
 
-		public virtual void AddTabModuleSetting(int tabModuleId, string settingName, string settingValue,
-												int createdByUserID)
-		{
-			ExecuteNonQuery("AddTabModuleSetting", tabModuleId, settingName, settingValue, createdByUserID);
-		}
 
 		public virtual void DeleteModule(int moduleId)
 		{
@@ -1652,7 +1637,7 @@ namespace DotNetNuke.Data
 		public virtual int AddFile(int portalId, Guid uniqueId, Guid versionGuid, string fileName, string extension,
 									long size, int width, int height, string contentType, string folder, int folderId,
 									int createdByUserID, string hash, DateTime lastModificationTime,
-									string title, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
+									string title, string description, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
 		{
 			return ExecuteScalar<int>("AddFile",
 											GetNull(portalId),
@@ -1670,6 +1655,7 @@ namespace DotNetNuke.Data
 											hash,
 											lastModificationTime,
 											title,
+                                            description,
 											enablePublishPeriod,
 											startDate,
 											GetNull(endDate),
@@ -1736,34 +1722,35 @@ namespace DotNetNuke.Data
 			return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles);
 		}
 
-		/// <summary>
-		/// This is an internal method for communication between DNN business layer and SQL database.
-		/// Do not use in custom modules, please use API (DotNetNuke.Services.FileSystem.FileManager.UpdateFile)
-		/// 
-		/// Stores information about a specific file, stored in DNN filesystem
-		/// calling petapoco method to call the underlying stored procedure "UpdateFile"
-		/// </summary>
-		/// <param name="fileId">ID of the (already existing) file</param>
-		/// <param name="versionGuid">GUID of this file version  (should usually not be modified)</param>
-		/// <param name="fileName">Name of the file in the file system (including extension)</param>
-		/// <param name="extension">File type - should meet extension in FileName</param>
-		/// <param name="size">Size of file (bytes)</param>
-		/// <param name="width">Width of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file sync)</param>
-		/// <param name="height">Height of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file snyc)</param>
-		/// <param name="contentType">MIME type of the file</param>
-		/// <param name="folderId">ID of the folder, the file resides in</param>
-		/// <param name="lastModifiedByUserID">ID of the user, who performed last update of file or file info</param>
-		/// <param name="hash">SHa1 hash of the file content, used for file versioning (lazy load: pass Null, will be generated by DNN platform on db file sync)</param>
-		/// <param name="lastModificationTime">timestamp, when last update of file or file info happened</param>
-		/// <param name="title">Display title of the file - optional (pass Null if not provided)</param>
-		/// <param name="startDate">date and time (server TZ), from which the file should be displayed/accessible (according to folder permission)</param>
-		/// <param name="endDate">date and time (server TZ), until which the file should be displayed/accessible (according to folder permission)</param>
-		/// <param name="enablePublishPeriod">shall startdate/end date be used?</param>
-		/// <param name="contentItemId">ID of the associated contentitem with description etc. (optional)</param>
-		public virtual void UpdateFile(int fileId, Guid versionGuid, string fileName, string extension, long size,
+        /// <summary>
+        /// This is an internal method for communication between DNN business layer and SQL database.
+        /// Do not use in custom modules, please use API (DotNetNuke.Services.FileSystem.FileManager.UpdateFile)
+        /// 
+        /// Stores information about a specific file, stored in DNN filesystem
+        /// calling petapoco method to call the underlying stored procedure "UpdateFile"
+        /// </summary>
+        /// <param name="fileId">ID of the (already existing) file</param>
+        /// <param name="versionGuid">GUID of this file version  (should usually not be modified)</param>
+        /// <param name="fileName">Name of the file in the file system (including extension)</param>
+        /// <param name="extension">File type - should meet extension in FileName</param>
+        /// <param name="size">Size of file (bytes)</param>
+        /// <param name="width">Width of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file sync)</param>
+        /// <param name="height">Height of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file snyc)</param>
+        /// <param name="contentType">MIME type of the file</param>
+        /// <param name="folderId">ID of the folder, the file resides in</param>
+        /// <param name="lastModifiedByUserID">ID of the user, who performed last update of file or file info</param>
+        /// <param name="hash">SHa1 hash of the file content, used for file versioning (lazy load: pass Null, will be generated by DNN platform on db file sync)</param>
+        /// <param name="lastModificationTime">timestamp, when last update of file or file info happened</param>
+        /// <param name="title">Display title of the file - optional (pass Null if not provided)</param>
+        /// <param name="description">Description of the file.</param>
+        /// <param name="startDate">date and time (server TZ), from which the file should be displayed/accessible (according to folder permission)</param>
+        /// <param name="endDate">date and time (server TZ), until which the file should be displayed/accessible (according to folder permission)</param>
+        /// <param name="enablePublishPeriod">shall startdate/end date be used?</param>
+        /// <param name="contentItemId">ID of the associated contentitem with description etc. (optional)</param>
+        public virtual void UpdateFile(int fileId, Guid versionGuid, string fileName, string extension, long size,
 										int width, int height, string contentType, int folderId,
 										int lastModifiedByUserID, string hash, DateTime lastModificationTime,
-										string title, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
+										string title, string description, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
 		{
 			ExecuteNonQuery("UpdateFile",
 									  fileId,
@@ -1779,6 +1766,7 @@ namespace DotNetNuke.Data
 									  hash,
 									  lastModificationTime,
 									  title,
+                                      description,
 									  enablePublishPeriod,
 									  startDate,
 									  GetNull(endDate),

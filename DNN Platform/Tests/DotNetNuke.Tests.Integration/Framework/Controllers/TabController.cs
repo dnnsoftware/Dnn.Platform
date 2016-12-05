@@ -1,5 +1,5 @@
 ﻿// DotNetNuke® - http://www.dnnsoftware.com
-// Copyright (c) 2002-2015, DNN Corp.
+// Copyright (c) 2002-2016, DNN Corp.
 // All Rights Reserved
 
 using System;
@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.Integration.Framework.Controllers
         /// </summary>
         public static void AddTabSetting(int tabId, string settingName, string settingValue)
         {
-            DatabaseHelper.ExecuteStoredProcedure("AddTabSetting",
+            DatabaseHelper.ExecuteStoredProcedure("UpdateTabSetting",
                 tabId,
                 settingName,
                 settingValue,

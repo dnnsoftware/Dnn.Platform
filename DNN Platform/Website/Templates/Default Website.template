@@ -5111,30 +5111,6 @@
       <files>
         <file>
           <contenttype>application/octet-stream</contenttype>
-          <extension>xml</extension>
-          <filename>Dnn.CKEditorSettings.xml</filename>
-          <height>0</height>
-          <size>5358</size>
-          <width>0</width>
-        </file>
-        <file>
-          <contenttype>application/octet-stream</contenttype>
-          <extension>xml</extension>
-          <filename>Dnn.CKToolbarButtons.xml</filename>
-          <height>0</height>
-          <size>8038</size>
-          <width>0</width>
-        </file>
-        <file>
-          <contenttype>application/octet-stream</contenttype>
-          <extension>xml</extension>
-          <filename>Dnn.CKToolbarSets.xml</filename>
-          <height>0</height>
-          <size>7111</size>
-          <width>0</width>
-        </file>
-        <file>
-          <contenttype>application/octet-stream</contenttype>
           <extension>css</extension>
           <filename>home.css</filename>
           <height>0</height>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -602,11 +602,11 @@ namespace DotNetNuke.Entities.Profile
                 needEncode = true;
             }
 
-            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var tagMatches = Regex.Matches(cleanContent, @"(<[^>]*?) on.*?\=(['""]?)[\s\S]*?(\2 )([^>]*?>)", RegexOptions.IgnoreCase);
             foreach (Match match in tagMatches)
             {
                 var tagContent = match.Value;
-                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var cleanTagContent = Regex.Replace(tagContent, @"on.*?\=(['""]?)[\s\S]*?(\1 )", string.Empty, RegexOptions.IgnoreCase);
                 cleanContent = cleanContent.Replace(tagContent, cleanTagContent);
             }
 

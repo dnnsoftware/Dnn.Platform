@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -2300,8 +2300,10 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current 
-                    list.Add(new PortalTemplateInfo(templateFilePath, (GetCurrentPortalSettingsInternal() != null) ? GetCurrentPortalSettingsInternal().CultureCode : Thread.CurrentThread.CurrentCulture.Name));
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use portal's default language.
+                    var portalSettings = PortalSettings.Current;
+                    var cultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                    list.Add(new PortalTemplateInfo(templateFilePath, cultureCode));
                 }
             }
 
@@ -3508,8 +3510,9 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current
-                    CultureCode = (GetCurrentPortalSettingsInternal() != null) ? GetCurrentPortalSettingsInternal().CultureCode : Thread.CurrentThread.CurrentCulture.Name;
+                    var portalSettings = PortalSettings.Current;
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
+                    CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }
             }
 

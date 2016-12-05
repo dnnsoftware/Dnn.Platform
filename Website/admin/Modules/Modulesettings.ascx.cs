@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -411,17 +411,19 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     //only Portal Administrators can manage the visibility on all Tabs
-                    rowAllTabs.Visible = PortalSecurity.IsInRole("Administrators");
+                    var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    rowAllTabs.Visible = isAdmin;
+                    chkAllModules.Enabled = isAdmin;
 
                     //tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
                     {
                         chkNewTabs.Enabled = false;
                         chkDefault.Enabled = false;
-                        chkAllModules.Enabled = false;
                         chkAllowIndex.Enabled = false;
                         cboTab.Enabled = false;
                     }
+                    
                     if (_moduleId != -1)
                     {
                         BindData();
@@ -521,13 +523,16 @@ namespace DotNetNuke.Modules.Admin.Modules
                     //TODO: REMOVE IF UNUSED
                     //var allowIndexChanged = false;
 
+                    //only Portal Administrators can manage the visibility on all Tabs
+                    var isAdmin = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+                    chkAllModules.Enabled = isAdmin;
+
                     //tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
                     {
                         chkAllTabs.Enabled = false;
                         chkNewTabs.Enabled = false;
                         chkDefault.Enabled = false;
-                        chkAllModules.Enabled = false;
                         chkAllowIndex.Enabled = false;
                         cboTab.Enabled = false;
                     }

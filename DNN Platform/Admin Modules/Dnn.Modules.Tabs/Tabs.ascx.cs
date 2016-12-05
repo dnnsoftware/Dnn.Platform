@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -234,17 +234,9 @@ namespace Dnn.Modules.Tabs
             ctlPages.NodeClick += CtlPagesNodeClick;
             ctlPages.ContextMenuItemClick += CtlPagesContextMenuItemClick;
             ctlPages.NodeEdit += CtlPagesNodeEdit;
-            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
-            {                
-                ctlPages.EnableDragAndDrop = true;
-                ctlPages.EnableDragAndDropBetweenNodes = true;
-                ctlPages.NodeDrop += CtlPagesNodeDrop;                
-            }
-            else
-            {             
-                ctlPages.EnableDragAndDrop = false;
-                ctlPages.EnableDragAndDropBetweenNodes = false;
-            }
+            ctlPages.EnableDragAndDrop = true;
+            ctlPages.EnableDragAndDropBetweenNodes = true;
+            ctlPages.NodeDrop += CtlPagesNodeDrop;                
             cmdExpandTree.Click += OnExpandTreeClick;
             grdModules.NeedDataSource += GrdModulesNeedDataSource;
             ctlPages.NodeExpand += CtlPagesNodeExpand;
@@ -456,31 +448,28 @@ namespace Dnn.Modules.Tabs
 
         protected void CtlPagesNodeDrop(object sender, RadTreeNodeDragDropEventArgs e)
         {
-            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+            var sourceNode = e.SourceDragNode;
+            var destNode = e.DestDragNode;
+            var dropPosition = e.DropPosition;
+            if (destNode != null && CanDropWithNode(destNode, dropPosition))
             {
-                var sourceNode = e.SourceDragNode;
-                var destNode = e.DestDragNode;
-                var dropPosition = e.DropPosition;
-                if (destNode != null)
+                if (sourceNode.TreeView.SelectedNodes.Count <= 1)
                 {
-                    if (sourceNode.TreeView.SelectedNodes.Count <= 1)
+                    PerformDragAndDrop(dropPosition, sourceNode, destNode);
+                }
+                else if (sourceNode.TreeView.SelectedNodes.Count > 1)
+                {
+                    foreach (var node in sourceNode.TreeView.SelectedNodes)
                     {
-                        PerformDragAndDrop(dropPosition, sourceNode, destNode);
+                        PerformDragAndDrop(dropPosition, node, destNode);
                     }
-                    else if (sourceNode.TreeView.SelectedNodes.Count > 1)
-                    {
-                        foreach (var node in sourceNode.TreeView.SelectedNodes)
-                        {
-                            PerformDragAndDrop(dropPosition, node, destNode);
-                        }
-                    }
+                }
 
-                    destNode.Expanded = true;
+                destNode.Expanded = true;
 
-                    foreach (var node in ctlPages.GetAllNodes())
-                    {
-                        node.Selected = node.Value == e.SourceDragNode.Value;
-                    }
+                foreach (var node in ctlPages.GetAllNodes())
+                {
+                    node.Selected = node.Value == e.SourceDragNode.Value;
                 }
             }
         }
@@ -553,7 +542,9 @@ namespace Dnn.Modules.Tabs
 
         protected void OnCreatePagesClick(object sender, EventArgs e)
         {
-            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)) 
+            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
+            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
+            if (!PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) && !TabPermissionController.CanAddPage(rootTab))
                 return;
 
             var strValue = txtBulk.Text;
@@ -569,8 +560,6 @@ namespace Dnn.Modules.Tabs
             }
 
             var pages = strValue.Split(char.Parse("\n"));
-            var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
-            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
             var tabs = new List<TabInfo>();
 
             foreach (var strLine in pages)
@@ -638,7 +627,7 @@ namespace Dnn.Modules.Tabs
 
             var intTab = Convert.ToInt32(ctlPages.SelectedNode.Value);
             var tab = TabController.Instance.GetTab(intTab, PortalId, true);
-            Page.Validate();
+            Page.Validate("Page");
             if (!Page.IsValid) 
                 return;
             if (tab != null && TabPermissionController.CanManagePage(tab))
@@ -818,7 +807,9 @@ namespace Dnn.Modules.Tabs
                         Text = string.Format("{0} {1}", objTab.TabName, GetNodeStatusIcon(objTab)),
                         Value = objTab.TabID.ToString(CultureInfo.InvariantCulture),
                         AllowEdit = true,
-                        ImageUrl = GetNodeIcon(objTab)
+                        ImageUrl = GetNodeIcon(objTab),
+                        AllowDrag = CanDrag(objTab),
+                        AllowDrop = CanDrop(objTab)
                     };
                     AddAttributes(ref node, objTab);
                     //If objTab.HasChildren Then
@@ -971,6 +962,8 @@ namespace Dnn.Modules.Tabs
                 rootNode.AllowEdit = false;
                 rootNode.EnableContextMenu = true;
                 rootNode.Attributes.Add("isPortalRoot", "True");
+                rootNode.AllowDrag = false;
+                rootNode.AllowDrop = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
                 AddAttributes(ref rootNode, null);
             }
             else
@@ -984,6 +977,7 @@ namespace Dnn.Modules.Tabs
                     rootNode.Expanded = true;
                     rootNode.EnableContextMenu = true;
                     rootNode.PostBack = false;
+                    rootNode.AllowDrag = false;
                 }
             }
 
@@ -1001,7 +995,9 @@ namespace Dnn.Modules.Tabs
                                 Text = string.Format("{0} {1}", tab.TabName, GetNodeStatusIcon(tab)),
                                 Value = tab.TabID.ToString(CultureInfo.InvariantCulture),
                                 AllowEdit = true,
-                                ImageUrl = GetNodeIcon(tab)
+                                ImageUrl = GetNodeIcon(tab),
+                                AllowDrag = CanDrag(tab),
+                                AllowDrop = CanDrop(tab)
                             };
                             AddAttributes(ref node, tab);
 
@@ -1018,7 +1014,9 @@ namespace Dnn.Modules.Tabs
                                 Text = string.Format("{0} {1}", tab.TabName, GetNodeStatusIcon(tab)),
                                 Value = tab.TabID.ToString(CultureInfo.InvariantCulture),
                                 AllowEdit = true,
-                                ImageUrl = GetNodeIcon(tab)
+                                ImageUrl = GetNodeIcon(tab),
+                                AllowDrag = CanDrag(tab),
+                                AllowDrop = CanDrop(tab)
                             };
                             AddAttributes(ref node, tab);
 
@@ -1216,7 +1214,7 @@ namespace Dnn.Modules.Tabs
         private bool MoveTab(TabInfo tab, TabInfo targetTab, Position position)
         {
             //Validate Tab Path
-            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath(targetTab.TabID, tab.TabName)))
+            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath(targetTab.ParentId, tab.TabName)))
             {
                 return false;
             }
@@ -1288,6 +1286,46 @@ namespace Dnn.Modules.Tabs
             PermissionsSection.Visible = show;
         }
 
+        private bool CanDropWithNode(RadTreeNode destNode, RadTreeViewDropPosition position)
+        {
+            var targetTab = TabController.Instance.GetTab(int.Parse(destNode.Value), PortalId, false);
+
+            if (position == RadTreeViewDropPosition.Over)
+            {
+                return CanDrop(targetTab);
+            }
+
+            //when drag the node before/after target, the target node should able to drag as well.
+            return CanDrag(targetTab);
+        }
+
+        private bool CanDrag(TabInfo tab)
+        {
+            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+            {
+                return true;
+            }
+
+            if (tab == null || tab.ParentId == Null.NullInteger || !TabPermissionController.CanManagePage(tab))
+            {
+                return false;
+            }
+
+            //only allow drag the node when its parent have manage permission.
+            var parentTab = TabController.Instance.GetTab(tab.ParentId, PortalId, false);
+            return parentTab != null && TabPermissionController.CanManagePage(parentTab);
+        }
+
+        private bool CanDrop(TabInfo tab)
+        {
+            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+            {
+                return true;
+            }
+
+            return tab != null && TabPermissionController.CanManagePage(tab);
+        }
+
         #endregion
 
         #region Public Methods
@@ -1324,7 +1362,7 @@ namespace Dnn.Modules.Tabs
                 try
                 {
                     xmlDoc.Load(templateFile);
-                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Replace, new Hashtable());
+                    TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                 }
                 catch (Exception ex)
                 {

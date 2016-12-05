@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -193,6 +193,9 @@ namespace DotNetNuke.Common.Utilities
         public const string UserCacheKey = "UserInfo|{0}|{1}";
         public const int UserCacheTimeOut = 1;
         public const CacheItemPriority UserCachePriority = CacheItemPriority.Normal;
+
+        public const string UserProfileCacheKey = "UserProfile|{0}|{1}";
+        public const int UserProfileCacheTimeOut = UserCacheTimeOut;
 
         public const string UserNotificationsCountCacheKey = "UserNotificationsCount|{0}|{1}";
         public const string UserNewThreadsCountCacheKey = "UserNewThreadsCount|{0}|{1}";
@@ -463,6 +466,7 @@ namespace DotNetNuke.Common.Utilities
         public static void ClearUserCache(int PortalId, string username)
         {
             RemoveCache(string.Format(UserCacheKey, PortalId, username));
+            RemoveCache(string.Format(UserProfileCacheKey, PortalId, username));
         }
 
         public static void ClearUserPersonalizationCache(int portalId, int userId)
