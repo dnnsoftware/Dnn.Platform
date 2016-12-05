@@ -8,6 +8,7 @@ import UserMenu from "../UserMenu";
 import Localization from "localization";
 import { SettingsIcon, UserIcon, MoreMenuIcon, ShieldIcon } from "dnn-svg-icons";
 import ColumnSizes from "../columnSizes";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import {canManageRoles, canManageProfile, canViewSettings} from "../../permissionHelpers.js";
 
 class DetailsRow extends Component {
@@ -117,7 +118,7 @@ class DetailsRow extends Component {
             {
                 index: 10,
                 content: <GridCell columnSize={columnSizes.find(x=>x.index===10).size}  className={"user-emails" + (user.isDeleted ? " deleted" : "") } >
-                    <p>{user.email}</p>
+                    <TextOverflowWrapper className="email-link" isAnchor={true} href={"mailto:" + user.email} text={user.email} maxWidth={125}/>
                 </GridCell >
             },
             {
