@@ -584,10 +584,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         c.Text,
                         c.Value,
-                        Icon =
+                        Icon = Globals.ResolveUrl(
                             string.IsNullOrEmpty(c.Value)
-                                ? "/images/Flags/none.gif"
-                                : $"/images/Flags/{c.Value}.gif"
+                                ? "~/images/Flags/none.gif"
+                                : $"~/images/Flags/{c.Value}.gif")
                     })
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -1486,8 +1486,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     Name = viewType == "NATIVE" ? local.NativeName : local.EnglishName,
                     local.Code,
-                    Icon = string.IsNullOrEmpty(local.Code) ? "/images/Flags/none.gif" :
-                        $"/images/Flags/{local.Code}.gif"
+                    Icon = Globals.ResolveUrl(string.IsNullOrEmpty(local.Code) ? "~/images/Flags/none.gif" :
+                        $"~/images/Flags/{local.Code}.gif")
                 }).ToList();
 
                 var response = new
@@ -1887,7 +1887,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     SystemDefaultLanguage = string.IsNullOrEmpty(Localization.SystemLocale)
                     ? Localization.GetString("NeutralCulture", Localization.GlobalResourceFile)
                     : Localization.GetLocaleName(Localization.SystemLocale, GetCultureDropDownType(pid)),
-                    SystemDefaultLanguageIcon = string.IsNullOrEmpty(Localization.SystemLocale) ? "/images/Flags/none.gif" : $"/images/Flags/{Localization.SystemLocale}.gif",
+                    SystemDefaultLanguageIcon = Globals.ResolveUrl(string.IsNullOrEmpty(Localization.SystemLocale) ? "~/images/Flags/none.gif" : $"~/images/Flags/{Localization.SystemLocale}.gif"),
                     SiteDefaultLanguage = portalSettings.DefaultLanguage,
                     LanguageDisplayMode = GetLanguageDisplayMode(pid),
                     portalSettings.EnableUrlLanguage,
@@ -1905,7 +1905,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         l.NativeName,
                         l.EnglishName,
                         l.Name,
-                        Icon = string.IsNullOrEmpty(l.Name) ? "/images/Flags/none.gif" : $"/images/Flags/{l.Name}.gif"
+                        Icon = Globals.ResolveUrl(string.IsNullOrEmpty(l.Name) ? "~/images/Flags/none.gif" : $"~/images/Flags/{l.Name}.gif")
                     }),
                     LanguageDisplayModes = languageDisplayModes
                 });
@@ -2019,10 +2019,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Languages = LocaleController.Instance.GetLocales(Null.NullInteger).Values.Select(l => new
                         {
                             l.LanguageId,
-                            Icon =
+                            Icon = Globals.ResolveUrl(
                                 string.IsNullOrEmpty(l.Code)
-                                    ? "/images/Flags/none.gif"
-                                    : $"/images/Flags/{l.Code}.gif",
+                                    ? "~/images/Flags/none.gif"
+                                    : $"~/images/Flags/{l.Code}.gif"),
                             l.Code,
                             l.NativeName,
                             l.EnglishName,
@@ -2044,10 +2044,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         Languages = LocaleController.Instance.GetLocales(Null.NullInteger).Values.Select(l => new
                         {
                             l.LanguageId,
-                            Icon =
+                            Icon = Globals.ResolveUrl(
                                 string.IsNullOrEmpty(l.Code)
-                                    ? "/images/Flags/none.gif"
-                                    : $"/images/Flags/{l.Code}.gif",
+                                    ? "~/images/Flags/none.gif"
+                                    : $"~/images/Flags/{l.Code}.gif"),
                             l.Code,
                             l.NativeName,
                             l.EnglishName,
@@ -2093,20 +2093,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         l.NativeName,
                         l.EnglishName,
                         l.Name,
-                        Icon =
+                        Icon = Globals.ResolveUrl(
                             string.IsNullOrEmpty(l.Name)
-                                ? "/images/Flags/none.gif"
-                                : $"/images/Flags/{l.Name}.gif"
+                                ? "~/images/Flags/none.gif"
+                                : $"~/images/Flags/{l.Name}.gif")
                     }).ToList() : LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger))
                     .Select(l => new
                     {
                         l.NativeName,
                         l.EnglishName,
                         l.Name,
-                        Icon =
+                        Icon = Globals.ResolveUrl(
                             string.IsNullOrEmpty(l.Name)
-                                ? "/images/Flags/none.gif"
-                                : $"/images/Flags/{l.Name}.gif"
+                                ? "~/images/Flags/none.gif"
+                                : $"~/images/Flags/{l.Name}.gif")
                     }).ToList();
 
                 fallbacks.Insert(0, new
@@ -2114,7 +2114,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     NativeName = Localization.GetString("System_Default", LocalResourcesFile),
                     EnglishName = Localization.GetString("System_Default", LocalResourcesFile),
                     Name = "",
-                    Icon = "/images/Flags/none.gif"
+                    Icon = Globals.ResolveUrl("~/images/Flags/none.gif")
                 });
 
                 return Request.CreateResponse(HttpStatusCode.OK, new
@@ -2184,10 +2184,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         c.NativeName,
                         c.EnglishName,
                         c.Name,
-                        Icon =
+                        Icon = Globals.ResolveUrl(
                             string.IsNullOrEmpty(c.Name)
                                 ? "/images/Flags/none.gif"
-                                : $"/images/Flags/{c.Name}.gif"
+                                : $"/images/Flags/{c.Name}.gif")
                     })
                 });
             }
@@ -2492,9 +2492,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         Language = Localization.GetLocaleName(locale.Code, GetCultureDropDownType(PortalId)),
                         IsSystemDefault = Localization.SystemLocale == locale.Code,
-                        Icon = string.IsNullOrEmpty(locale.Code)
+                        Icon = Globals.ResolveUrl(string.IsNullOrEmpty(locale.Code)
                             ? "/images/Flags/none.gif"
-                            : $"/images/Flags/{locale.Code}.gif",
+                            : $"/images/Flags/{locale.Code}.gif"),
                         MissingFiles = tableMissing,
                         FilesWithDuplicateEntries = tableDuplicate,
                         FilesWithMissingEntries = tableEntries,
