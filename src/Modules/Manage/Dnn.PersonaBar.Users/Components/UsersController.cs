@@ -281,10 +281,28 @@ namespace Dnn.PersonaBar.Users.Components
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    dbUsers = string.IsNullOrEmpty(searchText)
-                                ? UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, false)
-                                : UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize, ref totalRecords, true, false);
-                    users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        var reader = DataProvider.Instance()
+                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
+                                usersContract.SortColumn,
+                                usersContract.SortAscending,
+                                usersContract.PageIndex,
+                                usersContract.PageSize);
+                        if (reader.Read())
+                        {
+                            totalRecords = reader.GetInt32(0);
+                            reader.NextResult();
+                        }
+                        users = CBO.FillCollection<UserBasicDto>(reader);
+                    }
+                    else
+                    {
+                        dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
+                            ref totalRecords, true, false);
+                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                    }
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
