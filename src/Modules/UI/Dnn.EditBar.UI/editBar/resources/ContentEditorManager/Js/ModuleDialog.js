@@ -8,9 +8,9 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
 
 (function ($) {
     var htmlModuleName = 'HTML';
-    var layoutModuleName = 'Content Layout';
-    var moduleAlias = { 'Content Layout': 'Grids' };
+    var htmlModuleId = null;
     var recommendedList = [];
+    var moduleAlias = [];
     var listMode = 'category';
 
     ///dnnModuleDialog Plugin
@@ -443,12 +443,13 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 }
 
                 if (this._loadMore) {
+                    var isAdmin = dnn.getVar('editbar_isAdmin') === "True";
                     this._getService().request('GetPortalDesktopModules', 'GET', {
                         category: 'All',
                         loadingStartIndex: this._startIndex,
                         loadingPageSize: this._pageSize,
                         searchTerm: val,
-                        excludeCategories: 'Admin,Professional',
+                        excludeCategories: isAdmin ? '' : 'Admin,Professional',
                         sortBookmarks: true,
                         topModule: 'None'
                     }, $.proxy(this._renderModuleList, this));
@@ -511,28 +512,6 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 }
             }
             if (data.length > 0) {
-                if (list === 'listAll') {
-                    var htmlModuleIndex = -1;
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].ModuleName === htmlModuleName) {
-                            htmlModuleIndex = i;
-                        }
-                    }
-                    if (htmlModuleIndex > -1) {
-                        data.splice(0, 0, data.splice(htmlModuleIndex, 1)[0]);
-                    }
-
-                    var layoutModuleIndex = -1;
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].ModuleName === layoutModuleName) {
-                            layoutModuleIndex = i;
-                        }
-                    }
-                    if (layoutModuleIndex > -1) {
-                        data.splice(0, 0, data.splice(layoutModuleIndex, 1)[0]);
-                    }
-                }
-
                 //render rearranged list
 				for (var i = 0; i < data.length; i++) {
 				    var itemData = data[i];
@@ -545,11 +524,23 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
 					this._injectModuleScript($item, itemData);
 				}
 
-				if (list == "listAll") {
+				if (list === "listAll") {
 				    if (data.length < this._pageSize) {
 				        this._loadMore = false;
 				    } else {
 				        this._startIndex += data.length;
+				    }
+
+				    if (!htmlModuleId) {
+				        for (var i = 0; i < data.length; i++) {
+				            if (data[i].ModuleName === htmlModuleName) {
+				                htmlModuleId = data[i].ModuleID;
+				            }
+				        }
+				    }
+				    if (htmlModuleId > -1) {
+				        var $htmlItem = this._dialogLayout.find('.dnnModuleItem[data-moduleid="' + htmlModuleId + '"]');
+				        $htmlItem.parent().prepend($htmlItem);
 				    }
 
                     this._dialogLayout.trigger('moduleloaded');
@@ -648,9 +639,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                         template = template.replace('{0}', extraclass);
                     }
 
-                    if (renderItem.ModuleName === htmlModuleName
-                            || renderItem.ModuleName === layoutModuleName
-                            || renderItem.ModuleName === moduleAlias[layoutModuleName]) {
+                    if (renderItem.ModuleName === htmlModuleName) {
                         template = this._replaceAll(template, 'bookmarkModule', 'topModule');
                     } else if (renderItem.Bookmarked) {
                         template = this._replaceAll(template, 'bookmarkModule', 'bookmarkedModule');

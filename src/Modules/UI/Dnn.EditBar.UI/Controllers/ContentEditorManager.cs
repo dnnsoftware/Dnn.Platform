@@ -266,6 +266,8 @@ namespace Dnn.EditBar.UI.Controllers
             JavaScript.RequestRegistration(CommonJs.jQuery);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
+            ClientAPI.RegisterClientVariable(Page, "editbar_isAdmin", IsAdmin().ToString(), true);
+
             var settings = EditBarController.Instance.GetConfigurations(PortalSettings.PortalId);
             var settingsScript = "window.editBarSettings = " + JsonConvert.SerializeObject(settings) + ";";
             Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "EditBarSettings", settingsScript, true);
@@ -667,6 +669,13 @@ namespace Dnn.EditBar.UI.Controllers
                 SetLastPageHistory(pageId);
             }
         }
+
+        private bool IsAdmin()
+        {
+            var user = PortalSettings.UserInfo;
+            return user.IsSuperUser || PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+        }
+
 
         #endregion
 
