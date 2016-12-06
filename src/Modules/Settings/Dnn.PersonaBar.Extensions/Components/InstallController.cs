@@ -163,7 +163,9 @@ namespace Dnn.PersonaBar.Extensions.Components
                 installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
             }
 
-            installer.InstallerInfo.PortalID = portalId;
+            // We always assume we are installing from //Host/Extensions (in the previous releases)
+            // This will not work when we try to install a skin/container under a specific portal.
+            installer.InstallerInfo.PortalID = Null.NullInteger;
 
             //Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
