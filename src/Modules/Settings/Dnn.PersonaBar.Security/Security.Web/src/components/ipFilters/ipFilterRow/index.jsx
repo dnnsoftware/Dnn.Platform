@@ -78,7 +78,7 @@ class IpFilterRow extends Component {
                             }
                         </div>
                     </div>
-                    <Collapse accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                    <Collapse className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
                 </div>
             );
         }
