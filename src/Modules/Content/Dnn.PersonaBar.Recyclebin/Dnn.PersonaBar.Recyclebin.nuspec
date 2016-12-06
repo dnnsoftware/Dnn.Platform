@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Dnn.PersonaBar.Recyclebin</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>DNN PersonaBar Recyclebin</title>
     <authors>DNN Corporation</authors>
     <owners>DNN Corporation</owners>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN PersonaBar Recyclebin Module</description>
     <releaseNotes>
-      Version 1.0.0:
+      Version 1.1.0:
       - Initial reelase.
     </releaseNotes>
     <copyright>Copyright (c) 2016, DNN Corporation</copyright>
