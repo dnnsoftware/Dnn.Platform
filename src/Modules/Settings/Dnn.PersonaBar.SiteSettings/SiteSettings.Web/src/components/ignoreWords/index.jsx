@@ -48,7 +48,8 @@ class IgnoreWordsPanel extends Component {
 
         if (!this.loadData()) {
             this.setState({
-                ignoreWords: props.ignoreWords
+                ignoreWords: props.ignoreWords,
+                culture: props.ignoreWords.CultureCode
             });
             return;
         }
@@ -196,7 +197,8 @@ class IgnoreWordsPanel extends Component {
                     OpenCollapse={this.toggle.bind(this)}
                     Collapse={this.collapse.bind(this)}
                     onDelete={this.onDeleteIgnoreWords.bind(this, props.ignoreWords)}
-                    id={"row-1"}>
+                    id={"row-1"}
+                    visible={true}>
                     <IgnoreWordsEditor
                         words={props.ignoreWords}
                         culture={this.state.culture}
@@ -237,27 +239,24 @@ class IgnoreWordsPanel extends Component {
                     </div>
                     <div className="words-items-grid">
                         {this.renderHeader()}
-                        {opened &&
-                            <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
-                                <IgnoreWordsRow
-                                    tags={"-"}
-                                    index={"add"}
-                                    key={"wordsItem-add"}
-                                    closeOnClick={true}
-                                    openId={state.openId}
-                                    OpenCollapse={this.toggle.bind(this)}
-                                    Collapse={this.collapse.bind(this)}
-                                    onDelete={this.onDeleteIgnoreWords.bind(this)}
-                                    id={"add"}>
-                                    <IgnoreWordsEditor
-                                        Collapse={this.collapse.bind(this)}
-                                        culture={this.state.culture}
-                                        onUpdate={this.onUpdateIgnoreWords.bind(this)}
-                                        id={"add"}
-                                        openId={state.openId} />
-                                </IgnoreWordsRow>
-                            </Collapse>
-                        }
+                        <IgnoreWordsRow
+                            tags={"-"}
+                            index={"add"}
+                            key={"wordsItem-add"}
+                            closeOnClick={true}
+                            openId={state.openId}
+                            OpenCollapse={this.toggle.bind(this)}
+                            Collapse={this.collapse.bind(this)}
+                            onDelete={this.onDeleteIgnoreWords.bind(this)}
+                            id={"add"}
+                            visible={opened}>
+                            <IgnoreWordsEditor
+                                Collapse={this.collapse.bind(this)}
+                                culture={this.state.culture}
+                                onUpdate={this.onUpdateIgnoreWords.bind(this)}
+                                id={"add"}
+                                openId={state.openId} />
+                        </IgnoreWordsRow>
                         {this.renderedIgnoreWords()}
                     </div>
                 </div>

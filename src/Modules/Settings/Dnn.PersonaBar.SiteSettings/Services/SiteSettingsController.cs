@@ -1534,6 +1534,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var response = new
                 {
                     PortalId = pid,
+                    CultureCode = cultureCode,
                     SynonymsGroups = groups.Select(g => new
                     {
                         g.SynonymsGroupId,

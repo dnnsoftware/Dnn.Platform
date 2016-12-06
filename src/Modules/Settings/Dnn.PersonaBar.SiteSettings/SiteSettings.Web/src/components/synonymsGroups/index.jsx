@@ -48,7 +48,8 @@ class SynonymsGroupsPanel extends Component {
 
         if (!this.loadData()) {
             this.setState({
-                synonymsGroups: props.synonymsGroups
+                synonymsGroups: props.synonymsGroups,
+                culture: props.synonymsGroups.CultureCode
             });
             return;
         }
@@ -83,13 +84,21 @@ class SynonymsGroupsPanel extends Component {
     }
 
     renderHeader() {
-        let tableHeaders = tableFields.map((field) => {
-            let className = "synonyms-items header-" + field.id;
-            return <div className={className} key={"header-" + field.id}>
-                <span>{field.name}&nbsp; </span>
-            </div>;
-        });
-        return <div className="header-row">{tableHeaders}</div>;
+        if (this.props.synonymsGroups) {
+            let tableHeaders = tableFields.map((field) => {
+                let className = "synonyms-items header-" + field.id;
+                return <div className={className} key={"header-" + field.id}>
+                    <span>{field.name}&nbsp; </span>
+                </div>;
+            });
+
+            if (this.props.synonymsGroups.SynonymsGroups.length > 0) {
+                return <div className="header-row">{tableHeaders}</div>;                
+            }
+            else {
+                return <div className="header-row-no-border">{tableHeaders}</div>;
+            }
+        }
     }
 
     uncollapse(id) {
@@ -209,7 +218,8 @@ class SynonymsGroupsPanel extends Component {
                         OpenCollapse={this.toggle.bind(this)}
                         Collapse={this.collapse.bind(this)}
                         onDelete={this.onDeleteSynonymsGroup.bind(this, item)}
-                        id={id}>
+                        id={id}
+                        visible={true}>
                         <SynonymsGroupEditor
                             group={item}
                             culture={this.state.culture}
@@ -248,27 +258,24 @@ class SynonymsGroupsPanel extends Component {
                     </div>
                     <div className="synonyms-items-grid">
                         {this.renderHeader()}
-                        {opened &&
-                            <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>
-                                <SynonymsGroupRow
-                                    tags={"-"}
-                                    index={"add"}
-                                    key={"aliasItem-add"}
-                                    closeOnClick={true}
-                                    openId={this.state.openId}
-                                    OpenCollapse={this.toggle.bind(this)}
-                                    Collapse={this.collapse.bind(this)}
-                                    onDelete={this.onDeleteSynonymsGroup.bind(this)}
-                                    id={"add"}>
-                                    <SynonymsGroupEditor
-                                        Collapse={this.collapse.bind(this)}
-                                        culture={this.state.culture}
-                                        onUpdate={this.onUpdateSynonymsGroup.bind(this)}
-                                        id={"add"}
-                                        openId={this.state.openId} />
-                                </SynonymsGroupRow>
-                            </Collapse>
-                        }
+                        <SynonymsGroupRow
+                            tags={"-"}
+                            index={"add"}
+                            key={"aliasItem-add"}
+                            closeOnClick={true}
+                            openId={this.state.openId}
+                            OpenCollapse={this.toggle.bind(this)}
+                            Collapse={this.collapse.bind(this)}
+                            onDelete={this.onDeleteSynonymsGroup.bind(this)}
+                            id={"add"}
+                            visible={opened}>
+                            <SynonymsGroupEditor
+                                Collapse={this.collapse.bind(this)}
+                                culture={this.state.culture}
+                                onUpdate={this.onUpdateSynonymsGroup.bind(this)}
+                                id={"add"}
+                                openId={this.state.openId} />
+                        </SynonymsGroupRow>
                         {this.renderedSynonymsGroups()}
                     </div>
                 </div>
