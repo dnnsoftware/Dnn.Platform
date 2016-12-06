@@ -347,18 +347,37 @@ namespace Dnn.PersonaBar.Users.Components
                 var enumerable = userInfos as UserInfo[] ?? userInfos.ToArray();
                 totalRecords = enumerable.Length;
                 users =
-                    GetPagedData(enumerable, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
+                    GetPagedUsers(GetSortedUsers(enumerable, usersContract.SortColumn, usersContract.SortAscending),
+                        pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
             }
             return users;
         }
 
-        private static IEnumerable<UserInfo> GetPagedData(IEnumerable<UserInfo> users, int pageSize, int pageIndex)
+        private static IEnumerable<UserInfo> GetSortedUsers(IEnumerable<UserInfo> users, string sortColumn,
+            bool sortAscending = false)
+        {
+            switch (sortColumn?.ToLowerInvariant())
+            {
+
+                case "displayname":
+                    return sortAscending
+                        ? users.OrderBy(x => x.DisplayName)
+                        : users.OrderByDescending(x => x.DisplayName);
+                case "email":
+                    return sortAscending
+                        ? users.OrderBy(x => x.Email)
+                        : users.OrderByDescending(x => x.Email);
+                default:
+                    return sortAscending
+                        ? users.OrderBy(x => x.CreatedOnDate).ThenBy(x => x.LastModifiedOnDate)
+                        : users.OrderByDescending(x => x.CreatedOnDate).ThenByDescending(x => x.LastModifiedOnDate);
+            }
+        }
+
+        private static IEnumerable<UserInfo> GetPagedUsers(IEnumerable<UserInfo> users, int pageSize, int pageIndex)
         {
             return
-                users.OrderByDescending(x => x.LastModifiedOnDate)
-                    .ThenByDescending(x => x.CreatedOnDate)
-                    .Skip(pageIndex*pageSize)
-                    .Take(pageSize);
+                users.Skip(pageIndex*pageSize).Take(pageSize);
         }
 
         private static IList<UserBasicDto> GetUsersFromLucene(GetUsersContract usersContract, out int totalRecords)
