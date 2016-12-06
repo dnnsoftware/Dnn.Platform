@@ -37,7 +37,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="allow-icon" dangerouslySetInnerHTML={{ __html: allowIcon }} />
-                        <div style={{paddingLeft: "10px", paddingTop: 3, float: "left"}}>{resx.get("AllowIP")}</div>
+                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("AllowIP")}</div>
                     </div>
                 );
             }
@@ -45,7 +45,7 @@ class IpFilterRow extends Component {
                 return (
                     <div className="item-row-ruleType-display">
                         <div className="deny-icon" dangerouslySetInnerHTML={{ __html: denyIcon }} />
-                        <div style={{paddingLeft: "10px", paddingTop: 3, float: "left"}}>{resx.get("DenyIP")}</div>
+                        <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("DenyIP")}</div>
                     </div>
                 );
             }
@@ -59,9 +59,10 @@ class IpFilterRow extends Component {
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
-        if (props.visible) {
-            return (
-                <div className={"collapsible-component-ipfilters" + (opened ? " row-opened" : "")}>
+
+        return (
+            <div className={"collapsible-component-ipfilters" + (opened ? " row-opened" : "")}>
+                {props.visible &&
                     <div className={"collapsible-ipfilters " + !opened} >
                         <div className={"row"}>
                             <div className="ip-filter-item item-row-ruleType">
@@ -78,13 +79,11 @@ class IpFilterRow extends Component {
                             }
                         </div>
                     </div>
-                    <Collapse className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
-                </div>
-            );
-        }
-        else {
-            return <div />;
-        }
+                }
+                <Collapse className="ip-filter-wrapper" accordion={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+            </div>
+        );
+
     }
 }
 

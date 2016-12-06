@@ -143,7 +143,6 @@ class IpFiltersPanelBody extends Component {
                         </div>
                         <div className="ip-filter-items-grid">
                             {this.renderHeader()}
-                            <div className="add-setting-editor">
                                 <IpFilterRow
                                     ipFilterId={"-"}
                                     ruleType={"-"}
@@ -163,7 +162,6 @@ class IpFiltersPanelBody extends Component {
                                         id={"add"}
                                         openId={this.state.openId} />
                                 </IpFilterRow>
-                            </div>
                             {this.renderedIpFilters()}
                         </div>
                     </div>
