@@ -7,6 +7,9 @@
     &:not(:last-child) {
         border-bottom: 1px solid @alto;
     }
+    .words-editor-wrapper > div {
+        float: left;
+    }
     div.collapsible-header-ignore-words {
         width: 100%;
         float: left;
@@ -21,6 +24,7 @@
                 width: 85%;
                 float: left;
                 padding-left: 15px;
+                word-break: break-all;
             }
             .item-row-editButton {
                 width: 10%;

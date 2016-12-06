@@ -35,7 +35,6 @@ export default function search(state = {
             };
         case ActionTypes.SITESETTINGS_SYNONYMS_GROUP_CLIENT_MODIFIED:
             return { ...state,
-                synonymsGroup: action.data.synonymsGroup,
                 synonymsGroupClientModified: action.data.synonymsGroupClientModified
             };
         case ActionTypes.CANCELED_SITESETTINGS_SYNONYMS_GROUP_CLIENT_MODIFIED:
@@ -54,7 +53,6 @@ export default function search(state = {
             };
         case ActionTypes.SITESETTINGS_IGNORE_WORDS_CLIENT_MODIFIED:
             return { ...state,
-                ignoreWords: action.data.ignoreWords,
                 ignoreWordsClientModified: action.data.ignoreWordsClientModified
             };
         case ActionTypes.CANCELED_SITESETTINGS_IGNORE_WORDS_CLIENT_MODIFIED:

@@ -78,7 +78,7 @@ class SynonymsGroupEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SearchActions.synonymsGroupClientModified(group));
+        props.dispatch(SearchActions.synonymsGroupClientModified());
     }
 
     onSave() {

@@ -78,7 +78,7 @@ class IgnoreWordsEditor extends Component {
             error: state.error
         });
 
-        props.dispatch(SearchActions.ignoreWordsClientModified(words));
+        props.dispatch(SearchActions.ignoreWordsClientModified());
     }
 
     onSave() {

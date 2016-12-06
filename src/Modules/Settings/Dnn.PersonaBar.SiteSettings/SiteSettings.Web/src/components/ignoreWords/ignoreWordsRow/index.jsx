@@ -36,7 +36,7 @@ class IgnoreWordsRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapse className="words-editor-wrapper" isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
             </div>
         );
     }

@@ -167,12 +167,11 @@ const searchActions = {
             });
         };
     },
-    synonymsGroupClientModified(parameter) {
+    synonymsGroupClientModified() {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SITESETTINGS_SYNONYMS_GROUP_CLIENT_MODIFIED,
                 data: {
-                    synonymsGroup: parameter,
                     synonymsGroupClientModified: true
                 }
             });
@@ -245,12 +244,11 @@ const searchActions = {
             });
         };
     },
-    ignoreWordsClientModified(parameter) {
+    ignoreWordsClientModified() {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SITESETTINGS_IGNORE_WORDS_CLIENT_MODIFIED,
                 data: {
-                    ignoreWords: parameter,
                     ignoreWordsClientModified: true
                 }
             });
