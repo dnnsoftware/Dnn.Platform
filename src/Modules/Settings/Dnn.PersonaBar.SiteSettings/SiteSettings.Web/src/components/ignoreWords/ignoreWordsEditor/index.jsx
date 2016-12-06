@@ -36,27 +36,6 @@ class IgnoreWordsEditor extends Component {
         });
     }
 
-    componentWillReceiveProps(props) {
-        let {state} = this;
-
-        if (!props.words) {
-            return;
-        }
-
-        if (props.words["StopWords"] === undefined || props.words["StopWords"] === "") {
-            state.error["tags"] = true;
-        }
-        else if (props.words["StopWords"] !== "" && props.words["StopWords"] !== undefined) {
-            state.error["tags"] = false;
-        }
-
-        this.setState({
-            words: Object.assign({}, props.words),
-            triedToSubmit: false,
-            error: state.error
-        });
-    }
-
     onSettingChange(key, event) {
         let {state, props} = this;
         let words = Object.assign({}, state.words);

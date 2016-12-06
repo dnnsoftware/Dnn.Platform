@@ -34,28 +34,7 @@ class SynonymsGroupEditor extends Component {
         this.setState({
             group: group
         });
-    }
-
-    componentWillReceiveProps(props) {
-        let {state} = this;
-
-        if (!props.group) {
-            return;
-        }
-
-        if (props.group["SynonymsTags"] === undefined || props.group["SynonymsTags"] === "") {
-            state.error["tags"] = true;
-        }
-        else if (props.group["SynonymsTags"] !== "" && props.group["SynonymsTags"] !== undefined) {
-            state.error["tags"] = false;
-        }
-
-        this.setState({
-            group: Object.assign({}, props.group),
-            triedToSubmit: false,
-            error: state.error
-        });
-    }
+    }    
 
     onSettingChange(key, event) {
         let {state, props} = this;
