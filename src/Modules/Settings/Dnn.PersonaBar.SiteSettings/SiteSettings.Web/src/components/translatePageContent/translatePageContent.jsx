@@ -37,8 +37,7 @@ class TranslatePageContent extends Component {
     }
 
     componentWillReceiveProps(props) {
-        const {languageBeingEdited} = props;
-        this.setState({ languageBeingEdited });
+        this.setState({ languageBeingEdited: Object.assign({}, props.languageBeingEdited)  });
     }
 
     getPageList() {
@@ -301,7 +300,8 @@ TranslatePageContent.propTypes = {
     onSelectChange: PropTypes.func,
     portalId: PropTypes.number,
     closePersonaBarPage: PropTypes.func,
-    languageDisplayMode: PropTypes.string
+    languageDisplayMode: PropTypes.string,
+    languageBeingEdited: PropTypes.object
 };
 
 function mapStateToProps(state) {
