@@ -117,9 +117,8 @@ class IgnoreWordsPanel extends Component {
 
     onUpdateIgnoreWords(words) {
         const {props} = this;
-
         if (words.StopWordsId) {
-            props.dispatch(SearchActions.updateIgnoreWords(words, () => {
+            props.dispatch(SearchActions.updateIgnoreWords(Object.assign({PortalId: props.ignoreWords.PortalId}, words), () => {
                 util.utilities.notify(resx.get("IgnoreWordsUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -128,7 +127,7 @@ class IgnoreWordsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SearchActions.addIgnoreWords(words, () => {
+            props.dispatch(SearchActions.addIgnoreWords(Object.assign({PortalId: props.ignoreWords.PortalId}, words), () => {
                 util.utilities.notify(resx.get("IgnoreWordsCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -141,7 +140,7 @@ class IgnoreWordsPanel extends Component {
     onDeleteIgnoreWords(words) {
         const {props} = this;
         util.utilities.confirm(resx.get("IgnoreWordsDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
-            props.dispatch(SearchActions.deleteIgnoreWords(words, () => {
+            props.dispatch(SearchActions.deleteIgnoreWords(Object.assign({PortalId: props.ignoreWords.PortalId}, words), () => {
                 util.utilities.notify(resx.get("IgnoreWordsDeleteSuccess"));
                 this.collapse();
             }, () => {
@@ -185,7 +184,7 @@ class IgnoreWordsPanel extends Component {
     /* eslint-disable react/no-danger */
     renderedIgnoreWords() {
         const {props} = this;
-        if (props.ignoreWords) {
+        if (props.ignoreWords && props.ignoreWords.StopWords) {
             return (
                 <IgnoreWordsRow
                     wordsId={props.ignoreWords.StopWordsId}
@@ -217,26 +216,28 @@ class IgnoreWordsPanel extends Component {
         return (
             <div>
                 <div className="words-group-items">
-                    <div className="AddItemRow">
-                        <div className="sectionTitle">{resx.get("IgnoreWords")}</div>
-                        {!props.ignoreWords &&
-                            <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
-                                </div> {resx.get("cmdAddWord")}
-                            </div>
-                        }
-                        {this.props.cultures && this.props.cultures.length > 1 &&
-                            <div className="language-filter">
-                                <DropDown
-                                    value={this.state.culture}
-                                    style={{ width: "auto" }}
-                                    options={this.getCultureOptions()}
-                                    withBorder={false}
-                                    onSelect={this.onSelectCulture.bind(this)}
-                                    />
-                            </div>
-                        }
-                    </div>
+                    {props.ignoreWords &&
+                        <div className="AddItemRow">
+                            <div className="sectionTitle">{resx.get("IgnoreWords")}</div>
+                            {!props.ignoreWords.StopWords &&
+                                <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
+                                    <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
+                                    </div> {resx.get("cmdAddWord")}
+                                </div>
+                            }
+                            {this.props.cultures && this.props.cultures.length > 1 &&
+                                <div className="language-filter">
+                                    <DropDown
+                                        value={this.state.culture}
+                                        style={{ width: "auto" }}
+                                        options={this.getCultureOptions()}
+                                        withBorder={false}
+                                        onSelect={this.onSelectCulture.bind(this)}
+                                        />
+                                </div>
+                            }
+                        </div>
+                    }
                     <div className="words-items-grid">
                         {this.renderHeader()}
                         <IgnoreWordsRow

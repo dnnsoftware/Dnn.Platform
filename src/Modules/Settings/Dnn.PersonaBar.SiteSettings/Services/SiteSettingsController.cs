@@ -1722,14 +1722,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var response = new
                 {
-                    Success = true,
-                    IgnoreWords = words == null ? null : new
-                    {
-                        words.PortalId,
-                        words.StopWordsId,
-                        words.CultureCode,
-                        words.StopWords
-                    }
+                    PortalId = pid,
+                    CultureCode = cultureCode,
+                    StopWordsId = words == null ? null: words.StopWordsId,
+                    StopWords = wordsd
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }

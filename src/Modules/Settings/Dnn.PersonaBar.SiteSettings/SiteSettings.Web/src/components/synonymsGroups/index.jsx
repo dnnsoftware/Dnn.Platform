@@ -136,7 +136,7 @@ class SynonymsGroupsPanel extends Component {
                 }
             });
 
-            props.dispatch(SearchActions.updateSynonymsGroup(group, synonymsGroups, () => {
+            props.dispatch(SearchActions.updateSynonymsGroup(Object.assign({PortalId: props.synonymsGroups.PortalId}, group), synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupUpdateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -145,7 +145,7 @@ class SynonymsGroupsPanel extends Component {
             }));
         }
         else {
-            props.dispatch(SearchActions.addSynonymsGroup(group, props.synonymsGroups, () => {
+            props.dispatch(SearchActions.addSynonymsGroup(Object.assign({PortalId: props.synonymsGroups.PortalId}, group), props.synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupCreateSuccess"));
                 this.collapse();
             }, (error) => {
@@ -160,7 +160,7 @@ class SynonymsGroupsPanel extends Component {
         util.utilities.confirm(resx.get("SynonymsGroupDeletedWarning"), resx.get("Yes"), resx.get("No"), () => {
             const synonymsGroups = Object.assign({}, props.synonymsGroups);
             synonymsGroups.SynonymsGroups = synonymsGroups.SynonymsGroups.filter((item) => item.SynonymsGroupId !== group.SynonymsGroupId);
-            props.dispatch(SearchActions.deleteSynonymsGroup(group, synonymsGroups, () => {
+            props.dispatch(SearchActions.deleteSynonymsGroup(Object.assign({PortalId: props.synonymsGroups.PortalId}, group), synonymsGroups, () => {
                 util.utilities.notify(resx.get("SynonymsGroupDeleteSuccess"));
                 this.collapse();
             }, () => {

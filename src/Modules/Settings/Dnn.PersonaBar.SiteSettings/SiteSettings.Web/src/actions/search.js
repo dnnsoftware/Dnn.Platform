@@ -193,7 +193,7 @@ const searchActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SITESETTINGS_IGNORE_WORDS,
                     data: {
-                        ignoreWords: data.IgnoreWords
+                        ignoreWords: data
                     }
                 });
                 if (callback) {
@@ -205,12 +205,12 @@ const searchActions = {
     addIgnoreWords(payload, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.addIgnoreWords(payload, data => {
-                let updatedWords = Object.assign({ StopWordsId: data.Id }, payload);
-
+                let updated = Object.assign({}, payload);
+                updated.StopWordsId =  data.Id;
                 dispatch({
                     type: ActionTypes.CREATED_SITESETTINGS_IGNORE_WORDS,
                     data: {
-                        ignoreWords: updatedWords,
+                        ignoreWords: updated,
                         ignoreWordsClientModified: false
                     }
                 });
@@ -226,7 +226,7 @@ const searchActions = {
     },
     updateIgnoreWords(payload, callback, failureCallback) {
         return (dispatch) => {
-            ApplicationService.updateIgnoreWords(payload, data => {
+            ApplicationService.updateIgnoreWords(payload, data => {                
                 dispatch({
                     type: ActionTypes.UPDATED_SITESETTINGS_IGNORE_WORDS,
                     data: {
@@ -267,10 +267,13 @@ const searchActions = {
     deleteIgnoreWords(payload, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.deleteIgnoreWords(payload, data => {
+                let updated = Object.assign({}, payload);
+                updated.StopWordsId =  -1;
+                updated.StopWords = null;
                 dispatch({
                     type: ActionTypes.DELETED_SITESETTINGS_IGNORE_WORDS,
                     data: {
-                        ignoreWords: undefined
+                        ignoreWords: updated
                     }
                 });
                 if (callback) {
