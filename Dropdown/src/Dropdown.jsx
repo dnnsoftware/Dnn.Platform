@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import Collapse from "react-collapse";
 import Scrollbars from "react-custom-scrollbars";
 import { ArrowDownIcon } from "dnn-svg-icons";
+import scroll from "scroll";
+import debounce from "lodash/debounce";
 import "./style.less";
 
 class Dropdown extends Component {
@@ -10,10 +12,14 @@ class Dropdown extends Component {
         super();
         this.state = {
             dropDownOpen: false,
-            fixedHeight: 0
+            fixedHeight: 0,
+            dropdownText: "",
+            closestValue: null,
+            selectedOption: {}
         };
         this.handleClick = this.handleClick.bind(this);
         this.uniqueId = Date.now() * Math.random();
+        this.debouncedSearch = debounce(this.searchItems, 500);
     }
     toggleDropdown() {
         const {props} = this;
@@ -23,7 +29,12 @@ class Dropdown extends Component {
             if (!this.state.dropDownOpen) {
                 setTimeout(() => {
                     this.setState({});
+                    ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
                 }, 250);
+            } else {
+                this.setState({
+                    closestValue: null
+                });
             }
 
             this.setState({
@@ -83,7 +94,9 @@ class Dropdown extends Component {
 
         if (!ReactDOM.findDOMNode(this).contains(event.target)) {
             this.setState({
-                dropDownOpen: false
+                dropDownOpen: false,
+                closestValue: null,
+                dropdownText: ""
             });
         }
     }
@@ -91,9 +104,14 @@ class Dropdown extends Component {
         const {props} = this;
         if (props.enabled) {
             this.setState({
-                dropDownOpen: false
+                dropDownOpen: false,
+                closestValue: null,
+                dropdownText: ""
             });
             if (props.onSelect) {
+                this.setState({
+                    selectedOption: option
+                });
                 props.onSelect(option);
             }
         }
@@ -135,17 +153,97 @@ class Dropdown extends Component {
         return this.props.labelIsMultiLine ? "" : " no-wrap";
     }
 
+    searchItems() {
+        let closestValueLength = 0, closestValue = null, itemIndex = 0;
+
+        this.props.options.forEach((option, index) => {
+            let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+            let stringToMatchBeginning = new RegExp("^" + regex, "gi");
+
+            let labelToMatch = typeof option.label === "string" ? option.label : (option.searchableValue || "");
+
+            if (labelToMatch.match(stringToMatchBeginning) && labelToMatch.match(stringToMatchBeginning).length > closestValueLength) {
+                closestValueLength = labelToMatch.match(stringToMatchBeginning).length;
+                closestValue = option;
+                itemIndex = index;
+            }
+        });
+
+        if (closestValue === null) {
+            this.props.options.forEach((option, index) => {
+                let regex = this.state.dropdownText.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+
+                let stringToMatchInBetween = new RegExp(regex, "gi");
+
+                let labelToMatch = typeof option.label === "string" ? option.label : (option.searchableValue || "");
+
+                if (labelToMatch.match(stringToMatchInBetween) && labelToMatch.match(stringToMatchInBetween).length > closestValueLength) {
+                    closestValueLength = labelToMatch.match(stringToMatchInBetween).length;
+                    closestValue = option;
+                    itemIndex = index;
+                }
+            });
+        }
+
+        this.setState({
+            closestValue
+        }, () => {
+            setTimeout(() => {
+                this.setState({
+                    dropdownText: ""
+                });
+            }, 1500);
+        });
+
+        if (closestValue !== null) {
+            const optionValue = ReactDOM.findDOMNode(this.refs[this.uniqueId + "option-" + itemIndex]);
+            if (optionValue) {
+                const bottom = optionValue.offsetTop - 165;
+                scroll.top(ReactDOM.findDOMNode(this.refs.dropdownScrollContainer).childNodes[0], bottom);
+            }
+        }
+    }
+
+    onDropdownSearch(event) {
+        this.setState({
+            dropdownText: event.target.value
+        }, () => {
+            this.debouncedSearch();
+        });
+    }
+
+    onKeyDown(event) {
+        if (event.key === "Enter") {
+            if (this.state.closestValue && this.state.closestValue.value !== null) {
+                this.onSelect(this.state.closestValue);
+                ReactDOM.findDOMNode(this.refs.dropdownSearch).blur();
+            } else {
+                this.onSelect(this.state.selectedOption);
+            }
+        }
+    }
+
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
         const options = props.options && props.options.map((option, index) => {
-            return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index} className={option.value === props.value ? "selected" : ""} >{option.label}</li>;
+            return <li onClick={this.onSelect.bind(this, option)} key={this.uniqueId + "option-" + index} ref={this.uniqueId + "option-" + index}
+                className={((option.value === props.value && state.closestValue === null) || option.value === (state.closestValue && state.closestValue.value)) ? "selected" : ""}>{option.label}</li>;
         });
         return (
             <div className={this.getClassName()} style={props.style}>
                 <div className={"collapsible-label" + this.getIsMultiLineLabel()} onClick={this.toggleDropdown.bind(this)}>
                     {this.getDropdownLabel()}
                 </div>
+                <input
+                    type="text"
+                    onChange={this.onDropdownSearch.bind(this)}
+                    ref="dropdownSearch"
+                    value={this.state.dropdownText}
+                    onKeyDown={this.onKeyDown.bind(this)}
+                    style={{ position: "absolute", opacity: 0, pointerEvents: "none", width: 0, height: 0, padding: 0, margin: 0 }}
+                    />
                 {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
@@ -154,7 +252,8 @@ class Dropdown extends Component {
                         isOpened={state.dropDownOpen}>
                         <Scrollbars
                             autoHide={true}
-                            style={props.scrollAreaStyle}>
+                            style={props.scrollAreaStyle}
+                            ref="dropdownScrollContainer">
                             <div>
                                 <ul>
                                     {options}
