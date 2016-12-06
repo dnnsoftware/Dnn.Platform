@@ -29,6 +29,7 @@ using DotNetNuke.Web.Api;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Library.DTO.Tabs;
 using Dnn.PersonaBar.Pages.Components.Security;
+using Dnn.PersonaBar.Themes.Components.DTO;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -387,14 +388,9 @@ namespace Dnn.PersonaBar.Pages.Services
             var themeLayout = _themesController.GetLayouts(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
             var themeContainer = _themesController.GetContainers(PortalSettings, level).FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.InvariantCultureIgnoreCase));
 
-            if (themeLayout == null || themeContainer == null)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "ThemeNotFound");
-            }
-
             return Request.CreateResponse(HttpStatusCode.OK, new {
-                layouts = _themesController.GetThemeFiles(PortalSettings, themeLayout),
-                containers = _themesController.GetThemeFiles(PortalSettings, themeContainer)
+                layouts = themeLayout == null ? new List<ThemeFileInfo>() : _themesController.GetThemeFiles(PortalSettings, themeLayout),
+                containers = themeContainer == null ? new List<ThemeFileInfo>() : _themesController.GetThemeFiles(PortalSettings, themeContainer)
             });
         }
 
