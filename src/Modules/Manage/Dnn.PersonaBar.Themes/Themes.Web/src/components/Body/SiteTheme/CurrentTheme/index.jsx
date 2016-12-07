@@ -18,8 +18,8 @@ class CurrentTheme extends Component {
             <div className="current-theme">
                 {
                     (function () {
-                        if (props.theme && props.theme.SiteLayout.thumbnail) {
-                            return <img src={props.theme.SiteLayout.thumbnail} />;
+                        if (props.currentTheme && props.currentTheme.SiteLayout.thumbnail) {
+                            return <img src={props.currentTheme.SiteLayout.thumbnail} />;
                         }
                         else {
                             return <SvgIcon name="EmptyThumbnail" />;
@@ -33,7 +33,7 @@ class CurrentTheme extends Component {
 
 CurrentTheme.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    theme: PropTypes.object
+    currentTheme: PropTypes.object
 };
 
 function mapStateToProps(state) {
