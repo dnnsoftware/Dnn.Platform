@@ -64,6 +64,7 @@ const BasicPackageInformation = ({disabled, validationMapped, installedPackageTy
                 defaultDropdownValue={formatVersionNumber(version[0])}
                 onSelect={onVersionChange && onVersionChange.bind(this, 0)}
                 className="version-dropdown"
+                style={{position: "relative", top: 3}}
                 />
             <Dropdown
                 options={getVersionDropdownValues()}

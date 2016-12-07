@@ -106,6 +106,7 @@ class PackageInformation extends Component {
                             defaultDropdownValue={formatVersionNumber(version[0])}
                             onSelect={props.onVersionChange && props.onVersionChange.bind(this, 0)}
                             className="version-dropdown"
+                            style={{position: "relative", top: 3}}
                             />
                         <Dropdown
                             options={getVersionDropdownValues()}
