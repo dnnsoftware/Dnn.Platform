@@ -62,7 +62,7 @@ class FiltersBar extends Component {
     closeDropDown() {
         /*This is done in order to keep the dropdown closed on click on edit/delete*/
         let {state} = this.refs["groupsDropdown"];
-        state.dropDownOpen = true;
+        state.dropDownOpen = false;
         this.refs["groupsDropdown"].setState({
             state
         });
@@ -72,11 +72,12 @@ class FiltersBar extends Component {
         this.props.onRoleGroupChanged(option);
     }
     toggleEditGroup() {
-        this.closeDropDown();
         let {showPopup} = this.state;
         showPopup = !showPopup;
         this.setState({
             showPopup
+        }, () => {
+            this.closeDropDown();
         });
     }
     updateSelectedGroup(option) {
