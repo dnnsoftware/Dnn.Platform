@@ -69,9 +69,12 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var objStreamReader = File.OpenText(Globals.ApplicationMapPath + @"\portals\_default\logs\" + fileName);
-                var logText = objStreamReader.ReadToEnd();
-                return Request.CreateResponse(HttpStatusCode.OK, logText);
+                var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
+                using (var reader = File.OpenText(logFilePath))
+                {
+                    var logText = reader.ReadToEnd();
+                    return Request.CreateResponse(HttpStatusCode.OK, logText);
+                }
             }
             catch (Exception exc)
             {
@@ -86,13 +89,16 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var upgradeText = string.Empty;
-                var strProviderPath = DataProvider.Instance().GetProviderPath();
-                if (File.Exists(strProviderPath + logName + ".log.resources"))
+                var providerPath = DataProvider.Instance().GetProviderPath();
+                var logFilePath = Path.Combine(providerPath, logName + ".log.resources");
+                if (File.Exists(logFilePath))
                 {
-                    var objStreamReader = File.OpenText(strProviderPath + logName + ".log.resources");
-                    upgradeText = objStreamReader.ReadToEnd();
-                    upgradeText = upgradeText.Replace("\n", "<br>");
-                    objStreamReader.Close();
+                    using (var reader = File.OpenText(logFilePath))
+                    {
+                        upgradeText = reader.ReadToEnd();
+                        upgradeText = upgradeText.Replace("\n", "<br>");
+                        reader.Close();
+                    }
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, upgradeText);
