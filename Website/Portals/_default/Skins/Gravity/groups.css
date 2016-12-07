@@ -1,0 +1,39 @@
+﻿/* SET COLUMNS */
+	.threeColRightPane {
+	    width: 220px;
+		margin-left:10px;
+		float: right;
+	}
+	.threeColLeftPane {
+		width: 120px;
+		float: left;
+	}
+	.contentPane {
+	    margin-left:130px;
+		margin-right: 230px;
+	}
+	
+	/* ACCOMODATE EMPTY PANES */
+	.DNNEmptyPane{width:0; margin:0;}
+	.paneGroup .threeColLeftPane.DNNEmptyPane + .contentPane{
+		margin-left:0;
+	}
+	.paneGroup .threeColRightPane.DNNEmptyPane + .threeColLeftPane + .contentPane{
+	    margin-right: 0;
+	}
+	.paneGroup .threeColRightPane.DNNEmptyPane + .threeColLeftPane.DNNEmptyPane + .contentPane{
+	    margin-left:0;
+	    margin-right: 0;
+	}
+	
+	.console .console-none {
+	    background-color: #666;
+	}
+	.console .console-none h3{
+	    color: #fff;
+	    font-family: arial;
+	}
+	
+	.console .active.console-none {
+	    background-color: #222;   
+	}

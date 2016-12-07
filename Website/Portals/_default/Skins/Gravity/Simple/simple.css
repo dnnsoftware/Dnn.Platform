@@ -1,0 +1,141 @@
+﻿/* Site Navigation */
+
+#nav {
+    float: right;
+    position: relative;
+    top: 18px;
+}
+
+#dnn_pnav li {
+    position: relative;
+    list-style: none;
+    margin: 0;
+}
+
+    #dnn_pnav li ul {
+        margin-left: 0;
+    }
+
+#dnn_pnav > li {
+    float: left;
+    height: 30px;
+    padding-top: 5px;
+    margin-right: 2px;
+}
+
+    #dnn_pnav > li > a, #dnn_pnav > li > span {
+        display: block;
+        padding: 5px 0 5px 15px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #666;
+        text-decoration: none;
+    }
+
+    #dnn_pnav > li > span {
+        cursor: default;
+    }
+
+    #dnn_pnav > li:hover > a, #dnn_pnav > li.active > a {
+        color: #3B96B6;
+    }
+
+        #dnn_pnav > li:hover > a:active {
+            color: #3B96B6;
+        }
+
+    #dnn_pnav > li:hover > span {
+        color: #3B96B6;
+    }
+
+    /* Secondary level */
+    #dnn_pnav > li ul { /* Styles for all sub levels */
+        display: none;
+        position: absolute;
+        z-index: 2;
+        width: 225px;
+        padding: 0;
+        background: #F5F7F7;
+        border: 1px solid #cbcbcb;
+        /* CSS3 */
+        border-radius: 0px;
+        /*box-shadow:inset 0px 1px 0px 0px rgba(255,255,255,1), 0px 0px 3px rgba(0,0,0,0.15);*/
+        -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
+        box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.4);
+        -webkit-animation-duration: .25s;
+        -webkit-animation-delay: .2s;
+        -webkit-animation-timing-function: ease;
+        -webkit-animation-fill-mode: both;
+        -moz-animation-duration: .25s;
+        -moz-animation-delay: .2s;
+        -moz-animation-timing-function: ease;
+        -moz-animation-fill-mode: both;
+        -ms-animation-duration: .25s;
+        -ms-animation-delay: .2s;
+        -ms-animation-timing-function: ease;
+        -ms-animation-fill-mode: both;
+        animation-duration: .25s;
+        animation-delay: .2s;
+        animation-timing-function: ease;
+        animation-fill-mode: both;
+    }
+
+#dnn_pnav li:hover > ul {
+    display: block;
+}
+
+#dnn_pnav > li > ul { /* styles specific to secondary level */
+    top: 35px;
+    left: 0;
+    padding: 15px 5px;
+}
+
+    #dnn_pnav > li > ul:after {
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        content: '';
+        width: 0px;
+        height: 0px;
+        border-left: 15px solid transparent; /* left arrow slant */
+        border-right: 15px solid transparent; /* right arrow slant */
+        border-bottom: 15px solid #F5F7F7; /* bottom, add background color here */
+        font-size: 0px;
+        line-height: 0px;
+    }
+
+#dnn_pnav > li ul a, #dnn_pnav > li ul span {
+    display: block;
+    padding: 3px 15px;
+    color: #3B9FBF;
+    font-size: 13px;
+    font-weight: normal;
+    text-decoration: none;
+    /* transition decleration */
+    transition: all ease-in 100ms;
+    -moz-transition: all ease-in 100ms; /* Firefox 4 */
+    -webkit-transition: all ease-in 100ms; /* Safari and Chrome */
+    -o-transition: all ease-in 100ms; /* Opera */
+    -ms-transition: all ease-in 100ms; /* IE9? */
+}
+
+#dnn_pnav > li ul span {
+    color: #666;
+    cursor: default;
+}
+
+#dnn_pnav ul li:last-child > a {
+}
+
+#dnn_pnav > li > ul li:hover > a {
+    color: #D00;
+    background: #F5F7F7;
+}
+
+/* Tertiary level */
+#dnn_pnav li ul li ul {
+    left: 225px;
+    top: -8px;
+    padding: 15px 5px;
+    border-left: 1px solid #ddd;
+}

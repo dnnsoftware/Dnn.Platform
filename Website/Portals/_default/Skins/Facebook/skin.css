@@ -1,0 +1,58 @@
+﻿@font-face {
+    font-family: 'TitilliumText22LBold';
+    src: url('Fonts/TitilliumText22L005-webfont.eot');
+    src: url('Fonts/TitilliumText22L005-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/TitilliumText22L005-webfont.ttf') format('truetype'),
+         url('Fonts/TitilliumText22L005-webfont.woff') format('woff'),         
+		 url('Fonts/TitilliumText22L005-webfont.svg#TitilliumText22LBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html{height:100%;}
+#Body{height:100%;font-family:Helvetica, Arial, sans-serif;color:#333;}
+#Form{height:100%;}
+a{outline:0;border:0;}
+p, ul, ol{margin:0;padding:0 0 1em 0;}
+#DNN6{width:100%;position:relative;z-index:1;min-height:100%;background-color: #fafafa;}
+#Background{background:#fafafa;}
+
+h1{font-family:TitilliumText22LBold;font-size:26px;}
+h2{font-family:TitilliumText22LBold;font-size:22px;}
+h3{font-family:TitilliumText22LBold;font-size:18px;}
+
+#Content {min-height: 600px;}
+
+#Panes{width:480px;margin:auto;}
+    
+    #dnn_ContentPane, #dnn_BottomPane{clear:both;}
+
+
+/* Default Over-rides */
+
+#ControlPanelWrapper #dnnCPWrap{filter:none !important;}
+
+/* Modules */
+.DnnModule{margin:0 0 2em 0;}
+
+/* Panes - In Layout Mode */
+.paneOutline{border:0;}
+.paneOutline span.SubHead center{border:1px #ccc dotted;border-left:0;border-right:0;line-height:2.5em;}
+
+#iPopUp{display:none;}
+.eipbackimg{z-index:1000;}
+
+/* Fonts */
+.Normal{font-size:12px;line-height:16px;}
+.SubHead{color:#333;}
+
+/* Language Object */
+.language-object { display:inline-block; margin-left: 5px; }
+ul.dnnAdminTabNav{ padding: 0;}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    #Panes{width:760px;}
+}
+@media (min-width: 980px) {
+    #Panes{width:960px;}
+}
