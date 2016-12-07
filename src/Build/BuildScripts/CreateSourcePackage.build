@@ -18,9 +18,9 @@
             </Output>
         </GetVersion>
         <PropertyGroup>
-            <PackageName>Dnn.PersonaBar.Library_$(BuildVersion)_Source.zip</PackageName>
+            <PackageName>Dnn.PersonaBar.UI_$(FormattedBuildVersion)_Source.zip</PackageName>
         </PropertyGroup>
-        <Message Text="Zip Version : $(BuildVersion)" />
+        <Message Text="Zip Version : $(FormattedBuildVersion)" />
     </Target>
 
     <Target Name="CreateSource" DependsOnTargets="VersionCheck">
