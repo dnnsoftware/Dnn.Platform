@@ -21,7 +21,6 @@ using Dnn.PersonaBar.Pages.Components.Exceptions;
 using Dnn.PersonaBar.Pages.Services.Dto;
 using Dnn.PersonaBar.Themes.Components;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.OutputCache;
@@ -53,6 +52,7 @@ namespace Dnn.PersonaBar.Pages.Services
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
         private readonly ITemplateController _templateController;
+        private readonly IDefaultPortalThemeController _defaultPortalThemeController;
 
         private readonly ITabController _tabController;
         private readonly ILocaleController _localeController;
@@ -64,6 +64,7 @@ namespace Dnn.PersonaBar.Pages.Services
             _themesController = ThemesController.Instance;
             _bulkPagesController = BulkPagesController.Instance;
             _templateController = TemplateController.Instance;
+            _defaultPortalThemeController = DefaultPortalThemeController.Instance;
 
             _tabController = TabController.Instance;
             _localeController = LocaleController.Instance;
@@ -369,8 +370,8 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             var themes = _themesController.GetLayouts(PortalSettings, ThemeLevel.Global | ThemeLevel.Site);
             var defaultPortalThemeName = GetDefaultPortalTheme();
-            var defaultPortalLayout = GetDefaultPortalLayout();
-            var defaultPortalContainer = GetDefaultPortalContainer();
+            var defaultPortalLayout = _defaultPortalThemeController.GetDefaultPortalLayout();
+            var defaultPortalContainer = _defaultPortalThemeController.GetDefaultPortalContainer();
 
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -1146,23 +1147,13 @@ namespace Dnn.PersonaBar.Pages.Services
 
         private string GetDefaultPortalTheme()
         {
-            var layoutSrc = GetDefaultPortalLayout();
+            var layoutSrc = _defaultPortalThemeController.GetDefaultPortalLayout();
             if (string.IsNullOrWhiteSpace(layoutSrc))
             {
                 return null;
             }
             var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
             return layout?.ThemeName;
-        }
-
-        private string GetDefaultPortalContainer()
-        {
-            return PortalController.GetPortalSetting("DefaultPortalContainer", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
-        }
-
-        private string GetDefaultPortalLayout()
-        {
-            return PortalController.GetPortalSetting("DefaultPortalSkin", PortalId, Host.DefaultPortalSkin, PortalSettings.CultureCode);
         }
     }
 }

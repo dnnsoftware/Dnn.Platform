@@ -54,6 +54,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IModuleController _moduleController;
         private readonly IPageUrlsController _pageUrlsController;
         private readonly ITemplateController _templateController;
+        private readonly IDefaultPortalThemeController _defaultPortalThemeController;
 
         public const string PageTagsVocabulary = "PageTags";
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
@@ -64,6 +65,7 @@ namespace Dnn.PersonaBar.Pages.Components
             _moduleController = ModuleController.Instance;
             _pageUrlsController = PageUrlsController.Instance;
             _templateController = TemplateController.Instance;
+            _defaultPortalThemeController = DefaultPortalThemeController.Instance;
         }
         
         public bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
@@ -490,8 +492,8 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabSettings["CustomStylesheet"] = pageSettings.PageStyleSheet;
 
             // Tab Skin
-            tab.SkinSrc = pageSettings.SkinSrc;
-            tab.ContainerSrc = pageSettings.ContainerSrc;
+            tab.SkinSrc = GetSkinSrc(pageSettings);
+            tab.ContainerSrc = GetContainerSrc(pageSettings);
 
             if (pageSettings.PageType == "template")
             {
@@ -556,6 +558,30 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+        }
+
+        private string GetContainerSrc(PageSettings pageSettings)
+        {
+            var defaultContainer = _defaultPortalThemeController.GetDefaultPortalContainer();
+            if (pageSettings.ContainerSrc != null && 
+                pageSettings.ContainerSrc.Equals(defaultContainer,
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+            return pageSettings.ContainerSrc;
+        }
+
+        private string GetSkinSrc(PageSettings pageSettings)
+        {
+            var defaultSkin = _defaultPortalThemeController.GetDefaultPortalLayout();
+            if (pageSettings.SkinSrc != null && 
+                pageSettings.SkinSrc.Equals(defaultSkin,
+                StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+            return pageSettings.SkinSrc;
         }
 
         private string GetInternalUrl(PageSettings pageSettings)

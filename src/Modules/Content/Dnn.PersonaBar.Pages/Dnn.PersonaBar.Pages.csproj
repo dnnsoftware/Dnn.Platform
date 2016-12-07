@@ -128,10 +128,12 @@
     <Compile Include="Components\IPagesController.cs" />
     <Compile Include="Components\IPageUrlsController.cs" />
     <Compile Include="Components\ITemplateController.cs" />
+    <Compile Include="Components\IDefaultPortalThemeController.cs" />
     <Compile Include="Components\Localization.cs" />
     <Compile Include="Components\PageManagementController.cs" />
     <Compile Include="Components\PagesController.cs" />
     <Compile Include="Components\PagesControllerImpl.cs" />
+    <Compile Include="Components\DefaultPortalThemeController.cs" />
     <Compile Include="Components\XssCleaner.cs" />
     <Compile Include="Components\PageUrlsController.cs" />
     <Compile Include="Components\Security\ISecurityService.cs" />
