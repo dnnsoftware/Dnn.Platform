@@ -65,7 +65,10 @@ class LanguageEditor extends Component {
                                     <img src={item.Icon} />
                                 </div>
                                 <div className="language-name">{item.NativeName}</div>
-                            </div>, value: item.Name, text: item.NativeName
+                            </div>,
+                            searchableValue: item.NativeName,
+                            value: item.Name,
+                            text: item.NativeName
                         };
                     }
                     else {
@@ -75,7 +78,9 @@ class LanguageEditor extends Component {
                                     <img src={item.Icon} />
                                 </div>
                                 <div className="language-name">{item.EnglishName}</div>
-                            </div>, value: item.Name, text: item.EnglishName
+                            </div>,
+                            searchableValue: item.EnglishName,
+                            value: item.Name, text: item.EnglishName
                         };
                     }
                 });
@@ -114,7 +119,9 @@ class LanguageEditor extends Component {
                                 <img src={item.Icon} />
                             </div>
                             <div className="language-name">{item.NativeName}</div>
-                        </div>, value: item.Name
+                        </div>,
+                        searchableValue: item.NativeName,
+                        value: item.Name
                     };
                 }
                 else {
@@ -124,7 +131,9 @@ class LanguageEditor extends Component {
                                 <img src={item.Icon} />
                             </div>
                             <div className="language-name">{item.EnglishName}</div>
-                        </div>, value: item.Name
+                        </div>,
+                        searchableValue: item.EnglishName,
+                        value: item.Name
                     };
                 }
             });
