@@ -1620,7 +1620,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode)
                     ? LocaleController.Instance.GetCurrentLocale(pid).Code
                     : request.CultureCode;
-
+            
                 var language = LocaleController.Instance.GetLocale(pid, cultureCode);
                 if (language == null)
                 {
@@ -1724,8 +1724,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     PortalId = pid,
                     CultureCode = cultureCode,
-                    StopWordsId = words == null ? null: words.StopWordsId,
-                    StopWords = wordsd
+                    StopWordsId = words?.StopWordsId ?? Null.NullInteger,
+                    StopWords = words?.StopWords
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
