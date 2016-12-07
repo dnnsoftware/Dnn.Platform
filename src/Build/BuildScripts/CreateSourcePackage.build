@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="CreateSource" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <MSBuildCommunityTasksLib>MSBuild.Community.Tasks.dll</MSBuildCommunityTasksLib>
+        <DotNetNukeMSBuildTasksLib>DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
+    </PropertyGroup>
+    <UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.Zip" />
+    <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.GetVersion" />
+
+    <Target Name="VersionCheck">
+        <Message Text="SolutionInfo: $(checkoutDirectory)\src\SolutionInfo.cs" />
+        <GetVersion SolutionFile="$(checkoutDirectory)\src\SolutionInfo.cs" >
+            <Output TaskParameter="BuildVersion" PropertyName="BuildVersion">
+            </Output>
+            <Output TaskParameter="FormattedBuildVersion" PropertyName="FormattedBuildVersion">
+            </Output>
+            <Output TaskParameter="Revision" PropertyName="Revision">
+            </Output>
+        </GetVersion>
+        <PropertyGroup>
+            <PackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Source.zip</PackageName>
+        </PropertyGroup>
+        <Message Text="Zip Version : $(FormattedBuildVersion)" />
+    </Target>
+
+    <Target Name="CreateSource" DependsOnTargets="VersionCheck">
+        <ItemGroup>
+            <SourceExclude Include="$(checkoutDirectory)\src\**\*.Web\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\.vs\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\bin\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\**\bin\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\**\obj\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\packages\**\*" />
+        </ItemGroup>
+
+        <ItemGroup>
+            <SourceFiles Include="$(checkoutDirectory)\src\**\*.*" Exclude="@(SourceExclude)" />
+        </ItemGroup>
+        <Zip Files="@(SourceFiles)" WorkingDirectory="$(checkoutDirectory)\" ZipFileName="$(checkoutDirectory)\website\install\module\$(PackageName)" />
+    </Target>
+</Project>
