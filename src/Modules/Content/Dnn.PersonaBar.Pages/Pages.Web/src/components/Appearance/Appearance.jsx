@@ -26,15 +26,29 @@ class Appearance extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { page, defaultPortalThemeName, onRetrieveThemeFiles } = this.props;
+        const { page, containers, defaultPortalThemeName, onRetrieveThemeFiles } = this.props;
         
+        if (newProps.containers !== containers) {
+            this.autoSelectFirstContainerIfNoOneIsSelected(newProps.page, newProps.containers);
+        }
+
         if (page.themeName) {
             return;
         }
 
         if (defaultPortalThemeName !== newProps.defaultPortalThemeName && newProps.defaultPortalThemeName !== null) {
             onRetrieveThemeFiles(newProps.defaultPortalThemeName);
-        }
+        }          
+    }
+
+    autoSelectFirstContainerIfNoOneIsSelected(page, containers) {
+        const { onChangeField, defaultPortalContainer } = this.props;
+        const selectedContainerPath = page.containerSrc || defaultPortalContainer;
+        const selectedContainer = containers.find(this.findByPath(selectedContainerPath)); 
+        if (!selectedContainer && containers.length !== 0) {
+            const container = containers[0];
+            onChangeField("containerSrc", this.addAscxExtension(container.path));
+        } 
     }
 
     getPagePreviewUrl(skinSrc, containerSrc) {
@@ -111,7 +125,8 @@ class Appearance extends Component {
         const selectedLayoutPath = page.skinSrc || defaultPortalLayout;
         const selectedLayout = layouts.find(this.findByPath(selectedLayoutPath));
         const selectedContainerPath = page.containerSrc || defaultPortalContainer;
-        const selectedContainer = containers.find(this.findByPath(selectedContainerPath));     
+        const selectedContainer = containers.find(this.findByPath(selectedContainerPath)); 
+
         return (
             <div className={style.moduleContainer}>
                 <GridCell>
