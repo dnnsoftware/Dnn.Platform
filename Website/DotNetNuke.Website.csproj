@@ -3492,11 +3492,6 @@
     <Content Include="Portals\_default\EventQueue\readme.txt" />
     <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
-    <Content Include="Portals\_default\Skins\Facebook\Facebook-Mega-Menu.ascx" />
-    <Content Include="Portals\_default\Skins\Facebook\Facebook-Mega-Menu.doctype.xml" />
-    <Content Include="Portals\_default\Skins\Facebook\images\FacebookLogo.png" />
-    <Content Include="Portals\_default\Skins\Facebook\jquery.cycle.min.js" />
-    <Content Include="Portals\_default\Skins\Facebook\skin.css" />
     <Content Include="Portals\_default\Skins\Gravity\2-Col.ascx" />
     <Content Include="Portals\_default\Skins\Gravity\2-Col.jpg" />
     <Content Include="Portals\_default\Skins\Gravity\3-Col-Social.ascx" />
