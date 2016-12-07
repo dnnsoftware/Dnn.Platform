@@ -459,6 +459,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (!_securityService.CanManagePage(tabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 if (_tabController.GetTabsByPortal(PortalId).WithParentId(tabId).Count > 0)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, LocalizeString("MakeNeutral.ErrorMessage"));
@@ -482,6 +487,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (!_securityService.CanManagePage(tabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 var currentTab = _tabController.GetTab(tabId, PortalId, false);
                 if (currentTab == null)
                 {
@@ -508,6 +518,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (!_securityService.CanManagePage(tabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 _tabController.AddMissingLanguages(PortalId, tabId);
                 _tabController.ClearCache(PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -526,6 +541,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (!_securityService.CanManagePage(comment.TabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 // loop through all localized version of this page
                 var currentTab = _tabController.GetTab(comment.TabId, PortalId, false);
                 foreach (var localizedTab in currentTab.LocalizedTabs.Values)
@@ -564,6 +584,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (!_securityService.CanManagePage(tabId))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 var currentTab = _tabController.GetTab(tabId, PortalId, false);
                 var locales = new List<LocaleInfoDto>();
                 var pages = new DnnPagesDto(locales);
@@ -587,6 +612,11 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                if (pages.Pages.Any(x => x.TabId > 0 && !_securityService.CanManagePage(x.TabId)))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 SaveNonLocalizedPages(pages);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
@@ -604,6 +634,12 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                var module = ModuleController.Instance.GetTabModule(tabModuleId);
+                if (!_securityService.CanManagePage(module.TabID))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 var moduleController = ModuleController.Instance;
                 var moduleInfo = moduleController.GetTabModule(tabModuleId);
                 if (moduleInfo == null)
@@ -628,6 +664,12 @@ namespace Dnn.PersonaBar.Pages.Services
         {
             try
             {
+                var module = ModuleController.Instance.GetTabModule(tabModuleId);
+                if (!_securityService.CanManagePage(module.TabID))
+                {
+                    return GetForbiddenResponse();
+                }
+
                 var moduleController = ModuleController.Instance;
                 var moduleInfo = moduleController.GetTabModule(tabModuleId);
                 if (moduleInfo == null)
