@@ -35,6 +35,6 @@
         <ItemGroup>
             <SourceFiles Include="$(checkoutDirectory)\src\**\*.*" Exclude="@(SourceExclude)" />
         </ItemGroup>
-        <Zip Files="@(SourceFiles)" WorkingDirectory="$(checkoutDirectory)\" ZipFileName="$(checkoutDirectory)\$(PackageName)" />
+        <Zip Files="@(SourceFiles)" WorkingDirectory="$(checkoutDirectory)\" ZipFileName="$(checkoutDirectory)\website\install\module\$(PackageName)" />
     </Target>
 </Project>
