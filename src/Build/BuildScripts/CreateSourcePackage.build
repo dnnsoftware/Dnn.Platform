@@ -30,6 +30,7 @@
             <SourceExclude Include="$(checkoutDirectory)\src\bin\**\*" />
             <SourceExclude Include="$(checkoutDirectory)\src\**\bin\**\*" />
             <SourceExclude Include="$(checkoutDirectory)\src\**\obj\**\*" />
+            <SourceExclude Include="$(checkoutDirectory)\src\packages\**\*" />
         </ItemGroup>
 
         <ItemGroup>
