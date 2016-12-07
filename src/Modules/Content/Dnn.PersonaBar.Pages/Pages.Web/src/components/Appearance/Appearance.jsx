@@ -63,7 +63,8 @@ class Appearance extends Component {
 
     onSelectTheme(theme) {
         this.props.onChangeField("themeName", theme.packageName);
-        this.props.onChangeField("skinSrc", theme.defaultThemeFile);
+        const skinSrc = this.addAscxExtension(theme.defaultThemeFile);
+        this.props.onChangeField("skinSrc", skinSrc);
         this.props.onRetrieveThemeFiles(theme.packageName);
     }
 
