@@ -53,7 +53,8 @@ export class Body extends Component {
                             style={{
                                 position: "absolute",
                                 right: -27,
-                                top: 15
+                                top: 15,
+                                textTransform: "none"
                             }}
                             />
                     </div>
@@ -72,7 +73,8 @@ export class Body extends Component {
                                 style={{
                                     position: "absolute",
                                     right: -27,
-                                    top: 15
+                                    top: 15,
+                                    textTransform: "none"
                                 }}
                                 />
                         </div>,
@@ -106,7 +108,8 @@ export class Body extends Component {
                         style={{
                             position: "absolute",
                             right: -27,
-                            top: 15
+                            top: 15,
+                            textTransform: "none"
                         }}
                         /></div>]}
                     type="secondary">

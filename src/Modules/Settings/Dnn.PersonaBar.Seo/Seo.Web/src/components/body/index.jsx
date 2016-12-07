@@ -38,7 +38,7 @@ export class Body extends Component {
                     tabHeaders={[resx.get("GeneralSettingsTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
                         messages={[resx.get("GlobalSetting")]}
                         type="global"
-                        style={{ position: "absolute", right: 0, top: 15, float: "right" }}
+                        style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }}
                         /></div>, resx.get("TestURLTab")]}
                     type="secondary">
                     <GeneralSettings />
