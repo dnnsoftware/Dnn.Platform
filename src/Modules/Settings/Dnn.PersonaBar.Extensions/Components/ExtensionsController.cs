@@ -333,29 +333,36 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (package.PackageType.ToLowerInvariant())
             {
                 case "module":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultExtensionImage;
                 case "container":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultContainerImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultContainerImage;
                 case "skin":
                 case "skinobject":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultSkinImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultSkinImage;
                 case "authenticationsystem":
                 case "auth_system":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultAuthenicationImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultAuthenicationImage;
                 case "corelanguagepack":
                 case "extensionlanguagepack":
-                    return package.IconFile != "N\\A"  && IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLanguageImage;
+                    return package.IconFile != "N\\A"  && IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLanguageImage;
                 case "provider":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultProviderImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultProviderImage;
                 case "widget":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultWidgetImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultWidgetImage;
                 case "dashboardcontrol":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultDashboardImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultDashboardImage;
                 case "library":
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultLibraryImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLibraryImage;
                 default:
-                    return IconExists(package.IconFile) ? package.IconFile : Globals.ImagePath + Constants.DefaultExtensionImage;
+                    return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultExtensionImage;
             }
+        }
+
+        private static string FixIconUrl(string url)
+        {
+            return !string.IsNullOrEmpty(Globals.ApplicationPath)
+                ? $"{Globals.ApplicationPath}/{url.TrimStart('~').TrimStart('/')}"
+                : url;
         }
 
         internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
