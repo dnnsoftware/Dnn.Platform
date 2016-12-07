@@ -242,3 +242,4 @@ DNN Platform/Dnn.AuthServices.Jwt/Package/
 Website/Portals/_default/Install/Dnn.CKEditorDefaultSettings.xml
 Website/Portals/_default/Install/Dnn.CKToolbarButtons.xml
 Website/Portals/_default/Install/Dnn.CKToolbarSets.xml
+/Build.bat

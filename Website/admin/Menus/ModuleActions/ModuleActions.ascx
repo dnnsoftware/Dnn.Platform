@@ -86,6 +86,15 @@
 
                                 var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
 
+							if ($(document.body).css('direction') == 'rtl')
+								root.css({
+                                    position: "absolute",
+                                    marginLeft: 0,
+                                    marginTop: 0,
+                                    top: containerPosition.top,
+                                    left: containerPosition.left
+								});
+							else
                                 root.css({
                                     position: "absolute",
                                     marginLeft: 0,

@@ -102,6 +102,7 @@
                         open: function () {
                             $('.ui-dialog-buttonpane').find('button:contains("' + opts.noText + '")').addClass('dnnConfirmCancel');
                         },
+                        position: 'center',
                         draggable: false,
                         buttons: [
                         {
@@ -440,7 +441,10 @@
             });
             var helpSelector = $this.find(opts.helpSelector);
             $this.parent().css({ position: 'relative' });
-            $this.css({ position: 'absolute', right: '-29%' });
+			if ($(document.body).css('direction') == 'rtl')
+				$this.css({ position: 'absolute', left: '-29%' });
+			else
+            	$this.css({ position: 'absolute', right: '-29%' });
             var hoverOnToolTip = false, hoverOnPd = false;
 
             dnnFormHelp.hoverIntent({

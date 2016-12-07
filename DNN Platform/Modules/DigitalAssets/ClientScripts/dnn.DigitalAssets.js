@@ -166,7 +166,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             var label = labels.eq(i);
             currentTool.is(':visible') ? label.show() : label.hide();
             if (nextTool.length > 0) {
-                label.width(nextTool.position().left - currentTool.position().left);
+                if ($(document.body).css('direction') == 'rtl')
+                    label.width(currentTool.position().left - nextTool.position().left);
+                else
+                    label.width(nextTool.position().left - currentTool.position().left);
             }
         }
     }
@@ -351,8 +354,14 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             left = 0;
         }
 
-        contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
-        loadingPanel.css({ 'left': left });
+        if ($(document.body).css('direction') == 'rtl') {
+            contentPane.animate({ 'margin-right': left }, 500, 'swing', moreItemsHint);
+            loadingPanel.css({ 'right': left });
+        }
+        else {
+            contentPane.animate({ 'margin-left': left }, 500, 'swing', moreItemsHint);
+            loadingPanel.css({ 'left': left });
+        }
     }
 
     function moreItemsHint() {
@@ -872,7 +881,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                             "class": "dnnSecondaryAction"
                         }
                     ],
-                close: function() {
+                close: function () {
                     cancelFunction();
                 }
             });
@@ -1326,7 +1335,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         // Copy attributes
         var attributesCopyFrom = nodeCopyFrom.get_attributes();
-        for (var i = 0; i < attributesCopyFrom.get_count(); i++) {
+        for (var i = 0; i < attributesCopyFrom.get_count() ; i++) {
             var attributeKey = attributesCopyFrom._keys[i];
             nodeCopyTo.get_attributes().setAttribute(attributeKey, attributesCopyFrom.getAttribute(attributeKey));
         }
@@ -1377,7 +1386,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         for (var i = 0; i < permissions.length; i++) {
             //Select all menu items that must check the current permission            
             var itemsSelector = selectorPattern + " .permission_" + permissions[i].Key;
-            $(itemsSelector).each(function() {
+            $(itemsSelector).each(function () {
                 var $item = changeParent ? $(this).parent() : $(this);
 
                 if (permissions[i].Value) {
@@ -1796,8 +1805,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
         } else {
-            $.each(dataItem.Permissions, function(index, p)
-            {
+            $.each(dataItem.Permissions, function (index, p) {
                 if (p.Key == "READ" && p.Value == true) {
                     self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
                     return false;
@@ -1843,7 +1851,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             },
             async: false,
             beforeSend: servicesFramework.setModuleHeaders
-        }).done(function(data) {
+        }).done(function (data) {
             url = data;
         }).fail(function (xhr) {
             handledXhrError(xhr, resources.getUrlErrorTitle);
@@ -1919,7 +1927,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         controller.gridOnRowDataBound(item, args.get_dataItem());
     }
 
-    function onContextMenuShown() {
+    function onContextMenuShown(mnu, args) {
         // RadMenu asigns overflow: hidden to hidden items. This is not hidding the bottom border
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu li').each(function () {
             if ($(this).css("overflow") == "hidden") {
@@ -1931,6 +1939,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         // Change the rmFirst and rmLast classes considering item visibility
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu').find('li:visible:first').addClass('rmFirst');
         $('.RadMenu.dnnModuleDigitalAssetsContextMenu').find('li:visible:last').addClass('rmLast');
+
+        if ($(document.body).css('direction') == 'rtl') {
+            $('.RadMenu.dnnModuleDigitalAssetsContextMenu').each(function () {
+                var evt = args.get_domEvent();
+                var x;
+
+                if (evt)
+                    x = evt.screenX - $(this).width();
+                else
+                    x = $(args.get_node().get_element()).offset().left - $(this).width() / 2;
+
+                $(this).css("left", x);
+            });
+        }
     }
 
     function isItemAlreadySelected(gridItem, items) {
@@ -2479,8 +2501,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         unlinkFolder(items[0]);
     }
 
-    function unlinkFolder(item)
-    {
+    function unlinkFolder(item) {
         var dialogTitle = resources.unlinkTitle;
         var dialogText = resources.unlinkConfirmText;
 
@@ -2498,7 +2519,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     id: "unlink_button",
                     text: resources.unlinkText,
                     "class": "dnnPrimaryAction",
-                    click: function() {
+                    click: function () {
                         $(this).dialog("close");
                         enableLoadingPanel(true);
 
@@ -2508,7 +2529,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                             data: { folderId: item.ItemId },
                             async: false,
                             beforeSend: servicesFramework.setModuleHeaders
-                        }).done(function(data) {
+                        }).done(function (data) {
 
                             if (item.ItemId == currentFolderId) {
                                 var parentNode = getCurrentNode().get_parent();
@@ -2521,9 +2542,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                             treeView.findNodeByValue(item.ParentFolderId).get_nodes().remove(treeView.findNodeByValue(item.ItemId));
                             treeView.commitChanges();
                             treeViewRefreshScrollbars();
-                        }).fail(function(xhr) {
+                        }).fail(function (xhr) {
                             handledXhrError(xhr, resources.unlinkFolderErrorText);
-                        }).always(function() {
+                        }).always(function () {
                             enableLoadingPanel(false);
                         });
                     }
@@ -2664,9 +2685,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             },
             type: "POST",
             beforeSend: servicesFramework.setModuleHeaders
-        }).done(function(data) {
+        }).done(function (data) {
             confirmDeleteItems(items, parentFolderId, data);
-        }).fail(function(xhr) {
+        }).fail(function (xhr) {
             handledXhrError(xhr, resources.deleteItemsErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);
@@ -2682,7 +2703,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             if (item.IsFolder) {
                 var hasBeenDeleted = true;
                 for (var j = 0; j < itemsNotDeleted.length; j++) {
-                    if(item.ItemId == itemsNotDeleted[j].ItemId) {
+                    if (item.ItemId == itemsNotDeleted[j].ItemId) {
                         hasBeenDeleted = false;
                         break;
                     }
@@ -2869,7 +2890,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
 
         var selectedNode = treeView.findNodeByValue(currentFolderId);
-        if(selectedNode) {
+        if (selectedNode) {
             selectedNode.select();
             if (selectedNode.get_parent() != null && !selectedNode.get_parent().get_expanded()) {
                 selectedNode.get_parent().expand();
@@ -3053,7 +3074,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function getUrl() {
-        var items = convertToItemsFromGridItems(grid.get_selectedItems());        
+        var items = convertToItemsFromGridItems(grid.get_selectedItems());
         if (!items[0].IsFolder) {
             getUrlFromFileId(items[0]);
         }
@@ -3088,7 +3109,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 fileId: item.ItemId
             },
             beforeSend: servicesFramework.setModuleHeaders
-        }).done(function(data) {
+        }).done(function (data) {
             var url;
             if (data.indexOf("http://") == 0 || data.indexOf("https://") == 0) {
                 url = data;
@@ -3537,7 +3558,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return list;
     }
 
-    function initUI () {
+    function initUI() {
 
         initDragAndDrop();
 

@@ -94,7 +94,9 @@
 
             $modal = $("<iframe id=\"iPopUp\" name=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
             $(document.body).append($modal);
-            $(document).find('html').css('overflow', 'hidden'); 
+
+			if (navigator.userAgent.match(/firefox/i))
+				$(document.body).css('position', 'relative'); 
 			
 			var ss = document.styleSheets;
 			var isAdmin = false;
@@ -200,8 +202,8 @@
                     $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
                     var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
                     $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
-                    
-                    $dnnToggleMax.click(function (e) {
+
+                    $dnnToggleMax.click(function(e) {
                         e.preventDefault();
 
                         var $window = $(window),
@@ -213,14 +215,12 @@
                             newHeight = $modal.data('height') + JQUERY_UI_HEIGHT_SHRINK_OFFSET;
                             newWidth = $modal.data('width');
                             $modal.data('isMaximized', false);
-
                         } else {
                             $modal.data('height', $modal.dialog("option", "minHeight"))
                                 .data('width', $modal.dialog("option", "minWidth"));
 
                             newHeight = $window.height() - 46;
                             newWidth = $window.width() - 40;
-
                             $modal.data('isMaximized', true);
                         }
 
@@ -286,7 +286,7 @@
             } else {
                 popup.dialog('option', 'close', null).dialog('close');
             }
-            $(windowTop.document).find('html').css('overflow', '');
+            $(windowTop.document.body).css('position', '');
         },
 
         refreshPopup: function(options) {
