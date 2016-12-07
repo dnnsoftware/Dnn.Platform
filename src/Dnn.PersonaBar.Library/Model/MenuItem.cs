@@ -88,11 +88,11 @@ namespace Dnn.PersonaBar.Library.Model
             get
             {
                 var resourcesPath = System.IO.Path.Combine(Constants.PersonaBarModulesPath, Identifier, "App_LocalResources", ModuleName + ".resx");
-                var displayName = Localization.GetSafeJSString(ResourceKey, resourcesPath);
+                var displayName = Localization.GetString(ResourceKey, resourcesPath);
                 if (string.IsNullOrEmpty(displayName))
                 {
                     resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
-                    displayName = Localization.GetSafeJSString(ResourceKey, resourcesPath);
+                    displayName = Localization.GetString(ResourceKey, resourcesPath);
                 }
 
                 if (string.IsNullOrEmpty(displayName))
