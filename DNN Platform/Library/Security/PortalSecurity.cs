@@ -455,20 +455,17 @@ namespace DotNetNuke.Security
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
-            else
+            if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
             {
-                if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
-                {
-                    tempInput = HttpUtility.HtmlEncode(tempInput);
-                }
-                if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
-                {
-                    tempInput = FormatDisableScripting(tempInput);
-                }
-                if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
-                {
-                    tempInput = FormatMultiLine(tempInput);
-                }
+                tempInput = HttpUtility.HtmlEncode(tempInput);
+            }
+            if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
+            {
+                tempInput = FormatDisableScripting(tempInput);
+            }
+            if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
+            {
+                tempInput = FormatMultiLine(tempInput);
             }
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
