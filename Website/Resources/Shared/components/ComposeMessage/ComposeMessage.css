@@ -34,7 +34,6 @@ div.token-input-dropdown-facebook ul li img{padding-right:10px;vertical-align:mi
 @media only screen and (max-width: 480px) {
 	.composeMessageDialog .dnnLabel {
 	    white-space: nowrap;
-	    width: auto;
 	    margin-right: 1em;
 	    text-align: left;
 	}
