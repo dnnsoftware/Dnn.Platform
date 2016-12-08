@@ -31,3 +31,11 @@ div.token-input-dropdown-facebook ul li img{padding-right:10px;vertical-align:mi
 .composeMessageDialog .messageAttachments a.removeAttachment:hover{
 	opacity:1;
 }
+@media only screen and (max-width: 480px) {
+	.composeMessageDialog .dnnLabel {
+	    white-space: nowrap;
+	    width: auto;
+	    margin-right: 1em;
+	    text-align: left;
+	}
+}
