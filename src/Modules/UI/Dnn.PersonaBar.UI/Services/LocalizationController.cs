@@ -121,7 +121,7 @@ namespace Dnn.PersonaBar.UI.Services
             {
                 var key = resourcesFile.Key;
                 var relativePath = resourcesFile.Value.Replace(Globals.ApplicationMapPath, "~").Replace("\\", "/");
-                var keys = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
+                var keys = GetLocalizedDictionary(relativePath, culture);
                 resources.Add(key, keys);
             }
 
@@ -136,6 +136,50 @@ namespace Dnn.PersonaBar.UI.Services
             File.WriteAllText(filePath, content, Encoding.UTF8);
 
             return resources;
+        }
+
+        private IDictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
+        {
+            var localizedDict = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
+            if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var fallbackCulture = GetFallbackCulture(culture);
+                var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
+                var fileName = Path.GetFileNameWithoutExtension(relativePath)?
+                                .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), "");
+                var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase)
+                                    ? "" : "." + fallbackCulture;
+                var fallbackFilePath = $"{folder}//{fileName}{culturePart}.resx";
+                if (!File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
+                {
+                    fallbackFilePath = $"{folder}//{fileName}.resx";
+                }
+
+                if (File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
+                {
+                    var fallbackDict = Components.Controllers.LocalizationController.Instance.GetLocalizedDictionary(fallbackFilePath, culture);
+                    foreach (var kvp in fallbackDict)
+                    {
+                        if (!localizedDict.ContainsKey(kvp.Key))
+                        {
+                            localizedDict.Add(kvp.Key, kvp.Value);
+                        }
+                    }
+                }
+            }
+
+            return localizedDict;
+        }
+
+        private string GetFallbackCulture(string culture)
+        {
+            var locale = LocaleController.Instance.GetLocale(PortalId, culture);
+            if (locale != null && !string.IsNullOrEmpty(locale.Fallback))
+            {
+                return locale.Fallback;
+            }
+
+            return Localization.SystemLocale;
         }
 
         private string GetResourcesJsonFilePath(string culture)
@@ -178,6 +222,19 @@ namespace Dnn.PersonaBar.UI.Services
                         return !string.IsNullOrEmpty(name) 
                                     && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                     });
+
+                    if (string.IsNullOrEmpty(cultureSpecificFile))
+                    {
+                        var fallbackCulture = GetFallbackCulture(culture);
+                        cultureSpecificFileName = $"{key}.{fallbackCulture}.resx";
+                        cultureSpecificFile = allFiles.FirstOrDefault(f =>
+                        {
+                            var name = Path.GetFileName(f);
+                            return !string.IsNullOrEmpty(name)
+                                        && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
+                        });
+
+                    }
 
                     if (!string.IsNullOrEmpty(cultureSpecificFile))
                     {
