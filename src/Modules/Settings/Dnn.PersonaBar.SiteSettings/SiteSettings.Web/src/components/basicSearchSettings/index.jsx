@@ -65,10 +65,11 @@ class BasicSearchSettingsPanelBody extends Component {
             }
 
             let maxWordLength = props.basicSearchSettings["MaxWordLength"];
-            if (!re.test(maxWordLength) || minWordLength >= maxWordLength) {
+
+            if (!re.test(maxWordLength) || parseInt(minWordLength) >= parseInt(maxWordLength)) {
                 state.error["maxlength"] = true;
             }
-            else if (re.test(maxWordLength) && maxWordLength > minWordLength) {
+            else if (re.test(maxWordLength) && parseInt(maxWordLength) > parseInt(minWordLength)) {
                 state.error["maxlength"] = false;
             }
 
@@ -101,10 +102,12 @@ class BasicSearchSettingsPanelBody extends Component {
             state.error["minlength"] = false;
         }
 
-        if (key === "MaxWordLength" && (!re.test(basicSearchSettings[key]) || basicSearchSettings["MinWordLength"] >= basicSearchSettings["MaxWordLength"])) {
+        if (key === "MaxWordLength" && (!re.test(basicSearchSettings[key])
+            || parseInt(basicSearchSettings["MinWordLength"]) >= parseInt(basicSearchSettings["MaxWordLength"]))) {
             state.error["maxlength"] = true;
         }
-        else if (key === "MaxWordLength" && re.test(basicSearchSettings[key]) && basicSearchSettings["MaxWordLength"] > basicSearchSettings["MinWordLength"]) {
+        else if (key === "MaxWordLength" && re.test(basicSearchSettings[key])
+            && parseInt(basicSearchSettings["MaxWordLength"]) > parseInt(basicSearchSettings["MinWordLength"])) {
             state.error["maxlength"] = false;
         }
 
