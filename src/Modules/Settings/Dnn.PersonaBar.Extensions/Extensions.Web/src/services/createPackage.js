@@ -27,12 +27,12 @@ class CreatePackageService {
 
         sf.post("CreateNewManifest", payload, callback, errorCallback);
     }
-    createPackage(payload, callback) {
+    createPackage(payload, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
 
         sf.post("CreatePackage", payload, callback, errorCallback);
     }
-    refreshPackageFiles(payload, callback) {
+    refreshPackageFiles(payload, callback, errorCallback) {
         const sf = this.getServiceFramework("Extensions");
 
         sf.post("RefreshPackageFiles", payload, callback, errorCallback);

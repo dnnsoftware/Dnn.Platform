@@ -157,6 +157,8 @@ class CreatePackage extends Component {
         if (props.packagePayload.createPackage) {
             props.dispatch(CreatePackageActions.createPackage(mapToPackagePayload(deepCopy(props.packagePayload), deepCopy(props.packageManifest)), () => {
                 this.goToStep(5);
+            }, (data) => {
+                utilities.utilities.notifyError(JSON.parse(data.responseText).Message, 5000);
             }));
         }
     }
@@ -219,7 +221,11 @@ class CreatePackage extends Component {
     onRefresh() {
         const { props } = this;
 
-        props.dispatch(CreatePackageActions.refreshPackageFiles(mapToFileRequestPayload(deepCopy(props.packageManifest))));
+        props.dispatch(CreatePackageActions.refreshPackageFiles(mapToFileRequestPayload(deepCopy(props.packageManifest)),
+            () => { },
+            (data) => {
+                utilities.utilities.notifyError(JSON.parse(data.responseText).Message);
+            }));
     }
 
     getCurrentWizardUI(step) {

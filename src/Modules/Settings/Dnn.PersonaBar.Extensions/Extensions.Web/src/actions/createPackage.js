@@ -68,7 +68,7 @@ const createPackageActions = {
             });
         };
     },
-    createPackage(payload, callback) {
+    createPackage(payload, callback, errorCallback) {
         return (dispatch) => {
             CreatePackageService.createPackage(payload, (data) => {
                 dispatch({
@@ -77,6 +77,10 @@ const createPackageActions = {
                 });
                 if (callback) {
                     callback(data);
+                }
+            }, (data) => {
+                if (errorCallback) {
+                    errorCallback(data);
                 }
             });
         };
@@ -94,7 +98,7 @@ const createPackageActions = {
             }
         };
     },
-    refreshPackageFiles(payload, callback) {
+    refreshPackageFiles(payload, callback, errorCallback) {
         return (dispatch) => {
             CreatePackageService.refreshPackageFiles(payload, (data) => {
                 dispatch({
@@ -103,6 +107,10 @@ const createPackageActions = {
                 });
                 if (callback) {
                     callback(data);
+                }
+            }, (data) => {
+                if (errorCallback) {
+                    errorCallback(data);
                 }
             });
         };
