@@ -95,11 +95,13 @@
 				    </div>
 				    <dnn:COPYRIGHT ID="dnnCopyright" runat="server" CssClass="pull-left" />
                 </div>
+                <% If DotNetNuke.Entities.Host.Host.DisplayCopyright Then %>
                 <div class="row-fluid copyright-container">
 					<span class="split"></span>
                     <dnn:DNNLINK id="dnnLink" runat="server" CssClass="" Target="_blank"></dnn:DNNLINK>
 					<span class="split"></span>
 				</div>
+                <% End If %>
             </div>
         </div>
 	</div>
