@@ -134,8 +134,6 @@
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary, li.page-drag-helper div.page-item span.summary {
     display: block;
-    vertical-align: top;
-    margin-left: 94px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary > span, li.page-drag-helper div.page-item span.summary > span {
     min-height: 18px;

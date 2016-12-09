@@ -13,6 +13,13 @@ const pageHierarchyActions = {
             type: ActionTypes.SET_ITEM_TEMPLATE,
             itemTemplate
         };
+    },
+
+    setDragItemTemplate(itemTemplate) {
+        return {
+            type: ActionTypes.SET_DRAG_ITEM_TEMPLATE,
+            itemTemplate
+        };
     }
 };
 
