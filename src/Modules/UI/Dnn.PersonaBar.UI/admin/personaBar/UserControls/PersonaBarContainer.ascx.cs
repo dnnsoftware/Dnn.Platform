@@ -12,8 +12,10 @@ using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.ControlPanels;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
 using Globals = DotNetNuke.Common.Globals;
@@ -80,8 +82,11 @@ namespace Dnn.PersonaBar.UI.UserControls
 
             RegisterPersonaBarStyleSheet();
 
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins); //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
+
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
