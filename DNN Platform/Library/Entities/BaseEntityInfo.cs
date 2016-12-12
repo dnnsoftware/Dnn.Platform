@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int CreatedByUserID { get; private set; }
+        public int CreatedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public int LastModifiedByUserID { get; private set; }
+        public int LastModifiedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -150,16 +150,6 @@ namespace DotNetNuke.Entities
         internal void FillBaseProperties(IDataReader dr)
         {
             FillInternal(dr);
-        }
-
-        internal void SetCreatorUserId(int userId)
-        {
-            CreatedByUserID = userId;
-        }
-
-        internal void SetLastModifiedByUserId(int userId)
-        {
-            LastModifiedByUserID = userId;
         }
     }
 }

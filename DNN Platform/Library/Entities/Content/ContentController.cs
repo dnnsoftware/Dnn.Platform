@@ -63,8 +63,8 @@ namespace DotNetNuke.Entities.Content
 
 	        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
             contentItem.ContentItemId = _dataService.AddContentItem(contentItem, userId);
-            contentItem.SetCreatorUserId(userId);
-            contentItem.SetLastModifiedByUserId(userId);
+            contentItem.CreatedByUserID = userId;
+            contentItem.LastModifiedByUserID = userId;
 
             SaveMetadataDelta(contentItem);
 
@@ -188,7 +188,7 @@ namespace DotNetNuke.Entities.Content
 
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
             _dataService.UpdateContentItem(contentItem, userId);
-            contentItem.SetLastModifiedByUserId(userId);
+            contentItem.LastModifiedByUserID = userId;
 
             UpdateContentItemsCache(contentItem);
         }
