@@ -300,6 +300,10 @@ namespace Dnn.PersonaBar.Library.Permissions
                         {
                             roleId = role.RoleID;
                         }
+                        else if(role != null)
+                        {
+                            Logger.Error($"Role \"{roleName}\" in portal \"{portalId}\" doesn't marked as system role, will ignore add this default permission to {menuItem.Identifier}.");
+                        }
                         break;
                 }
 
