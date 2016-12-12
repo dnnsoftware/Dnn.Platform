@@ -151,5 +151,15 @@ namespace DotNetNuke.Entities
         {
             FillInternal(dr);
         }
+
+        internal void SetCreatorUserId(int userId)
+        {
+            CreatedByUserID = userId;
+        }
+
+        internal void SetLastModifiedByUserId(int userId)
+        {
+            LastModifiedByUserID = userId;
+        }
     }
 }

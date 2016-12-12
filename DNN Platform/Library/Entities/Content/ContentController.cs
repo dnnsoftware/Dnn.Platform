@@ -61,7 +61,10 @@ namespace DotNetNuke.Entities.Content
             //Argument Contract
             Requires.NotNull("contentItem", contentItem);
 
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
+	        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, userId);
+            contentItem.SetCreatorUserId(userId);
+            contentItem.SetLastModifiedByUserId(userId);
 
             SaveMetadataDelta(contentItem);
 
@@ -182,8 +185,10 @@ namespace DotNetNuke.Entities.Content
             AttachmentController.SerializeAttachmentMetadata(contentItem);
 
             SaveMetadataDelta(contentItem);
-            
-            _dataService.UpdateContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
+
+            var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+            _dataService.UpdateContentItem(contentItem, userId);
+            contentItem.SetLastModifiedByUserId(userId);
 
             UpdateContentItemsCache(contentItem);
         }
