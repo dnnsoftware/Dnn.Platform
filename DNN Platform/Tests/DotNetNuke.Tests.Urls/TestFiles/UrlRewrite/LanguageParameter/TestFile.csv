@@ -1,7 +1,6 @@
 Test,						Scheme,		Page Name,		Test Url,														Expected Url,														Status
 Home en-US,					http://,	Home,			http://{alias}/,												{defaultPage}?TabId={tabId}&language=en-US,							200
 About Us en-US,				http://,	About Us,		http://{alias}/About-Us.aspx,									{defaultPage}?TabId={tabId},										200
-Admin Site Settings en-US,	http://,	Site Settings,	http://{alias}/Admin/Site-Settings.aspx,						{defaultPage}?TabId={tabId},										200
 Profile Messages en-US,		http://,	Messages,		http://{alias}/Activity-Feed/Messages.aspx,						{defaultPage}?TabId={tabId},										200
 Terms en-US,				http://,	Home,			http://{alias}/Terms.aspx,										{defaultPage}?PortalId={portalId}&ctl=Terms,						200
 Login en-US,				http://,	About Us,		http://{alias}/Login.aspx,										{defaultPage}?PortalId={portalId}&ctl=Login,						200
@@ -9,7 +8,6 @@ Edit Page Home en-US,		http://,	Home,			http://{alias}/Home/ctl/Edit/mid/100.asp
 Edit Page About Us en-US,	http://,	About Us,		http://{alias}/About-Us/ctl/Edit/mid/200.aspx,					{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,						200
 Home fr-FR,					http://,	Home,			http://{alias}/language/fr-FR/Home.aspx,						{defaultPage}?TabId={tabId}&language=fr-FR,							200
 About Us fr-FR,				http://,	About Us,		http://{alias}/language/fr-FR/About-Us.aspx,					{defaultPage}?TabId={tabId}&language=fr-FR,							200
-Admin Site Settings fr-FR,	http://,	Site Settings,	http://{alias}/language/fr-FR/Admin/Site-Settings.aspx,			{defaultPage}?TabId={tabId}&language=fr-FR,							200
 Profile Messages fr-FR,		http://,	Messages,		http://{alias}/language/fr-FR/Activity-Feed/Messages.aspx,		{defaultPage}?TabId={tabId}&language=fr-FR,							200
 Terms fr-FR,				http://,	Home,			http://{alias}/language/fr-FR/Terms.aspx,						{defaultPage}?PortalId={portalId}&ctl=Terms&language=fr-FR,			200
 Login fr-FR,				http://,	About Us,		http://{alias}/language/fr-FR/Login.aspx,						{defaultPage}?PortalId={portalId}&ctl=Login&language=fr-FR,			200

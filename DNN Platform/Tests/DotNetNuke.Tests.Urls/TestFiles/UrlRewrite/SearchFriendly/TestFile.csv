@@ -1,7 +1,6 @@
 ﻿Test,								Scheme,		Page Name,		Test Url,																Expected Url,										Status,		Final Url,										RedirectReason
 Home,								http://,	Home,			http://{alias}/Home/tabid/{tabId}/{defaultPage},						{defaultPage}?TabId={tabId},						301,		http://{alias}/,								Unfriendly_Url_2
 About Us,							http://,	About Us,		http://{alias}/About-Us/tabid/{tabId}/{defaultPage},					{defaultPage}?TabId={tabId},						301,		http://{alias}/About-Us,						Unfriendly_Url_2
-Admin Site Settings,				http://,	Site Settings,	http://{alias}/Admin/Site-Settings/tabid/{tabId}/{defaultPage},			{defaultPage}?TabId={tabId},						301,		http://{alias}/Admin/Site-Settings,				Unfriendly_Url_2
 Profile Messages,					http://,	Messages,		http://{alias}/Activity-Feed/Messages/tabid/{tabId}/{defaultPage},		{defaultPage}?TabId={tabId},						301,		http://{alias}/Activity-Feed/Messages,			Unfriendly_Url_2
 Terms,								http://,	Home,			http://{alias}/Home/tabid/{tabId}/ctl/Terms/{defaultPage},				{defaultPage}?TabId={tabId}&ctl=Terms,				301,		http://{alias}/Terms,							Unfriendly_Url_2
 Login,								http://,	About Us,		http://{alias}/Home/tabid/{tabId}/ctl/Login/{defaultPage},				{defaultPage}?TabId={tabId}&ctl=Login,				301,		http://{alias}/Login,							Unfriendly_Url_2
@@ -9,7 +8,6 @@ Edit Page,							http://,	Home,			http://{alias}/Home/tabid/{tabId}/ctl/Edit/mid
 Edit Page 2,						http://,	About Us,		http://{alias}/About-Us/tabid/{tabId}/ctl/Edit/mid/200/{defaultPage},	{defaultPage}?TabId={tabId}&ctl=Edit&mid=200,		301,		http://{alias}/About-Us/ctl/Edit/mid/200,		Unfriendly_Url_2
 Home No Page Name,					http://,	Home,			http://{alias}/tabid/{tabId}/{defaultPage},								{defaultPage}?TabId={tabId},						301,		http://{alias}/,								Unfriendly_Url_2
 About Us No Page Name,				http://,	About Us,		http://{alias}/tabid/{tabId}/{defaultPage},								{defaultPage}?TabId={tabId},						301,		http://{alias}/About-Us,						Unfriendly_Url_2
-Admin Site Settings No Page Name,	http://,	Site Settings,	http://{alias}/tabid/{tabId}/{defaultPage},								{defaultPage}?TabId={tabId},						301,		http://{alias}/Admin/Site-Settings,				Unfriendly_Url_2
 Profile Messages No Page Name,		http://,	Messages,		http://{alias}/tabid/{tabId}/{defaultPage},								{defaultPage}?TabId={tabId},						301,		http://{alias}/Activity-Feed/Messages,			Unfriendly_Url_2
 Terms No Page Name,					http://,	Home,			http://{alias}/tabid/{tabId}/ctl/Terms/{defaultPage},					{defaultPage}?TabId={tabId}&ctl=Terms,				301,		http://{alias}/Terms,							Unfriendly_Url_2
 Login No Page Name,					http://,	About Us,		http://{alias}/tabid/{tabId}/ctl/Login/{defaultPage},					{defaultPage}?TabId={tabId}&ctl=Login,				301,		http://{alias}/Login,							Unfriendly_Url_2

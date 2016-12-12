@@ -1,7 +1,6 @@
 ﻿Test,					Scheme,		Page Name,		Params,					Expected Url,	
 Home,					http://,	Home,			,						http://{alias}/Home/tabid/{tabId}/{defaultPage}
 About Us,				http://,	About Us,		,						http://{alias}/AboutUs/tabid/{tabId}/{defaultPage}
-Admin Site Settings,	http://,	Site Settings,	,						http://{alias}/Admin/SiteSettings/tabid/{tabId}/{defaultPage}
 Profile Messages,		http://,	Messages,		,						http://{alias}/ActivityFeed/Messages/tabid/{tabId}/{defaultPage}
 Terms,					http://,	Home,			&ctl=Terms,				http://{alias}/Home/tabid/{tabId}/ctl/Terms/{defaultPage}
 Login,					http://,	About Us,		&ctl=Login,				http://{alias}/AboutUs/tabid/{tabId}/ctl/Login/{defaultPage}

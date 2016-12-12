@@ -165,6 +165,8 @@ namespace DotNetNuke.Tests.Urls
         {
             var tabName = testFields["Page Name"];
             var tab = TabController.Instance.GetTabByName(tabName, PortalId);
+            if (tab == null)
+                Assert.Fail($"TAB with name [{tabName}] is not found!");
 
             ExecuteTestForTab(test, tab, settings, testFields);            
         }
