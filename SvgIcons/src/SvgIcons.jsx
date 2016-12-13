@@ -56,6 +56,8 @@ const ModuleIcon = require(`!raw!./svg/module.svg`);
 const ArrowMoveUpIcon = require(`!raw!./svg/arrow_moveup.svg`);
 const ArrowMoveDownIcon = require(`!raw!./svg/arrow_movedown.svg`);
 const TableEmptyState = require(`!raw!./svg/table_empty.svg`);
+const ArrowBack = require(`!raw!./svg/arrow_back.svg`);
+const ArrowForward = require(`!raw!./svg/arrow_forward.svg`);
 export {
     ActivityIcon, 
     AddIcon,
@@ -113,5 +115,7 @@ export {
 	ModuleIcon,
     ArrowMoveUpIcon,
     ArrowMoveDownIcon,
-    TableEmptyState
+    TableEmptyState,
+    ArrowBack, 
+    ArrowForward
 };
