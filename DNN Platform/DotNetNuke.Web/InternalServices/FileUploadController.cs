@@ -635,6 +635,21 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage GetUserInfo()
+        {
+            var user = PortalSettings.UserInfo;
+            return Request.CreateResponse(
+                HttpStatusCode.OK, 
+                new
+                {
+                    userId = user.UserID,
+                    username = user.Username,
+                });
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)

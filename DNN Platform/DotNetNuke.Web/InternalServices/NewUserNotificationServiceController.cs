@@ -32,7 +32,6 @@ using DotNetNuke.Web.Api;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
-    [DnnExceptionFilter]
     public class NewUserNotificationServiceController : DnnApiController
     {        
         [HttpPost]

@@ -35,7 +35,6 @@ using DotNetNuke.Web.Api.Internal;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
-    [DnnExceptionFilter]
     [DnnPageEditor]
     public class PageServiceController : DnnApiController
     {

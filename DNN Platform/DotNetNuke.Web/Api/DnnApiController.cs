@@ -27,6 +27,7 @@ using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.Api
 {
+    [DnnExceptionFilter]
     public abstract class DnnApiController : ApiController
     {
         private readonly Lazy<ModuleInfo> _activeModule;
