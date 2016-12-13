@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Lists" type="Module" version="09.01.00">
+        <package name="DotNetNuke.Lists" type="Module" version="09.00.01">
             <friendlyName>Lists</friendlyName>
             <description>Allows you to edit common lists.</description>
             <iconFile>~/Icons/Sigma/Lists_32X32_Standard.png</iconFile>

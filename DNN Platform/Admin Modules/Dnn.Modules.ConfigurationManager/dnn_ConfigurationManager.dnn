@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Configuration Manager" type="Module" version="09.01.00">
+        <package name="DotNetNuke.Configuration Manager" type="Module" version="09.00.01">
             <friendlyName>Configuration Manager</friendlyName>
             <description>The configuration manager module allows you to load various .config files located within the website; allowing you to edit them without direct access to the file system.</description>
             <iconFile>~/Icons/Sigma/Configuration_32X32_Standard.png</iconFile>

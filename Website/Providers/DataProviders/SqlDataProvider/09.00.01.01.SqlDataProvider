@@ -11,7 +11,7 @@
 /* Update version number in DesktopModules */
 /*******************************************/
 DECLARE @version NVARCHAR(8)
-SET @version = '09.01.00'
+SET @version = '09.00.01'
 
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Authentication'
 UPDATE {databaseOwner}{objectQualifier}DesktopModules SET Version = @version WHERE ModuleName='Portals'

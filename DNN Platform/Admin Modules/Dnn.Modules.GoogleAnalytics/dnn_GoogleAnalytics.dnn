@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Google Analytics" type="Module" version="09.01.00">
+        <package name="DotNetNuke.Google Analytics" type="Module" version="09.00.01">
             <friendlyName>Google Analytics</friendlyName>
             <description>Configure Site Google Analytics settings.</description>
             <iconFile>~/Icons/Sigma/GoogleAnalytics_32X32_Standard.png</iconFile>

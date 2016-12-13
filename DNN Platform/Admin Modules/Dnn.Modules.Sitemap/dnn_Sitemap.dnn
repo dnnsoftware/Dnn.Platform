@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Sitemap" type="Module" version="09.01.00">
+		<package name="DotNetNuke.Sitemap" type="Module" version="09.00.01">
 			<friendlyName>Sitemap</friendlyName>
 			<description>Site Map Settings.</description>
 			<iconFile>~/Icons/Sigma/Sitemap_32X32_Standard.png</iconFile>
