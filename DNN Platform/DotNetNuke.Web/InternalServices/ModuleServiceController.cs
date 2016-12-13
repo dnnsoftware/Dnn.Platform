@@ -1,6 +1,6 @@
 #region Copyright
 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2016
 // by DotNetNuke Corporation
 // 
@@ -20,6 +20,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -94,20 +95,24 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage MoveModule(MoveModuleDTO postData)
         {
 	        var moduleOrder = postData.ModuleOrder;
-	        if (moduleOrder > 0)
-	        {
-				//DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
-				//index count of deleted modules and will cause order issue.
-		        var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
-		        foreach (var module in deletedModules)
-		        {
-			        if (module.ModuleOrder < moduleOrder)
-			        {
-				        moduleOrder += 2;
-			        }
-		        }
-	        }
-			ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
+            if (moduleOrder > 0)
+            {
+                //DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
+                //index count of deleted modules and will cause order issue.
+                //DNN-8766: count deleted modules only on target pane, not entire page
+                var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values
+                    .Where(m => m.IsDeleted && string.Equals(m.PaneName, postData.Pane, StringComparison.OrdinalIgnoreCase));
+
+                foreach (var module in deletedModules)
+                {
+                    if (module.ModuleOrder < moduleOrder)
+                    {
+                        moduleOrder += 2;
+                    }
+                }
+            }
+
+            ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
 
             return Request.CreateResponse(HttpStatusCode.OK);
