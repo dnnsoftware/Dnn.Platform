@@ -83,6 +83,13 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/* DNN-8699" Update SystemRoles to set IsSystemRole field to true */
+/*************************************************/
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Administrators'
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Subscribers'
+UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='Registered Users'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
