@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     BindGroups();
 
                     ctlIcon.FileFilter = Globals.glbImageFileTypes;
-                    if (_roleID != -1)
+                    if (_roleID != Null.NullInteger)
                     {
                         var role = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID);
                         if (role != null)
@@ -362,6 +362,10 @@ namespace DotNetNuke.Modules.Admin.Security
                         strTrialFrequency = cboTrialFrequency.SelectedItem.Value;
                     }
 
+                    var existRole = _roleID > Null.NullInteger ?
+                                        RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID)
+                                        : null;
+
                     var role = new RoleInfo
                     {
                         PortalID = PortalId,
@@ -380,7 +384,8 @@ namespace DotNetNuke.Modules.Admin.Security
                         SecurityMode = (SecurityMode)Enum.Parse(typeof(SecurityMode), securityModeList.SelectedValue),
                         Status = (RoleStatus)Enum.Parse(typeof(RoleStatus), statusList.SelectedValue),
                         RSVPCode = txtRSVPCode.Text,
-                        IconFile = ctlIcon.Url
+                        IconFile = ctlIcon.Url,
+                        IsSystemRole = existRole != null ? existRole.IsSystemRole : false
                     };
 
                     if (_roleID == -1)
