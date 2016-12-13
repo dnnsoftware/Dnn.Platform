@@ -233,7 +233,8 @@ class Dropdown extends Component {
         });
         return (
             <div className={this.getClassName()} style={props.style}>
-                <div className={"collapsible-label" + this.getIsMultiLineLabel()} onClick={this.toggleDropdown.bind(this)}>
+                <div className={"collapsible-label" + this.getIsMultiLineLabel()} 
+                    onClick={this.toggleDropdown.bind(this)} title={this.props.title}>
                     {this.getDropdownLabel()}
                 </div>
                 <input
@@ -289,7 +290,8 @@ Dropdown.propTypes = {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     closeOnClick: PropTypes.bool,
     prependWith: PropTypes.string,
-    labelIsMultiLine: PropTypes.bool
+    labelIsMultiLine: PropTypes.bool,
+    title: PropTypes.string
 };
 
 Dropdown.defaultProps = {
