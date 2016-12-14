@@ -539,6 +539,14 @@ const siteBehaviorActions = {
                 }
             });
         };
+    },
+    sortProfileProperty(profileProperties) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.UPDATED_SITESETTINGS_PROFILE_PROPERTY_ORDER,
+                data: { profileProperties }
+            });
+        };
     }
 };
 

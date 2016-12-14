@@ -5,6 +5,7 @@ import {
 } from "../../../actions";
 import ProfilePropertyRow from "./profilePropertyRow";
 import ProfilePropertyEditor from "./profilePropertyEditor";
+import Sortable from "dnn-sortable";
 import Collapse from "dnn-collapsible";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
@@ -12,6 +13,7 @@ import util from "../../../utils";
 import resx from "../../../resources";
 
 let tableFields = [];
+
 
 class ProfilePropertiesPanel extends Component {
     constructor() {
@@ -201,6 +203,13 @@ class ProfilePropertiesPanel extends Component {
         }
     }
 
+    onSort(items) {
+        const {props} = this;
+        let profileProperties = Object.assign({}, props.profileProperties);
+        profileProperties.Properties = items;
+        props.dispatch(SiteBehaviorActions.sortProfileProperty(profileProperties));
+    }
+
     /* eslint-disable react/no-danger */
     renderedProfileProperties() {
         let i = 0;
@@ -275,7 +284,13 @@ class ProfilePropertiesPanel extends Component {
                                     openId={this.state.openId} />
                             </ProfilePropertyRow>
                         </Collapse>
-                        {this.renderedProfileProperties()}
+                        {this.props.profileProperties && <Sortable
+                            onSort={this.onSort.bind(this)}
+                            items={this.props.profileProperties.Properties}
+                            sortOnDrag={true}
+                            >
+                            {this.renderedProfileProperties()}
+                        </Sortable>}
                     </div>
                 </div>
 
