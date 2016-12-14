@@ -46,6 +46,7 @@ module.exports = {
         "dnn-single-line-input-with-error": "window.dnn.nodeModules.CommonComponents.SingleLineInputWithError",
         "dnn-social-panel-body": "window.dnn.nodeModules.CommonComponents.SocialPanelBody",
         "dnn-social-panel-header": "window.dnn.nodeModules.CommonComponents.SocialPanelHeader",
+        "dnn-sortable": "window.dnn.nodeModules.CommonComponents.Sortable",
         "dnn-svg-icons": "window.dnn.nodeModules.CommonComponents.SvgIcons",
         "dnn-switch": "window.dnn.nodeModules.CommonComponents.Switch",
         "dnn-tabs": "window.dnn.nodeModules.CommonComponents.Tabs",
