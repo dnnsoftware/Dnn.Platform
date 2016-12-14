@@ -66,6 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -148,7 +151,6 @@
     <Compile Include="Framework\Controllers\TabController.cs" />
     <Compile Include="Framework\Controllers\UserController.cs" />
     <Compile Include="Framework\WebApiConnector.cs" />
-    <Compile Include="Framework\WebApiException.cs" />
     <Compile Include="Framework\Helpers\WebApiTestHelper.cs" />
     <Compile Include="Services\Installer\XmlMergeTests.cs" />
     <Compile Include="TestSetup.cs" />

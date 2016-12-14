@@ -34,7 +34,6 @@ using DotNetNuke.Web.Api.Internal;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
-    [DnnExceptionFilter]
     public class ModuleServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleServiceController));

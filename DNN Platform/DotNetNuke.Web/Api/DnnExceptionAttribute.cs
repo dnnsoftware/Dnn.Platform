@@ -24,7 +24,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
 
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
@@ -40,25 +39,45 @@ namespace DotNetNuke.Web.Api
         {
             if (actionExecutedContext.Exception != null)
             {
-
                 var exception = actionExecutedContext.Exception;
                 var actionName = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
                 var controllerName = actionExecutedContext.ActionContext.ControllerContext.ControllerDescriptor.ControllerName;
 
-                string resourceFile = String.IsNullOrEmpty(LocalResourceFile) 
-                                        ? Localization.ExceptionsResourceFile 
-                                        : LocalResourceFile;
+                var resourceFile = string.IsNullOrEmpty(LocalResourceFile)
+                    ? Localization.ExceptionsResourceFile
+                    : LocalResourceFile;
 
-                string key = String.IsNullOrEmpty(MessageKey) ? controllerName + "_" + actionName + ".Error" : MessageKey;
+                var key = string.IsNullOrEmpty(MessageKey) ? controllerName + "_" + actionName + ".Error" : MessageKey;
+
+                HttpStatusCode statusCode;
+                if (exception is NotImplementedException)
+                {
+                    statusCode = HttpStatusCode.NotImplemented;
+                }
+                else if (exception is TimeoutException)
+                {
+                    statusCode = HttpStatusCode.RequestTimeout;
+                }
+                else if (exception is WebApiException)
+                {
+                    statusCode = HttpStatusCode.BadRequest;
+                }
+                else if (exception is UnauthorizedAccessException)
+                {
+                    statusCode = HttpStatusCode.Unauthorized;
+                }
+                else
+                {
+                    statusCode = HttpStatusCode.InternalServerError;
+                }
 
                 var response = new HttpResponseMessage
-                                        {
-                                            StatusCode = HttpStatusCode.InternalServerError,
-                                            ReasonPhrase = Localization.GetString(key, resourceFile)
-                                        };
-                
-                actionExecutedContext.Response = response;
+                {
+                    StatusCode = statusCode,
+                    ReasonPhrase = Localization.GetString(key, resourceFile)
+                };
 
+                actionExecutedContext.Response = response;
                 Exceptions.LogException(exception);
             }
         }

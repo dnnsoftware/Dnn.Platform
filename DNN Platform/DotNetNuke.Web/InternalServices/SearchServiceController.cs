@@ -430,7 +430,6 @@ namespace DotNetNuke.Web.InternalServices
         #endregion
 
         [HttpGet]
-        [DnnExceptionFilter]
         public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
         {
             string cleanedKeywords;
@@ -482,7 +481,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        [DnnExceptionFilter]
         public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
         {
             string cleanedKeywords;
@@ -539,7 +537,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             string duplicateWord;
@@ -552,7 +549,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             string duplicateWord;
@@ -564,7 +560,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage DeleteSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
             SearchHelper.Instance.DeleteSynonymsGroup(synonymsGroup.Id, synonymsGroup.PortalId, synonymsGroup.Culture);
@@ -576,7 +571,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.AddSearchStopWords(stopWords.Words, stopWords.PortalId, stopWords.Culture);
@@ -587,7 +581,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.UpdateSearchStopWords(stopWords.Id, stopWords.Words, stopWords.PortalId, stopWords.Culture);
@@ -598,7 +591,6 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
-        [DnnExceptionFilter]
         public HttpResponseMessage DeleteStopWords(StopWordsDto stopWords)
         {
             SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);

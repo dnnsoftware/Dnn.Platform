@@ -7,7 +7,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace DotNetNuke.Tests.Integration.Framework
+namespace DotNetNuke.Web.Api
 {
     /// <summary>
     /// Represents a non successful response while executing a WebApi call.

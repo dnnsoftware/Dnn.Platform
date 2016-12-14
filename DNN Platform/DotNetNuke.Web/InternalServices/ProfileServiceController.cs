@@ -54,7 +54,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-        [DnnExceptionFilter]
         public HttpResponseMessage Search(string q)
         {
             var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
@@ -83,7 +82,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpPost]
-        [DnnExceptionFilter]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateVanityUrl(VanityUrlDTO vanityUrl)
         {

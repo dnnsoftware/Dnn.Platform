@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
@@ -49,7 +50,8 @@ namespace DotNetNuke.Tests.Web.Api
 
             //Act
             var vaft = new ValidateAntiForgeryTokenAttribute();
-            Assert.IsTrue(vaft.IsAuthorized(authFilterContext));
+            //Assert.IsTrue(ValidateAntiForgeryTokenAttribute.IsAuthorized(authFilterContext));
+            Assert.DoesNotThrow(() => { vaft.OnActionExecuting(authFilterContext.ActionContext); });
 
             //Assert
             mockAntiForgery.Verify(x => x.Validate(cookieValue, It.IsAny<string>()), Times.Once());
@@ -72,7 +74,8 @@ namespace DotNetNuke.Tests.Web.Api
 
             //Act, Assert
             var vaft = new ValidateAntiForgeryTokenAttribute();
-            Assert.IsFalse(vaft.IsAuthorized(authFilterContext));
+            //Assert.IsFalse(ValidateAntiForgeryTokenAttribute.IsAuthorized(authFilterContext));
+            Assert.Throws<UnauthorizedAccessException>(() => { vaft.OnActionExecuting(authFilterContext.ActionContext); });
         }
     }
 }
