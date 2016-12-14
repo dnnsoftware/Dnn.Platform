@@ -202,7 +202,7 @@
     <value>Could not delete the schedule item. Please try later.</value>
   </data>
   <data name="ControlTitle_edit.Text" xml:space="preserve">
-    <value>Edit Schedule</value>
+    <value>Edit Task</value>
   </data>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>&lt;h1&gt;About Schedule&lt;/h1&gt;&lt;p&gt;Allows you to schedule tasks to be run at specified intervals.&lt;/p&gt;</value>
@@ -361,7 +361,7 @@
     <value>Notes</value>
   </data>
   <data name="ControlTitle_history.Text" xml:space="preserve">
-    <value>Schedule History</value>
+    <value>Task History</value>
   </data>
   <data name="Description.Header" xml:space="preserve">
     <value>Description</value>

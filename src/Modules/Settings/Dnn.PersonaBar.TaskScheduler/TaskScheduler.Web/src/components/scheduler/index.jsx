@@ -1,12 +1,12 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     task as TaskActions
 } from "../../actions";
 import SchedulerRow from "./schedulerRow";
+import Dropdown from "dnn-dropdown";
 import SchedulerEditor from "./schedulerEditor";
 import Collapse from "dnn-collapsible";
-import Select from "dnn-select";
 import "./style.less";
 import { AddIcon } from "dnn-svg-icons";
 import util from "../../utils";
@@ -76,7 +76,7 @@ class SchedulerPanel extends Component {
     toggle(openId) {
         if (openId !== "") {
             this.uncollapse(openId);
-        } 
+        }
         else {
             //this.collapse();
         }
@@ -153,17 +153,17 @@ class SchedulerPanel extends Component {
                         index={index}
                         key={"scheduleItem-" + index}
                         closeOnClick={true}
-                        openId={this.state.openId }
-                        OpenCollapse={this.toggle.bind(this) }
-                        Collapse={this.collapse.bind(this) }
+                        openId={this.state.openId}
+                        OpenCollapse={this.toggle.bind(this)}
+                        Collapse={this.collapse.bind(this)}
                         id={id}>
                         <SchedulerEditor
                             serverList={this.props.serverList}
                             enabled={item.Enabled}
                             scheduleId={item.ScheduleID}
-                            Collapse={this.collapse.bind(this) }
-                            onDelete={this.onDeleteSchedulerItem.bind(this) }
-                            onUpdate={this.onUpdateSchedulerItem.bind(this) }
+                            Collapse={this.collapse.bind(this)}
+                            onDelete={this.onDeleteSchedulerItem.bind(this)}
+                            onUpdate={this.onUpdateSchedulerItem.bind(this)}
                             id={id}
                             openId={this.state.openId} />
                     </SchedulerRow>
@@ -179,41 +179,47 @@ class SchedulerPanel extends Component {
             <div>
                 <div className="schedule-items">
                     <div className="servergroup-filter-container">
-                        {serverOptions.length > 2 && <Select options={serverOptions} value={this.state.currentServerId} onChange={this.onSelectServer.bind(this) }
-                            style={{ border: "none", margin: "-5px 0 0 0", padding: "5px 5px", width: "150px", height: "30px" }}
-                            />}
+                        {serverOptions.length > 2 &&
+                            <Dropdown
+                                options={serverOptions}
+                                style={{ width: "100%" }}
+                                withBorder={false}
+                                value={this.state.currentServerId}
+                                onSelect={this.onSelectServer.bind(this)}
+                                />
+                        }
                     </div>
                     <div className="AddItemRow">
-                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
+                        <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add")}>
                             <div className="add-icon" dangerouslySetInnerHTML={{ __html: AddIcon }}>
                             </div> {resx.get("cmdAddTask")}
                         </div>
                     </div>
                     <div className="schedule-items-grid">
-                        {this.renderHeader() }
-                        <Collapse isOpened={opened} style={{ float: "left" }} fixedHeight={630}>
+                        {this.renderHeader()}
+                        <Collapse isOpened={opened} style={{ float: "left" }} fixedHeight={650}>
                             <SchedulerRow
                                 name={"-"}
-                                frequency={"-"}    
-                                retryTimeLapse={"-"}                 
+                                frequency={"-"}
+                                retryTimeLapse={"-"}
                                 nextStart={"-"}
                                 index={"add"}
                                 key={"scheduleItem-add"}
                                 closeOnClick={true}
-                                openId={this.state.openId }
-                                OpenCollapse={this.toggle.bind(this) }
-                                Collapse={this.collapse.bind(this) }
+                                openId={this.state.openId}
+                                OpenCollapse={this.toggle.bind(this)}
+                                Collapse={this.collapse.bind(this)}
                                 id={"add"}>
                                 <SchedulerEditor
                                     serverList={this.props.serverList}
-                                    Collapse={this.collapse.bind(this) }
-                                    onDelete={this.onDeleteSchedulerItem.bind(this) }
-                                    onUpdate={this.onUpdateSchedulerItem.bind(this) }
+                                    Collapse={this.collapse.bind(this)}
+                                    onDelete={this.onDeleteSchedulerItem.bind(this)}
+                                    onUpdate={this.onUpdateSchedulerItem.bind(this)}
                                     id={"add"}
-                                    openId={this.state.openId}/>
+                                    openId={this.state.openId} />
                             </SchedulerRow>
                         </Collapse>
-                        {this.renderedScedulerItemList() }
+                        {this.renderedScedulerItemList()}
                     </div>
                 </div>
 

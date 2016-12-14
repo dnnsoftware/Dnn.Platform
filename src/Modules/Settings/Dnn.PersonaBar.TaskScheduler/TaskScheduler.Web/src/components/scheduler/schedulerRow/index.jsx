@@ -3,6 +3,7 @@ import Collapse from "dnn-collapsible";
 import "./style.less";
 import { EditIcon } from "dnn-svg-icons";
 import ItemHistory from "../itemHistory";
+import resx from "../../../resources";
 
 /*eslint-disable quotes*/
 const svgIcon = require(`!raw!./../../svg/checkmark.svg`);
@@ -68,7 +69,7 @@ class SchedulerRow extends Component {
                             {this.getEnabledDisplay() }</div>                        
                         { props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
-                                <div className="history-icon" dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggleHistoryPanel.bind(this) }>
+                                <div className="history-icon" title={resx.get("ControlTitle_history")} dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggleHistoryPanel.bind(this) }>
                                 </div>
                                 <div className="collapsible-content">
                                     <ItemHistory
@@ -82,12 +83,12 @@ class SchedulerRow extends Component {
                             </div>
                         }
                         <div className="schedule-item item-row-editButton">
-                            <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
+                            <div className={opened ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} dangerouslySetInnerHTML={{ __html: EditIcon }} onClick={this.toggle.bind(this) }>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} style={{ float: "left" }} fixedHeight={580}>{opened && props.children }</Collapse>
+                <Collapse autoScroll={true} isOpened={opened} style={{ float: "left" }} fixedHeight={600}>{opened && props.children }</Collapse>
             </div>
         );
     }
