@@ -6,6 +6,8 @@
     </PropertyGroup>
     <UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.Zip" />
     <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.GetVersion" />
+	<UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.Attrib" />
+    <UsingTask AssemblyFile="$(MSBuildCommunityTasksLib)" TaskName="MSBuild.Community.Tasks.FileUpdate" />
 
     <Target Name="VersionCheck">
         <Message Text="SolutionInfo: $(checkoutDirectory)\src\SolutionInfo.cs" />
@@ -18,7 +20,8 @@
             </Output>
         </GetVersion>
         <PropertyGroup>
-            <PackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Source.zip</PackageName>
+            <SourcePackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Source.zip</SourcePackageName>
+			<SymbolsPackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Symbols.zip</SymbolsPackageName>
         </PropertyGroup>
         <Message Text="Zip Version : $(FormattedBuildVersion)" />
     </Target>
@@ -36,6 +39,22 @@
         <ItemGroup>
             <SourceFiles Include="$(checkoutDirectory)\src\**\*.*" Exclude="@(SourceExclude)" />
         </ItemGroup>
-        <Zip Files="@(SourceFiles)" WorkingDirectory="$(checkoutDirectory)\" ZipFileName="$(checkoutDirectory)\website\install\module\$(PackageName)" />
+        <Zip Files="@(SourceFiles)" WorkingDirectory="$(checkoutDirectory)\" ZipFileName="$(checkoutDirectory)\website\install\module\$(SourcePackageName)" />
+    </Target>
+	
+	<Target Name="CreateSymbols" DependsOnTargets="VersionCheck">
+        <ItemGroup>
+            <SymbolsFiles Include="$(checkoutDirectory)\Website\bin\*.pdb" Exclude="@(SymbolsExclude)"/>
+            <SymbolsFiles Include="$(checkoutDirectory)\Website\bin\*.xml" Exclude="@(SymbolsExclude)"/>
+        </ItemGroup>
+        <Zip Files="@(SymbolsFiles)" WorkingDirectory="$(checkoutDirectory)\website\bin"
+                 ZipFileName="$(checkoutDirectory)\src\Build\Symbols\Resources.zip" />
+        <ItemGroup>
+            <SymbolsPackage Include="$(checkoutDirectory)\src\Build\Symbols\*.*;" />
+        </ItemGroup>
+        <Zip Files="@(SymbolsPackage)" WorkingDirectory="$(checkoutDirectory)\src\Build\Symbols\"
+                 ZipFileName="$(checkoutDirectory)\Website\Install\Module\$(SymbolsPackageName)" />
+
+        <Delete Files="$(checkoutDirectory)\src\Build\Symbols\Resources.zip" />
     </Target>
 </Project>
