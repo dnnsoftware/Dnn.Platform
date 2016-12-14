@@ -7,6 +7,11 @@ export default (Component) => {
     
     class Draggable extends React.Component {
 
+        constructor() {
+            super();
+            this.initialScrollY = 0;
+        }
+
         showGhostTargetOnClone(currentTarget) {            
             this.originalTarget = currentTarget;
             this.originalTargetClassName = this.originalTarget.className;
@@ -82,7 +87,10 @@ export default (Component) => {
         moveTarget(event) {
             const target = event.target;
             const x = (parseFloat(target.getAttribute("data-x")) || 0) + event.dx;
-            const y = (parseFloat(target.getAttribute("data-y")) || 0) + event.dy;
+            const afterScroll = this.initialScrollY - window.scrollY;
+            this.initialScrollY = window.scrollY;
+            const y = ((parseFloat(target.getAttribute("data-y")) || 0) + event.dy) + afterScroll;
+            
             // translate the element
             target.style.webkitTransform = 
                 target.style.transform = 
@@ -160,7 +168,8 @@ export default (Component) => {
                     // start a drag interaction targeting the clone
                     interaction.start({ name: "drag" }, event.interactable, clone);
                 }
-            }).on("dragstart", (event) => {                
+            }).on("dragstart", (event) => {
+                this.initialScrollY = window.scrollY;
                 if (typeof(onDragStart) === "function") {
                     onDragStart(self, event);
                 }
