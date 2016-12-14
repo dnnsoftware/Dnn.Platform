@@ -178,7 +178,7 @@ class PageSettings extends Component {
             if (isLocalizationTabVisible) {
                 headers.push(Localization.get("Localization"));
             }
-            tabs.push(<div className="dnn-simple-tab-item">                
+            tabs.push(<div className="dnn-simple-tab-item permission-tab">                
                         <PermissionGrid
                             permissions={selectedPage.permissions} 
                             onPermissionsChanged={this.props.onPermissionsChanged} />

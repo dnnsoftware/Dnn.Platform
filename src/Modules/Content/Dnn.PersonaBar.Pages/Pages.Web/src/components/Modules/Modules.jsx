@@ -56,10 +56,10 @@ class Modules extends Component {
                     </div>
                 <div className="module-table">    
                     <div className="header-row">
-                        <GridCell columnSize={42} >
+                        <GridCell columnSize={45} >
                             {Localization.get("Title")}
                         </GridCell>
-                        <GridCell  columnSize={42} >
+                        <GridCell  columnSize={45} >
                             {Localization.get("Module")}
                         </GridCell>
                     </div>

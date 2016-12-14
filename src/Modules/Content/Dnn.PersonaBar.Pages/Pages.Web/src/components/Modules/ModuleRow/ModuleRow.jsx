@@ -11,10 +11,10 @@ class ModuleRow extends Component {
         return (
             /* eslint-disable react/no-danger */
             <div className={styles.moduleRow} >
-                <GridCell columnSize={40} >
+                <GridCell columnSize={45} >
                     {module.title}
                 </GridCell>
-                <GridCell  columnSize={40} >
+                <GridCell  columnSize={45} >
                     {module.friendlyName}
                 </GridCell>
                 <GridCell  columnSize={10} >
