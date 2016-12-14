@@ -351,8 +351,7 @@ namespace Dnn.EditBar.UI.Controllers
                         && !string.IsNullOrEmpty(paneControl.Attributes["class"])
                         && paneControl.Attributes["class"].Contains("DNNEmptyPane"))
                 {
-                    paneControl.Attributes["class"] =
-                        paneControl.Attributes["class"].Replace("DNNEmptyPane", "EvoqEmptyPane");
+                    paneControl.Attributes["class"] = $"{paneControl.Attributes["class"]} EditBarEmptyPane";
                 }
             }
         }

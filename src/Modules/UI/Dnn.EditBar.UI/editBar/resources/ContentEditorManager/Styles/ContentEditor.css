@@ -866,7 +866,7 @@ div.module-motion {
     position: absolute;
     z-index: 1110;
 }
-.EvoqEmptyPane { display: block !important;}
+.EditBarEmptyPane { display: block !important;width: auto !important;}
 .module-drag-tip {
     position: fixed;
     background-color: #000;
