@@ -3,12 +3,23 @@
     float: left;
     font-weight: bolder;
     color: @thunder;
-    cursor: pointer;
+    cursor: default;
     text-transform: uppercase;
     &:hover {
-        color: @curiousBlue;
+        color: @mountainMist;
+        .icon {
+            fill: @mountainMist;
+        }
     }
-    &::before { 
-        content: "< ";
+    .icon {
+        fill: @thunder;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+    }
+    span {
+        vertical-align: middle;
+        margin-left: 10px;
     }
 }
