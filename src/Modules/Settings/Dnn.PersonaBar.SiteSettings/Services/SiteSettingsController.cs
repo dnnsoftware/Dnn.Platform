@@ -1462,6 +1462,42 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        /// GET: api/SiteSettings/GetPortals
+        /// <summary>
+        /// Gets portals
+        /// </summary>
+        /// <param></param>
+        /// <returns>List of portals</returns>
+        [HttpGet]
+        [RequireHost]
+        public HttpResponseMessage GetPortals()
+        {
+            try
+            {
+                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
+                var availablePortals = portals.Select(v => new
+                {
+                    v.PortalID,
+                    v.PortalName,
+                    IsCurrentPortal = PortalId == v.PortalID
+                }).ToList();
+
+                var response = new
+                {
+                    Success = true,
+                    Results = availablePortals,
+                    TotalResults = availablePortals.Count
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         /// GET: api/SiteSettings/GetCultureList
         /// <summary>
         /// Gets culture list
@@ -1479,6 +1515,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
+                var portal = PortalController.Instance.GetPortal(pid);
+                var portalSettings = new PortalSettings(portal);
+
                 string viewType = GetLanguageDisplayMode(pid);
 
                 var locals = LocaleController.Instance.GetLocales(pid).Values;
@@ -1487,7 +1526,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Name = viewType == "NATIVE" ? local.NativeName : local.EnglishName,
                     local.Code,
                     Icon = Globals.ResolveUrl(string.IsNullOrEmpty(local.Code) ? "~/images/Flags/none.gif" :
-                        $"~/images/Flags/{local.Code}.gif")
+                        $"~/images/Flags/{local.Code}.gif"),
+                    IsDefault = local.Code == portalSettings.DefaultLanguage
                 }).ToList();
 
                 var response = new

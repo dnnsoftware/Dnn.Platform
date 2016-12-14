@@ -27,12 +27,27 @@ class IgnoreWordsPanel extends Component {
     loadData() {
         const {props} = this;
         if (props.ignoreWords) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+
             if (props.portalId === undefined || props.ignoreWords.PortalId === props.portalId) {
-                return false;
+                portalIdChanged = false;
             }
             else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.ignoreWords.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
                 return true;
             }
+            else return false;
         }
         else {
             return true;

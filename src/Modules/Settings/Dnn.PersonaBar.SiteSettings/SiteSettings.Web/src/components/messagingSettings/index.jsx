@@ -28,12 +28,27 @@ class MessagingSettingsPanelBody extends Component {
     loadData() {
         const {props} = this;
         if (props.messagingSettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+
             if (props.portalId === undefined || props.messagingSettings.PortalId === props.portalId) {
-                return false;
+                portalIdChanged = false;
             }
             else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.messagingSettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
                 return true;
             }
+            else return false;
         }
         else {
             return true;

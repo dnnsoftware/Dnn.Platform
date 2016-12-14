@@ -7,10 +7,21 @@ import "./style.less";
 class HtmlEditorManagerPanelBody extends Component {
     constructor() {
         super();
+        this.state = {
+            url: undefined
+        };
     }
 
-    getIframeUrl() {
-        return "/Host/HTMLEditorManager?portalid=" + this.props.portalId + "&portpopUp=true";
+    componentWillMount() {
+        this.setState({
+            url: "/Host/HTMLEditorManager?portalid=" + this.props.portalId + "&portpopUp=true"
+        });
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            url: "/Host/HTMLEditorManager?portalid=" + props.portalId + "&portpopUp=true"
+        });
     }
 
     /* eslint-disable react/no-danger */
@@ -18,7 +29,7 @@ class HtmlEditorManagerPanelBody extends Component {
         return (
             <div className={styles.htmlEditorManager}>
                 <div className="htmlEditor-back" onClick={this.props.closeHtmlEditorManager.bind(this)}>{resx.get("BackToSiteBehavior")}</div>
-                <iframe className="htmlEditorIframe" src={this.getIframeUrl()} frameBorder="0" />
+                <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
             </div>
         );
     }

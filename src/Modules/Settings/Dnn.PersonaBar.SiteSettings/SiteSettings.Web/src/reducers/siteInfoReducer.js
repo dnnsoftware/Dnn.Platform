@@ -1,4 +1,4 @@
-import { 
+import {
     siteInfo as ActionTypes
 } from "../constants/actionTypes";
 
@@ -20,7 +20,11 @@ export default function siteInfo(state = {
         case ActionTypes.UPDATED_SITESETTINGS_PORTAL_SETTINGS:
             return { ...state,
                 clientModified: action.data.clientModified
-            };        
+            };
+        case ActionTypes.RETRIEVED_PORTALS:
+            return { ...state,
+                portals: action.data.portals
+            };
         default:
             return state;
     }

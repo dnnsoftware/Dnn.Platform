@@ -31,12 +31,27 @@ class BasicSettingsPanelBody extends Component {
     loadData() {
         const {props} = this;
         if (props.basicSettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+
             if (props.portalId === undefined || props.basicSettings.PortalId === props.portalId) {
-                return false;
+                portalIdChanged = false;
             }
             else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.basicSettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
                 return true;
             }
+            else return false;
         }
         else {
             return true;
@@ -202,7 +217,7 @@ class BasicSettingsPanelBody extends Component {
                         tooltipMessage={resx.get("plKeyWords.Help")}
                         label={resx.get("plKeyWords")}
                         />
-                    <MultiLineInputWithError                        
+                    <MultiLineInputWithError
                         value={state.basicSettings.KeyWords}
                         onChange={this.onSettingChange.bind(this, "KeyWords")} />
                 </InputGroup>

@@ -32,12 +32,27 @@ class LanguageSettingsPanelBody extends Component {
     loadData() {
         const {props} = this;
         if (props.languageSettings) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+
             if (props.portalId === undefined || props.languageSettings.PortalId === props.portalId) {
-                return false;
+                portalIdChanged = false;
             }
             else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.languageSettings.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
                 return true;
             }
+            else return false;
         }
         else {
             return true;

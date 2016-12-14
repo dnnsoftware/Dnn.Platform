@@ -1,0 +1,87 @@
+@import "~dnn-global-styles/index";
+:local(.sitesHeader) {
+    padding: 8px 30px;
+    z-index: 99999;
+    position: fixed;
+    width: 860px;
+    background-color: #fff;
+    box-sizing: border-box;
+    * {
+        box-sizing: border-box;
+    }
+    .site-selection {
+        width: 50%;
+        float: left;
+        .dnn-ui-common-input-group {
+            width: auto;
+            .dnn-label {
+                margin-right: 0;
+                label {
+                    font-weight: bolder;
+                    float: left;
+                }
+            }
+            .dnn-dropdown {
+                width: 250px;
+                .language-flag {
+                    float: left;
+                    height: 16px;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }
+                .collapsible-label {
+                    .language-name {
+                        width: 240px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+                li {
+                    float: left;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .language-selection {
+        width: 50%;
+        float: right;
+        .dnn-ui-common-input-group {
+            width: auto;
+            float: right;
+            .dnn-label {
+                margin-right: 0;
+                label {
+                    font-weight: bolder;
+                    float: left;
+                }
+            }
+            .dnn-dropdown {
+                width: 250px;
+                .language-flag {
+                    float: left;
+                    height: 16px;
+                }
+                .language-name {
+                    float: left;
+                    margin-left: 10px;
+                }
+                .collapsible-label {
+                    .language-name {
+                        width: 240px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+                li {
+                    float: left;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

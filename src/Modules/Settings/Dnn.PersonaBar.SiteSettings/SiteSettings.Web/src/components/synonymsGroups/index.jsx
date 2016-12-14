@@ -27,12 +27,27 @@ class SynonymsGroupsPanel extends Component {
     loadData() {
         const {props} = this;
         if (props.synonymsGroups) {
+            let portalIdChanged = false;
+            let cultureCodeChanged = false;
+
             if (props.portalId === undefined || props.synonymsGroups.PortalId === props.portalId) {
-                return false;
+                portalIdChanged = false;
             }
             else {
+                portalIdChanged = true;
+            }
+
+            if (props.cultureCode === undefined || props.synonymsGroups.CultureCode === props.cultureCode) {
+                cultureCodeChanged = false;
+            }
+            else {
+                cultureCodeChanged = true;
+            }
+
+            if (portalIdChanged || cultureCodeChanged) {
                 return true;
             }
+            else return false;
         }
         else {
             return true;

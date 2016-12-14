@@ -2,6 +2,21 @@ import { siteInfo as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const siteInfoActions = {
+    getPortals(callback) {
+        return (dispatch) => {
+            ApplicationService.getPortals(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PORTALS,
+                    data: {
+                        portals: data.Results
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
     getPortalSettings(portalId, cultureCode, callback) {
         return (dispatch) => {
             ApplicationService.getPortalSettings(portalId, cultureCode, data => {
@@ -49,7 +64,7 @@ const siteInfoActions = {
                 }
             });
         };
-    }    
+    }
 };
 
 export default siteInfoActions;

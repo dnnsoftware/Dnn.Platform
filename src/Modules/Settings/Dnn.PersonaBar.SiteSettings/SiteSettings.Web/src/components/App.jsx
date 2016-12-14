@@ -12,6 +12,7 @@ import LanguagePack from "./languageSettings/languagePack";
 import LocalizedContent from "./languageSettings/localizedContent";
 import TranslatePageContent from "./translatePageContent/translatePageContent";
 import EditLanguagePanel from "./editLanguagePanel";
+import SiteLanguageSelector from "./siteLanguageSelector";
 import utilities from "utils";
 import resx from "../resources";
 
@@ -30,12 +31,15 @@ class App extends Component {
         super();
         this.state = {
             portalId: utilities.settings.portalId,
+            cultureCode: utilities.settings.cultureCode,
             referrer: utilities.settings.referrer,
             referrerText: utilities.settings.referrerText,
             backToReferrerFunc: this.backToReferrer.bind(this, utilities.settings.backToReferrerFunc),
             bodyShowing: true
         };
         this.changePortalId = this.changePortalId.bind(this);
+        this.changeCultureCode = this.changeCultureCode.bind(this);
+        this.changePortalIdCultureCode = this.changePortalIdCultureCode.bind(this);
     }
 
     backToReferrer(callback) {
@@ -62,6 +66,29 @@ class App extends Component {
         });
     }
 
+    changeCultureCode(cultureCode) {
+        this.setState({
+            bodyShowing: false
+        }, () => {
+            this.setState({
+                bodyShowing: true,
+                cultureCode
+            });
+        });
+    }
+
+    changePortalIdCultureCode(portalId, cultureCode) {
+        this.setState({
+            bodyShowing: false
+        }, () => {
+            this.setState({
+                bodyShowing: true,
+                portalId,
+                cultureCode
+            });
+        });
+    }
+
     updateReferrerInfo(event) {
         this.setState({
             referrer: event.referrer,
@@ -71,13 +98,49 @@ class App extends Component {
     }
 
     componentWillMount() {
+        const {state, props} = this;
+
         // // Listen for the event.
         document.addEventListener("portalIdChanged", (e) => {
-            if (this.state.portalId !== e.portalId) {
+            if (state.portalId !== e.portalId) {
                 this.changePortalId(e.portalId);
             }
             this.updateReferrerInfo(e);
         }, false);
+
+        document.addEventListener("cultureCodeChanged", (e) => {
+            if (state.cultureCode !== e.cultureCode) {
+                this.changeCultureCode(e.cultureCode);
+            }
+            this.updateReferrerInfo(e);
+        }, false);
+
+        document.addEventListener("portalIdCultureCodeChanged", (e) => {
+            if (state.cultureCode !== e.cultureCode && this.state.portalId !== e.portalId) {
+                this.changePortalIdCultureCode(e.portalId, e.cultureCode);
+            }
+            this.updateReferrerInfo(e);
+        }, false);
+
+        if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
+            this.changePortalIdCultureCode(props.portalId, props.cultureCode);
+        }
+        else if (state.portalId !== props.portalId) {
+            this.changePortalId(props.portalId);
+        }
+        else if (state.cultureCode !== props.cultureCode) {
+            this.changeCultureCode(props.cultureCode);
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        const {state} = this;
+        if (state.portalId !== props.portalId && props.portalId !== undefined) {
+            this.changePortalId(props.portalId);
+        }
+        if (state.cultureCode !== props.cultureCode && props.cultureCode !== undefined) {
+            this.changeCultureCode(props.cultureCode);
+        }
     }
 
     openPersonaBarPage(pageNumber) {
@@ -94,6 +157,13 @@ class App extends Component {
         const {props, state} = this;
         return (
             <div className="siteSettings-app">
+                <SiteLanguageSelector
+                    portalId={state.portalId}
+                    cultureCode={state.cultureCode}
+                    referrer={state.referrer}
+                    referrerText={state.referrerText}
+                    backToReferrerFunc={state.backToReferrerFunc}
+                    />
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
                     </PersonaBarPageHeader>
@@ -107,7 +177,7 @@ class App extends Component {
                         openLanguageVerifier={this.openPersonaBarPage.bind(this, Pages.LanguageVerifier)}
                         openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager)}
                         openLocalizedContent={this.openPersonaBarPage.bind(this, Pages.LocalizedContent)}
-                        cultureCode={props.cultureCode}
+                        cultureCode={state.cultureCode}
                         />
                 </PersonaBarPage>
 
@@ -122,7 +192,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageVerifier}>
                     <PersonaBarPageHeader title={resx.get("ResourceFileVerifier")}>
                     </PersonaBarPageHeader>
-                    <LanguageVerifier portalId={props.portalId} closeLanguageVerifier={this.closePersonaBarPage.bind(this)} />
+                    <LanguageVerifier portalId={state.portalId} closeLanguageVerifier={this.closePersonaBarPage.bind(this)} />
                 </PersonaBarPage>
 
                 {props.selectedPage === Pages.LanguageEditor && <PersonaBarPage isOpen={props.selectedPage === Pages.LanguageEditor}>
@@ -143,7 +213,7 @@ class App extends Component {
                 <PersonaBarPage isOpen={props.selectedPage === Pages.TranslatePageContent}>
                     <PersonaBarPageHeader title={resx.get("TranslatePageContent")} />
                     {props.selectedPage === Pages.TranslatePageContent &&
-                        <TranslatePageContent cultureCode={props.code} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId} />
+                        <TranslatePageContent cultureCode={state.cultureCode} closePersonaBarPage={this.closePersonaBarPage.bind(this)} portalId={state.portalId} />
                     }
                 </PersonaBarPage>
 
