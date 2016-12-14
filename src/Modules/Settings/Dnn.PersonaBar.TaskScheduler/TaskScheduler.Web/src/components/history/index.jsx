@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
     task as TaskActions
@@ -30,14 +30,14 @@ class HistoryPanelBody extends Component {
         const {props, state} = this;
         props.dispatch(TaskActions.getScheduleItemHistory({ scheduleId: props.scheduleId, pageIndex: state.pageIndex, pageSize: state.pageSize }));
 
-        tableFields=[];
+        tableFields = [];
         tableFields.push({ "name": resx.get("DescriptionColumn"), "id": "LogNotes" });
         tableFields.push({ "name": resx.get("RanOnServerColumn"), "id": "Server" });
         tableFields.push({ "name": resx.get("DurationColumn"), "id": "ElapsedTime" });
         tableFields.push({ "name": resx.get("SucceededColumn"), "id": "Succeeded" });
         tableFields.push({ "name": resx.get("StartEndColumn"), "id": "StartEnd" });
 
-        pageSizeOptions=[];
+        pageSizeOptions = [];
         pageSizeOptions.push({ "value": "10", "label": "10 entries per page" });
         pageSizeOptions.push({ "value": "25", "label": "25 entries per page" });
         pageSizeOptions.push({ "value": "50", "label": "50 entries per page" });
@@ -122,15 +122,13 @@ class HistoryPanelBody extends Component {
         const {props} = this;
         return (
             <div>
-                <div>
-                    <div className="historyIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
-                    <div className="taskHistoryList-title">{props.title}</div>
-                    <div className="taskHistoryList-grid">
-                        { this.renderedHistoryListHeader() }
-                        { this.renderedHistoryList() }
-                    </div>
-                    { this.renderPager() }
+                <div className="historyIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
+                <div className="taskHistoryList-title">{props.title}</div>
+                <div className="taskHistoryList-grid">
+                    {this.renderedHistoryListHeader()}
+                    {this.renderedHistoryList()}
                 </div>
+                {this.renderPager()}
             </div>
         );
     }
