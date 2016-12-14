@@ -43,10 +43,10 @@
                     text-transform: uppercase;
                 }
                 .header-Name {
-                    width: 29%;
+                    width: 23%;
                     float: left;
                     font-weight: bolder;
-                    padding-left: 60px;
+                    padding-left: 15px;
                 }
                 .header-DataType {
                     width: 20%;
@@ -139,6 +139,9 @@
         .sortable-item {
             float: left;
             width: 100%;
+            &:not(:last-child) {
+                border-bottom: 1px solid @alto;
+            }
         }
         .dnn-sortable {
             & > div {

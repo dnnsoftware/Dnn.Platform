@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import Collapse from "dnn-collapsible";
 import "./style.less";
-import { CheckMarkIcon, EditIcon, TrashIcon, ArrowMoveUpIcon, ArrowMoveDownIcon } from "dnn-svg-icons";
+import { CheckMarkIcon, EditIcon, TrashIcon, DragRowIcon } from "dnn-svg-icons";
 
 class ProfilePropertyRow extends Component {
     componentWillMount() {
@@ -50,10 +50,6 @@ class ProfilePropertyRow extends Component {
             <div className={"collapsible-component-properties" + (opened ? " row-opened" : "")}>
                 <div className={"collapsible-header-properties " + !opened} >
                     <div className={"row"}>
-                        <div className="property-item item-row-orderButton">                            
-                            <div className={opened ? "down-icon-hidden" : "down-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveDownIcon }} onClick={props.onMoveDown}></div>
-                            <div className={opened ? "up-icon-hidden" : "up-icon"} dangerouslySetInnerHTML={{ __html: ArrowMoveUpIcon }} onClick={props.onMoveUp}></div>&nbsp;
-                        </div>
                         <div title={props.name} className="property-item item-row-name">
                             {props.name}&nbsp; </div>
                         <div className="property-item item-row-dataType">
@@ -65,6 +61,7 @@ class ProfilePropertyRow extends Component {
                         <div className="property-item item-row-visible">
                             {this.getBooleanDisplay(props.visible)}</div>
                         <div className="property-item item-row-editButton">
+                            <div className={opened ? "order-icon-hidden" : "order-icon"} dangerouslySetInnerHTML={{ __html: DragRowIcon }} ></div>
                             {!this.isSystemProperty(props.name) &&
                                 <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: TrashIcon }} onClick={props.onDelete}></div>
                             }
@@ -74,7 +71,7 @@ class ProfilePropertyRow extends Component {
                 </div>
                 <Collapse isOpened={opened} autoScroll={true} fixedHeight={520} style={{ float: "left", width: "100%", overflow: "inherit" }}>
                     {opened && props.children}
-                    </Collapse>
+                </Collapse>
             </div>
         );
     }

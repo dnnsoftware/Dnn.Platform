@@ -45,48 +45,8 @@
                     }
                 }
             }
-            .item-row-orderButton {
-                width: 6%;
-                height: 16px;
-                float: right;
-                margin-right: 5px;
-                &:not(:last-child) {
-                    float: left;
-                    margin-right: 0px;
-                }
-                .up-icon,
-                .down-icon {
-                    display: block;
-                    cursor: pointer;
-                    float: right;
-                    margin-left: 5px;
-                    > svg {
-                        width: 16px;
-                        float: left;
-                        height: 16px;
-                        &:hover {
-                            fill: @curiousBlue;
-                        }
-                        fill: @alto;
-                    }
-                }
-                .up-icon-hidden,
-                .down-icon-hidden {
-                    display: none;
-                }
-                .up-icon-active,
-                .down-icon-active {
-                    > svg {
-                        float: right;
-                        margin-left: 5px;
-                        width: 16px;
-                        height: 16px;
-                        fill: @curiousBlue;
-                    }
-                }
-            }
             .item-row-editButton {
-                width: 7% !important;
+                width: 13% !important;
                 float: right;
                 margin-right: 10px;
                 &:not(:last-child) {
@@ -95,8 +55,7 @@
                 }
                 .delete-icon, 
                 .edit-icon, 
-                .up-icon,
-                .down-icon {
+                .order-icon {
                     display: block;
                     cursor: pointer;
                     float: right;
@@ -112,13 +71,11 @@
                     }
                 }
                 .delete-icon-hidden,
-                .up-icon-hidden,
-                .down-icon-hidden {
+                .order-icon-hidden {
                     display: none;
                 }
                 .edit-icon-active, 
-                .up-icon-active,
-                .down-icon-active {
+                .order-icon-active {
                     > svg {
                         float: right;
                         margin-left: 5px;
