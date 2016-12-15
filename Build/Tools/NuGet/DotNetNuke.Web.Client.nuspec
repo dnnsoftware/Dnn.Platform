@@ -15,5 +15,6 @@
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.dll" target="lib\net40\" />
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\net40\" />
   </files>
 </package>

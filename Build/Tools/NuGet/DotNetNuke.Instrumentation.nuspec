@@ -15,6 +15,7 @@
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\net40\" />
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\net40\" />
     <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.dll" target="lib\net40\"/>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\net40\"/>
   </files>
