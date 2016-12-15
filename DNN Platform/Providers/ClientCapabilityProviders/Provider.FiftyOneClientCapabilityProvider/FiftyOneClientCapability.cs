@@ -49,20 +49,22 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             get
             {
-                if (_match != null)
+                if (_match != null && _match[name] != null)
                 {
                     return string.Join(Constants.ValueSeperator, _match[name]);
                 }
-                else if (_profiles != null && _profiles.Any())
+
+                if (_profiles != null && _profiles.Any() && _profiles[0][name] != null)
                 {
                     return string.Join(Constants.ValueSeperator, _profiles[0][name]);
                 }
-                else if(_caps != null)
+
+                if (_caps != null)
                 {
                     var capabilities =
                         _caps.Capabilities[Constants.FiftyOneDegreesProperties] as SortedList<string, string[]>;
 
-                    if (capabilities != null)
+                    if (capabilities != null && capabilities.ContainsKey(name) && capabilities[name] != null)
                     {
                         return string.Join(Constants.ValueSeperator, capabilities[name]);
                     }
