@@ -12,6 +12,9 @@
       This package contains components required for developing DNN Platform modules using ASP.NET MVC.
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Web" version="9.0.1" />
+    </dependencies>
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net45\"/>

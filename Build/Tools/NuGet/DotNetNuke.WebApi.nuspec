@@ -14,13 +14,10 @@
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
     <dependencies>
       <dependency id="Microsoft.AspNet.WebApi.Client" version="4.0.20710.0" />
+      <dependency id="DotNetNuke.Web" version="9.0.1" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Web.Http" targetFramework="net40" />
     </frameworkAssemblies>
   </metadata>
-  <files>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.dll" target="lib\net40\" />
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.pdb" target="lib\net40\" />
-  </files>
 </package>

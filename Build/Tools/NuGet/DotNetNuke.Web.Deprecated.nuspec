@@ -12,11 +12,13 @@
       This package contains components which are deprecated and expected to be removed from DNN Platform in a later version.
     </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Web" version="9.0.1" />
+    </dependencies>
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\net40\" />
     <file src="DNN.Platform\Website\bin\Telerik.Web.UI.dll" target="lib\net40\" />
-    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net40\" />
     <file src="DNN.Platform\Website\Licenses\Telerik RadControls for ASP.NET AJAX (Custom).pdf" />
   </files>
 </package>
