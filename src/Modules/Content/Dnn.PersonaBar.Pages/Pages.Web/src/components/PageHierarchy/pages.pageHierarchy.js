@@ -597,7 +597,7 @@ window.dnn.pages = window.dnn.pages || {};
                 }
 
                 scrollContent.find('ul:first').css({
-                    'min-height': (scrollContent.innerHeight() - padding) + 'px'
+                    'min-height': (scrollContent.innerHeight() - padding * 2) + 'px'
                 });
 
                 if (scrollContent.data('jsp')) {
