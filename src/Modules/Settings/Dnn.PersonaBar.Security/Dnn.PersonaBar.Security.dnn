@@ -3,7 +3,7 @@
     <package name="Dnn.PersonaBar.Security" type="PersonaBar" version="01.01.00">
       <friendlyName>Dnn.PersonaBar.Security</friendlyName>
       <description></description>
-      <iconFile>~/DesktopModules/admin/Dnn.PersonaBar/images/module_icon_32x32.png</iconFile>
+      <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
       <owner>
         <name>DNN</name>
         <organization>DNN Corp.</organization>
