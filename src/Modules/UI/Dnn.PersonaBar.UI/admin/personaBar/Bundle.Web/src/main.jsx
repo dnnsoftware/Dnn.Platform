@@ -19,6 +19,7 @@ import Moment from "moment";
 import ReactWidgets from "react-widgets";
 import ThrottleDebounce from "throttle-debounce";
 import Promise from "es6-promise";
+import PersonaBarComponents from "./components/persona-bar-components";
 
 /** Polyfills */
 require("es6-object-assign").polyfill();
@@ -45,6 +46,7 @@ window.dnn.nodeModules.ReactModal = ReactModal;
 window.dnn.nodeModules.ReactWidgets = ReactWidgets;
 window.dnn.nodeModules.ThrottleDebounce = ThrottleDebounce;
 window.dnn.nodeModules.CommonComponents = CommonComponents;
+window.dnn.nodeModules.PersonaBarComponents = PersonaBarComponents;
 window.dnn.nodeModules.ReduxDevTools = ReduxDevTools;
 window.dnn.nodeModules.ReduxDevToolsDockMonitor = ReduxDevToolsDockMonitor;
 window.dnn.nodeModules.ReduxDevToolsLogMonitor = ReduxDevToolsLogMonitor;
