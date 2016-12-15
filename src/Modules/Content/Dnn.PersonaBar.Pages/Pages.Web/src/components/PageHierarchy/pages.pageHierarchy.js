@@ -399,6 +399,17 @@ window.dnn.pages = window.dnn.pages || {};
             this._loadRootPageList();
         },
 
+        _inDragChanged: function (inDrag) {
+            var handler = this;
+            this._removeListScrollView();
+
+            this.container.find('.pages-list-container').width(20000);
+
+            setTimeout(function () {
+                handler._initScrollView(true);
+            }, 300);
+        },
+
         _selectPage: function (pageData) {
             if (this._getViewModel().selectedPage().id != pageData.id) {
                 this._needScrollToSelectedPage = true;
@@ -1165,6 +1176,7 @@ window.dnn.pages = window.dnn.pages || {};
                 this._viewModel.deletedPagesCount = ko.observable(0);
 
                 this._viewModel.selectedPage.subscribe($.proxy(this._selectedPageChanged, this));
+                this._viewModel.inDrag.subscribe($.proxy(this._inDragChanged, this));
                 
                 this._viewModel.pageItemClick = $.proxy(this._pageItemClickHandler, this);
                 this._viewModel.viewPageClick = $.proxy(this._viewPageClickHandler, this);
