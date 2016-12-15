@@ -272,6 +272,8 @@
     <Content Include="admin\personaBar\scripts\tabpanel.js" />
     <Content Include="admin\personaBar\scripts\util.js" />
     <Content Include="admin\personaBar\scripts\validator.js" />
+    <Content Include="Images\icon-personabarapp-16px.png" />
+    <Content Include="Images\icon-personabarapp-32px.png" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>

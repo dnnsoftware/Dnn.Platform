@@ -34,6 +34,19 @@
                         </resourceFile>
                     </resourceFiles>
                 </component>
+                <component type="File">
+                    <files>
+                        <basePath>Images</basePath>
+                        <file>
+                            <name>icon-personabarapp-16px.png</name>
+                            <sourceFileName>Images/icon-personabarapp-16px.png</sourceFileName>
+                        </file>
+                        <file>
+                            <name>icon-personabarapp-32px.png</name>
+                            <sourceFileName>Images/icon-personabarapp-32px.png</sourceFileName>
+                        </file>
+                    </files>
+                </component>
                 <component type="Config">
                     <config>
                         <configFile>web.config</configFile>
