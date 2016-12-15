@@ -7,16 +7,18 @@
     text-transform: uppercase;
     &:hover {
         color: @mountainMist;
-        .icon {
+        .icon > svg {
             fill: @mountainMist;
         }
     }
     .icon {
-        fill: @thunder;
         display: inline-block;
         width: 20px;
         height: 20px;
         vertical-align: middle;
+        &> svg {
+            fill: @thunder;
+        }
     }
     span {
         vertical-align: middle;
