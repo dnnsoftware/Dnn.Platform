@@ -47,7 +47,7 @@
             <SymbolsFiles Include="$(checkoutDirectory)\Website\bin\*.pdb" Exclude="@(SymbolsExclude)"/>
             <SymbolsFiles Include="$(checkoutDirectory)\Website\bin\*.xml" Exclude="@(SymbolsExclude)"/>
         </ItemGroup>
-        <Zip Files="@(SymbolsFiles)" WorkingDirectory="$(checkoutDirectory)\website\bin"
+        <Zip Files="@(SymbolsFiles)" WorkingDirectory="$(checkoutDirectory)\website"
                  ZipFileName="$(checkoutDirectory)\src\Build\Symbols\Resources.zip" />
         <ItemGroup>
             <SymbolsPackage Include="$(checkoutDirectory)\src\Build\Symbols\*.*;" />
