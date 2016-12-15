@@ -584,7 +584,7 @@ window.dnn.pages = window.dnn.pages || {};
             }
 
             $pagesList = this.container.find('.pages-list-container div.pages-list');
-            bottomSpace = 54;
+            bottomSpace = 30;
             $pagesList.css('height', this.container.height() - bottomSpace).each(function() {
                 var scrollContent = $(this);
 

@@ -7,6 +7,10 @@
     background-color: #2fa6eb !important;
 }
 
+.pagePanel .breadcrumbs-container {
+    min-height: 110px;
+}
+
 .pagePanel .pagehierarchy-container {
     overflow: hidden;
     outline: none;
