@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>DotNetNuke.Bundle</id>
+    <version>9.0.1</version>
+    <title>DotNetNuke Bundle</title>
+    <authors>DotNetNuke Corporation</authors>
+    <owners>DotNetNuke Corporation</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DotNetNuke Bundle containing DotNetNuke.dll, .Instrumentation.dll, .Web.dll and .Web.Client.dll</description>
+    <copyright>DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.</copyright>
+  </metadata>
+  <files>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\"/>
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\HttpModules\Bin\DotNetNuke.HttpModules.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Modules\UrlManagement\Bin\DotNetNuke.Modules.UrlManagement.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Modules\UrlManagement\Bin\DotNetNuke.Modules.UrlManagement.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
+
+    <file src="DNN.Platform\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" target="lib\net40\"/>
+    <file src="DNN.Platform\DNN Platform\Components\51Degrees\bin\FiftyOne.Foundation.dll" target="lib\"/>
+    <file src="DNN.Platform\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
+  </files>
+</package>
