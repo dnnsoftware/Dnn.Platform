@@ -233,6 +233,11 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
     border-left: 0px;
 }
 
+.recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader td.username
+{
+    border-left: 0px;
+}
+
 .recycleBinContainer table.dnnRBGrid tr.dnnRBGridHeader td.first {
     width: 2%;
     border-right: 0px;
@@ -285,6 +290,15 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
 }
 .recycleBinContainer td.actions {
     width: 13%;
+}
+
+.recycleBinContainer table.dnnRBGrid td.username,
+.recycleBinContainer table.dnnRBGrid td.displayname {
+    text-align: left;
+}
+
+.recycleBinContainer table.dnnRBGrid td.userdeleteddate {
+    width: 20%;
 }
 
 .recycleBinContainer td.actions span.restore {
@@ -347,7 +361,6 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
 .recycleBinContainer .EmptyList.NoModules {
     background-image: url('../Images/Icon-Empty-Modules-white.png');
 }
-
 .recycleBinContainer input[type="checkbox"]:disabled + .qaTooltip {
     left: 20px;
     top: 8px;

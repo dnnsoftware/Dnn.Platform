@@ -319,6 +319,48 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             return tab.IsVisible ? "Visible" : "Hidden";
         }
 
+        public List<UserInfo> GetDeletedUsers()
+        {
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().ToList();
+            return deletedusers;
+        }
+
+        public void DeleteUsers(IEnumerable<UserInfo> users)
+        {
+            var userInfos = users as IList<UserInfo> ?? users.ToList();
+            if (users == null || !userInfos.Any()) return;
+            foreach (var user in userInfos.Select(u => UserController.GetUserById(u.PortalID, u.UserID)).Where(user => user != null).Where(user => user.IsDeleted))
+            {
+                UserController.RemoveUser(user);
+            }
+        }
+
+        public void DeleteUsers(IEnumerable<UserItem> users)
+        {
+            var userInfos = users as IList<UserItem> ?? users.ToList();
+            if (users == null || !userInfos.Any()) return;
+            foreach (var user in userInfos.Select(u => UserController.GetUserById(u.PortalId, u.Id)).Where(user => user != null).Where(user => user.IsDeleted))
+            {
+                UserController.RemoveUser(user);
+            }
+        }
+
+        public bool RestoreUser(UserInfo user, out string errorMessage)
+        {
+            errorMessage = null;
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().ToList();
+            if ((user != null) && deletedusers.Any(u => u.UserID == user.UserID))
+            {
+                UserController.RestoreUser(ref user);
+                return true;
+            }
+            else
+            {
+                errorMessage = string.Format(LocalizeString("Service_RestoreUserError"));
+                return false;
+            }
+        }
+
         #endregion
     }
 }

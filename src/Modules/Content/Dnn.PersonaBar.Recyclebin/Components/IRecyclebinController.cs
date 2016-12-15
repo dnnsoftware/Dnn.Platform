@@ -10,6 +10,7 @@ using System.Text;
 using Dnn.PersonaBar.Recyclebin.Components.Dto;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
@@ -22,23 +23,25 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false);
 
         void DeleteTabs(IEnumerable<TabInfo> tabs, StringBuilder errors, bool deleteDescendants = false);
-
-
+        
         void DeleteModules(IEnumerable<ModuleItem> modules, StringBuilder errors);
 
         void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors);
 
+        void DeleteUsers(IEnumerable<UserItem> users);
 
-        //void HardDeleteTab(TabInfo tab, bool deleteDescendants);
-
-        //void HardDeleteModule(ModuleInfo module);
+        void DeleteUsers(IEnumerable<UserInfo> users);
 
         bool RestoreTab(TabInfo tab, out string resultmessage);
 
         bool RestoreModule(int moduleId, int tabId, out string errorMessage);
 
+        bool RestoreUser(UserInfo user, out string resultmessage);
+
         List<TabInfo> GetDeletedTabs();
 
         List<ModuleInfo> GetDeletedModules();
+
+        List<UserInfo> GetDeletedUsers();
     }
 }

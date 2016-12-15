@@ -4,7 +4,7 @@
 
     <div class="actions">
         <a class="emtyRecycleBin primarybtn button" data-bind="html: resx.recyclebin_EmptyRecycleBin, click: $root.emptyRecycleBin, clickBubble: false,
-                        visible: (deletedpagesList().length > 0 || deletedmodulesList().length > 0)"></a>
+                        visible: (deletedpagesList().length > 0 || deletedmodulesList().length > 0 || deletedusersList().length > 0)"></a>
     </div>
 </div>
 
@@ -15,6 +15,7 @@
     <ul class="tabs-nav">
         <li><a href="#pages" data-bind="html: resx.recyclebin_Pages, click: $root.refreshPages"></a></li>
         <li><a href="#modules" data-bind="html: resx.recyclebin_Modules, click: $root.refreshModules"></a></li>
+        <li><a href="#users" data-bind="html: resx.recyclebin_Users, click: $root.refreshUsers"></a></li>
     </ul>
 
     <div id="pages" data-bind="visible: deletedPagesReady() && activeTab() == 0"
@@ -50,7 +51,7 @@
                                 jScrollPaneOptions: { autoReinitialise: true } }" id="moduleList">
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
-                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllModules" /></td>
+                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllModules"/></td>
                     <td class="mtitle" data-bind="html: $root.resx.recyclebin_ModuleTitle"></td>
                     <td class="mpage" data-bind="html: $root.resx.recyclebin_Page"></td>
                     <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
@@ -62,6 +63,29 @@
         <div data-bind="visible: deletedmodulesList().length > 0" class="actions">
             <a class="secondarybtn" id="RestoreSelectedModules" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedModules "></a>
             <a class="primarybtn" id="RemoveSelectedModules" data-bind="attr: { title:  $root.resx.recyclebin_Delete }, html: $root.resx.recyclebin_Delete, click: $root.removeSelectedModules"></a>
+        </div>
+    </div>
+    <div id="users" data-bind="visible: deletedUsersReady() && activeTab() == 2"
+         class="listOfItems">
+        <div data-bind="text: resx.recyclebin_NoUsers, visible: deletedusersList().length == 0,
+                                css: { 'EmptyList NoUsers': deletedusersList().length == 0}"></div>
+        <div data-bind="visible: deletedusersList().length > 0, jScrollPane: { observableElement: deletedUsersReady,
+                                parentHeightOptions: { heightCorrection: -110 },
+                                jScrollPaneOptions: { autoReinitialise: true } }" id="userList">
+            <table class="dnnRBGrid">
+                <tr class="dnnRBGridHeader">
+                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllUsers" /></td>
+                    <td class="username" data-bind="html: $root.resx.recyclebin_Username"></td>
+                    <td class="displayname" data-bind="html: $root.resx.recyclebin_UserDisplayName"></td>
+                    <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
+                    <td class="actions" data-bind="html: $root.resx.recyclebin_Actions"></td>
+                </tr>
+                <tbody class="pages-list-container" data-bind="template: { name: 'users-list-recyclebin', foreach: deletedusersList }"></tbody>
+            </table>
+        </div>
+        <div data-bind="visible: deletedusersList().length > 0" class="actions">
+            <a class="secondarybtn" id="RestoreSelectedUsers" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, html: $root.resx.recyclebin_Restore, click: $root.restoreSelectedUsers "></a>
+            <a class="primarybtn" id="RemoveSelectedUsers" data-bind="attr: { title:  $root.resx.recyclebin_Delete }, html: $root.resx.recyclebin_Delete, click: $root.removeSelectedUsers"></a>
         </div>
     </div>
 </div>
@@ -140,6 +164,22 @@
         <td class="actions">
             <span class="restore" data-bind="attr: { title:  $root.resx.recyclebin_Restore }, click: !TabDeleted ? $root.restoreModule : null, enable: !TabDeleted, clickBubble: false, css: { 'action-disabled': TabDeleted }, visible: mouseOver"></span>
             <span class="remove" data-bind="attr: { title: $root.resx.recyclebin_Delete }, click: $root.removeModule, clickBubble: false, visible: mouseOver"></span>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="users-list-recyclebin">
+    <tr class="dnnRBGridBody" data-bind="setWhenHover: mouseOver,
+                        attr: { 'data-user-id': Id }, css: null, css: {'hover': mouseOver() || selected() }">
+        <td class="checkbox">
+            <input type="checkbox" class="user-item" data-bind="checked: selected" />            
+        </td>
+        <td class="username" data-bind="html: Username"></td>
+        <td class="displayname" data-bind="html: DisplayName"></td>
+        <td class="userdeleteddate" data-bind="css: null"><span data-bind="html: LastModifiedOnDate"></span></td>
+        <td class="actions">
+            <span class="restore" data-bind="attr: { title: $root.resx.recyclebin_Restore }, click: $root.restoreUser, clickBubble: false, visible: mouseOver"></span>
+            <span class="remove" data-bind="attr: { title: $root.resx.recyclebin_Delete }, click: $root.removeUser, clickBubble: false, visible: mouseOver"></span>
         </td>
     </tr>
 </script>

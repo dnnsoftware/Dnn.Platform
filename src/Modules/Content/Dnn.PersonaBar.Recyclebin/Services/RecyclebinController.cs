@@ -37,6 +37,7 @@ using DotNetNuke.Web.Api;
 using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.Recyclebin.Components;
 using Dnn.PersonaBar.Recyclebin.Components.Dto;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Recyclebin.Services
 {
@@ -83,6 +84,26 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 {
                     Status = 1,
                     Message = string.Format(Components.RecyclebinController.Instance.LocalizeString("Service_RemoveTabModuleError"), errors)
+                });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveUser(List<UserItem> users)
+        {
+            var errors = new StringBuilder();
+
+            Components.RecyclebinController.Instance.DeleteUsers(users);
+
+            if (errors.Length > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Status = 1,
+                    Message = string.Format(Components.RecyclebinController.Instance.LocalizeString("Service_RemoveUserError"), errors)
                 });
             }
 
@@ -140,6 +161,28 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RestoreUser(List<UserItem> users)
+        {
+            var errors = new StringBuilder();
+            if (users != null && users.Any())
+            {
+                foreach (var user in users.Select(u => UserController.Instance.GetUserById(PortalSettings.PortalId, u.Id)))
+                {
+                    if (user == null)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                    string resultmessage;
+                    Components.RecyclebinController.Instance.RestoreUser(user, out resultmessage);
+                    errors.Append(resultmessage);
+                }
+            }
+            return errors.Length > 0 ? Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = string.Format(Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"), errors) })
+                : Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+        }
+
         [HttpGet]
         public HttpResponseMessage GetDeletedModuleList()
         {
@@ -149,15 +192,26 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         }
 
         [HttpGet]
+        public HttpResponseMessage GetDeletedUserList()
+        {
+            var users = Components.RecyclebinController.Instance.GetDeletedUsers();
+            var deletedusers = from t in users select ConvertToUserItem(t);
+            return Request.CreateResponse(HttpStatusCode.OK, deletedusers);
+        }
+
+        [HttpGet]
         public HttpResponseMessage EmptyRecycleBin()
         {
             var deletedTabs = Components.RecyclebinController.Instance.GetDeletedTabs();
             var deletedModules = Components.RecyclebinController.Instance.GetDeletedModules();
+            var deletedUsers = Components.RecyclebinController.Instance.GetDeletedUsers();
             var errors = new StringBuilder();
 
             Components.RecyclebinController.Instance.DeleteModules(deletedModules, errors);
 
             Components.RecyclebinController.Instance.DeleteTabs(deletedTabs, errors, true);
+
+            Components.RecyclebinController.Instance.DeleteUsers(deletedUsers);
 
             if (errors.Length > 0)
             {
@@ -215,6 +269,20 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 TabDeleted = tab.IsDeleted,
                 LastModifiedOnDate = mod.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
                 FriendlyLastModifiedOnDate = mod.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US"))
+            };
+        }
+
+        private UserItem ConvertToUserItem(UserInfo user)
+        {
+            return new UserItem
+            {
+                Id = user.UserID,
+                Username = user.Username,
+                PortalId = user.PortalID,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                LastModifiedOnDate = user.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
+                FriendlyLastModifiedOnDate = user.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt", CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US"))
             };
         }
 

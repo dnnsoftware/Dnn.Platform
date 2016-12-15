@@ -42,6 +42,23 @@ define(['jquery', 'knockout',
             self.mouseOver = ko.observable(false);
         };
 
+        var UserInfo = function (requestData) {
+            var self = this;
+
+            // request data
+            self.Id = requestData.Id;
+            self.Username = requestData.Username;
+            self.PortalId = requestData.PortalId;
+            self.DisplayName = requestData.DisplayName;
+            self.Email = requestData.Email;
+            self.LastModifiedOnDate = requestData.LastModifiedOnDate;
+            self.friendlyLastModifiedOnDate = requestData.friendlyLastModifiedOnDate;
+
+            // other attributes
+            self.selected = ko.observable(false);
+            self.mouseOver = ko.observable(false);
+        };
+
         var PageInfo = function (requestData) {
             var PAGES_TREE_LEFT_PADDING = 50;
 
@@ -216,7 +233,8 @@ define(['jquery', 'knockout',
                 pageRestoreRevomeOperationsCallback, canBeDeleted,
                 restoreSelectedModulesHandler, removeSelectedModulesHandler,
                 restorePageHandler, removePageHandler, restoreModuleHandler, removeModuleHandler, emptyRecycleBinHandler,
-                getDeletedPageList, getDeletedModuleList,
+                restoreUserHandler, removeUserHandler, restoreSelectedUsersHandler, removeSelectedUsersHandler, userRestoreRevomeOperationsCallback,
+                getDeletedPageList, getDeletedModuleList, getDeletedUserList,
                 getService, getViewModel, tabActivated;
 
             /* Class properties */
@@ -388,6 +406,57 @@ define(['jquery', 'knockout',
                 }
             };
 
+            restoreSelectedUsersHandler = function () {
+                var usersList, viewModel;
+
+                viewModel = getViewModel();
+                usersList = getSelectedElements(viewModel.deletedusersList());
+
+                if (usersList.length > 0) {
+                    var confirmText, yesText, noText;
+                    confirmText = usersList.length > 1 ? _resx.recyclebin_RestoreUsersConfirm : _resx.recyclebin_RestoreUserConfirm;
+                    yesText = _resx.recyclebin_YesConfirm;
+                    noText = _resx.recyclebin_NoConfirm;
+
+                    _utility.confirm(confirmText, yesText, noText, function () {
+                        getService().post('RestoreUser', usersList, userRestoreRevomeOperationsCallback);
+                    });
+                }
+            };
+
+            removeSelectedUsersHandler = function () {
+                var viewModel, usersList;
+
+                viewModel = getViewModel();
+                usersList = getSelectedElements(viewModel.deletedusersList());
+
+                if (usersList.length > 0) {
+                    var confirmText, yesText, noText;
+                    confirmText = usersList.length > 1 ? _resx.recyclebin_RemoveUsersConfirm : _resx.recyclebin_RemoveUserConfirm;
+                    yesText = _resx.recyclebin_YesConfirm;
+                    noText = _resx.recyclebin_NoConfirm;
+
+                    _utility.confirm(confirmText, yesText, noText, function () {
+                        getService().post('RemoveUser', usersList, function () {
+                            for (var i = 0; i < usersList.length; i++) {
+                                viewModel.deletedusersList.remove(usersList[i]);
+                            }
+                            viewModel.selectAllUsers(false);
+                        });
+                    });
+                }
+            };
+
+            userRestoreRevomeOperationsCallback = function (data) {
+                if (data.Status > 0) {
+                    // Error: inform
+                    _utility.notify(data.Message);
+                }
+                getDeletedUserList();
+                //CONTENT-4010 - call refresh in person bar
+                $("#showsite").data('need-refresh', true);
+            };
+
             pageRestoreRevomeOperationsCallback = function (data) {
                 if (data.Status > 0) {
                     // Error: inform
@@ -412,6 +481,20 @@ define(['jquery', 'knockout',
                 });
             };
 
+            restoreUserHandler = function (userData) {
+                var confirmText, yesText, noText;
+
+                confirmText = _resx.recyclebin_RestoreUserConfirm;
+                yesText = _resx.recyclebin_YesConfirm;
+                noText = _resx.recyclebin_NoConfirm;
+
+                _utility.confirm(confirmText, yesText, noText, function () {
+                    var usersList = [];
+                    usersList.push({ id: userData.Id });
+                    getService().post('RestoreUser', usersList, userRestoreRevomeOperationsCallback);
+                });
+            };
+
             removePageHandler = function (pageData) {
                 var confirmText, yesText, noText;
 
@@ -427,6 +510,24 @@ define(['jquery', 'knockout',
                     var pagesList = [];
                     pagesList.push({ id: pageData.id });
                     getService().post('RemovePage', pagesList, pageRestoreRevomeOperationsCallback);
+                });
+            };
+
+            removeUserHandler = function (userData) {
+                var viewModel, confirmText, yesText, noText;
+                viewModel = getViewModel();
+                confirmText = _resx.recyclebin_RemoveUserConfirm;
+                yesText = _resx.recyclebin_YesConfirm;
+                noText = _resx.recyclebin_NoConfirm;
+
+                _utility.confirm(confirmText, yesText, noText, function () {
+                    var userList = [];
+                    userList.push({
+                        Id: userData.Id
+                    });
+                    getService().post('RemoveUser', userList, function () {
+                        viewModel.deletedusersList.remove(userData);
+                    });
                 });
             };
 
@@ -480,6 +581,7 @@ define(['jquery', 'knockout',
                     getService().get('EmptyRecycleBin', { t: (new Date).getTime() }, function () {
                         viewModel.deletedpagesList.removeAll();
                         viewModel.deletedmodulesList.removeAll();
+                        viewModel.deletedusersList.removeAll();
                     });
                 });
             };
@@ -566,6 +668,21 @@ define(['jquery', 'knockout',
                 });
             };
 
+            getDeletedUserList = function () {
+                var viewModel = getViewModel();
+                viewModel.deletedUsersReady(false);
+                viewModel.deletedusersList.removeAll();
+
+                getService().get('GetDeletedUserList', {}, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var user = new UserInfo(data[i]);
+                        viewModel.deletedusersList.push(user);
+                    }
+                    viewModel.selectAllUsers(false);
+                    viewModel.deletedUsersReady(true);
+                });
+            };
+
             tabActivated = function (event, ui) {
                 var panelId = ui.newPanel.attr('id');
                 var activeTab = 0;
@@ -575,6 +692,9 @@ define(['jquery', 'knockout',
                         break;
                     case 'modules':
                         activeTab = 1;
+                        break;
+                    case 'users':
+                        activeTab = 2;
                         break;
                     default:
                         activeTab = 0;
@@ -592,30 +712,37 @@ define(['jquery', 'knockout',
 
                         deletedPagesReady: ko.observable(false),
                         deletedModulesReady: ko.observable(false),
+                        deletedUsersReady: ko.observable(false),
 
                         deletedpagesList: ko.observableArray([]),
                         deletedmodulesList: ko.observableArray([]),
+                        deletedusersList: ko.observableArray([]),
 
                         selectAllPages: ko.observable(false),
                         selectAllModules: ko.observable(false),
-
+                        selectAllUsers: ko.observable(false),
 
                         changeElementSelectedStatus: changeElementSelectedStatus,
 
                         removePage: removePageHandler,
                         removeModule: removeModuleHandler,
+                        removeUser: removeUserHandler,
 
                         restorePage: restorePageHandler,
                         restoreModule: restoreModuleHandler,
+                        restoreUser: restoreUserHandler,
 
                         restoreSelectedPages: restoreSelectedPagesHandler,
                         restoreSelectedModules: restoreSelectedModulesHandler,
+                        restoreSelectedUsers: restoreSelectedUsersHandler,
 
                         removeSelectedPages: removeSelectedPagesHandler,
                         removeSelectedModules: removeSelectedModulesHandler,
+                        removeSelectedUsers: removeSelectedUsersHandler,
 
                         refreshPages: getDeletedPageList,
                         refreshModules: getDeletedModuleList,
+                        refreshUsers: getDeletedUserList,
 
                         emptyRecycleBin: emptyRecycleBinHandler,
 
@@ -630,6 +757,9 @@ define(['jquery', 'knockout',
                         markAllModulesAsIfPossible(_viewModel.deletedmodulesList(), newValue);
                     });
 
+                    _viewModel.selectAllUsers.subscribe(function (newValue) {
+                        markAllElementsAs(_viewModel.deletedusersList(), newValue);
+                    });
                 }
 
                 return _viewModel;
@@ -652,6 +782,7 @@ define(['jquery', 'knockout',
             DnnPageRecycleBin.prototype.show = function () {
                 getDeletedPageList();
                 getDeletedModuleList();
+                getDeletedUserList();
             };
 
             return DnnPageRecycleBin;

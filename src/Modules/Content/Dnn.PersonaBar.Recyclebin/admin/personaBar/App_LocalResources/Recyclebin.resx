@@ -144,8 +144,17 @@
   <data name="recyclebin_Modules.Text" xml:space="preserve">
     <value>Modules</value>
   </data>
+  <data name="recyclebin_Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="recyclebin_ModuleTitle.Text" xml:space="preserve">
     <value>Module Title</value>
+  </data>
+  <data name="recyclebin_Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="recyclebin_UserDisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
   </data>
   <data name="recyclebin_NoConfirm.Text" xml:space="preserve">
     <value>No</value>
@@ -158,6 +167,9 @@
   </data>
   <data name="recyclebin_NoPages.Text" xml:space="preserve">
     <value>No Pages In Recycle Bin</value>
+  </data>
+  <data name="recyclebin_NoUsers.Text" xml:space="preserve">
+    <value>No Users In Recycle Bin</value>
   </data>
   <data name="recyclebin_Page.Text" xml:space="preserve">
     <value>Page</value>
@@ -198,6 +210,12 @@
   <data name="recyclebin_RestorePagesInvalid.Text" xml:space="preserve">
     <value>The page(s) you tried to restore should select their parent in same time.</value>
   </data>
+  <data name="recyclebin_RestoreUserConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore this user.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RestoreUsersConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to restore selected users.&lt;/p&gt;</value>
+  </data>
   <data name="recyclebin_Title.Text" xml:space="preserve">
     <value>Recycle Bin</value>
   </data>
@@ -213,6 +231,9 @@
   <data name="Service_RemoveTabModuleError.Text" xml:space="preserve">
     <value>Error removing page has occurred:&lt;br/&gt;{0}</value>
   </data>
+  <data name="Service_RemoveUserError.Text" xml:space="preserve">
+    <value>Error removing user has occurred:&lt;br/&gt;{0}</value>
+  </data>
   <data name="Service_RestoreModuleError.Text" xml:space="preserve">
     <value>Error restoring module {0} on page {1}. Page is deleted.</value>
   </data>
@@ -224,5 +245,8 @@
   </data>
   <data name="Service_EmptyRecycleBinError.Text" xml:space="preserve">
     <value>Some of the items were not deleted.</value>
+  </data>
+  <data name="Service_RestoreUserError.Text" xml:space="preserve">
+    <value>Error restoring user.</value>
   </data>
 </root>
