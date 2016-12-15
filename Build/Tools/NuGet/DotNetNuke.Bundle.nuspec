@@ -3,11 +3,14 @@
   <metadata>
     <id>DotNetNuke.Bundle</id>
     <version>9.0.1</version>
-    <title>DotNetNuke Bundle</title>
+    <title>DNN Platform</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DotNetNuke Bundle containing DotNetNuke.dll, .Instrumentation.dll, .Web.dll and .Web.Client.dll</description>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing many different kinds of extensions for DNN Platform.
+    </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>

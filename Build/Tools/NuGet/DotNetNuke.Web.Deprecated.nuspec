@@ -3,11 +3,14 @@
   <metadata>
     <id>DotNetNuke.Web.Deprecated</id>
     <version>9.0.1</version>
-    <title>DNN Web Deprecated</title>
+    <title>DNN Platform (Deprecated Components)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Open Source Web Application Framework</description>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components which are deprecated and expected to be removed from DNN Platform in a later version.
+    </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>

@@ -3,11 +3,14 @@
   <metadata>
     <id>DotNetNuke.Instrumentation</id>
     <version>9.0.1</version>
-    <title>DNN Instrumentation</title>
+    <title>DNN Platform (Instrumentation)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Open Source Web Application Framework</description>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for logging and instrumentation for DNN Platform.
+    </description>
     <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
