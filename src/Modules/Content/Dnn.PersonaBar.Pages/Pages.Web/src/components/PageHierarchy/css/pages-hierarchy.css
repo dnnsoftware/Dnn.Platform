@@ -158,7 +158,7 @@
     display: inline-block;
     visibility: hidden;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status.visible {
+.pagePanel .pagehierarchy-container .pages-list ul li div.page-item:hover span.summary span.status.visible {
     visibility: visible;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status > label {
