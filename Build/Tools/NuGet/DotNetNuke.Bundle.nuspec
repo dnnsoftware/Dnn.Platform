@@ -4,11 +4,11 @@
     <id>DotNetNuke.Bundle</id>
     <version>9.0.1</version>
     <title>DotNetNuke Bundle</title>
-    <authors>DotNetNuke Corporation</authors>
-    <owners>DotNetNuke Corporation</owners>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DotNetNuke Bundle containing DotNetNuke.dll, .Instrumentation.dll, .Web.dll and .Web.Client.dll</description>
-    <copyright>DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.</copyright>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.dll" target="lib\"/>
