@@ -69,7 +69,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClientDependency.Core">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\ClientDependency.Core.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\ClientDependency.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dnn.PersonaBar.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,47 +77,47 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.HttpModules">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.HttpModules.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.HttpModules.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Instrumentation.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Instrumentation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Log4Net.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Log4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Data">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Tests.Data.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Tests.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Tests.Utilities">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Tests.Utilities.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Web.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Web.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web.Deprecated">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.Web.Deprecated.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.Web.Deprecated.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.WebControls.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.WebControls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.0.658\lib\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.7\lib\DotNetNuke.WebUtility.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
