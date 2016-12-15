@@ -18,7 +18,7 @@ import PageList from "./PageList/PageList";
 import SaveAsTemplate from "./SaveAsTemplate/SaveAsTemplate";
 import Button from "dnn-button";
 import utils from "../utils";
-import BackTo from "./common/BackTo/BackTo";
+import BackTo from "dnn-back-to";
 import panels from "../constants/panels";
 import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
