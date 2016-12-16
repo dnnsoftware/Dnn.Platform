@@ -1,0 +1,36 @@
+<ul id="dnn_pnav">
+[*>NODE]
+</ul>
+[>NODE]
+	<li>
+	[?ENABLED]
+		<a href="[=URL]" [?TARGET]target="[=TARGET]"[/?]>[=TEXT]</a>
+	[?ELSE]
+		<span>[=TEXT]</span>
+	[/?]
+	[?NODE]
+	    <ul>
+	    [*>NODE]
+	    </ul>
+	[/?]
+	</li>
+[/>]
+
+<script type="text/javascript">
+(function($){
+	$().ready(function(){
+		$("#dnn_pnav > li > ul li").mouseover(function(e){
+			var subMenu = $(">ul", $(this));
+			if(subMenu.length > 0){
+				var offset = subMenu.offset();
+				var rightEage = offset.left + subMenu.outerWidth();
+				if(rightEage > $(window).width()){
+					subMenu.css("left", (parseInt(subMenu.css("left")) - (subMenu.outerWidth() + $(this).width())) + "px");
+				}
+			}
+
+			e.stopPropagation();
+		});
+	});
+})(jQuery);
+</script>
