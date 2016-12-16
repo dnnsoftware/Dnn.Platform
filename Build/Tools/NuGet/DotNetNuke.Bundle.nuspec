@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>DotNetNuke</id>
+    <id>DotNetNuke.Bundle</id>
     <version>9.0.1</version>
     <title>DNN Platform</title>
     <authors>DNN Corp</authors>
