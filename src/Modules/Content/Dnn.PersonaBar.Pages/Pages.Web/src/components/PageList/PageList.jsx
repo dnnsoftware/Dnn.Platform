@@ -14,7 +14,7 @@ class PageList extends Component {
 
     render() {
         return (
-            <div className={styles.pageListBody}>                  
+            <div className={styles.pageListBody + " dnn-persona-bar-page-body"}>
                 <div className="search-container">      
                     <GridCell columnSize={65}>
                         <div>{this.props.toolbarComponents}</div>
