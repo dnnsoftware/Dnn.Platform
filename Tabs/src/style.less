@@ -1,5 +1,14 @@
 @import "~dnn-global-styles/index";
 .dnn-tabs.react-tabs {
+    ul {
+        li {
+            position: relative;
+            list-style: none;
+            border: 1px solid transparent;
+            border-bottom: none;
+            cursor: pointer;
+        }
+    }
     &.primary {
         > ul {
             padding: 0;
@@ -13,6 +22,7 @@
                 font-size: 10pt;
                 bottom: 0px;
                 color: @bulgarianRose;
+                display: inline-block;
                 &:focus {
                     box-shadow: none;
                     outline: none;
@@ -36,6 +46,7 @@
             border-bottom: 1px solid @alto;
             margin: 0;
             li {
+                display: inline-block;
                 font-weight: bold;
                 text-transform: uppercase;
                 margin-right: 35px;
