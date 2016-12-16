@@ -401,6 +401,7 @@ window.dnn.pages = window.dnn.pages || {};
 
         _inDragChanged: function (inDrag) {
             var handler = this;
+			this._removeHiddenLists();
             this._removeListScrollView();
 
             this.container.find('.pages-list-container').width(20000);
