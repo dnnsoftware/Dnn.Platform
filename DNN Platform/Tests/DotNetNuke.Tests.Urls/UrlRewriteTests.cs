@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Urls
 
             DeleteTab(_testPage);
             UpdateTabName(_tabId, "About Us");
-            UpdateTabSkin(_tabId, "[G]Skins/Xcillion/Inner.ascx");
+            UpdateTabSkin(_tabId, "[G]Skins/Gravity/2-Col.ascx");
 
             if (!String.IsNullOrEmpty(_securePageName))
             {
