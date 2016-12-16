@@ -3,35 +3,27 @@
   <metadata>
     <id>DotNetNuke.Bundle</id>
     <version>9.0.1</version>
-    <title>DotNetNuke Bundle</title>
-    <authors>DotNetNuke Corporation</authors>
-    <owners>DotNetNuke Corporation</owners>
+    <title>DNN Platform</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DotNetNuke Bundle containing DotNetNuke.dll, .Instrumentation.dll, .Web.dll and .Web.Client.dll</description>
-    <copyright>DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.</copyright>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing many different kinds of extensions for DNN Platform.
+      Installing this package also installs DotNetNuke.Core, DotNetNuke.Instrumentation, DotNetNuke.Web, DotNetNuke.Web.Client, DotNetNuke.Web.Mvc, DotNetNuke.WebApi, and DotNetNuke.Web.Deprecated.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Core" version="9.0.1" />
+      <dependency id="DotNetNuke.Instrumentation" version="9.0.1" />
+      <dependency id="DotNetNuke.Web" version="9.0.1" />
+      <dependency id="DotNetNuke.Web.Client" version="9.0.1" />
+      <dependency id="DotNetNuke.Web.Mvc" version="9.0.1" />
+      <dependency id="DotNetNuke.WebApi" version="9.0.1" />
+      <dependency id="DotNetNuke.Web.Deprecated" version="9.0.1" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Instrumentation.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Client.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Log4Net.pdb" target="lib\"/>
-
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.dll" target="lib\"/>
-    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Deprecated.pdb" target="lib\"/>
-
     <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Components\ClientDependency\Source\Bin\ClientDependency.Core.pdb" target="lib\"/>
 
@@ -50,7 +42,6 @@
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll" target="lib\net40\"/>
     <file src="DNN.Platform\DNN Platform\Components\51Degrees\bin\FiftyOne.Foundation.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" target="lib\"/>
   </files>

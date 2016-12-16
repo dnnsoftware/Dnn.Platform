@@ -3,12 +3,18 @@
   <metadata>
     <id>DotNetNuke.Web.Mvc</id>
     <version>9.0.1</version>
-    <title>DotNetNuke Web Mvc</title>
-    <authors>DotNetNuke Corporation</authors>
-    <owners>DotNetNuke Corporation</owners>
+    <title>DNN Platform (ASP.NET MVC)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Open Source Web Application Framework</description>
-    <copyright>DotNetNuke is copyright 2002-2017 by DotNetNuke Corporation. All Rights Reserved.</copyright>    
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing DNN Platform modules using ASP.NET MVC.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
+    <dependencies>
+      <dependency id="DotNetNuke.Web" version="9.0.1" />
+    </dependencies>
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net45\"/>

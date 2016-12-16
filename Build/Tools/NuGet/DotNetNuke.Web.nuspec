@@ -3,15 +3,20 @@
   <metadata>
     <id>DotNetNuke.Web</id>
     <version>9.0.1</version>
-    <title>DNN Web</title>
-    <authors>DNN Corporation</authors>
-    <owners>DNN Corporation</owners>
+    <title>DNN Platform (Web)</title>
+    <authors>DNN Corp</authors>
+    <owners>DNN Corp</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Open Source Web Application Framework</description>
-    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corporation. All Rights Reserved.</copyright>
+    <description>
+      DNN Platform is an open source web application framework.
+      This package contains components required for developing extensions for DNN Platform.
+    </description>
+    <copyright>DNN and DotNetNuke are copyright 2002-2017 by DNN Corp. All Rights Reserved.</copyright>
   </metadata>
   <files>
     <file src="DNN.Platform\Website\bin\DotNetNuke.Web.dll" target="lib\net40\" />
+    <file src="DNN.Platform\Website\bin\DotNetNuke.Web.pdb" target="lib\net40\" />
     <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.dll" target="lib\net40\" />
+    <file src="DNN.Platform\Website\bin\DotNetNuke.WebUtility.pdb" target="lib\net40\" />
   </files>
 </package>
