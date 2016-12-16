@@ -56,7 +56,9 @@
                                     <node path="/configuration/system.webServer" action="update" targetpath="/configuration/system.webServer/staticContent" collision="ignore">
                                         <staticContent>
                                             <remove fileExtension=".svg" />
+                                            <remove fileExtension=".woff" />
                                             <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                            <mimeMap fileExtension=".woff" mimeType="font/x-woff" />
                                         </staticContent>
                                     </node>
                                     <node path="/configuration/system.webServer/staticContent/remove[@fileExtension='.svg']" action="remove" />
@@ -66,6 +68,14 @@
                                     <node path="/configuration/system.webServer/staticContent/mimeMap[@fileExtension='.svg']" action="remove" />
                                     <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
                                         <mimeMap fileExtension=".svg" mimeType="image/svg+xml" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/remove[@fileExtension='.woff']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="remove" collision="overwrite">
+                                        <remove fileExtension=".woff" />
+                                    </node>
+                                    <node path="/configuration/system.webServer/staticContent/mimeMap[@fileExtension='.woff']" action="remove" />
+                                    <node path="/configuration/system.webServer/staticContent" action="add" key="mimeMap" collision="overwrite">
+                                        <mimeMap fileExtension=".woff" mimeType="font/x-woff" />
                                     </node>
                                     <node path="/configuration/system.webServer/modules/add[@name='PersonaBarModule']" action="remove" />
                                     <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
