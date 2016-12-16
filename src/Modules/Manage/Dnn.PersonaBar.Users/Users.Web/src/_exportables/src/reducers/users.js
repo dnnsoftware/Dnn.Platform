@@ -31,16 +31,20 @@ const switchCase = [
     {
         condition: ActionTypes.DELETE_USER,
         functionToRun: (state, action) => {
+            let totalUsers = Object.assign(state.totalUsers);
             return {
-                users: updateUser(state.users, action.payload.userId, true, null)
+                users: removeUser(state.users, action.payload.userId),
+                totalUsers: totalUsers - 1
             };
         }
     },
     {
         condition: ActionTypes.RESTORE_USER,
         functionToRun: (state, action) => {
+            let totalUsers = Object.assign(state.totalUsers);
             return {
-                users: updateUser(state.users, action.payload.userId, false, null)
+                users: removeUser(state.users, action.payload.userId),
+                totalUsers: totalUsers - 1
             };
         }
     },
@@ -100,8 +104,10 @@ const switchCase = [
     {
         condition: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
         functionToRun: (state, action) => {
+            let totalUsers = Object.assign(state.totalUsers);
             return {
-                users: updateUser(state.users, action.payload.userId, null, action.payload.authorized)
+                users: removeUser(state.users, action.payload.userId),
+                totalUsers: totalUsers - 1
             };
         }
     },
