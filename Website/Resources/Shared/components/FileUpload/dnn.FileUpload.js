@@ -634,6 +634,33 @@
         this.init();
     };
 
+    var fuDialogWidth;
+    var setFileUploadDialogWidth = function () {
+        var fuScreenWidth = $(window).width();
+        switch (true) {
+            case (fuScreenWidth < 400):
+                fuDialogWidth = 350;
+                break;
+            case (fuScreenWidth < 480):
+                fuDialogWidth = 400;
+                break;
+            case (fuScreenWidth < 600):
+                fuDialogWidth = 500;
+                break;
+            case (fuScreenWidth < 800):
+                fuDialogWidth = 780;
+                break;
+            default:
+                fuDialogWidth = 780;
+                break;
+        }
+    };
+
+    $(window).resize(function () {
+        setFileUploadDialogWidth();
+    });
+    setFileUploadDialogWidth();
+    
     FileUploadDialog.prototype = {
         constructor: FileUploadDialog,
 
@@ -668,7 +695,7 @@
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
                 title: this.options.resources.title,
                 resizable: false,
-                width: this.options.width,
+                width: fuDialogWidth,
                 height: this.options.height,
                 close: $.proxy(function() {
                     $panel.empty().remove();
@@ -686,7 +713,7 @@
 
     FileUploadDialog._defaults = {
         dialogCss: "fu-dialog",
-        width: 780,
+        width: fuDialogWidth,
         height: 630
     };
 
