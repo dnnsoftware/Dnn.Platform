@@ -6,6 +6,7 @@
     <title>DNN Platform (Core)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
+    <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       DNN Platform is an open source web application framework.
