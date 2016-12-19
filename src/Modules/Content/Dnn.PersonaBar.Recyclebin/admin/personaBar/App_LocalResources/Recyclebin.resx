@@ -216,6 +216,12 @@
   <data name="recyclebin_RestoreUsersConfirm.Text" xml:space="preserve">
     <value>&lt;p&gt;Please confirm you wish to restore selected users.&lt;/p&gt;</value>
   </data>
+  <data name="recyclebin_RemoveUserConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete this user.&lt;/p&gt;</value>
+  </data>
+  <data name="recyclebin_RemoveUsersConfirm.Text" xml:space="preserve">
+    <value>&lt;p&gt;Please confirm you wish to delete selected users.&lt;/p&gt;</value>
+  </data>
   <data name="recyclebin_Title.Text" xml:space="preserve">
     <value>Recycle Bin</value>
   </data>
