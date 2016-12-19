@@ -28,6 +28,7 @@ using System.Linq;
 using System.Xml;
 
 using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Upgrade;
 
@@ -624,6 +625,13 @@ namespace DotNetNuke.Services.Installer
                         targetProductName = configNode.Attributes["productName"].Value;
                     }
                     bool isAppliedToProduct;
+
+                    if (!File.Exists(Globals.ApplicationMapPath + "\\" + TargetFileName))
+                    {
+                        DnnInstallLogger.InstallLogInfo($"Target File {TargetFileName} doesn't exist, ignore the merge process");
+                        return;
+                    }
+
                     TargetConfig = Config.Load(TargetFileName);
                     if (String.IsNullOrEmpty(targetProductName) || targetProductName == "All")
                     {
