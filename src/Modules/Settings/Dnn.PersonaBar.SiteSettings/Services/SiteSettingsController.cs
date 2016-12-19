@@ -2070,7 +2070,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             TranslatedPages = GetTranslatedPages(portalSettings, l.Code),
                             TranslatedStatus = GetTranslatedStatus(portalSettings, l.Code),
                             Active = IsLanguagePublished(pid, l.Code),
-                            IsLocalized = IsLocalized(portalSettings, l.Code)
+                            IsLocalized = IsLocalized(portalSettings, l.Code),
+                            PublishedPages = GetPublishedLocalizedPages(pid, l.Code)
                         })
                     });
                 }
@@ -2863,6 +2864,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private TabCollection GetLocalizedPages(int portalId, string code, bool includeNeutral)
         {
             return TabController.Instance.GetTabsByPortal(portalId).WithCulture(code, includeNeutral);
+        }
+
+        private int GetPublishedLocalizedPages(int portalId, string code)
+        {
+            var localizedTabs = TabController.Instance.GetTabsByPortal(portalId).WithCulture(code, false);
+            return localizedTabs.Count(t => TabController.Instance.IsTabPublished(t.Value));
         }
 
         private string GetTranslatedStatus(PortalSettings portalSettings, string code)
