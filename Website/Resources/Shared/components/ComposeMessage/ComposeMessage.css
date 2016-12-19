@@ -33,8 +33,20 @@ div.token-input-dropdown-facebook ul li img{padding-right:10px;vertical-align:mi
 }
 @media only screen and (max-width: 480px) {
 	.composeMessageDialog .dnnLabel {
-	    white-space: nowrap;
-	    margin-right: 1em;
-	    text-align: left;
+    	white-space: nowrap;
+    	margin-right: 1em;
+    	text-align: left;
+        float:none;
+        display:block;
+        width:100%;
+	}
+
+    .composeMessageDialog .dnnFormItem textarea,.composeMessageDialog .dnnFormItem input[type="text"] {
+        width:100%;
+	}
+        
+    .composeMessageDialog ul.token-input-list-facebook {
+        /*override desktopmodules/coremessaging/module.css */
+        width:100% !important; 
 	}
 }
