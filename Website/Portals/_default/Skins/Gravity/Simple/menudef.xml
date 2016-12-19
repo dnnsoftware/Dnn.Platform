@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<manifest>
-    <template>SimpleTokens.txt</template>
-  <stylesheets>
-    <stylesheet>simple.css</stylesheet>
-  </stylesheets>
-</manifest>
