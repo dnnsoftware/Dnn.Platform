@@ -1,6 +1,9 @@
 import utilities from "utils";
 
 export function formatDate(dateValue, longformat) {
+    if (!dateValue) {
+        return "";
+    }
     let date = new Date(dateValue);
     let dayValue = date.getDate(),
         monthValue = date.getMonth() + 1,

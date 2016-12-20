@@ -1,6 +1,6 @@
 import React, {Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { CommonUsersActions } from "actions";
+import { CommonUsersActions } from "../../../actions";
 import "./style.less";
 
 class EditProfile extends Component {

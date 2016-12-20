@@ -22,6 +22,11 @@ class UserTable extends Component {
             renderIndex: -1
         };
     }
+
+    componentWillReceiveProps() {
+        this.collapse();
+    }
+
     uncollapse(id, index) {
         setTimeout(() => {
             this.setState({

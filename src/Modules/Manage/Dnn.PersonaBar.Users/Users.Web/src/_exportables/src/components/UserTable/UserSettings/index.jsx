@@ -24,7 +24,7 @@ class UserSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            accountSettings: blankAccountSettings,
+            accountSettings: Object.assign(blankAccountSettings),
             userDetails: props.userDetails,
             errors: {
                 displayName: false,
@@ -53,7 +53,18 @@ class UserSettings extends Component {
             this.updateUserDetailsState(newProps.userDetails);
         }
     }
+
+    makeBlankObj(obj) {
+        let newObject = Object.assign({}, obj);
+        const keys = Object.keys(newObject);
+        keys.forEach(key => newObject[key] = "");
+        return newObject; 
+    }
+
     getUserDetails(props, userId) {
+        const accountSettings = this.makeBlankObj(this.state.accountSettings);
+        this.setState({accountSettings});
+
         props.dispatch(CommonUsersActions.getUserDetails({ userId: userId }, (data) => {
             this.updateUserDetailsState(data);
         }));
@@ -65,6 +76,7 @@ class UserSettings extends Component {
         accountSettings.userName = userDetails.userName;
         accountSettings.email = userDetails.email;
         accountSettings.userId = userDetails.userId;
+        
         this.setState({
             accountSettings,
             userDetails
@@ -133,6 +145,13 @@ class UserSettings extends Component {
             utilities.notify(Localization.get("PasswordSent"), 3000);
         }));
     }
+    stringifyBoolean(value) {
+        if (value === "") {
+            return "";
+        }
+        return value ? "True" : "False";        
+    }
+
     render() {
         let {state} = this;
         return <GridCell className={styles.userSettings}>
@@ -245,7 +264,7 @@ class UserSettings extends Component {
                             {Localization.get("IsOnLine")}
                         </GridCell>
                         <GridCell>
-                            {state.userDetails.isOnline ? "True" : "False"}
+                            {this.stringifyBoolean(state.userDetails.isOnline)}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
@@ -253,7 +272,7 @@ class UserSettings extends Component {
                             {Localization.get("LockedOut")}
                         </GridCell>
                         <GridCell>
-                            {state.userDetails.isLocked ? "True" : "False"}
+                            {this.stringifyBoolean(state.userDetails.isLocked)}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
@@ -261,7 +280,7 @@ class UserSettings extends Component {
                             {Localization.get("Approved")}
                         </GridCell>
                         <GridCell>
-                            {state.userDetails.authorized ? "True" : "False"}
+                            {this.stringifyBoolean(state.userDetails.authorized)}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
@@ -269,7 +288,7 @@ class UserSettings extends Component {
                             {Localization.get("UpdatePassword")}
                         </GridCell>
                         <GridCell>
-                            {state.userDetails.needUpdatePassword ? "True" : "False"}
+                            {this.stringifyBoolean(state.userDetails.needUpdatePassword)}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
@@ -277,7 +296,7 @@ class UserSettings extends Component {
                             {Localization.get("IsDeleted")}
                         </GridCell>
                         <GridCell>
-                            {state.userDetails.isDeleted ? "True" : "False"}
+                            {this.stringifyBoolean(state.userDetails.isDeleted)}
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
