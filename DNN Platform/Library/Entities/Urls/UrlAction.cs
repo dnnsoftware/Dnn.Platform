@@ -57,6 +57,12 @@ namespace DotNetNuke.Entities.Urls
                 physicalPath = request.ApplicationPath; //will be no file for this location
                 VirtualPath = StateBoolean.True;
             }
+            catch (ArgumentException)
+            {
+                //don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; //will be no file for this location
+                VirtualPath = StateBoolean.True;
+            }
             finally
             {
                 Constructor(request.Url.Scheme, request.ApplicationPath, physicalPath);
