@@ -126,7 +126,8 @@ class TranslatePageContent extends Component {
         const cultureCode = props.languageBeingEdited.Code;
         const portalId = props.portalId;
         props.dispatch(LanguagesActions.publishAllPages({ portalId, cultureCode, enable }, () => {
-            utils.utilities.notify(resx.get("PublishedAllTranslatedPages"));
+            const message = enable ? resx.get("PublishedAllTranslatedPages") : resx.get("UnPublishedAllTranslatedPages");
+            utils.utilities.notify(message);
             this.doneProgress();
         }));
     }

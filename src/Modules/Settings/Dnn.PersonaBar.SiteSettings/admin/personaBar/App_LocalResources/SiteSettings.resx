@@ -1194,6 +1194,9 @@
   <data name="PublishedAllTranslatedPages.Text" xml:space="preserve">
     <value>Pages published successfully.</value>
   </data>
+  <data name="UnPublishedAllTranslatedPages.Text" xml:space="preserve">
+    <value>Pages successfully unpublished.</value>
+  </data>
   <data name="SelectResourcePlaceholder.Text" xml:space="preserve">
     <value>-- Select --</value>
   </data>
