@@ -30,7 +30,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -2343,6 +2342,12 @@ namespace DotNetNuke.Entities.Urls
             catch (PathTooLongException)
             {
                 //catch and handle this exception, caused by an excessively long file path based on the
+                //mapped virtual url
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                //catch and handle this exception, caused by an invalid character in the file path based on the
                 //mapped virtual url
                 return false;
             }
