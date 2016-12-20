@@ -2701,6 +2701,13 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
+                                //DNN-9158: prevent SSL Offloading infinite redirects
+                                if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https"))
+                                {
+                                    bestFriendlyNoScheme = bestFriendlyNoScheme.Replace("https://", "http://");
+                                }
+
                                 if (!(bestFriendlyNoScheme == requestedPathNoScheme
                                       || bestFriendlyNoScheme == rawUrlWithHost
                                       || bestFriendlyNoScheme == rawUrlWithHostNoScheme
