@@ -8,6 +8,7 @@ import GridSystem from "dnn-grid-system";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import RadioButtons from "dnn-radio-buttons";
+import BackTo from "dnn-back-to";
 import Button from "dnn-button";
 import DropdownWithError from "dnn-dropdown-with-error";
 import Switch from "dnn-switch";
@@ -247,7 +248,7 @@ class CreatePortal extends Component {
         return (
             <div className="create-portal">
                 <PersonaBarPageHeader title={Localization.get("AddNewSite.Header")} />
-                <div className="back-to-button" onClick={this.onCancel.bind(this)}>{Localization.get("BackToSites")}</div>
+                <BackTo onClick={this.onCancel.bind(this)} label={Localization.get("BackToSites") } />;
                 <PersonaBarPageBody>
                     <GridCell className="create-site-container">
                         <GridCell>

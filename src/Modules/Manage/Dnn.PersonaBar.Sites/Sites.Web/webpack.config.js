@@ -2,7 +2,10 @@
 const path = require("path");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
-const webpackExternals = require("dnn-webpack-externals");
+const webpackExternals = Object.assign({},
+    require("dnn-webpack-externals"), {
+        "dnn-back-to": "window.dnn.nodeModules.PersonaBarComponents.BackTo"
+    });
 const languages = {
     "en": null
     // TODO: create locallizaton files per language 

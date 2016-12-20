@@ -28,9 +28,11 @@ class HtmlEditorManagerPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         return (
-            <div className={styles.htmlEditorManager}>
-                <BackTo onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
-                <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
+            <div className="dnn-persona-bar-page-body">
+                <div className={styles.htmlEditorManager}>
+                    <BackTo onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
+                    <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
+                </div>
             </div>
         );
     }

@@ -401,7 +401,7 @@
     <value>Load More</value>
   </data>
   <data name="BackToSites.Text" xml:space="preserve">
-    <value>&lt; Back To Sites</value>
+    <value>Back To Sites</value>
   </data>
   <data name="DeleteSite.Text" xml:space="preserve">
     <value>Delete Site</value>
