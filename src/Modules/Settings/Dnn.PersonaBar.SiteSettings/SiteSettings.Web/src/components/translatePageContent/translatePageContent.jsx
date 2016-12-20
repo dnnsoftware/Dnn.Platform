@@ -200,8 +200,6 @@ class TranslatePageContent extends Component {
     render() {
         const {props, state} = this;
         const language = state.languageBeingEdited;
-        console.log('1212', language);
-
         const hasPublishedPages = !!language.PublishedPages;
         
         const isEnabled = language.Enabled;
