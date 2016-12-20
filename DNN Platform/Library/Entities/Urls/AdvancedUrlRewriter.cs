@@ -305,7 +305,7 @@ namespace DotNetNuke.Entities.Urls
                         //not correct alias for portal : will be redirected
                         //perform a 301 redirect if one has already been found
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                        Redirect(response, result.FinalUrl, false);
+                        response.RedirectPermanent(result.FinalUrl, false);
                         finished = true;
                     }
                     if (!finished)
@@ -412,7 +412,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             //performs a 302 redirect if requested
                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                            Redirect(response, result.FinalUrl, false);
+                            response.Redirect(result.FinalUrl, false);
                             finished = true;
                         }
                         else
@@ -422,7 +422,7 @@ namespace DotNetNuke.Entities.Urls
                                 finished = true;
                                 //perform a 301 redirect if one has already been found
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                PermanentRedirect(response, result.FinalUrl, false);
+                                response.RedirectPermanent(result.FinalUrl, false);
                             }
                         }
                     }
@@ -453,11 +453,11 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 case ActionType.Redirect301:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    PermanentRedirect(response, result.FinalUrl);
+                                    response.RedirectPermanent(result.FinalUrl);
                                     break;
                                 case ActionType.Redirect302:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    Redirect(response, result.FinalUrl);
+                                    response.Redirect(result.FinalUrl);
                                     break;
                                 case ActionType.Output404:
                                     response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
@@ -562,7 +562,7 @@ namespace DotNetNuke.Entities.Urls
                                                     ShowDebugData(context, fullUrl, result, null);
                                                 }
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                PermanentRedirect(response, result.FinalUrl);
+                                                response.RedirectPermanent(result.FinalUrl);
                                                 finished = true;
                                             }
                                             else
@@ -595,7 +595,7 @@ namespace DotNetNuke.Entities.Urls
                                                 else
                                                 {
                                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                    PermanentRedirect(response, result.FinalUrl);
+                                                    response.RedirectPermanent(result.FinalUrl);
                                                     finished = true;
                                                 }
                                             }
@@ -612,13 +612,13 @@ namespace DotNetNuke.Entities.Urls
                                             if (result.Action == ActionType.Redirect301)
                                             {
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                PermanentRedirect(response, result.FinalUrl, false);
+                                                response.RedirectPermanent(result.FinalUrl, false);
                                                 finished = true;
                                             }
                                             else if (result.Action == ActionType.Redirect302)
                                             {
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                Redirect(response, result.FinalUrl, false);
+                                                response.Redirect(result.FinalUrl, false);
                                                 finished = true;
                                             }
                                         }
@@ -1455,7 +1455,7 @@ namespace DotNetNuke.Entities.Urls
                                     //perform a 301 redirect to the external url of the tab
                                     response.AppendHeader("X-Redirect-Reason",
                                                           result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    PermanentRedirect(response, result.FinalUrl);
+                                    response.RedirectPermanent(result.FinalUrl);
                                 }
                             }
                             else
@@ -1467,7 +1467,7 @@ namespace DotNetNuke.Entities.Urls
                                         //perform a 301 redirect to the external url of the tab
                                         response.AppendHeader("X-Redirect-Reason",
                                                               result.Reason.ToString().Replace("_", " ") + " Requested");
-                                        Redirect(response, result.FinalUrl);
+                                        response.Redirect(result.FinalUrl);
                                     }
                                 }
                             }
@@ -1484,24 +1484,6 @@ namespace DotNetNuke.Entities.Urls
                 //level try/catch block, so we handle it here.
             }
             return finished;
-        }
-
-        private static void Redirect(HttpResponse response, string url, bool endResponse=false)
-        {
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
-            response.Redirect(url, endResponse);
-        }
-
-        private static void PermanentRedirect(HttpResponse response, string url, bool endResponse = false)
-        {
-            if (url.EndsWith("/"))
-            {
-                url = url.Substring(0, url.Length - 1);
-            }
-            response.RedirectPermanent(url, endResponse);
         }
 
         private bool CheckForSecureRedirect(PortalSettings portalSettings, 
