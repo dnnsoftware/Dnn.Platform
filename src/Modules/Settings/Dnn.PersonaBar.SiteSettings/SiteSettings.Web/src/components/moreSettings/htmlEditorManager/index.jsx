@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import resx from "../../../resources";
+import BackTo from "dnn-back-to";
 import styles from "./style.less";
 import "./style.less";
 
@@ -28,7 +29,7 @@ class HtmlEditorManagerPanelBody extends Component {
     render() {
         return (
             <div className={styles.htmlEditorManager}>
-                <div className="htmlEditor-back" onClick={this.props.closeHtmlEditorManager.bind(this)}>{resx.get("BackToSiteBehavior")}</div>
+                <BackTo onClick={this.props.closeHtmlEditorManager} label={resx.get("BackToSiteBehavior") } />
                 <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
             </div>
         );

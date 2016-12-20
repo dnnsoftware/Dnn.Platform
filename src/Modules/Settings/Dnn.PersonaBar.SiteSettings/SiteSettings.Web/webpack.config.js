@@ -12,7 +12,10 @@ const languages = {
     // "nl": require("./localizations/nl.json")
 };
 
-const webpackExternals = require("dnn-webpack-externals");
+const webpackExternals = Object.assign({},
+    require("dnn-webpack-externals"), {
+        "dnn-back-to": "window.dnn.nodeModules.PersonaBarComponents.BackTo"
+    });
 
 module.exports = {
     entry: "./src/main.jsx",

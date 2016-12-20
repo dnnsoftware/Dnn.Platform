@@ -4,6 +4,7 @@ import "./style.less";
 import resx from "../../resources";
 import { Scrollbars } from "react-custom-scrollbars";
 import InputGroup from "dnn-input-group";
+import BackTo from "dnn-back-to";
 import Switch from "dnn-switch";
 import Label from "dnn-label";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
@@ -205,12 +206,12 @@ class TranslatePageContent extends Component {
         const isEnabled = language.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
         const localizablePages = +language.LocalizablePages;
+        const backToPages = <BackTo onClick={props.closePersonaBarPage} label={resx.get("BackToLanguages") } />;
+        
         return <PersonaBarPageBody
             className="translate-page-content"
             workSpaceTrayOutside={true}
-            workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage}>
-                {resx.get("BackToLanguages") }
-            </div>}
+            workSpaceTray={backToPages}
             workSpaceTrayVisible={true}>
 
             <div className="language-settings-page-list">

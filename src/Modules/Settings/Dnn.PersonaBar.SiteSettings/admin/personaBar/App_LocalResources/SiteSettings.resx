@@ -793,10 +793,10 @@
     <value>The HTML Editor Manager allows you to easily change your site's HTML editor or configure settings.</value>
   </data>
   <data name="BackToSiteBehavior.Text" xml:space="preserve">
-    <value>&lt; BACK TO SITE BEHAVIOR</value>
+    <value>BACK TO SITE BEHAVIOR</value>
   </data>
   <data name="BackToLanguages.Text" xml:space="preserve">
-    <value>&lt; BACK TO LANGUAGES</value>
+    <value>BACK TO LANGUAGES</value>
   </data>
   <data name="NativeName.Text" xml:space="preserve">
     <value>Native Name</value>
@@ -961,7 +961,7 @@
     <value>Please select at least one module from the list.</value>
   </data>
   <data name="BackToSiteSettings.Text" xml:space="preserve">
-    <value>&lt; BACK TO SITE SETTINGS</value>
+    <value>BACK TO SITE SETTINGS</value>
   </data>
   <data name="DefaultValue.Text" xml:space="preserve">
     <value>Default Value</value>
