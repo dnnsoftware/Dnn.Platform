@@ -213,11 +213,9 @@ class ProfilePropertiesPanel extends Component {
                 PortalId: props.portalId,
                 Properties: items
             }, profileProperties, () => {
-                util.utilities.notify(resx.get("ViewOrderUpdateSuccess"));
                 this.collapse();
             }, (error) => {
                 const errorMessage = JSON.parse(error.responseText);
-                util.utilities.notifyError(errorMessage.Message);
             }));
     }
 
@@ -295,13 +293,15 @@ class ProfilePropertiesPanel extends Component {
                                     openId={this.state.openId} />
                             </ProfilePropertyRow>
                         </Collapse>
-                        {this.props.profileProperties && <Sortable
-                            onSort={this.onSort.bind(this)}
-                            items={this.props.profileProperties.Properties}
-                            sortOnDrag={false}
-                            >
-                            {this.renderedProfileProperties()}
-                        </Sortable>}
+                        {this.props.profileProperties && 
+                            <Sortable
+                                onSort={this.onSort.bind(this)}
+                                items={this.props.profileProperties.Properties}
+                                sortOnDrag={true}
+                                >
+                                 {this.renderedProfileProperties()}
+                            </Sortable>
+                    }
                     </div>
                 </div>
 
@@ -309,6 +309,7 @@ class ProfilePropertiesPanel extends Component {
         );
     }
 }
+// sortOnDrag={true}
 
 ProfilePropertiesPanel.propTypes = {
     dispatch: PropTypes.func.isRequired,

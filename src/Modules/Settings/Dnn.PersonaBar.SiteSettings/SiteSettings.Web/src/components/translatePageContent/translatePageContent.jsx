@@ -126,6 +126,7 @@ class TranslatePageContent extends Component {
         const portalId = props.portalId;
         props.dispatch(LanguagesActions.publishAllPages({ portalId, cultureCode, enable }, () => {
             utils.utilities.notify(resx.get("PublishedAllTranslatedPages"));
+            this.doneProgress();
         }));
     }
 
@@ -199,6 +200,10 @@ class TranslatePageContent extends Component {
     render() {
         const {props, state} = this;
         const language = state.languageBeingEdited;
+        console.log('1212', language);
+
+        const hasPublishedPages = !!language.PublishedPages;
+        
         const isEnabled = language.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
         const localizablePages = +language.LocalizablePages;
@@ -253,7 +258,7 @@ class TranslatePageContent extends Component {
                         </Button>
                         <Button
                             type="secondary"
-                            disabled={!language.Active || !isEnabled}
+                            disabled={!language.Active || !isEnabled || !hasPublishedPages}
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, false) }>
                             {resx.get("UnpublishTranslatedPages") }
