@@ -604,6 +604,12 @@ ul.buttonList .windowslive a span
     }
 }
 
+@media only screen and (max-width: 800px) {
+    .dnnButtonDropdown-ul {
+        left:-150px;
+    }
+}
+
 @media screen and (max-width: 725px) {
     .dnnProfile .dnnLabel {
         float: none !important;
