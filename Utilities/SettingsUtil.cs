@@ -103,37 +103,39 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 if (!filteredSettings.Any(s => s.Name.Equals(string.Format("{0}{1}", key, info.Name))))
                 {
-                    continue;
+                    if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
+                    {
+                        continue;
+                    }
                 }
 
-                /*if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
+                var settingValue = string.Empty;
+                if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                 {
-                    continue;
-                }*/
+                    settingValue =
+                        filteredSettings.FirstOrDefault(
+                            setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
 
-                var settingValue =
-                    filteredSettings.FirstOrDefault(
-                        setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
+                    if (string.IsNullOrEmpty(settingValue))
+                    {
+                        continue;
+                    }
 
-                if (string.IsNullOrEmpty(settingValue))
-                {
-                    continue;
-                }
-
-                switch (info.PropertyType.Name)
-                {
-                    case "String":
-                        info.SetValue(currentSettings.Config, settingValue, null);
-                        break;
-                    case "Int32":
-                        info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
-                        break;
-                    case "Decimal":
-                        info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
-                        break;
-                    case "Boolean":
-                        info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
-                        break;
+                    switch (info.PropertyType.Name)
+                    {
+                        case "String":
+                            info.SetValue(currentSettings.Config, settingValue, null);
+                            break;
+                        case "Int32":
+                            info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
+                            break;
+                        case "Decimal":
+                            info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
+                            break;
+                        case "Boolean":
+                            info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
+                            break;
+                    }
                 }
 
                 switch (info.Name)
@@ -168,6 +170,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
@@ -198,6 +201,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
