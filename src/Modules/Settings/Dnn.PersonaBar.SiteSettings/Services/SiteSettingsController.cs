@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
@@ -1292,27 +1294,31 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
-                var searchStatistics = InternalSearchController.Instance.GetSearchStatistics();
+                dynamic settings = new ExpandoObject();
+                settings.MinWordLength = HostController.Instance.GetInteger("Search_MinKeyWordLength", 3);
+                settings.MaxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
+                settings.AllowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
+                settings.SearchCustomAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+                settings.TitleBoost = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost);
+                settings.TagBoost = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost);
+                settings.ContentBoost = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost);
+                settings.DescriptionBoost = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost);
+                settings.AuthorBoost = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost);
+                settings.SearchIndexPath = Path.Combine(Globals.ApplicationMapPath, HostController.Instance.GetString("SearchFolder", @"App_Data\Search"));
+
+                SearchStatistics searchStatistics = GetSearchStatistics();
+                if (searchStatistics != null)
+                {
+                    settings.SearchIndexDbSize = ((searchStatistics.IndexDbSize/1024f)/1024f).ToString("N") + " MB";
+                    settings.SearchIndexLastModifedOn = DateUtils.CalculateDateForDisplay(searchStatistics.LastModifiedOn);
+                    settings.SearchIndexTotalActiveDocuments = searchStatistics.TotalActiveDocuments.ToString(CultureInfo.InvariantCulture);
+                    settings.SearchIndexTotalDeletedDocuments = searchStatistics.TotalDeletedDocuments.ToString(CultureInfo.InvariantCulture);
+                }
+
                 var response = new
                 {
                     Success = true,
-                    Settings = new
-                    {
-                        MinWordLength = HostController.Instance.GetInteger("Search_MinKeyWordLength", 3),
-                        MaxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255),
-                        AllowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y",
-                        SearchCustomAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty),
-                        TitleBoost = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost),
-                        TagBoost = HostController.Instance.GetInteger(SearchTagBoostSetting, DefaultSearchTagBoost),
-                        ContentBoost = HostController.Instance.GetInteger(SearchContentBoostSetting, DefaultSearchContentBoost),
-                        DescriptionBoost = HostController.Instance.GetInteger(SearchDescriptionBoostSetting, DefaultSearchDescriptionBoost),
-                        AuthorBoost = HostController.Instance.GetInteger(SearchAuthorBoostSetting, DefaultSearchAuthorBoost),
-                        SearchIndexPath = Path.Combine(Globals.ApplicationMapPath, HostController.Instance.GetString("SearchFolder", @"App_Data\Search")),
-                        SearchIndexDbSize = ((searchStatistics.IndexDbSize / 1024f) / 1024f).ToString("N") + " MB",
-                        SearchIndexLastModifedOn = DateUtils.CalculateDateForDisplay(searchStatistics.LastModifiedOn),
-                        SearchIndexTotalActiveDocuments = searchStatistics.TotalActiveDocuments.ToString(CultureInfo.InvariantCulture),
-                        SearchIndexTotalDeletedDocuments = searchStatistics.TotalDeletedDocuments.ToString(CultureInfo.InvariantCulture)
-                    },
+                    Settings = settings,
                     SearchCustomAnalyzers = _controller.GetAvailableAnalyzers()
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -3069,6 +3075,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
             string viewType = Convert.ToString(personalization.Profile[viewTypePersonalizationKey]);
             return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;
+        }
+
+        private SearchStatistics GetSearchStatistics()
+        {
+            try
+            {
+                return InternalSearchController.Instance.GetSearchStatistics();
+            }
+            catch (SearchIndexEmptyException ex)
+            {
+                return null;
+            }
         }
 
         #endregion
