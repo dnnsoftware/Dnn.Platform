@@ -207,6 +207,8 @@ class TranslatePageContent extends Component {
         const isEnabled = language.Enabled;
         const pagesNumber = state.pageList ? state.pageList.length : 0;
         const localizablePages = +language.LocalizablePages;
+        const TranslatedPages = +language.TranslatedPages;
+
         const backToPages = <BackTo onClick={props.closePersonaBarPage} label={resx.get("BackToLanguages") } />;
         
         return <PersonaBarPageBody
@@ -250,7 +252,7 @@ class TranslatePageContent extends Component {
                             {resx.get("EraseAllLocalizedPages") }
                         </Button>
                         <Button
-                            disabled={!language.Active || !isEnabled}
+                            disabled={!language.Active || !isEnabled || !TranslatedPages}
                             type="primary"
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, true) }>
@@ -258,7 +260,7 @@ class TranslatePageContent extends Component {
                         </Button>
                         <Button
                             type="secondary"
-                            disabled={!language.Active || !isEnabled || !hasPublishedPages}
+                            disabled={!language.Active || !isEnabled || !hasPublishedPages || !TranslatedPages}
                             className="float-right"
                             onClick={this.onPublishTranslatedPages.bind(this, false) }>
                             {resx.get("UnpublishTranslatedPages") }
