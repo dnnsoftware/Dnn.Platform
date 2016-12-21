@@ -186,14 +186,14 @@ IF(@PortalId IS NULL)
 	WHERE M.PortalId IS NULL
 	  AND M.DefinitionName = @DefinitionName
 	  AND M.IsDeleted = 0
-	  AND M.IsModuleDeleted = 0
+	  AND M.IsTabDeleted = 0
 ELSE
 	SELECT M.*
 	FROM {databaseOwner}{objectQualifier}vw_Modules M
 	WHERE M.PortalId = @PortalId
 	  AND M.DefinitionName = @DefinitionName
 	  AND M.IsDeleted = 0
-	  AND M.IsModuleDeleted = 0
+	  AND M.IsTabDeleted = 0
 GO
 
 /************************************************************/
