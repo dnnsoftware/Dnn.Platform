@@ -1,6 +1,6 @@
 {
   "name": "dnn-search-box",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Search Box",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
   },
   "devDependencies": {
+    "babel-core": "^6.18.2",
     "babel-loader": "6.2.4",
     "babel-plugin-transform-object-assign": "6.8.0",
     "babel-plugin-transform-object-rest-spread": "6.8.0",
