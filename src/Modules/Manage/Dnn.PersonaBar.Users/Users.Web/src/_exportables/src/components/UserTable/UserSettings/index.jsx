@@ -83,6 +83,7 @@ class UserSettings extends Component {
                 loading: false
             });
     }
+    
     onChange(key, item) {
         if (this.state.loading) {
             return;
@@ -93,6 +94,7 @@ class UserSettings extends Component {
             this.validateForm(true);
         });
     }
+
     save() {
         if (this.validateForm()) {
             this.props.dispatch(CommonUsersActions.updateUserBasicInfo(this.state.accountSettings, () => {

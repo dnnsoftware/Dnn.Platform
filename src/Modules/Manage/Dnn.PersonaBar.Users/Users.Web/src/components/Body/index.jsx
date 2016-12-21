@@ -6,7 +6,7 @@ import GridCell from "dnn-grid-cell";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import UserTable from "../../_exportables/src/components/UserTable";
-import { FiltersBar } from "dnn-users-common-components";
+import FiltersBar from "../../_exportables/src/components/FiltersBar";
 import Pager from "dnn-pager";
 import "./style.less";
 import {CommonUsersActions } from "dnn-users-common-actions";

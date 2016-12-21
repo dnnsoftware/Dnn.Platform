@@ -28,7 +28,8 @@ class UsersInRole extends Component {
             editIndex: -1,
             editCommand: "",
             sendEmail: true,
-            isOwner: false
+            isOwner: false,
+            loading: false
         };
 
         this.debounceGetSuggestUsers = debounce(500, this.debounceGetSuggestUsers);
@@ -42,15 +43,18 @@ class UsersInRole extends Component {
     }
 
     getUsers() {
-        const {props, state} = this;
 
+        const {props, state} = this;
+        this.setState({loading: true});
         let parameter = {
             roleId: props.roleDetails.id,
             keyword: state.usersKeyword,
             pageIndex: state.currentPage,
             pageSize: state.pageSize
         };
-        props.dispatch(RoleUsersActions.getRoleUsers(parameter));
+        props.dispatch(RoleUsersActions.getRoleUsers(parameter, () => {
+            this.setState({loading: false});
+        }));
     }
 
     getSuggestUsers() {
@@ -63,6 +67,9 @@ class UsersInRole extends Component {
     }
 
     onUserSelectorChanged(item) {
+        if (this.state.loading) {
+            return;
+        }
         if (item.userId || item.displayName || typeof item === "object") {
             return;
         }
@@ -134,9 +141,15 @@ class UsersInRole extends Component {
         </div>;
     }
     onSendEmailClick(sendEmail) {
+        if (this.state.loading) {
+            return;
+        }
         this.setState({ sendEmail });
     }
     onIsOwnerClick(isOwner) {
+        if (this.state.loading) {
+            return;
+        }
         this.setState({ isOwner });
     }
     renderHeader() {
@@ -174,13 +187,14 @@ class UsersInRole extends Component {
     }
     render() {
         const {state} = this;
-        return <div className="roleusers-form">
+        const className = "roleusers-form" + (state.loading ? " isloading" : "");
+        return <div className={className}>
             <div className="header">
                 <div className="header-title">{resx.get("PermissionsByRole") }</div>
                 <div className="add-box">
                     <GridCell columnSize={50}>
                         <div className="send-email-box">
-                            <CheckBox value={this.state.sendEmail} onChange={this.onSendEmailClick.bind(this) }
+                            <CheckBox value={this.state.sendEmail} enabled={!state.loading} onChange={this.onSendEmailClick.bind(this) }
                                 label={  resx.get("SendEmail") } labelPlace="right"    />
                             {this.props.roleDetails.allowOwner && <CheckBox value={this.state.isOwner} onChange={this.onIsOwnerClick.bind(this) }
                                 label={  resx.get("isOwner") } labelPlace="right"   />}
