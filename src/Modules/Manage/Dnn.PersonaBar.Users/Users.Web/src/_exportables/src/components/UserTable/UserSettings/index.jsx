@@ -29,6 +29,7 @@ class UserSettings extends Component {
             errors: {
                 displayName: false,
                 userName: false,
+                loading: false,
                 email: false
             },
             ChangePasswordVisible: false
@@ -63,8 +64,8 @@ class UserSettings extends Component {
 
     getUserDetails(props, userId) {
         const accountSettings = this.makeBlankObj(this.state.accountSettings);
-        this.setState({accountSettings});
-
+        const userDetails = this.makeBlankObj(this.state.userDetails);
+        this.setState({accountSettings, userDetails, loading: true});
         props.dispatch(CommonUsersActions.getUserDetails({ userId: userId }, (data) => {
             this.updateUserDetailsState(data);
         }));
@@ -76,13 +77,16 @@ class UserSettings extends Component {
         accountSettings.userName = userDetails.userName;
         accountSettings.email = userDetails.email;
         accountSettings.userId = userDetails.userId;
-        
-        this.setState({
-            accountSettings,
-            userDetails
-        });
+            this.setState({
+                accountSettings,
+                userDetails,
+                loading: false
+            });
     }
     onChange(key, item) {
+        if (this.state.loading) {
+            return;
+        }
         let {accountSettings} = this.state;
         accountSettings[key] = item.target.value;
         this.setState({ accountSettings }, () => {
@@ -128,11 +132,17 @@ class UserSettings extends Component {
         });
     }
     onChangePassword() {
+        if (this.state.loading) {
+            return;
+        }
         this.setState({
             ChangePasswordVisible: true
         });
     }
     onForcePasswordChange() {
+        if (this.state.loading) {
+            return;
+        }
         this.props.dispatch(CommonUsersActions.forceChangePassword({ userId: this.props.userId }, () => {
             utilities.notify(Localization.get("UserPasswordUpdateChanged"), 3000);
             let {userDetails} = this.state;
@@ -141,6 +151,9 @@ class UserSettings extends Component {
         }));
     }
     onSendPasswordLink() {
+        if (this.state.loading) {
+            return;
+        }
         this.props.dispatch(CommonUsersActions.sendPasswordResetLink({ userId: this.props.userId }, () => {
             utilities.notify(Localization.get("PasswordSent"), 3000);
         }));
@@ -161,13 +174,14 @@ class UserSettings extends Component {
                     <div className="title">
                         {Localization.get("AccountSettings")}
                     </div>
-                    <div>
+                    <div className={this.state.loading ? "isloading" : ""}>
                         <SingleLineInputWithError value={state.accountSettings.userName}
                             error={state.errors.userName}
                             onChange={this.onChange.bind(this, "userName") }
                             label={Localization.get("Username") }
                             tooltipMessage={Localization.get("Username.Help")}
                             errorMessage={Localization.get("Username.Required") }
+                            enabled={!this.state.loading}
                             style={inputStyle}
                             autoComplete="off"
                             enabled={canEditSettings(this.props.appSettings.applicationSettings.settings)}
@@ -175,6 +189,7 @@ class UserSettings extends Component {
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
                             onChange={this.onChange.bind(this, "displayName") }
+                            enabled={!this.state.loading}
                             label={Localization.get("DisplayName") }
                             tooltipMessage={Localization.get("DisplayName.Help")}
                             errorMessage={Localization.get("DisplayName.Required") }
@@ -186,6 +201,7 @@ class UserSettings extends Component {
                             error={state.errors.email}
                             onChange={this.onChange.bind(this, "email") }
                             label={Localization.get("Email") }
+                            enabled={!this.state.loading}
                             tooltipMessage={Localization.get("Email.Help")}
                             errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}
@@ -198,17 +214,17 @@ class UserSettings extends Component {
                             <div className="title">
                                 {Localization.get("PasswordManagement")}
                             </div>
-                            <GridCell className="link">
+                            <GridCell className={"link" + (this.state.loading ? " disabled" : "")}>
                                 <div onClick={this.onChangePassword.bind(this) }>[ {Localization.get("ChangePassword")} ]
                                 </div>
                             </GridCell>
                             {!state.userDetails.needUpdatePassword && 
-                                <GridCell className="link">
+                                <GridCell className={"link" + (this.state.loading ? " disabled" : "")}>
                                     <div onClick={this.onForcePasswordChange.bind(this) }>[ {Localization.get("ForceChangePassword")} ]
                                     </div>
                                 </GridCell>
                             }
-                            <GridCell className="link">
+                            <GridCell className={"link" + (this.state.loading ? " disabled" : "")}>
                                 <div onClick={this.onSendPasswordLink.bind(this) }>[ {Localization.get("ResetPassword")} ]
                                 </div>
                             </GridCell>
@@ -315,7 +331,7 @@ class UserSettings extends Component {
                         <Button id="cancelbtn"  type="secondary" onClick={this.props.collapse.bind(this) }>{Localization.get("btnCancel") }</Button>
                     </GridCell>
                     <GridCell columnSize={50} className="rightBtn">
-                        <Button id="confirmbtn" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
+                        <Button id="confirmbtn" disabled={this.state.loading} type="primary" onClick={this.save.bind(this) }>{Localization.get("btnSave") }</Button>
                     </GridCell>
                 </GridCell>
             }

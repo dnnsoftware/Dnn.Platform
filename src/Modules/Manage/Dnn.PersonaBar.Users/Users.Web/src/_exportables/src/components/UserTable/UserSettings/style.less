@@ -45,6 +45,10 @@
             &:active, &:hover {
                 color: @cerulean;
             }
+            &.disabled {
+                color: #C8C8C8;
+                cursor: default;
+            }
             &:visited {
                 color: @matisse;
             }
@@ -58,6 +62,14 @@
             }
             &.rightBtn {
                 padding-left: 10px;
+            }
+        }
+    }
+    .isloading {
+        .input-tooltip-container {
+            input {
+                pointer-events: none;
+                border-color: @alto;
             }
         }
     }
