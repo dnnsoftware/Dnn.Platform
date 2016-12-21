@@ -596,3 +596,49 @@ ul.buttonList .windowslive a span
         .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem.dnnFileUploadFolder {
             display: none !important;
         }
+
+/*DNN Edit Profile Page Manage Profile Tab Media Queries*/
+@media screen and (max-width: 860px) {
+        .dnnProfile .dnnLabel {
+        width: 20% !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .dnnProfile .dnnButtonDropdown-ul {
+        left:-150px;
+    }
+}
+
+@media screen and (max-width: 725px) {
+    .dnnProfile .dnnLabel {
+        float: none !important;
+        width: 100% !important;
+        text-align:left;
+    }
+    .dnnProfile .dnnLabel label {
+        margin-right:.3em;
+    }
+    .dnnProfile .dnnFormHelp {
+        position:relative !important;
+        width:20px;
+    }
+    .dnnProfile .dnnTooltip {
+        left:20%;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .dnnProfile .dnnFileUploadScope {
+        width:auto;
+    }
+    .dnnProfile .dnnFileUploadScope > div:first-child {
+        float:none;
+        width:100%;
+    }
+
+    .dnnProfile .RadEditor, .RadEditor.reWrapper  {
+        width:auto !important;
+        min-width:inherit !important;
+    }
+}
