@@ -115,7 +115,7 @@ AS
         TM.Color,
         TM.Border,
         CASE WHEN TM.IconFile LIKE 'fileid=%' 
-			THEN (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}Files]
+			THEN (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
 				  WHERE FileId = CAST(SUBSTRING(TM.IconFile, 8, 10) AS Int))
 			ELSE Coalesce(TM.IconFile,'')
 		END AS IconFile,
