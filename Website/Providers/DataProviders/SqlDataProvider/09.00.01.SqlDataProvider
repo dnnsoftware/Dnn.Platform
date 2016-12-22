@@ -52,7 +52,7 @@ AS
 		BEGIN
 			IF @PropertyValue IS NOT NULL AND DATALENGTH(@PropertyValue) > 0
 				BEGIN
-					INSERT INTO dbo.UserProfile (
+					INSERT INTO {databaseOwner}{objectQualifier}UserProfile (
 						UserID,
 						PropertyDefinitionID,
 						PropertyValue,
