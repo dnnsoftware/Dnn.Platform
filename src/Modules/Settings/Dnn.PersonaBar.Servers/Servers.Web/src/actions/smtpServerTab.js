@@ -92,14 +92,15 @@ const smtpServeTabActions = {
                     payload: {
                         success: response.success,
                         infoMessage: response.confirmationMessage,
-                        errorMessage: localization.get("errorMessageSendingTestEmail")
+                        errorMessage: response.errMessage
                     }
                 });  
-            }).catch(() => {
+            }).catch((data) => {
+                let response = JSON.parse(data.responseText);
                 dispatch({
                     type: ActionTypes.ERROR_SENDING_TEST_EMAIL,
                     payload: {
-                        errorMessage: localization.get("errorMessageSendingTestEmail")
+                        errorMessage: response.errMessage
                     }
                 });
             });        
