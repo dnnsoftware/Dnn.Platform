@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Mail
                                 MailFormat bodyFormat, Encoding bodyEncoding, IEnumerable<Attachment> attachments, 
                                 string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            string retValue;
+            string retValue = string.Empty;
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
             mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
@@ -138,30 +138,29 @@ namespace DotNetNuke.Services.Mail
                         smtpClient.EnableSsl = smtpEnableSSL;
                         smtpClient.Send(mailMessage);
                         smtpClient.Dispose();
-                        retValue = "";
                     }
-                }
-                catch (SmtpFailedRecipientException exc)
-                {
-                    retValue = string.Format(Localize.GetString("FailedRecipient"), exc.FailedRecipient);
-                    Exceptions.Exceptions.LogException(exc);
-                }
-                catch (SmtpException exc)
-                {
-                    retValue = Localize.GetString("SMTPConfigurationProblem");
-                    Exceptions.Exceptions.LogException(exc);
                 }
                 catch (Exception exc)
                 {
+                    var exc2 = exc as SmtpFailedRecipientException;
+                    if (exc2 != null)
+                    {
+                        retValue = string.Format(Localize.GetString("FailedRecipient"), exc2.FailedRecipient) + " ";
+                    }
+                    else if (exc is SmtpException)
+                    {
+                        retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
+                    }
+
                     //mail configuration problem
                     if (exc.InnerException != null)
                     {
-                        retValue = string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
+                        retValue += string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
                         Exceptions.Exceptions.LogException(exc.InnerException);
                     }
                     else
                     {
-                        retValue = exc.Message;
+                        retValue += exc.Message;
                         Exceptions.Exceptions.LogException(exc);
                     }
                 }
@@ -213,13 +212,14 @@ namespace DotNetNuke.Services.Mail
                 return;
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
-
-            SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
-                                    HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                                    Encoding.UTF8, new List<Attachment>(),
-                                    Host.SMTPServer, Host.SMTPAuthentication, Host.SMTPUsername,
-                                    Host.SMTPPassword, Host.EnableSMTPSSL);
+            using (var emailMessage = new MailMessage(fromAddress, toAddress) {Sender = new MailAddress(senderAddress)})
+            {
+                SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
+                    HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                    Encoding.UTF8, new List<Attachment>(),
+                    Host.SMTPServer, Host.SMTPAuthentication, Host.SMTPUsername,
+                    Host.SMTPPassword, Host.EnableSMTPSSL);
+            }
         }
 
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
@@ -229,14 +229,14 @@ namespace DotNetNuke.Services.Mail
                 return "SMTP Server not configured";
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
-
-            return SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
-                                    HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
-                                    Encoding.UTF8, attachments,
-                                    Host.SMTPServer, Host.SMTPAuthentication, Host.SMTPUsername,
-                                    Host.SMTPPassword, Host.EnableSMTPSSL);
-
+            using (var emailMessage = new MailMessage(fromAddress, toAddress) {Sender = new MailAddress(senderAddress)})
+            {
+                return SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
+                    HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
+                    Encoding.UTF8, attachments,
+                    Host.SMTPServer, Host.SMTPAuthentication, Host.SMTPUsername,
+                    Host.SMTPPassword, Host.EnableSMTPSSL);
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -578,8 +578,11 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.ReplyToList.Add(new MailAddress(replyTo));
             }
 
-            return SendMailInternal(mailMessage, subject, body, priority, bodyFormat, bodyEncoding,
-                attachments, smtpServer, smtpAuthentication, smtpUsername,smtpPassword, smtpEnableSSL);
+            using (mailMessage)
+            {
+                return SendMailInternal(mailMessage, subject, body, priority, bodyFormat, bodyEncoding,
+                    attachments, smtpServer, smtpAuthentication, smtpUsername,smtpPassword, smtpEnableSSL);
+            }
         }
 
         #endregion
