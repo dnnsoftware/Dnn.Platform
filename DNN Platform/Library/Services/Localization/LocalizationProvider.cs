@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Localization
                 Logger.WarnFormat("Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
-            return resourceValue;
+            return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
         }
 
         /// <summary>
