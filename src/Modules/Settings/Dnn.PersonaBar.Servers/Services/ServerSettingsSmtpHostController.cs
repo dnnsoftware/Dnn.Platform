@@ -145,7 +145,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var mailFrom = Host.HostEmail;
                 var mailTo = request.SmtpServerMode == "h" ? Host.HostEmail : PortalSettings.UserInfo.Email;
 
-                var strMessage = Mail.SendMail(mailFrom,
+                var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
                     "",
                     "",
@@ -161,10 +161,11 @@ namespace Dnn.PersonaBar.Servers.Services
                     request.SmtpPassword,
                     request.EnableSmtpSsl);
 
-                var success = string.IsNullOrEmpty(strMessage);
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                var success = string.IsNullOrEmpty(errMessage);
+                return Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
                 {
                     success,
+                    errMessage,
                     confirmationMessage = success ?
                         string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
                         mailFrom, mailTo) : Localization.GetString("errorMessageSendingTestEmail")

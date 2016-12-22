@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var mailFrom = Host.HostEmail;
                 var mailTo = smtpHostMode ? Host.HostEmail : PortalSettings.UserInfo.Email;
 
-                var strMessage = Mail.SendMail(mailFrom,
+                var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
                     "",
                     "",
@@ -139,9 +139,11 @@ namespace Dnn.PersonaBar.Servers.Services
                     smtpHostMode ? HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey()) : request.SmtpPassword,
                     smtpHostMode ? HostController.Instance.GetBoolean("SMTPEnableSSL", false) : request.EnableSmtpSsl);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                var success = string.IsNullOrEmpty(errMessage);
+                return Request.CreateResponse(success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new
                 {
-                    success = string.IsNullOrEmpty(strMessage),
+                    success,
+                    errMessage,
                     confirmationMessage =
                         string.Format(Localization.GetString("EmailSentMessage", Components.Constants.ServersResourcersPath),
                         mailFrom, mailTo)
