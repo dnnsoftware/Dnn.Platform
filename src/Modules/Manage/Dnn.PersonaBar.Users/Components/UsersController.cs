@@ -332,7 +332,7 @@ namespace Dnn.PersonaBar.Users.Components
                     {
                         var reader = DataProvider.Instance()
                             .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
-                                usersContract.SortColumn,
+                                string.IsNullOrEmpty(usersContract.SortColumn) ? "Joined" : usersContract.SortColumn,
                                 usersContract.SortAscending,
                                 usersContract.PageIndex,
                                 usersContract.PageSize);
