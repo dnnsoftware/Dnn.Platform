@@ -144,14 +144,16 @@ namespace DotNetNuke.Data
 
 		#region Private Methods
 
-		private DateTime FixDate(DateTime dateToFix)
+		private static DateTime FixDate(DateTime dateToFix)
 		{
-			//Fix for Sql Dates having a minimum value of 1/1/1753
-			if (dateToFix < SqlDateTime.MinValue.Value)
-			{
-				dateToFix = SqlDateTime.MinValue.Value;
-			}
-			return dateToFix;
+            //Fix for Sql Dates having a minimum value of January 1, 1753
+            // or maximum value of December 31, 9999
+            if (dateToFix <= SqlDateTime.MinValue.Value)
+                dateToFix = SqlDateTime.MinValue.Value.AddDays(1);
+            else if (dateToFix >= SqlDateTime.MaxValue.Value)
+                dateToFix = SqlDateTime.MaxValue.Value.AddDays(-1);
+
+            return dateToFix;
 		}
 
 		private object GetRoleNull(int RoleID)
@@ -4243,13 +4245,32 @@ namespace DotNetNuke.Data
 			Instance().ExecuteNonQuery("OutputCacheRemoveItem", itemId);
 		}
 
-		#endregion
+        #endregion
 
-		#endregion
+        #region Redirec Display Messages
 
-		#region Obsolete Methods
+        public virtual Guid AddRedirectMessage(int userId, int tabId, string text)
+        {
+            return ExecuteScalar<Guid>("AddRedirectMessage", userId, tabId, text);
+        }
 
-		[Obsolete(
+        public virtual string GetRedirectMessage(Guid id)
+        {
+            return ExecuteScalar<string>("GetRedirectMessage", id);
+        }
+
+        public virtual void DeleteOldRedirectMessage(DateTime cutofDateTime)
+        {
+            ExecuteNonQuery("DeleteOldRedirectMessage", FixDate(cutofDateTime));
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Obsolete Methods
+
+        [Obsolete(
 			"Deprecated in 7.0.0.  This method is unneccessary.  You can get a reader and convert it to a DataSet.")]
 		public virtual DataSet ExecuteDataSet(string procedureName, params object[] commandParameters)
 		{
