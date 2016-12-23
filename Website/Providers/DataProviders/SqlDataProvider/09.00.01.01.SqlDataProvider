@@ -196,6 +196,33 @@ ELSE
 	  AND M.IsTabDeleted = 0
 GO
 
+/* DNN-9042 */
+/************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}ScheduleHistory
+	WHERE ScheduleHistoryID IN (
+		SELECT TOP 5000 ScheduleHistoryID FROM {databaseOwner}{objectQualifier}ScheduleHistory sh
+			INNER JOIN {databaseOwner}{objectQualifier}Schedule s ON s.ScheduleID = sh.ScheduleID
+		WHERE (
+			  SELECT COUNT(*)
+			  FROM {databaseOwner}{objectQualifier}ScheduleHistory sh2
+			  WHERE sh2.ScheduleID = sh.ScheduleID
+			  AND sh2.StartDate >= sh.StartDate
+			  ) > s.RetainHistoryNum
+		  AND s.Enabled = 1
+		  AND s.RetainHistoryNum <> -1
+		ORDER BY ScheduleHistoryID
+	)
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
