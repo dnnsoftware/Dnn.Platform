@@ -139,7 +139,7 @@ class UserMenu extends Component {
     }
     deleteUser() {
         utilities.confirm(Localization.get("DeleteUser.Confirm"), Localization.get("Delete"), Localization.get("Cancel"), () => {
-            this.props.dispatch(CommonUsersActions.deleteUser({ userId: this.props.userId }, () => {
+            this.props.dispatch(CommonUsersActions.deleteUser({ userDetails: this.props.userDetails }, this.props.filter, () => {
                 utilities.notify(Localization.get("UserDeleted"), 3000);
                 this.reload();
             }));
@@ -151,7 +151,7 @@ class UserMenu extends Component {
         });
     }
     restoreUser() {
-        this.props.dispatch(CommonUsersActions.restoreUser({ userId: this.props.userId }, () => {
+        this.props.dispatch(CommonUsersActions.restoreUser({ userDetails: this.props.userDetails }, this.props.filter, () => {
             utilities.notify(Localization.get("UserRestored"), 3000);
             this.reload();
         }));
@@ -163,7 +163,7 @@ class UserMenu extends Component {
         }));
     }
     updateAuthorizeStatus(authorized) {
-        this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userId: this.props.userId, authorized: authorized }, () => {
+        this.props.dispatch(CommonUsersActions.updateAuthorizeStatus({ userDetails: this.props.userDetails }, authorized, this.props.filter, () => {
             utilities.notify(authorized ? Localization.get("UserAuthorized") :Localization.get("UserUnAuthorized"), 3000);
             this.reload();
         }));
@@ -260,7 +260,8 @@ UserMenu.propTypes = {
     userDetails: PropTypes.object,
     getUserMenu: PropTypes.func.isRequired,
     userMenuAction: PropTypes.func.isRequired,
-    appSettings: PropTypes.object
+    appSettings: PropTypes.object,
+    filter: PropTypes.number
 };
 
 function mapStateToProps(state) {

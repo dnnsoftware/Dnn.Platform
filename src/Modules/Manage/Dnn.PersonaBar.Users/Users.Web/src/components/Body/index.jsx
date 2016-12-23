@@ -15,7 +15,7 @@ import utilities from "utils";
 
 const searchParameters = {
     searchText: "",
-    filter: 0,
+    filter: 5,
     pageIndex: 0,
     pageSize: 10,
     sortColumn: "",
@@ -98,7 +98,7 @@ class Body extends Component {
                 }
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody workSpaceTrayVisible={true} workSpaceTrayOutside={true} workSpaceTray={this.getWorkSpaceTray() } className={panelBodyMargin}>
-                    <UserTable ref="userTable" appSettings={appSettings}/>
+                    <UserTable ref="userTable" appSettings={appSettings} filter={state.searchParameters.filter}/>
                     {
                         <div className="users-paging">
                             <Pager pageSizeDropDownWithoutBorder={true} 

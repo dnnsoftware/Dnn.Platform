@@ -124,7 +124,8 @@ class UserTable extends Component {
                     appSettings={props.appSettings}
                     columnSizes={props.columnSizes}
                     id={"add"}
-                    addIsOpened={addIsOpened ? "add-opened" : "closed"}>
+                    addIsOpened={addIsOpened ? "add-opened" : "closed"}
+                    filter={props.filter}>
                  <CollapsibleSwitcher children={[<CreateUserBox onCancel={this.collapse.bind(this) }/>]}/>
                 </DetailRow>
                 {
@@ -143,7 +144,8 @@ class UserTable extends Component {
                             userMenuAction={props.userMenuAction && props.userMenuAction.bind(this)}
                             appSettings={props.appSettings}
                             columnSizes={props.columnSizes}
-                            id={id}>
+                            id={id}
+                            filter={props.filter}>
                             <CollapsibleSwitcher children={this.getChildren(user) } renderIndex={this.state.renderIndex} />
                         </DetailRow>;
                     }) 
@@ -164,7 +166,8 @@ UserTable.propTypes = {
     getUserMenu: PropTypes.func,
     userMenuAction: PropTypes.func,
     appSettings: PropTypes.object,
-    columnSizes: PropTypes.array
+    columnSizes: PropTypes.array,
+    filter: PropTypes.number
 };
 function mapStateToProps(state) {
     return {

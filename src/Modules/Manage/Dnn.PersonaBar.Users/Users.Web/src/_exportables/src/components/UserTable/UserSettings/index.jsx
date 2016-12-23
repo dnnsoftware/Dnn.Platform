@@ -77,11 +77,11 @@ class UserSettings extends Component {
         accountSettings.userName = userDetails.userName;
         accountSettings.email = userDetails.email;
         accountSettings.userId = userDetails.userId;
-            this.setState({
-                accountSettings,
-                userDetails,
-                loading: false
-            });
+        this.setState({
+            accountSettings,
+            userDetails,
+            loading: false
+        });
     }
     
     onChange(key, item) {
@@ -183,7 +183,6 @@ class UserSettings extends Component {
                             label={Localization.get("Username") }
                             tooltipMessage={Localization.get("Username.Help")}
                             errorMessage={Localization.get("Username.Required") }
-                            enabled={!this.state.loading}
                             style={inputStyle}
                             autoComplete="off"
                             enabled={canEditSettings(this.props.appSettings.applicationSettings.settings)}
@@ -191,7 +190,6 @@ class UserSettings extends Component {
                         <SingleLineInputWithError value={state.accountSettings.displayName}
                             error={state.errors.displayName}
                             onChange={this.onChange.bind(this, "displayName") }
-                            enabled={!this.state.loading}
                             label={Localization.get("DisplayName") }
                             tooltipMessage={Localization.get("DisplayName.Help")}
                             errorMessage={Localization.get("DisplayName.Required") }
@@ -203,7 +201,6 @@ class UserSettings extends Component {
                             error={state.errors.email}
                             onChange={this.onChange.bind(this, "email") }
                             label={Localization.get("Email") }
-                            enabled={!this.state.loading}
                             tooltipMessage={Localization.get("Email.Help")}
                             errorMessage={Localization.get("Email.Required") }
                             style={inputStyle}

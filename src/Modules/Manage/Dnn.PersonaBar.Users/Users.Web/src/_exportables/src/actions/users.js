@@ -94,12 +94,15 @@ const userActions = {
             }, errorCallback);
         };
     },
-    deleteUser(payload, callback) {
+    deleteUser(payload, filter, callback) {
         return (dispatch) => {
-            UserService.deleteUser(payload, data => {
+            let deletedUser = Object.assign({}, payload.userDetails);
+            deletedUser.isDeleted = true;
+            UserService.deleteUser({userId: payload.userDetails.userId}, data => {
                 dispatch({
                     type: ActionTypes.DELETE_USER,
-                    payload: { userId: payload.userId }
+                    payload: deletedUser,
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);
@@ -120,12 +123,15 @@ const userActions = {
             }, errorCallback);
         };
     },
-    restoreUser(payload, callback) {
+    restoreUser(payload, filter, callback) {
         return (dispatch) => {
-            UserService.restoreUser(payload, data => {
+            let restoredUser = Object.assign({}, payload.userDetails);
+            restoredUser.isDeleted = false;
+            UserService.restoreUser({userId: payload.userDetails.userId}, data => {
                 dispatch({
                     type: ActionTypes.RESTORE_USER,
-                    payload: { userId: payload.userId }
+                    payload: restoredUser,
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);
@@ -146,12 +152,15 @@ const userActions = {
             }, errorCallback);
         };
     },
-    updateAuthorizeStatus(payload, callback) {
+    updateAuthorizeStatus(payload, authorized, filter, callback) {
         return (dispatch) => {
-            UserService.updateAuthorizeStatus(payload, data => {
+            let user = Object.assign({}, payload.userDetails);
+            user.authorized = authorized;
+            UserService.updateAuthorizeStatus({ userId: payload.userDetails.userId, authorized: authorized }, data => {
                 dispatch({
                     type: ActionTypes.UPDATE_USER_AUTHORIZE_STATUS,
-                    payload: { userId: payload.userId, authorized: payload.authorized }
+                    payload: user,
+                    filter: filter
                 });
                 if (callback) {
                     callback(data);

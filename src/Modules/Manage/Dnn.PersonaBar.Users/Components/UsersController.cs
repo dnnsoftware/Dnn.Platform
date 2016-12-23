@@ -83,7 +83,7 @@ namespace Dnn.PersonaBar.Users.Components
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser= false)
         {
             var userFilters = new List<KeyValuePair<string, int>>();
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 6; i++)
             {
                 userFilters.Add(
                     new KeyValuePair<string, int>(
@@ -284,25 +284,14 @@ namespace Dnn.PersonaBar.Users.Components
 
                     if (string.IsNullOrEmpty(searchText))
                     {
-                        var reader = DataProvider.Instance()
-                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
-                                usersContract.SortColumn,
-                                usersContract.SortAscending,
-                                usersContract.PageIndex,
-                                usersContract.PageSize);
-                        if (reader.Read())
-                        {
-                            totalRecords = reader.GetInt32(0);
-                            reader.NextResult();
-                        }
-                        users = CBO.FillCollection<UserBasicDto>(reader);
+                        dbUsers = UserController.GetUsers(portalId, pageIndex, pageSize, ref totalRecords, true, false);
                     }
                     else
                     {
                         dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
                             ref totalRecords, true, false);
-                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
+                    userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
@@ -337,6 +326,29 @@ namespace Dnn.PersonaBar.Users.Components
                     if (!isSuperUser)
                     {
                         userInfos = userInfos?.Where(x => !x.IsSuperUser);
+                    }
+                    break;
+                case UserFilters.Authorized:
+                    if (string.IsNullOrEmpty(searchText))
+                    {
+                        var reader = DataProvider.Instance()
+                            .ExecuteReader("Personabar_GetUsers", usersContract.PortalId,
+                                usersContract.SortColumn,
+                                usersContract.SortAscending,
+                                usersContract.PageIndex,
+                                usersContract.PageSize);
+                        if (reader.Read())
+                        {
+                            totalRecords = reader.GetInt32(0);
+                            reader.NextResult();
+                        }
+                        users = CBO.FillCollection<UserBasicDto>(reader);
+                    }
+                    else
+                    {
+                        dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
+                            ref totalRecords, true, false);
+                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
                     break;
                 default:
