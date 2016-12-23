@@ -296,9 +296,8 @@ namespace Dnn.PersonaBar.Users.Components
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true,
-                            true);
-                        users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
+                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
+                        userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     }
                     break;
                 case UserFilters.UnAuthorized:
