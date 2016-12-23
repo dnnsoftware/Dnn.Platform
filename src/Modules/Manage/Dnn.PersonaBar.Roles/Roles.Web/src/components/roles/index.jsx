@@ -145,7 +145,7 @@ class RolesPanel extends Component {
                 }
             </GridCell>;
         });
-        return <div id="header-row" className="header-row">{tableHeaders}</div>;
+        return <div id="users-header-row" className="users-header-row">{tableHeaders}</div>;
     }
     renderedRolesList(roleGroupOptions, securityModeOptions, statusOptions) {
         if (this.props.rolesList.length > 0) {
