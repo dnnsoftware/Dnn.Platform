@@ -408,7 +408,7 @@ namespace Dnn.PersonaBar.Users.Components
             totalRecords = userIds.Count;
 
             var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex*usersContract.PageSize).Take(usersContract.PageSize));
-            return UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds);
+            return UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => u.Authorized).ToList();
         }
 
         private static bool TryConvertToInt32(string paramValue, out int intValue)
