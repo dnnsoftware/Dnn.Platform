@@ -2524,7 +2524,9 @@ namespace DotNetNuke.Common
                 else
                 {
                     //redirect to access denied page with custom message
-                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + HttpUtility.UrlEncode(Message));
+                    var messageGuid = DataProvider.Instance().AddRedirectMessage(
+                        _portalSettings.UserId, _portalSettings.ActiveTab.TabID, Message).ToString("N");
+                    strURL = NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
                 }
             }
             else

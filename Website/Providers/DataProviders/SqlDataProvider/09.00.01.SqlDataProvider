@@ -8,10 +8,6 @@
 /*****                                                  *****/
 /************************************************************/
 
-/************************************************************/
-/*****              SqlDataProvider                     *****/
-/************************************************************/
-
 /* Update version number in DesktopModules */
 /*******************************************/
 DECLARE @version NVARCHAR(8)
@@ -265,3 +261,66 @@ AS
 				SELECT @ProfileID
 		END
 GO
+
+/* DNN-9141: adding temporary table for redirects with error messages */
+/**********************************************************************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}RedirectMessages]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}RedirectMessages](
+		[MessageId] [UniqueIdentifier] CONSTRAINT Guid_Default DEFAULT NEWID() ROWGUIDCOL,
+		[UserId] [int],
+		[TabId] [int],
+		[MessageText] [nvarchar](max) NOT NULL,
+		[CreatedOnDate] [DateTime] NOT NULL DEFAULT GETDATE(),
+			CONSTRAINT [PK_{objectQualifier}RedirectMessages] PRIMARY KEY ([MessageId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}RedirectMessages]')
+				AND name = N'IX_{objectQualifier}RedirectMessages_CreatedOnDate')
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}RedirectMessages_CreatedOnDate]
+		ON {databaseOwner}[{objectQualifier}RedirectMessages] ([CreatedOnDate])
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddRedirectMessage];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddRedirectMessage]
+	@UserId int,
+	@TabId int,
+	@Text [nvarchar](max)
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}RedirectMessages
+		(UserId, TabId, MessageText)
+	OUTPUT inserted.MessageId
+	VALUES(@UserId, @TabId, @Text)
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRedirectMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetRedirectMessage]
+	@guid [UniqueIdentifier]
+AS
+	SELECT MessageText
+	FROM {databaseOwner}{objectQualifier}RedirectMessages
+	WHERE MessageId = @guid
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteOldRedirectMessage]
+	@CutoffDate [DateTime]
+AS
+	DELETE FROM {databaseOwner}{objectQualifier}RedirectMessages
+	WHERE CreatedOnDate <= @CutoffDate
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
