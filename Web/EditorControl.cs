@@ -48,11 +48,6 @@ namespace DNNConnect.CKEditorProvider.Web
         private const string ProviderType = "htmlEditor";
 
         /// <summary>
-        /// Has MS Ajax Installed?
-        /// </summary>
-        private static bool? _hasMsAjax;
-
-        /// <summary>
         /// The portal settings.
         /// </summary>
         private readonly PortalSettings _portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];

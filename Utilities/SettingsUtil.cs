@@ -14,6 +14,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Common.Utilities;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {
@@ -57,7 +58,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             return hshModSet.Keys.Cast<string>().Any(key => key.StartsWith(moduleKey));
         }
@@ -70,7 +71,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleInstanceSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             return !string.IsNullOrEmpty((string)hshModSet[string.Format("{0}skin", moduleKey)]);
         }
@@ -774,7 +775,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             var roles = new ArrayList();
 
