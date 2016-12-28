@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -50,7 +50,6 @@
     <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -62,40 +61,30 @@
     <NOWARN>1591</NOWARN>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
       <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web">
       <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
       <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
@@ -118,6 +107,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Extensions\CustomAttributeExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Module\EditorConfigManager.ascx.cs">
       <DependentUpon>EditorConfigManager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -232,6 +222,7 @@
     <Content Include="css\CKEditorOverride.css" />
     <Content Include="css\CkEditorContents.css" />
     <Content Include="css\CkEditorToolBars.css" />
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
     <Content Include="Install\Dnn.CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -256,9 +247,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Browser.aspx.de-DE.resx" />
-    <Content Include="App_LocalResources\Browser.aspx.resx">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="App_LocalResources\Browser.aspx.resx" />
     <Content Include="App_LocalResources\Options.aspx.de-DE.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -289,7 +278,6 @@
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
     <Content Include="Install\01.00.00.SqlDataProvider" />
-    <Content Include="Install\01.00.02.SqlDataProvider" />
     <None Include="Install\Uninstall.SqlDataProvider" />
     <None Include="DNNConnect.CKEditorProvider.dnn">
       <SubType>Designer</SubType>

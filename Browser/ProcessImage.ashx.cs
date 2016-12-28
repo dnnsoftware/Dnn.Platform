@@ -176,7 +176,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             string sExtension = Path.GetExtension(sSourceFullPath);
 
             string sNewFilePath = !string.IsNullOrEmpty(sNewFileName)
-                                      ? Path.Combine(sSourcePath, sNewFileName + sExtension)
+                                      ? Path.Combine(sSourcePath, CleanName(sNewFileName) + sExtension)
                                       : Path.Combine(
                                           sSourcePath,
                                           string.Format(
@@ -288,6 +288,18 @@ namespace DNNConnect.CKEditorProvider.Browser
             Image.GetThumbnailImageAbort callback = GetThumbAbort;
             return (Bitmap)img.GetThumbnailImage(width, height, callback, IntPtr.Zero);
         }
+
+        private static string CleanName(string name)
+        {
+            name = name.Replace("\\", "/");
+            if (name.Contains("/"))
+            {
+                name = name.Substring(name.LastIndexOf('/') + 1);
+            }
+
+            return name;
+        }
+
 
         #endregion
     }

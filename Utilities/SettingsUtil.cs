@@ -14,6 +14,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Common.Utilities;
 
 namespace DNNConnect.CKEditorProvider.Utilities
 {
@@ -58,7 +59,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             return hshModSet.Keys.Cast<string>().Any(key => key.StartsWith(moduleKey));
         }
@@ -71,7 +72,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>Returns if The Module Settings Exists or not.</returns>
         internal static bool CheckExistsModuleInstanceSettings(string moduleKey, int moduleId)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             return !string.IsNullOrEmpty((string)hshModSet[string.Format("{0}skin", moduleKey)]);
         }
@@ -97,41 +98,46 @@ namespace DNNConnect.CKEditorProvider.Utilities
             var roles = new ArrayList();
 
             // Import all Editor config settings
-            foreach (PropertyInfo info in GetEditorConfigProperties())
+            var props = GetEditorConfigProperties().ToList();
+            var filteredSettings = editorHostSettings.Where(s => s.Name.StartsWith(key)).ToList();
+
+            foreach (PropertyInfo info in props)
             {
-                if (!editorHostSettings.Any(s => s.Name.Equals(string.Format("{0}{1}", key, info.Name))))
+                if (!filteredSettings.Any(s => s.Name.Equals(string.Format("{0}{1}", key, info.Name))))
                 {
-                    continue;
+                    if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
+                    {
+                        continue;
+                    }
                 }
 
-                /*if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
+                var settingValue = string.Empty;
+                if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                 {
-                    continue;
-                }*/
+                    settingValue =
+                        filteredSettings.FirstOrDefault(
+                            setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
 
-                var settingValue =
-                    editorHostSettings.FirstOrDefault(
-                        setting => setting.Name.Equals(string.Format("{0}{1}", key, info.Name))).Value;
+                    if (string.IsNullOrEmpty(settingValue))
+                    {
+                        continue;
+                    }
 
-                if (string.IsNullOrEmpty(settingValue))
-                {
-                    continue;
-                }
-
-                switch (info.PropertyType.Name)
-                {
-                    case "String":
-                        info.SetValue(currentSettings.Config, settingValue, null);
-                        break;
-                    case "Int32":
-                        info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
-                        break;
-                    case "Decimal":
-                        info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
-                        break;
-                    case "Boolean":
-                        info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
-                        break;
+                    switch (info.PropertyType.Name)
+                    {
+                        case "String":
+                            info.SetValue(currentSettings.Config, settingValue, null);
+                            break;
+                        case "Int32":
+                            info.SetValue(currentSettings.Config, int.Parse(settingValue), null);
+                            break;
+                        case "Decimal":
+                            info.SetValue(currentSettings.Config, decimal.Parse(settingValue), null);
+                            break;
+                        case "Boolean":
+                            info.SetValue(currentSettings.Config, bool.Parse(settingValue), null);
+                            break;
+                    }
                 }
 
                 switch (info.Name)
@@ -166,11 +172,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
                             typeof(CodeMirror).GetProperties()
                                 .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                         {
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))).Value;
                             switch (codeMirrorInfo.PropertyType.Name)
                             {
                                 case "String":
                                     if (
-                                        editorHostSettings.Any(
+                                        filteredSettings.Any(
                                             s => s.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))))
                                     {
                                         codeMirrorInfo.SetValue(currentSettings.Config.CodeMirror, settingValue, null);
@@ -179,7 +186,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                     break;
                                 case "Boolean":
                                     if (
-                                        editorHostSettings.Any(
+                                        filteredSettings.Any(
                                             s => s.Name.Equals(string.Format("{0}{1}", key, codeMirrorInfo.Name))))
                                     {
                                         codeMirrorInfo.SetValue(
@@ -196,11 +203,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     case "WordCount":
                         foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
                         {
+                            settingValue = filteredSettings.FirstOrDefault(setting => setting.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))).Value;
                             switch (wordCountInfo.PropertyType.Name)
                             {
                                 case "String":
                                     if (
-                                        editorHostSettings.Any(
+                                        filteredSettings.Any(
                                             s => s.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))))
                                     {
                                         wordCountInfo.SetValue(currentSettings.Config.WordCount, settingValue, null);
@@ -209,7 +217,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                     break;
                                 case "Boolean":
                                     if (
-                                        editorHostSettings.Any(
+                                        filteredSettings.Any(
                                             s => s.Name.Equals(string.Format("{0}{1}", key, wordCountInfo.Name))))
                                     {
                                         wordCountInfo.SetValue(
@@ -229,11 +237,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             /////////////////
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SKIN))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SKIN))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -243,11 +251,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CODEMIRRORTHEME))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CODEMIRRORTHEME))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -258,7 +266,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             List<ToolbarRoles> listToolbarRoles = (from RoleInfo objRole in portalRoles
                                                    where
-                                                       editorHostSettings.Any(
+                                                       filteredSettings.Any(
                                                            setting =>
                                                            setting.Name.Equals(
                                                                string.Format(
@@ -268,7 +276,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                                    SettingConstants.TOOLB)))
                                                    where
                                                        !string.IsNullOrEmpty(
-                                                           editorHostSettings.FirstOrDefault(
+                                                           filteredSettings.FirstOrDefault(
                                                                s =>
                                                                s.Name.Equals(
                                                                    string.Format(
@@ -277,7 +285,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                                        objRole.RoleID,
                                                                        SettingConstants.TOOLB))).Value)
                                                    let sToolbar =
-                                                       editorHostSettings.FirstOrDefault(
+                                                       filteredSettings.FirstOrDefault(
                                                            s =>
                                                            s.Name.Equals(
                                                                string.Format(
@@ -290,11 +298,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 .ToList();
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.TOOLB))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -307,7 +315,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             var listUploadSizeRoles = (from RoleInfo objRole in portalRoles
                                        where
-                                           editorHostSettings.Any(
+                                           filteredSettings.Any(
                                                setting =>
                                                setting.Name.Equals(
                                                    string.Format(
@@ -317,7 +325,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                        SettingConstants.UPLOADFILELIMITS)))
                                        where
                                            !string.IsNullOrEmpty(
-                                               editorHostSettings.FirstOrDefault(
+                                               filteredSettings.FirstOrDefault(
                                                    s =>
                                                    s.Name.Equals(
                                                        string.Format(
@@ -326,7 +334,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                                                            objRole.RoleID,
                                                            SettingConstants.UPLOADFILELIMITS))).Value)
                                        let uploadFileLimit =
-                                           editorHostSettings.FirstOrDefault(
+                                           filteredSettings.FirstOrDefault(
                                                s =>
                                                s.Name.Equals(
                                                    string.Format(
@@ -339,11 +347,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 .ToList();
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -355,11 +363,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             currentSettings.UploadSizeRoles = listUploadSizeRoles;
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.ROLES))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -390,11 +398,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSER))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSER))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -439,11 +447,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.INJECTJS))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.INJECTJS))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -457,11 +465,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.WIDTH))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.WIDTH))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -471,11 +479,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HEIGHT))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.HEIGHT))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -485,11 +493,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BLANKTEXT))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BLANKTEXT))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -499,11 +507,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CSS))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CSS))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -513,11 +521,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.TEMPLATEFILES))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.TEMPLATEFILES))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -527,11 +535,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CUSTOMJSFILE))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CUSTOMJSFILE))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -541,11 +549,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CONFIG))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.CONFIG))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -555,11 +563,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.FILELISTPAGESIZE))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.FILELISTPAGESIZE))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -569,11 +577,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.FILELISTVIEWMODE))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.FILELISTVIEWMODE))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -583,11 +591,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.DEFAULTLINKMODE))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.DEFAULTLINKMODE))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -597,11 +605,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.USEANCHORSELECTOR))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.USEANCHORSELECTOR))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -615,11 +623,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SHOWPAGELINKSTABFIRST))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SHOWPAGELINKSTABFIRST))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -633,11 +641,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.OVERRIDEFILEONUPLOAD))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.OVERRIDEFILEONUPLOAD))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -651,11 +659,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SUBDIRS))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.SUBDIRS))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -669,11 +677,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -690,11 +698,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -711,11 +719,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTH))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTH))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -732,11 +740,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             }
 
             if (
-                editorHostSettings.Any(
+                filteredSettings.Any(
                     setting => setting.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHT))))
             {
                 var settingValue =
-                    editorHostSettings.FirstOrDefault(
+                    filteredSettings.FirstOrDefault(
                         s => s.Name.Equals(string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHT))).Value;
 
                 if (!string.IsNullOrEmpty(settingValue))
@@ -768,7 +776,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// </returns>
         internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
-            var hshModSet = new ModuleController().GetModuleSettings(moduleId);
+            var hshModSet = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false).ModuleSettings;
 
             var roles = new ArrayList();
 

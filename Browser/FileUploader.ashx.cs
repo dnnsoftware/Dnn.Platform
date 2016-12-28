@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
 
 namespace DNNConnect.CKEditorProvider.Browser
@@ -205,8 +206,10 @@ namespace DNNConnect.CKEditorProvider.Browser
                             Path.GetExtension(file.FileName));
                     }
                 }
-
-                FileManager.Instance.AddFile(StorageFolder, fileName, file.InputStream, OverrideFiles);
+                var fileManager = FileManager.Instance;
+                var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                fileManager.AddFile(StorageFolder, fileName, file.InputStream, OverrideFiles, true, contentType, userId);
 
                 var fullName = Path.GetFileName(fileName);
                 statuses.Add(new FilesUploadStatus(fullName, file.ContentLength));
