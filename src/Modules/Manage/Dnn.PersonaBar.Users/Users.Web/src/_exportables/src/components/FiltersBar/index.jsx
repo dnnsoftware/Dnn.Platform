@@ -1,4 +1,4 @@
-import React, {Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import "./style.less";
 import DropDown from "dnn-dropdown";
 import Localization from "localization";
@@ -23,10 +23,24 @@ class FiltersBar extends Component {
         if (value !== selectedUserFilter.value) {
             selectedUserFilter.label = label;
             selectedUserFilter.value = value;
-            this.setState({
-                selectedUserFilter,
-                searchText: ""
-            }, () => { this.props.onChange(option, this.state.searchText); });
+
+            if (selectedUserFilter.value === 0 || selectedUserFilter.value === 5) {
+                this.setState({
+                    selectedUserFilter: { label: "", value: -1 },
+                    searchText: ""
+                }, () => {
+                    this.setState({
+                        selectedUserFilter,
+                        searchText: ""
+                    }, () => { this.props.onChange(option, this.state.searchText); });
+                });
+            }
+            else {
+                this.setState({
+                    selectedUserFilter,
+                    searchText: ""
+                }, () => { this.props.onChange(option, this.state.searchText); });
+            }
         }
     }
 
@@ -54,11 +68,11 @@ class FiltersBar extends Component {
                 {
                     userFiltersOptions.length > 0 &&
                     <div className="user-filters-filter">
-                        <DropDown  style={{ width: "100%" }}
+                        <DropDown style={{ width: "100%" }}
                             withBorder={false}
                             options={userFiltersOptions}
-                            label={this.state.selectedUserFilter.label }
-                            onSelect={this.onSelect.bind(this) }
+                            label={this.state.selectedUserFilter.label}
+                            onSelect={this.onSelect.bind(this)}
                             ref="userFiltersDropdown"
                             prependWith={Localization.get("ShowLabel")}
                             />
@@ -73,7 +87,7 @@ class FiltersBar extends Component {
                 <div className="search-filter">
                     {
                         (this.state.selectedUserFilter.value === 0 || this.state.selectedUserFilter.value === 5) &&
-                        <SearchBox placeholder={Localization.get("SearchPlaceHolder") } onSearch={this.onKeywordChanged.bind(this) } maxLength={50} iconStyle={{right: 0}}/>
+                        <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />
                     }
                     <div className="clear"></div>
                 </div>

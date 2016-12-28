@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Users.Components
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             return !string.IsNullOrEmpty(usersContract.SearchText) 
-                        && usersContract.Filter == UserFilters.All
+                        && usersContract.Filter == UserFilters.Authorized
                         && !HostController.Instance.GetBoolean("DisableUserCrawling", false)
                 ? GetUsersFromLucene(usersContract, out totalRecords)
                 : GetUsersFromDb(usersContract, isSuperUser, out totalRecords);
