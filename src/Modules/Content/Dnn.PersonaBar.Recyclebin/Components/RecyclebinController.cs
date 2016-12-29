@@ -304,7 +304,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         {
             var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
-                .Where(module => module.IsDeleted && ModulePermissionController.CanDeleteModule(module))
+                .Where(module => module.IsDeleted && (
+                    TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) || 
+                    ModulePermissionController.CanDeleteModule(module))
+                )
                 .ToList();
             return deletedModules;
         }
