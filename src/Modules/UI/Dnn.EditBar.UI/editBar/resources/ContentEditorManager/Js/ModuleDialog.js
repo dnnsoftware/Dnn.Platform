@@ -870,8 +870,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             var opts = {
                 callbackTrue: function () {
                     //remove all action menus in current layout
-                    handler._getEditorService().request('DeleteModule', 'GET', {
-                        moduleId: moduleId
+                    handler._getEditorService().request('DeleteModule?moduleId=' + moduleId, 'POST', {
                     }, function (data) {
                         if (data.Status != 0) {
                             $.dnnAlert({ text: data.Message });
