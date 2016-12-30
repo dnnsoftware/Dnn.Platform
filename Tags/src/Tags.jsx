@@ -91,17 +91,18 @@ export default class Tags extends Component {
     }
 
     onKeyDown(event) {
-        
         switch (event.keyCode) {
             case KEY.ENTER:
-                return this.addTag();
             case KEY.COMMA:
-                return this.addTag();
             case KEY.TAB:
-                event.preventDefault();
-                return this.addTag();
+                if (this.state.newTagText) {
+                    event.preventDefault();
+                    this.addTag();
+                }
+                break;
             case KEY.BACKSPACE:
-                return this.removeLastTag();
+                this.removeLastTag();
+                break;
         }
     }
 
