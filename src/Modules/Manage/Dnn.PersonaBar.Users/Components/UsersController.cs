@@ -407,7 +407,7 @@ namespace Dnn.PersonaBar.Users.Components
             }).Where(u => u > 0).ToList();
 
             var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex*usersContract.PageSize).Take(usersContract.PageSize));
-            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => u.Authorised).ToList();
+            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => UserController.GetUserById(usersContract.PortalId, u.UserId).Membership.Approved).ToList();
             totalRecords = users.Count;
             return users;
         }
