@@ -35,8 +35,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isDeleted")]
         public bool IsDeleted { get; set; }
 
-        [DataMember(Name = "authorized")]
-        public bool Authorized { get; set; }
+        [DataMember(Name = "authorised")]
+        public bool Authorised { get; set; }
 
         [DataMember(Name = "isSuperUser")]
         public bool IsSuperUser { get; set; }
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             Email = user.Email;
             CreatedOnDate = user.CreatedOnDate;
             IsDeleted = user.IsDeleted;
-            Authorized = user.Membership.Approved;
+            Authorised = user.Membership.Approved;
             IsSuperUser = user.IsSuperUser;
             IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
         }
@@ -77,7 +77,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Email = user.Email,
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
-                Authorized = user.Membership.Approved,
+                Authorised = user.Membership.Approved,
                 IsSuperUser = user.IsSuperUser
         };
         }
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 Email = user.Email,
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
-                Authorized = user.Authorized,
+                Authorised = user.Authorised,
                 IsSuperUser = user.IsSuperUser
         };
         }

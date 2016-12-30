@@ -405,10 +405,11 @@ namespace Dnn.PersonaBar.Users.Components
                 TryConvertToInt32(r.UniqueKey.Split('_')[0], out userId);
                 return userId;
             }).Where(u => u > 0).ToList();
-            totalRecords = userIds.Count;
 
             var currentIds = string.Join(",", userIds.Skip(usersContract.PageIndex*usersContract.PageSize).Take(usersContract.PageSize));
-            return UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => u.Authorized).ToList();
+            var users = UsersDataService.Instance.GetUsersByUserIds(usersContract.PortalId, currentIds).Where(u => u.Authorised).ToList();
+            totalRecords = users.Count;
+            return users;
         }
 
         private static bool TryConvertToInt32(string paramValue, out int intValue)
