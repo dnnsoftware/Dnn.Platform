@@ -1,0 +1,63 @@
+<dotnetnuke type="Package" version="1.0">
+  <packages>
+    <package name="Skin.Xcillion" type="Skin" version="01.00.00">
+      <friendlyName>Xcillion</friendlyName>
+      <iconFile></iconFile>
+      <description><![CDATA[A new default DNN skin]]></description>
+      <owner>
+        <name>XCESS</name>
+        <organization><![CDATA[XCESS expertise center b.v.]]></organization>
+        <url><![CDATA[http://www.xcess.nl]]></url>
+        <email><![CDATA[info@xcess.nl]]></email>
+      </owner>
+      <license src="license.htm" />
+      <releaseNotes src="release_notes.htm" />
+      <components>
+        <component type="Skin">
+          <skinFiles>
+            <skinName>Xcillion</skinName>
+            <basePath>Portals\_default\Skins\Xcillion</basePath>
+          </skinFiles>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Portals\_default\Skins\Xcillion</basePath>
+            <resourceFile>
+              <name>resource-skin.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>
+    <package name="Container.Xcillion" type="Container" version="01.00.00">
+      <friendlyName>Xcillion</friendlyName>
+      <iconFile></iconFile>
+      <description><![CDATA[DNN container]]></description>
+      <owner>
+        <name>XCESS</name>
+        <organization><![CDATA[XCESS expertise center b.v.]]></organization>
+        <url><![CDATA[http://www.xcess.nl]]></url>
+        <email><![CDATA[info@xcess.nl]]></email>
+      </owner>
+      <license src="license.htm" />
+      <releaseNotes src="release_notes.htm" />
+      <components>
+        <component type="Container">
+          <containerFiles>
+            <containerName>Xcillion</containerName>
+            <basePath>Portals\_default\Containers\Xcillion</basePath>
+          </containerFiles>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>Portals\_default\Containers\Xcillion</basePath>
+            <resourceFile>
+              <name>resource-container.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+      </components>
+    </package>    
+  </packages>
+</dotnetnuke>
+
