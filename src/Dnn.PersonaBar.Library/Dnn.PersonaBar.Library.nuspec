@@ -7,7 +7,7 @@
     <authors>DNN Corporation</authors>
     <owners>DNN Corporation</owners>
     <licenseUrl>http://www.dnnsoftware.com</licenseUrl>
-    <projectUrl>https://github.com/dnnsoftware/Dnn.PersonaBar</projectUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.AdminExperience.Library</projectUrl>
     <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DNN PersonaBar Common Library</description>
