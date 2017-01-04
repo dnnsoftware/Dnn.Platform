@@ -138,24 +138,41 @@ define(['jquery'], function ($) {
                     });
                 },
 
-                notify: function (text, timeout) {
-                    timeout = timeout || 2000;
-                    $('#notification-dialog > p').removeClass().html(text);
-                    $('#notification-dialog').fadeIn(200, 'linear', function () {
+                notify: function (text, options = {}) {
+                    var notificationDialog = $('#notification-dialog');
+                    var timeout = options.timeout || 2000;
+                    var size = options.size || '';
+                    var clickToClose = options.clickToClose || false;
+                    var type = options.type || 'notify';
+                    if (typeof options === 'number') {
+                        timeout = options;  // legacy support; options is not passed in, but a number is
+                    }
+                    notificationDialog.removeClass();
+                    notificationDialog.children('p').removeClass().html(text);
+                    if (size) {
+                        notificationDialog.addClass(size);
+                    }
+                    if (clickToClose !== true) {
+                        notificationDialog.addClass('close-hidden');
+                    }
+                    if (type === 'error') {
+                        notificationDialog.addClass('errorMessage');
+                    }
+                    notificationDialog.children('#close-notification').on('click', function () {
+                        notificationDialog.fadeOut(200, 'linear');
+                    });
+                    notificationDialog.fadeIn(200, 'linear', function () {
+                        if (clickToClose !== true) {
                         setTimeout(function () {
-                            $('#notification-dialog').fadeOut(200, 'linear');
+                                notificationDialog.fadeOut(200, 'linear');
                         }, timeout);
+                        }
                     });
                 },
 
-                notifyError: function (text, timeout) {
-                    timeout = timeout || 2000;
-                    $('#notification-dialog > p').removeClass().addClass('errorMessage').html(text);
-                    $('#notification-dialog').fadeIn(200, 'linear', function () {
-                        setTimeout(function () {
-                            $('#notification-dialog').fadeOut(200, 'linear');
-                        }, timeout);
-                    });
+                notifyError: function (text, options = {}) {
+                    options.type = "error";
+                    this.notify(text, options);
                 },
 
                 localizeErrMessages: function (validator) {

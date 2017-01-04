@@ -158,39 +158,74 @@ a.plainbtn {
 }
 /* notification dialog */
 #notification-dialog {
-    position: fixed;
-    top: 30%;
-    left: 370px;
-    width: 200px;
-    padding: 15px;
-    background-color: #002e47;
-    opacity: 0.9;
-    z-index: 99999;
-    border-radius: 3px;
-    color: #fff;
     display: none;
+    position: fixed;
+    background-color: #092836;
+    opacity: .9;
+    width: 385px;
+    padding: 50px;
+    top: 30%;
+    left: 315px;
+    opacity: .9;
+    z-index: 99999;
+    color: #fff;
     word-wrap: break-word;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-    #notification-dialog > p {
-        background-image: url(../images/notify.png);
-        background-position: 0 0;
-        background-repeat: no-repeat;
-        padding: 7px 0 0 40px;
-        min-height: 31px;
-    }
+#notification-dialog.large {
+    width: 485px;
+    left: 265px;
+}
 
-    #notification-dialog > p.errorMessage {
-        background-image: url(../images/icon-exclamation.png);
-    }
+#notification-dialog > p {
+    color: white;
+    font-size: 15px;
+    line-height: 22px;
+}
 
-/* confirmation dialog */
+#notification-dialog > #close-notification {
+    cursor: pointer;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 10px;
+    top: 10px;
+}
+
+#notification-dialog.close-hidden > #close-notification {
+    display: none;
+}
+
+#notification-dialog > img {
+    width: 35px;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+#notification-dialog.errorMessage > .notify-check {
+    display: none;
+}
+
+#notification-dialog.errorMessage > .notify-error {
+    display: block;
+    margin: 0 auto 10px;
+    width: 22px;
+    height: 30px;
+}
+
+#notification-dialog > .notify-error {
+    display: none;
+}
+
 #confirmation-dialog {
-    left: 370px;
-    width: 300px;
-    padding: 18px;
+    left: 265px;
+    box-sizing: border-box;
+    width: 485px;
+    padding: 50px;
     background-color: #002e47;
-    opacity: 0.9;
+    opacity: .9;
     z-index: 99999;
     border-radius: 3px;
     color: #fff;
@@ -198,55 +233,60 @@ a.plainbtn {
     position: fixed;
     top: 30%;
     word-wrap: break-word;
+    text-align: center;
 }
 
-    #confirmation-dialog > p {
-        background-image: url(../images/icon-exclamation.png);
-        background-position: 0 0;
-        background-repeat: no-repeat;
-        padding: 7px 0 5px 40px;
-        min-height: 31px;
-    }
+#confirmation-dialog > img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+}
 
-    #confirmation-dialog > div.buttonpanel {
-        width: 200px;
-        margin: 20px auto 20px auto;
-    }
+#confirmation-dialog>p {
+    color: white;
+    font-size: 15px;
+    line-height: 22px;
+}
 
-        #confirmation-dialog > div.buttonpanel > a {
-            background-color: #fafafa;
-            color: #333;
-            display: inline-block;
-            padding: 7px 7px;
-            cursor: pointer;
-            width: 75px;
-            border-radius: 3px;
-            text-decoration: none;
-            text-align: center;
-            font-family: sourcecodepro_semibold;
-            font-size: 12px;
-            border: 1px solid #ddd;
-            margin-left: 14px;
-        }
-            
-        #confirmation-dialog > div.buttonpanel #cancelbtn {
-            margin-left: 4px;
-        }
+#confirmation-dialog>div.buttonpanel {
+    width: 200px;
+    margin: 20px auto 0 auto;
+}
 
-        #confirmation-dialog > div.buttonpanel > a:hover {
-            background: #d9ecfa;
-        }
-            
-        #confirmation-dialog > div.buttonpanel > #confirmbtn {
-            background-color: #0281c6;
-            border: solid 1px #0281c6;
-            color: #FFF;
-            margin-left: 4px;
-        }
-            
-        #confirmation-dialog > div.buttonpanel #confirmbtn:hover {
-            background-color: #028ed9;
-        }
+#confirmation-dialog>div.buttonpanel>a {
+    background-color: #fafafa;
+    color: #333;
+    display: inline-block;
+    padding: 7px 7px;
+    cursor: pointer;
+    width: 75px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-align: center;
+    font-family: sourcecodepro_semibold;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    margin-left: 14px
+}
+
+#confirmation-dialog>div.buttonpanel #cancelbtn {
+    margin-left: 4px
+}
+
+#confirmation-dialog>div.buttonpanel>a:hover {
+    background: #d9ecfa
+}
+
+#confirmation-dialog>div.buttonpanel>#confirmbtn {
+    background-color: #0281c6;
+    border: solid 1px #0281c6;
+    color: #FFF;
+    margin-left: 4px
+}
+
+#confirmation-dialog>div.buttonpanel #confirmbtn:hover {
+    background-color: #028ed9
+}
 
 /* basic layout */
 .two-columns {
