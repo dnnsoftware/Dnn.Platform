@@ -240,8 +240,6 @@ namespace DotNetNuke.Entities.Urls
                         if (customTabAlias == false)
                         {
                             int tabId;
-                            bool addLanguageCode = true;
-
                             if (!String.IsNullOrEmpty(querystringCol["TabId"]))
                             {
                                 tabId = Convert.ToInt32(querystringCol["TabId"]);
@@ -266,7 +264,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 if (string.IsNullOrEmpty(culture))
                                 {
-                                    addLanguageCode = false; //do not add culture code to query string, let GetPageLocale handle it
+                                    culture = portal.DefaultLanguage; //set culture to default if not found specifically
                                 }
                                 else
                                 {
@@ -291,10 +289,7 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             //DNN-3789 always call this method as culture is defined by GetPageLocale
-                            if (addLanguageCode)
-                            {
-                                AddLanguageCodeToRewritePath(ref newUrl, culture);
-                            }
+                            AddLanguageCodeToRewritePath(ref newUrl, culture);
                             //add on language specified by current portal alias
                             reWritten = true;
                         }
