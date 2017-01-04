@@ -8,6 +8,8 @@
     <owners>DNN Corp</owners>
     <licenseUrl>https://github.com/dnnsoftware/Dnn.Platform/blob/development/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>http://www.dnnsoftware.com/favicon.ico</iconUrl>
+    <projectUrl>https://github.com/dnnsoftware/Dnn.Platform</projectUrl>
     <description>
       DNN Platform is an open source web application framework.
       This package contains components required for logging and instrumentation for DNN Platform.
