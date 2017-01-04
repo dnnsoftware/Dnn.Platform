@@ -220,8 +220,8 @@ namespace DotNetNuke.Services.Search
                             continue;
                         }
 
-							//DNN-5740: replace split flag if it included in property value.
-	                        propertyValue = propertyValue.Replace("[$][$][$]", "$$$");
+                        //DNN-5740 / DNN-9040: replace split flag if it included in property value.
+                        propertyValue = propertyValue.Replace("[$]", "$");
                         var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                         {
