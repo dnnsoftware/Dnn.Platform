@@ -15,9 +15,9 @@
         <dnnweb:Label ID="ModeLabel" runat="server" ResourceKey="Mode" Suffix=":" ControlName="ModeComboBox" />
         <dnnweb:DnnComboBox ID="ModeComboBox" runat="server" OnClientSelectedIndexChanged="updateRootFolderItemVisibility" >
             <Items>
-                <dnnweb:DnnComboBoxItem Value="Normal" ResourceKey="Normal"></dnnweb:DnnComboBoxItem>
-                <dnnweb:DnnComboBoxItem Value="Group" ResourceKey="Group"></dnnweb:DnnComboBoxItem>
-                <dnnweb:DnnComboBoxItem Value="User" ResourceKey="User"></dnnweb:DnnComboBoxItem>
+                <asp:ListItem Value="Normal" ResourceKey="Normal"></asp:ListItem>
+                <asp:ListItem Value="Group" ResourceKey="Group"></asp:ListItem>
+                <asp:ListItem Value="User" ResourceKey="User"></asp:ListItem>
             </Items>
         </dnnweb:DnnComboBox>
     </div>

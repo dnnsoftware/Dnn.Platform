@@ -88,7 +88,6 @@
                             <asp:Label ID="lblMaxVersions" runat="server" />
                         </div>
                         <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5">
-                            <pagerstyle mode="NextPrevAndNumeric"></pagerstyle>
 					        <Columns>
 						        <dnnweb:DnnGridBoundColumn HeaderText="Version" DataField="Version" />
 						        <dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="LastModifiedOnDate"  />
@@ -193,12 +192,6 @@
             $('window.frameElement, body, html').css('overflow', 'hidden');
             if ($('.ehccContent.EditView').length)
             {
-                // RadEditor
-                var editor = $find($(".RadEditor").attr('id'));
-                if (editor) {
-                    editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
-                    $('.ehCurrentContent').css('overflow', 'hidden');
-                }
                 // CK Editor
                 var editorid = $(".ehCurrentContent textarea.editor").attr('id');
                 if (editorid) {

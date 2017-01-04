@@ -30,7 +30,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridBinaryImageColumn : TemplateColumn
+    public class DnnGridBinaryImageColumn : TemplateField
     {
         //#region Public Properties
 

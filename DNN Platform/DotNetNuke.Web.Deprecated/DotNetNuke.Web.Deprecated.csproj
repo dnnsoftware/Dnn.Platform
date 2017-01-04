@@ -130,6 +130,7 @@
     <Compile Include="UI\WebControls\DnnListBox.cs" />
     <Compile Include="UI\WebControls\DnnListView.cs" />
     <Compile Include="UI\WebControls\DnnTreeView.cs" />
+    <Compile Include="UI\WebControls\DnnTreeViewContextMenuCollection.cs" />
     <Compile Include="UI\WebControls\DnnTreeViewContextMenu.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />

@@ -40,7 +40,6 @@
                                 <dnnweb:DnnTreeViewContextMenu ID="MainContextMenu" runat="server" CssClass="dnnModuleDigitalAssetsContextMenu" 
                                     OnClientLoad="dnnModule.digitalAssets.treeViewContextMenuOnLoad" 
                                     OnClientHiding="dnnModule.digitalAssets.treeViewContextMenuOnHiding" >
-                                    <CollapseAnimation Type="none"></CollapseAnimation>
                                 </dnnweb:DnnTreeViewContextMenu>
                             </ContextMenus>
                         </dnnweb:DnnTreeView>
@@ -118,13 +117,13 @@
                             OnColumnHidden="dnnModule.digitalAssets.gridOnColumnHidden" /> 
                     </ClientSettings>
                     <Columns>
-                        <dnnweb:DnnGridClientSelectColumn HeaderStyle-Width="44px" UniqueName="Select" />                        
-                        <dnnweb:DnnGridBoundColumn UniqueName="ItemName" SortExpression="ItemName" DataField="ItemName" HeaderText="Name"  HeaderStyle-Width="100%" />
-                        <dnnweb:DnnGridBoundColumn UniqueName="LastModifiedOnDate" DataField="LastModifiedOnDate" HeaderText="Modified" HeaderStyle-Width="170px" ReadOnly="True" />
-                        <dnnweb:DnnGridBoundColumn UniqueName="Size" DataField="Size" HeaderText="Size" Visible="True" ReadOnly="True" HeaderStyle-Width="80px" />
-                        <dnnweb:DnnGridBoundColumn UniqueName="ItemID" DataField="ItemID" HeaderText="ItemID" Visible="False" ReadOnly="True"/>
-                        <dnnweb:DnnGridBoundColumn UniqueName="IsFolder" DataField="IsFolder" HeaderText="IsFolder" Visible="False" ReadOnly="True"/>
-                        <dnnweb:DnnGridBoundColumn UniqueName="ParentFolder" DataField="ParentFolder" HeaderText="ParentFolder" Visible="True" ReadOnly="True"/>
+                        <dnnweb:DnnGridClientSelectColumn HeaderStyle-Width="44px" />                        
+                        <dnnweb:DnnGridBoundColumn SortExpression="ItemName" DataField="ItemName" HeaderText="Name"  HeaderStyle-Width="100%" />
+                        <dnnweb:DnnGridBoundColumn DataField="LastModifiedOnDate" HeaderText="Modified" HeaderStyle-Width="170px" ReadOnly="True" />
+                        <dnnweb:DnnGridBoundColumn DataField="Size" HeaderText="Size" Visible="True" ReadOnly="True" HeaderStyle-Width="80px" />
+                        <dnnweb:DnnGridBoundColumn DataField="ItemID" HeaderText="ItemID" Visible="False" ReadOnly="True"/>
+                        <dnnweb:DnnGridBoundColumn DataField="IsFolder" HeaderText="IsFolder" Visible="False" ReadOnly="True"/>
+                        <dnnweb:DnnGridBoundColumn DataField="ParentFolder" HeaderText="ParentFolder" Visible="True" ReadOnly="True"/>
                     </Columns>
                     <EmptyDataTemplate>
                         <div id="dnnModuleDigitalAssetsGridViewNoItems" class="emptySpace">

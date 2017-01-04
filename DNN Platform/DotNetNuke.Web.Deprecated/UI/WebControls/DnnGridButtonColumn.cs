@@ -30,7 +30,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridButtonColumn : ButtonColumn
+    public class DnnGridButtonColumn : ButtonField
     {
         //#region "Public Properties"
 

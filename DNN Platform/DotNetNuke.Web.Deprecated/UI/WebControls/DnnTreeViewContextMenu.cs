@@ -30,11 +30,5 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnTreeViewContextMenu : WebControl
     {
-
-        //public DnnTreeViewContextMenu()
-        //{
-        //    Utilities.ApplySkin(this);
-        //}
-
     }
 }

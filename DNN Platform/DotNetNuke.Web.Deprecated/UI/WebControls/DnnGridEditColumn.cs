@@ -27,7 +27,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridEditColumn : EditCommandColumn
+    public class DnnGridEditColumn : CommandField
     {
         //#region "Public Properties"
 

@@ -30,7 +30,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridDropDownColumn : TemplateColumn
+    public class DnnGridDropDownColumn : TemplateField
     {
         //#region Public Properties
 

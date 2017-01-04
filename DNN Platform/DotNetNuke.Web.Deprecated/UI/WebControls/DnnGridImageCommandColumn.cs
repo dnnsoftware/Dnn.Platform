@@ -20,13 +20,14 @@
 #endregion
 
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridImageCommandColumn : DnnGridTemplateColumn
+    public class DnnGridImageCommandColumn : TemplateField
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;
         private bool _showImage = true;
@@ -178,10 +179,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return template;
         }
 
-        /// <summary>
-        /// Initialises the Column
-        /// </summary>
-        public override void Initialize()
+        public override bool Initialize(bool sortingEnabled, Control control)
         {
             ItemTemplate = CreateTemplate(ListItemType.Item);
             EditItemTemplate = CreateTemplate(ListItemType.EditItem);
@@ -195,6 +193,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+
+            return true;
         }
     }
 }

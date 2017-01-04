@@ -341,10 +341,10 @@
                     <dnn:label id="plPerformance" controlname="cboPerformance" runat="server" />
                     <dnn:dnncombobox id="cboPerformance" runat="server">
                         <Items>
-                        <dnn:DnnComboBoxItem resourcekey="NoCaching" Value="0" />
-                        <dnn:DnnComboBoxItem resourcekey="LightCaching" Value="1" />
-                        <dnn:DnnComboBoxItem resourcekey="ModerateCaching" Value="3" />
-                        <dnn:DnnComboBoxItem resourcekey="HeavyCaching" Value="6" />
+                        <asp:ListItem resourcekey="NoCaching" Value="0" />
+                        <asp:ListItem resourcekey="LightCaching" Value="1" />
+                        <asp:ListItem resourcekey="ModerateCaching" Value="3" />
+                        <asp:ListItem resourcekey="HeavyCaching" Value="6" />
                         </Items>
                     </dnn:dnncombobox>
                 </div>
@@ -352,12 +352,12 @@
                     <dnn:label id="plCacheability" controlname="cboCacheability" runat="server" />
                     <dnn:dnncombobox id="cboCacheability" runat="server">
                         <Items>
-                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
-                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
-                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
-                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
-                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
-                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        <asp:ListItem resourcekey="NoCache" Value="0" />
+                        <asp:ListItem resourcekey="Private" Value="1" />
+                        <asp:ListItem resourcekey="Public" Value="2" />
+                        <asp:ListItem resourcekey="Server" Value="3" />
+                        <asp:ListItem resourcekey="ServerAndNoCache" Value="4" />
+                        <asp:ListItem resourcekey="ServerAndPrivate" Value="5" />
                         </Items>
                     </dnn:dnncombobox>
                 </div>
@@ -365,12 +365,12 @@
                     <dnn:label id="plcboUnauthCacheability" controlname="cboUnauthCacheability" runat="server" />
                     <dnn:dnncombobox id="cboUnauthCacheability" runat="server">
                         <Items>
-                        <dnn:DnnComboBoxItem resourcekey="NoCache" Value="0" />
-                        <dnn:DnnComboBoxItem resourcekey="Private" Value="1" />
-                        <dnn:DnnComboBoxItem resourcekey="Public" Value="2" />
-                        <dnn:DnnComboBoxItem resourcekey="Server" Value="3" />
-                        <dnn:DnnComboBoxItem resourcekey="ServerAndNoCache" Value="4" />
-                        <dnn:DnnComboBoxItem resourcekey="ServerAndPrivate" Value="5" />
+                        <asp:ListItem resourcekey="NoCache" Value="0" />
+                        <asp:ListItem resourcekey="Private" Value="1" />
+                        <asp:ListItem resourcekey="Public" Value="2" />
+                        <asp:ListItem resourcekey="Server" Value="3" />
+                        <asp:ListItem resourcekey="ServerAndNoCache" Value="4" />
+                        <asp:ListItem resourcekey="ServerAndPrivate" Value="5" />
                         </Items>
                     </dnn:dnncombobox>
                 </div>

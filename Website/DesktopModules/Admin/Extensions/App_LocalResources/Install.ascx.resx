@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LogTitle.Text" xml:space="preserve">
+    <value>Package Install Logs</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="InvalidExt.Text" xml:space="preserve">
+    <value>Invalid File Extension - {0}</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Package Install&lt;/h1&gt;&lt;p&gt;Allows you to upload and install packages to the site.&lt;/p&gt;</value>
+  </data>
+  <data name="NoFile.Text" xml:space="preserve">
+    <value>You need to select a file to upload first - click the Choose File button to locate the file on your local file system.</value>
+  </data>
+  <data name="InstallCustomPackage.Text" xml:space="preserve">
+    <value>Install New {0} Extension</value>
+  </data>
+  <data name="InstallPackage.Text" xml:space="preserve">
+    <value>Install Extension</value>
+  </data>
+  <data name="UploadPackage.Text" xml:space="preserve">
+    <value>Upload Package</value>
+  </data>
+  <data name="AcceptLicense.Text" xml:space="preserve">
+    <value>Accept License</value>
+  </data>
+  <data name="Introduction.Help" xml:space="preserve">
+    <value>DNN can be extended in many ways.  The Install Wizard helps you upload and install DNN extension packages.</value>
+  </data>
+  <data name="Introduction.Title" xml:space="preserve">
+    <value>Upload New Extension Package</value>
+  </data>
+  <data name="ZipCriticalError.Text" xml:space="preserve">
+    <value>Critical error reading zip package.</value>
+  </data>
+  <data name="ZipError.Text" xml:space="preserve">
+    <value>Error reading the zip package - see below.</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>You must accept the terms of the license to install this package.</value>
+  </data>
+  <data name="InstallError.Text" xml:space="preserve">
+    <value>Error loading files from temporary folder - see below.</value>
+  </data>
+  <data name="InstallResults.Help" xml:space="preserve">
+    <value>See below for the results of the package installation.</value>
+  </data>
+  <data name="InstallResults.Title" xml:space="preserve">
+    <value>Package Installation Report</value>
+  </data>
+  <data name="PackageInfo.Help" xml:space="preserve">
+    <value>The following information was found in the package manifest.</value>
+  </data>
+  <data name="PackageInfo.Title" xml:space="preserve">
+    <value>Package Information</value>
+  </data>
+  <data name="License.Help" xml:space="preserve">
+    <value>Before proceeding you must accept the terms of the license for this extension.  Please review the license and check the Accept License check box.</value>
+  </data>
+  <data name="License.Title" xml:space="preserve">
+    <value>Review License</value>
+  </data>
+  <data name="ReleaseNotes.Help" xml:space="preserve">
+    <value>Review the Release Notes for this package.</value>
+  </data>
+  <data name="ReleaseNotes.Title" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="IgnoreWhiteList.Text" xml:space="preserve">
+    <value>Ignore File Restrictions</value>
+  </data>
+  <data name="IgnoreRestrictedFilesWarning.Text" xml:space="preserve">
+    <value>Warning: You have elected not to check for restricted file types.  This action poses a possible security risk for your site, and you should only do this if the package you are installing is from a trusted source.</value>
+  </data>
+  <data name="RepairInstall.Text" xml:space="preserve">
+    <value>Repair Install?</value>
+  </data>
+  <data name="InvalidFiles.Text" xml:space="preserve">
+    <value>The package contains files with invalid File Extensions ({0})</value>
+  </data>
+  <data name="PackageInstalled.Text" xml:space="preserve">
+    <value>The package is already installed.</value>
+  </data>
+  <data name="RepairInstallWarning.Text" xml:space="preserve">
+    <value>Warning: You have selected to repair the installation of this package.  This will cause the files in the package to overwrite all files that were previously installed.</value>
+  </data>
+  <data name="Return.Text" xml:space="preserve">
+    <value>Return</value>
+  </data>
+  <data name="LegacySkin.Text" xml:space="preserve">
+    <value>Legacy Theme/Container:</value>
+  </data>
+  <data name="NoManifest.Text" xml:space="preserve">
+    <value>This package does not appear to be a valid DNN Extension as it does not have a manifest.  Old (legacy) Themes and Containers do not contain manifests.  If this package is a legacy Theme or Container Package please check the appropriate radio button below, and click Next.</value>
+  </data>
+  <data name="Container.Text" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>Not a Theme/Container</value>
+  </data>
+  <data name="Skin.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="CoreLanguageError.Text" xml:space="preserve">
+    <value>The core language for which this language pack is designed is not installed.  Install the core language pack before installing any extension language packs for that language.</value>
+  </data>
+  <data name="DependencyError.Text" xml:space="preserve">
+    <value>This language pack is designed for an extension that does not appear to be installed.</value>
+  </data>
+  <data name="IgnoreWhiteListHelp.Text" xml:space="preserve">
+    <value>The installer maintains a list of allowable files (whitelist) that can be installed into the site.  If you are confident that the package you are installing is from a reliable source then you can elect to ignore this list.</value>
+  </data>
+  <data name="LegacySkinHelp.Text" xml:space="preserve">
+    <value>Legacy Themes and Containers can be installed using this installer, but as they do not have manifests you must identify that the package is a Legacy Theme or Container (if you are unsure if the Theme/Container is a legacy Theme/Container then check the appropriate option anyway).</value>
+  </data>
+  <data name="RepairInstallHelp.Text" xml:space="preserve">
+    <value>By default the installer will not overwrite the same Package/Version.  Check this box if you would like the Installer to continue and to repair the current installed version.  Otherwise you will not be able to proceed any further with this installation.</value>
+  </data>
+  <data name="BrowseFile.Text" xml:space="preserve">
+    <value>Browse for File:</value>
+  </data>
+  <data name="BrowseFileHelp.Text" xml:space="preserve">
+    <value>Use the Choose File button to browse your local file system to find the extension package to install and then click Next to continue.</value>
+  </data>
+  <data name="Warnings.Help" xml:space="preserve">
+    <value>If you have reached this page it is because the installer needs to gather some more information before proceeding.</value>
+  </data>
+  <data name="Warnings.Title" xml:space="preserve">
+    <value>Upload Results</value>
+  </data>
+  <data name="AcceptLicense.Help" xml:space="preserve">
+    <value>Check this box to accept the terms of the license.</value>
+  </data>
+  <data name="ControlTitle_install.Text" xml:space="preserve">
+    <value>Install Extension</value>
+  </data>
+  <data name="FileSizeRestriction.Text" xml:space="preserve">
+    <value>Your site is configured with a maximum file upload size of {0} MB.</value>
+  </data>
+  <data name="AzureCompact.Text" xml:space="preserve">
+    <value>Install extension without Windows Azure SQL Database verification anyway?</value>
+  </data>
+  <data name="AzureCompactHelp.Text" xml:space="preserve">
+    <value>This site uses Windows Azure SQL Database for database storage, and the package you are currently installing has not been verified by the owner to be compatible with Windows Azure SQL Database.  If a non-compatible extension is installed, it can stop successful backups and restores of the database, and can cause run-time errors once the extension is in use.  You may continue the installation process if you have verified the compatibility of the extension yourself, or click Cancel and contact the owner of the Extension to ask for an Azure SQL Database compatible version.</value>
+  </data>
+  <data name="AzureCompactMessage.Text" xml:space="preserve">
+    <value>This package is not verified to be compatible with Azure SQL Database.</value>
+  </data>
+  <data name="AzureCompactWarning.Text" xml:space="preserve">
+    <value>Warning: You have selected to install the package without Windows Azure SQL Database verification.</value>
+  </data>
+  <data name="NoAzureCompactHelp.Text" xml:space="preserve">
+    <value>This site uses Windows Azure SQL Database for database storage, and the package you are currently installing has been verified by the owner to be incompatible with Windows Azure SQL Database. Please click 'Cancel' to end the installation process.</value>
+  </data>
+  <data name="NoAzureCompactMessage.Text" xml:space="preserve">
+    <value>This package is not compatible with the Windows Azure SQL Database.</value>
+  </data>
+</root>

@@ -27,12 +27,17 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridItem : DataGridItem
+    public class DnnGridItem : GridViewRow
     {
-        public DnnGridItem(int itemIndex, int dataSetIndex, ListItemType type) : base(itemIndex, dataSetIndex, type)
+        public DnnGridItem(int itemIndex, int dataItemIndex, DataControlRowType type, DataControlRowState state)
+            : base(itemIndex, dataItemIndex, type, state)
         {
             
         }
+        //public DnnGridItem(int itemIndex, int dataSetIndex, ListItemType type) : base(itemIndex, dataSetIndex, type)
+        //{
+
+        //}
         //public DnnGridItem(GridTableView ownerTableView, int itemIndex, int dataSetIndex, GridItemType itemType) : base(ownerTableView, itemIndex, dataSetIndex, itemType)
         //{
         //}

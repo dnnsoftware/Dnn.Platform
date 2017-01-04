@@ -47,9 +47,9 @@
 				<dnn:label id="plOperator" runat="server" controlname="ddlOperator" suffix=":" />
 				<dnn:DnnComboBox ID="ddlOperator" runat="server">
 					<Items>
-						<dnn:DnnComboBoxItem Value="Equal" Text="Equal"></dnn:DnnComboBoxItem>
-						<dnn:DnnComboBoxItem Value="NotEqual" Text="NotEqual"></dnn:DnnComboBoxItem>
-						<dnn:DnnComboBoxItem Value="Regex" Text="Regex"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="Equal" Text="Equal"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="NotEqual" Text="NotEqual"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="Regex" Text="Regex"></dnn:DnnComboBoxItem>
 					</Items>
                 </dnn:DnnComboBox>
 			</div>
@@ -61,9 +61,9 @@
 				<dnn:label id="plAction" runat="server" controlname="ddlAction" suffix=":" />
 				<dnn:DnnComboBox ID="ddlAction" runat="server">
 					<Items>
-						<dnn:DnnComboBoxItem Value="Redirect" Text="Redirect"></dnn:DnnComboBoxItem>
-						<dnn:DnnComboBoxItem Value="PermanentRedirect" Text="PermanentRedirect"></dnn:DnnComboBoxItem>
-						<dnn:DnnComboBoxItem Value="NotFound" Text="NotFound"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="Redirect" Text="Redirect"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="PermanentRedirect" Text="PermanentRedirect"></dnn:DnnComboBoxItem>
+						<asp:ListItem Value="NotFound" Text="NotFound"></dnn:DnnComboBoxItem>
 					</Items>
                 </dnn:DnnComboBox>
 			</div>

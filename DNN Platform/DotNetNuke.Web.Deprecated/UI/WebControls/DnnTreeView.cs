@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 #endregion
@@ -29,11 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnTreeView : TreeView
     {
-
-        //public DnnTreeView()
-        //{
-        //    Utilities.ApplySkin(this);
-        //}
+        public DnnTreeViewContextMenuCollection ContextMenus { get; set; }
 
     }
 }

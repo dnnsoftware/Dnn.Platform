@@ -94,7 +94,7 @@ namespace DotNetNuke.Admin.Containers
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterStyleSheet(Page, "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterStyleSheet(Page, "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

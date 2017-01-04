@@ -82,7 +82,15 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 DataSource = SkinController.GetSkins(Portal, RootPath, Scope)
                                            .ToDictionary(skin => skin.Key, skin => skin.Value);
-                DataBind(SelectedValue);
+
+                if (string.IsNullOrEmpty(SelectedValue))
+                {
+                    DataBind();
+                }
+                else
+                {
+                    DataBind(SelectedValue);
+                }
 
                 if (IncludeNoneSpecificItem)
                 {
@@ -97,7 +105,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             //do not select item during data binding, item will select later
             var selectedValue = SelectedValue;
-            SelectedValue = string.Empty;
+            SelectedValue = null;
 
             base.PerformDataBinding(dataSource);
 

@@ -682,7 +682,7 @@ Namespace DotNetNuke.UI.Utilities
         Public Shared Sub RegisterClientReference(ByVal objPage As Page, ByVal eRef As ClientNamespaceReferences)
             Select Case eRef
                 Case ClientNamespaceReferences.dnn
-                    If Not IsClientScriptBlockRegistered(objPage, "dnn.js") Then
+                    If Not IsClientScriptBlockRegistered(objPage, "dnn.js") AND Not HttpContext.Current.Items.Contains("LEGACY.dnn.js") Then
                         RegisterClientScriptBlock(objPage, "dnn.js", "<script src=""" & ClientAPI.ScriptPath & "dnn.js""></script>")
                         If BrowserSupportsFunctionality(ClientFunctionality.SingleCharDelimiters) = False Then
                             RegisterClientVariable(objPage, "__scdoff", "1", True)                           'SingleCharDelimiters Off!!!

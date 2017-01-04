@@ -30,7 +30,7 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridCheckBoxColumn : CheckBoxColumn
+    public class DnnGridCheckBoxColumn : CheckBoxField
     {
         //#region "Public Properties"
 
