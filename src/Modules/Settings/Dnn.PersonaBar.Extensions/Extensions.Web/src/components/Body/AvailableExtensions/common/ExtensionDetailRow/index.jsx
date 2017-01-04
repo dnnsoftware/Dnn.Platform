@@ -7,7 +7,7 @@ import ColumnSizes from "../ExtensionColumnSizes";
 
 /* eslint-disable react/no-danger */
 const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation}) => (
-    <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px" }}>
+    <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px 0 20px 20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
             <img src={_package.packageIcon.replace("~", "")} />
         </GridCell>
@@ -18,15 +18,15 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation
         <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.version}</p>
         </GridCell>
-        <GridCell columnSize={ColumnSizes[3]}>
+        <GridCell columnSize={ColumnSizes[3]} style={{ paddingRight: 0 }}>
             {_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadPackage" method="GET" target="_blank">
                 <input type="hidden" name="FileName" value={_package.fileName} />
                 <input type="hidden" name="PackageType" value={type} />
-                <button className="dnn-ui-common-button install-download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
+                <button className="dnn-ui-common-button download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
             </form>}
             {!_package.fileName && <form action="/API/PersonaBar/Extensions/DownloadLanguagePackage" method="GET" target="_blank">
                 <input type="hidden" name="CultureCode" value={_package.description} />
-                <button className="dnn-ui-common-button install-download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
+                <button className="dnn-ui-common-button download-button" type="submit" role="secondary">{Localization.get("Download.Button")}</button>
             </form>}
             {!_package.fileName &&
                 <Button className="install-download-button" disabled={doingOperation} onClick={onDeploy.bind(this, _package)}>{Localization.get("Deploy.Button")}</Button>
