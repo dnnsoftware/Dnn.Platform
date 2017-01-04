@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     tabId = portal.HomeTabId;
                                 }
-                                if (string.IsNullOrEmpty(culture))
+                                if (culture == null)
                                 {
                                     culture = portal.DefaultLanguage; //set culture to default if not found specifically
                                 }
