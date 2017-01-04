@@ -321,6 +321,85 @@ AS
 	WHERE CreatedOnDate <= @CutoffDate
 GO
 
+/* DNN-9040: replace split flag if it included in property value. */
+/*************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+    @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS
+BEGIN
+	DECLARE @PivotSql NVARCHAR(MAX)
+
+	SELECT @PivotSql = COALESCE(@PivotSql + ',','') + '[' + PropertyName + ']'
+		FROM {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd
+		INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON ListName = 'DataType' AND SystemList = 1 AND Value IN ( 'Text', 'RichText' ) AND l.EntryID = pd.DataType
+		WHERE ISNULL(pd.PortalID, -1) = ISNULL(@PortalId, -1)
+		AND Deleted = 0
+	ORDER BY ViewOrder
+
+	DECLARE @Sql NVARCHAR(MAX)
+
+	SELECT @Sql = '
+    WITH    ValidDataType
+                AS ( SELECT   EntryID
+                    FROM     {databaseOwner}[{objectQualifier}Lists]
+                    WHERE    ListName = ''DataType''
+                            AND SystemList = 1
+                            AND Value IN ( ''Text'', ''RichText'' )
+                    ),
+                ValidUsers AS
+                (
+                                    SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                        FROM ( SELECT DISTINCT
+                                        ( u.UserID )
+                                FROM      {databaseOwner}[{objectQualifier}Users] u
+                                        INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                        INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+                                        INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalId
+                                        INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                        AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                        AND ((p.PropertyValue IS NOT NULL AND p.PropertyValue <> '''') OR u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                            ) AS T WHERE UserID > @startUserId) AS T
+                            WHERE rownumber <= @numberOfUsers
+                )
+
+	SELECT *
+	FROM (
+		SELECT  u.UserID ,
+				u.DisplayName,
+				u.LastModifiedOnDate,
+				u.Username,
+				u.IsSuperUser,
+				u.Email,
+				u.CreatedOnDate,
+				p.PropertyName,
+				REPLACE(p.PropertyValue, ''$'', ''[$]'') + ''$$$'' +
+						CAST(CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS VARCHAR(10)) + ''$$$'' + p.ExtendedVisibility + ''$$$'' +
+						CONVERT(VARCHAR(20), CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate OR p.LastUpdatedDate IS NULL THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END, 20)
+					AS [PropertyValue]
+		FROM
+			{databaseOwner}[{objectQualifier}Users] u
+			INNER JOIN ValidUsers vu on vu.UserId = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}vw_Profile] p ON p.UserID = u.UserID
+			INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+			INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+		) AS T
+	PIVOT (MAX(PropertyValue) for PropertyName in (' + @PivotSql + ')) AS T
+	ORDER BY UserId
+	'
+	EXECUTE sp_executesql @Sql, 
+                            N'@PortalId INT, @StartDate DATETIME, @startUserId INT, @numberOfUsers INT',
+                            @PortalId, @StartDate, @startUserId, @numberOfUsers
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
