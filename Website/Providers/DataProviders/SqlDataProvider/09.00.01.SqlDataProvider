@@ -91,6 +91,7 @@ UPDATE {databaseOwner}{objectQualifier}Roles SET IsSystemRole=1 WHERE RoleName='
 GO
 
 /* DNN-8950: Performance of GetModuleByDefinition Impacts DB Server Heavily */
+/* DNN-9044: Performance issue */
 /*************************************************/
 
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Modules]', N'V') IS NOT NULL
@@ -101,6 +102,7 @@ CREATE VIEW {databaseOwner}[{objectQualifier}vw_Modules]
 AS
     SELECT
         M.PortalID AS [OwnerPortalID],
+        DM.PackageID,
         T.PortalID,
         TM.TabID,
         TM.TabModuleID,
@@ -138,6 +140,8 @@ AS
         M.AllTabs,
         M.StartDate,
         M.EndDate,
+        T.StartDate AS TabStartDate,
+        T.EndDate AS TabEndDate,
         M.InheritViewPermissions,
         M.IsShareable,
         M.IsShareableViewOnly,
@@ -172,6 +176,8 @@ AS
     WHERE (MC.ControlKey IS NULL)
 GO
 
+/* DNN-8950: Performance of GetModuleByDefinition Impacts DB Server Heavily */
+/****************************************************************************/
 IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
 GO
@@ -260,6 +266,205 @@ AS
 			ELSE
 				SELECT @ProfileID
 		END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (OR host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+	
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+    WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+		AND IsDeleted = 0
+		AND TabId IN (SELECT M.TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+					  LEFT JOIN #TabsLatestPublished TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+                      WHERE M.PackageID = @PackageId AND (M.IsDeleted = 0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL)))
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsersByProfileProperty]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersByProfileProperty]
+    @PortalID		int,
+    @PropertyName   nvarchar(256),
+    @PropertyValue  nvarchar(256),
+    @PageIndex      int,
+    @PageSize       INT,
+    @IncludeDeleted bit,
+    @SuperUsersOnly bit	
+AS
+BEGIN
+	-- Set the page bounds
+	DECLARE @PageLowerBound INT
+	DECLARE @PageUpperBound INT
+	SET @PageLowerBound = @PageSize * @PageIndex
+	SET @PageUpperBound = @PageSize - 1 + @PageLowerBound
+
+	-- Create a temp table TO store the select results
+	CREATE TABLE #PageIndexForUsers
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		UserId int,
+		DisplayName varchar(512)
+	)
+
+	-- Insert into our temp table
+	INSERT INTO #PageIndexForUsers (UserId,DisplayName)
+		SELECT DISTINCT U.UserId, U.DisplayName 
+		FROM {databaseOwner}{objectQualifier}ProfilePropertyDefinition P
+			INNER JOIN {databaseOwner}{objectQualifier}UserProfile     UP ON P.PropertyDefinitionID = UP.PropertyDefinitionID 
+			INNER JOIN {databaseOwner}{objectQualifier}Users           U  ON UP.UserID = U.UserID
+			INNER JOIN {databaseOwner}{objectQualifier}Lists           DT ON DT.EntryID = P.DataType
+			LEFT  JOIN {databaseOwner}{objectQualifier}Lists           L  ON L.ListName = @PropertyName AND L.Value = UP.PropertyValue AND L.Text LIKE @PropertyValue
+		WHERE (PropertyName = @PropertyName)
+		  AND (PropertyValue LIKE @PropertyValue OR PropertyText LIKE @PropertyValue OR (DT.Value = 'List' AND L.EntryID IS NOT NULL ))
+		  AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				    OR IsDeleted Is NULL)
+			AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			AND (P.Portalid = @PortalID OR (@PortalID is null ))
+		ORDER BY U.DisplayName
+
+	SELECT  *
+	FROM	{databaseOwner}{objectQualifier}vw_Users u, 
+			#PageIndexForUsers p
+	WHERE  u.UserId = p.UserId
+			AND (IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+						--less than equal done to cover IsDeleted in (1,0) for IncludeDeleted...else just IsDeleted = 0
+				    OR IsDeleted Is NULL)
+			AND IsSuperUser >= CASE @SuperUsersOnly WHEN 1 THEN 1 ELSE 0 END
+			AND ( PortalId = @PortalID OR (@PortalID is null ))
+			AND p.IndexId >= @PageLowerBound AND p.IndexId <= @PageUpperBound
+		ORDER BY U.DisplayName
+
+	SELECT  TotalRecords = COUNT(*)
+	FROM    #PageIndexForUsers
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetModulePackagesInUse]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePackagesInUse]
+	@PortalID INT,
+	@ForHost BIT
+AS
+BEGIN
+	-- Create a temp table to store the select results
+	CREATE TABLE #TabsLatestPublished
+	(
+		IndexId int IDENTITY (0, 1) NOT NULL,
+		TabId int,
+		ModuleId int
+	);
+
+	WITH Temp AS ( 
+        SELECT ROW_NUMBER() OVER (PARTITION BY TabId ORDER BY Version DESC) AS RowNumber, TabVersionId, TabId
+        FROM {databaseOwner}{objectQualifier}TabVersions
+		WHERE IsPublished = 1		
+    )
+	-- Insert into our temp table
+	INSERT INTO #TabsLatestPublished (TabId, ModuleId)
+	SELECT TLP.TabId, TVD.ModuleId 	
+	FROM Temp TLP
+	INNER JOIN {databaseOwner}{objectQualifier}TabVersionDetails TVD ON TLP.TabVersionId = TVD.TabVersionId 
+	WHERE RowNumber = 1 AND TVD.Action <> 2
+
+	IF (@ForHost = 1)
+		-- Get in use for all host pages and portal pages
+		SELECT AllPackages.*
+		FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM         {databaseOwner}{objectQualifier}Packages       P
+				  INNER JOIN {databaseOwner}{objectQualifier}vw_Modules     M   ON P.PackageID=M.PackageID
+				  INNER JOIN {databaseOwner}{objectQualifier}tabs           T   ON T.TabID=M.TabID
+				  LEFT  JOIN #TabsLatestPublished                           TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE T.IsDeleted=0 AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))
+			) AS InUsePackages
+				ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+	ELSE
+		-- Get in use for portal or host only
+		SELECT AllPackages.* FROM {databaseOwner}{objectQualifier}Packages AS AllPackages
+			INNER JOIN (
+				SELECT DISTINCT P.PackageID
+				FROM         {databaseOwner}{objectQualifier}Packages       P
+				  INNER JOIN {databaseOwner}{objectQualifier}vw_Modules     M   ON P.PackageID=M.PackageID
+				  INNER JOIN {databaseOwner}{objectQualifier}tabs           T   ON T.TabID=M.TabID
+				  LEFT  JOIN #TabsLatestPublished                           TLP ON TLP.TabId = M.TabId AND TLP.ModuleId = M.ModuleID
+				WHERE ((@PortalID IS NULL AND T.PortalID IS NULL) OR T.PortalID = @PortalID)
+				  AND T.IsDeleted=0
+				  AND (M.IsDeleted=0 OR (TLP.TabId IS NOT NULL AND TLP.ModuleId IS NOT NULL))) AS InUsePackages	
+			ON AllPackages.PackageID = InUsePackages.PackageID
+		ORDER BY AllPackages.FriendlyName
+END
+GO
+
+/* DNN-9044: Performance issue */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSearchModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSearchModules
+	@PortalID int
+AS
+BEGIN	
+	DECLARE @currentDate AS [DATETIME] = GETDATE();
+
+	SELECT *
+	FROM {databaseOwner}{objectQualifier}vw_Modules
+	WHERE IsDeleted = 0  
+	  AND IsTabDeleted = 0  
+	  AND IsAdmin = 0
+	  AND (SupportedFeatures & 2) = 2
+	  AND (StartDate <= @currentDate OR StartDate IS NULL) 
+	  AND (EndDate > @currentDate OR EndDate IS NULL) 
+	  AND (TabEndDate > @currentDate OR TabEndDate IS NULL) 
+	  AND (TabStartDate <= @currentDate OR TabStartDate IS NULL) 
+	  AND (NOT (BusinessControllerClass IS NULL))
+	  AND (PortalID = @PortalID OR (PortalID IS NULL AND @PortalID Is NULL))
+	ORDER BY ModuleOrder
+END
 GO
 
 /* DNN-9141: adding temporary table for redirects with error messages */
