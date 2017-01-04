@@ -23,31 +23,35 @@
 using System;
 using System.Data.SqlTypes;
 using System.Globalization;
-using Telerik.Web.UI;
+using System.Web.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnDatePicker : RadDatePicker
+    public class DnnDatePicker : TextBox
     {
         protected override void OnInit(EventArgs e)
         {
-            if (CultureInfo.CurrentCulture.Name == "ar-SA")
-            {
-                Culture.DateTimeFormat.Calendar = new GregorianCalendar();
-            }
+            //if (CultureInfo.CurrentCulture.Name == "ar-SA")
+            //{
+            //    Culture.DateTimeFormat.Calendar = new GregorianCalendar();
+            //}
 
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
-            Utilities.ApplySkin(this);
-            this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
-            var specialDay = new RadCalendarDay();
-            specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
-            specialDay.ItemStyle.CssClass = "dnnCalendarToday";
-            this.Calendar.SpecialDays.Add(specialDay);
-            this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
-            this.MinDate = (DateTime)SqlDateTime.MinValue;
+            //base.EnableEmbeddedBaseStylesheet = false;
+            //Utilities.ApplySkin(this);
+            //this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
+            //var specialDay = new RadCalendarDay();
+            //specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
+            //specialDay.ItemStyle.CssClass = "dnnCalendarToday";
+            //this.Calendar.SpecialDays.Add(specialDay);
+            //this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
+            //this.MinDate = (DateTime)SqlDateTime.MinValue;
         }
+
+        public DateTime? SelectedDate { get; set; }
+
+        public TextBox DateInput { get; set; }
     }
 }

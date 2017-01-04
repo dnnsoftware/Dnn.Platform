@@ -1264,60 +1264,6 @@ namespace DotNetNuke.Modules.Admin.Host {
         protected global::System.Web.UI.WebControls.CheckBox chkMsAjaxCdn;
         
         /// <summary>
-        /// plTelerikCdn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTelerikCdn;
-        
-        /// <summary>
-        /// chkTelerikCdn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkTelerikCdn;
-        
-        /// <summary>
-        /// plTelerikBasicUrl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTelerikBasicUrl;
-        
-        /// <summary>
-        /// txtTelerikBasicUrl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTelerikBasicUrl;
-        
-        /// <summary>
-        /// plTelerikSecureUrl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plTelerikSecureUrl;
-        
-        /// <summary>
-        /// txtTelerikSecureUrl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTelerikSecureUrl;
-        
-        /// <summary>
         /// plEnableCDN control.
         /// </summary>
         /// <remarks>
@@ -2207,7 +2153,7 @@ namespace DotNetNuke.Modules.Admin.Host {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.UI.UserControls.LabelControl plImprovementProgram;
-
+        
         /// <summary>
         /// chkImprovementProgram control.
         /// </summary>
@@ -2216,7 +2162,7 @@ namespace DotNetNuke.Modules.Admin.Host {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkImprovementProgram;
-
+        
         /// <summary>
         /// plShowCriticalErrors control.
         /// </summary>

@@ -25,202 +25,200 @@
 
                 <div class="dnnFormItem">
                     <dnn:DnnGrid ID="languagesGrid" runat="server" AutoGenerateColumns="false" EnableViewState="True" OnNeedDataSource="LanguagesGrid_NeedDataSource">
-                        <MasterTableView>
-                            <ItemStyle VerticalAlign="Top" HorizontalAlign="Center" />
-                            <AlternatingItemStyle VerticalAlign="Top" HorizontalAlign="Center" />
-                            <HeaderStyle VerticalAlign="Bottom" HorizontalAlign="Center" Wrap="false" />
-                            <Columns>
-                                <dnn:DnnGridTemplateColumn ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left">
-                                    <HeaderTemplate>
-                                        <%# LocalizeString("Culture.Header")%>
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <dnn:DnnLanguageLabel ID="translationStatusLabel" runat="server" Language='<%# Eval("Code") %>' />
-                                        <asp:Label ID="defaultLanguageMessageLabel" runat="server" CssClass="NormalRed" Text="**"
-                                            Visible='<%# IsDefaultLanguage(Eval("Code").ToString()) %>' />
-                                    </ItemTemplate>
-                                </dnn:DnnGridTemplateColumn>
-                                <dnn:DnnGridTemplateColumn ItemStyle-Width="80px">
-                                    <HeaderTemplate>
-                                        <%# LocalizeString("Enabled.Header")%>
-                                        <asp:Label ID="enabledMessageLabel" runat="server" CssClass="NormalRed" Text="*"
-                                            Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <asp:CheckBox ID="enabledCheckbox" runat="server" AutoPostBack="True" CommandArgument='<%# Eval("LanguageId") %>'
-                                            Enabled='<%# CanEnableDisable(Eval("Code").ToString()) %>' 
-                                            OnCheckedChanged="enabledCheckbox_CheckChanged" CssClass="normalCheckBox" />
-                                    </ItemTemplate>
-                                </dnn:DnnGridTemplateColumn>
-                                <dnn:DnnGridTemplateColumn ItemStyle-Width="80px">
-                                    <HeaderTemplate>
-                                        <%# LocalizeString("Settings")%>
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <asp:HyperLink ID="editLink" runat="server" NavigateUrl='<%# GetEditUrl(Eval("LanguageId").ToString()) %>'>
-                                            <dnn:DnnImage ID="editImage" runat="server" IconKey="Edit" resourcekey="Edit" />
-                                        </asp:HyperLink>
-                                    </ItemTemplate>
-                                </dnn:DnnGridTemplateColumn>
-                                <dnn:DnnGridTemplateColumn HeaderStyle-Width="194px">
-                                    <HeaderTemplate>
-                                        <table class="DnnGridNestedTable" style="width: 180px;">
-                                            <caption>
-                                                <%# LocalizeString("Static.Header") %></caption>
+                        <RowStyle VerticalAlign="Top" HorizontalAlign="Center" />
+                        <AlternatingRowStyle VerticalAlign="Top" HorizontalAlign="Center" />
+                        <HeaderStyle VerticalAlign="Bottom" HorizontalAlign="Center" Wrap="false" />
+                        <Columns>
+                            <dnn:DnnGridTemplateColumn ItemStyle-HorizontalAlign="Left" HeaderStyle-HorizontalAlign="Left">
+                                <HeaderTemplate>
+                                    <%# LocalizeString("Culture.Header")%>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <dnn:DnnLanguageLabel ID="translationStatusLabel" runat="server" Language='<%# Eval("Code") %>' />
+                                    <asp:Label ID="defaultLanguageMessageLabel" runat="server" CssClass="NormalRed" Text="**"
+                                        Visible='<%# IsDefaultLanguage(Eval("Code").ToString()) %>' />
+                                </ItemTemplate>
+                            </dnn:DnnGridTemplateColumn>
+                            <dnn:DnnGridTemplateColumn ItemStyle-Width="80px">
+                                <HeaderTemplate>
+                                    <%# LocalizeString("Enabled.Header")%>
+                                    <asp:Label ID="enabledMessageLabel" runat="server" CssClass="NormalRed" Text="*"
+                                        Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:CheckBox ID="enabledCheckbox" runat="server" AutoPostBack="True" CommandArgument='<%# Eval("LanguageId") %>'
+                                        Enabled='<%# CanEnableDisable(Eval("Code").ToString()) %>' 
+                                        OnCheckedChanged="enabledCheckbox_CheckChanged" CssClass="normalCheckBox" />
+                                </ItemTemplate>
+                            </dnn:DnnGridTemplateColumn>
+                            <dnn:DnnGridTemplateColumn ItemStyle-Width="80px">
+                                <HeaderTemplate>
+                                    <%# LocalizeString("Settings")%>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:HyperLink ID="editLink" runat="server" NavigateUrl='<%# GetEditUrl(Eval("LanguageId").ToString()) %>'>
+                                        <dnn:DnnImage ID="editImage" runat="server" IconKey="Edit" resourcekey="Edit" />
+                                    </asp:HyperLink>
+                                </ItemTemplate>
+                            </dnn:DnnGridTemplateColumn>
+                            <dnn:DnnGridTemplateColumn HeaderStyle-Width="194px">
+                                <HeaderTemplate>
+                                    <table class="DnnGridNestedTable" style="width: 180px;">
+                                        <caption>
+                                            <%# LocalizeString("Static.Header") %></caption>
+                                        <tbody>
+                                            <tr>
+                                                <%
+                                                    if (UserInfo.IsSuperUser)
+                                                    {%>
+                                                <td id="Td2" style="width: 60px;" runat="server">
+                                                    <%# LocalizeString("System")%>
+                                                </td>
+                                                <td id="Td1" style="width: 60px;" runat="server">
+                                                    <%# LocalizeString("Host")%>
+                                                </td>
+                                                <td style="width: 60px;">
+                                                    <%# LocalizeString("Portal")%>
+                                                </td>
+                                                <%
+                                                    }
+                                                    else
+                                                    {%>
+                                                <td style="width: 180px;">
+                                                    <%# LocalizeString("Portal")%>
+                                                </td>
+                                                <%
+                                                    }%>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <%
+                                        if (UserInfo.IsSuperUser)
+                                        {%>
+                                    <table class="DnnGridNestedTable" style="width: 180px;">
+                                        <%
+                                        }
+                                        else
+                                        {%>
+                                        <table class="DnnGridNestedTable" style="width: 60px;">
+                                            <%
+                                        }%>
                                             <tbody>
                                                 <tr>
                                                     <%
                                                         if (UserInfo.IsSuperUser)
-                                                        {%>
-                                                    <td id="Td2" style="width: 60px;" runat="server">
-                                                        <%# LocalizeString("System")%>
+                                                        {
+                                                    %>
+                                                    <td id="Td4" style="width: 60px; border-width: 0">
+                                                        <asp:HyperLink ID="editSystemLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "System") %>'>
+                                                            <dnn:DnnImage ID="editSystemImage" runat="server" IconKey="Edit" resourcekey="System.Help" />
+                                                        </asp:HyperLink>
                                                     </td>
-                                                    <td id="Td1" style="width: 60px;" runat="server">
-                                                        <%# LocalizeString("Host")%>
-                                                    </td>
-                                                    <td style="width: 60px;">
-                                                        <%# LocalizeString("Portal")%>
-                                                    </td>
-                                                    <%
-                                                        }
-                                                        else
-                                                        {%>
-                                                    <td style="width: 180px;">
-                                                        <%# LocalizeString("Portal")%>
+                                                    <td id="Td3" style="width: 60px;" runat="server">
+                                                        <asp:HyperLink ID="editHostLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "Host") %>'>
+                                                            <dnn:DnnImage ID="editHostImage" runat="server" IconKey="Edit" resourcekey="Host.Help" />
+                                                        </asp:HyperLink>
                                                     </td>
                                                     <%
                                                         }%>
+                                                    <td style="width: 60px;">
+                                                        <asp:HyperLink ID="editPortalLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "Portal") %>'>
+                                                            <dnn:DnnImage ID="editPortalImage" runat="server" IconKey="Edit" resourcekey="Portal.Help" />
+                                                        </asp:HyperLink>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <%
-                                            if (UserInfo.IsSuperUser)
-                                            {%>
-                                        <table class="DnnGridNestedTable" style="width: 180px;">
-                                            <%
-                                            }
-                                            else
-                                            {%>
-                                            <table class="DnnGridNestedTable" style="width: 60px;">
-                                                <%
-                                            }%>
-                                                <tbody>
-                                                    <tr>
-                                                        <%
-                                                            if (UserInfo.IsSuperUser)
-                                                            {
-                                                        %>
-                                                        <td id="Td4" style="width: 60px; border-width: 0">
-                                                            <asp:HyperLink ID="editSystemLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "System") %>'>
-                                                                <dnn:DnnImage ID="editSystemImage" runat="server" IconKey="Edit" resourcekey="System.Help" />
-                                                            </asp:HyperLink>
-                                                        </td>
-                                                        <td id="Td3" style="width: 60px;" runat="server">
-                                                            <asp:HyperLink ID="editHostLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "Host") %>'>
-                                                                <dnn:DnnImage ID="editHostImage" runat="server" IconKey="Edit" resourcekey="Host.Help" />
-                                                            </asp:HyperLink>
-                                                        </td>
-                                                        <%
-                                                            }%>
-                                                        <td style="width: 60px;">
-                                                            <asp:HyperLink ID="editPortalLink" runat="server" NavigateUrl='<%# GetEditKeysUrl(Eval("Code").ToString(), "Portal") %>'>
-                                                                <dnn:DnnImage ID="editPortalImage" runat="server" IconKey="Edit" resourcekey="Portal.Help" />
-                                                            </asp:HyperLink>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                    </ItemTemplate>
-                                </dnn:DnnGridTemplateColumn>
-                                <dnn:DnnGridTemplateColumn UniqueName="ContentLocalization" HeaderStyle-Width="204px">
-                                    <HeaderTemplate>
-                                        <table class="DnnGridNestedTable" style="width: 400px;">
-                                            <caption>
-                                                <%# LocalizeString("Content.Header")%></caption>
-                                            <tr>
-                                                <td style="width: 50px;">
-                                                    <%# LocalizeString("Pages.Header")%>
-                                                </td>
-                                                <td style="width: 50px;">
-                                                    <%# LocalizeString("Translated.Header")%>
-                                                </td>
-                                                <td style="width: 50px;">
-                                                    <%# LocalizeString("Active.Header")%>
-                                                    <asp:Label ID="publishedMessageLabel" runat="server" CssClass="NormalRed" Text="*"
-                                                        Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
-                                                </td>
-                                                <td style="width: 50px;">
-                                                    <%# LocalizeString("Publish.Header")%>
-                                                    <asp:Label ID="Label1" runat="server" CssClass="NormalRed" Text="*"
-                                                        Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
-                                                </td>
-                                                <td style="width: 50px;">
-                                                     <%# LocalizeString("Delete.Header")%>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <table class="DnnGridNestedTable" style="width: 400px;">
-                                            <tr>
-                                                <td style="width: 50px; border-width: 0;vertical-align:bottom">
-                                                    <asp:PlaceHolder ID="PlaceHolder1" runat="server" Visible='<%# IsDefaultLanguage(Eval("Code").ToString()) %>'>
-                                                        <span title="<%# LocalizeString("LocalizablePages")%>"><%# GetLocalizablePages(Eval("Code").ToString())%></span>
-                                                    </asp:PlaceHolder>
-                                                    <asp:PlaceHolder ID="localizationStatus" runat="server" Visible='<%# IsLocalized(Eval("Code").ToString()) %>'>
-                                                        <div>
-                                                            <div style="display: inline-block; ">
-                                                                <span><%# GetLocalizedPages(Eval("Code").ToString())%></span>
-                                                                <span style="font-size: 0.8em">(<%# GetLocalizedStatus(Eval("Code").ToString()) %>)</span><br /><br />
-                                                            </div>
-                                                            <div style="display: inline-block; float:right;">
-                                                                <asp:HyperLink ID="localizeLinkAlt" runat="server" Visible='<%# CanLocalize(Eval("Code").ToString()) %>'>
-                                                                    <asp:Image ID="localizeImageAlt" runat="server" ImageAlign="Middle" IconKey="Languages" ResourceKey="CreateLocalizedPages" />
-                                                                </asp:HyperLink>
-                                                            </div>
+                                </ItemTemplate>
+                            </dnn:DnnGridTemplateColumn>
+                            <dnn:DnnGridTemplateColumn UniqueName="ContentLocalization" HeaderStyle-Width="204px">
+                                <HeaderTemplate>
+                                    <table class="DnnGridNestedTable" style="width: 400px;">
+                                        <caption>
+                                            <%# LocalizeString("Content.Header")%></caption>
+                                        <tr>
+                                            <td style="width: 50px;">
+                                                <%# LocalizeString("Pages.Header")%>
+                                            </td>
+                                            <td style="width: 50px;">
+                                                <%# LocalizeString("Translated.Header")%>
+                                            </td>
+                                            <td style="width: 50px;">
+                                                <%# LocalizeString("Active.Header")%>
+                                                <asp:Label ID="publishedMessageLabel" runat="server" CssClass="NormalRed" Text="*"
+                                                    Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
+                                            </td>
+                                            <td style="width: 50px;">
+                                                <%# LocalizeString("Publish.Header")%>
+                                                <asp:Label ID="Label1" runat="server" CssClass="NormalRed" Text="*"
+                                                    Visible='<%# PortalSettings.ContentLocalizationEnabled %>' />
+                                            </td>
+                                            <td style="width: 50px;">
+                                                    <%# LocalizeString("Delete.Header")%>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <table class="DnnGridNestedTable" style="width: 400px;">
+                                        <tr>
+                                            <td style="width: 50px; border-width: 0;vertical-align:bottom">
+                                                <asp:PlaceHolder ID="PlaceHolder1" runat="server" Visible='<%# IsDefaultLanguage(Eval("Code").ToString()) %>'>
+                                                    <span title="<%# LocalizeString("LocalizablePages")%>"><%# GetLocalizablePages(Eval("Code").ToString())%></span>
+                                                </asp:PlaceHolder>
+                                                <asp:PlaceHolder ID="localizationStatus" runat="server" Visible='<%# IsLocalized(Eval("Code").ToString()) %>'>
+                                                    <div>
+                                                        <div style="display: inline-block; ">
+                                                            <span><%# GetLocalizedPages(Eval("Code").ToString())%></span>
+                                                            <span style="font-size: 0.8em">(<%# GetLocalizedStatus(Eval("Code").ToString()) %>)</span><br /><br />
                                                         </div>
-                                                    </asp:PlaceHolder>
-                                                    <asp:HyperLink ID="localizeLink" runat="server" Visible='<%# !IsLocalized(Eval("Code").ToString()) && CanLocalize(Eval("Code").ToString()) %>'>
-                                                        <asp:Image ID="localizeImage" runat="server" ImageAlign="Middle" IconKey="Languages" ResourceKey="CreateLocalizedPages" />
-                                                    </asp:HyperLink>
-                                                </td>
-                                                <td style="width: 50px;vertical-align:bottom">
-                                                    <span><%# GetTranslatedPages(Eval("Code").ToString())%></span>
-                                                    <span style="font-size: 0.8em">(<%# GetTranslatedStatus(Eval("Code").ToString())%>)</span><br />
-                                                    <asp:HyperLink ID="hyp" runat="server" NavigateUrl='<%# "javascript:getNonTranslatedPages(\"" + Eval("Code").ToString() + "\",\"" + Eval("NativeName").ToString() + "\");"%>'
-                                                        Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' 
-                                                        ToolTip='<%# LocalizeString("GetNonTranslatedPages") %>'>
-                                                        <dnn:DnnImage ID="DnnImage1" runat="server" ResourceKey="GetNonTranslatedPages" IconKey="Translate" />
-                                                    </asp:HyperLink>
-                                                    &nbsp;&nbsp;
-                                                   <asp:LinkButton ID="cmdTranslateAll" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="MarkAllPagesTranslated" CausesValidation="False" ToolTip='<%# LocalizeString("MarkAllPagesTranslated") %>'>
-                                                        <dnn:DnnImage ID="DnnImage2" runat="server" ResourceKey="MarkAllPagesTranslated" IconKey="Grant" />
-                                                    </asp:LinkButton>
-                                                </td>
-                                                <td style="width: 50px; text-align: center;vertical-align:bottom">
-                                                    <asp:CheckBox ID="publishedCheckbox" runat="server" AutoPostBack="True" 
-                                                        Enabled='<%# IsLanguageEnabled(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>'
-                                                        OnCheckedChanged="publishedCheckbox_CheckChanged"
-                                                        Visible='<%# IsLocalized(Eval("Code").ToString()) %>' CssClass="normalCheckBox" />
-                                                </td>
-                                                <td style="width: 50px;vertical-align:bottom">
-                                                    <asp:LinkButton ID="publishButton" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# IsLanguagePublished(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="PublishPages" CausesValidation="False" ToolTip='<%# LocalizeString("PublishTranslatedPages") %>'>
-                                                        <dnn:DnnImage ID="imgPublish" runat="server" ResourceKey="PublishTranslatedPages" IconKey="PublishLanguage" />
-                                                    </asp:LinkButton>
-                                                </td>
-                                                <td style="width: 50px;vertical-align:bottom">
-                                                    <asp:LinkButton ID="cmdDeleteTranslation" runat="server" CommandArgument='<%# Eval("LanguageId") %>' OnClick="cmdDeleteTranslation_Click" CausesValidation="False" Visible='<%# IsLocalized(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>' ToolTip='<%# LocalizeString("cmdDeleteTranslation") %>'>
-                                                        <dnn:DnnImage ID="imgDeleteTranslation" runat="server" ResourceKey="cmdDeleteTranslation" IconKey="Delete" />
-                                                    </asp:LinkButton>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </ItemTemplate>
-                                </dnn:DnnGridTemplateColumn>
-                            </Columns>
-                        </MasterTableView>
+                                                        <div style="display: inline-block; float:right;">
+                                                            <asp:HyperLink ID="localizeLinkAlt" runat="server" Visible='<%# CanLocalize(Eval("Code").ToString()) %>'>
+                                                                <asp:Image ID="localizeImageAlt" runat="server" ImageAlign="Middle" IconKey="Languages" ResourceKey="CreateLocalizedPages" />
+                                                            </asp:HyperLink>
+                                                        </div>
+                                                    </div>
+                                                </asp:PlaceHolder>
+                                                <asp:HyperLink ID="localizeLink" runat="server" Visible='<%# !IsLocalized(Eval("Code").ToString()) && CanLocalize(Eval("Code").ToString()) %>'>
+                                                    <asp:Image ID="localizeImage" runat="server" ImageAlign="Middle" IconKey="Languages" ResourceKey="CreateLocalizedPages" />
+                                                </asp:HyperLink>
+                                            </td>
+                                            <td style="width: 50px;vertical-align:bottom">
+                                                <span><%# GetTranslatedPages(Eval("Code").ToString())%></span>
+                                                <span style="font-size: 0.8em">(<%# GetTranslatedStatus(Eval("Code").ToString())%>)</span><br />
+                                                <asp:HyperLink ID="hyp" runat="server" NavigateUrl='<%# "javascript:getNonTranslatedPages(\"" + Eval("Code").ToString() + "\",\"" + Eval("NativeName").ToString() + "\");"%>'
+                                                    Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' 
+                                                    ToolTip='<%# LocalizeString("GetNonTranslatedPages") %>'>
+                                                    <dnn:DnnImage ID="DnnImage1" runat="server" ResourceKey="GetNonTranslatedPages" IconKey="Translate" />
+                                                </asp:HyperLink>
+                                                &nbsp;&nbsp;
+                                                <asp:LinkButton ID="cmdTranslateAll" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="MarkAllPagesTranslated" CausesValidation="False" ToolTip='<%# LocalizeString("MarkAllPagesTranslated") %>'>
+                                                    <dnn:DnnImage ID="DnnImage2" runat="server" ResourceKey="MarkAllPagesTranslated" IconKey="Grant" />
+                                                </asp:LinkButton>
+                                            </td>
+                                            <td style="width: 50px; text-align: center;vertical-align:bottom">
+                                                <asp:CheckBox ID="publishedCheckbox" runat="server" AutoPostBack="True" 
+                                                    Enabled='<%# IsLanguageEnabled(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>'
+                                                    OnCheckedChanged="publishedCheckbox_CheckChanged"
+                                                    Visible='<%# IsLocalized(Eval("Code").ToString()) %>' CssClass="normalCheckBox" />
+                                            </td>
+                                            <td style="width: 50px;vertical-align:bottom">
+                                                <asp:LinkButton ID="publishButton" runat="server" CommandArgument='<%# Eval("LanguageId") %>' Visible='<%# IsLanguagePublished(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) && IsLocalized(Eval("Code").ToString()) %>' OnClick="PublishPages" CausesValidation="False" ToolTip='<%# LocalizeString("PublishTranslatedPages") %>'>
+                                                    <dnn:DnnImage ID="imgPublish" runat="server" ResourceKey="PublishTranslatedPages" IconKey="PublishLanguage" />
+                                                </asp:LinkButton>
+                                            </td>
+                                            <td style="width: 50px;vertical-align:bottom">
+                                                <asp:LinkButton ID="cmdDeleteTranslation" runat="server" CommandArgument='<%# Eval("LanguageId") %>' OnClick="cmdDeleteTranslation_Click" CausesValidation="False" Visible='<%# IsLocalized(Eval("Code").ToString()) && !IsDefaultLanguage(Eval("Code").ToString()) %>' ToolTip='<%# LocalizeString("cmdDeleteTranslation") %>'>
+                                                    <dnn:DnnImage ID="imgDeleteTranslation" runat="server" ResourceKey="cmdDeleteTranslation" IconKey="Delete" />
+                                                </asp:LinkButton>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ItemTemplate>
+                            </dnn:DnnGridTemplateColumn>
+                        </Columns>
                     </dnn:DnnGrid>
                     <div class="dnnFormItem">
                         <asp:PlaceHolder runat="server" ID="enabledPublishedPlaceHolder">

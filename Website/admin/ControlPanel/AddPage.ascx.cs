@@ -203,7 +203,7 @@ namespace DotNetNuke.UI.ControlPanel
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
-                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
+                var item = new ListItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
                 TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {

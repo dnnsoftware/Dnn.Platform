@@ -26,7 +26,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -41,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             TextBoxWidth = new Unit(100);
             ShowSpinButtons = true;
-            Type = NumericType.Number;
+            //Type = NumericType.Number;
             DecimalDigits = 0;
         }
 
@@ -51,7 +50,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public Unit TextBoxWidth { get; set; }
 
-        public NumericType Type { get; set; }
+        //public NumericType Type { get; set; }
 
         private void TextChanged(object sender, EventArgs e)
         {

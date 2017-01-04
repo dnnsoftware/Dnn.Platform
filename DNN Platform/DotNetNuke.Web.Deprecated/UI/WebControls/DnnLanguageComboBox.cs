@@ -31,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 
-using Telerik.Web.UI;
 
 
 #endregion
@@ -181,8 +180,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (IncludeNoneSpecified && refresh)
             {
-                _englishCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
-                _nativeCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
+                _englishCombo.Items.Insert(0, new ListItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
+                _nativeCombo.Items.Insert(0, new ListItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
             }
         }
 
@@ -242,29 +241,29 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (DisplayMode.ToUpperInvariant() == "ENGLISH")
             {
-                if (_englishCombo.Items.FindItemByValue(_originalValue) != null)
+                if (_englishCombo.FindItemByValue(_originalValue) != null)
                 {
-                    _englishCombo.Items.FindItemByValue(_originalValue).Selected = true;
+                    _englishCombo.FindItemByValue(_originalValue).Selected = true;
                 }
             }
             else
             {
-                if (_nativeCombo.Items.FindItemByValue(_originalValue) != null)
+                if (_nativeCombo.FindItemByValue(_originalValue) != null)
                 {
-                    _nativeCombo.Items.FindItemByValue(_originalValue).Selected = true;
+                    _nativeCombo.FindItemByValue(_originalValue).Selected = true;
                 }
             }
 
             _modeRadioButtonList.Items.FindByValue(DisplayMode).Selected = true;
 
-            foreach (RadComboBoxItem item in _englishCombo.Items)
-            {
-                item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
-            }
-            foreach (RadComboBoxItem item in _nativeCombo.Items)
-            {
-                item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
-            }
+            //foreach (var item in _englishCombo.Items)
+            //{
+            //    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+            //}
+            //foreach (RadComboBoxItem item in _nativeCombo.Items)
+            //{
+            //    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+            //}
 
             _englishCombo.AutoPostBack = AutoPostBack;
             _englishCombo.CausesValidation = CausesValidation;

@@ -43,7 +43,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI.WebControls;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -231,7 +230,7 @@ namespace Dnn.Modules.Languages
         {
 
             string s = "";
-            foreach (GridDataItem dataItem in languagesGrid.MasterTableView.Items)
+            foreach (GridViewRow dataItem in languagesGrid.Rows)
             {
                 var control = dataItem.FindControl(controlName);
                 var button = control as LinkButton;
@@ -301,7 +300,7 @@ namespace Dnn.Modules.Languages
             base.OnInit(e);
 
             languagesComboBox.ModeChanged += languagesComboBox_ModeChanged;
-            languagesGrid.ItemDataBound += languagesGrid_ItemDataBound;
+            languagesGrid.RowDataBound += languagesGrid_ItemDataBound;
             languagesGrid.PreRender += languagesGrid_PreRender;
             updateButton.Click += updateButton_Click;
             cmdDisableLocalization.Click += cmdDisableLocalization_Click;
@@ -473,7 +472,7 @@ namespace Dnn.Modules.Languages
                 if ((sender) is CheckBox)
                 {
                     var enabledCheckbox = (CheckBox)sender;
-                    GridDataItem item = (GridDataItem)enabledCheckbox.NamingContainer;
+                    var item = (DataGridItem)enabledCheckbox.NamingContainer;
                     DnnLanguageLabel code = item.FindControl("translationStatusLabel") as DnnLanguageLabel;
                     Locale locale = LocaleController.Instance.GetLocale(code.Language);
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
@@ -544,9 +543,9 @@ namespace Dnn.Modules.Languages
             BindGrid();
         }
 
-        protected void languagesGrid_ItemDataBound(object sender, GridItemEventArgs e)
+        protected void languagesGrid_ItemDataBound(object sender, GridViewRowEventArgs e)
         {
-            var gridItem = e.Item as GridDataItem;
+            var gridItem = e.Row;
             if (gridItem != null)
             {
                 var locale = gridItem.DataItem as Locale;
@@ -615,14 +614,14 @@ namespace Dnn.Modules.Languages
 
         protected void languagesGrid_PreRender(object sender, EventArgs e)
         {
-            foreach (GridColumn column in languagesGrid.Columns)
+            foreach (DataGridColumn column in languagesGrid.Columns)
             {
-                if ((column.UniqueName == "ContentLocalization"))
+                if ((column.HeaderText == "ContentLocalization"))
                 {
                     column.Visible = PortalSettings.ContentLocalizationEnabled;
                 }
             }
-            languagesGrid.Rebind();
+            languagesGrid.DataBind();
         }
 
         protected void publishedCheckbox_CheckChanged(object sender, EventArgs e)
@@ -632,7 +631,7 @@ namespace Dnn.Modules.Languages
                 if ((sender) is CheckBox)
                 {
                     var publishedCheckbox = (CheckBox)sender;
-                    GridDataItem item = (GridDataItem)publishedCheckbox.NamingContainer;
+                    var item = (DataGridItem)publishedCheckbox.NamingContainer;
                     DnnLanguageLabel code = item.FindControl("translationStatusLabel") as DnnLanguageLabel;
                     Locale locale = LocaleController.Instance.GetLocale(code.Language);
 
@@ -789,10 +788,10 @@ namespace Dnn.Modules.Languages
             BindCLControl();
         }
 
-        protected void LanguagesGrid_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        {
-            languagesGrid.DataSource = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
-        }
+        //protected void LanguagesGrid_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        //{
+        //    languagesGrid.DataSource = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
+        //}
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {

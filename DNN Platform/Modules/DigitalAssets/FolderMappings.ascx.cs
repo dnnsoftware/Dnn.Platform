@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -31,7 +31,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Modules.DigitalAssets
@@ -111,12 +110,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 if (ModuleConfiguration.ModuleControl.SupportsPopUps)
                 {
-                    MappingsGrid.Rebind();
+                    MappingsGrid.DataBind();
                 }
             }
         }
 
-        protected void MappingsGrid_OnItemCommand(object source, GridCommandEventArgs e)
+        protected void MappingsGrid_OnItemCommand(object source, DataGridCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
             {
@@ -138,13 +137,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 FolderMappingsList = folderMappingsList;
-                MappingsGrid.Rebind();
+                MappingsGrid.DataBind();
             }
         }
 
-        protected void MappingsGrid_OnItemDataBound(object sender, GridItemEventArgs e)
+        protected void MappingsGrid_OnItemDataBound(object sender, DataGridItemEventArgs e)
         {
-            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem) return;
+            if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem) return;
 
             var folderMapping = (e.Item.DataItem as FolderMappingInfo);
             if (folderMapping == null || !folderMapping.IsEditable)
@@ -162,11 +161,6 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             var deleteMessage = string.Format(Localization.GetString("DeleteConfirm", LocalResourceFile), folderMapping.MappingName);
             cmdDeleteMapping.OnClientClick = "return confirm(\"" + ClientAPI.GetSafeJSString(deleteMessage) + "\");";
-        }
-
-        protected void MappingsGrid_OnNeedDataSource(object source, GridNeedDataSourceEventArgs e)
-        {
-            MappingsGrid.DataSource = FolderMappingsList;
         }
 
         protected void OnNewMappingClick(object sender, EventArgs e)

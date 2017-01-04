@@ -20,13 +20,14 @@
 #endregion
 #region Usings
 
-using Telerik.Web.UI;
 
 #endregion
 
+using System.Web.UI.WebControls;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnMenuItem : RadMenuItem
+    public class DnnMenuItem : WebControl
     {
         public DnnMenuItem()
         {
@@ -36,8 +37,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnMenuItem(string text, string navigateUrl) : base(text, navigateUrl)
-        {
-        }
+        //public DnnMenuItem(string text, string navigateUrl) : base(text, navigateUrl)
+        //{
+        //}
     }
 }

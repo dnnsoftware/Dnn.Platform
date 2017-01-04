@@ -84,9 +84,6 @@
     </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-    </Reference>
     <Reference Include="WebFormsMvp">
       <HintPath>..\..\..\packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
     </Reference>
@@ -114,10 +111,6 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj">
-      <Project>{7B8E5F63-8BDD-454F-AFCE-0C824C7CAE67}</Project>
-      <Name>DotNetNuke.Modules.Taxonomy</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj">
       <Project>{2595aade-d3e0-4205-b8af-109cb23f4223}</Project>

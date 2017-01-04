@@ -24,48 +24,47 @@ using System;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Services.Localization;
-
-using Telerik.Web.UI;
+using DotNetNuke.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridCheckBoxColumn : GridCheckBoxColumn
+    public class DnnGridCheckBoxColumn : CheckBoxColumn
     {
-        #region "Public Properties"
+        //#region "Public Properties"
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
-            }
-        }
+        //public string LocalResourceFile
+        //{
+        //    get
+        //    {
+        //        return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region "Public Methods"
+        //#region "Public Methods"
 
-        public override GridColumn Clone()
-        {
-            DnnGridCheckBoxColumn dnnGridColumn = new DnnGridCheckBoxColumn();
+        //public override GridColumn Clone()
+        //{
+        //    DnnGridCheckBoxColumn dnnGridColumn = new DnnGridCheckBoxColumn();
 
-            //you should override CopyBaseProperties if you have some column specific properties
-            dnnGridColumn.CopyBaseProperties(this);
+        //    //you should override CopyBaseProperties if you have some column specific properties
+        //    dnnGridColumn.CopyBaseProperties(this);
 
-            return dnnGridColumn;
-        }
+        //    return dnnGridColumn;
+        //}
 
-        public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
-        {
-            base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && !String.IsNullOrEmpty(HeaderText))
-            {
-                cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
-            }
-        }
+        //public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
+        //{
+        //    base.InitializeCell(cell, columnIndex, inItem);
+        //    if (inItem is GridHeaderItem && !String.IsNullOrEmpty(HeaderText))
+        //    {
+        //        cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

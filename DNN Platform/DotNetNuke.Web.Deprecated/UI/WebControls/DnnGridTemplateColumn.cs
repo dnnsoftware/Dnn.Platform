@@ -25,47 +25,46 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Services.Localization;
 
-using Telerik.Web.UI;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridTemplateColumn : GridTemplateColumn
+    public class DnnGridTemplateColumn : TemplateColumn
     {
-        #region "Public Properties"
+        //#region "Public Properties"
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
-            }
-        }
+        //public string LocalResourceFile
+        //{
+        //    get
+        //    {
+        //        return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region "Public Methods"
+        //#region "Public Methods"
 
-        public override GridColumn Clone()
-        {
-            DnnGridTemplateColumn dnnGridColumn = new DnnGridTemplateColumn();
+        //public override GridColumn Clone()
+        //{
+        //    DnnGridTemplateColumn dnnGridColumn = new DnnGridTemplateColumn();
 
-            //you should override CopyBaseProperties if you have some column specific properties
-            dnnGridColumn.CopyBaseProperties(this);
+        //    //you should override CopyBaseProperties if you have some column specific properties
+        //    dnnGridColumn.CopyBaseProperties(this);
 
-            return dnnGridColumn;
-        }
+        //    return dnnGridColumn;
+        //}
 
-        public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
-        {
-            base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && HeaderTemplate == null && !String.IsNullOrEmpty(HeaderText))
-            {
-                cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
-            }
-        }
+        //public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
+        //{
+        //    base.InitializeCell(cell, columnIndex, inItem);
+        //    if (inItem is GridHeaderItem && HeaderTemplate == null && !String.IsNullOrEmpty(HeaderText))
+        //    {
+        //        cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

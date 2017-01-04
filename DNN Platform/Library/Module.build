@@ -50,8 +50,6 @@
     <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll" DestinationFolder="$(WebsiteBinPath)" />
@@ -92,22 +90,6 @@
 
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
-
-    <XmlRead Prefix="n"
-            Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
-            XPath="dotnetnuke/packages/package/@version"
-            XmlFileName="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn">
-      <Output TaskParameter="Value" PropertyName="TelerikVersion" />
-    </XmlRead>
-    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
-    <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
-    <Copy SourceFiles="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="..\Components\Telerik\Package" />
-    <Copy SourceFiles="..\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="..\Components\Telerik\Package\Documentation" />
-    <CreateItem Include="..\Components\Telerik\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="TelerikContent" />
-    </CreateItem>
-    <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
-    <RemoveDir Directories ="..\Components\Telerik\Package" />
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

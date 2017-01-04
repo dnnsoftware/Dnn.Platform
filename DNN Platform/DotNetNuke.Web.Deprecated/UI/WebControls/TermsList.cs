@@ -27,7 +27,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
 
-using Telerik.Web.UI;
 
 
 #endregion
@@ -129,11 +128,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             _TreeView = new DnnTreeView();
             _TreeView.ID = string.Concat(ID, "_Tree");
-            _TreeView.DataTextField = "Name";
-            _TreeView.DataValueField = "TermId";
-            _TreeView.DataFieldID = "TermId";
-            _TreeView.DataFieldParentID = "ParentTermId";
-            _TreeView.NodeClick += TreeViewNodeClick;
+            //_TreeView.DataTextField = "Name";
+            //_TreeView.DataValueField = "TermId";
+            //_TreeView.DataFieldID = "TermId";
+            //_TreeView.DataFieldParentID = "ParentTermId";
+            //_TreeView.NodeClick += TreeViewNodeClick;
 
             Controls.Add(_ListBox);
             Controls.Add(_TreeView);
@@ -154,7 +153,7 @@ namespace DotNetNuke.Web.UI.WebControls
             _TreeView.Height = Height;
             _TreeView.Width = Width;
 
-            _TreeView.ExpandAllNodes();
+            //_TreeView.ExpandAllNodes();
 
             base.OnPreRender(e);
         }
@@ -178,7 +177,7 @@ namespace DotNetNuke.Web.UI.WebControls
             OnSelectedTermChanged(new TermsEventArgs(SelectedTerm));
         }
 
-        private void TreeViewNodeClick(object sender, RadTreeNodeEventArgs e)
+        private void TreeViewNodeClick(object sender, TreeNodeEventArgs e)
         {
             //Raise the SelectedTermChanged Event
             OnSelectedTermChanged(new TermsEventArgs(SelectedTerm));
@@ -205,7 +204,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public void ClearSelectedTerm()
         {
             _ListBox.SelectedIndex = Null.NullInteger;
-            _TreeView.UnselectAllNodes();
+            //_TreeView.UnselectAllNodes();
         }
 
         #endregion

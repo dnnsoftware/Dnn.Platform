@@ -21,16 +21,14 @@
 #region Usings
 
 using System;
-
-using Telerik.Web.UI;
+using System.Web.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnListBox : RadListBox
+    public class DnnListBox : DropDownList
     {
-
         //public DnnListBox()
         //{
         //    Utilities.ApplySkin(this);

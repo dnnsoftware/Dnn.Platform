@@ -23,7 +23,6 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -150,11 +149,11 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Creates a ImageCommandColumnTemplate
         /// </summary>
         /// <returns>A ImageCommandColumnTemplate</returns>
-        private DnnGridImageCommandColumnTemplate CreateTemplate(GridItemType type)
+        private DnnGridImageCommandColumnTemplate CreateTemplate(ListItemType type)
         {
             bool isDesignMode = HttpContext.Current == null;
             var template = new DnnGridImageCommandColumnTemplate(type);
-            if (type != GridItemType.Header)
+            if (type != ListItemType.Header)
             {
                 template.ImageURL = ImageURL;
                 if (!isDesignMode)
@@ -171,7 +170,7 @@ namespace DotNetNuke.Web.UI.WebControls
             template.ShowImage = ShowImage;
             template.Visible = Visible;
 
-            template.Text = type == GridItemType.Header ? HeaderText : Text;
+            template.Text = type == ListItemType.Header ? HeaderText : Text;
 
             //Set Design Mode to True
             template.DesignMode = isDesignMode;
@@ -184,9 +183,9 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         public override void Initialize()
         {
-            ItemTemplate = CreateTemplate(GridItemType.Item);
-            EditItemTemplate = CreateTemplate(GridItemType.EditItem);
-            HeaderTemplate = CreateTemplate(GridItemType.Header);
+            ItemTemplate = CreateTemplate(ListItemType.Item);
+            EditItemTemplate = CreateTemplate(ListItemType.EditItem);
+            HeaderTemplate = CreateTemplate(ListItemType.Header);
 
             if (HttpContext.Current == null)
             {

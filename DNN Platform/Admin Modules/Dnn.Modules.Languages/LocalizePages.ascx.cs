@@ -34,29 +34,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-using Telerik.Web.UI;
-using Telerik.Web.UI.Upload;
-
-//
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2017
-// by DotNetNuke Corporation
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
-// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-// of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
-//
-
 #endregion
 
 namespace Dnn.Modules.Languages
@@ -103,11 +80,11 @@ namespace Dnn.Modules.Languages
         {
             try
             {
-                RadProgressContext progress = RadProgressContext.Current;
+                //RadProgressContext progress = RadProgressContext.Current;
 
-                progress.Speed = "N/A";
-                progress.PrimaryTotal = totalLanguages;
-                progress.PrimaryValue = languageCount;
+                //progress.Speed = "N/A";
+                //progress.PrimaryTotal = totalLanguages;
+                //progress.PrimaryValue = languageCount;
 
                 int total = pageList.Count;
                 for (int i = 0; i <= total - 1; i++)
@@ -115,14 +92,14 @@ namespace Dnn.Modules.Languages
                     TabInfo currentTab = pageList[i];
                     int stepNo = i + 1;
 
-                    progress.SecondaryTotal = total;
-                    progress.SecondaryValue = stepNo;
+                    //progress.SecondaryTotal = total;
+                    //progress.SecondaryValue = stepNo;
                     float secondaryPercent = ((float)stepNo / (float)total) * 100;
-                    progress.SecondaryPercent = Convert.ToInt32(secondaryPercent);
+                    //progress.SecondaryPercent = Convert.ToInt32(secondaryPercent);
                     float primaryPercent = ((((float)languageCount + ((float)stepNo / (float)total)) / (float)totalLanguages)) * 100;
-                    progress.PrimaryPercent = Convert.ToInt32(primaryPercent);
+                    //progress.PrimaryPercent = Convert.ToInt32(primaryPercent);
 
-                    progress.CurrentOperationText = string.Format(Localization.GetString("ProcessingPage", LocalResourceFile), locale.Code, stepNo, total, currentTab.TabName);
+                    //progress.CurrentOperationText = string.Format(Localization.GetString("ProcessingPage", LocalResourceFile), locale.Code, stepNo, total, currentTab.TabName);
 
                     if (!Response.IsClientConnected)
                     {
@@ -133,7 +110,7 @@ namespace Dnn.Modules.Languages
                         break;
                     }
 
-                    progress.TimeEstimated = (total - stepNo) * 100;
+                    //progress.TimeEstimated = (total - stepNo) * 100;
 
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                     
@@ -189,16 +166,16 @@ namespace Dnn.Modules.Languages
             if (!IsPostBack)
             {
                 //Do not display SelectedFilesCount progress indicator.
-                pageCreationProgressArea.ProgressIndicators &= ~ProgressIndicators.SelectedFilesCount;
+                //pageCreationProgressArea.ProgressIndicators &= ~ProgressIndicators.SelectedFilesCount;
             }
-            pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TimeEstimated;
-            pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TransferSpeed;
+            //pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TimeEstimated;
+            //pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TransferSpeed;
 
-            pageCreationProgressArea.Localization.Total = Localization.GetString("TotalLanguages", LocalResourceFile);
-            pageCreationProgressArea.Localization.TotalFiles = Localization.GetString("TotalPages", LocalResourceFile);
-            pageCreationProgressArea.Localization.Uploaded = Localization.GetString("TotalProgress", LocalResourceFile);
-            pageCreationProgressArea.Localization.UploadedFiles = Localization.GetString("Progress", LocalResourceFile);
-            pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
+            //pageCreationProgressArea.Localization.Total = Localization.GetString("TotalLanguages", LocalResourceFile);
+            //pageCreationProgressArea.Localization.TotalFiles = Localization.GetString("TotalPages", LocalResourceFile);
+            //pageCreationProgressArea.Localization.Uploaded = Localization.GetString("TotalProgress", LocalResourceFile);
+            //pageCreationProgressArea.Localization.UploadedFiles = Localization.GetString("Progress", LocalResourceFile);
+            //pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
 
 
             var pageList = GetTabsToLocalize(PortalId, Locale);

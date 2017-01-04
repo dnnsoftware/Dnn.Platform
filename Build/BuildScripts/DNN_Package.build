@@ -26,7 +26,6 @@
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNXE*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Module\DNNPro*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Provider\DNNPro*"/>
-    <InstallExclude Include="$(WebsitePath)\Install\Module\Telerik_Design*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources"/>
     <InstallExclude Include="$(WebsitePath)\Install\Skin\Facebook*"/>
     <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_06.01.02_Install.resources" />
@@ -40,8 +39,6 @@
     <UpgradeExclude Include="$(WebsitePath)\**\System.Web.Extensions.dll" />
     <UpgradeExclude Include="$(WebsitePath)\App_Data\Database.mdf" />
     <UpgradeExclude Include="$(WebsitePath)\App_Data\Database_log.LDF" />
-    <UpgradeExclude Include="$(WebsitePath)\bin\Telerik.Web.UI.dll" />
-    <UpgradeExclude Include="$(WebsitePath)\bin\Telerik.Web.UI.Skins.dll" />
     <UpgradeExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.Html.dll" />
     <UpgradeExclude Include="$(WebsitePath)\Install\Container\*.zip" />
     <UpgradeExclude Include="$(WebsitePath)\Install\Language\*.zip" />

@@ -20,16 +20,20 @@
 #endregion
 #region Usings
 
-using Telerik.Web.UI;
 
 #endregion
+
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
 
-    public class DnnTreeNode : RadTreeNode
+    public class DnnTreeNode : TreeNode
     {
 
-
+        public DnnTreeNode Clone()
+        {
+            return this.MemberwiseClone() as DnnTreeNode;
+        }
     }
 }

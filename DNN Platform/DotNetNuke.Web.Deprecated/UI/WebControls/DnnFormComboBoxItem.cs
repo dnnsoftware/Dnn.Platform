@@ -28,7 +28,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
-using Telerik.Web.UI;
 
 #endregion
 

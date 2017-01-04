@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Web.UI.WebControls;
+
 #region Usings
 
 using System;
@@ -28,14 +31,13 @@ using DotNetNuke.Framework;
 #region Usings
 
 using DotNetNuke.Framework.JavaScriptLibraries;
-using Telerik.Web.UI;
 using DotNetNuke.Services.Localization;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGrid : RadGrid
+    public class DnnGrid : GridView
     {
 
         #region public properties
@@ -48,40 +50,40 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
+            //base.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            if (string.IsNullOrEmpty(ClientSettings.ClientEvents.OnGridCreated))
-            {
-                ClientSettings.ClientEvents.OnGridCreated = "$.dnnGridCreated";
-            }
+            //if (string.IsNullOrEmpty(ClientSettings.ClientEvents.OnGridCreated))
+            //{
+            //    ClientSettings.ClientEvents.OnGridCreated = "$.dnnGridCreated";
+            //}
 
             this.PreRender += new EventHandler(DnnGrid_PreRender);
 
-            this.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", Localization.SharedResourceFile);
+            //this.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", Localization.SharedResourceFile);
         }
 
         void DnnGrid_PreRender(object sender, EventArgs e)
         {
-            var items = this.MasterTableView.Items;
-            if (ScreenRowNumber == 0)
-                ScreenRowNumber = 15;
+            //var items = this.MasterTableView.Items;
+            //if (ScreenRowNumber == 0)
+            //    ScreenRowNumber = 15;
 
-            if (items.Count > ScreenRowNumber)
-            {
-                // need scroll
-                this.ClientSettings.Scrolling.AllowScroll = true;
-                this.ClientSettings.Scrolling.UseStaticHeaders = true;
+            //if (items.Count > ScreenRowNumber)
+            //{
+            //    // need scroll
+            //    this.ClientSettings.Scrolling.AllowScroll = true;
+            //    this.ClientSettings.Scrolling.UseStaticHeaders = true;
 
-                if(RowHeight == 0)
-                    RowHeight = 25;
+            //    if(RowHeight == 0)
+            //        RowHeight = 25;
 
-                this.ClientSettings.Scrolling.ScrollHeight = RowHeight * ScreenRowNumber;
-            }
-            else
-            {
-                this.ClientSettings.Scrolling.AllowScroll = false;                
-            }
+            //    this.ClientSettings.Scrolling.ScrollHeight = RowHeight * ScreenRowNumber;
+            //}
+            //else
+            //{
+            //    this.ClientSettings.Scrolling.AllowScroll = false;                
+            //}
         }
     }
 }

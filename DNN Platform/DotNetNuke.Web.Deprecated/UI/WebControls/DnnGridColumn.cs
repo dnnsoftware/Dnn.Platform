@@ -25,62 +25,61 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Services.Localization;
 
-using Telerik.Web.UI;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridColumn : GridColumn
+    public class DnnGridColumn : BoundColumn
     {
-        #region Public Properties
+        //#region Public Properties
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
-            }
-        }
+        //public string LocalResourceFile
+        //{
+        //    get
+        //    {
+        //        return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Public Methods
+        //#region Public Methods
 
-        public override GridColumn Clone()
-        {
-            var dnnGridColumn = new DnnGridColumn();
-            dnnGridColumn.CopyBaseProperties(this);
-            dnnGridColumn.setHeaderText = HeaderText;
-            return dnnGridColumn;
-        }
+        //public override GridColumn Clone()
+        //{
+        //    var dnnGridColumn = new DnnGridColumn();
+        //    dnnGridColumn.CopyBaseProperties(this);
+        //    dnnGridColumn.setHeaderText = HeaderText;
+        //    return dnnGridColumn;
+        //}
 
-        private String _HeaderText;
+        //private String _HeaderText;
 
-        public override string HeaderText
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(base.HeaderText))
-                    base.HeaderText = Localization.GetString(string.Format("{0}.Header", _HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent));
-                return base.HeaderText;
-            }
-            set
-            {
-                _HeaderText = value;
-                base.HeaderText = "";
-            }
-        }
+        //public override string HeaderText
+        //{
+        //    get
+        //    {
+        //        if (String.IsNullOrEmpty(base.HeaderText))
+        //            base.HeaderText = Localization.GetString(string.Format("{0}.Header", _HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent));
+        //        return base.HeaderText;
+        //    }
+        //    set
+        //    {
+        //        _HeaderText = value;
+        //        base.HeaderText = "";
+        //    }
+        //}
 
-        public String setHeaderText
-        {
-            set
-            {
-                base.HeaderText = value;
-            }
-        }
+        //public String setHeaderText
+        //{
+        //    set
+        //    {
+        //        base.HeaderText = value;
+        //    }
+        //}
 
 
-        #endregion
+        //#endregion
     }
 }

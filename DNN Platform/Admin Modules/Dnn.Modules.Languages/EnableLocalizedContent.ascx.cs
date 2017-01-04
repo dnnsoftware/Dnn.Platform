@@ -32,9 +32,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
-using Telerik.Web.UI;
-using Telerik.Web.UI.Upload;
-
 #endregion
 
 namespace Dnn.Modules.Languages
@@ -89,19 +86,19 @@ namespace Dnn.Modules.Languages
 
         private void ProcessLanguage(IEnumerable<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
         {
-            RadProgressContext progress = RadProgressContext.Current;
+            //RadProgressContext progress = RadProgressContext.Current;
 
-            progress.Speed = "N/A";
-            progress.PrimaryTotal = totalLanguages;
-            progress.PrimaryValue = languageCount;
+            //progress.Speed = "N/A";
+            //progress.PrimaryTotal = totalLanguages;
+            //progress.PrimaryValue = languageCount;
             
 
             int total = pageList.Count();
             if (total == 0)
             {
-                progress.SecondaryTotal = 0;
-                progress.SecondaryValue = 0;
-                progress.SecondaryPercent = 100;
+                //progress.SecondaryTotal = 0;
+                //progress.SecondaryValue = 0;
+                //progress.SecondaryPercent = 100;
             }
 
             for (int i = 0; i < total ; i++)
@@ -109,14 +106,14 @@ namespace Dnn.Modules.Languages
                 TabInfo currentTab = pageList.ElementAt(i);
                 int stepNo = i + 1;
 
-                progress.SecondaryTotal = total;
-                progress.SecondaryValue = stepNo;
+                //progress.SecondaryTotal = total;
+                //progress.SecondaryValue = stepNo;
                 float secondaryPercent = ((float) stepNo/(float) total) * 100;
-                progress.SecondaryPercent = Convert.ToInt32(secondaryPercent);
+                //progress.SecondaryPercent = Convert.ToInt32(secondaryPercent);
                 float primaryPercent = ((((float)languageCount + ((float)stepNo / (float)total)) / (float)totalLanguages)) * 100;
-                progress.PrimaryPercent = Convert.ToInt32(primaryPercent);
+                //progress.PrimaryPercent = Convert.ToInt32(primaryPercent);
                 
-                progress.CurrentOperationText = string.Format(Localization.GetString("ProcessingPage", LocalResourceFile), locale.Code, stepNo, total, currentTab.TabName);
+                //progress.CurrentOperationText = string.Format(Localization.GetString("ProcessingPage", LocalResourceFile), locale.Code, stepNo, total, currentTab.TabName);
 
                 if (!Response.IsClientConnected)
                 {
@@ -127,7 +124,7 @@ namespace Dnn.Modules.Languages
                     break;
                 }
 
-                progress.TimeEstimated = (total - stepNo)*100;
+                //progress.TimeEstimated = (total - stepNo)*100;
 
                 if (locale.Code == PortalDefault)
                 {
@@ -180,17 +177,17 @@ namespace Dnn.Modules.Languages
             if (!IsPostBack)
             {
                 //Do not display SelectedFilesCount progress indicator.
-                pageCreationProgressArea.ProgressIndicators &= ~ProgressIndicators.SelectedFilesCount;
+                //pageCreationProgressArea.ProgressIndicators &= ~ProgressIndicators.SelectedFilesCount;
             }
             
-            pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TimeEstimated;
-            pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TransferSpeed;
+            //pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TimeEstimated;
+            //pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TransferSpeed;
 
-            pageCreationProgressArea.Localization.Total = Localization.GetString("TotalLanguages", LocalResourceFile);
-            pageCreationProgressArea.Localization.TotalFiles = Localization.GetString("TotalPages", LocalResourceFile);
-            pageCreationProgressArea.Localization.Uploaded = Localization.GetString("TotalProgress", LocalResourceFile);
-            pageCreationProgressArea.Localization.UploadedFiles = Localization.GetString("Progress", LocalResourceFile);
-            pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
+            //pageCreationProgressArea.Localization.Total = Localization.GetString("TotalLanguages", LocalResourceFile);
+            //pageCreationProgressArea.Localization.TotalFiles = Localization.GetString("TotalPages", LocalResourceFile);
+            //pageCreationProgressArea.Localization.Uploaded = Localization.GetString("TotalProgress", LocalResourceFile);
+            //pageCreationProgressArea.Localization.UploadedFiles = Localization.GetString("Progress", LocalResourceFile);
+            //pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
         }
 
         protected void cancelButton_Click(object sender, EventArgs e)

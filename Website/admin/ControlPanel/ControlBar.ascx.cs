@@ -912,7 +912,7 @@ namespace DotNetNuke.UI.ControlPanels
 		{
 			foreach (var portal in LoadPortalsList())
 			{
-				controlBar_SwitchSite.Items.Add(new DnnComboBoxItem(portal[0], portal[1]));
+				controlBar_SwitchSite.Items.Add(new ListItem(portal[0], portal[1]));
 			}
 		}
 
@@ -923,8 +923,8 @@ namespace DotNetNuke.UI.ControlPanels
                 const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
                 foreach (var lang in LoadLanguagesList())
                 {
-                    var item = new DnnComboBoxItem(lang[0], lang[1]);
-                    item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                    var item = new ListItem(lang[0], lang[1]);
+                    //item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
                     if (lang[2] == "true")
                     {
                         item.Selected = true;

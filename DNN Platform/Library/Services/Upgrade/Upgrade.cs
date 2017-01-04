@@ -2856,14 +2856,6 @@ namespace DotNetNuke.Services.Upgrade
                 PackageController.Instance.SaveExtensionPackage(pkg);
             }
 
-            //Telerik.Web module needs to be made a system package
-            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Telerik.Web");
-            if (pkg != null)
-            {
-                pkg.IsSystemPackage = true;
-                PackageController.Instance.SaveExtensionPackage(pkg);
-            }
-
             //jQuery needs to be made a system package
             pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "jQuery");
             if (pkg != null)

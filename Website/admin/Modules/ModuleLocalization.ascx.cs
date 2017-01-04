@@ -31,9 +31,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
-using Telerik.Web.UI;
-
-
 #endregion
 
 namespace DotNetNuke.Admin.Modules
@@ -181,13 +178,13 @@ namespace DotNetNuke.Admin.Modules
 			return moduleList;
 		}
 
-		private void ToggleCheckBox(GridDataItem dataItem, bool toggleValue)
+		private void ToggleCheckBox(DataGridItem dataItem, bool toggleValue)
 		{
 			var rowCheckBox = (CheckBox)dataItem.FindControl("rowCheckBox");
 			if (rowCheckBox.Visible)
 			{
 				rowCheckBox.Checked = toggleValue;
-				dataItem.Selected = toggleValue;
+				//dataItem.Selected = toggleValue;
 			}
 		}
 
@@ -228,63 +225,63 @@ namespace DotNetNuke.Admin.Modules
 
 		public void LocalizeSelectedItems(bool localize)
 		{
-			foreach (GridDataItem row in localizedModulesGrid.SelectedItems)
-			{
-				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
-				var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
-                ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
+			//foreach (DataGridItem row in localizedModulesGrid.Items)
+			//{
+			//	var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
+			//	var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
+   //             ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
 
-				if (sourceModule != null)
-				{
-					if (sourceModule.DefaultLanguageModule != null)
-					{
-						if (localize)
-						{
-							//Localize
-                            ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetLocale(sourceModule.CultureCode));
-						}
-						else
-						{
-							//Delocalize
-                            ModuleController.Instance.DeLocalizeModule(sourceModule);
+			//	if (sourceModule != null)
+			//	{
+			//		if (sourceModule.DefaultLanguageModule != null)
+			//		{
+			//			if (localize)
+			//			{
+			//				//Localize
+   //                         ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetLocale(sourceModule.CultureCode));
+			//			}
+			//			else
+			//			{
+			//				//Delocalize
+   //                         ModuleController.Instance.DeLocalizeModule(sourceModule);
 
-							//Mark module as Not Translated
-                            ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
-						}
-					}
-				}
-			}
+			//				//Mark module as Not Translated
+   //                         ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
+			//			}
+			//		}
+			//	}
+			//}
 
-            ModuleController.Instance.ClearCache(TabId);
+   //         ModuleController.Instance.ClearCache(TabId);
 
-			//Rebind localized Modules
-			DataBind();
+			////Rebind localized Modules
+			//DataBind();
 
-			//Raise Changed event
-			OnModuleLocalizationChanged(EventArgs.Empty);
+			////Raise Changed event
+			//OnModuleLocalizationChanged(EventArgs.Empty);
 		}
 
 		public void MarkTranslatedSelectedItems(bool translated)
 		{
-			foreach (GridDataItem row in localizedModulesGrid.SelectedItems)
-			{
-				var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
-				var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
-                ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
+			//foreach (DataGridItem row in localizedModulesGrid.Items)
+			//{
+			//	var localizedModuleId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["ModuleId"];
+			//	var localizedTabId = (int)row.OwnerTableView.DataKeyValues[row.ItemIndex]["TabId"];
+   //             ModuleInfo sourceModule = ModuleController.Instance.GetModule(localizedModuleId, localizedTabId, false);
 
-				if (sourceModule.IsLocalized)
-				{
-                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, translated);
-				}
-			}
+			//	if (sourceModule.IsLocalized)
+			//	{
+   //                 ModuleController.Instance.UpdateTranslationStatus(sourceModule, translated);
+			//	}
+			//}
 
-			ModuleController.Instance.ClearCache(TabId);
+			//ModuleController.Instance.ClearCache(TabId);
 
-            //Raise Changed event
-            OnModuleLocalizationChanged(EventArgs.Empty);
+   //         //Raise Changed event
+   //         OnModuleLocalizationChanged(EventArgs.Empty);
             
-            //Rebind localized Modules
-			DataBind();
+   //         //Rebind localized Modules
+			//DataBind();
 		}
 
 		#endregion
@@ -339,18 +336,18 @@ namespace DotNetNuke.Admin.Modules
 
 		protected void localizedModulesGrid_PreRender(object sender, EventArgs e)
 		{
-			foreach (GridColumn column in localizedModulesGrid.Columns)
+			foreach (DataGridColumn column in localizedModulesGrid.Columns)
 			{
-				if ((column.UniqueName == "Edit"))
+				if ((column.HeaderText == "Edit"))
 				{
 					column.Visible = ShowEditColumn;
 				}
-				if ((column.UniqueName == "Language"))
+				if ((column.HeaderText == "Language"))
 				{
 					column.Visible = ShowLanguageColumn;
 				}
 			}
-			localizedModulesGrid.Rebind();
+			localizedModulesGrid.DataBind();
 
 			footerPlaceHolder.Visible = ShowFooter && Modules.Where(m => !m.IsDefaultLanguage).Count() > 0;
 		}

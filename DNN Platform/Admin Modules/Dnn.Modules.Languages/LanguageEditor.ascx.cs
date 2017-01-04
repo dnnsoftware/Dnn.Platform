@@ -40,7 +40,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
-using Telerik.Web.UI;
+using DotNetNuke.Web.UI.WebControls;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using DNNControls = DotNetNuke.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
@@ -248,22 +248,22 @@ namespace Dnn.Modules.Languages
         /// -----------------------------------------------------------------------------
         private void LoadRootNodes()
         {
-            var node = new RadTreeNode();
+            var node = new DnnTreeNode();
             node.Text = LocalizeString("LocalResources");
             node.Value = "Local Resources";
-            node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
             resourceFiles.Nodes.Add(node);
 
-            node = new RadTreeNode();
+            node = new DnnTreeNode();
             node.Text = LocalizeString("GlobalResources");
             node.Value = "Global Resources";
-            node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
             resourceFiles.Nodes.Add(node);
 
-            node = new RadTreeNode();
+            node = new DnnTreeNode();
             node.Text = LocalizeString("SiteTemplates");
             node.Value = "Site Templates";
-            node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
             resourceFiles.Nodes.Add(node);
 
         }
@@ -455,15 +455,14 @@ namespace Dnn.Modules.Languages
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             rbMode.SelectedIndexChanged += rbMode_SelectedIndexChanged;
-            resourceFiles.NodeClick += resourceFiles_NodeClick;
-            resourceFiles.NodeExpand += resourceFiles_NodeExpand;
-            resourcesGrid.ItemDataBound += resourcesGrid_ItemDataBound;
-            resourcesGrid.NeedDataSource += resourcesGrid_NeedDataSource;
+            resourceFiles.SelectedNodeChanged += resourceFiles_NodeClick;
+            resourceFiles.TreeNodeExpanded += resourceFiles_NodeExpand;
+            resourcesGrid.RowDataBound += resourcesGrid_ItemDataBound;
 
             resourcesGrid.AllowPaging = UsePaging;
             resourcesGrid.PageSize = PageSize;
             resourcesGrid.ScreenRowNumber = PageSize;
-            resourcesGrid.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", LocalResourceFile);
+            //resourcesGrid.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", LocalResourceFile);
         }
 
         /// -----------------------------------------------------------------------------
@@ -665,9 +664,9 @@ namespace Dnn.Modules.Languages
                 var changedResources = new Dictionary<string, string>();
 
                 // only items different from default will be saved
-                foreach (GridDataItem di in resourcesGrid.Items)
+                foreach (GridViewRow di in resourcesGrid.Rows)
                 {
-                    if ((di.ItemType == GridItemType.Item || di.ItemType == GridItemType.AlternatingItem))
+                    if (di.RowType == DataControlRowType.DataRow)
                     {
                         var resourceKey = (Label)di.FindControl("resourceKey");
                         var txtValue = (TextBox)di.FindControl("txtValue");
@@ -797,108 +796,108 @@ namespace Dnn.Modules.Languages
             }
         }
 
-        protected void resourceFiles_NodeClick(object sender, RadTreeNodeEventArgs e)
+        protected void resourceFiles_NodeClick(object sender, EventArgs e)
         {
-            try
-            {
-                if (e.Node.Nodes.Count == 0)
-                {
-                    SelectedResourceFile = e.Node.Value;
-                    try
-                    {
-                        BindGrid(true);
-                    }
-                    catch
-                    {
-						DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Save.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                    }
-                }
-                //Module failed to load
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+      //      try
+      //      {
+      //          if (e.Node.Nodes.Count == 0)
+      //          {
+      //              SelectedResourceFile = e.Node.Value;
+      //              try
+      //              {
+      //                  BindGrid(true);
+      //              }
+      //              catch
+      //              {
+						//DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Save.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+      //              }
+      //          }
+      //          //Module failed to load
+      //      }
+      //      catch (Exception exc)
+      //      {
+      //          Exceptions.ProcessModuleLoadException(this, exc);
+      //      }
         }
 
-        protected void resourceFiles_NodeExpand(object sender, RadTreeNodeEventArgs e)
+        protected void resourceFiles_NodeExpand(object sender, EventArgs e)
         {
-            RadTreeNode node = default(RadTreeNode);
-            switch (e.Node.Value)
-            {
-                case "Local Resources":
-                    node = new RadTreeNode();
-                    node.Text = "Admin";
-                    node.Value = Server.MapPath("~/Admin");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = "Controls";
-                    node.Value = Server.MapPath("~/Controls");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = "DesktopModules";
-                    node.Value = Server.MapPath("~/DesktopModules");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = "Install";
-                    node.Value = Server.MapPath("~/Install");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
-                    node = new RadTreeNode();
-                    node.Text = "Providers";
-                    node.Value = Server.MapPath("~/Providers");
-                    node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                    e.Node.Nodes.Add(node);
+            //RadTreeNode node = default(RadTreeNode);
+            //switch (e.Node.Value)
+            //{
+            //    case "Local Resources":
+            //        node = new RadTreeNode();
+            //        node.Text = "Admin";
+            //        node.Value = Server.MapPath("~/Admin");
+            //        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //        e.Node.Nodes.Add(node);
+            //        node = new RadTreeNode();
+            //        node.Text = "Controls";
+            //        node.Value = Server.MapPath("~/Controls");
+            //        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //        e.Node.Nodes.Add(node);
+            //        node = new RadTreeNode();
+            //        node.Text = "DesktopModules";
+            //        node.Value = Server.MapPath("~/DesktopModules");
+            //        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //        e.Node.Nodes.Add(node);
+            //        node = new RadTreeNode();
+            //        node.Text = "Install";
+            //        node.Value = Server.MapPath("~/Install");
+            //        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //        e.Node.Nodes.Add(node);
+            //        node = new RadTreeNode();
+            //        node.Text = "Providers";
+            //        node.Value = Server.MapPath("~/Providers");
+            //        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //        e.Node.Nodes.Add(node);
 
-                    if (HasLocalResources(Path.Combine(Globals.HostMapPath, "Skins")))
-                    {
-                        node = new RadTreeNode();
-                        node.Text = LocalizeString("HostSkins");
-                        node.Value = Path.Combine(Globals.HostMapPath, "Skins");
-                        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                        e.Node.Nodes.Add(node);
-                    }
+            //        if (HasLocalResources(Path.Combine(Globals.HostMapPath, "Skins")))
+            //        {
+            //            node = new RadTreeNode();
+            //            node.Text = LocalizeString("HostSkins");
+            //            node.Value = Path.Combine(Globals.HostMapPath, "Skins");
+            //            node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //            e.Node.Nodes.Add(node);
+            //        }
 
-                    string portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
-                    if (Directory.Exists(portalSkinFolder) && (PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId))
-                    {
-                        node = new RadTreeNode();
-                        node.Text = LocalizeString("PortalSkins");
-                        node.Value = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
-                        node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
-                        e.Node.Nodes.Add(node);
-                    }
-                    break;
-                case "Global Resources":
-                    GetResxFiles(Server.MapPath("~/App_GlobalResources"), e);
-                    break;
-                case "Site Templates":
-                    GetResxFiles(Server.MapPath("~/Portals/_default"), e);
-                    break;
-                default:
-                    GetResxDirectories(e.Node.Value, e);
-                    GetResxFiles(e.Node.Value, e);
-                    break;
-            }
+            //        string portalSkinFolder = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
+            //        if (Directory.Exists(portalSkinFolder) && (PortalSettings.ActiveTab.ParentId == PortalSettings.AdminTabId))
+            //        {
+            //            node = new RadTreeNode();
+            //            node.Text = LocalizeString("PortalSkins");
+            //            node.Value = Path.Combine(PortalSettings.HomeSystemDirectoryMapPath, "Skins");
+            //            node.ExpandMode = TreeNodeExpandMode.ServerSideCallBack;
+            //            e.Node.Nodes.Add(node);
+            //        }
+            //        break;
+            //    case "Global Resources":
+            //        GetResxFiles(Server.MapPath("~/App_GlobalResources"), e);
+            //        break;
+            //    case "Site Templates":
+            //        GetResxFiles(Server.MapPath("~/Portals/_default"), e);
+            //        break;
+            //    default:
+            //        GetResxDirectories(e.Node.Value, e);
+            //        GetResxFiles(e.Node.Value, e);
+            //        break;
+            //}
 
-            e.Node.Expanded = true;
+            //e.Node.Expanded = true;
         }
 
-        private void GetResxDirectories(string path, RadTreeNodeEventArgs e)
+        private void GetResxDirectories(string path, EventArgs e)
         {
-            foreach (string folder in Directory.GetDirectories(path))
-            {
-                var folderInfo = new DirectoryInfo(folder);
-                var node = new RadTreeNode { Value = folderInfo.FullName, Text = folderInfo.Name, ExpandMode = TreeNodeExpandMode.ServerSideCallBack };
+            //foreach (string folder in Directory.GetDirectories(path))
+            //{
+            //    var folderInfo = new DirectoryInfo(folder);
+            //    var node = new RadTreeNode { Value = folderInfo.FullName, Text = folderInfo.Name, ExpandMode = TreeNodeExpandMode.ServerSideCallBack };
 
-                if (HasLocalResources(folderInfo.FullName))
-                {
-                    e.Node.Nodes.Add(node);
-                }
-            }
+            //    if (HasLocalResources(folderInfo.FullName))
+            //    {
+            //        e.Node.Nodes.Add(node);
+            //    }
+            //}
         }
 
         private bool HasLocalResources(string path)
@@ -923,39 +922,39 @@ namespace Dnn.Modules.Languages
 
         }
 
-        private void GetResxFiles(string path, RadTreeNodeEventArgs e)
+        private void GetResxFiles(string path, EventArgs e)
         {
-            foreach (string file in Directory.GetFiles(path, "*.resx"))
-            {
-                var fileInfo = new FileInfo(file);
-                var match = FileInfoRegex.Match(fileInfo.Name);
+            //foreach (string file in Directory.GetFiles(path, "*.resx"))
+            //{
+            //    var fileInfo = new FileInfo(file);
+            //    var match = FileInfoRegex.Match(fileInfo.Name);
 
-                if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
-                {
-                    continue;
-                }
-                var node = new RadTreeNode { Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "") };
-                e.Node.Nodes.Add(node);
-            }
+            //    if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
+            //    {
+            //        continue;
+            //    }
+            //    var node = new RadTreeNode { Value = fileInfo.FullName, Text = fileInfo.Name.Replace(".resx", "") };
+            //    e.Node.Nodes.Add(node);
+            //}
         }
 
-        protected void resourcesGrid_ItemDataBound(object sender, GridItemEventArgs e)
+        protected void resourcesGrid_ItemDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
-                if (e.Item.ItemType == GridItemType.AlternatingItem || e.Item.ItemType == GridItemType.Item)
+                if (e.Row.RowType == DataControlRowType.DataRow)
                 {
                     HyperLink c = null;
-                    c = (HyperLink)e.Item.FindControl("lnkEdit");
+                    c = (HyperLink)e.Row.FindControl("lnkEdit");
                     if ((c != null))
                     {
                         ClientAPI.AddButtonConfirm(c, Localization.GetString("SaveWarning", LocalResourceFile));
                     }
 
-                    var p = (Pair)((DictionaryEntry)e.Item.DataItem).Value;
+                    var p = (Pair)((DictionaryEntry)e.Row.DataItem).Value;
 
-                    var t = (TextBox)e.Item.FindControl("txtValue");
-                    var d = (TextBox)e.Item.FindControl("txtDefault");
+                    var t = (TextBox)e.Row.FindControl("txtValue");
+                    var d = (TextBox)e.Row.FindControl("txtDefault");
 
                     if (p.First.ToString() == p.Second.ToString() && chkHighlight.Checked && !string.IsNullOrEmpty(p.Second.ToString()))
                     {
@@ -990,10 +989,10 @@ namespace Dnn.Modules.Languages
             }
         }
 
-        protected void resourcesGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
-        {
-            BindGrid(false);
-        }
+        //protected void resourcesGrid_NeedDataSource(object source, GridNeedDataSourceEventArgs e)
+        //{
+        //    BindGrid(false);
+        //}
 
         #endregion
 

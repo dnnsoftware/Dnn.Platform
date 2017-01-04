@@ -169,9 +169,3 @@
 /* Set Z-index of Control Panel */
 body > form #ControlBar_ControlPanel { z-index:1001 !important; /* set higher than module action menus */ }
 
-/* Set Z-index of Telerik Dropdowns */
-body > form > .rcbSlide { z-index:6000!important;} 
-
-/* Set Z-index of Telerik Tree context menu */
-body > form > .RadMenu_Context { z-index: 1000 !important;} 
-

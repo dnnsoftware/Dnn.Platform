@@ -978,24 +978,6 @@
   <data name="plMsAjaxCdn.Text" xml:space="preserve">
     <value>Enable MS Ajax CDN:</value>
   </data>
-  <data name="plTelerikBasicUrl.Help" xml:space="preserve">
-    <value>Enter the basic URL of Telerik CDN, it will use the files on Telerik server if you keep this field empty. You can see more from &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
-  </data>
-  <data name="plTelerikBasicUrl.Text" xml:space="preserve">
-    <value>Telerik CDN Basic URL:</value>
-  </data>
-  <data name="plTelerikCdn.Help" xml:space="preserve">
-    <value>Check this box to enable CDN Settings for Telerik Controls.</value>
-  </data>
-  <data name="plTelerikCdn.Text" xml:space="preserve">
-    <value>Enable Telerik CDN:</value>
-  </data>
-  <data name="plTelerikSecureUrl.Help" xml:space="preserve">
-    <value>Enter the secure URL of Telerik CDN or leave this field blank to use the files on Telerik server.  For more details see &lt;a href="http://www.telerik.com/help/aspnet-ajax/cdn-custom-provider.html" target="_blank"&gt;here&lt;/a&gt;.</value>
-  </data>
-  <data name="plTelerikSecureUrl.Text" xml:space="preserve">
-    <value>Telerik CDN Secure URL:</value>
-  </data>
   <data name="plAsyncTimeout.Help" xml:space="preserve">
     <value>Set a value that indicates the time, in seconds, before asynchronous postbacks time out if no response is received, the value should between 90-9999 seconds.</value>
   </data>

@@ -18,18 +18,16 @@
         </div>
         <dnn:DnnGrid ID="grdProviders" runat="Server" Width="100%" AutoGenerateColumns="false"
             AllowSorting="true">
-            <MasterTableView EditMode="InPlace">
-                <Columns>
-                    <dnn:DnnGridEditColumn ButtonType="ImageButton" EditImageUrl="~/icons/sigma/edit_16X16_standard.png"
-                        CancelImageUrl="~/icons/sigma/cancel_16X16_standard.png" UpdateImageUrl="~/icons/sigma/save_16X16_standard.png" />
-                    <dnn:DnnGridBoundColumn DataField="Name" HeaderText="Name" ReadOnly="true" />
-                    <dnn:DnnGridBoundColumn DataField="Description" HeaderText="Description" ReadOnly="true" />
-                    <dnn:DnnGridCheckBoxColumn DataField="OverridePriority" HeaderText="OverridePriority"
-                        HeaderStyle-Width="0" />
-                    <dnn:DnnGridBoundColumn DataField="Priority" HeaderText="Priority" HeaderStyle-Width="0" />
-                    <dnn:DnnGridCheckBoxColumn DataField="Enabled" HeaderText="Enabled" HeaderStyle-Width="0" />
-                </Columns>
-            </MasterTableView>
+            <Columns>
+                <dnn:DnnGridEditColumn ButtonType="ImageButton" EditImageUrl="~/icons/sigma/edit_16X16_standard.png"
+                    CancelImageUrl="~/icons/sigma/cancel_16X16_standard.png" UpdateImageUrl="~/icons/sigma/save_16X16_standard.png" />
+                <dnn:DnnGridBoundColumn DataField="Name" HeaderText="Name" ReadOnly="true" />
+                <dnn:DnnGridBoundColumn DataField="Description" HeaderText="Description" ReadOnly="true" />
+                <dnn:DnnGridCheckBoxColumn DataField="OverridePriority" HeaderText="OverridePriority"
+                    HeaderStyle-Width="0" />
+                <dnn:DnnGridBoundColumn DataField="Priority" HeaderText="Priority" HeaderStyle-Width="0" />
+                <dnn:DnnGridCheckBoxColumn DataField="Enabled" HeaderText="Enabled" HeaderStyle-Width="0" />
+            </Columns>
         </dnn:DnnGrid>
     </fieldset>
     <h2 id="dnnSiteMap-SectionCoreSettings" class="dnnFormSectionHead">

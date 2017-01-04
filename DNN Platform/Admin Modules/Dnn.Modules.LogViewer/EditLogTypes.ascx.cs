@@ -39,7 +39,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.UI.WebControls;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -84,7 +83,7 @@ namespace Dnn.Modules.LogViewer
             cboLogTypePortalID.DataBind();
 
 // ReSharper disable LocalizableElement
-            var i = new DnnComboBoxItem{Text = Localization.GetString("All"), Value = "*"};
+            var i = new ListItem{Text = Localization.GetString("All"), Value = "*"};
 // ReSharper restore LocalizableElement
             cboLogTypePortalID.Items.Insert(0, i);
 
@@ -101,35 +100,35 @@ namespace Dnn.Modules.LogViewer
 
             int[] items = {1, 2, 3, 4, 5, 10, 25, 100, 250, 500};
             cboKeepMostRecent.Items.Clear();
-            cboKeepMostRecent.Items.Add(new DnnComboBoxItem(Localization.GetString("All"), "*"));
+            cboKeepMostRecent.Items.Add(new ListItem(Localization.GetString("All"), "*"));
             foreach (int item in items)
             {
                 cboKeepMostRecent.Items.Add(item == 1
-                                                ? new DnnComboBoxItem(item + Localization.GetString("LogEntry", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
-                                                : new DnnComboBoxItem(item + Localization.GetString("LogEntries", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+                                                ? new ListItem(item + Localization.GetString("LogEntry", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
+                                                : new ListItem(item + Localization.GetString("LogEntries", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
             }
             int[] items2 = {1, 2, 3, 4, 5, 10, 25, 100, 250, 500, 1000};
             cboThreshold.Items.Clear();
             foreach (int item in items2)
             {
                 cboThreshold.Items.Add(item == 1
-                                           ? new DnnComboBoxItem(item + Localization.GetString("Occurence", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
-                                           : new DnnComboBoxItem(item + Localization.GetString("Occurences", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+                                           ? new ListItem(item + Localization.GetString("Occurence", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture))
+                                           : new ListItem(item + Localization.GetString("Occurences", LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
             }
 
             cboThresholdNotificationTime.Items.Clear();
             foreach (int item in new []{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 60, 90, 120})
             {
-                cboThresholdNotificationTime.Items.Add(new DnnComboBoxItem(item.ToString(CultureInfo.InvariantCulture), item.ToString(CultureInfo.InvariantCulture)));
+                cboThresholdNotificationTime.Items.Add(new ListItem(item.ToString(CultureInfo.InvariantCulture), item.ToString(CultureInfo.InvariantCulture)));
             }
 
             cboThresholdNotificationTimeType.Items.Clear();
             foreach (int item in new[] { 1, 2, 3, 4 })
             {
-                cboThresholdNotificationTimeType.Items.Add(new DnnComboBoxItem(Localization.GetString(string.Format("TimeType_{0}", item), LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
+                cboThresholdNotificationTimeType.Items.Add(new ListItem(Localization.GetString(string.Format("TimeType_{0}", item), LocalResourceFile), item.ToString(CultureInfo.InvariantCulture)));
             }
 // ReSharper disable LocalizableElement
-            var j = new DnnComboBoxItem{Text = Localization.GetString("All"), Value = "*"};
+            var j = new ListItem { Text = Localization.GetString("All"), Value = "*"};
 // ReSharper restore LocalizableElement
             cboLogTypeKey.Items.Insert(0, j);
         }
@@ -201,7 +200,7 @@ namespace Dnn.Modules.LogViewer
             cmdUpdate.Click += OnUpdateClick;
             chkEmailNotificationStatus.CheckedChanged += ChkEmailNotificationStatusCheckedChanged;
             chkIsActive.CheckedChanged += ChkIsActiveCheckedChanged;
-            dgLogTypeConfigInfo.EditCommand += DgLogTypeConfigInfoEditCommand;
+            dgLogTypeConfigInfo.RowCommand += DgLogTypeConfigInfoEditCommand;
 
             try
             {
@@ -321,9 +320,9 @@ namespace Dnn.Modules.LogViewer
             DisableLoggingControls();
         }
 
-        protected void DgLogTypeConfigInfoEditCommand(object source, GridCommandEventArgs e)
+        protected void DgLogTypeConfigInfoEditCommand(object source, GridViewCommandEventArgs e)
         {
-            var logID = Convert.ToString(((GridDataItem)e.Item).GetDataKeyValue("ID"));
+            var logID = Convert.ToString(e.CommandArgument);
             ViewState["LogID"] = logID;
 
             BindDetailData();
@@ -369,7 +368,7 @@ namespace Dnn.Modules.LogViewer
             DisableLoggingControls();
             DisableNotificationControls();
 
-            e.Canceled = true; //disable inline editing in grid
+            dgLogTypeConfigInfo.EditIndex = -1;
         }
 
         #endregion

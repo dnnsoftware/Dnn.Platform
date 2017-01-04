@@ -117,23 +117,21 @@
                             OnDataBound="dnnModule.digitalAssets.gridOnDataBound"
                             OnColumnHidden="dnnModule.digitalAssets.gridOnColumnHidden" /> 
                     </ClientSettings>
-                    <MasterTableView TableLayout="Fixed" AllowCustomSorting="True" AllowSorting="true" EditMode="InPlace" EnableColumnsViewState="false">
-                        <Columns>
-                            <dnnweb:DnnGridClientSelectColumn HeaderStyle-Width="44px" UniqueName="Select" />                        
-                            <dnnweb:DnnGridBoundColumn UniqueName="ItemName" SortExpression="ItemName" DataField="ItemName" HeaderText="Name"  HeaderStyle-Width="100%" />
-                            <dnnweb:DnnGridBoundColumn UniqueName="LastModifiedOnDate" DataField="LastModifiedOnDate" HeaderText="Modified" HeaderStyle-Width="170px" ReadOnly="True" />
-                            <dnnweb:DnnGridBoundColumn UniqueName="Size" DataField="Size" HeaderText="Size" Visible="True" ReadOnly="True" HeaderStyle-Width="80px" />
-                            <dnnweb:DnnGridBoundColumn UniqueName="ItemID" DataField="ItemID" HeaderText="ItemID" Visible="False" ReadOnly="True"/>
-                            <dnnweb:DnnGridBoundColumn UniqueName="IsFolder" DataField="IsFolder" HeaderText="IsFolder" Visible="False" ReadOnly="True"/>
-                            <dnnweb:DnnGridBoundColumn UniqueName="ParentFolder" DataField="ParentFolder" HeaderText="ParentFolder" Visible="True" ReadOnly="True"/>
-                        </Columns>
-                        <NoRecordsTemplate>
-                            <div id="dnnModuleDigitalAssetsGridViewNoItems" class="emptySpace">
-                                <span class="dnnModuleDigitalAssetsNoItems emptySpace"></span>
-                            </div>
-                        </NoRecordsTemplate>
-                        <PagerStyle AlwaysVisible="true" PageButtonCount="6" CssClass="dnnModuleDigitalAssetsPagerStyle" Mode="NextPrevAndNumeric"/>
-                    </MasterTableView>
+                    <Columns>
+                        <dnnweb:DnnGridClientSelectColumn HeaderStyle-Width="44px" UniqueName="Select" />                        
+                        <dnnweb:DnnGridBoundColumn UniqueName="ItemName" SortExpression="ItemName" DataField="ItemName" HeaderText="Name"  HeaderStyle-Width="100%" />
+                        <dnnweb:DnnGridBoundColumn UniqueName="LastModifiedOnDate" DataField="LastModifiedOnDate" HeaderText="Modified" HeaderStyle-Width="170px" ReadOnly="True" />
+                        <dnnweb:DnnGridBoundColumn UniqueName="Size" DataField="Size" HeaderText="Size" Visible="True" ReadOnly="True" HeaderStyle-Width="80px" />
+                        <dnnweb:DnnGridBoundColumn UniqueName="ItemID" DataField="ItemID" HeaderText="ItemID" Visible="False" ReadOnly="True"/>
+                        <dnnweb:DnnGridBoundColumn UniqueName="IsFolder" DataField="IsFolder" HeaderText="IsFolder" Visible="False" ReadOnly="True"/>
+                        <dnnweb:DnnGridBoundColumn UniqueName="ParentFolder" DataField="ParentFolder" HeaderText="ParentFolder" Visible="True" ReadOnly="True"/>
+                    </Columns>
+                    <EmptyDataTemplate>
+                        <div id="dnnModuleDigitalAssetsGridViewNoItems" class="emptySpace">
+                            <span class="dnnModuleDigitalAssetsNoItems emptySpace"></span>
+                        </div>
+                    </EmptyDataTemplate>
+                    <PagerStyle AlwaysVisible="true" PageButtonCount="6" CssClass="dnnModuleDigitalAssetsPagerStyle" Mode="NextPrevAndNumeric"/>
                 </dnnweb:DnnGrid>            
             
             </div>

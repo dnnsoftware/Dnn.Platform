@@ -21,14 +21,13 @@
 #region Usings
 
 using System;
-
-using Telerik.Web.UI;
+using System.Web.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnTreeView : RadTreeView
+    public class DnnTreeView : TreeView
     {
 
         //public DnnTreeView()

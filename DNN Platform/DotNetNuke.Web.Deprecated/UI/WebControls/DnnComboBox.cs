@@ -21,33 +21,33 @@
 #region Usings
 
 using System;
+using System.Web.UI.WebControls;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-
-using Telerik.Web.UI;
+using DotNetNuke.Web.UI.WebControls.Extensions;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnComboBox : RadComboBox
+    public class DnnComboBox : DropDownList
     {
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
-            OnClientLoad = "$.dnnComboBoxLoaded";
-            OnClientFocus = "$.dnnComboBoxHack";
-            OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            OnClientItemsRequested = "$.dnnComboBoxItemRequested";
-            MaxHeight = 240;
-            ZIndex = 100010;
-            Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+            //base.EnableEmbeddedBaseStylesheet = false;
+            //OnClientLoad = "$.dnnComboBoxLoaded";
+            //OnClientFocus = "$.dnnComboBoxHack";
+            //OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            //OnClientItemsRequested = "$.dnnComboBoxItemRequested";
+            //MaxHeight = 240;
+            //ZIndex = 100010;
+            //Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            //Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            //Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            //Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            //Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -59,12 +59,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void AddItem(string text, string value)
         {
-            Items.Add(new DnnComboBoxItem(text, value));
+            Items.Add(new ListItem(text, value));
         }
 
         public void InsertItem(int index, string text, string value)
         {
-            Items.Insert(index, new DnnComboBoxItem(text, value));
+            Items.Insert(index, new ListItem(text, value));
         }
 
         public void DataBind(string initialValue)
@@ -95,6 +95,21 @@ namespace DotNetNuke.Web.UI.WebControls
 					FindItemByValue(initial, true).Selected = true;
                 }
             } 
+        }
+
+        public ListItem FindItemByText(string text, bool ignoreCase = false)
+        {
+            return ignoreCase ? Items.FindByText(text) : Items.FindByTextWithIgnoreCase(text);
+        }
+
+        public ListItem FindItemByValue(string value, bool ignoreCase = false)
+        {
+            return ignoreCase ? Items.FindByValue(value) : Items.FindByValueWithIgnoreCase(value);
+        }
+
+        public int FindItemIndexByValue(string value)
+        {
+            return Items.IndexOf(FindItemByValue(value));
         }
     }
 }

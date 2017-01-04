@@ -34,7 +34,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Installer.Packages;
 
-using Telerik.Web.UI;
 
 
 #endregion
@@ -143,16 +142,16 @@ namespace DotNetNuke.Web.UI.WebControls
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            foreach (RadComboBoxItem item in _moduleCombo.Items)
-            {
-                string imageUrl =
-                    (from pkgs in packages
-                     join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                     where portMods.Value.DesktopModuleID.ToString() == item.Value
-                     select pkgs.IconFile).FirstOrDefault();
+            //foreach (var item in _moduleCombo.Items)
+            //{
+            //    string imageUrl =
+            //        (from pkgs in packages
+            //         join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+            //         where portMods.Value.DesktopModuleID.ToString() == item.Value
+            //         select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            }
+            //    item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            //}
         }
 
         private void BindTabModuleImages(int tabID)
@@ -162,17 +161,17 @@ namespace DotNetNuke.Web.UI.WebControls
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            foreach (RadComboBoxItem item in _moduleCombo.Items)
-            {
-                string imageUrl = (from pkgs in packages
-                                   join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                                   join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                                   join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                                   where tabMods.Value.ModuleID.ToString() == item.Value
-                                   select pkgs.IconFile).FirstOrDefault();
+            //foreach (RadComboBoxItem item in _moduleCombo.Items)
+            //{
+            //    string imageUrl = (from pkgs in packages
+            //                       join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+            //                       join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+            //                       join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+            //                       where tabMods.Value.ModuleID.ToString() == item.Value
+            //                       select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            }
+            //    item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            //}
         }
 
         #endregion
@@ -204,9 +203,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnPreRender(EventArgs e)
         {
-            if (_moduleCombo.Items.FindItemByValue(_originalValue) != null)
+            if (_moduleCombo.FindItemByValue(_originalValue) != null)
             {
-                _moduleCombo.Items.FindItemByValue(_originalValue).Selected = true;
+                _moduleCombo.FindItemByValue(_originalValue).Selected = true;
             }
 
             _moduleCombo.Width = Width;

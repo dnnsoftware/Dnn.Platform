@@ -84,10 +84,6 @@
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Modules\PreviewProfileManagement\DotNetNuke.Modules.PreviewProfileManagement.csproj">
-      <Project>{BB64270B-FFF0-414D-B8A7-AE965BFDFB23}</Project>
-      <Name>DotNetNuke.Modules.PreviewProfileManagement</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
       <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
       <Name>DotNetNuke.Tests.Utilities</Name>

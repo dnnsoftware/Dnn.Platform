@@ -20,38 +20,39 @@
 #endregion
 #region Usings
 
-using Telerik.Web.UI;
 
 #endregion
 
+using System.Web.UI.WebControls;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridEditColumn : GridEditCommandColumn
+    public class DnnGridEditColumn : EditCommandColumn
     {
-        #region "Public Properties"
+        //#region "Public Properties"
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
-            }
-        }
+        //public string LocalResourceFile
+        //{
+        //    get
+        //    {
+        //        return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region "Public Methods"
+        //#region "Public Methods"
 
-        public override GridColumn Clone()
-        {
-            DnnGridEditColumn dnnGridColumn = new DnnGridEditColumn();
+        //public override GridColumn Clone()
+        //{
+        //    DnnGridEditColumn dnnGridColumn = new DnnGridEditColumn();
 
-            //you should override CopyBaseProperties if you have some column specific properties
-            dnnGridColumn.CopyBaseProperties(this);
+        //    //you should override CopyBaseProperties if you have some column specific properties
+        //    dnnGridColumn.CopyBaseProperties(this);
 
-            return dnnGridColumn;
-        }
+        //    return dnnGridColumn;
+        //}
 
-        #endregion
+        //#endregion
     }
 }

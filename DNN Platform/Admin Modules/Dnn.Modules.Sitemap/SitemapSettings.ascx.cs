@@ -26,6 +26,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -36,7 +37,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI.WebControls;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -187,8 +187,8 @@ namespace Dnn.Modules.Sitemap
             AJAX.RegisterScriptManager();
 
             cboSearchEngine.SelectedIndexChanged += OnSearchEngineIndexChanged;
-            grdProviders.UpdateCommand += ProvidersUpdateCommand;
-            grdProviders.ItemCommand += ProvidersItemCommand;
+            grdProviders.RowUpdating += ProvidersUpdateCommand;
+            grdProviders.RowCommand += ProvidersItemCommand;
             lnkResetCache.Click += OnResetCacheClick;
             lnkSaveAll.Click += OnSaveAllClick;
             cmdVerification.Click += OnVerifyClick;
@@ -210,8 +210,6 @@ namespace Dnn.Modules.Sitemap
                 }
 
                 GrdProvidersNeedDataSorce();
-
-                grdProviders.NeedDataSource += OnGridNeedDataSource;
             }
             catch (Exception exc)
             {
@@ -246,102 +244,95 @@ namespace Dnn.Modules.Sitemap
             ResetCache();
         }
 
-        protected void OnGridNeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        protected void ProvidersItemCommand(object source, GridViewCommandEventArgs e)
         {
-            GrdProvidersNeedDataSorce();
-        }
-
-        protected void ProvidersItemCommand(object source, GridCommandEventArgs e)
-        {
-            if (e.CommandName == RadGrid.UpdateCommandName)
+            if (e.CommandName == "Update")
             {
                 if (!Page.IsValid)
                 {
-                    e.Canceled = true;
+                    grdProviders.EditIndex = -1;
                 }
             }
         }
 
-        protected void ProvidersUpdateCommand(object source, GridCommandEventArgs e)
+        protected void ProvidersUpdateCommand(object source, GridViewUpdateEventArgs e)
         {
             //grdProviders.Rebind()
 
-            var editedItem = (GridEditableItem)e.Item;
-            var editMan = editedItem.EditManager;
-            //var editedSiteMap = (SitemapProvider) e.Item.DataItem;
-            var nameCol = ((DnnGrid)source).Columns.FindByUniqueName("Name");
-            var nameEditor = editMan.GetColumnEditor((IGridEditableColumn)nameCol);
-            var key = ((GridTextColumnEditor)nameEditor).Text;
+            //var editedItem = (DataGridItem)e.Item;
+            //var nameCol = ((DnnGrid)source).Columns.Cast<DataGridColumn>().FirstOrDefault(c => c.HeaderText == "Name");
+            //var nameEditor = editMan.GetColumnEditor((IGridEditableColumn)nameCol);
+            //var key = ((GridTextColumnEditor)nameEditor).Text;
 
-            var providers = (List<SitemapProvider>)grdProviders.DataSource;
-            SitemapProvider editedProvider = null;
+            //var providers = (List<SitemapProvider>)grdProviders.DataSource;
+            //SitemapProvider editedProvider = null;
 
-            foreach (var p in providers)
-            {
-                if ((string.Equals(key, p.Name, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    editedProvider = p;
-                }
-            }
+            //foreach (var p in providers)
+            //{
+            //    if ((string.Equals(key, p.Name, StringComparison.InvariantCultureIgnoreCase)))
+            //    {
+            //        editedProvider = p;
+            //    }
+            //}
 
-            var providerEnabled = false;
-            var providerPriorityString = string.Empty;
-            var providerOverride = false;
+            //var providerEnabled = false;
+            //var providerPriorityString = string.Empty;
+            //var providerOverride = false;
 
-            foreach (GridColumn column in e.Item.OwnerTableView.Columns)
-            {
-                if (column is IGridEditableColumn)
-                {
-                    var editableCol = (IGridEditableColumn)column;
+            //foreach (GridColumn column in e.Item.OwnerTableView.Columns)
+            //{
+            //    if (column is IGridEditableColumn)
+            //    {
+            //        var editableCol = (IGridEditableColumn)column;
 
 
-                    if ((editableCol.IsEditable))
-                    {
-                        var editor = editMan.GetColumnEditor(editableCol);
+            //        if ((editableCol.IsEditable))
+            //        {
+            //            var editor = editMan.GetColumnEditor(editableCol);
 
-                        //var editorType = (editor).ToString();
-                        object editorValue = null;
+            //            //var editorType = (editor).ToString();
+            //            object editorValue = null;
 
-                        if ((editor is GridTextColumnEditor))
-                        {
-                            //editorText = ((GridTextColumnEditor) editor).Text;
-                            editorValue = ((GridTextColumnEditor)editor).Text;
-                        }
+            //            if ((editor is GridTextColumnEditor))
+            //            {
+            //                //editorText = ((GridTextColumnEditor) editor).Text;
+            //                editorValue = ((GridTextColumnEditor)editor).Text;
+            //            }
 
-                        if ((editor is GridBoolColumnEditor))
-                        {
-                            //editorText = ((GridBoolColumnEditor) editor).Value.ToString();
-                            editorValue = ((GridBoolColumnEditor)editor).Value;
-                        }
+            //            if ((editor is GridBoolColumnEditor))
+            //            {
+            //                //editorText = ((GridBoolColumnEditor) editor).Value.ToString();
+            //                editorValue = ((GridBoolColumnEditor)editor).Value;
+            //            }
 
-                        if ((column.UniqueName == "Enabled"))
-                        {
-                            providerEnabled = Convert.ToBoolean(editorValue);
-                        }
-                        else if ((column.UniqueName == "Priority"))
-                        {
-                            providerPriorityString = editorValue.ToString();
-                        }
-                        else if ((column.UniqueName == "OverridePriority"))
-                        {
-                            providerOverride = Convert.ToBoolean(editorValue);
-                        }
-                    }
-                }
-            }
+            //            if ((column.UniqueName == "Enabled"))
+            //            {
+            //                providerEnabled = Convert.ToBoolean(editorValue);
+            //            }
+            //            else if ((column.UniqueName == "Priority"))
+            //            {
+            //                providerPriorityString = editorValue.ToString();
+            //            }
+            //            else if ((column.UniqueName == "OverridePriority"))
+            //            {
+            //                providerOverride = Convert.ToBoolean(editorValue);
+            //            }
+            //        }
+            //    }
+            //}
 
-            float providerPriority;
+            //float providerPriority;
 
-            if ((float.TryParse(providerPriorityString, out providerPriority)))
-            {
-                editedProvider.Enabled = providerEnabled;
-                editedProvider.OverridePriority = providerOverride;
-                editedProvider.Priority = providerPriority;
-            }
-            else
-            {
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("valPriority.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-            }
+            //if ((float.TryParse(providerPriorityString, out providerPriority)))
+            //{
+            //    editedProvider.Enabled = providerEnabled;
+            //    editedProvider.OverridePriority = providerOverride;
+            //    editedProvider.Priority = providerPriority;
+            //}
+            //else
+            //{
+            //    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("valPriority.Text", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+            //}
         }
 
         protected void OnSearchEngineIndexChanged(object o, EventArgs e)

@@ -22,14 +22,12 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
-
-using Telerik.Web.UI;
-
+using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
@@ -70,39 +68,39 @@ namespace Dnn.Modules.Languages
 
         #region "Private Methods"
 
-        private void LocalizeSelectedItems(bool localize, RadTreeNodeCollection nodes)
+        private void LocalizeSelectedItems(bool localize, TreeNodeCollection nodes)
         {
-            foreach (RadTreeNode node in nodes)
-            {
-				dynamic moduleLocalization = node.FindControl("moduleLocalization");
-                if (moduleLocalization != null)
-                {
-                    moduleLocalization.LocalizeSelectedItems(localize);
+    //        foreach (var node in nodes)
+    //        {
+				//dynamic moduleLocalization = node.FindControl("moduleLocalization");
+    //            if (moduleLocalization != null)
+    //            {
+    //                moduleLocalization.LocalizeSelectedItems(localize);
 
-                    //Recursively call for child nodes
-                    LocalizeSelectedItems(localize, node.Nodes);
-                }
-            }
+    //                //Recursively call for child nodes
+    //                LocalizeSelectedItems(localize, node.Nodes);
+    //            }
+    //        }
         }
 
-        private void MarkTranslatedSelectedItems(bool translated, RadTreeNodeCollection nodes)
+        private void MarkTranslatedSelectedItems(bool translated, TreeNodeCollection nodes)
         {
-            foreach (RadTreeNode node in nodes)
-            {
-				dynamic moduleLocalization = node.FindControl("moduleLocalization");
-				dynamic tabLocalization = node.FindControl("tabLocalization");
-                if (moduleLocalization != null)
-                {
-                    moduleLocalization.MarkTranslatedSelectedItems(translated);
-                }
-                if (tabLocalization != null)
-                {
-                    tabLocalization.MarkTranslatedSelectedItems(translated);
-                }
+    //        foreach (RadTreeNode node in nodes)
+    //        {
+				//dynamic moduleLocalization = node.FindControl("moduleLocalization");
+				//dynamic tabLocalization = node.FindControl("tabLocalization");
+    //            if (moduleLocalization != null)
+    //            {
+    //                moduleLocalization.MarkTranslatedSelectedItems(translated);
+    //            }
+    //            if (tabLocalization != null)
+    //            {
+    //                tabLocalization.MarkTranslatedSelectedItems(translated);
+    //            }
 
-                //Recursively call for child nodes
-                MarkTranslatedSelectedItems(translated, node.Nodes);
-            }
+    //            //Recursively call for child nodes
+    //            MarkTranslatedSelectedItems(translated, node.Nodes);
+    //        }
         }
 
         #endregion
@@ -115,7 +113,7 @@ namespace Dnn.Modules.Languages
             localizeModuleButton.Click += localizeModuleButton_Click;
             markModuleTranslatedButton.Click += markModuleTranslatedButton_Click;
             markModuleUnTranslatedButton.Click += markModuleUnTranslatedButton_Click;
-            pagesTreeView.NodeDataBound += pagesTreeView_NodeDataBound;
+            //pagesTreeView.NodeDataBound += pagesTreeView_NodeDataBound;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -149,22 +147,22 @@ namespace Dnn.Modules.Languages
             MarkTranslatedSelectedItems(false, pagesTreeView.Nodes);
         }
 
-        protected void pagesTreeView_NodeDataBound(object sender, RadTreeNodeEventArgs e)
+        protected void pagesTreeView_NodeDataBound(object sender, TreeNodeEventArgs e)
         {
-            dynamic moduleLocalization = e.Node.FindControl("moduleLocalization");
-			dynamic tabLocalization = e.Node.FindControl("tabLocalization");
-            var boundTab = e.Node.DataItem as TabInfo;
-            if (boundTab != null)
-            {
-                moduleLocalization.TabId = boundTab.TabID;
-                tabLocalization.ToLocalizeTabId = boundTab.TabID;
+   //         dynamic moduleLocalization = e.Node.FindControl("moduleLocalization");
+			//dynamic tabLocalization = e.Node.FindControl("tabLocalization");
+   //         var boundTab = e.Node.DataItem as TabInfo;
+   //         if (boundTab != null)
+   //         {
+   //             moduleLocalization.TabId = boundTab.TabID;
+   //             tabLocalization.ToLocalizeTabId = boundTab.TabID;
 
-                if (!Page.IsPostBack)
-                {
-                    moduleLocalization.DataBind();
-                    tabLocalization.DataBind();
-                }
-            }
+   //             if (!Page.IsPostBack)
+   //             {
+   //                 moduleLocalization.DataBind();
+   //                 tabLocalization.DataBind();
+   //             }
+   //         }
         }
     }
 }

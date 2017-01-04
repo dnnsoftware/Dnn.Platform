@@ -22,7 +22,6 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Mvp;
 using DotNetNuke.Web.UI.WebControls;
 
-using Telerik.Web.UI;
 using WebFormsMvp;
 
 using Globals = DotNetNuke.Common.Globals;
@@ -92,8 +91,8 @@ namespace DotNetNuke.Modules.MobileManagement
 
             dgCapabilityList.ItemCommand += OnCapabilitiesItemCommand;
             dgCapabilityList.ItemDataBound += CapabilitiesItemDataBound;
-            cboCapabilityValue.ItemsRequested += LoadCapabilityValues;
-            cboCapabilityValue.SelectedIndexChanged += SetCapabilityValue;
+            //cboCapabilityValue.ItemsRequested += LoadCapabilityValues;
+            //cboCapabilityValue.SelectedIndexChanged += SetCapabilityValue;
 
             lnkSave.Click += lnkSave_OnClick;
             lnkCancel.Click += lnkCancel_OnClick;
@@ -158,16 +157,16 @@ namespace DotNetNuke.Modules.MobileManagement
             }
         }
 
-        protected void LoadCapabilityValues(object source, RadComboBoxItemsRequestedEventArgs e)
-        {
-            BindCapabilityValues(e.Text);
-            SetCapabilityAndValue();
-        }
+        //protected void LoadCapabilityValues(object source, RadComboBoxItemsRequestedEventArgs e)
+        //{
+        //    BindCapabilityValues(e.Text);
+        //    SetCapabilityAndValue();
+        //}
 
-        protected void SetCapabilityValue(object source, RadComboBoxSelectedIndexChangedEventArgs e)
-        {
-            _capabilityValue = e.Text;
-        }
+        //protected void SetCapabilityValue(object source, RadComboBoxSelectedIndexChangedEventArgs e)
+        //{
+        //    _capabilityValue = e.Text;
+        //}
 
         #endregion
 
@@ -259,7 +258,7 @@ namespace DotNetNuke.Modules.MobileManagement
 				cboPortal.Items.Clear();
 	            foreach (var portalInfo in portals)
 	            {
-		            cboPortal.Items.Add(new DnnComboBoxItem(portalInfo.PortalName, portalInfo.PortalID.ToString()));
+		            cboPortal.Items.Add(new ListItem(portalInfo.PortalName, portalInfo.PortalID.ToString()));
 	            }
             }
             else

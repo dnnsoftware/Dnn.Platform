@@ -6,15 +6,13 @@
 <div class="dnnForm dnnEditLogTypes" id="dnnEditLogTypes">
     <asp:panel id="pnlLogTypeConfigInfo" runat="server">
 	    <dnn:DnnGrid id="dgLogTypeConfigInfo" runat="server" autogeneratecolumns="false">
-	        <MasterTableView DataKeyNames="ID">
-		        <Columns>
-		            <dnn:DnnGridImageCommandColumn CommandName="Edit" IconKey="Edit" UniqueName="EditColumn" />
-			        <dnn:DnnGridBoundColumn headertext="LogType" datafield="LogTypeFriendlyName" />
-			        <dnn:DnnGridBoundColumn headertext="Portal" datafield="LogTypePortalID" />
-			        <dnn:DnnGridBoundColumn headertext="Active" datafield="LoggingIsActive" />
-			        <dnn:DnnGridBoundColumn headertext="FileName" datafield="LogFilename" />
-		        </Columns>
-            </MasterTableView>
+		    <Columns>
+		        <dnn:DnnGridImageCommandColumn CommandName="Edit" IconKey="Edit" UniqueName="EditColumn" />
+			    <dnn:DnnGridBoundColumn headertext="LogType" datafield="LogTypeFriendlyName" />
+			    <dnn:DnnGridBoundColumn headertext="Portal" datafield="LogTypePortalID" />
+			    <dnn:DnnGridBoundColumn headertext="Active" datafield="LoggingIsActive" />
+			    <dnn:DnnGridBoundColumn headertext="FileName" datafield="LogFilename" />
+		    </Columns>
 	    </dnn:DnnGrid>
 	    <ul class="dnnActions dnnClear">
 	        <li><asp:HyperLink class="dnnPrimaryAction" id="hlAdd" runat="server" resourcekey="AddContent.Action" /></li>

@@ -31,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.Skins;
-using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -119,7 +118,7 @@ namespace DotNetNuke.Web.UI.WebControls
             Attributes.Add("PortalPath", Portal != null ? Portal.HomeDirectory : string.Empty);
             Attributes.Add("HostPath", Globals.HostPath);
 
-            OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
+            //OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
             var indexChangedMethod = @"function selectedIndexChangedMethod(sender, eventArgs){
     var value = eventArgs.get_item().get_value();
     value = value.replace('[L]', sender.get_attributes().getAttribute('PortalPath'));
@@ -128,25 +127,25 @@ namespace DotNetNuke.Web.UI.WebControls
 }";
             Page.ClientScript.RegisterClientScriptBlock(GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
 
-            foreach (RadComboBoxItem item in Items)
-            {
-                if (string.IsNullOrEmpty(item.Value))
-                {
-                    continue;
-                }
+            //foreach (var item in Items)
+            //{
+            //    if (string.IsNullOrEmpty(item.Value))
+            //    {
+            //        continue;
+            //    }
 
-                var tooltip = item.Value.Replace("[G]", Globals.HostPath);
-                if (Portal != null)
-                {
-                    tooltip = tooltip.Replace("[L]", Portal.HomeDirectory);
-                }
+            //    var tooltip = item.Value.Replace("[G]", Globals.HostPath);
+            //    if (Portal != null)
+            //    {
+            //        tooltip = tooltip.Replace("[L]", Portal.HomeDirectory);
+            //    }
 
-                item.ToolTip = tooltip;
-                if (item.Value.Equals(SelectedValue))
-                {
-                    ToolTip = tooltip;
-                }
-            }
+            //    item.ToolTip = tooltip;
+            //    if (item.Value.Equals(SelectedValue))
+            //    {
+            //        ToolTip = tooltip;
+            //    }
+            //}
         }
 
         #endregion

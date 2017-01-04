@@ -20,13 +20,14 @@
 #endregion
 #region Usings
 
-using Telerik.Web.UI;
 
 #endregion
 
+using System.Web.UI.WebControls;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnAjaxLoadingPanel : RadAjaxLoadingPanel
+    public class DnnAjaxLoadingPanel : WebControl
     {
     }
 }

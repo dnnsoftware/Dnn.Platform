@@ -1986,7 +1986,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name = "portalSettings">The current portalSettings</param>
         /// <remarks>
         ///   This method will configure the Thread culture codes.  Any page which does not derive from PageBase should
-        ///   be sure to call this method in OnInit to ensure localiztion works correctly.  See the TelerikDialogHandler for an example.
+        ///   be sure to call this method in OnInit to ensure localiztion works correctly.
         /// </remarks>
         public static void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {

@@ -34,7 +34,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -65,13 +64,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnInit(EventArgs e)
         {
-            ItemTemplate = new TreeViewTemplate();
-            Items.Add(new RadComboBoxItem());
+            //ItemTemplate = new TreeViewTemplate();
+            Items.Add(new ListItem());
             base.OnInit(e);
 
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
-            OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
+            //OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
             if (!string.IsNullOrEmpty(CssClass))
             {
                 CssClass = string.Format("{0} TermsSelector", CssClass);
@@ -112,7 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     //clear the append item by client side
                     if (Items.Count > 1)
                     {
-                        Items.Remove(1);
+                        //Items.Remove(1);
                     }
                 }
             }
@@ -151,7 +150,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             #region Private Fields
 
-            private RadComboBoxItem _container;
+            //private RadComboBoxItem _container;
             private TermsSelector _termsSelector;
 
             private DnnTreeView _tree;
@@ -162,18 +161,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
             public void InstantiateIn(Control container)
             {
-                _container = (RadComboBoxItem)container;
-                _termsSelector = (TermsSelector)container.Parent;
+                //_container = (RadComboBoxItem)container;
+                //_termsSelector = (TermsSelector)container.Parent;
 
-                _tree = new DnnTreeView();
-                _tree.ID = string.Format("{0}_TreeView", _termsSelector.ID);
-                _tree.CheckBoxes = true;
-                _tree.EnableViewState = false;
+                //_tree = new DnnTreeView();
+                //_tree.ID = string.Format("{0}_TreeView", _termsSelector.ID);
+                //_tree.CheckBoxes = true;
+                //_tree.EnableViewState = false;
 
-                //bind client-side events
-                _tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
+                ////bind client-side events
+                //_tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
 
-                _container.Controls.Add(_tree);
+                //_container.Controls.Add(_tree);
             }
 
 

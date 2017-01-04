@@ -19,11 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
-using Telerik.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnScriptBlock : RadScriptBlock
+    public class DnnScriptBlock : Panel
     {
 
     }

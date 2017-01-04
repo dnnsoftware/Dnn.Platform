@@ -190,7 +190,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plPage;
+        protected global::System.Web.UI.UserControl plPage;
         
         /// <summary>
         /// ddlPages control.
@@ -280,7 +280,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl systemDefaultLabel;
+        protected global::System.Web.UI.UserControl systemDefaultLabel;
         
         /// <summary>
         /// systemDefaultLanguageLabel control.
@@ -298,7 +298,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl siteDefaultLabel;
+        protected global::System.Web.UI.UserControl siteDefaultLabel;
         
         /// <summary>
         /// defaultLanguageLabel control.
@@ -334,7 +334,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plUrl;
+        protected global::System.Web.UI.UserControl plUrl;
         
         /// <summary>
         /// chkUrl control.
@@ -352,7 +352,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl detectBrowserLable;
+        protected global::System.Web.UI.UserControl detectBrowserLable;
         
         /// <summary>
         /// chkBrowser control.
@@ -370,7 +370,7 @@ namespace Dnn.Modules.Languages {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl allowUserCulture;
+        protected global::System.Web.UI.UserControl allowUserCulture;
         
         /// <summary>
         /// chkUserCulture control.

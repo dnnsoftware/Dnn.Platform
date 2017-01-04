@@ -204,9 +204,6 @@ namespace DotNetNuke.Modules.Admin.Host
 		private void BindCdnSettings()
 		{
 			chkMsAjaxCdn.Checked = Entities.Host.Host.EnableMsAjaxCdn;
-			chkTelerikCdn.Checked = Entities.Host.Host.EnableTelerikCdn;
-			txtTelerikBasicUrl.Text = Entities.Host.Host.TelerikCdnBasicUrl;
-			txtTelerikSecureUrl.Text = Entities.Host.Host.TelerikCdnSecureUrl;
 		    chkEnableCDN.Checked = Entities.Host.Host.CdnEnabled;
 		}
 
@@ -594,7 +591,7 @@ namespace DotNetNuke.Modules.Admin.Host
 
             cbCustomAnalyzer.DataSource = GetAvailableAnalyzers();
             cbCustomAnalyzer.DataBind();
-            cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
+            cbCustomAnalyzer.Items.Insert(0, new ListItem(noneSpecified, string.Empty));
             cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
 
 			txtTitleBoost.Text = HostController.Instance.GetInteger(SearchTitleBoostSetting, DefaultSearchTitleBoost).ToString();
@@ -877,10 +874,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("DefaultAdminContainer", editContainerCombo.SelectedValue, false);
                     
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
-					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
-					HostController.Instance.Update("TelerikCDNBasicUrl", txtTelerikBasicUrl.Text, false);
-					HostController.Instance.Update("TelerikCDNSecureUrl", txtTelerikSecureUrl.Text, false);
                     var maxUpload = 12;
                     if (int.TryParse(txtMaxUploadSize.Text, out maxUpload))
                     {

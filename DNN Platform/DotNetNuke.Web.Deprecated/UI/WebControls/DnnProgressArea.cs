@@ -21,14 +21,13 @@
 #region Usings
 
 using System;
-
-using Telerik.Web.UI;
+using System.Web.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnProgressArea : RadProgressArea
+    public class DnnProgressArea : WebControl
     {
 
         //public DnnProgressArea()

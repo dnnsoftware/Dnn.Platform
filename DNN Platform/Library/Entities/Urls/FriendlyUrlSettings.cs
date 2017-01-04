@@ -633,7 +633,7 @@ namespace DotNetNuke.Entities.Urls
                 return _useSiteUrlsRegex ??
                        (_useSiteUrlsRegex =
                            GetStringSetting(SiteUrlsOnlyRegexSetting,
-                               @"/rss\.aspx|Telerik.RadUploadProgressHandler\.ashx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx"));
+                               @"/rss\.aspx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx"));
             }
             internal set { _useSiteUrlsRegex = value; }
         }

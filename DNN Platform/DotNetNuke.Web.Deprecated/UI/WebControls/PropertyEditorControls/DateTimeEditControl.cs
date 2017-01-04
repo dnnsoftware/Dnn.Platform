@@ -33,7 +33,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 
-using Telerik.Web.UI;
 
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
 

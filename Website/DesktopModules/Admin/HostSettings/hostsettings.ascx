@@ -392,20 +392,6 @@
                     <dnn:label id="plMsAjaxCdn" controlname="chkMsAjaxCdn" runat="server" />
                     <asp:CheckBox ID="chkMsAjaxCdn" runat="server" />
                 </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plTelerikCdn" controlname="chkTelerikCdn" runat="server" />
-                    <asp:CheckBox ID="chkTelerikCdn" runat="server" />
-                </div>
-                <div id="telerikCdnSettingsRow">
-                    <div class="dnnFormItem">
-                        <dnn:label id="plTelerikBasicUrl" controlname="chkTelerikBasicUrl" runat="server" />
-                        <asp:TextBox ID="txtTelerikBasicUrl" runat="server" MaxLength="256" />
-                    </div>
-                    <div class="dnnFormItem">
-                        <dnn:label id="plTelerikSecureUrl" controlname="chkTelerikSecureUrl" runat="server" />
-                        <asp:TextBox ID="txtTelerikSecureUrl" runat="server" MaxLength="256" />
-                    </div>
-                </div>
                   <div class="dnnFormItem">
                     <dnn:label id="plEnableCDN" controlname="chkEnableCDN" runat="server" />
                     <asp:CheckBox ID="chkEnableCDN" runat="server" />
@@ -760,10 +746,6 @@
             toggleSection('sslDomainRow', $("#<%=chkUpgradeForceSSL.ClientID %>")[0].checked);
             $("#<%=chkUpgradeForceSSL.ClientID %>").change(function (e) {
                 toggleSection('sslDomainRow', this.checked);
-            });
-
-            $("#<%=chkTelerikCdn.ClientID %>").change(function (e) {
-                toggleSection('telerikCdnSettingsRow', this.checked);
             });
 
             var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',

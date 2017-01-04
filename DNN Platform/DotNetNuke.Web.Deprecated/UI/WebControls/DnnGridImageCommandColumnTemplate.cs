@@ -29,23 +29,22 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnGridImageCommandColumnTemplate : IBindableTemplate
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;
-        private GridItemType _itemType = GridItemType.Item;
+        private ListItemType _itemType = ListItemType.Item;
         private bool _showImage = true;
         private bool _visible = true;
 
         public DnnGridImageCommandColumnTemplate()
-            : this(GridItemType.Item)
+            : this(ListItemType.Item)
         {
         }
 
-        public DnnGridImageCommandColumnTemplate(GridItemType itemType)
+        public DnnGridImageCommandColumnTemplate(ListItemType itemType)
         {
             ItemType = itemType;
         }
@@ -87,7 +86,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// The type of Template to Create
         /// </summary>
         /// <value>A String</value>
-        public GridItemType ItemType
+        public ListItemType ItemType
         {
             get { return _itemType; }
             set { _itemType = value; }
@@ -172,10 +171,10 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             switch (ItemType)
             {
-                case GridItemType.Item:
-                case GridItemType.AlternatingItem:
-                case GridItemType.SelectedItem:
-                case GridItemType.EditItem:
+                case ListItemType.Item:
+                case ListItemType.AlternatingItem:
+                case ListItemType.SelectedItem:
+                case ListItemType.EditItem:
                     if (EditMode == ImageCommandColumnEditMode.URL)
                     {
                         var hypLink = new HyperLink {ToolTip = Text};
@@ -220,8 +219,8 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
                     break;
-                case GridItemType.Footer:
-                case GridItemType.Header:
+                case ListItemType.Footer:
+                case ListItemType.Header:
                     container.Controls.Add(new LiteralControl(Text));
                     break;
             }
@@ -240,7 +239,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets whether theButton is visible
         /// </summary>
         ///	<param name="container">The parent container (DataGridItem)</param>
-        private bool GetIsVisible(GridItem container)
+        private bool GetIsVisible(DataGridItem container)
         {
             if (!String.IsNullOrEmpty(VisibleField))
             {
@@ -255,7 +254,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets the value of the key
         /// </summary>
         ///	<param name="container">The parent container (DataGridItem)</param>
-        private int GetValue(GridItem container)
+        private int GetValue(DataGridItem container)
         {
             int keyValue = Null.NullInteger;
             if (!String.IsNullOrEmpty(KeyField))
@@ -275,12 +274,12 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <param name="e">An EventArgs object</param>
         private void ItemDataBinding(object sender, EventArgs e)
         {
-            GridItem container;
+            DataGridItem container;
             int keyValue;
             if (EditMode == ImageCommandColumnEditMode.URL)
             {
                 var hypLink = (HyperLink) sender;
-                container = (GridItem) hypLink.NamingContainer;
+                container = (DataGridItem) hypLink.NamingContainer;
                 keyValue = GetValue(container);
                 if (!String.IsNullOrEmpty(NavigateURLFormatString))
                 {
@@ -297,7 +296,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
                 {
                     var colIcon = (ImageButton) sender;
-                    container = (GridItem) colIcon.NamingContainer;
+                    container = (DataGridItem) colIcon.NamingContainer;
                     keyValue = GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colIcon.Visible = GetIsVisible(container);
@@ -306,7 +305,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     //Bind Link Button
                     var colLink = (LinkButton) sender;
-                    container = (GridItem) colLink.NamingContainer;
+                    container = (DataGridItem) colLink.NamingContainer;
                     keyValue = GetValue(container);
                     colLink.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colLink.Visible = GetIsVisible(container);

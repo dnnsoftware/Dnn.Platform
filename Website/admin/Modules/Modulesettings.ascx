@@ -101,25 +101,23 @@
                 <div>
                     <div class="dnnFormItem">
                         <dnnweb:DnnGrid ID="dgOnTabs" runat="server" AutoGenerateColumns="False" AllowPaging="true" PageSize="20" ViewStateMode="Disabled">
-                            <MasterTableView>
-                                <Columns>
-                                    <dnnweb:DnnGridTemplateColumn HeaderText="Site" HeaderStyle-Width="150px">
-                                        <ItemTemplate>
-                                            <%#GetInstalledOnSite(Container.DataItem)%>
-                                        </ItemTemplate>
-                                    </dnnweb:DnnGridTemplateColumn>
-                                    <dnnweb:DnnGridTemplateColumn HeaderText="Page">
-                                        <ItemTemplate>
-                                            <%#GetInstalledOnLink(Container.DataItem)%>
-                                        </ItemTemplate>
-                                    </dnnweb:DnnGridTemplateColumn>
-                                </Columns>
-                                <NoRecordsTemplate>
-                                    <div class="dnnFormMessage dnnFormWarning">
-                                        <asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" />
-                                    </div>
-                                </NoRecordsTemplate>
-                            </MasterTableView>
+                            <Columns>
+                                <dnnweb:DnnGridTemplateColumn HeaderText="Site" HeaderStyle-Width="150px">
+                                    <ItemTemplate>
+                                        <%#GetInstalledOnSite(Container.DataItem)%>
+                                    </ItemTemplate>
+                                </dnnweb:DnnGridTemplateColumn>
+                                <dnnweb:DnnGridTemplateColumn HeaderText="Page">
+                                    <ItemTemplate>
+                                        <%#GetInstalledOnLink(Container.DataItem)%>
+                                    </ItemTemplate>
+                                </dnnweb:DnnGridTemplateColumn>
+                            </Columns>
+                            <EmptyDataTemplate>
+                                <div class="dnnFormMessage dnnFormWarning">
+                                    <asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" />
+                                </div>
+                            </EmptyDataTemplate>
                         </dnnweb:DnnGrid>
                     </div>   
                 </div>

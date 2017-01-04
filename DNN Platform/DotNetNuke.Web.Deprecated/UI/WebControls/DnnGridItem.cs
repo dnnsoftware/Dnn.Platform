@@ -20,16 +20,21 @@
 #endregion
 #region Usings
 
-using Telerik.Web.UI;
 
 #endregion
 
+using System.Web.UI.WebControls;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGridItem : GridItem
+    public class DnnGridItem : DataGridItem
     {
-        public DnnGridItem(GridTableView ownerTableView, int itemIndex, int dataSetIndex, GridItemType itemType) : base(ownerTableView, itemIndex, dataSetIndex, itemType)
+        public DnnGridItem(int itemIndex, int dataSetIndex, ListItemType type) : base(itemIndex, dataSetIndex, type)
         {
+            
         }
+        //public DnnGridItem(GridTableView ownerTableView, int itemIndex, int dataSetIndex, GridItemType itemType) : base(ownerTableView, itemIndex, dataSetIndex, itemType)
+        //{
+        //}
     }
 }
