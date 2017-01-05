@@ -21,6 +21,7 @@ window.dnn.pages.registerSettingsButtonComponent = application.registerSettingsB
 window.dnn.pages.registerPageTypeSelectorComponent = application.registerPageTypeSelectorComponent;
 window.dnn.pages.registerAdditionalPanel = application.registerAdditionalPanel;
 window.dnn.pages.isSuperUserForPages = application.isSuperUserForPages;
+window.dnn.pages.load = application.load;
 
 const appContainer = document.getElementById("pages-container");
 const initCallback = appContainer.getAttribute("data-init-callback");

@@ -28,6 +28,12 @@ function init(options) {
     settings = options.settings;
 }
 
+function load(options) {
+    viewName = options.viewName;
+    viewParams = options.viewParams;
+    settings = options.settings;
+}
+
 function checkInit() {
     if (!initialized) {
         throw new Error("Utils have not been initialized");
@@ -148,6 +154,7 @@ function getDefaultPageUrl() {
 
 const utils = {
     init,
+    load,
     formatDateNoTime,
     formatNumeric,
     formatNumeric2Decimals,

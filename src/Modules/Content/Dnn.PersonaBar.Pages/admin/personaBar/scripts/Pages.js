@@ -32,6 +32,11 @@
     };
 
     var load = function (params, callback) {
+        window.dnn.pages.load({
+            viewName: (params && params.viewName) ? params.viewName : null,
+            viewParams: (params && params.viewParams) ? params.viewParams : null,
+            settings: params.settings
+        });
         if (window.dnn.pages.pageHierarchyManager &&
             window.dnn.pages.pageHierarchyManager._initialized) {
             window.dnn.pages.pageHierarchyManager._resizeContentContainer(true);
