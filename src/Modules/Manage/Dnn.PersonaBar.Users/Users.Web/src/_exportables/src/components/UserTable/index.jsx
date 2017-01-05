@@ -59,7 +59,7 @@ class UserTable extends Component {
         if (canViewSettings(this.props.appSettings.applicationSettings.settings))
         {
             children = children.concat([{
-                index: 15,
+                index: 10,
                 content: <UserSettings userId={user.userId} collapse={this.collapse.bind(this) } appSettings={this.props.appSettings}/>
             }]);
         }
@@ -75,11 +75,11 @@ class UserTable extends Component {
         if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
         {
             children = children.concat([{
-                index: 10,
+                index: 15,
                 content: <EditProfile  userId={user.userId} />
             }]);
         }
-        return sort(children, "index").map((child) => {
+        return sort(children, "index", "desc").map((child) => {
             return child.content;
         });
     }
