@@ -121,14 +121,11 @@ class SiteLanguageSelector extends Component {
         let options = [];
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {
-                return {
-                    label: <div style={{ float: "left", display: "flex" }}>
-                        <div className="language-flag">
-                            <img src={item.Icon} />
-                        </div>
-                        <div className="language-name">{item.Name}</div>
-                    </div>, value: item.Code
-                };
+                return (
+                    <div className="language-flag" onClick={this.onLanguageChange.bind(this, { value: item.Code })}>
+                        <img src={item.Icon} />
+                    </div>
+                );
             });
         }
         return options;
@@ -174,7 +171,7 @@ class SiteLanguageSelector extends Component {
                 <InputGroup>
                     <Label
                         labelType="inline"
-                        label={resx.get("SiteSelectionLabel")}
+                        label={resx.get("SiteSelectionLabel") + ":"}
                         />
                     <Dropdown
                         options={this.getSiteOptions()}
@@ -192,17 +189,7 @@ class SiteLanguageSelector extends Component {
         const {props} = this;
         if (props.languages) {
             return (<div className="language-selection">
-                <InputGroup>
-                    <Label
-                        labelType="inline"
-                        label={resx.get("LanguageSelectionLabel")}
-                        />
-                    <Dropdown
-                        options={this.getLanguageOptions()}
-                        value={this.validateCultureCode()}
-                        onSelect={this.onLanguageChange.bind(this)}
-                        />
-                </InputGroup>
+                {this.getLanguageOptions()}
             </div>
             );
         }
@@ -212,8 +199,8 @@ class SiteLanguageSelector extends Component {
     /* eslint-disable react/no-danger */
     render() {
         return <div className={styles.sitesHeader}>
-            {isHost && this.renderSitesList()}
-            {this.renderLanguagesList()}
+            {(this.props.languages && this.props.languages.length > 1) && this.renderLanguagesList()}
+            {(this.props.portals && this.props.portals.length > 1 && isHost) && this.renderSitesList()}
         </div>;
     }
 }

@@ -6,6 +6,7 @@
     width: 860px;
     background-color: #fff;
     box-sizing: border-box;
+    height: 30px;
     * {
         box-sizing: border-box;
     }
@@ -14,15 +15,19 @@
         float: left;
         .dnn-ui-common-input-group {
             width: auto;
+            float: left;
             .dnn-label {
                 margin-right: 0;
+                padding-top: 10px;
                 label {
                     font-weight: bolder;
                     float: left;
+                    font-size: 11px;
                 }
             }
             .dnn-dropdown {
-                width: 250px;
+                width: auto;
+                border: none;
                 .language-flag {
                     float: left;
                     height: 16px;
@@ -32,48 +37,33 @@
                     margin-left: 10px;
                 }
                 .collapsible-label {
+                    padding-top: 10px;
+                    width: 100%;
+                    text-align: right;
+                    padding-left: 0;
+                    font-size: 11px;
+                    text-transform: uppercase;
+                    font-weight: 900;
+                    color: @curiousBlue;
                     .language-name {
-                        width: 240px;
+                        width: 100%;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
                     }
                 }
-                li {
-                    float: left;
-                    width: 100%;
-                }
-            }
-        }
-    }
-    .site-selection, .language-selection {
-        .dnn-ui-common-input-group {
-            label {
-                max-width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                text-transform: uppercase;
-            }
-            .dnn-dropdown {
-                min-width: 240px;
-                max-width: 240px;
-                border: none;
-                width: auto;
-                .collapsible-label {
-                    color: @curiousBlue;
-                    text-transform: uppercase;
-                    font-weight: 900;
-                    
-                }
                 .collapsible-content {
-                    min-width: 250px;
-                    right: 0px;
-                    left: auto;
+                    width: 430px;
+                    left: -84px;
                 }
                 .open {
                     border: none;
                     margin-left: 1px;
                     box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.2);
+                }
+                li {
+                    float: left;
+                    width: 100%;
                 }
             }
         }
@@ -81,38 +71,17 @@
     .language-selection {
         width: 50%;
         float: right;
-        .dnn-ui-common-input-group {
-            width: auto;
+        .language-flag {
             float: right;
-            .dnn-label {
-                margin-right: 0;
-                label {
-                    font-weight: bolder;
-                    float: left;
-                }
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 5px;
+            > img {
+                width: 22px;
+                height: auto;
             }
-            .dnn-dropdown {
-                width: 250px;
-                .language-flag {
-                    float: left;
-                    height: 16px;
-                }
-                .language-name {
-                    float: left;
-                    margin-left: 10px;
-                }
-                .collapsible-label {
-                    .language-name {
-                        width: 240px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                }
-                li {
-                    float: left;
-                    width: 100%;
-                }
+            &:first-child {
+                margin-right: 0;
             }
         }
     }
