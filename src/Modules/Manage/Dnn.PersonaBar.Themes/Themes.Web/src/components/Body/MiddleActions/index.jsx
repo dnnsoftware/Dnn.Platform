@@ -30,7 +30,7 @@ class MiddleActions extends Component {
                 <GridCell columnSize="30">
                     <div className="search-filter">
                         {
-                            <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} />
+                            <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />
                         }
                         <div className="clear"></div>
                     </div>

@@ -75,7 +75,7 @@ class ThemeFileList extends Component {
             width += (self.selectedAsSite(themeFile) || self.selectedAsEdit(themeFile)) ? 108 : 90;
         });
 
-        return width - 10;
+        return width + 20;
     }
 
     loadThemeFiles() {
