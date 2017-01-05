@@ -90,18 +90,18 @@ class DetailsRow extends Component {
         }
 
         let i = 0;
-        let userActions = sort(actionIcons, "index").map((actionIcon) => {
+        let userActions = sort(actionIcons, "index", "desc").map((actionIcon) => {
             let element = <div title={actionIcon.title} className={ "extension-action " + !(opened && this.props.currentIndex === i) } dangerouslySetInnerHTML={{ __html: actionIcon.icon }} onClick={ this.toggle.bind(this, i) } ></div>;
             i++;
             return element;
         });
-        return userActions.concat([<div style={{ position: "relative" }}>
+        return ([<div style={{ position: "relative" }}>
             <div className={"extension-action " + !this.state.showMenu} dangerouslySetInnerHTML={{ __html: MoreMenuIcon }}
                 onClick={this.toggleUserMenu.bind(this) }>
             </div>
             { this.state.showMenu && <UserMenu filter={this.props.filter} appSettings={this.props.appSettings} getUserMenu={this.props.getUserMenu && this.props.getUserMenu.bind(this)} userMenuAction={this.props.userMenuAction && this.props.userMenuAction.bind(this)} onClose={this.toggleUserMenu.bind(this) } 
             userId={user.userId}/> }
-        </div>]);
+        </div>]).concat(userActions);
     }
     getUserColumns(user, id, opened) {
         let userActions = this.getUserActions(user, opened);
@@ -130,7 +130,7 @@ class DetailsRow extends Component {
             },
             {
                 index: 25,
-                content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right"}}>{userActions}</GridCell>
+                content: id !== "add" && <GridCell columnSize={columnSizes.find(x=>x.index===25).size} style={{float:"right", textAlign:"right", paddingRight: 2}}>{userActions}</GridCell>
             }
         ].concat((extraColumns) || []);
 
