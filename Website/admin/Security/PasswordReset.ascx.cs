@@ -205,7 +205,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
-            if (UserController.ValidatePassword(txtPassword.Text)==false)
+            var newPassword = txtPassword.Text.Trim();
+            if (UserController.ValidatePassword(newPassword) ==false)
             {
                 resetMessages.Visible = true;
                 var failed = Localization.GetString("PasswordResetFailed");
@@ -220,7 +221,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (settings.EnableBannedList)
             {
                 var m = new MembershipPasswordController();
-                if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
+                if (m.FoundBannedPassword(newPassword) || txtUsername.Text == newPassword)
                 {
                     resetMessages.Visible = true;
                     var failed = Localization.GetString("PasswordResetFailed");
@@ -245,7 +246,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 answer = txtAnswer.Text;
             }
 
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, answer, ResetToken, out errorMessage) == false)
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, newPassword, answer, ResetToken, out errorMessage) == false)
             {
                 resetMessages.Visible = true;
                 var failed = errorMessage;
