@@ -1,6 +1,9 @@
 import utilities from "../utils";
 import PageHierarchyActions from "../actions/pageHierarchyActions";
 import ExtensionsActions from "../actions/extensionsActions";
+import PageActions from "../actions/pageActions";
+import utils from "../utils";
+import securityService from "../services/securityService";
 
 const application = {
     init(initCallback) {
@@ -14,6 +17,14 @@ const application = {
         
         if (window.dnn.pages.itemTemplate) {
             application.dispatch(PageHierarchyActions.setItemTemplate(window.dnn.pages.itemTemplate));
+        }
+    },
+    load(options) {
+        utilities.load(options);
+        const viewName = utils.getViewName();
+
+        if (viewName === "edit" || !securityService.isSuperUser()) {        
+            application.dispatch(PageActions.loadPage(utils.getCurrentPageId()));
         }
     },
     dispatch() {
