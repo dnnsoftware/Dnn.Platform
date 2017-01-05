@@ -122,7 +122,7 @@ class SiteLanguageSelector extends Component {
         if (props.languages !== undefined) {
             options = props.languages.map((item) => {
                 return (
-                    <div className="language-flag" onClick={this.onLanguageChange.bind(this, { value: item.Code })}>
+                    <div className={"language-flag" + (item.Code === this.state.cultureCode ? " selected": "")} onClick={this.onLanguageChange.bind(this, { value: item.Code })}>
                         <img src={item.Icon} />
                     </div>
                 );
