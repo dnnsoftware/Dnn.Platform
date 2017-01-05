@@ -15,7 +15,7 @@
                 }
             }
             .logHeader-wrapper {
-                &:not(:last-child) {
+                &:not(: last-child) {
                     border-bottom: 1px solid @alto;
                 }
                 width: 100%;
@@ -161,8 +161,15 @@
                 float: left;
                 width: 100%;
                 padding: 7px 0;
-                .sitegroup-filter-container {
-                    width: 23%;
+                .adminlogs-filter-container:first-child {
+                    > .dnn-dropdown {
+                        .collapsible-label {
+                            padding-left: 0;
+                        }
+                    }
+                }
+                .adminlogs-filter-container {
+                    width: 28%;
                     height: 32px;
                     margin-top: 10px;
                     border-right: 1px solid @alto;

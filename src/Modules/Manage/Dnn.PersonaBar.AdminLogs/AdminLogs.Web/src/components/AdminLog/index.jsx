@@ -316,7 +316,7 @@ class AdminLogPanelBody extends Component {
             <div style={{ margin: "0 20px", float: "left" }}>
                 <div className="toolbar">
                     {util.settings.isHost && state.portalList.length > 0 &&
-                        <div className="sitegroup-filter-container">
+                        <div className="adminlogs-filter-container">
                             <DropDown
                                 value={state.currentPortalId}
                                 style={{ width: "100%" }}
@@ -327,7 +327,7 @@ class AdminLogPanelBody extends Component {
                         </div>
                     }
                     {state.logTypeList.length > 0 &&
-                        <div className="sitegroup-filter-container">
+                        <div className="adminlogs-filter-container">
                             <DropDown
                                 value={state.currentLogTypeKey}
                                 style={{ width: "100%" }}
@@ -337,7 +337,7 @@ class AdminLogPanelBody extends Component {
                                 />
                         </div>
                     }
-                    <div className="toolbar-button toolbar-button-actions">
+                    <div className="toolbar-button toolbar-button-actions"  style={{width: "14%"}}>
                         <div onClick={this.toggleEmailPanel.bind(this)}>
                             <TextOverflowWrapper                                
                                 text={Localization.get("btnEmail")}
@@ -353,17 +353,17 @@ class AdminLogPanelBody extends Component {
                             </EmailPanel>
                         </div>
                     </div>
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)}>
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onDeleteLogItems.bind(this)} style={{width: "17%"}}>
                         <TextOverflowWrapper
                             style={{ margin: "0 20px 0 0" }}
                             text={Localization.get("btnDelete")}
-                            maxWidth={90}
+                            maxWidth={100}
                             />
                     </div>
                     }
-                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)}>
+                    {util.settings.isHost && <div className="toolbar-button toolbar-button-actions" onClick={this.onClearLog.bind(this)} style={{borderLeft: "none", width: "13%"}}>
                         <TextOverflowWrapper
-                            style={{ margin: "0 20px 0 0" }}
+                            style={{ margin: "0 22px 0 0" }}
                             text={Localization.get("btnClear")}
                             maxWidth={90}
                             />
