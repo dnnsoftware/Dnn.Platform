@@ -1,5 +1,5 @@
 Test,						Scheme,		Page Name,		Test Url,														Expected Url,														Status,		Final Url,														RedirectReason
-Home en-US,					http://,	Home,			http://{alias}/,												{defaultPage}?TabId={tabId}&language=en-US,							200
+Home en-US,					http://,	Home,			http://{alias}/,												{defaultPage}?TabId={tabId},							200
 About Us en-US,				http://,	About Us,		http://{alias}/About-Us.aspx,									{defaultPage}?TabId={tabId},										200
 Profile Messages en-US,		http://,	Messages,		http://{alias}/Activity-Feed/Messages.aspx,						{defaultPage}?TabId={tabId},										200
 Terms en-US,				http://,	Home,			http://{alias}/Terms.aspx,										{defaultPage}?PortalId={portalId}&ctl=Terms,						200
