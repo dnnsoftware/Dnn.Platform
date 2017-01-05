@@ -220,19 +220,22 @@ class Performance extends Component {
                         tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
                         value={enableCompositeFiles}
                         onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
-                        isGlobal={areGlobalSettings} />
+                        isGlobal={areGlobalSettings} 
+                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
                         tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
                         value={enableCompositeFiles ? minifyCss : false}
                         readOnly={!enableCompositeFiles}
                         onChange={this.onChangeField.bind(this, minifyCssKey)}
-                        isGlobal={areGlobalSettings} />
+                        isGlobal={areGlobalSettings} 
+                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
                     <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
                         tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
                         value={enableCompositeFiles ? minifyJs : false}
                         readOnly={!enableCompositeFiles}
                         onChange={this.onChangeField.bind(this, minifyJsKey)}
-                        isGlobal={areGlobalSettings} />
+                        isGlobal={areGlobalSettings} 
+                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
                 </div>
             </GridSystem>
             <div className="clear" />

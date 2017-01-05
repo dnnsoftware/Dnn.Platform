@@ -63,9 +63,18 @@ class DetailsRow extends Component {
     getUserActions(user, opened) {
         let actionIcons = [];
         actionIcons = actionIcons.concat((this.props.getUserTabsIcons && this.props.getUserTabsIcons(user)) || []);
-        if (canViewSettings(this.props.appSettings.applicationSettings.settings)) {
+
+        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
+        {
             actionIcons = actionIcons.concat([{
                 index: 15,
+                icon: UserIcon,
+                title: Localization.get("ManageProfile.title")
+            }]);
+        }
+        if (canViewSettings(this.props.appSettings.applicationSettings.settings)) {
+            actionIcons = actionIcons.concat([{
+                index: 10,
                 icon: SettingsIcon,
                 title: Localization.get("ManageSettings.title")
             }]);
@@ -77,15 +86,6 @@ class DetailsRow extends Component {
                 index: 5,
                 icon: ShieldIcon,
                 title: Localization.get("ManageRoles.title")
-            }]);
-        }
-
-        if (canManageProfile(this.props.appSettings.applicationSettings.settings, user))
-        {
-            actionIcons = actionIcons.concat([{
-                index: 10,
-                icon: UserIcon,
-                title: Localization.get("ManageProfile.title")
             }]);
         }
 
