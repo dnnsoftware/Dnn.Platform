@@ -17,7 +17,7 @@
         util.sf.moduleRoot = 'internalservices';
         util.sf.controller = "controlBar";
         util.sf.post('ToggleUserMode', { UserMode: mode }, function handleToggleUserMode() {
-            window.parent.location.reload();
+            window.top.location.href = window.top.location.href;
         });
     }
 
