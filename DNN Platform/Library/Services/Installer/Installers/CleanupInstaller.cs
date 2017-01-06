@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Installer.Installers
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CleanupInstaller));
 		#region "Private Members"
 
-        private string _FileName;
+        private string _fileName;
 
 		#endregion
 
@@ -56,37 +56,31 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "*";
-            }
-        }
-		
-		#endregion
+        public override string AllowableFiles => "*";
+
+        #endregion
 
 	#region "Private Methods"
 
         private bool ProcessCleanupFile()
         {
             Log.AddInfo(string.Format(Util.CLEANUP_Processing, Version.ToString(3)));
-            bool bSuccess = true;
             try
             {
-                string strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _FileName);
+                var strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _fileName);
                 if (File.Exists(strListFile))
                 {
                     FileSystemUtils.DeleteFiles(Regex.Split(FileSystemUtils.ReadFile(strListFile), Environment.NewLine));
                 }
-                Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
             }
             catch (Exception ex)
             {
                 Log.AddFailure(ex);
-                bSuccess = false;
+                //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
+                //return false;
             }
-            return bSuccess;
+            Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
+            return true;
         }
 		
 		#endregion
@@ -182,7 +176,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(_FileName))
+                if (string.IsNullOrEmpty(_fileName))
                 {
                     foreach (InstallFile file in Files)
                     {
@@ -207,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            _FileName = Util.ReadAttribute(manifestNav, "fileName");
+            _fileName = Util.ReadAttribute(manifestNav, "fileName");
             base.ReadManifest(manifestNav);
         }
 
