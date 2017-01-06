@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import debounce from "lodash/debounce";
 import MagnifyingGlassIcon from "./MagnifyingGlassIcon";
+import "./style.less";
 
 const style = {
     main: {
