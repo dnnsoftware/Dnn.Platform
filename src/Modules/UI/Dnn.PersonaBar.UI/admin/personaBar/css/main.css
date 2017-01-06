@@ -1,38 +1,20 @@
 ﻿@font-face {
-    font-family: 'sourcecodepro';
-    src: url('SourceCodePro-Regular.ttf.woff') format('woff'),
-         url('SourceCodePro-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'sourcecodepro_semibold';
-    src: url('SourceCodePro-Semibold.ttf.woff') format('woff'),
-         url('SourceCodePro-Semibold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
     font-family: 'pb_regular';
-    src: url('SourceCodePro-Regular.ttf.woff') format('woff'),
-         url('SourceCodePro-Regular.ttf') format('truetype');
+    src: url('OpenSans-Semibold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'pb_semibold';
-    src: url('SourceCodePro-Semibold.ttf.woff') format('woff'),
-         url('SourceCodePro-Semibold.ttf') format('truetype');
+    src: url('OpenSans-Semibold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'robotoslab';
-    src: url('RobotoSlab-Regular.ttf') format('truetype');
+    font-family: 'roboto';
+    src: url('Roboto-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -40,7 +22,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: robotoslab, Arial;
+    font-family: roboto, Arial;
     font-size: 12px;
 }
 
@@ -263,7 +245,7 @@ a.plainbtn {
     border-radius: 3px;
     text-decoration: none;
     text-align: center;
-    font-family: sourcecodepro_semibold;
+    font-family: pb_semibold;
     font-size: 12px;
     border: 1px solid #ddd;
     margin-left: 14px
@@ -713,7 +695,9 @@ transform: rotate(180deg);
     -ms-background-size: 32px auto;
     background-size: 32px auto;
 }
-
+.personabar .personabarLogo:hover {
+    background-color: #2f2f2f;
+}
 .personabarnav {
     margin: 0;
     padding: 0;
@@ -723,7 +707,7 @@ transform: rotate(180deg);
 .personabarnav > li {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 28px;
     cursor: pointer;
     text-align: center;
     background-repeat: repeat-x;
@@ -740,15 +724,7 @@ transform: rotate(180deg);
 }
 
 .personabarnav > li > span {
-    font-size: 12px;
-    font-family: sourcecodepro, arial;
-    display: block;
-    word-wrap: break-word;
-    max-width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50%;
-    transform: translateY(-50%);
+    display: none;
 }
 .personabarnav > li.btn_panel.disabled {
     cursor: default;
@@ -758,9 +734,56 @@ transform: rotate(180deg);
     background-position: -8px 10px;
     color: #6a6d6d;
 }
-.personabarnav > li:hover,.personabarnav > li.selected,.personabarnav > li.active {
+.personabarnav > li:hover,.personabarnav > li.active {
     color: #fff;
     background-color: #2f2f2f;
+}
+.personabarnav > li:before {
+    display: block;
+    content: "";
+    width:24px;
+    height: 24px;
+    margin: 0;
+}
+
+.personabarnav > li#Content:before {
+    background: url('../images/nav_content.svg') no-repeat;
+}
+.personabarnav > li#Content:hover:before,
+.personabarnav > li#Content.active:before,
+.personabarnav > li#Content.selected:before{
+    background: url('../images/nav_content_selected.svg') no-repeat;
+}
+
+.personabarnav > li#Manage:before {
+    background: url('../images/nav_manage.svg') no-repeat;
+}
+.personabarnav > li#Manage:hover:before,
+.personabarnav > li#Manage.active:before,
+.personabarnav > li#Manage.selected:before{
+    background: url('../images/nav_manage_selected.svg') no-repeat;
+}
+
+.personabarnav > li#Settings:before {
+    background: url('../images/nav_settings.svg') no-repeat;
+}
+.personabarnav > li#Settings:hover:before,
+.personabarnav > li#Settings.active:before,
+.personabarnav > li#Settings.selected:before{
+    background: url('../images/nav_settings_selected.svg') no-repeat;
+}
+
+.personabarnav > li#Edit.selected {
+    color: #737171;
+    background-color: transparent;
+}
+.personabarnav > li#Edit:before {
+    background: url('../images/nav_edit.svg') no-repeat;
+}
+.personabarnav > li#Edit:hover:before,
+.personabarnav > li#Edit.active:before,
+.personabarnav > li#Edit.selected:before{
+    background: url('../images/nav_edit_selected.svg') no-repeat;
 }
 
 .personabarnav > li#showsite {
@@ -770,6 +793,10 @@ transform: rotate(180deg);
 .personabarnav > li#Logout, .personabarnav > li#Edit {
     width: 100%;
 }
+.personabarnav > li#Logout {
+    display: none;
+}
+
 @media all and (min-height: 680px) {
     .personabarnav > li#Logout {
         bottom: 80px;
@@ -780,14 +807,11 @@ transform: rotate(180deg);
         position: absolute;
     }
 }
-.personabarnav > li#Edit.selected {
-    color: #737171;
-    background-color: transparent;
-}
+
 .hovermenu {
     position: absolute;
     left: 80px;
-    padding: 18px 8px 23px 25px;
+    padding: 0 8px 23px 25px;
     background-color: #2f2f2f;
     display: none;
     /* display: none; IE not apply list-style-type: none; with this active
@@ -798,7 +822,12 @@ transform: rotate(180deg);
     box-sizing: border-box;
 }
 .hovermenu > label {
-    display: none;
+    height: 80px;
+    line-height: 80px;
+    display: block;
+    text-align: left;
+    text-transform: uppercase;
+    color: #FFF;
 }
 .hovermenu > ul {
     margin: 0;
@@ -807,12 +836,12 @@ transform: rotate(180deg);
 
 .hovermenu > ul > li {
     cursor: pointer;
-    font-family: sourcecodepro_semibold, arial;
+    font-family: pb_semibold, arial;
     font-size: 14px;
     font-weight: 600;
     margin-top: 12px;
     text-align: left;
-    color: #5c5c5c;
+    color: #868484;
 }
 .hovermenu > ul > li:first-child {
     margin-top: 0;
@@ -961,7 +990,7 @@ transform: rotate(180deg);
     color: #b2aeae;
     text-transform: uppercase;
     display: block;
-    font-family: sourcecodepro_semibold;
+    font-family: pb_semibold;
     letter-spacing: 2px;
 }
 .socialpanelheader > .qaTooltip {
@@ -977,7 +1006,7 @@ transform: rotate(180deg);
     line-height: 36px;
     min-height: 48px;
     margin: 0;
-    font-family: robotoslab, arial;
+    font-family: roboto, arial;
     font-weight: normal;
 }
 .socialpanelheader > .qaTooltip > .tag-menu {
@@ -1172,7 +1201,7 @@ only screen and (min-width: 768px) and (max-width: 1024px)   {
     .notification-footer > span {
         display: block;
         margin-right: 90px;
-        font-family: sourcecodepro_semibold;
+        font-family: pb_semibold;
         text-transform: uppercase;
     }
 
@@ -1233,7 +1262,7 @@ ul.tabControl {
         display: block;
         padding: 20px 0 20px 14px;
         font-size: 20px;
-        font-family: sourcecodepro;
+        font-family: pb_semibold;
         font-weight: normal;
     }
 
@@ -1717,3 +1746,104 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     height: 5px;
 }
 /* SCROLL BAR Style END */
+
+/* Popup Style Start */
+
+.hoverSummaryMenu {
+    position: absolute;
+    width: 200px;
+    background-color: #2f2f2f;
+    padding: 27px 37px 42px 37px;
+    left: 80px;
+    top: 0;
+    opacity: 0;
+    display: none;
+    box-sizing: border-box;
+    animation: summarymenu 200ms linear;
+    animation-fill-mode: forwards;
+    text-align: left;
+    cursor: default;
+}
+.hoverSummaryMenu * {
+    font-family: pb_semibold, Arial;
+}
+.hoverSummaryMenu.shown {
+    display: block !important;
+}
+@keyframes summarymenu {
+    0%{ opacity: 0;display: none;}
+    1%{ opacity: 0;display: block;}
+    100%{ opacity: 1;display: block;}
+}
+
+.hoverSummaryMenu ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.hoverSummaryMenu ul li {
+    font-family: roboto, Arial;
+    font-size: 11px;
+    color: #fff;
+    margin-top: 18px;
+    cursor: default;
+}
+.hoverSummaryMenu ul li span, .hoverSummaryMenu ul li label {
+    display: block;
+    line-height: 13px;
+    word-break: break-all;
+}
+.hoverSummaryMenu ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+.hoverSummaryMenu ul li label {
+    font-size: 12px;
+    color: #868484;
+    padding: 2px 0 13px 0;
+    border-bottom: 1px solid #868484;
+    text-transform: uppercase;
+    -moz-word-break: break-all;
+    -o-word-break: break-all;
+    word-break: break-all;
+}
+.hoverSummaryMenu ul li:last-child label {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.hoverSummaryMenu ul li span.bigtext {
+    font-size: 24px;
+    line-height: 24px;
+}
+.hoverSummaryMenu li.title {
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-top: 0;
+}
+.hoverSummaryMenu li.separator {
+    height: 18px;
+    line-height: 0;
+    margin: 0;
+}
+.server-summary li.version-info {
+    margin-top: 11px;
+}
+.server-summary li.framework {
+    margin-top: 36px;
+}
+.server-summary li.doc-center a, 
+.server-summary li.logout {
+    font-size: 14px;
+    color: #6F7273;
+    text-decoration: none;
+    cursor: pointer;
+}
+.server-summary li.doc-center a:hover, 
+.server-summary li.logout:hover {
+    color: #FFF;
+}
+.server-summary li.logout {
+    margin-top: 12px;
+}
+
+/* Popup Style END */

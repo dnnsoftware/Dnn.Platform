@@ -171,6 +171,7 @@
     </Compile>
     <Compile Include="Services\Dto\SuggestionDto.cs" />
     <Compile Include="Services\Dto\RoleGroupDto.cs" />
+    <Compile Include="Services\ServerSummaryController.cs" />
     <Compile Include="Services\MenuExtensionsController.cs" />
     <Compile Include="Services\LocalizationController.cs" />
     <Compile Include="Services\ComponentsController.cs" />
@@ -196,9 +197,18 @@
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
+    <Content Include="admin\personaBar\images\nav_content_selected.svg" />
+    <Content Include="admin\personaBar\images\nav_edit_selected.svg" />
+    <Content Include="admin\personaBar\images\nav_manage_selected.svg" />
+    <Content Include="admin\personaBar\images\nav_settings_selected.svg" />
     <Content Include="admin\personaBar\images\notify.png" />
     <Content Include="admin\personaBar\images\PersonaBarDialog-icons.png" />
+    <Content Include="admin\personaBar\images\nav_content.svg" />
+    <Content Include="admin\personaBar\images\nav_edit.svg" />
+    <Content Include="admin\personaBar\images\nav_manage.svg" />
+    <Content Include="admin\personaBar\images\nav_settings.svg" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
+    <Content Include="admin\personaBar\scripts\serversummary.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -220,11 +230,8 @@
     <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.js" />
     <Content Include="admin\personaBar\scripts\loader.js" />
     <Content Include="admin\personaBar\scripts\gateway.js" />
-    <None Include="admin\personaBar\css\RobotoSlab-Regular.ttf" />
-    <None Include="admin\personaBar\css\SourceCodePro-Regular.ttf" />
-    <None Include="admin\personaBar\css\SourceCodePro-Regular.ttf.woff" />
-    <None Include="admin\personaBar\css\SourceCodePro-Semibold.ttf" />
-    <None Include="admin\personaBar\css\SourceCodePro-Semibold.ttf.woff" />
+    <None Include="admin\personaBar\css\OpenSans-Semibold.ttf" />
+    <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="app.config" />
     <None Include="Dnn.PersonaBar.UI.dnn" />
     <None Include="Module.build">

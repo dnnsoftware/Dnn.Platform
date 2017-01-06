@@ -100,6 +100,10 @@ namespace Dnn.PersonaBar.Library.Containers
             {
                 settings.Add("beaconUrl", GetBeaconUrl());
             }
+
+            var customModules = new List<string>() { "serversummary" };
+            settings.Add("customModules", customModules);
+
             return settings;
         }
 

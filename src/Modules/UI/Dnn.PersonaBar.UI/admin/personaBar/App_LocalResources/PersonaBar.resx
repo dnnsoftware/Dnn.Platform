@@ -279,4 +279,19 @@
   <data name="btn_LoadMore.Text" xml:space="preserve">
     <value>Load More</value>
   </data>
+  <data name="Documentation.Text" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="Framework.Text" xml:space="preserve">
+    <value>.Net Framework</value>
+  </data>
+  <data name="LicenseKey.Text" xml:space="preserve">
+    <value>License Key</value>
+  </data>
+  <data name="ServerName.Text" xml:space="preserve">
+    <value>Server Name</value>
+  </data>
+  <data name="UpgradeLicense.Text" xml:space="preserve">
+    <value>[ Upgrade to Evoq ]</value>
+  </data>
 </root>
