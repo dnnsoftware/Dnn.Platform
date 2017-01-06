@@ -230,7 +230,7 @@
     <Content Include="admin\personaBar\scripts\koComponents\dateTimePicker.js" />
     <Content Include="admin\personaBar\scripts\loader.js" />
     <Content Include="admin\personaBar\scripts\gateway.js" />
-    <None Include="admin\personaBar\css\OpenSans-Semibold.ttf" />
+    <None Include="admin\personaBar\css\open-sans.semibold.ttf" />
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="app.config" />
     <None Include="Dnn.PersonaBar.UI.dnn" />

@@ -1,13 +1,13 @@
 ﻿@font-face {
     font-family: 'pb_regular';
-    src: url('OpenSans-Semibold.ttf') format('truetype');
+    src: url('open-sans.semibold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'pb_semibold';
-    src: url('OpenSans-Semibold.ttf') format('truetype');
+    src: url('open-sans.semibold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

@@ -138,7 +138,8 @@ define(['jquery'], function ($) {
                     });
                 },
 
-                notify: function (text, options = {}) {
+                notify: function (text, options) {
+                    options = options || {};
                     var notificationDialog = $('#notification-dialog');
                     var timeout = options.timeout || 2000;
                     var size = options.size || '';
@@ -170,7 +171,8 @@ define(['jquery'], function ($) {
                     });
                 },
 
-                notifyError: function (text, options = {}) {
+                notifyError: function (text, options) {
+                    options = options || {};
                     options.type = "error";
                     this.notify(text, options);
                 },
