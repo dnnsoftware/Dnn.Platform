@@ -196,6 +196,7 @@
     <Content Include="admin\personaBar\images\close_thin.svg" />
     <Content Include="admin\personaBar\images\icon-exclamation.png" />
     <Content Include="admin\personaBar\images\icon-permission-sprint.png" />
+    <Content Include="admin\personaBar\images\icon_exclamation.svg" />
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
