@@ -106,7 +106,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             moment: moment,
             persistent: persistent.init(config, sf),
             inAnimation: inAnimation,
-            closePersonaBar: function handleClosePersonarBar(callback) {
+            closePersonaBar: function handleClosePersonarBar(callback, keepSelection) {
                 var self = this;
 
                 if ($personaBarPlaceholder.is(":hidden")) {
@@ -117,12 +117,17 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     return;
                 }
 
-                $('.btn_panel, .hovermenu > ul > li').removeClass('selected');
+                if (keepSelection) {
+                    $('.btn_panel.selected, .hovermenu > ul > li.selected').removeClass('selected').addClass('pending');
+                    $('.btn_panel, .hovermenu > ul > li').removeClass('selected');
+                } else {
+                    $('.btn_panel, .hovermenu > ul > li').removeClass('selected pending');
+                }
 
                 parentBody.style.overflow = "auto";
                 body.style.overflow = "hidden";
 
-                function persistentSaveCallback() {
+                function closeCallback() {
                     inAnimation = true;
                     $personaBarPlaceholder.hide();
                     self.leaveCustomModules();
@@ -155,9 +160,13 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                     });
                 };
 
-                self.persistent.save({
-                    expandPersonaBar: false
-                }, persistentSaveCallback);
+                if (keepSelection) {
+                    closeCallback();
+                } else {
+                    self.persistent.save({
+                        expandPersonaBar: false
+                    }, closeCallback);
+                }
             },
             loadPanel: function handleLoadPanel(identifier, params) {
                 var savePersistentCallback;
@@ -215,8 +224,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                 var $menuItems = $(".btn_panel");
                 var $hoverMenuItems = $(".hovermenu > ul > li");
                 
-                $menuItems.removeClass('selected');
-                $hoverMenuItems.removeClass('selected');
+                $menuItems.removeClass('selected pending');
+                $hoverMenuItems.removeClass('selected pending');
 
                 var $btn = $(".btn_panel[id='" + identifier + "']");
                 $btn.addClass('selected');
@@ -261,7 +270,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                     if (e.keyCode === 27) {
                                         e.preventDefault();
                                         if (!window.dnn.stopEscapeFromClosingPB) {
-                                            util.closePersonaBar();
+                                            util.closePersonaBar(null, true);
                                         }
                                     }
                                 });
@@ -558,10 +567,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         $avatarMenu.before($showSiteButton);
                                     }
 
-                                    $showSiteButton.click(function handleShowSite(e) {
+                                    $showSiteButton.click(function handleShowSite(e, keepSelection) {
                                         e.preventDefault();
                                         var needRefresh = $(this).data('need-refresh');
                                         var needHomeRedirect = $(this).data('need-homeredirect');
+                                        $showSiteButton.hide();
                                         util.closePersonaBar(function() {
                                             if (needHomeRedirect) {
                                                 window.top.location.href = config.siteRoot;
@@ -570,7 +580,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                     window.top.location.reload();
                                                 }
                                             }
-                                        });
+                                        }, keepSelection);
                                     });
                                 }());
 
@@ -784,6 +794,10 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 200, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 200, 'linear', callback);
                     }
+
+                    $mask.click(function(e) {
+                        $showSiteButton.trigger('click', [true]);
+                    });
                 },
                 function initCustomModules(callback) {
                     util.initCustomModules(callback);

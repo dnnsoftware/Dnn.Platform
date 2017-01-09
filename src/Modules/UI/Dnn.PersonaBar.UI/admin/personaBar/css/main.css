@@ -745,7 +745,9 @@ transform: rotate(180deg);
     height: 24px;
     margin: 0;
 }
-
+.personabarnav > li.pending {
+    border-right: 3px solid #9FDBF0;
+}
 .personabarnav > li#Content:before {
     background: url('../images/nav_content.svg') no-repeat;
 }
@@ -754,6 +756,10 @@ transform: rotate(180deg);
 .personabarnav > li#Content.selected:before{
     background: url('../images/nav_content_selected.svg') no-repeat;
 }
+.personabarnav > li#Content.pending:before{
+    background: url('../images/nav_content_pending.svg') no-repeat;
+}
+
 
 .personabarnav > li#Manage:before {
     background: url('../images/nav_manage.svg') no-repeat;
@@ -763,6 +769,9 @@ transform: rotate(180deg);
 .personabarnav > li#Manage.selected:before{
     background: url('../images/nav_manage_selected.svg') no-repeat;
 }
+.personabarnav > li#Manage.pending:before{
+    background: url('../images/nav_manage_pending.svg') no-repeat;
+}
 
 .personabarnav > li#Settings:before {
     background: url('../images/nav_settings.svg') no-repeat;
@@ -771,6 +780,9 @@ transform: rotate(180deg);
 .personabarnav > li#Settings.active:before,
 .personabarnav > li#Settings.selected:before{
     background: url('../images/nav_settings_selected.svg') no-repeat;
+}
+.personabarnav > li#Settings.pending:before{
+    background: url('../images/nav_settings_pending.svg') no-repeat;
 }
 
 .personabarnav > li#Edit.selected {
@@ -787,7 +799,18 @@ transform: rotate(180deg);
 }
 
 .personabarnav > li#showsite {
+    background: url('../images/close_thin.svg') no-repeat center center;
+    position: absolute;
+    padding: 0;
+    width: 12px;
+    height: 12px;
+    left: 921px;
+    top: 9px;
+    border: none;
     display: none;
+}
+.personabarnav > li#showsite:hover {
+    background-image: url('../images/close_thin-hover.svg')
 }
 
 .personabarnav > li#Logout, .personabarnav > li#Edit {
@@ -861,6 +884,9 @@ transform: rotate(180deg);
 .hovermenu > ul > li.selected {
     color: white;
     cursor: default;
+}
+.hovermenu > ul > li.pending {
+    color: #9FDBF0;
 }
 
 .hovermenu > ul > li:first-child {

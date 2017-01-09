@@ -192,21 +192,29 @@
     <Content Include="admin\personaBar\images\arrow_forward.svg">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="admin\personaBar\images\close_thin-hover.svg" />
+    <Content Include="admin\personaBar\images\close_thin.svg" />
     <Content Include="admin\personaBar\images\icon-exclamation.png" />
     <Content Include="admin\personaBar\images\icon-permission-sprint.png" />
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
+    <Content Include="admin\personaBar\images\nav_content_pending.svg" />
     <Content Include="admin\personaBar\images\nav_content_selected.svg" />
     <Content Include="admin\personaBar\images\nav_edit_selected.svg" />
+    <Content Include="admin\personaBar\images\nav_manage_pending.svg" />
     <Content Include="admin\personaBar\images\nav_manage_selected.svg" />
+    <Content Include="admin\personaBar\images\nav_settings_pending.svg" />
     <Content Include="admin\personaBar\images\nav_settings_selected.svg" />
     <Content Include="admin\personaBar\images\notify.png" />
+    <Content Include="admin\personaBar\images\notify_check.svg" />
+    <Content Include="admin\personaBar\images\notify_error.svg" />
     <Content Include="admin\personaBar\images\PersonaBarDialog-icons.png" />
     <Content Include="admin\personaBar\images\nav_content.svg" />
     <Content Include="admin\personaBar\images\nav_edit.svg" />
     <Content Include="admin\personaBar\images\nav_manage.svg" />
     <Content Include="admin\personaBar\images\nav_settings.svg" />
+    <Content Include="admin\personaBar\images\x_thin.svg" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
