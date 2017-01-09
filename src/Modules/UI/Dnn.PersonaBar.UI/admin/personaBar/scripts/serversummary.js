@@ -14,7 +14,7 @@ define(['jquery', 'knockout', 'jquery.hoverIntent.min'], function ($, ko) {
                         '<li class="version-info" data-bind="html: ProductVersion"></li>' +
                         '<li class="framework" data-bind="visible: FrameworkVersion.length > 0"><span data-bind="html: FrameworkVersion"></span><label data-bind="html: resx.Framework"></label></li>' +
                         '<li class="server-name" data-bind="visible: ServerName.length > 0"><span data-bind="html: ServerName"></span><label data-bind="html: resx.ServerName"></label></li>' +
-                        '<li class="license-info"><a href="http://www.dnnsoftware.com/products/" data-bind="html: resx.UpgradeLicense" target="_blank"></a><label data-bind="html: resx.LicenseKey"></label></li>' +
+                        '<li class="license-info" data-bind="visible: visibleCheck(\'LicenseVisible\')"><a href="http://www.dnnsoftware.com/products/" data-bind="html: resx.UpgradeLicense" target="_blank"></a><label data-bind="html: resx.LicenseKey"></label></li>' +
                         '<li class="separator"></li>' +
                         '<li class="doc-center"><a href="http://www.dnnsoftware.com/docs/" data-bind="html: resx.Documentation, visible: visibleCheck(\'DocCenterVisible\')" target="_blank"></a></li>' +
                         '<li id="Logout" class="logout" data-bind="html: resx.nav_Logout"></li>' +
