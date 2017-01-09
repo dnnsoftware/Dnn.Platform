@@ -13,7 +13,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.UI;
@@ -22,6 +21,8 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     public class TemplateController : ServiceLocator<ITemplateController, TemplateController>, ITemplateController
     {
+        private const string TemplatesFolderPath = "Templates/";
+
         private readonly ITabController _tabController;
 
         public TemplateController()
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                 if (folder == null)
                 {
-                    throw new TemplateException("Folder could not be found in system.");
+                    folder = CreateTemplateFolder();
                 }
 
                 filename = folder.FolderPath + template.Name + ".page.template";
@@ -75,8 +76,12 @@ namespace Dnn.PersonaBar.Pages.Components
         }
         private static IFolderInfo GetTemplateFolder()
         {
-            const string folderPath = "Templates/";
-            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, folderPath);
+            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
+        }
+
+        private static IFolderInfo CreateTemplateFolder()
+        {
+            return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
         }
 
         private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
@@ -98,7 +103,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, "Templates/");
+            var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
            
             return LoadTemplates(portalSettings.PortalId, templateFolder);
         }
