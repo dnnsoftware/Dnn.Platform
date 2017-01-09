@@ -737,6 +737,7 @@ transform: rotate(180deg);
 .personabarnav > li:hover,.personabarnav > li.active {
     color: #fff;
     background-color: #2f2f2f;
+    border-right: none !important;
 }
 .personabarnav > li:before {
     display: block;
