@@ -1,7 +1,12 @@
 ﻿
 <div class="pagesPanelContainer pagePanel" id="pages-bodyPanel">
     <div class="breadcrumbs-container">
-        <!-- ko foreach: selectedPagePath -->
+
+        <!-- ko if: selectedPagePath().length > 4 -->
+        <span class="more"></span>
+        <!-- /ko -->
+
+        <!-- ko foreach: selectedPagePath().slice(Math.max(selectedPagePath().length - 4, 0)) -->
         <div data-bind="click: $root.doSelectPage">
             <span data-bind="text: name"></span>
         </div>
