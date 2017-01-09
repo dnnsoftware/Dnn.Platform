@@ -99,42 +99,14 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, "Templates/");
-            if (templateFolder != null)
-            {
-                //var folderName = templateFolder != null ? templateFolder.FolderName : null;
-                //if (folderName == string.Empty)
-                //{
-                //    templateFolder.FfolderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
-                //}
-                return LoadTemplates(templateFolder);
-            }
-
-            return null;
+           
+            return LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
-        public int GetDefaultTemplateId(IEnumerable<Template> templates)
+        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
         {
-            var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
-            if (firstOrDefault != null)
-            {
-                return firstOrDefault.Value;
-            }
-
-            return Null.NullInteger;
-        }
-
-        private IEnumerable<Template> LoadTemplates(IFolderInfo templateFolder)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var portalId = portalSettings.PortalId;
             var templates = new List<Template>();
             if (templateFolder == null)
-            {
-                return templates;
-            }
-
-            var folder = FolderManager.Instance.GetFolder(templateFolder.FolderID);
-            if (folder == null)
             {
                 return templates;
             }
@@ -145,7 +117,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 Value = Null.NullInteger
             });
 
-            var files = Globals.GetFileList(portalId, "page.template", false, folder.FolderPath);
+            var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
             foreach (FileItem file in files)
             {
                 int i;
@@ -158,6 +130,17 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return templates;
+        }
+
+        public int GetDefaultTemplateId(IEnumerable<Template> templates)
+        {
+            var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
+            if (firstOrDefault != null)
+            {
+                return firstOrDefault.Value;
+            }
+
+            return Null.NullInteger;
         }
 
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
