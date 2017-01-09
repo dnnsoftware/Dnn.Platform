@@ -96,7 +96,7 @@ namespace DotNetNuke.Data
             return connectionValid;
         }
 
-        private string ExecuteScriptInternal(string connectionString, string script)
+        private string ExecuteScriptInternal(string connectionString, string script, int timeout = 0)
         {
             string exceptions = "";
 
@@ -132,8 +132,8 @@ namespace DotNetNuke.Data
                         //Create a new connection
                         using (var connection = new SqlConnection(connectionString))
                         {
-                            //Create a new command (with no timeout)
-                            using (var command = new SqlCommand(query, connection) {CommandTimeout = 0})
+                            //Create a new command
+                            using (var command = new SqlCommand(query, connection) {CommandTimeout = timeout})
                             {
                                 connection.Open();
                                 command.ExecuteNonQuery();
@@ -152,33 +152,57 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql)
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeout = 0)
         {
             string errorMessage;
-            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeout, out errorMessage);
         }
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, out string errorMessage)
+
+        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeout, out string errorMessage)
         {
             try
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
-                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+
+                if (string.IsNullOrEmpty(connectionString))
+                    throw new ArgumentNullException(nameof(connectionString));
+
+                if (timeout > 0)
+                {
+                    var builder = GetConnectionStringBuilder();
+                    builder.ConnectionString = connectionString;
+                    builder["Connect Timeout"] = null;
+                    builder["Connection Timeout"] = timeout;
+                    connectionString = builder.ConnectionString;
+                }
+
+                SqlConnection connection = null;
+                try
+                {
+                    connection = new SqlConnection(connectionString);
+                    connection.Open();
+                    return SqlHelper.ExecuteReader(connection, CommandType.Text, sql);
+                }
+                catch (Exception)
+                {
+                    connection?.Dispose();
+                    throw;
+                }
             }
             catch (SqlException sqlException)
             {
                 //error in SQL query
                 Logger.Error(sqlException);
-
-                errorMessage = sqlException.Message + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
-                return null;
+                errorMessage = sqlException.Message;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                errorMessage = ex + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
-                return null;
+                errorMessage = ex.ToString();
             }
+            errorMessage += Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
+            return null;
         }
 
         private string GetConnectionStringUserID()
@@ -319,14 +343,29 @@ namespace DotNetNuke.Data
             PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
+        public override void ExecuteNonQuery(int timeout, string procedureName, params object[] commandParameters)
+        {
+            PetaPocoHelper.ExecuteNonQuery(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)
         {
             PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeout)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, timeout, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
+        }
+
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
             return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
@@ -336,7 +375,12 @@ namespace DotNetNuke.Data
 
         public override string ExecuteScript(string script)
         {
-            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script);
+            return ExecuteScript(script, 0);
+        }
+
+        public override string ExecuteScript(string script, int timeout)
+        {
+            string exceptions = ExecuteScriptInternal(UpgradeConnectionString, script, timeout);
 
             //if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (UpgradeConnectionString != ConnectionString || DatabaseOwner.Trim().ToLower() != "dbo.")
@@ -380,9 +424,19 @@ namespace DotNetNuke.Data
             return ExecuteScriptInternal(connectionString, script); 
         }
 
+        public override string ExecuteScript(string connectionString, string script, int timeout)
+        {
+            return ExecuteScriptInternal(connectionString, script, timeout); 
+        }
+
         public override IDataReader ExecuteSQL(string sql)
         {
             return ExecuteSQLInternal(ConnectionString, sql);
+        }
+
+        public override IDataReader ExecuteSQL(string sql, int timeout)
+        {
+            return ExecuteSQLInternal(ConnectionString, sql, timeout);
         }
 
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql)
@@ -390,13 +444,23 @@ namespace DotNetNuke.Data
             string errorMessage;
             return ExecuteSQLTemp(connectionString, sql, out errorMessage);
         }
-        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout)
         {
-            return ExecuteSQLInternal(connectionString, sql, out errorMessage);
+            string errorMessage;
+            return ExecuteSQLTemp(connectionString, sql, timeout, out errorMessage);
         }
 
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
+        {
+            return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+        }
+
+        public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout, out string errorMessage)
+        {
+            return ExecuteSQLInternal(connectionString, sql, timeout, out errorMessage);
+        }
 
         #endregion
-
     }
 }
