@@ -97,9 +97,8 @@ namespace Dnn.PersonaBar.Pages.Components
         #region Templates
         public IEnumerable<Template> GetTemplates()
         {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var folders = FolderManager.Instance.GetFolders(user, "BROWSE, ADD");
-            var templateFolder = folders.SingleOrDefault(f => f.DisplayPath == "Templates/");
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, "Templates/");
             if (templateFolder != null)
             {
                 //var folderName = templateFolder != null ? templateFolder.FolderName : null;
