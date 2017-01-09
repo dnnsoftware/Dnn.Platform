@@ -119,6 +119,7 @@
     <Compile Include="MenuControllers\HostMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SqlConsoleController.cs" />
+    <Compile Include="Components\AdhocSqlQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\SqlConsole.css" />

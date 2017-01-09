@@ -13,8 +13,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
@@ -35,7 +33,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-        private const int MaxOutputRecords = 500;
+        //private const int MaxOutputRecords = 500;
 
         #region API
 
@@ -67,10 +65,10 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             if (query.QueryId <= 0)
             {
                 var saveQueries = _controller.GetQueries();
-                if (saveQueries.Any(q => q.Name.Equals(query.Name, StringComparison.InvariantCultureIgnoreCase)))
+                var saveQuery = saveQueries.FirstOrDefault(q => q.Name.Equals(query.Name, StringComparison.InvariantCultureIgnoreCase));
+                if (saveQuery != null)
                 {
-                    query.QueryId = saveQueries.First(q =>
-                        q.Name.Equals(query.Name, StringComparison.InvariantCultureIgnoreCase)).QueryId;
+                    query.QueryId = saveQuery.QueryId;
                 }
             }
 
@@ -103,7 +101,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage RunQuery(SqlQuery query)
+        public HttpResponseMessage RunQuery(AdhocSqlQuery query)
         {
             var connectionstring = Config.GetConnectionString(query.ConnectionStringName);
 
@@ -113,14 +111,13 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             var runAsQuery = RunAsScript(query.Query);
             if (runAsQuery)
             {
-                errorMessage = DataProvider.Instance().ExecuteScript(connectionstring, query.Query);
+                errorMessage = DataProvider.Instance().ExecuteScript(connectionstring, query.Query, query.Timeout);
             }
             else
             {
                 try
                 {
-                    
-                    var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, query.Query, out errorMessage);
+                    var dr = DataProvider.Instance().ExecuteSQLTemp(connectionstring, query.Query, query.Timeout, out errorMessage);
                     if (dr != null)
                     {
                         do
