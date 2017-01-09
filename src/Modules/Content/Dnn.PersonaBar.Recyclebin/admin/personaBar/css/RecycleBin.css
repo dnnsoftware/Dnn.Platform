@@ -170,14 +170,7 @@ div#recycleBin-body.socialpanelbody .listOfItems{
 }
 div#recycleBin-header.socialpanelheader .actions {
     float: right;
-    margin-top: 5px;
-    position: absolute;
-    max-width: 80%;
-    right: 0;
-    margin-right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
+    margin-right: 28px;
 }
 div#recycleBin-header.socialpanelheader .actions a.button {
     margin: 22px 38px 0 0;

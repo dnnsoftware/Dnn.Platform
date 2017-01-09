@@ -3,8 +3,8 @@
     <h3 class="caption" data-bind="html: resx.recyclebin_Title"></h3>
 
     <div class="actions">
-        <a class="emtyRecycleBin primarybtn button" data-bind="html: resx.recyclebin_EmptyRecycleBin, click: $root.emptyRecycleBin, clickBubble: false,
-                        visible: (deletedpagesList().length > 0 || deletedmodulesList().length > 0 || deletedusersList().length > 0)"></a>
+        <button class="emtyRecycleBin dnn-ui-common-button large" role="primary" data-bind="html: resx.recyclebin_EmptyRecycleBin, click: $root.emptyRecycleBin, clickBubble: false,
+                        visible: (deletedpagesList().length > 0 || deletedmodulesList().length > 0 || deletedusersList().length > 0)"></button>
     </div>
 </div>
 
