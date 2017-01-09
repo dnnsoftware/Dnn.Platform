@@ -172,31 +172,40 @@ namespace DotNetNuke.Data
 		#region DAL + Methods
 
 		public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
+		public abstract void ExecuteNonQuery(int timeout, string procedureName, params object[] commandParameters);
 
         public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
+        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeout);
 
         public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
+        public abstract IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
 
 		public abstract IDataReader ExecuteSQL(string sql);
+		public abstract IDataReader ExecuteSQL(string sql, int timeout);
 
 		#endregion
 
 		#region ExecuteScript Methods
 
 		public abstract string ExecuteScript(string script);
+		public abstract string ExecuteScript(string script, int timeout);
 
 		public abstract string ExecuteScript(string connectionString, string sql);
+		public abstract string ExecuteScript(string connectionString, string sql, int timeout);
 
 		public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql);
-		public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage);
+        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout);
 
-		#endregion
+        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage);
+        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout, out string errorMessage);
 
-		#region Transaction Methods
+        #endregion
 
-		public virtual void CommitTransaction(DbTransaction transaction)
+        #region Transaction Methods
+
+        public virtual void CommitTransaction(DbTransaction transaction)
 		{
 			try
 			{
@@ -3709,7 +3718,7 @@ namespace DotNetNuke.Data
 
 		public virtual void PurgeScheduleHistory()
 		{
-			ExecuteNonQuery("PurgeScheduleHistory");
+			ExecuteNonQuery(90, "PurgeScheduleHistory");
 		}
 
 		public virtual void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse,
