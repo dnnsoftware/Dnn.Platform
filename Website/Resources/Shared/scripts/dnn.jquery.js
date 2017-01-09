@@ -4294,6 +4294,18 @@
     };
     window.__rgDataDivScrollTopPersistArray = [];
     $(document).ajaxComplete(dnnInitCustomisedCtrls);
+
+    if (typeof Sys._isInstanceOfType === "function") {
+        var originalFunc = Sys._isInstanceOfType;
+        Sys._isInstanceOfType = function(type, instance) {
+            if (typeof instance === "function" && type === Function) {
+                return true;
+            }
+
+            return originalFunc(type, instance);
+        }
+    }
+
     Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(saveRgDataDivScrollTop);
     Sys.WebForms.PageRequestManager.getInstance().add_endRequest(dnnInitCustomisedCtrls);
     $(dnnInitCustomisedCtrls);

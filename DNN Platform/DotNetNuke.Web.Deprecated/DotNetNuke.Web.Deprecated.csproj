@@ -107,8 +107,6 @@
     <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
     <Compile Include="UI\WebControls\DnnTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\WebControls\DnnAjaxLoadingPanel.cs" />
-    <Compile Include="UI\WebControls\DnnAjaxPanel.cs" />
     <Compile Include="UI\WebControls\DnnFormNumericTextBoxItem.cs" />
     <Compile Include="UI\WebControls\DnnModuleComboBox.cs" />
     <Compile Include="UI\WebControls\DnnFormComboBoxItem.cs" />
@@ -180,8 +178,6 @@
     <Compile Include="UI\WebControls\DnnGridEditColumn.cs" />
     <Compile Include="UI\WebControls\DnnGridTemplateColumn.cs" />
     <Compile Include="UI\WebControls\DnnLanguageComboBox.cs" />
-    <Compile Include="UI\WebControls\DnnProgressArea.cs" />
-    <Compile Include="UI\WebControls\DnnProgressManager.cs" />
     <Compile Include="UI\WebControls\TermsList.cs" />
     <Compile Include="UI\WebControls\TermsSelector.cs" />
   </ItemGroup>

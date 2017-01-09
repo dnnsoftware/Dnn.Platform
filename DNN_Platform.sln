@@ -353,6 +353,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skin", "Skin", "{140B6176-E
 		DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip = DNN Platform\Website\Install\Skin\Skin_Xcillion_1.0.0.zip
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Selectize", "Selectize", "{3F9DB6B8-B26A-43B9-8699-6A3CF401546C}"
+	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Selectize\releaseNotes.txt = DNN Platform\JavaScript Libraries\Selectize\releaseNotes.txt
+		DNN Platform\JavaScript Libraries\Selectize\Selectize (Apache).txt = DNN Platform\JavaScript Libraries\Selectize\Selectize (Apache).txt
+		DNN Platform\JavaScript Libraries\Selectize\selectize.css = DNN Platform\JavaScript Libraries\Selectize\selectize.css
+		DNN Platform\JavaScript Libraries\Selectize\selectize.default.css = DNN Platform\JavaScript Libraries\Selectize\selectize.default.css
+		DNN Platform\JavaScript Libraries\Selectize\Selectize.dnn = DNN Platform\JavaScript Libraries\Selectize\Selectize.dnn
+		DNN Platform\JavaScript Libraries\Selectize\selectize.min.js = DNN Platform\JavaScript Libraries\Selectize\selectize.min.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -692,5 +702,6 @@ Global
 		{15EE268D-2073-4489-9BB2-26E34D65A8DC} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{140B6176-E045-4F86-ABCA-6C493068F6FA} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
+		{3F9DB6B8-B26A-43B9-8699-6A3CF401546C} = {886DB964-63D4-4841-81D1-5A7360C98230}
 	EndGlobalSection
 EndGlobal

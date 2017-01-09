@@ -111,12 +111,12 @@
 	};
 
 	$(document).ready(function () {
-		updateTerms();
-		if (typeof Sys != "undefined") {
-			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-				updateTerms();
-			});
-		}
+		//updateTerms();
+		//if (typeof Sys != "undefined") {
+		//	Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+		//		updateTerms();
+		//	});
+		//}
 	});
 }(jQuery));
 

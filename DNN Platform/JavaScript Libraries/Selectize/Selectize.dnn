@@ -1,0 +1,55 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="Selectize" type="JavaScript_Library" version="00.12.04" isSystem="true">
+      <friendlyName>Selectize JavaScript Library</friendlyName>
+      <description>Selectize is the hybrid of a textbox and select box. It's jQuery-based and it's useful for tagging, contact lists, country selectors, and so on.</description>
+      <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="Selectize (Apache).txt" />
+      <releaseNotes src="releaseNotes.txt" />
+      <azureCompatible>true</azureCompatible>
+      <components>
+        <component type="JavaScript_Library">
+          <javaScriptLibrary>
+            <libraryName>Selectize</libraryName>
+            <fileName>selectize.min.js</fileName>
+            <objectName>Selectize</objectName>
+            <CDNPath>//cdnjs.com/libraries/selectize.js</CDNPath>
+          </javaScriptLibrary>
+        </component>
+        <component type="JavaScriptFile">
+          <jsfiles>
+            <libraryFolderName>Selectize</libraryFolderName>
+            <jsfile>
+              <name>selectize.min.js</name>
+            </jsfile>
+          </jsfiles>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Licenses</basePath>
+            <file>
+              <name>Selectize (Apache).txt</name>
+            </file>
+          </files>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>Resources\Libraries\Selectize\00_12_04</basePath>
+            <file>
+              <name>selectize.css</name>
+            </file>
+            <file>
+              <name>selectize.default.css</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

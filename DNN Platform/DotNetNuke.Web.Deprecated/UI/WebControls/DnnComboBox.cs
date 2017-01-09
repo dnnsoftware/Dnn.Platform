@@ -22,8 +22,10 @@
 
 using System;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 #endregion
@@ -33,27 +35,12 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnComboBox : DropDownList
     {
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            //base.EnableEmbeddedBaseStylesheet = false;
-            //OnClientLoad = "$.dnnComboBoxLoaded";
-            //OnClientFocus = "$.dnnComboBoxHack";
-            //OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            //OnClientItemsRequested = "$.dnnComboBoxItemRequested";
-            //MaxHeight = 240;
-            //ZIndex = 100010;
-            //Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            //Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            //Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            //Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            //Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
-        }
 
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplySkin(this);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            RegisterRequestResources();
+
             base.OnPreRender(e);
         }
 
@@ -110,6 +97,24 @@ namespace DotNetNuke.Web.UI.WebControls
         public int FindItemIndexByValue(string value)
         {
             return Items.IndexOf(FindItemByValue(value));
+        }
+
+        private void RegisterRequestResources()
+        {
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            var package = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == "Selectize");
+            if (package != null)
+            {
+                JavaScript.RequestRegistration("Selectize");
+
+                var libraryPath = $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
+                ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.css");
+                ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.default.css");
+
+                var initScripts = $"$('#{ClientID}').selectize({{}});";
+
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
+            }
         }
     }
 }
