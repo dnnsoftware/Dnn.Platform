@@ -439,6 +439,10 @@ window.dnn.pages = window.dnn.pages || {};
             this._computeSelectedPagePath();
         },
 
+        _selectedPagePathChanged(path) {
+            this.selectedPagePathChanged(path);
+        },
+
         // Select page which under hierarchy and need expand level by level.
         _selectPageInHierarchy: function() {
             var pageId, find, pageData;
@@ -1172,6 +1176,7 @@ window.dnn.pages = window.dnn.pages || {};
                 this._viewModel.inDrag = ko.observable(true);
                 this._viewModel.isNew = ko.observable(false);
                 this._viewModel.selectedPagePath = ko.observableArray([]);
+                this._viewModel.selectedPagePath.subscribe($.proxy(this._selectedPagePathChanged, this));
                 this._viewModel.searchKeyword = ko.observable('');
                 this._viewModel.searchFocus = ko.observable(true);
                 this._viewModel.deletedPagesCount = ko.observable(0);

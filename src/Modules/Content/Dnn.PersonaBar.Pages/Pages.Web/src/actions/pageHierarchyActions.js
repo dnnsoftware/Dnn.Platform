@@ -20,6 +20,20 @@ const pageHierarchyActions = {
             type: ActionTypes.SET_DRAG_ITEM_TEMPLATE,
             itemTemplate
         };
+    },
+
+    selectPage(page) {
+        return {
+            type: ActionTypes.SELECT_PAGE,
+            page
+        };
+    },
+
+    changeSelectedPagePath(path) {
+        return {
+            type: ActionTypes.CHANGE_SELECTED_PAGE_PATH,
+            path
+        };
     }
 };
 

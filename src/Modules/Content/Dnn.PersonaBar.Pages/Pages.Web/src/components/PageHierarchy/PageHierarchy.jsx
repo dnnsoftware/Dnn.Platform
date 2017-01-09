@@ -18,10 +18,11 @@ class PageHierarchy extends Component {
         pageHierarchyManager.setDragItemTemplate(dragItemTemplate);
         pageHierarchyManager.setSearchKeyword(searchKeyword);   
         pageHierarchyManager.setCurrentTabIdAndSiteRoot(utils.getCurrentPageId(), utils.getSiteRoot());
+        pageHierarchyManager.selectedPagePathChanged = p => this.props.onSelectedPagePathChanged([...p]);
     }
 
     componentWillReceiveProps(nextProps) {
-        const {itemTemplate, dragItemTemplate, searchKeyword} = this.props;
+        const {itemTemplate, dragItemTemplate, searchKeyword, selectedPage} = this.props;
         if (itemTemplate !== nextProps.itemTemplate) {
             pageHierarchyManager.setItemTemplate(nextProps.itemTemplate);
         }    
@@ -32,6 +33,10 @@ class PageHierarchy extends Component {
 
         if (searchKeyword !== nextProps.searchKeyword) {
             pageHierarchyManager.setSearchKeyword(nextProps.searchKeyword);
+        }
+
+        if (selectedPage !== nextProps.selectedPage) {
+            pageHierarchyManager._selectPage(nextProps.selectedPage);
         }
     }
     
@@ -59,6 +64,8 @@ PageHierarchy.propTypes = {
     dragItemTemplate: PropTypes.string.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     onPageSettings: PropTypes.func.isRequired,
+    onSelectedPagePathChanged: PropTypes.func.isRequired,
+    selectedPage: PropTypes.object,
     createdPage: PropTypes.object
 };
 

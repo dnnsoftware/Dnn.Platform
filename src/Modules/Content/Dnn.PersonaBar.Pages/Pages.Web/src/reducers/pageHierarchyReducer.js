@@ -4,6 +4,8 @@ import ContentActionTypes from "../constants/actionTypes/pageActionTypes";
 export default function  pageHierarchyReducer(state = {
     itemTemplate: "pages-list-item-template",
     searchKeyword: "",
+    selectedPagePath: [],
+    selectedPage: null,
     createdPage: null
 }, action) {
     switch (action.type) {
@@ -25,6 +27,16 @@ export default function  pageHierarchyReducer(state = {
         case ContentActionTypes.SAVED_PAGE:
             return { ...state,
                 createdPage: action.data.createdPage
+            };
+
+        case ActionTypes.CHANGE_SELECTED_PAGE_PATH:
+            return { ...state,
+                selectedPagePath: action.path  
+            };
+
+        case ActionTypes.SELECT_PAGE:
+            return { ...state,
+                selectedPage: action.page
             };
 
         default:

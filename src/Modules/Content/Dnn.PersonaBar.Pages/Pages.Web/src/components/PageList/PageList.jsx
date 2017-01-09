@@ -6,6 +6,7 @@ import PageHierarchy from "../PageHierarchy/PageHierarchy";
 import {pageHierarchyActions as PageHierarchyActions} from "../../actions";
 import styles from "./PageList.less";
 import Localization from "../../localization";
+import { bindActionCreators } from "redux";
 
 class PageList extends Component {
     onSearchKeywordChanged(value) {
@@ -32,6 +33,8 @@ class PageList extends Component {
                     dragItemTemplate={this.props.dragItemTemplate}
                     searchKeyword={this.props.searchKeyword} 
                     onPageSettings={this.props.onPageSettings}
+                    selectedPage={this.props.selectedPage}
+                    onSelectedPagePathChanged={this.props.onSelectedPagePathChanged}
                     createdPage={this.props.createdPage} />
             </div>
         );
@@ -40,6 +43,8 @@ class PageList extends Component {
 
 PageList.propTypes = {
     onPageSettings: PropTypes.func,
+    selectedPage: PropTypes.object,
+    onSelectedPagePathChanged: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
@@ -54,8 +59,15 @@ function mapStateToProps(state) {
         itemTemplate: state.pageHierarchy.itemTemplate,
         dragItemTemplate: state.pageHierarchy.dragItemTemplate,
         createdPage: state.pageHierarchy.createdPage,
-        toolbarComponents: state.extensions.toolbarComponents
+        toolbarComponents: state.extensions.toolbarComponents,
+        selectedPage: state.pageHierarchy.selectedPage
     };
 }
 
-export default connect(mapStateToProps)(PageList);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        onSelectedPagePathChanged: PageHierarchyActions.changeSelectedPagePath
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageList);

@@ -9,7 +9,8 @@ import {
     addPagesActions as AddPagesActions,
     templateActions as TemplateActions,
     visiblePanelActions as VisiblePanelActions,
-    languagesActions as LanguagesActions
+    languagesActions as LanguagesActions,
+    pageHierarchyActions as PageHierarchyActions
 } from "../actions";
 import PageSettings from "./PageSettings/PageSettings";
 import AddPages from "./AddPages/AddPages";
@@ -23,6 +24,7 @@ import panels from "../constants/panels";
 import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
 import permissionTypes from "../services/permissionTypes";
+import BreadCrumbs from "./BreadCrumbs";
 
 function getSelectedTabBeingViewed(viewTab) {
     switch (viewTab) {
@@ -336,6 +338,7 @@ class App extends Component {
                         <PersonaBarPageHeader title={Localization.get("Pages")}>
                             <Button type="primary" size="large" onClick={this.onAddPage.bind(this)}>{Localization.get("AddPage")}</Button>
                             <Button type="secondary" size="large" onClick={props.onLoadAddMultiplePages}>{Localization.get("AddMultiplePages")}</Button>
+                            <BreadCrumbs items={this.props.selectedPagePath} onSelectedItem={props.selectPage}/>                            
                         </PersonaBarPageHeader>
                         <PageList onPageSettings={this.onPageSettings.bind(this)} />
                     </PersonaBarPage>
@@ -394,7 +397,9 @@ App.propTypes = {
     onShowPanel: PropTypes.func.isRequired,
     onHidePanel: PropTypes.func.isRequired,
     isContentLocalizationEnabled: PropTypes.object.isRequired,
-    getContentLocalizationEnabled: PropTypes.func.isRequired
+    getContentLocalizationEnabled: PropTypes.func.isRequired,
+    selectPage: PropTypes.func.isRequired,
+    selectedPagePath: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
@@ -412,7 +417,8 @@ function mapStateToProps(state) {
         pageTypeSelectorComponents: state.extensions.pageTypeSelectorComponents,
         selectedPageSettingTab: state.pages.selectedPageSettingTab,
         additionalPanels: state.extensions.additionalPanels,
-        isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled
+        isContentLocalizationEnabled: state.languages.isContentLocalizationEnabled,
+        selectedPagePath: state.pageHierarchy.selectedPagePath
     };
 }
 
@@ -441,8 +447,8 @@ function mapDispatchToProps(dispatch) {
         onDuplicatePage: PageActions.duplicatePage,
         onShowPanel: VisiblePanelActions.showPanel,
         onHidePanel: VisiblePanelActions.hidePanel,
-        getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled
-
+        getContentLocalizationEnabled: LanguagesActions.getContentLocalizationEnabled,
+        selectPage: PageHierarchyActions.selectPage
     }, dispatch);
 }
 
