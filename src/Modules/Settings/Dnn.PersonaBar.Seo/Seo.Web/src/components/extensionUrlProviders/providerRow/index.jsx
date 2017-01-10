@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import Collapse from "dnn-collapsible";
 import Checkbox from "dnn-checkbox";
 import "./style.less";
-import { EditIcon, CheckMarkIcon } from "dnn-svg-icons";
+import { EditIcon } from "dnn-svg-icons";
 
 class ProviderRow extends Component {
     constructor() {
@@ -35,7 +35,7 @@ class ProviderRow extends Component {
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
         if (props.visible) {
             return (
-                <div className={"collapsible-component-providers" + (opened ? " row-opened" : "")}>
+                <div className={"collapsible-component-extention-url-providers" + (opened ? " row-opened" : "")}>
                     <div className={"collapsible-providers " + !opened} >
                         <div className={"row"}>
                             <div className="provider-item item-row-name">
