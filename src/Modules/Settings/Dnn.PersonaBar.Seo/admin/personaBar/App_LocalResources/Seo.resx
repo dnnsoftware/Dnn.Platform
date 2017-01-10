@@ -126,6 +126,9 @@
   <data name="GeneralSettingsTab.Text" xml:space="preserve">
     <value>GENERAL SETTINGS</value>
   </data>
+  <data name="ExtensionUrlProvidersTab.Text" xml:space="preserve">
+	<value>EXTENSION URL PROVIDERS</value>
+  </data>
   <data name="ExpressionsTab.Text" xml:space="preserve">
     <value>EXPRESSIONS</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="RegularExpressions.Text" xml:space="preserve">
     <value>REGULAR EXPRESSIONS</value>
+  </data>
+  <data name="ExtensionUrlProviders.Text" xml:space="preserve">
+    <value>EXTENSION URL PROVIDERS</value>
   </data>
   <data name="SettingsUpdateSuccess.Text" xml:space="preserve">
     <value>The settings have been updated.</value>

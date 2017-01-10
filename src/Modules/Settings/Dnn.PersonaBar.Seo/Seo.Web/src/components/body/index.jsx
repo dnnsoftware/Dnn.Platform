@@ -7,6 +7,7 @@ import {
 import GeneralSettings from "../generalSettings";
 import RegexSettings from "../regexSettings";
 import SitemapSettings from "../sitemapSettings";
+import ExtensionUrlProviders from "../extensionUrlProviders";
 import TestUrl from "../testUrl";
 import Tooltip from "dnn-tooltip";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
@@ -35,13 +36,14 @@ export class Body extends Component {
                 resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("GeneralSettingsTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
+                    tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), <div style={{ fontSize: "9pt", paddingRight: 25 }}>{resx.get("ExpressionsTab")} <Tooltip
                         messages={[resx.get("GlobalSetting")]}
                         type="global"
                         style={{ position: "absolute", right: 0, top: 15, float: "right", textTransform: "none" }}
                         /></div>, resx.get("TestURLTab")]}
                     type="secondary">
                     <GeneralSettings />
+                    <ExtensionUrlProviders />
                     <RegexSettings />
                     <TestUrl />
                 </Tabs>
@@ -54,9 +56,10 @@ export class Body extends Component {
                 resx.get("SitemapSettingsTab")]}
                 type="primary">
                 <Tabs onSelect={this.handleSelect.bind(this)}
-                    tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("TestURLTab")]}
+                    tabHeaders={[resx.get("GeneralSettingsTab"), resx.get("ExtensionUrlProvidersTab"), resx.get("TestURLTab")]}
                     type="secondary">
                     <GeneralSettings />
+                    <ExtensionUrlProviders />
                     <TestUrl />
                 </Tabs>
                 <SitemapSettings />

@@ -23,6 +23,7 @@ using Dnn.PersonaBar.Seo.Services.Dto;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
@@ -508,7 +509,8 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     p.ExtensionUrlProviderId,
                     p.ProviderName,
-                    p.IsActive
+                    p.IsActive,
+                    SettingUrl = Globals.NavigateURL(PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
                 }).ToList();
 
                 var response = new

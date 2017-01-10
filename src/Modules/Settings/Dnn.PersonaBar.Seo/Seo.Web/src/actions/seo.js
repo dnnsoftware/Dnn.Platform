@@ -255,6 +255,40 @@ const siteInfoActions = {
             });
         };
     },
+    getExtensionUrlProviders(callback) {
+        return (dispatch) => {
+            ApplicationService.getExtensionUrlProviders(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SEO_EXTENSION_URL_PROVIDERS,
+                    data: {
+                        providers: data.Providers
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateExtensionUrlProviderStatus(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateExtensionUrlProviderStatus(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SEO_EXTENSION_URL_PROVIDER,
+                    data: {
+                        
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    },
     createVerification(verification, callback, failureCallback) {
         return (dispatch) => {
             ApplicationService.createVerification(verification, data => {

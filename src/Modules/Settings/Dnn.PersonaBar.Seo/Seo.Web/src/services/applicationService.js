@@ -68,6 +68,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SEO");
         sf.post("ResetCache", {}, callback, failureCallback);
     }
+
+    getExtensionUrlProviders(callback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.get("GetExtensionUrlProviders", {}, callback);
+    }
+
+    updateExtensionUrlProviderStatus(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("SEO");
+        sf.post("UpdateExtensionUrlProviderStatus", payload, callback, failureCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;
