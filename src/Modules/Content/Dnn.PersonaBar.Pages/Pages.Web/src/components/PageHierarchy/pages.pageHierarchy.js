@@ -411,7 +411,7 @@ window.dnn.pages = window.dnn.pages || {};
             }, 300);
         },
 
-        _selectPage: function (pageData) {
+        selectPageFromBreadCrumbs: function (pageData) {
             if (this._getViewModel().selectedPage().id != pageData.id) {
                 this._needScrollToSelectedPage = true;
                 this._getViewModel().selectedPage(pageData);
@@ -1189,7 +1189,6 @@ window.dnn.pages = window.dnn.pages || {};
                 this._viewModel.editPageClick = $.proxy(this._editPageClickHandler, this);
                 this._viewModel.settingsPageClick = $.proxy(this._settingsPageClickHandler, this);
                 this._viewModel.deletePageClick = $.proxy(this._deletePageClickHandler, this);
-                this._viewModel.doSelectPage = $.proxy(this._selectPage, this);
 
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
 

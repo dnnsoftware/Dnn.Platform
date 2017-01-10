@@ -36,7 +36,7 @@ class PageHierarchy extends Component {
         }
 
         if (selectedPage !== nextProps.selectedPage) {
-            pageHierarchyManager._selectPage(nextProps.selectedPage);
+            pageHierarchyManager.selectPageFromBreadCrumbs(nextProps.selectedPage);
         }
     }
     
