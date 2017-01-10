@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.UrlManagement
     {
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
+        private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected override void OnInit(EventArgs e)
         {
@@ -56,6 +57,11 @@ namespace DotNetNuke.Modules.UrlManagement
             {
                 _providerSettingsControl.LoadSettings();
             }
+
+            if (DisplayMode == "editor" || DisplayMode == "settings")
+            {
+                cmdCancel.Visible = false;
+            }
         }
 
         void cmdCancel_Click(object sender, EventArgs e)
@@ -79,7 +85,10 @@ namespace DotNetNuke.Modules.UrlManagement
                 }
             }
 
-            Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+            if (DisplayMode != "editor" && DisplayMode != "settings")
+            {
+                Response.Redirect(Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID));
+            }
         }
     }
 }
