@@ -5,6 +5,7 @@ import {
 } from "../../actions";
 import ProviderRow from "./providerRow";
 import ProviderEditor from "./providerEditor";
+import GridCell from "dnn-grid-cell";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
@@ -33,7 +34,7 @@ class ExtensionUrlProvidersPanelBody extends Component {
     onUpdateProviderStatus(providerId, isActive) {
         const {props} = this;
 
-        props.dispatch(SeoActions.updateExtensionUrlProviderStatus({ProviderId: providerId, IsActive: isActive}, () => {
+        props.dispatch(SeoActions.updateExtensionUrlProviderStatus({ ProviderId: providerId, IsActive: isActive }, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
         }, () => {
             util.utilities.notifyError(resx.get("SettingsError"));
@@ -76,26 +77,31 @@ class ExtensionUrlProvidersPanelBody extends Component {
 
     renderedProviders() {
         if (this.props.providers) {
-            return this.props.providers.map((item, index) => {
-                return (
-                    <ProviderRow
-                        providerId={item.ExtensionUrlProviderId}
-                        name={item.ProviderName}
-                        enabled={item.IsActive}
-                        index={index}
-                        key={"provider-" + index}
-                        closeOnClick={true}
-                        openId={this.state.openId}
-                        onUpdateStatus={this.onUpdateProviderStatus.bind(this)}
-                        OpenCollapse={this.toggle.bind(this)}
-                        Collapse={this.collapse.bind(this)}>
-                        <ProviderEditor
-                            settingUrl={item.SettingUrl}
-                            Collapse={this.collapse.bind(this)}                            
-                            openId={this.state.openId} />
-                    </ProviderRow>
-                );
-            });
+            if (this.props.providers.length > 0) {
+                return this.props.providers.map((item, index) => {
+                    return (
+                        <ProviderRow
+                            providerId={item.ExtensionUrlProviderId}
+                            name={item.ProviderName}
+                            enabled={item.IsActive}
+                            index={index}
+                            key={"provider-" + index}
+                            closeOnClick={true}
+                            openId={this.state.openId}
+                            onUpdateStatus={this.onUpdateProviderStatus.bind(this)}
+                            OpenCollapse={this.toggle.bind(this)}
+                            Collapse={this.collapse.bind(this)}>
+                            <ProviderEditor
+                                settingUrl={item.SettingUrl}
+                                Collapse={this.collapse.bind(this)}
+                                openId={this.state.openId} />
+                        </ProviderRow>
+                    );
+                });
+            }
+            else {
+                return <GridCell className="no-extension-url-providers">{resx.get("NoExtensionUrlProviders")}</GridCell>;
+            }
         }
     }
 

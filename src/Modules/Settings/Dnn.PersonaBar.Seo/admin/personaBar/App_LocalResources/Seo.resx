@@ -612,4 +612,7 @@
   <data name="VerificationValidity.ErrorMessage" xml:space="preserve">
     <value>Valid file name must has an extension .html (ie. google53c0cef435b2b81e.html)</value>
   </data>
+  <data name="NoExtensionUrlProviders.Text" xml:space="preserve">
+    <value>No extension URL providers found</value>
+  </data>
 </root>
