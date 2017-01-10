@@ -6,7 +6,9 @@ const Breadcrumbs = ({items, onSelectedItem}) => {
     return (
         <div className="breadcrumbs-container">
             { items.length > maxItems && 
-                <span className="more" onClick={onSelectedItem.bind(this, items[0])} /> }
+                <span className="more" 
+                    title={items.map(i => i.name).join(" > ")}
+                    onClick={onSelectedItem.bind(this, items[0])} /> }
             { items.slice(Math.max(items.length - maxItems, 0)).map(item =>
                 <div key={item.id} onClick={onSelectedItem.bind(this, item)}>
                     <span>{item.name}</span>
