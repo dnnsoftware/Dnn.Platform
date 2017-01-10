@@ -656,7 +656,7 @@ define(['jquery',
                     }
                 }
                 viewModel.loading(false);
-                utility.notify(message);
+                utility.notifyError(message, { clickToClose: true});
             });
         }
 
