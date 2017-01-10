@@ -139,17 +139,25 @@ define(['jquery'], function ($) {
                 },
 
                 notify: function (text, options) {
+                    var self = this;
                     options = options || {};
                     var notificationDialog = $('#notification-dialog');
-                    var timeout = options.timeout || 2000;
+                    var notificationMessageContainer = $('#notification-message-container');
+                    var notificationMessage = $('#notification-message');
+                    var closeNotification = $('#close-notification');
+                    if (notificationMessageContainer.data('jsp')) {
+                        notificationMessageContainer.data('jsp').destroy();
+                    }
+                    var timeout = typeof options === 'number' ? options : (options.timeout || 2000);
                     var size = options.size || '';
                     var clickToClose = options.clickToClose || false;
+                    var closeButtonText = options.closeButtonText || self.resx.PersonaBar.btn_CloseDialog
                     var type = options.type || 'notify';
-                    if (typeof options === 'number') {
-                        timeout = options;  // legacy support; options is not passed in, but a number is
-                    }
+
+                    clearTimeout(self.fadeTimeout);
+
                     notificationDialog.removeClass();
-                    notificationDialog.children('p').removeClass().html(text);
+                    notificationMessage.removeClass().html(text);
                     if (size) {
                         notificationDialog.addClass(size);
                     }
@@ -159,22 +167,35 @@ define(['jquery'], function ($) {
                     if (type === 'error') {
                         notificationDialog.addClass('errorMessage');
                     }
-                    notificationDialog.children('#close-notification').on('click', function () {
+                    closeNotification.html(closeButtonText)
+                    closeNotification.on('click', function () {
                         notificationDialog.fadeOut(200, 'linear');
+                        if (notificationMessageContainer.data('jsp')) {
+                            //waits for fade out before destroying.
+                            setTimeout(function () {
+                                notificationMessageContainer.data('jsp').destroy();
+                            }, 200);
+                        }
                     });
+                    //add delay for proper execution
+                    setTimeout(function () {
+                        notificationMessageContainer.jScrollPane();
+                    }, 0);
                     notificationDialog.fadeIn(200, 'linear', function () {
                         if (clickToClose !== true) {
-                        setTimeout(function () {
+                            self.fadeTimeout = setTimeout(function () {
+                                if (self.fadeTimeout) {
                                 notificationDialog.fadeOut(200, 'linear');
+                                }
                         }, timeout);
                         }
                     });
                 },
 
                 notifyError: function (text, options) {
-                    options = options || {};
-                    options.type = "error";
-                    this.notify(text, options);
+                    var _options = typeof options === 'number' ? {timeout: options} : options;
+                    _options.type = "error";
+                    this.notify(text, _options);
                 },
 
                 localizeErrMessages: function (validator) {

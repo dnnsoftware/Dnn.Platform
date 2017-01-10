@@ -75,10 +75,15 @@
         </div>
     </div>
     <div id="notification-dialog" style="display: none;">
-        <img id="close-notification" class="thin-close-x" src="images/x_thin.svg" alt="Close"/>
         <img class="notify-check" src="images/notify_check.svg" alt="Success"/>
         <img class="notify-error" src="images/notify_error.svg" alt="Error"/>
-        <p></p>
+        <div id="notification-message-container">
+            <p id="notification-message"></p>
+        </div>
+
+        <div class="buttonpanel">
+            <button id="close-notification" class="dnn-ui-common-button" role="primary"></button>
+        </div>
     </div>
     <div id="personaBar-loadingbar" style="display: none;">
         <div></div>

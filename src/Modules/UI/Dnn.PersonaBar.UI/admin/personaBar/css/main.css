@@ -156,27 +156,29 @@ a.plainbtn {
     box-sizing: border-box;
 }
 
+#notification-dialog > div.buttonpanel {
+    width: 200px;
+    margin: 20px auto 0 auto;
+}
 #notification-dialog.large {
     width: 485px;
     left: 265px;
 }
 
-#notification-dialog > p {
+#notification-message-container {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    overflow: auto;
+}
+#notification-message {
     color: white;
     font-size: 15px;
     line-height: 22px;
 }
 
-#notification-dialog > #close-notification {
-    cursor: pointer;
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    right: 10px;
-    top: 10px;
-}
 
-#notification-dialog.close-hidden > #close-notification {
+#notification-dialog.close-hidden #close-notification {
     display: none;
 }
 
