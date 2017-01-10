@@ -200,6 +200,8 @@
     <Content Include="admin\personaBar\images\loading.gif" />
     <Content Include="admin\personaBar\images\Logo.svg" />
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
+    <Content Include="admin\personaBar\images\more_hover.svg" />
+    <Content Include="admin\personaBar\images\more.svg" />
     <Content Include="admin\personaBar\images\nav_content_pending.svg" />
     <Content Include="admin\personaBar\images\nav_content_selected.svg" />
     <Content Include="admin\personaBar\images\nav_edit_selected.svg" />
