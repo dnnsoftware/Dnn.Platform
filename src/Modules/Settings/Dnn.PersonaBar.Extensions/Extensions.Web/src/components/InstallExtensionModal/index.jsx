@@ -128,6 +128,7 @@ class InstallExtensionModal extends Component {
             selectedLegacyType: null,
             alreadyInstalled: false
         });
+        props.onCancel();
     }
 
     getResxFromLegacyType() {
