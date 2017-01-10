@@ -411,7 +411,7 @@ window.dnn.pages = window.dnn.pages || {};
             }, 300);
         },
 
-        _selectPage: function (pageData) {
+        selectPageFromBreadCrumbs: function (pageData) {
             if (this._getViewModel().selectedPage().id != pageData.id) {
                 this._needScrollToSelectedPage = true;
                 this._getViewModel().selectedPage(pageData);
@@ -437,6 +437,10 @@ window.dnn.pages = window.dnn.pages || {};
             }
 
             this._computeSelectedPagePath();
+        },
+
+        _selectedPagePathChanged(path) {
+            this.selectedPagePathChanged(path);
         },
 
         // Select page which under hierarchy and need expand level by level.
@@ -1172,6 +1176,7 @@ window.dnn.pages = window.dnn.pages || {};
                 this._viewModel.inDrag = ko.observable(true);
                 this._viewModel.isNew = ko.observable(false);
                 this._viewModel.selectedPagePath = ko.observableArray([]);
+                this._viewModel.selectedPagePath.subscribe($.proxy(this._selectedPagePathChanged, this));
                 this._viewModel.searchKeyword = ko.observable('');
                 this._viewModel.searchFocus = ko.observable(true);
                 this._viewModel.deletedPagesCount = ko.observable(0);
@@ -1184,7 +1189,6 @@ window.dnn.pages = window.dnn.pages || {};
                 this._viewModel.editPageClick = $.proxy(this._editPageClickHandler, this);
                 this._viewModel.settingsPageClick = $.proxy(this._settingsPageClickHandler, this);
                 this._viewModel.deletePageClick = $.proxy(this._deletePageClickHandler, this);
-                this._viewModel.doSelectPage = $.proxy(this._selectPage, this);
 
                 this._viewModel.doSearch = $.proxy(this._searchPage, this);
 

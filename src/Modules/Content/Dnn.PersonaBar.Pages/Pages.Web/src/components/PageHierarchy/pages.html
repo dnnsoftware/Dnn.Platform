@@ -1,18 +1,5 @@
 ﻿
 <div class="pagesPanelContainer pagePanel" id="pages-bodyPanel">
-    <div class="breadcrumbs-container">
-
-        <!-- ko if: selectedPagePath().length > 4 -->
-        <span class="more"></span>
-        <!-- /ko -->
-
-        <!-- ko foreach: selectedPagePath().slice(Math.max(selectedPagePath().length - 4, 0)) -->
-        <div data-bind="click: $root.doSelectPage">
-            <span data-bind="text: name"></span>
-        </div>
-        <!-- /ko -->
-    </div>
-
     <div class="pagehierarchy-container" data-bind="css: {'drag-view': inDrag()}">
         <div class="pages-list-scroller">
             <div class="pages-list-container" data-bind="template:{name: 'pages-list-template', foreach: pagesList }"></div>
