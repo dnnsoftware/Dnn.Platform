@@ -4208,7 +4208,7 @@ namespace DotNetNuke.Data
 
 		public virtual IDataReader GetAvailableUsersForIndex(int portalId, DateTime startDate, int startUserId, int numberOfUsers)
 		{
-			return ExecuteReader("GetAvailableUsersForIndex", portalId, startDate, startUserId, numberOfUsers);
+			return ExecuteReader(90, "GetAvailableUsersForIndex", portalId, startDate, startUserId, numberOfUsers);
 		}
 
 		#endregion
