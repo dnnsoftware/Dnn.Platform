@@ -79,6 +79,11 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override IDataReader ExecuteSQL(string sql)
         {
             throw new System.NotImplementedException();

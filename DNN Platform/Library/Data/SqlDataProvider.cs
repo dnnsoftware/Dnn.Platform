@@ -373,6 +373,11 @@ namespace DotNetNuke.Data
             return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
         }
 
+        public override T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters)
+        {
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, timeout, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+        }
+
         public override string ExecuteScript(string script)
         {
             return ExecuteScript(script, 0);
