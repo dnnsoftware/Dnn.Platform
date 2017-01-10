@@ -425,18 +425,18 @@ namespace Dnn.PersonaBar.Seo.Services
             }
         }
 
-        /// GET: api/Sitemap/GetProviders
+        /// GET: api/SEO/GetSitemapProviders
         /// <summary>
         /// Gets list of sitemap providers
         /// </summary>
         /// <param></param>
         /// <returns>Web Server information</returns>
         [HttpGet]
-        public HttpResponseMessage GetProviders()
+        public HttpResponseMessage GetSitemapProviders()
         {
             try
             {
-                var providers = _controller.GetProviders().Select(p => new
+                var providers = _controller.GetSitemapProviders().Select(p => new
                 {
                     p.Name,
                     p.Enabled,
@@ -458,7 +458,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
         }
 
-        /// POST: api/SEO/UpdateProvider
+        /// POST: api/SEO/UpdateSitemapProvider
         /// <summary>
         /// Updates settings of a sitemap provider
         /// </summary>
@@ -466,12 +466,12 @@ namespace Dnn.PersonaBar.Seo.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateProvider(UpdateSitemapProviderRequest request)
+        public HttpResponseMessage UpdateSitemapProvider(UpdateSitemapProviderRequest request)
         {
             try
             {
                 SitemapProvider editedProvider =
-                    _controller.GetProviders()
+                    _controller.GetSitemapProviders()
                         .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase));
 
                 if (editedProvider != null)
@@ -484,6 +484,67 @@ namespace Dnn.PersonaBar.Seo.Services
                     }
                 }
 
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// GET: api/SEO/GetExtensionUrlProviders
+        /// <summary>
+        /// Gets list of extension url providers
+        /// </summary>
+        /// <param></param>
+        /// <returns>extension url providers</returns>
+        [HttpGet]
+        public HttpResponseMessage GetExtensionUrlProviders()
+        {
+            try
+            {
+                var providers = ExtensionUrlProviderController.GetProviders(PortalId).Select(p => new
+                {
+                    p.ExtensionUrlProviderId,
+                    p.ProviderName,
+                    p.IsActive
+                }).ToList();
+
+                var response = new
+                {
+                    Success = true,
+                    Providers = providers
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/SEO/UpdateExtensionUrlProviderStatus
+        /// <summary>
+        /// Enable or disable extension url provider
+        /// </summary>
+        /// <param name="request">Data of extension url provider</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateExtensionUrlProviderStatus(UpdateExtensionUrlProviderStatusRequest request)
+        {
+            try
+            {
+                if (request.IsActive)
+                {
+                    ExtensionUrlProviderController.EnableProvider(request.ProviderId, PortalId);
+                }
+                else
+                {
+                    ExtensionUrlProviderController.DisableProvider(request.ProviderId, PortalId);
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)

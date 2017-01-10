@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Seo.Components
             _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
         }
 
-        public IEnumerable<SitemapProvider> GetProviders()
+        public IEnumerable<SitemapProvider> GetSitemapProviders()
         {
             var builder = new SitemapBuilder(_portalSettings);
             return builder.Providers;

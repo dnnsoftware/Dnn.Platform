@@ -82,9 +82,9 @@ class SitemapSettingsPanelBody extends Component {
             });
         }));
 
-        props.dispatch(SeoActions.getProviders((data) => {
+        props.dispatch(SeoActions.getSitemapProviders((data) => {
             this.setState({
-                providers: Object.assign({}, data.Providers)
+                sitemapProviders: Object.assign({}, data.Providers)
             });
         }));
     }
@@ -159,11 +159,11 @@ class SitemapSettingsPanelBody extends Component {
     onUpdateProvider(settings) {
         const {props} = this;
 
-        props.dispatch(SeoActions.updateProvider(settings, () => {
+        props.dispatch(SeoActions.updateSitemapProvider(settings, () => {
             util.utilities.notify(resx.get("SettingsUpdateSuccess"));
-            props.dispatch(SeoActions.getProviders((data) => {
+            props.dispatch(SeoActions.getSitemapProviders((data) => {
                 this.setState({
-                    providers: Object.assign({}, data.Providers)
+                    sitemapProviders: Object.assign({}, data.Providers)
                 });
             }));
             this.collapse();
@@ -457,7 +457,7 @@ function mapStateToProps(state) {
         sitemapSettings: state.seo.sitemapSettings,
         searchEngineUrls: state.seo.searchEngineUrls,
         clientModified: state.seo.clientModified,
-        providers: state.seo.providers
+        providers: state.seo.sitemapProviders
     };
 }
 

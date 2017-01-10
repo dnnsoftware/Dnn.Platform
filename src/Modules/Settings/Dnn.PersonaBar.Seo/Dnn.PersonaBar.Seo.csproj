@@ -120,6 +120,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SeoController.cs" />
     <Compile Include="Services\Seo\UpdateSitemapProviderRequest.cs" />
+    <Compile Include="Services\Seo\UpdateExtensionUrlProviderStatusRequest.cs" />
     <Compile Include="Services\Seo\UpdateSitemapSettingsRequest.cs" />
     <Compile Include="Services\Seo\UpdateRegexSettingsRequest.cs" />
     <Compile Include="Services\Seo\UpdateGeneralSettingsRequest.cs" />

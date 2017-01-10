@@ -221,9 +221,9 @@ const siteInfoActions = {
             });
         };
     },
-    getProviders(callback) {
+    getSitemapProviders(callback) {
         return (dispatch) => {
-            ApplicationService.getProviders(data => {
+            ApplicationService.getSitemapProviders(data => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_SEO_SITEMAP_PROVIDERS,
                     data: {
@@ -236,9 +236,9 @@ const siteInfoActions = {
             });
         };
     },
-    updateProvider(payload, callback, failureCallback) {
+    updateSitemapProvider(payload, callback, failureCallback) {
         return (dispatch) => {
-            ApplicationService.updateProvider(payload, data => {
+            ApplicationService.updateSitemapProvider(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATED_SEO_SITEMAP_PROVIDER,
                     data: {

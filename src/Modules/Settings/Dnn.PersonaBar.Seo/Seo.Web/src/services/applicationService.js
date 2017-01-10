@@ -49,14 +49,14 @@ class ApplicationService {
         sf.post("UpdateSitemapSettings", payload, callback, failureCallback);
     }
 
-    getProviders(callback) {
+    getSitemapProviders(callback) {
         const sf = this.getServiceFramework("SEO");
-        sf.get("GetProviders", {}, callback);
+        sf.get("GetSitemapProviders", {}, callback);
     }
 
-    updateProvider(payload, callback, failureCallback) {
+    updateSitemapProvider(payload, callback, failureCallback) {
         const sf = this.getServiceFramework("SEO");
-        sf.post("UpdateProvider", payload, callback, failureCallback);
+        sf.post("UpdateSitemapProvider", payload, callback, failureCallback);
     }
 
     createVerification(verification, callback, failureCallback) {

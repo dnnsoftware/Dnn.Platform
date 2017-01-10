@@ -65,7 +65,7 @@ export default function seoSettings(state = {
             };
         case ActionTypes.RETRIEVED_SEO_SITEMAP_PROVIDERS:
             return { ...state,
-                providers: action.data.providers
+                sitemapProviders: action.data.providers
             };
         default:
             return { ...state
