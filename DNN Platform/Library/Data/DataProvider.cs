@@ -181,6 +181,7 @@ namespace DotNetNuke.Data
         public abstract IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
+		public abstract T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters);
 
 		public abstract IDataReader ExecuteSQL(string sql);
 		public abstract IDataReader ExecuteSQL(string sql, int timeout);
