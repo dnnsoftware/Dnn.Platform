@@ -44,6 +44,7 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Web.UI.WebControls.Extensions;
 
 #endregion
 

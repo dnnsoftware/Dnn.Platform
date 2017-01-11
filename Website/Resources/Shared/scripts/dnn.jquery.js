@@ -336,17 +336,9 @@
                 var params = "?";
                 var skin, container;
 
-                if (opts.useComboBox) {
-                    var skinComboBox = $find(opts.skinSelector);
-                    var containerComboBox = $find(opts.containerSelector);
+                skin = $this.find(opts.skinSelector).val();
+                container = $this.find(opts.containerSelector).val();
 
-                    skin = skinComboBox ? skinComboBox.get_value() : '';
-                    container = containerComboBox ? containerComboBox.get_value() : '';
-                }
-                else {
-                    skin = $this.find(opts.skinSelector).val();
-                    container = $this.find(opts.containerSelector).val();
-                }
                 if (skin) {
                     params += "SkinSrc=" + skin;
                 }

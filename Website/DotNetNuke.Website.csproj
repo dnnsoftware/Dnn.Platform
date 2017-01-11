@@ -3320,7 +3320,6 @@
     <Content Include="Portals\_default\Skins\_default\popUpSkin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.doctype.xml" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox.Default.css" />
-    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox.DnnBlack.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\Default.gif" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\rcbSprite.png" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DatePicker.Default.css" />

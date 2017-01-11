@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,8 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.InternalServices
@@ -1354,6 +1357,36 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        #endregion
+
+        #region Terms List
+
+        [HttpGet]
+        public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+
+            var vocabRep = Util.GetVocabularyController();
+            var termRep = Util.GetTermController();
+
+            var terms = new ArrayList();
+            var vocabularies = from v in vocabRep.GetVocabularies()
+                where (v.ScopeType.ScopeType == "Application"
+                       || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
+                      && (!v.IsSystem || includeSystem)
+                      && (v.Name != "Tags" || includeTags)
+                select v;
+
+            foreach (var v in vocabularies)
+            {
+                terms.AddRange(new[] {from t in termRep.GetTermsByVocabulary(v.VocabularyId)
+                                      where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
+                                        select new {text = t.Name, value = t.TermId}});
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
         #endregion

@@ -209,12 +209,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
-  </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

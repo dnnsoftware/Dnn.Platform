@@ -1,16 +1,13 @@
 /* RadComboBox Default skin */
 /*global*/
 
-.RadComboBox_Default, .RadComboBox_Default .rcbInput, .RadComboBoxDropDown_Default {
+.selectize-control {
     font-size: 12px; /*font-family:Verdana, Arial, Helvetica, sans-serif;*/
     color: #999; /*padding: 8px; 	border: 1px solid #c9c9c9;*/
-}
-
-.RadComboBox_Default {
     display: inline-block !important;
 }
 
-.dnnFormItem > .RadComboBox_Default {
+.dnnFormItem > .selectize-control, .dnnFormItem select {
     width: 47%;
     margin-bottom: 18px;
     max-width: 445px;

@@ -219,7 +219,7 @@
                 </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
-                    <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" ViewStateMode="Disabled" />
+                    <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" />
                     <a href="#" class="dnnSecondaryAction">
                         <%=LocalizeString("ContainerPreview")%></a>
                 </div>
@@ -262,7 +262,7 @@
                     <dnn:label id="plTab" runat="server" controlname="cboTab" />
                     <%--<asp:DropDownList ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId"
                         runat="server" />--%>
-                    <dnnweb:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server"  ViewStateMode="Disabled"/>
+                    <dnnweb:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server" />
                 </div>
             </fieldset>
         </div>
@@ -310,7 +310,7 @@
                 title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
             });
             $('.dnnContainerPreview').dnnPreview({
-                containerSelector: '<%=  moduleContainerCombo.ClientID %>',
+                containerSelector: '#<%=  moduleContainerCombo.ClientID %>',
                 baseUrl: '<%= DotNetNuke.Common.Globals.NavigateURL(this.TabId) %>',
                 noSelectionMessage: '<%= Localization.GetSafeJSString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
