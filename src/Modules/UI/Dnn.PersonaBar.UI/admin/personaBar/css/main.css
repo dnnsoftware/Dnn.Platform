@@ -1520,25 +1520,11 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 
 
 /* BREADCRUMB STYLES */
-.socialpanelbody > div.breadcrumbs-container {
-    padding: 0;    
-    transition: 0.3s;
-    white-space: nowrap;
-    overflow: hidden;
-    height: 32px;
-    font-weight: bold;
-    color: #686868;   
-}
-
-.socialpanelbody > div.breadcrumbs-container.shadow {
-	box-shadow: 0 10px 5px -5px rgba(0,0,0,0.2);
-	transition: 0.3s;
-}
-
 .breadcrumbs-container {	
 	font-size: 0;
 	line-height: 0;
     text-transform: uppercase;
+    font-weight: bold;
 }
 .breadcrumbs-container div {
 	display: inline-block;	
@@ -1547,18 +1533,32 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-decoration: none;
 	font-size: 14px;
+    max-width: 20%;
+    color: #4B4E4F;
+}
+.breadcrumbs-container div:hover {
+    color: #959695;
+}
+.breadcrumbs-container .more {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url(../images/more.svg);
+    background-repeat: no-repeat;
+    cursor: default;
+}
+.breadcrumbs-container .more:hover {
+    background-image: url(../images/more_hover.svg); 
 }
 .breadcrumbs-container > div:first-child:last-child {	
 	width: 150px;
 	margin-left: 0;
-	padding-left: 30px;
 }
 .breadcrumbs-container > div:first-child:not(:last-child) {
-	padding-left: 30px;
 	padding-right: 10px;
 	position: relative;
 	display: inline-block;
-	cursor: pointer;
+	cursor: default;
 }
 
 .breadcrumbs-container > div:not(:last-child)::after {
@@ -1578,11 +1578,11 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
 	position: relative;
 	margin-left: 18px;
 	box-sizing: border-box;
-	cursor: pointer;
+	cursor: default;
 }
 
 .breadcrumbs-container > div:last-child {
-    color: #2fa6eb;
+    color: #1E88C3;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-decoration: none;
 	font-size: 14px;
@@ -1595,6 +1595,7 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close:hover {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 /* BREADCRUMB STYLES END*/
 
