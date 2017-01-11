@@ -1,4 +1,5 @@
 import Button from "dnn-button";
+import BackToLink from "dnn-back-to-link";
 import Checkbox from "dnn-checkbox";
 import Collapsible from "dnn-collapsible";
 import CollapsibleRow from "dnn-collapsible-row";
@@ -40,6 +41,7 @@ import FolderPicker from "dnn-folder-picker";
 
 export {
     Button,
+    BackToLink,
     Checkbox,
     Collapsible,
     CollapsibleRow,
