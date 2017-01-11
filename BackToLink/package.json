@@ -1,6 +1,6 @@
 {
   "name": "dnn-back-to-link",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Back To Link",
   "main": "index.js",
   "scripts": {
