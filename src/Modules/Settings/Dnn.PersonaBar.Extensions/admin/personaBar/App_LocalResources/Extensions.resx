@@ -1199,4 +1199,10 @@ Common issues with bad installation files:
   <data name="InstallationError.Text" xml:space="preserve">
     <value>There was an error during installation. See log files below for more information.</value>
   </data>
+  <data name="BackToEditExtension.Text" xml:space="preserve">
+    <value>Back To Edit {0} Extension</value>
+  </data>
+  <data name="BackToExtensions.Text" xml:space="preserve">
+    <value>Back To Extensions</value>
+  </data>
 </root>

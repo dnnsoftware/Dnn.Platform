@@ -148,7 +148,10 @@ class NewModuleModal extends Component {
         return (
             <div className={styles.newModuleModal}>
                 <PersonaBarPageHeader title={Localization.get("CreateModule.Action")} />
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToExtensions"),
+                    onClick: this.onCancel.bind(this)
+                }}>
                     <GridCell className="new-module-box extension-form">
                         <GridCell columnSize={100} style={{ marginBottom: 15, padding: 0 }}>
                             <GridCell className="new-module-dropdown-container">

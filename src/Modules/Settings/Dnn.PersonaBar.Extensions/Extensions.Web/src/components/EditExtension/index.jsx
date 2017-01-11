@@ -374,7 +374,10 @@ class EditExtension extends Component {
                         </Button>
                     }
                 </PersonaBarPageHeader>
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToExtensions"),
+                    onClick: this.onCancel.bind(this)
+                }}>
                     <Tabs
                         tabHeaders={this.getTabHeaders()}
                         onSelect={this.onTabSelect.bind(this)}

@@ -172,7 +172,10 @@ class NewExtensionModal extends Component {
         return (
             <div className={styles.newExtensionModal}>
                 <PersonaBarPageHeader title={Localization.get("CreateExtension.Action")} />
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToExtensions"),
+                    onClick: props.onCancel.bind(this)
+                }}>
                     <GridCell className="new-extension-box extension-form">
                         <BasicPackageInformation
                             validationMapped={true}

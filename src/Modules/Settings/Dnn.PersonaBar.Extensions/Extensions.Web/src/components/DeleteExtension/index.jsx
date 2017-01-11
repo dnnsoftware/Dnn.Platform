@@ -43,7 +43,10 @@ class DeleteExtension extends Component {
         return (
             <GridCell className={styles.DeleteExtension}>
                 <PersonaBarPageHeader title={Localization.get("DeleteExtension.Action").replace("{0}", extensionBeingDeleted.friendlyName)} />
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToExtensions"),
+                    onClick: this.onCancel.bind(this)
+                }}>
                     <GridCell className="delete-extension-box extension-form">
                         <PackageInformation
                             extensionData={extensionBeingDeleted}

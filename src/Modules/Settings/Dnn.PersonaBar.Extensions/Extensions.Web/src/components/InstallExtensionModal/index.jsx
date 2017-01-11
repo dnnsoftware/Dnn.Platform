@@ -217,7 +217,10 @@ class InstallExtensionModal extends Component {
         return (
             <GridCell className={styles.installExtensionModal}>
                 <PersonaBarPageHeader title={Localization.get("ExtensionInstall.Action")} />
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToExtensions"),
+                    onClick: this.cancelInstall.bind(this)
+                }}>
                     <GridCell className="install-extension-box extension-form">
                         {wizardStep === 0 &&
                             <GridCell>

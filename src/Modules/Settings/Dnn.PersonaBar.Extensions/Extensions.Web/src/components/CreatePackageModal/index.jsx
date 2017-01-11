@@ -300,11 +300,14 @@ class CreatePackage extends Component {
 
     render() {
         const {props} = this;
-        const {createPackageStep} = props;
+        const {createPackageStep, packageManifest} = props;
         return (
             <GridCell className={styles.createPackage}>
                 <PersonaBarPageHeader title={Localization.get("CreatePackage_Header.Header")} />
-                <PersonaBarPageBody>
+                <PersonaBarPageBody backToLinkProps={{
+                    text: Localization.get("BackToEditExtension").replace("{0}", packageManifest.friendlyName),
+                    onClick: props.onCancel.bind(this)
+                }}>
                     <GridCell className="extension-form create-package-wizard">
                         {this.getCurrentWizardUI(createPackageStep)}
                     </GridCell>
