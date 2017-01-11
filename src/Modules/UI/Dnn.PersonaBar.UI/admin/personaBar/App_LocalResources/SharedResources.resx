@@ -252,4 +252,7 @@
   <data name="All.Text" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="AllSites.Text" xml:space="preserve">
+    <value>All Sites</value>
+  </data>
 </root>

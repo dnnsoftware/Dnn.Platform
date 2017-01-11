@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.UI.Services
                     {
                         PortalID = -1,
                         PortalName =
-                            DotNetNuke.Services.Localization.Localization.GetString("All", Constants.SharedResources)
+                            DotNetNuke.Services.Localization.Localization.GetString("AllSites", Constants.SharedResources)
                     });
                 }
 
