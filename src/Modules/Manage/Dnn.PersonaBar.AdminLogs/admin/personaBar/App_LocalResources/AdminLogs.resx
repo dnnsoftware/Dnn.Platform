@@ -467,4 +467,7 @@
   <data name="UnAuthorizedToSendLog.Text" xml:space="preserve">
     <value>You are not authorized to send these log entries.</value>
   </data>
+  <data name="AllTypes.Text" xml:space="preserve">
+    <value>All Types</value>
+  </data>
 </root>

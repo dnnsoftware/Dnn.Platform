@@ -50,8 +50,8 @@ namespace Dnn.PersonaBar.AdminLogs.Services
 
                 logTypes.Insert(0, new LogTypeInfo
                 {
-                    LogTypeFriendlyName = Localization.GetString("All"),
-                    LogTypeKey = "*"
+                    LogTypeFriendlyName = Localization.GetString("AllTypes", Components.Constants.LocalResourcesFile),
+                LogTypeKey = "*"
                 });
 
                 var types = logTypes.Select(v => new
