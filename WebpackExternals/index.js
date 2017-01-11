@@ -20,6 +20,7 @@ module.exports = {
         "moment": "window.dnn.nodeModules.Moment",
         "es6-promise": "window.dnn.nodeModules.Es6Promise",
         "dnn-button": "window.dnn.nodeModules.CommonComponents.Button",
+        "dnn-back-to-link": "window.dnn.nodeModules.CommonComponents.BackToLink",
         "dnn-checkbox": "window.dnn.nodeModules.CommonComponents.Checkbox",
         "dnn-collapsible-row": "window.dnn.nodeModules.CommonComponents.CollapsibleRow",
         "dnn-collapsible": "window.dnn.nodeModules.CommonComponents.Collapsible",

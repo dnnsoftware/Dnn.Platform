@@ -23,7 +23,8 @@ module.exports = {
     },
     externals: {
         "react": "react",
-        "dnn-grid-cell": "dnn-grid-cell"
+        "dnn-grid-cell": "dnn-grid-cell",
+        "dnn-back-to-link": "dnn-back-to-link"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
