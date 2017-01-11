@@ -19,7 +19,6 @@ import PageList from "./PageList/PageList";
 import SaveAsTemplate from "./SaveAsTemplate/SaveAsTemplate";
 import Button from "dnn-button";
 import utils from "../utils";
-import BackTo from "dnn-back-to";
 import panels from "../constants/panels";
 import Sec from "./Security/Sec";
 import securityService from "../services/securityService";
@@ -229,7 +228,6 @@ class App extends Component {
         const deleteAction = this.onDeleteSettings.bind(this);
         const backToReferral = this.backToReferral.bind(this, this.state.referral);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-        const backToPages = <BackTo onClick={this.state.referral ? backToReferral : cancelAction} label={this.state.referralText || Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
             <PersonaBarPageHeader title={titleSettings} tooltip={titleSettings}>
@@ -238,9 +236,10 @@ class App extends Component {
                 }
             </PersonaBarPageHeader>
             <PersonaBarPageBody
-                workSpaceTrayOutside={true}
-                workSpaceTray={backToPages}
-                workSpaceTrayVisible={securityService.isSuperUser()}>
+                backToLinkProps={{
+                    text: securityService.isSuperUser() && Localization.get("BackToPages"),
+                    onClick: (this.state.referral ? backToReferral : cancelAction)
+                }}>
                 <PageSettings selectedPage={props.selectedPage}
                     AllowContentLocalization={AllowContentLocalization}
                     selectedPageErrors={props.selectedPageErrors}
@@ -267,15 +266,14 @@ class App extends Component {
 
     getAddPages() {
         const {props} = this;
-        const backToPages = <BackTo onClick={props.onCancelAddMultiplePages} label={Localization.get("BackToPages")} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.ADD_MULTIPLE_PAGES_PANEL}>
             <PersonaBarPageHeader title={Localization.get("AddMultiplePages")}>
             </PersonaBarPageHeader>
-            <PersonaBarPageBody
-                workSpaceTrayOutside={true}
-                workSpaceTray={backToPages}
-                workSpaceTrayVisible={securityService.isSuperUser()}>
+            <PersonaBarPageBody backToLinkProps={{
+                text: securityService.isSuperUser() && Localization.get("BackToPages"),
+                onClick: props.onCancelAddMultiplePages
+            }}>
                 <AddPages
                     bulkPage={props.bulkPage}
                     onCancel={props.onCancelAddMultiplePages}
@@ -290,15 +288,14 @@ class App extends Component {
         const {props} = this;
         const pageName = props.selectedPage && props.selectedPage.name;
         const backToLabel = Localization.get("BackToPageSettings") + ": " + pageName;
-        const backToPageSettings = <BackTo onClick={props.onCancelSavePageAsTemplate} label={backToLabel} />;
 
         return (<PersonaBarPage isOpen={props.selectedView === panels.SAVE_AS_TEMPLATE_PANEL}>
             <PersonaBarPageHeader title={Localization.get("SaveAsTemplate")}>
             </PersonaBarPageHeader>
-            <PersonaBarPageBody
-                workSpaceTrayOutside={true}
-                workSpaceTray={backToPageSettings}
-                workSpaceTrayVisible={true}>
+            <PersonaBarPageBody backToLinkProps={{
+                text: backToLabel,
+                onClick: props.onCancelSavePageAsTemplate
+            }}>
                 <SaveAsTemplate
                     onCancel={props.onCancelSavePageAsTemplate} />
             </PersonaBarPageBody>

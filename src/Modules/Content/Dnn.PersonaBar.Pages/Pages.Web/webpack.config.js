@@ -2,10 +2,7 @@
 const packageJson = require("./package.json");
 const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
-const webpackExternals = Object.assign({}, 
-    require("dnn-webpack-externals"), {
-        "dnn-back-to": "window.dnn.nodeModules.PersonaBarComponents.BackTo"
-    });
+const webpackExternals = require("dnn-webpack-externals");
 module.exports = {
     entry: "./src/main.jsx",
     output: {
