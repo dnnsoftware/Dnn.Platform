@@ -111,23 +111,12 @@ class InstallExtensionModal extends Component {
         });
     }
 
-    cancelInstall(cancelRevertStep) {
+    cancelInstall() {
         const {props} = this;
-        props.dispatch(InstallationActions.clearParsedInstallationPackage(() => {
-            if (cancelRevertStep) {
-                this.goToStep(0);
-            } else {
-                this.goToStep(0);
-                props.onCancel();
-            }
-        }));
+        props.dispatch(InstallationActions.clearParsedInstallationPackage());
         props.dispatch(InstallationActions.notInstallingAvailablePackage());
-        props.dispatch(InstallationActions.toggleAcceptLicense(false));
-        this.setState({
-            package: null,
-            selectedLegacyType: null,
-            alreadyInstalled: false
-        });
+        props.dispatch(InstallationActions.toggleAcceptLicense(false));       
+        this.goToStep(0);
         props.onCancel();
     }
 
