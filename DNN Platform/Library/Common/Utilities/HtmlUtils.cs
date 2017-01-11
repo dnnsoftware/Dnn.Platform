@@ -316,6 +316,20 @@ namespace DotNetNuke.Common.Utilities
             return EntityRegEx.Replace(HTML, repString);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Checks whether the string contains any HTML Entity or not
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="html">The HTML content to clean up</param>
+        /// <returns>True if the string contains any entity</returns>
+        /// -----------------------------------------------------------------------------
+        public static bool ContainsEntity(string html)
+        {
+            return !string.IsNullOrEmpty(html) && EntityRegEx.IsMatch(html);
+        }
+
         /// <summary>
         /// Removes Inline CSS Styles
         /// </summary>

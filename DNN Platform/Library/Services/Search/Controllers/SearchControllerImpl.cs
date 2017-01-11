@@ -141,7 +141,12 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var tag in searchQuery.Tags)
             {
-                query.Add(new TermQuery(new Term(Constants.Tag, tag.ToLower())), Occur.MUST);
+                var text = tag.ToLower();
+                if (HtmlUtils.ContainsEntity(text))
+                {
+                    text = System.Net.WebUtility.HtmlDecode(text);
+                }
+                query.Add(new TermQuery(new Term(Constants.Tag, text)), Occur.MUST);
             }
 
             foreach (var kvp in searchQuery.CustomKeywords)
