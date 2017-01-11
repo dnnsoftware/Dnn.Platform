@@ -94,7 +94,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Web.Client">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
