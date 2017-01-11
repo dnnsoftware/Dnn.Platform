@@ -279,4 +279,7 @@
   <data name="All.Text" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="BackToVocabularies.Text" xml:space="preserve">
+    <value>Back To Vocabularies</value>
+  </data>
 </root>
