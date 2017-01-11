@@ -92,8 +92,10 @@ export class Body extends Component {
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
         return (
-            <PersonaBarPageBody>
-                {this.props.referrer && <div className="back-to-referrer" onClick={this.props.backToReferrerFunc}>{this.props.referrerText}</div>}
+            <PersonaBarPageBody backToLinkProps={{
+                text: this.props.referrer && this.props.referrerText,
+                onClick: this.props.backToReferrerFunc
+            }}>
                 <Tabs onSelect={this.handleSelect.bind(this)}
                     tabHeaders={[resx.get("TabSiteInfo"),
                     resx.get("TabSiteBehavior"),

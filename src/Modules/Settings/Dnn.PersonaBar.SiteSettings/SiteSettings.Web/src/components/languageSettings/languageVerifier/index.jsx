@@ -4,6 +4,7 @@ import {
     languages as LanguagesActions
 } from "../../../actions";
 import LanguageVerifierGrid from "./languageVerifierGrid";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import "./style.less";
 import resx from "../../../resources";
 import styles from "./style.less";
@@ -56,9 +57,13 @@ class LanguageVerifierPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         return (
-            <div className={styles.languageVerifier}>
-                <div className="languageVerifier-back" onClick={this.props.closeLanguageVerifier.bind(this)}>{resx.get("BackToLanguages")}</div>
-                <div className="languageVerifier-wrapper">{this.renderedResults()}</div>
+            <div className={styles.languageVerifier}>                
+                <PersonaBarPageBody backToLinkProps={{
+                    text: resx.get("BackToLanguages"),
+                    onClick: this.props.closeLanguageVerifier.bind(this)
+                }}>
+                    {this.renderedResults()}
+                </PersonaBarPageBody>
             </div>
         );
     }

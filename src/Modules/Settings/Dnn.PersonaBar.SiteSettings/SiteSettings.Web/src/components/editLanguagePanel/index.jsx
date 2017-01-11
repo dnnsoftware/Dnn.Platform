@@ -137,9 +137,10 @@ class EditLanguagePanel extends Component {
         return (
             <PersonaBarPageBody
                 className="edit-language-panel"
-                workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={this.backToSiteSettings.bind(this)}>{resx.get("BackToLanguages")}</div>}
-                workSpaceTrayVisible={true}>
+                backToLinkProps={{
+                    text: resx.get("BackToLanguages"),
+                    onClick: this.backToSiteSettings.bind(this)
+                }}>
                 <LanguageInfoView
                     languageBeingEdited={languageBeingEdited}
                     ModeOptions={ModeOptions}

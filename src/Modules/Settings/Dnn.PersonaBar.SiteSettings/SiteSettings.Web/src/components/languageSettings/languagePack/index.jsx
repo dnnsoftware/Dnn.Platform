@@ -202,11 +202,10 @@ class LanguagePackPanelBody extends Component {
             <div className={styles.languagePack}>
                 <PersonaBarPageBody
                     className="create-language-pack-panel"
-                    workSpaceTrayOutside={true}
-                    workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closeLanguagePack.bind(this)}>
-                        {resx.get("BackToLanguages")}
-                    </div>}
-                    workSpaceTrayVisible={true}>
+                    backToLinkProps={{
+                        text: resx.get("BackToLanguages"),
+                        onClick: props.closeLanguagePack.bind(this)
+                    }}>
                     <div className="languagePack-wrapper">
                         <InputGroup>
                             <Label

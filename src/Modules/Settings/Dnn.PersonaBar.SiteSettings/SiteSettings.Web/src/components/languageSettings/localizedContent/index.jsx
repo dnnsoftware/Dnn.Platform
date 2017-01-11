@@ -91,11 +91,10 @@ class LocalizedContent extends Component {
         return (
             <PersonaBarPageBody
                 className="create-language-pack-panel enable-localized-content-panel"
-                workSpaceTrayOutside={true}
-                workSpaceTray={<div className="siteSettings-back dnn-grid-cell" onClick={props.closePersonaBarPage }>
-                    {resx.get("BackToLanguages") }
-                </div>}
-                workSpaceTrayVisible={true}>
+                backToLinkProps={{
+                    text: resx.get("BackToLanguages"),
+                    onClick: props.closePersonaBarPage
+                }}>
                 <div className="languagePack-wrapper">
                     <InputGroup>
                         <div className="help-text-with-background">
