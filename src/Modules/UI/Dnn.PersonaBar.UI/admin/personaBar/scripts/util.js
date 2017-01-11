@@ -151,7 +151,7 @@ define(['jquery'], function ($) {
                     var timeout = typeof options === 'number' ? options : (options.timeout || 2000);
                     var size = options.size || '';
                     var clickToClose = options.clickToClose || false;
-                    var closeButtonText = options.closeButtonText || self.resx.PersonaBar.btn_CloseDialog
+                    var closeButtonText = options.closeButtonText || (self.resx && self.resx.PersonaBar.btn_CloseDialog) || "OK";
                     var type = options.type || 'notify';
 
                     clearTimeout(self.fadeTimeout);
@@ -179,7 +179,7 @@ define(['jquery'], function ($) {
                     });
                     //add delay for proper execution
                     setTimeout(function () {
-                        notificationMessageContainer.jScrollPane();
+                        notificationMessageContainer.jScrollPane && notificationMessageContainer.jScrollPane();
                     }, 0);
                     notificationDialog.fadeIn(200, 'linear', function () {
                         if (clickToClose !== true) {
@@ -193,7 +193,7 @@ define(['jquery'], function ($) {
                 },
 
                 notifyError: function (text, options) {
-                    var _options = typeof options === 'number' ? {timeout: options} : options;
+                    var _options = typeof options === 'number' ? {timeout: options} : options || {};
                     _options.type = "error";
                     this.notify(text, _options);
                 },
