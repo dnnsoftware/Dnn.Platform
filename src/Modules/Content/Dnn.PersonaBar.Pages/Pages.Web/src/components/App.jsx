@@ -228,7 +228,7 @@ class App extends Component {
         const deleteAction = this.onDeleteSettings.bind(this);
         const backToReferral = this.backToReferral.bind(this, this.state.referral);
         const AllowContentLocalization = !!props.isContentLocalizationEnabled;
-
+        console.log(this.state.referral);
         return (<PersonaBarPage isOpen={props.selectedView === panels.PAGE_SETTINGS_PANEL}>
             <PersonaBarPageHeader title={titleSettings} tooltip={titleSettings}>
                 {!this.isNewPage() &&
@@ -237,7 +237,7 @@ class App extends Component {
             </PersonaBarPageHeader>
             <PersonaBarPageBody
                 backToLinkProps={{
-                    text: securityService.isSuperUser() && Localization.get("BackToPages"),
+                    text: securityService.isSuperUser() && (this.state.referralText || Localization.get("BackToPages")),
                     onClick: (this.state.referral ? backToReferral : cancelAction)
                 }}>
                 <PageSettings selectedPage={props.selectedPage}

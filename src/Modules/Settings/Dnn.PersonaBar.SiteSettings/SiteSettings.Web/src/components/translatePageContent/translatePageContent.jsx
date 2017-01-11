@@ -154,7 +154,7 @@ class TranslatePageContent extends Component {
                         pageId,
                         viewTab: "localization",
                         referral: utils.identifier,
-                        referralText: resx.get("BackToLanguages").substring(1)
+                        referralText: resx.get("BackToLanguages")
                     }
                 }
             );
@@ -165,7 +165,7 @@ class TranslatePageContent extends Component {
             event.pageId = pageId;
             event.viewTab = "localization";
             event.referral = utils.identifier;
-            event.referralText = resx.get("BackToLanguages").substring(1);
+            event.referralText = resx.get("BackToLanguages");
 
             document.dispatchEvent(event);
         }
