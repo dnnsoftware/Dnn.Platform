@@ -69,6 +69,10 @@ class UserService {
         const sf = this.getServiceFramework("Users");
         sf.post("UpdateAuthorizeStatus?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
     }
+    unlockUser(userDetails, callback, errorCallback){
+        const sf = this.getServiceFramework("Users");
+        sf.post("UnlockUser?" + serializeQueryStringParameters(userDetails), null, callback, errorCallback);
+    }
     //User Roles Methods
     getUserRoles(searchParameters, callback, errorCallback) {
         const sf = this.getServiceFramework("Users");

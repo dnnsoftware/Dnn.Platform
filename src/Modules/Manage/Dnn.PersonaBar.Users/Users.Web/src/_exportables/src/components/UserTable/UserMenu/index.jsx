@@ -107,6 +107,10 @@ class UserMenu extends Component {
                 this.updateAuthorizeStatus(true);
                 this.props.onClose();
                 break;
+            case "cmdUnLock":
+                this.unLockUser();
+                this.props.onClose();
+                break;
             case "PromoteToSuperUser":
                 this.updateSuperUserStatus(true);
                 this.props.onClose();
@@ -168,6 +172,12 @@ class UserMenu extends Component {
             this.reload();
         }));
     }
+    unLockUser() {
+        this.props.dispatch(CommonUsersActions.unLockUser({ userDetails: this.props.userDetails }, () => {
+            utilities.notify(Localization.get("UserUnLocked"), 3000);
+            this.reload();
+        }));
+    }
     updateSuperUserStatus(setSuperUser) {
         this.props.dispatch(CommonUsersActions.updateSuperUserStatus({ userId: this.props.userId, setSuperUser: setSuperUser }, () => {
             this.reload();
@@ -220,6 +230,9 @@ class UserMenu extends Component {
             else
             {
                 visibleMenus = [{ key:"cmdAuthorize", title:  Localization.get("cmdAuthorize"), index: 50 }].concat(visibleMenus);
+            }
+            if (this.state.userDetails.isLocked) {
+                visibleMenus = [{ key:"cmdUnLock", title:  Localization.get("cmUnlockUser"), index: 100 }].concat(visibleMenus);
             }
         }
        
