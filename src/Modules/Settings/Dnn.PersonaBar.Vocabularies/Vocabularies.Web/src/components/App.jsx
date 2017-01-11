@@ -42,7 +42,7 @@ class App extends Component {
                         title={LocalizedResources.get("Create")}
                         onCreateVocabulary={this.openCreateVocabulary.bind(this)}
                         />
-                    <CreateVocabulary onCloseVocabulary={this.closeCreateVocabulary.bind(this)} isOpen={props.selectedPage === 1} />
+                    {props.selectedPage === 1 && <CreateVocabulary onCloseVocabulary={this.closeCreateVocabulary.bind(this)} isOpen={props.selectedPage === 1} />}
                 </PersonaBarPage>
             </div>
         );

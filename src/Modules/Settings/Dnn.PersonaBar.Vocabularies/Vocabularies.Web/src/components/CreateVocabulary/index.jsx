@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
+import PersonaBarPageBody from "dnn-persona-bar-page-body";
+import GridCell from "dnn-grid-cell";
 import Button from "dnn-button";
 import InputGroup from "dnn-input-group";
 import RadioButtons from "dnn-radio-buttons";
@@ -42,18 +44,6 @@ class CreateVocabulary extends Component {
 
     onCloseVocabulary() {
         const {props} = this;
-        this.setState({
-            triedToSubmit: false,
-            error: {
-                name: true
-            },
-            term: {
-                Name: "",
-                Description: "",
-                TypeId: 1,
-                ScopeTypeId: 2
-            }
-        });
         props.onCloseVocabulary();
     }
 
@@ -126,9 +116,13 @@ class CreateVocabulary extends Component {
         ];
         return (
             //inline style for height to allow proper calculating
-            <div className={styles.createVocabulary} style={{ height: "calc(100% - 100px)" }}>
+            <PersonaBarPageBody backToLinkProps={{
+                text: LocalizedResources.get("BackToVocabularies"),
+                onClick: this.onCloseVocabulary.bind(this)
+            }}
+             className={styles.createVocabulary} style={{ height: "calc(100% - 100px)" }}>
                 {props.isOpen &&
-                    <div className="create-box">
+                    <GridCell className="create-box">
                         <InputGroup>
                             <SingleLineInputWithError
                                 inputId={"create-vocabulary-name"}
@@ -162,14 +156,14 @@ class CreateVocabulary extends Component {
                             buttonGroup="scopeType"
                             buttonWidth={130}
                             value={state.term.ScopeTypeId} />
-                        <div className="action-buttons">
+                        <GridCell className="action-buttons">
                             <Button type="secondary" onClick={this.onCloseVocabulary.bind(this)}>{LocalizedResources.get("cancelCreate")}</Button>
                             <Button type="primary" onClick={this.onAddNewVocabulary.bind(this)}>{LocalizedResources.get("CreateVocabulary")}</Button>
                             <span className="required-help-text">* {LocalizedResources.get("RequiredField")}</span>
-                        </div>
-                    </div>
+                        </GridCell>
+                    </GridCell>
                 }
-            </div>
+            </PersonaBarPageBody>
         );
     }
 }
