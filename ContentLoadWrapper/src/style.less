@@ -1,0 +1,111 @@
+@import "~dnn-global-styles/index";
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -105px 0
+    }
+    100% {
+        background-position: 105px 0
+    }
+}
+
+.dnn-content-load-wrapper {
+    padding: 12px;
+    transition: opacity .4s .6s;
+    position: relative;
+    width: 100%;
+    &.upload-error {
+        background-color: rgba(255, 255, 255, 0.5);
+        .try-load-again {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            > div {
+                max-width: 300px;
+                margin: 0 auto;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                > p {
+                    margin: 10px 0;
+                }
+                > div.upload-icon {
+                    width: 40px;
+                    height: 40px;
+                    margin: 0 auto;
+                    > svg {
+                        fill: @mountainMist;
+                        &:hover {
+                            fill: @mountainMist;
+                        }
+                    }
+                }
+            }
+            span {
+                float: none;
+                color: @curiousBlue;
+                cursor: pointer;
+            }
+        }
+        .upload-bar-container {
+            .upload-bar-box {
+                background: @alto;
+            }
+        }
+    }
+    .upload-bar-container {
+        width: 105px;
+        height: 20px;
+        background: transparent;
+        box-sizing: border-box;
+        margin: 16px auto 0;
+        .upload-file-name {
+            margin-bottom: 10px;
+        }
+        .upload-icon {
+            width: 42px;
+            height: 42px;
+            margin: auto;
+            svg {
+                margin-top: 8px;
+                margin-bottom: 3px;
+            }
+        }
+        h4 {
+            color: @curiousBlue;
+            margin: auto;
+            text-align: center;
+            font-size: 14px;
+            margin: 15px 10px 10px;
+        }
+        .upload-bar-box {
+            position: relative;
+            float: left;
+            width: 100%;
+            height: 5px;
+            background: @gallery;
+            margin-top: 5px;
+            .upload-bar {
+                width: 0;
+                float: left;
+                height: 100%;
+                left: 0px;
+                transition: .1s;
+                animation-duration: 1.4s;
+                animation-fill-mode: forwards;
+                animation-iteration-count: infinite;
+                animation-name: placeHolderShimmer;
+                animation-timing-function: linear;
+                width: 105px;
+                background: @nonPhotoBlue;
+                background-image: -webkit-linear-gradient(to right, @nonPhotoBlue 0%, @solitude 35%, @nonPhotoBlue 100%);
+                background-image: linear-gradient(to right, @nonPhotoBlue 0%, @solitude 35%, @nonPhotoBlue 100%);
+                background-size: 105px 5px;
+                height: 5px;
+                position: relative;
+            }
+        }
+    }
+}
