@@ -50,6 +50,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             try
             {
                 var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(packageSettings.PackageId);
+
+                if (desktopModule == null)
+                {
+                    return false;
+                }
+
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
                 UpdatePermissions(desktopModule, packageSettings);
