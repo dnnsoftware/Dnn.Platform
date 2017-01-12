@@ -4,9 +4,10 @@ import {
     security as SecurityActions
 } from "../../actions";
 import "./style.less";
+import ContentLoadWrapper from "dnn-content-load-wrapper";
+import { TableEmptyState } from "dnn-svg-icons";
 import resx from "../../resources";
 import styles from "./style.less";
-import { TableEmptyState } from "dnn-svg-icons";
 
 class AuditCheckPanelBody extends Component {
     constructor() {
@@ -124,20 +125,22 @@ class AuditCheckPanelBody extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props} = this;
-        if (props.auditCheckResults && props.auditCheckResults.length > 0) {
-            return (
+        let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;
+        return (
+            <ContentLoadWrapper loadComplete={contentShouldShow}
+                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}>
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
                         {resx.get("AuditExplanation")}
                     </div>
                     <div className="auditCheckItems">
-                        {this.renderHeader()}
-                        {this.renderedList()}
+                        {contentShouldShow && this.renderHeader()}
+                        {contentShouldShow && this.renderedList()}
                     </div>
                 </div>
-            );
-        }
-        else return <div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />;
+            </ContentLoadWrapper>
+        );
+
     }
 }
 
