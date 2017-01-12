@@ -3,6 +3,7 @@ import BackToLink from "dnn-back-to-link";
 import Checkbox from "dnn-checkbox";
 import Collapsible from "dnn-collapsible";
 import CollapsibleRow from "dnn-collapsible-row";
+import ContentLoadWrapper from "dnn-content-load-wrapper";
 import Dropdown from "dnn-dropdown";
 import DatePicker from "dnn-date-picker";
 import DropdownWithError from "dnn-dropdown-with-error";
@@ -45,6 +46,7 @@ export {
     Checkbox,
     Collapsible,
     CollapsibleRow,
+    ContentLoadWrapper,
     Dropdown,
     DatePicker,
     DropdownWithError,
