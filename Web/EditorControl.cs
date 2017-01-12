@@ -33,7 +33,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DNNConnect.CKEditorProvider.Web
 {
-
+    using DotNetNuke.Entities.Host;
 
     /// <summary>
     /// The CKEditor control.
@@ -917,10 +917,7 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void CKEditorInit(object sender, EventArgs e)
         {
-            if (Page != null)
-            {
-                Page.RegisterRequiresPostBack(this); // Ensures that postback is handled
-            }
+            Page?.RegisterRequiresPostBack(this); // Ensures that postback is handled
 
             myParModule = (PortalModuleBase)FindModuleInstance(this);
 
@@ -1004,27 +1001,65 @@ namespace DNNConnect.CKEditorProvider.Web
             // Set Current Mode to Default
             currentSettings.SettingMode = SettingsMode.Default;
 
+            const string hostKey = "DNNCKH#";
             var portalKey = string.Format("DNNCKP#{0}#", _portalSettings.PortalId);
             var pageKey = string.Format("DNNCKT#{0}#", _portalSettings.ActiveTab.TabID);
             var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", parentModulId, ID);
 
+            // Load Host Settings ?!
+            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
+            {
+                var hostPortalRoles = RoleController.Instance.GetRoles(Host.HostPortalID);
+                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                    _portalSettings,
+                    currentSettings,
+                    settingsDictionary,
+                    hostKey,
+                    hostPortalRoles);
+
+                // Set Current Mode to Host
+                currentSettings.SettingMode = SettingsMode.Host;
+
+                // reset the roles to the correct portal
+                if (_portalSettings.PortalId != Host.HostPortalID)
+                {
+                    foreach (var toolbarRole in currentSettings.ToolBarRoles)
+                    {
+                        var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == toolbarRole.RoleId)?.RoleName ?? string.Empty;
+                        var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
+                        toolbarRole.RoleId = roleId;
+                    }
+
+                    foreach (var uploadRoles in currentSettings.UploadSizeRoles)
+                    {
+                        var roleName = hostPortalRoles.FirstOrDefault(role => role.RoleID == uploadRoles.RoleId)?.RoleName ?? string.Empty;
+                        var roleId = portalRoles.FirstOrDefault(role => role.RoleName.Equals(roleName))?.RoleID ?? Null.NullInteger;
+                        uploadRoles.RoleId = roleId;
+                    }
+                }
+            }
+
             // Load Portal Settings ?!
-            if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, portalKey))
+            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, portalKey))
             {
                 /* throw new ApplicationException(settingsDictionary.FirstOrDefault(
                              setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
 
-                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
-                    _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
+                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                    _portalSettings, 
+                    currentSettings, 
+                    settingsDictionary, 
+                    portalKey,
+                    portalRoles);
 
                 // Set Current Mode to Portal
                 currentSettings.SettingMode = SettingsMode.Portal;
             }
 
             // Load Page Settings ?!
-            if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, pageKey))
+            if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, pageKey))
             {
-                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                     _portalSettings, currentSettings, settingsDictionary, pageKey, portalRoles);
 
                 // Set Current Mode to Page

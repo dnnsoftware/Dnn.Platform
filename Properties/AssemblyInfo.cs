@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 /*
@@ -19,5 +19,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.3")]
 [assembly: ComVisible(false)]
 [assembly: AssemblyCompany("DNN-Connect")]
-[assembly: AssemblyCopyright("2015 DNN-Connect")]
+[assembly: AssemblyCopyright("2017 DNN-Connect")]
 

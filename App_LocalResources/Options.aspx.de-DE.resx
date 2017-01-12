@@ -509,4 +509,13 @@
   <data name="LoadingEditor.Text" xml:space="preserve">
     <value>CKEditor wird geladen...</value>
   </data>
+  <data name="AllPortals.Text" xml:space="preserve">
+    <value>Alle Portale</value>
+  </data>
+  <data name="HostHasSettingLabel.Text" xml:space="preserve">
+    <value>Enthält Host-Einstellungen</value>
+  </data>
+  <data name="HostNoSettingLabel.Text" xml:space="preserve">
+    <value>Enthält keine Host-Einstellungen</value>
+  </data>
 </root>

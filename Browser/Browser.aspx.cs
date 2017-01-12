@@ -785,28 +785,35 @@ namespace DNNConnect.CKEditorProvider.Browser
                         objProvider.Attributes["ck_configFolder"],
                         portalRoles);
                     break;
-                case SettingsMode.Portal:
-                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                case SettingsMode.Host:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        string.Format("DNNCKP#{0}#", request.QueryString["PortalID"]),
+                        "DNNCKH#",
+                        portalRoles);
+                    break;
+                case SettingsMode.Portal:
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
+                        _portalSettings,
+                        currentSettings,
+                        settingsDictionary,
+                        $"DNNCKP#{request.QueryString["PortalID"]}#",
                         portalRoles);
                     break;
                 case SettingsMode.Page:
-                    currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                    currentSettings = SettingsUtil.LoadEditorSettingsByKey(
                         _portalSettings,
                         currentSettings,
                         settingsDictionary,
-                        string.Format("DNNCKT#{0}#", request.QueryString["tabid"]),
+                        $"DNNCKT#{request.QueryString["tabid"]}#",
                         portalRoles);
                     break;
                 case SettingsMode.ModuleInstance:
                     currentSettings = SettingsUtil.LoadModuleSettings(
                         _portalSettings,
                         currentSettings,
-                        string.Format(
-                            "DNNCKMI#{0}#INS#{1}#", request.QueryString["mid"], request.QueryString["ckId"]),
+                        $"DNNCKMI#{request.QueryString["mid"]}#INS#{request.QueryString["ckId"]}#",
                         int.Parse(request.QueryString["mid"]),
                         portalRoles);
                     break;
