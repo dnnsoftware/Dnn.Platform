@@ -537,4 +537,13 @@
   <data name="RoleIsNotApproved.Text" xml:space="preserve">
     <value>Cannot assign a role which is not approved.</value>
   </data>
+  <data name="UserUnlockError.Text" xml:space="preserve">
+    <value>Failed to unlcok the user.</value>
+  </data>
+  <data name="cmUnlockUser.Text" xml:space="preserve">
+    <value>Unlock User</value>
+  </data>
+  <data name="UserUnLocked.Text" xml:space="preserve">
+    <value>User un-locked successfully.</value>
+  </data>
 </root>

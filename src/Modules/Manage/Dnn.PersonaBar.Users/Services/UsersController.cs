@@ -478,6 +478,33 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser)]
+        public HttpResponseMessage UnlockUser([FromUri] int userId)
+        {
+            try
+            {
+                HttpResponseMessage response;
+                var user = GetUser(userId, out response);
+                if (user == null)
+                    return response;
+                if (IsCurrentUser(userId, out response))
+                    return response;
+
+                var unlocked = !user.Membership.LockedOut || UserController.UnLockUser(user);
+                return !unlocked
+                    ? Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                        Localization.GetString("UserUnlockError", Components.Constants.LocalResourcesFile))
+                    : Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region User Roles API

@@ -26,6 +26,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
+
+            if(desktopModule == null)
+            {
+                return new PackageInfoDto(portalId, package);
+            }
+        
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
             var detail = isHostUser ? new ModulePackageDetailDto(portalId, package, desktopModule)
@@ -44,6 +50,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             try
             {
                 var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(packageSettings.PackageId);
+
+                if (desktopModule == null)
+                {
+                    return false;
+                }
+
                 var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
                 UpdatePermissions(desktopModule, packageSettings);

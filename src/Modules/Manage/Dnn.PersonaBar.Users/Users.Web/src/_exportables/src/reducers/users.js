@@ -133,6 +133,14 @@ const switchCase = [
         }
     },
     {
+        condition: ActionTypes.USER_UNLOCKED,
+        functionToRun: (state, action) => {
+            return {
+                users: updateUsersList(state.users, action.payload)
+            };
+        }
+    },
+    {
         condition: ActionTypes.REMOVE_USER_ROLE,
         functionToRun: (state, action) => {
             return {

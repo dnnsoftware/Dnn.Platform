@@ -168,6 +168,20 @@ const userActions = {
             }, errorCallback);
         };
     },
+    unLockUser(payload, callback) {
+        return (dispatch) => {
+            let user = Object.assign({}, payload.userDetails);
+            UserService.unlockUser({ userId: payload.userDetails.userId }, data => {
+                dispatch({
+                    type: ActionTypes.USER_UNLOCKED,
+                    payload: user
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
     getUserRoles(searchParameters, callback) {
         return (dispatch) => {
             UserService.getUserRoles(searchParameters, data => {

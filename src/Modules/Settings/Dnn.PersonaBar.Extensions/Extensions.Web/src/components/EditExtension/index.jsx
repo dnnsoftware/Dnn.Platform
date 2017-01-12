@@ -107,7 +107,7 @@ class EditExtension extends Component {
     parseEditorActions(extension) {
         switch (extension.packageType.value.toLowerCase()) {
             case "module":
-                return {
+                return extension.desktopModuleId ? {
                     category: extension.category.value,
                     dependencies: extension.dependencies.value,
                     hostPermissions: extension.hostPermissions.value,
@@ -117,7 +117,7 @@ class EditExtension extends Component {
                     unassignPortal: JSON.stringify(extension.unassignedPortals.value),
                     folderName: extension.folderName.value,
                     businessController: extension.businessController.value
-                };
+                } : null;
             case "auth_system":
                 return this.getAuthSystemCustomSettings(extension);
             case "javascript_library":
@@ -278,7 +278,7 @@ class EditExtension extends Component {
             case "CoreLanguagePack":
             case "JavaScript_Library":
             case "Module":
-                return true;
+                return this.props.extensionBeingEdited.desktopModuleId ? true : false;
             default:
                 return false;
         }
@@ -295,7 +295,7 @@ class EditExtension extends Component {
                 return !this.isHost;
             case "Auth_System":
             case "Module":
-                return true;
+                return this.props.extensionBeingEdited.desktopModuleId ? true : false;
             default:
                 return false;
         }
