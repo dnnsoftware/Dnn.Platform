@@ -84,9 +84,8 @@
       <HintPath>..\packages\DotNetNuke.Web.9.0.1.94\lib\net40\DotNetNuke.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
-	<Reference Include="DotNetNuke.Web.Client">
-      <HintPath>..\packages\DotNetNuke.Bundle.9.0.1.94\lib\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Client">
+      <HintPath>..\packages\DotNetNuke.Web.Client.9.0.1.94\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\packages\DotNetNuke.Web.9.0.1.94\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
