@@ -977,11 +977,33 @@ transform: rotate(180deg);
 }
 
     #personaBar-loadingbar > div {
-        background-color: #0087c6;
+    background-color: #21A3Da;
         position: absolute;
         top: 0;
         left: 0;
-        height: 4px;
+    height: 5px;
+    box-sizing: border-box;
+}
+#personaBar-loadingbar > span {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+    font-size: 13px;
+    color: white;
+    z-index: 2;
+    line-height: 16px;
+}
+#personaBar-loadingbar > #close-load-error {
+    cursor: pointer;
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    right: 10px;
+    top: 6px;
+    display: none;
+}
+#personaBar-loadingbar > div.load-error{
+    background-color: #EA2134;
     }
 
 .socialmask {

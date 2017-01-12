@@ -52,7 +52,7 @@ define(['jquery', 'main/loader'], function ($, loader) {
 							}
 						},
 						error: function (xhr, status, err) {
-							if (!silence) loader.stopLoading();
+							if (!silence) loader.stopLoading(!(httpMethod !== "GET")); //only show error if GET
 							if (typeof loading === 'function') {
 								loading(false);
 							}
