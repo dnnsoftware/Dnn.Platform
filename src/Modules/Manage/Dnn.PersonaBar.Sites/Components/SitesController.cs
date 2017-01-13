@@ -104,10 +104,10 @@ namespace Dnn.PersonaBar.Sites.Components
             foreach (var portalAliasInfo in arr)
             {
                 var httpAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
-                var originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString().ToLowerInvariant();
+                var originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"];
 
-                httpAlias = Globals.AddPort(httpAlias, originalUrl);
-                aliases.Add(new HttpAliasDto{ Url = portalAliasInfo.HTTPAlias, Link = httpAlias});
+                httpAlias = Globals.AddPort(httpAlias, originalUrl?.ToString().ToLowerInvariant() ?? httpAlias);
+                aliases.Add(new HttpAliasDto { Url = portalAliasInfo.HTTPAlias, Link = httpAlias });
             }
 
             return aliases;
