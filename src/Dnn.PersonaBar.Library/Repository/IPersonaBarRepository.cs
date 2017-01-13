@@ -57,5 +57,7 @@ namespace Dnn.PersonaBar.Library.Repository
         /// <param name="menuItem"></param>
         /// <param name="roleNames"></param>
         void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames);
+
+        void UpdateMenuController(string identifier, string controller);
     }
 }

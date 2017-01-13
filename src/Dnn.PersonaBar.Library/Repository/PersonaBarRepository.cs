@@ -99,6 +99,11 @@ namespace Dnn.PersonaBar.Library.Repository
             _dataService.SavePersonaBarMenuDefaultPermissions(menuItem.MenuId, roleNames);
         }
 
+        public void UpdateMenuController(string identifier, string controller)
+        {
+            _dataService.UpdateMenuController(identifier, controller);
+        }
+
         private void InjectMenuItems(MenuItem parent, IList<MenuItem> menuItems)
         {
             foreach (var menuItem in menuItems.Where(m => m.ParentId == parent.MenuId))

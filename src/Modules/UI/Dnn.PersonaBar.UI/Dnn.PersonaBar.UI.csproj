@@ -248,6 +248,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>

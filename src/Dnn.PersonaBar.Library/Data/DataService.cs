@@ -91,6 +91,11 @@ namespace Dnn.PersonaBar.Library.Data
             return DataProvider.ExecuteReader("PersonaBar_GetPersonaBarPermissions");
         }
 
+        public void UpdateMenuController(string identifier, string controller)
+        {
+            DataProvider.ExecuteNonQuery("PersonaBar_UpdateMenuController", identifier, controller);
+        }
+
         private object GetRoleNull(int roleId)
         {
             if (roleId.ToString() == "-4")
