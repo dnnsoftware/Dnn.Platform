@@ -868,13 +868,12 @@ namespace DotNetNuke.Security
 
         public static bool IsInRole(string role)
         {
-            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-            HttpContext context = HttpContext.Current;
-            if (!String.IsNullOrEmpty(role) && ((context.Request.IsAuthenticated == false && role == Globals.glbRoleUnauthUserName)))
+            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
             {
                 return true;
             }
-            return IsInRoles(objUserInfo, PortalController.Instance.GetCurrentPortalSettings(), role);
+
+            return IsInRoles(UserController.Instance.GetCurrentUserInfo(), PortalController.Instance.GetCurrentPortalSettings(), role);
         }
 
         public static bool IsInRoles(string roles)
