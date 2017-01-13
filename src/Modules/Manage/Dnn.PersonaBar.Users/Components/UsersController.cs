@@ -277,6 +277,7 @@ namespace Dnn.PersonaBar.Users.Components
             var pageIndex = usersContract.PageIndex;
             var pageSize = usersContract.PageSize;
             var searchText = usersContract.SearchText;
+            var paged = false;
 
             switch (usersContract.Filter)
             {
@@ -291,6 +292,7 @@ namespace Dnn.PersonaBar.Users.Components
                         dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
                             ref totalRecords, true, false);
                     }
+                    paged = true;
                     userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     break;
                 case UserFilters.SuperUsers:
@@ -299,6 +301,7 @@ namespace Dnn.PersonaBar.Users.Components
                         dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
                         userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     }
+                    paged = true;
                     break;
                 case UserFilters.UnAuthorized:
                     dbUsers = UserController.GetUnAuthorizedUsers(portalId, true, false);
@@ -349,6 +352,7 @@ namespace Dnn.PersonaBar.Users.Components
                             ref totalRecords, true, false);
                         users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
+                    paged = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -356,10 +360,9 @@ namespace Dnn.PersonaBar.Users.Components
             if (users == null && userInfos != null)
             {
                 var enumerable = userInfos as UserInfo[] ?? userInfos.ToArray();
-                totalRecords = enumerable.Length;
-                users =
-                    GetPagedUsers(GetSortedUsers(enumerable, usersContract.SortColumn, usersContract.SortAscending),
-                        pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
+                totalRecords = paged ? totalRecords : enumerable.Length;
+                var sorted = GetSortedUsers(enumerable, usersContract.SortColumn, usersContract.SortAscending);
+                users = paged ? sorted.Select(UserBasicDto.FromUserInfo).ToList() : GetPagedUsers(sorted, pageSize, pageIndex)?.Select(UserBasicDto.FromUserInfo).ToList();
             }
             return users;
         }
