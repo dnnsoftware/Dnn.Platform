@@ -870,7 +870,7 @@ namespace DotNetNuke.Security
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             HttpContext context = HttpContext.Current;
-            if (!String.IsNullOrEmpty(role) && ((context.Request.IsAuthenticated == false && role == Globals.glbRoleUnauthUserName)))
+            if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !context.Request.IsAuthenticated)
             {
                 return true;
             }
