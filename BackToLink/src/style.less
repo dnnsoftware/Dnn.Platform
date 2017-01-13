@@ -1,0 +1,29 @@
+@import "~dnn-global-styles/index";
+a.dnn-back-to-link {
+    font-weight: bold;
+    color: @thunder;
+    cursor: pointer;
+    display: inline-block;
+    > span {
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-left: 13px;
+    }
+    .dnn-back-to-arrow {
+        float: left;
+        margin-left: -3px;
+        > svg {
+            width: 16px;
+            height: 16px;
+            fill: @thunder;
+        }
+    }
+    &:hover {
+        color: @mountainMist;
+        .dnn-back-to-arrow {
+            > svg {
+                fill: @mountainMist;
+            }
+        }
+    }
+}

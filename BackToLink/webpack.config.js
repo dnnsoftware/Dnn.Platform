@@ -1,10 +1,10 @@
 module.exports = {
-    entry: "./src/PersonaBarPageBody.jsx",
+    entry: "./src/BackToLink.jsx",
     output: {
         path: "./lib/",
-        filename: "PersonaBarPageBody.js",
+        filename: "BackToLink.js",
         libraryTarget: "umd",
-        library: "PersonaBarPageBody"
+        library: "BackToLink"
     },
     module: {
         loaders: [
@@ -12,8 +12,11 @@ module.exports = {
                 test: /\.(js|jsx)$/, exclude: /node_modules/,
                 loader: "babel-loader",
                 query: {
-                    presets: ["react", "es2015"]
-                } 
+                    presets: ["react", "es2015"],
+                    plugins: [ 
+                        "transform-object-assign"
+                    ]
+                }
             },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" }
         ],
@@ -23,8 +26,7 @@ module.exports = {
     },
     externals: {
         "react": "react",
-        "dnn-grid-cell": "dnn-grid-cell",
-        "dnn-back-to-link": "dnn-back-to-link"
+        "dnn-svg-icons": "dnn-svg-icons"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 

@@ -1,10 +1,10 @@
 module.exports = {
-    entry: "./src/PersonaBarPageBody.jsx",
+    entry: "./src/ContentLoadWrapper.jsx",
     output: {
         path: "./lib/",
-        filename: "PersonaBarPageBody.js",
+        filename: "ContentLoadWrapper.js",
         libraryTarget: "umd",
-        library: "PersonaBarPageBody"
+        library: "ContentLoadWrapper"
     },
     module: {
         loaders: [
@@ -23,8 +23,7 @@ module.exports = {
     },
     externals: {
         "react": "react",
-        "dnn-grid-cell": "dnn-grid-cell",
-        "dnn-back-to-link": "dnn-back-to-link"
+        "dnn-svg-icons": "dnn-svg-icons"
     },
     resolve: {
         extensions: ["", ".js", ".json", ".jsx"] 
