@@ -298,13 +298,13 @@ namespace Dnn.PersonaBar.Users.Components
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
+                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, false, true);
                         userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     }
                     paged = true;
                     break;
                 case UserFilters.UnAuthorized:
-                    dbUsers = UserController.GetUnAuthorizedUsers(portalId, true, false);
+                    dbUsers = UserController.GetUnAuthorizedUsers(portalId, false, false);
                     userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     if (!isSuperUser)
                     {
@@ -349,7 +349,7 @@ namespace Dnn.PersonaBar.Users.Components
                     else
                     {
                         dbUsers = UserController.GetUsersByDisplayName(portalId, searchText + "%", pageIndex, pageSize,
-                            ref totalRecords, true, false);
+                            ref totalRecords, false, false);
                         users = dbUsers?.OfType<UserInfo>().Select(UserBasicDto.FromUserInfo).ToList();
                     }
                     paged = true;
