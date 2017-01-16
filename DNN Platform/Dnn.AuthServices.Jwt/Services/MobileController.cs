@@ -47,6 +47,8 @@ namespace Dnn.AuthServices.Jwt.Services
         /// a Json Web Token (JWT) that allows them to authenticate the users to other
         /// secure API endpoints afterwards.
         /// </summary>
+        /// <remarks>AllowAnonymous attribute must stay in this call even though the
+        /// DnnAuthorize attribute is present at a class level.</remarks>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
@@ -60,7 +62,10 @@ namespace Dnn.AuthServices.Jwt.Services
         /// new API requests. The caller must pass the renewal token received at the login time.
         /// The header still needs to pass the current token for validation even when it is expired.
         /// </summary>
-        /// <remarks>The access token is allowed to get renewed one time only.</remarks>
+        /// <remarks>The access token is allowed to get renewed one time only.<br />
+        /// AllowAnonymous attribute must stay in this call even though the
+        /// DnnAuthorize attribute is present at a class level.
+        /// </remarks>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult ExtendToken(RenewalDto rtoken)
