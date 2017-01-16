@@ -21,6 +21,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Client;
 
 namespace Dnn.PersonaBar.CssEditor.Services
@@ -83,6 +84,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
         /// <param name="request">Content of portal css</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateStyleSheet(UpdateCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser && PortalSettings.Current.UserInfo.PortalID != request.PortalId)
@@ -149,6 +151,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
         /// <param name="request">Id of portal</param>
         /// <returns>Content of portal.css</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
         {
             if (!PortalSettings.Current.UserInfo.IsSuperUser &&

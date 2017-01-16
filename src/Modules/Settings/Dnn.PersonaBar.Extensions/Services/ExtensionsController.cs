@@ -520,6 +520,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpPost]
         [RequireHost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage ParsePackageFile(DownloadPackageDto package)
         {
             try
@@ -548,6 +549,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         [HttpPost]
         [RequireHost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage ParseLanguagePackage([FromUri] string cultureCode)
         {
             try
@@ -571,6 +573,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <returns></returns>
         [HttpPost]
         [RequireHost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage InstallAvailablePackage(DownloadPackageDto package)
         {
             try
