@@ -472,7 +472,7 @@ GO
 
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}RedirectMessages]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}RedirectMessages](
-		[MessageId] [UniqueIdentifier] CONSTRAINT Guid_Default DEFAULT NEWID() ROWGUIDCOL,
+		[MessageId] [UniqueIdentifier] CONSTRAINT Guid_Default DEFAULT NEWID(),
 		[UserId] [int],
 		[TabId] [int],
 		[MessageText] [nvarchar](max) NOT NULL,
