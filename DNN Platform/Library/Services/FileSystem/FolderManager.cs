@@ -57,7 +57,8 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
-        
+        private static readonly object _threadLocker = new object();
+
         #region Public Properties
 
         public virtual string MyFolderName
@@ -995,6 +996,7 @@ namespace DotNetNuke.Services.FileSystem
 
             int? scriptTimeOut = null;
 
+            Monitor.Enter(_threadLocker);
             try
             {
                 if (HttpContext.Current != null)
@@ -1036,6 +1038,8 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     SetScriptTimeout(scriptTimeOut.Value);
                 }
+
+                Monitor.Exit(_threadLocker);
             }
 
             return 0;
