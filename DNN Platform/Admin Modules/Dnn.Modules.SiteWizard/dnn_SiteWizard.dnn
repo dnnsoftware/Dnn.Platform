@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.SiteWizard" type="Module" version="09.00.01">
+		<package name="DotNetNuke.SiteWizard" type="Module" version="09.01.00">
 			<friendlyName>Site Wizard</friendlyName>
 			<description>The Administrator can use this user-friendly wizard to set up the common features of the site.</description>
 			<iconFile>~/Icons/Sigma/Wizard_32X32_Standard.png</iconFile>

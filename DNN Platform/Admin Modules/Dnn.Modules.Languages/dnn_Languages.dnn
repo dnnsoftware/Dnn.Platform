@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Languages" type="Module" version="09.00.01">
+		<package name="DotNetNuke.Languages" type="Module" version="09.01.00">
 			<friendlyName>Languages</friendlyName>
 			<description>The Languages module provides a means to create, edit and verify language packs for use within DNN. </description>
 			<iconFile>~/Icons/Sigma/Languages_32X32_Standard.png</iconFile>
