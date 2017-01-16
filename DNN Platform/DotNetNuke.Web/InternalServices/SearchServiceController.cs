@@ -46,7 +46,7 @@ using DotNetNuke.Web.InternalServices.Views.Search;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    [AllowAnonymous]
+    [DnnAuthorize(StaticRoles = "Administrators")]
     public class SearchServiceController : DnnApiController
     {
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -430,6 +430,7 @@ namespace DotNetNuke.Web.InternalServices
         #endregion
 
         [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
         {
             string cleanedKeywords;
@@ -481,6 +482,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
         {
             string cleanedKeywords;
@@ -535,7 +537,6 @@ namespace DotNetNuke.Web.InternalServices
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
@@ -544,10 +545,8 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
@@ -558,7 +557,6 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage DeleteSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
@@ -569,7 +567,6 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
         {
@@ -579,7 +576,6 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
         {
@@ -589,7 +585,6 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(StaticRoles = "Administrators")]
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage DeleteStopWords(StopWordsDto stopWords)
         {
