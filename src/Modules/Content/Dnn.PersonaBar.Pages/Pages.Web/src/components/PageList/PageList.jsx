@@ -9,10 +9,6 @@ import Localization from "../../localization";
 import { bindActionCreators } from "redux";
 
 class PageList extends Component {
-    onSearchKeywordChanged(value) {
-        this.props.dispatch(PageHierarchyActions.setSearchKeyword(value));
-    }
-
     render() {
         return (
             <div className={styles.pageListBody + " dnn-persona-bar-page-body"}>
@@ -23,7 +19,8 @@ class PageList extends Component {
                     <GridCell columnSize={35} >
                         <div className="search-filter">                                
                             <SearchBox placeholder={Localization.get("Search")} 
-                                onSearch={this.onSearchKeywordChanged.bind(this)} maxLength={50} />                                
+                                onSearch={this.props.onSearchKeywordChanged} 
+                                maxLength={50} />
                             <div className="clear"></div>
                         </div>
                     </GridCell>
@@ -45,6 +42,7 @@ PageList.propTypes = {
     onPageSettings: PropTypes.func,
     selectedPage: PropTypes.object,
     onSelectedPagePathChanged: PropTypes.func.isRequired,
+    onSearchKeywordChanged: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
@@ -66,7 +64,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        onSelectedPagePathChanged: PageHierarchyActions.changeSelectedPagePath
+        onSelectedPagePathChanged: PageHierarchyActions.changeSelectedPagePath,
+        onSearchKeywordChanged: PageHierarchyActions.setSearchKeyword
     }, dispatch);
 }
 
