@@ -53,7 +53,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
     ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods)
     /// </summary>
     [TestFixture]
-    [AllowAnonymous]
     public class SearchServiceControllerTests
     {
 
