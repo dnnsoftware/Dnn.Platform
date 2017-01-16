@@ -43,7 +43,6 @@ PageList.propTypes = {
     selectedPage: PropTypes.object,
     onSelectedPagePathChanged: PropTypes.func.isRequired,
     onSearchKeywordChanged: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
     searchKeyword: PropTypes.string.isRequired,
     itemTemplate: PropTypes.string.isRequired,
     dragItemTemplate: PropTypes.string.isRequired,
