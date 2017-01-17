@@ -837,7 +837,7 @@ transform: rotate(180deg);
 .hovermenu {
     position: absolute;
     left: 80px;
-    padding: 0 8px 23px 25px;
+    padding: 0 0px 42px 37px;
     background-color: #2f2f2f;
     display: none;
     /* display: none; IE not apply list-style-type: none; with this active
@@ -934,7 +934,7 @@ transform: rotate(180deg);
     width: 491px;
 }
 .btn_panel.two-columns-menu .hovermenu > ul, .btn_panel.three-columns-menu .hovermenu > ul {
-    width: 126px;
+    width: 163px;
     float: left;
 }
 .btn_panel.two-columns-menu .hovermenu > ul:first-of-type, .btn_panel.three-columns-menu .hovermenu > ul:first-of-type {
