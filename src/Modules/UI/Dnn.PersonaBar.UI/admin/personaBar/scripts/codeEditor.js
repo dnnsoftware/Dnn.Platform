@@ -5,8 +5,8 @@ define(['jquery',
         'codemirror/mode/sql/sql',
 		'codemirror/mode/css/css',
 		'codemirror/mode/xml/xml',
-        'css!../../../../../Resources/Shared/components/CodeEditor/lib/codemirror.css',
-        'css!../../../../../Resources/Shared/components/CodeEditor/addon/scroll/simplescrollbars.css'],
+        'css!../../../../Resources/Shared/components/CodeEditor/lib/codemirror.css',
+        'css!../../../../Resources/Shared/components/CodeEditor/addon/scroll/simplescrollbars.css'],
         function ($, codemirror) {
             var defaultOptions = {
                 lineNumbers: true,
