@@ -277,6 +277,7 @@ class EditExtension extends Component {
             case "ExtensionLanguagePack":
             case "CoreLanguagePack":
             case "JavaScript_Library":
+                return true;
             case "Module":
                 return this.props.extensionBeingEdited.desktopModuleId ? true : false;
             default:
@@ -294,6 +295,7 @@ class EditExtension extends Component {
             case "JavaScript_Library":
                 return !this.isHost;
             case "Auth_System":
+                return true;
             case "Module":
                 return this.props.extensionBeingEdited.desktopModuleId ? true : false;
             default:
