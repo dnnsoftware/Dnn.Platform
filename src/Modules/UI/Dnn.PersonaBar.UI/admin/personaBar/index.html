@@ -14,7 +14,9 @@
 </head>
 <body>
     <div class="personabar" id="personabar">
-        <div class="personabarLogo"></div>
+        <div class="personabarLogo">
+            <a class="update" target="_blank" data-bind="attr: {'href': updateLink}, html: updateText, css: {'normal-update': updateType() === 1, 'critical-update': updateType() === 2}"></a>
+        </div>
         <div id="topLevelMenu">
             <ul class="personabarnav">
                 <!-- ko foreach: { data: menu.menuItems, as: 'menuItem' } -->

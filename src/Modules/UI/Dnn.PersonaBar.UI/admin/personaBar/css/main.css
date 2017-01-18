@@ -696,9 +696,32 @@ transform: rotate(180deg);
     background: #515050 url('../images/Logo.svg') no-repeat center center;
     -ms-background-size: 32px auto;
     background-size: 32px auto;
+    position: relative;
 }
 .personabar .personabarLogo:hover {
     background-color: #2f2f2f;
+}
+.personabar .personabarLogo a.update {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 7px;
+    font-family: pb_semibold;
+    display: none;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+.personabar .personabarLogo a.update.normal-update {
+    color: #21A3DA;
+    display: block;
+}
+.personabar .personabarLogo a.update.critical-update {
+    color: #D9577A;
+    display: block;
+}
+.personabar a.update.normal-update {
+    color: #21A3DA;
 }
 .personabarnav {
     margin: 0;

@@ -297,4 +297,10 @@
   <data name="btn_CloseDialog.Text" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="CriticalUpdate.Text" xml:space="preserve">
+    <value>[ Critical Update ]</value>
+  </data>
+  <data name="NormalUpdate.Text" xml:space="preserve">
+    <value>[ New Update ]</value>
+  </data>
 </root>

@@ -419,9 +419,11 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
         util.asyncParallel([
                 function (callback) {
                     util.loadResx(function onResxLoaded() {
-                        ko.applyBindings({
+                        var viewModel = {
                             resx: util.resx.PersonaBar,
                             menu: menuViewModel.menu,
+                            updateLink: ko.observable(''),
+                            updateType: ko.observable(0),
                             logOff: function() {
                                 function onLogOffSuccess() {
                                     if (typeof window.top.dnn != "undefined" && typeof window.top.dnn.PersonaBar != "undefined") {
@@ -429,10 +431,25 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                     }
                                     window.top.document.location.href = window.top.document.location.href;
                                 };
+
                                 util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess);
                                 return;
                             }
-                        }, document.getElementById('personabar'));
+                        };
+
+                        viewModel.updateText = ko.computed(function() {
+                            return viewModel.updateType() === 2 ? util.resx.PersonaBar.CriticalUpdate : util.resx.PersonaBar.NormalUpdate;
+                        });
+
+                        ko.applyBindings(viewModel, document.getElementById('personabar'));
+
+                        util.sf.moduleRoot = 'personabar';
+                        util.sf.controller = "serversummary";
+                        util.sf.getsilence('GetUpdateLink', {}, function (data) {
+                            viewModel.updateLink(data.Url);
+                            viewModel.updateType(data.Type);
+                        });
+
                         document.addEventListener("click", function(e) {
                             $('#topLevelMenu .hovermenu').hide();
                         });
