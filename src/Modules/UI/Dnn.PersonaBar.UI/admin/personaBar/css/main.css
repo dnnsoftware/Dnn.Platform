@@ -720,9 +720,7 @@ transform: rotate(180deg);
     color: #D9577A;
     display: block;
 }
-.personabar a.update.normal-update {
-    color: #21A3DA;
-}
+
 .personabarnav {
     margin: 0;
     padding: 0;
