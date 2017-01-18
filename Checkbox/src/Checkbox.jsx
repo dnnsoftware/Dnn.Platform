@@ -59,6 +59,7 @@ export default class Checkbox extends Component {
                         type="checkbox"
                         id={this.id}
                         checked={this.state.checked}
+                        onChange={() => {}}
                         />
                     <label htmlFor={this.id} onClick={this.onClick.bind(this)}></label>
                 </div>
@@ -79,7 +80,7 @@ export default class Checkbox extends Component {
 }
 
 Checkbox.propTypes = {
-    value: PropTypes.object.isRequired,
+    value: PropTypes.bool.isRequired,
     labelPlace: PropTypes.oneOf(["left", "right"]),
     size: PropTypes.number,
     checkBoxStyle: PropTypes.object,
