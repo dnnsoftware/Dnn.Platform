@@ -85,6 +85,8 @@ namespace DotNetNuke.Services.ImprovementsProgram
             // r: Role(s) - bitmask - see RolesEnum
             // u: User ID - hashed
             // f: page name / tab path
+            // n: Product Edition - hashed
+            // v: Version - hashed
 
             var uid = user.UserID.ToString("D") + user.CreatedOnDate.ToString("O");
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -100,6 +102,14 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
             if (!string.IsNullOrEmpty(filePath))
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
+
+            //add package and version to context of request
+            string packageName = DotNetNukeContext.Current.Application.Name;
+            string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+            if (!string.IsNullOrEmpty(packageName))
+                qparams["n"] = HttpUtility.UrlEncode(GetHash(packageName));
+            if (!string.IsNullOrEmpty(installVersion))
+                qparams["v"] = HttpUtility.UrlEncode(GetHash(installVersion));
 
             return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
         }
