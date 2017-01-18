@@ -10,25 +10,29 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Upgrade;
+using DotNetNuke.Services.Cache;
+using System.Web.Caching;
 
 namespace Dnn.PersonaBar.UI.Services
 {
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private const string CriticalUpdateHash = "df6ffb888798c1c2d96fa8a24064b748";
-        private const string NormalUpdateHash = "5a1ca5548f67d5860b18f2b552c5c295";
+        private const string CriticalUpdateHash = "e9adc7e579de097d836349d62fb18119e935fb31";
+        private const string NormalUpdateHash = "b9f053b41620fd0666458f5f7f43afe357a7d295";
 
         enum UpdateType
         {
@@ -101,33 +105,45 @@ namespace Dnn.PersonaBar.UI.Services
 
             try
             {
-                var webRequest = WebRequest.CreateHttp(imageUrl);
-                webRequest.Timeout = Host.WebRequestTimeout;
-                webRequest.UserAgent = request.UserAgent;
-                webRequest.Referer = request.RawUrl;
-
-                using (var stream = ((HttpWebResponse)webRequest.GetResponse()).GetResponseStream())
+                string hash;
+                const string cacheKey = "UpdateServiceUrlCacheKey";
+                var cachedData = DataCache.GetCache(cacheKey) as string;
+                if (cachedData != null)
                 {
-                    if (stream == null)
-                    {
-                        return false;
-                    }
+                    hash = cachedData;
+                }
+                else
+                {
+                    var webRequest = WebRequest.CreateHttp(imageUrl);
+                    webRequest.Timeout = Host.WebRequestTimeout;
+                    webRequest.UserAgent = request.UserAgent;
+                    webRequest.Referer = request.RawUrl;
 
-                    using (var md5 = MD5.Create())
+                    using (var stream = ((HttpWebResponse) webRequest.GetResponse()).GetResponseStream())
                     {
-                        var hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-                        switch (hash)
+                        if (stream == null)
                         {
-                            case NormalUpdateHash:
-                                updateType = UpdateType.Normal;
-                                return true;
-                            case CriticalUpdateHash:
-                                updateType = UpdateType.Critical;
-                                return true;
-                            default:
-                                return false;
+                            return false;
+                        }
+                        using (var sha1 = SHA1.Create())
+                        {
+                            hash =
+                                BitConverter.ToString(sha1.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency) null,
+                                Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
                         }
                     }
+                }
+                switch (hash)
+                {
+                    case NormalUpdateHash:
+                        updateType = UpdateType.Normal;
+                        return true;
+                    case CriticalUpdateHash:
+                        updateType = UpdateType.Critical;
+                        return true;
+                    default:
+                        return false;
                 }
             }
             catch (Exception ex)
