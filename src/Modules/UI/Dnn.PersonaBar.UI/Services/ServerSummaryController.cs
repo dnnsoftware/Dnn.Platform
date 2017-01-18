@@ -31,8 +31,8 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private const string CriticalUpdateHash = "e9adc7e579de097d836349d62fb18119e935fb31";
-        private const string NormalUpdateHash = "b9f053b41620fd0666458f5f7f43afe357a7d295";
+        private const string CriticalUpdateHash = "e67b666fb40c4f304a41d1706d455c09017b7bcf4ec1e411450ebfcd2c8f12d0";
+        private const string NormalUpdateHash = "df29e1cda367bb8fa8534b5fb2415406100252dec057138b8d63cbadb44fb8e7";
 
         enum UpdateType
         {
@@ -125,10 +125,10 @@ namespace Dnn.PersonaBar.UI.Services
                         {
                             return false;
                         }
-                        using (var sha1 = SHA1.Create())
+                        using (var sha256 = SHA256.Create())
                         {
                             hash =
-                                BitConverter.ToString(sha1.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
                             DataCache.SetCache(cacheKey, hash, (DNNCacheDependency) null,
                                 Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
                         }
