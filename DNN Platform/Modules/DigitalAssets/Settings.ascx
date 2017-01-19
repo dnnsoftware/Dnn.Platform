@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Settings.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.Settings" %>
 <%@ Register TagPrefix="dnnweb" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Modules.DigitalAssets.Components.WebControls" Assembly="DotNetNuke.Modules.DigitalAssets" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 
 <h2 id="dnnSitePanel-BasicSettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("BasicSettings")%></a></h2>
@@ -15,9 +15,9 @@
         <dnnweb:Label ID="ModeLabel" runat="server" ResourceKey="Mode" Suffix=":" ControlName="ModeComboBox" />
         <dnnweb:DnnComboBox ID="ModeComboBox" runat="server" OnClientSelectedIndexChanged="updateRootFolderItemVisibility" >
             <Items>
-                <asp:ListItem Value="Normal" ResourceKey="Normal"></asp:ListItem>
-                <asp:ListItem Value="Group" ResourceKey="Group"></asp:ListItem>
-                <asp:ListItem Value="User" ResourceKey="User"></asp:ListItem>
+                <dnnweb:DnnComboBoxItem Value="Normal" ResourceKey="Normal"></dnnweb:DnnComboBoxItem>
+                <dnnweb:DnnComboBoxItem Value="Group" ResourceKey="Group"></dnnweb:DnnComboBoxItem>
+                <dnnweb:DnnComboBoxItem Value="User" ResourceKey="User"></dnnweb:DnnComboBoxItem>
             </Items>
         </dnnweb:DnnComboBox>
     </div>

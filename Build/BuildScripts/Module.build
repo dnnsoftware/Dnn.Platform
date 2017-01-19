@@ -20,11 +20,12 @@
       <ClientScripts Include="ClientScripts/*.*" />
       <JsFiles Include="js/*.*" />
       <Scripts Include="Scripts/*.*" />
+      <Styles Include="Css/**/*.*" />
       <SharedScripts Include="Scripts/Shared/*.*" />
       <Templates Include="Templates/*.htm" />
       <DataFiles Include="Resources/*.xml" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);@(ControlResourceFiles);
-                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig)" />
+                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews); @(MVCConfig);@(Styles)" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -52,5 +53,6 @@
     <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)/Views" />
     <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)/Views/%(RecursiveDir)" />
     <Copy SourceFiles="@(MVCConfig)" DestinationFolder="$(ModuleFolderName)/Views" />
+    <Copy SourceFiles="@(Styles)" DestinationFolder="$(ModuleFolderName)/Css" />
   </Target> 
 </Project>

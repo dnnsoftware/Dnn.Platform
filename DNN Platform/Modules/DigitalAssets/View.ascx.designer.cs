@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTreeView FolderTreeView;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnTreeView FolderTreeView;
         
         /// <summary>
         /// MainContextMenu control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTreeViewContextMenu MainContextMenu;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnTreeViewContextMenu MainContextMenu;
         
         /// <summary>
         /// SearchBoxPanel control.
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnListView FolderListView;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnListView FolderListView;
         
         /// <summary>
         /// Grid control.
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnGrid Grid;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnGrid Grid;
         
         /// <summary>
         /// GridMenu control.
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnContextMenu GridMenu;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnContextMenu GridMenu;
         
         /// <summary>
         /// EmptySpaceMenu control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnContextMenu EmptySpaceMenu;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnContextMenu EmptySpaceMenu;
         
         /// <summary>
         /// ParentFolderLabel control.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox FolderTypeComboBox;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnComboBox FolderTypeComboBox;
         
         /// <summary>
         /// MappedPathLabel control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTreeView DestinationTreeView;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnTreeView DestinationTreeView;
         
         /// <summary>
         /// fileUpload control.

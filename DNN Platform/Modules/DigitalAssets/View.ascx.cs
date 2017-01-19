@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
@@ -39,6 +39,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+using DotNetNuke.Modules.DigitalAssets.Components.WebControls;
 using DotNetNuke.Modules.DigitalAssets.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -51,6 +52,8 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
+
+using Telerik.Web.UI;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
@@ -198,11 +201,11 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void InitializeGrid()
         {
-            Grid.PagerSettings.PreviousPageText = LocalizeString("PagerPreviousPage.ToolTip");
-            Grid.PagerSettings.NextPageText = LocalizeString("PagerNextPage.ToolTip");
-            Grid.PagerSettings.FirstPageText = LocalizeString("PagerFirstPage.ToolTip");
-            Grid.PagerSettings.LastPageText = LocalizeString("PagerLastPage.ToolTip");
-            //Grid.PagerSettings. = LocalizeString("PagerPageSize.Text");
+            Grid.MasterTableView.PagerStyle.PrevPageToolTip = LocalizeString("PagerPreviousPage.ToolTip");
+            Grid.MasterTableView.PagerStyle.NextPageToolTip = LocalizeString("PagerNextPage.ToolTip");
+            Grid.MasterTableView.PagerStyle.FirstPageToolTip = LocalizeString("PagerFirstPage.ToolTip");
+            Grid.MasterTableView.PagerStyle.LastPageToolTip = LocalizeString("PagerLastPage.ToolTip");
+            Grid.MasterTableView.PagerStyle.PageSizeLabelText = LocalizeString("PagerPageSize.Text");
 
             foreach (var columnExtension in epm.GetGridColumnExtensionPoints("DigitalAssets", "GridColumns", Filter))
             {
@@ -210,16 +213,16 @@ namespace DotNetNuke.Modules.DigitalAssets
                                     {
                                         HeaderText = columnExtension.HeaderText,
                                         DataField = columnExtension.DataField,
-                                        //UniqueName = columnExtension.UniqueName,
+                                        UniqueName = columnExtension.UniqueName,
                                         ReadOnly = columnExtension.ReadOnly,
-                                        //Reorderable = columnExtension.Reorderable,
+                                        Reorderable = columnExtension.Reorderable,
                                         SortExpression = columnExtension.SortExpression,
-                                        //HeaderTooltip = columnExtension.HeaderText
+                                        HeaderTooltip = columnExtension.HeaderText
                                     };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
                 var index = Math.Min(columnExtension.ColumnAt, Grid.Columns.Count - 1);
-                //Grid.Columns.Insert(index, column);
+                Grid.Columns.AddAt(index, column);
             }            
         }
 
@@ -234,7 +237,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 var newNode = this.CreateNodeFromFolder(folder);
                 SetupNodeAttributes(newNode, folder.Permissions, folder);
 
-                node.ChildNodes.Add(newNode);
+                node.Nodes.Add(newNode);
 
                 if (hasViewPermissions && folder.FolderName.Equals(nextFolderName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -272,7 +275,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 rootNode.Selected = false;
             }
 
-            if (rootNode.ChildNodes.Count == 0)
+            if (rootNode.Nodes.Count == 0)
             {
                 this.SetExpandable(rootNode, false);                
             }
@@ -295,7 +298,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 Text = folder.FolderName,
                 ImageUrl = folder.IconUrl,
                 Value = folder.FolderID.ToString(CultureInfo.InvariantCulture),
-                //Category = folder.FolderMappingID.ToString(CultureInfo.InvariantCulture),
+                Category = folder.FolderMappingID.ToString(CultureInfo.InvariantCulture),
             };
             this.SetExpandable(node, folder.HasChildren && HasViewPermissions(folder.Permissions));
             return node;
@@ -303,84 +306,84 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void SetExpandable(DnnTreeNode node, bool expandable)
         {
-            //node.ExpandMode = expandable ? TreeNodeExpandMode.WebService : TreeNodeExpandMode.ClientSide;
+            node.ExpandMode = expandable ? TreeNodeExpandMode.WebService : TreeNodeExpandMode.ClientSide;
         }
 
         private void SetupNodeAttributes(DnnTreeNode node, IEnumerable<PermissionViewModel> permissions, FolderViewModel folder)
         {
-            //node.Attributes.Add("permissions", permissions.ToJson());
-            //foreach (var attribute in folder.Attributes)
-            //{
-            //    node.Attributes.Add(attribute.Key, attribute.Value.ToJson());
-            //}
+            node.Attributes.Add("permissions", permissions.ToJson());
+            foreach (var attribute in folder.Attributes)
+            {
+                node.Attributes.Add(attribute.Key, attribute.Value.ToJson());
+            }
         }
 
         private void InitializeTreeViewContextMenu()
         {
-            //MainContextMenu.Items.AddRange(new[]
-            //{
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("CreateFolder", LocalResourceFile),
-            //            Value = "NewFolder",
-            //            CssClass = "permission_ADD disabledIfFiltered",
-            //            ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("RefreshFolder", LocalResourceFile),
-            //            Value = "RefreshFolder",
-            //            CssClass = "permission_BROWSE permission_READ",
-            //            ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("RenameFolder", LocalResourceFile),
-            //            Value = "RenameFolder",
-            //            CssClass = "permission_MANAGE",
-            //            ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
-            //        },  
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Move", LocalResourceFile),
-            //            Value = "Move",
-            //            CssClass = "permission_COPY",
-            //            ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
-            //        },
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("DeleteFolder", LocalResourceFile),
-            //            Value = "DeleteFolder",
-            //            CssClass = "permission_DELETE",
-            //            ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
-            //        },
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("UnlinkFolder", LocalResourceFile),
-            //            Value = "UnlinkFolder",
-            //            CssClass = "permission_DELETE",
-            //            ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
-            //        },
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
-            //            Value = "Properties",
-            //            CssClass = "permission_READ",
-            //            ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
-            //        },
-            //});
+            MainContextMenu.Items.AddRange(new[]
+            {
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("CreateFolder", LocalResourceFile),
+                        Value = "NewFolder",
+                        CssClass = "permission_ADD disabledIfFiltered",
+                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("RefreshFolder", LocalResourceFile),
+                        Value = "RefreshFolder",
+                        CssClass = "permission_BROWSE permission_READ",
+                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("RenameFolder", LocalResourceFile),
+                        Value = "RenameFolder",
+                        CssClass = "permission_MANAGE",
+                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
+                    },  
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Move", LocalResourceFile),
+                        Value = "Move",
+                        CssClass = "permission_COPY",
+                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
+                    },
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("DeleteFolder", LocalResourceFile),
+                        Value = "DeleteFolder",
+                        CssClass = "permission_DELETE",
+                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
+                    },
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("UnlinkFolder", LocalResourceFile),
+                        Value = "UnlinkFolder",
+                        CssClass = "permission_DELETE",
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
+                    },
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
+                        Value = "Properties",
+                        CssClass = "permission_READ",
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                    },
+            });
             
-            //// Dnn Menu Item Extension Point
-            //foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "TreeViewContextMenu", Filter))
-            //{
-            //    MainContextMenu.Items.Add(new DnnMenuItem
-            //    {
-            //        Text = menuItem.Text,
-            //        Value = menuItem.Value,
-            //        CssClass = menuItem.CssClass,
-            //        ImageUrl = menuItem.Icon
-            //    });
-            //}
+            // Dnn Menu Item Extension Point
+            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "TreeViewContextMenu", Filter))
+            {
+                MainContextMenu.Items.Add(new DnnMenuItem
+                {
+                    Text = menuItem.Text,
+                    Value = menuItem.Value,
+                    CssClass = menuItem.CssClass,
+                    ImageUrl = menuItem.Icon
+                });
+            }
         }
 
         private void InitializeSearchBox()
@@ -395,119 +398,119 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void InitializeGridContextMenu()
         {
-            //GridMenu.Items.AddRange(new[]
-            //    {
-            //        new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Download", LocalResourceFile),
-            //            Value = "Download",
-            //            CssClass = "permission_READ",
-            //            ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Rename", LocalResourceFile),
-            //            Value = "Rename",
-            //            CssClass = "permission_MANAGE singleItem",
-            //            ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Copy", LocalResourceFile),
-            //            Value = "Copy",
-            //            CssClass = "permission_COPY onlyFiles",
-            //            ImageUrl = IconController.IconURL("FileCopy", "16x16", "Black")
-            //        },  
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Move", LocalResourceFile),
-            //            Value = "Move",
-            //            CssClass = "permission_COPY disabledIfFiltered",
-            //            ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
-            //        }, 
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Delete", LocalResourceFile),
-            //            Value = "Delete",
-            //            CssClass = "permission_DELETE",
-            //            ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
-            //        }, 
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("Unlink", LocalResourceFile),
-            //            Value = "Unlink",
-            //            CssClass = "permission_DELETE singleItem onlyFolders",
-            //            ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
-            //        }, 
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("UnzipFile", LocalResourceFile),
-            //            Value = "UnzipFile",
-            //            CssClass = "permission_MANAGE singleItem onlyFiles",
-            //            ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
-            //        },
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("ViewProperties", LocalResourceFile),
-            //            Value = "Properties",
-            //            CssClass = "permission_READ singleItem",
-            //            ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
-            //        }, 
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("GetUrl", LocalResourceFile),
-            //            Value = "GetUrl",
-            //            CssClass = "permission_READ singleItem onlyFiles",
-            //            ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
-            //        }
-            //    });
+            GridMenu.Items.AddRange(new[]
+                {
+                    new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Download", LocalResourceFile),
+                        Value = "Download",
+                        CssClass = "permission_READ",
+                        ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Rename", LocalResourceFile),
+                        Value = "Rename",
+                        CssClass = "permission_MANAGE singleItem",
+                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Copy", LocalResourceFile),
+                        Value = "Copy",
+                        CssClass = "permission_COPY onlyFiles",
+                        ImageUrl = IconController.IconURL("FileCopy", "16x16", "Black")
+                    },  
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Move", LocalResourceFile),
+                        Value = "Move",
+                        CssClass = "permission_COPY disabledIfFiltered",
+                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
+                    }, 
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Delete", LocalResourceFile),
+                        Value = "Delete",
+                        CssClass = "permission_DELETE",
+                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
+                    }, 
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("Unlink", LocalResourceFile),
+                        Value = "Unlink",
+                        CssClass = "permission_DELETE singleItem onlyFolders",
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
+                    }, 
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("UnzipFile", LocalResourceFile),
+                        Value = "UnzipFile",
+                        CssClass = "permission_MANAGE singleItem onlyFiles",
+                        ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
+                    },
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("ViewProperties", LocalResourceFile),
+                        Value = "Properties",
+                        CssClass = "permission_READ singleItem",
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                    }, 
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("GetUrl", LocalResourceFile),
+                        Value = "GetUrl",
+                        CssClass = "permission_READ singleItem onlyFiles",
+                        ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
+                    }
+                });
 
-            //// Dnn Menu Item Extension Point
-            //foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu", Filter))
-            //{
-            //    GridMenu.Items.Add(new DnnMenuItem
-            //                           {
-            //                               Text = menuItem.Text,
-            //                               Value = menuItem.Value,
-            //                               CssClass = menuItem.CssClass,
-            //                               ImageUrl = menuItem.Icon
-            //                           });
-            //}
+            // Dnn Menu Item Extension Point
+            foreach (var menuItem in epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu", Filter))
+            {
+                GridMenu.Items.Add(new DnnMenuItem
+                                       {
+                                           Text = menuItem.Text,
+                                           Value = menuItem.Value,
+                                           CssClass = menuItem.CssClass,
+                                           ImageUrl = menuItem.Icon
+                                       });
+            }
         }
 
         private void InitializeEmptySpaceContextMenu()
         {
-            //EmptySpaceMenu.Items.AddRange(new[]
-            //{
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("CreateFolder", LocalResourceFile),
-            //            Value = "NewFolder",
-            //            CssClass = "permission_ADD disabledIfFiltered",
-            //            ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("RefreshFolder", LocalResourceFile),
-            //            Value = "RefreshFolder",
-            //            CssClass = "permission_READ permission_BROWSE",
-            //            ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
-            //        },    
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("UploadFiles.Title", LocalResourceFile),
-            //            Value = "UploadFiles",
-            //            CssClass = "permission_ADD",
-            //            ImageUrl = IconController.IconURL("UploadFiles", "16x16", "Gray")
-            //        },  
-            //    new DnnMenuItem
-            //        {
-            //            Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
-            //            Value = "Properties",
-            //            CssClass = "permission_READ",
-            //            ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
-            //        },
-            //});
+            EmptySpaceMenu.Items.AddRange(new[]
+            {
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("CreateFolder", LocalResourceFile),
+                        Value = "NewFolder",
+                        CssClass = "permission_ADD disabledIfFiltered",
+                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("RefreshFolder", LocalResourceFile),
+                        Value = "RefreshFolder",
+                        CssClass = "permission_READ permission_BROWSE",
+                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
+                    },    
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("UploadFiles.Title", LocalResourceFile),
+                        Value = "UploadFiles",
+                        CssClass = "permission_ADD",
+                        ImageUrl = IconController.IconURL("UploadFiles", "16x16", "Gray")
+                    },  
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
+                        Value = "Properties",
+                        CssClass = "permission_READ",
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                    },
+            });
         }
 
         private bool HasViewPermissions(IEnumerable<PermissionViewModel> permissions)
@@ -531,11 +534,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             return result;
         }
 
-        //private void OnItemDataBoundFolderTypeComboBox(object sender, RadComboBoxItemEventArgs e)
-        //{
-        //    var dataSource = (FolderMappingViewModel)e.Item.DataItem;
-        //    e.Item.Attributes["SupportsMappedPaths"] = FolderProvider.GetProviderList()[dataSource.FolderTypeName].SupportsMappedPaths.ToString().ToLowerInvariant();
-        //}
+        private void OnItemDataBoundFolderTypeComboBox(object sender, RadComboBoxItemEventArgs e)
+        {
+            var dataSource = (FolderMappingViewModel)e.Item.DataItem;
+            e.Item.Attributes["SupportsMappedPaths"] = FolderProvider.GetProviderList()[dataSource.FolderTypeName].SupportsMappedPaths.ToString().ToLowerInvariant();
+        }
         #endregion
 
         protected FolderViewModel RootFolderViewModel { get; private set; }
@@ -641,9 +644,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.js", FileOrder.Js.DefaultPriority + i);
+                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.WebControls.js", FileOrder.Js.DefaultPriority + i);
+
+                ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/DigitalAssets/Css/ComboBox.Default.css");
+                ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/DigitalAssets/Css/Grid.Default.css");
 
                 InitializeGrid();
-                //FolderTypeComboBox.ItemDataBound += OnItemDataBoundFolderTypeComboBox;
+                FolderTypeComboBox.ItemDataBound += OnItemDataBoundFolderTypeComboBox;
 
                 MainToolBar.ModuleContext = ModuleContext;
                 SelectionToolBar.ModuleContext = ModuleContext;
@@ -677,28 +684,28 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        protected void GridOnItemCreated(object sender, DataGridItemEventArgs e)
+        protected void GridOnItemCreated(object sender, GridItemEventArgs e)
         {
-            if (!(e.Item.ItemType == ListItemType.Pager)) return;
+            if (!(e.Item is GridPagerItem)) return;
 
             var items = new[]
             {
-                new ListItem { Text = "10", Value = "10" },
-                new ListItem { Text = "25", Value = "25" },
-                new ListItem { Text = "50", Value = "50" },
-                new ListItem { Text = "100", Value = "100" },
-                new ListItem
+                new RadComboBoxItem { Text = "10", Value = "10" },
+                new RadComboBoxItem { Text = "25", Value = "25" },
+                new RadComboBoxItem { Text = "50", Value = "50" },
+                new RadComboBoxItem { Text = "100", Value = "100" },
+                new RadComboBoxItem 
                     { 
                         Text = Localization.GetString("All", LocalResourceFile), 
                         Value = int.MaxValue.ToString(CultureInfo.InvariantCulture) 
                     }
             };
 
-            var dropDown = (DnnComboBox)e.Item.FindControl("PageSizeComboBox");
+            var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
             dropDown.Items.Clear();
             foreach (var item in items)
             {
-                //item.Attributes.Add("ownerTableViewId", e.Item.ClientID);
+                item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
                 dropDown.Items.Add(item);
             }
         }

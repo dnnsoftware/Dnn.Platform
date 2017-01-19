@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultFolderTypeComboBox;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnComboBox DefaultFolderTypeComboBox;
         
         /// <summary>
         /// ModeLabel control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ModeComboBox;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnComboBox ModeComboBox;
         
         /// <summary>
         /// ViewConditionItem control.

@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Modules.DigitalAssets.Components.WebControls" Assembly="DotNetNuke.Modules.DigitalAssets" %>
 <div class="dnnForm dnnEditFolderMapping dnnClear" id="dnnEditFolderMapping">
 	<div class="dnnFormMessage dnnFormInfo"><asp:Label ID="DescriptionLabel" runat="server" resourcekey="Description"></asp:Label></div>
     <asp:PlaceHolder id="SyncWarningPlaceHolder" runat="server">

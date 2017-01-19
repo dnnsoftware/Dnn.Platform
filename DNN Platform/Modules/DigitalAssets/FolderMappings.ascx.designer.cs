@@ -37,7 +37,25 @@ namespace DotNetNuke.Modules.DigitalAssets {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnGrid MappingsGrid;
+        protected global::DotNetNuke.Modules.DigitalAssets.Components.WebControls.DnnGrid MappingsGrid;
+        
+        /// <summary>
+        /// EditMappingButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.WebControls.CommandButton EditMappingButton;
+        
+        /// <summary>
+        /// DeleteMappingButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.UI.WebControls.CommandButton DeleteMappingButton;
         
         /// <summary>
         /// NewMappingButton control.

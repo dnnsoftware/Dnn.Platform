@@ -103,7 +103,10 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.Web.UI">
-      <HintPath>..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
+      <HintPath>References\Telerik\bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>References\Telerik\bin\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,22 @@
     <Compile Include="Components\ExtensionPoint\UserControls\FileFieldsControlExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\UserControls\PreviewInfoPanelExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\UserControls\SearchBoxExtensionPoint.cs" />
+    <Compile Include="Components\WebControls\DnnComboBox.cs" />
+    <Compile Include="Components\WebControls\DnnComboBoxItem.cs" />
+    <Compile Include="Components\WebControls\DnnContextMenu.cs" />
+    <Compile Include="Components\WebControls\DnnContextMenuElementTarget.cs" />
+    <Compile Include="Components\WebControls\DnnContextMenuTagNameTarget.cs" />
+    <Compile Include="Components\WebControls\DnnGrid.cs" />
+    <Compile Include="Components\WebControls\DnnGridBoundColumn.cs" />
+    <Compile Include="Components\WebControls\DnnGridClientSelectColumn.cs" />
+    <Compile Include="Components\WebControls\DnnGridTemplateColumn.cs" />
+    <Compile Include="Components\WebControls\DnnListView.cs" />
+    <Compile Include="Components\WebControls\DnnListViewItem.cs" />
+    <Compile Include="Components\WebControls\DnnListViewItemDragHandle.cs" />
+    <Compile Include="Components\WebControls\DnnMenuItem.cs" />
+    <Compile Include="Components\WebControls\DnnTreeNode.cs" />
+    <Compile Include="Components\WebControls\DnnTreeView.cs" />
+    <Compile Include="Components\WebControls\DnnTreeViewContextMenu.cs" />
     <Compile Include="FileFieldsControl.ascx.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,6 +271,7 @@
     </Content>
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
+    <Content Include="ClientScripts\dnn.DigitalAssets.WebControls.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.FilterViewSettings.js" />
     <Content Include="FileFieldsControl.ascx" />
@@ -274,6 +294,27 @@
     <Content Include="License.txt" />
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
+    <Content Include="Css\ComboBox.Default.css" />
+    <Content Include="Css\ComboBox\Default.gif" />
+    <Content Include="Css\ComboBox\rcbSprite.png" />
+    <Content Include="Css\Grid.Default.css" />
+    <Content Include="Css\Images\ItemHoveredBg.png" />
+    <Content Include="Css\Images\ItemSelectedBg.png" />
+    <Content Include="Css\Images\LoadingIcon.gif" />
+    <Content Include="Css\Images\PlusMinus.png" />
+    <Content Include="Css\Images\radFormToggleSprite.png" />
+    <Content Include="Css\Images\rtvBottomLine.png" />
+    <Content Include="Css\Images\rtvBottomLine_rtl.png" />
+    <Content Include="Css\Images\rtvFirstNodeSpan.png" />
+    <Content Include="Css\Images\rtvFirstNodeSpan_rtl.png" />
+    <Content Include="Css\Images\rtvMiddleLine.png" />
+    <Content Include="Css\Images\rtvMiddleLine_rtl.png" />
+    <Content Include="Css\Images\rtvNodeSpan.png" />
+    <Content Include="Css\Images\rtvNodeSpan_rtl.png" />
+    <Content Include="Css\Images\rtvSingleLine.png" />
+    <Content Include="Css\Images\rtvSingleLine_rtl.png" />
+    <Content Include="Css\Images\rtvTopLine.png" />
+    <Content Include="Css\Images\rtvTopLine_rtl.png" />
     <Content Include="SearchBoxControl.ascx" />
     <Content Include="Settings.ascx" />
     <Content Include="View.ascx" />
@@ -289,11 +330,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
-      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
-      <Name>DotNetNuke.Web.Deprecated</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
       <Name>DotNetNuke.Web</Name>
@@ -304,9 +340,6 @@
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\FolderMappings.ascx.resx" />
