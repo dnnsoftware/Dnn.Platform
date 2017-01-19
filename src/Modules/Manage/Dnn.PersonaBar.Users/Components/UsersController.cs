@@ -298,7 +298,7 @@ namespace Dnn.PersonaBar.Users.Components
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, false, true);
+                        dbUsers = UserController.GetUsers(Null.NullInteger, pageIndex, pageSize, ref totalRecords, true, true);
                         userInfos = dbUsers?.OfType<UserInfo>().ToList();
                     }
                     paged = true;
