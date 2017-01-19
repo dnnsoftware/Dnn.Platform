@@ -195,7 +195,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             get
             {
                 EnsureChildControls();
-                return DateControl.DateInput.ClientID;
+                return DateControl.ClientID;
 
             }
         }

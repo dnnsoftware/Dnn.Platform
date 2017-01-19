@@ -22,6 +22,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Web.UI.WebControls;
 
@@ -29,30 +30,20 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnDateTimePicker : TextBox
+    public class DnnDateTimePicker : DnnDatePicker
     {
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			//base.EnableEmbeddedBaseStylesheet = true;
-			//Utilities.ApplySkin(this, string.Empty, "DatePicker");
-			//this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
-			//var specialDay = new RadCalendarDay();
-			//specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
-			//specialDay.ItemStyle.CssClass = "dnnCalendarToday";
-			//this.Calendar.SpecialDays.Add(specialDay);
-   //         this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
-   //         this.Calendar.RangeMaxDate = (DateTime)SqlDateTime.MaxValue;
-   //         this.MinDate = (DateTime)SqlDateTime.MinValue;
-   //         this.MaxDate = (DateTime)SqlDateTime.MaxValue;
+        protected override string Format => "yyyy-MM-dd HH:mm:ss";
+        protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
+
+        protected override IDictionary<string, object> GetSettings()
+        {
+            var settings = base.GetSettings();
+
+            settings.Add("showTime", true);
+            settings.Add("use24hour", true);
+            settings.Add("autoClose", true);
+
+            return settings;
         }
-
-        public DateTime? SelectedDate { get; set; }
-
-        public DateTime MinDate { get; set; }
-
-        public DateTime MaxDate { get; set; }
-
-        public TextBox DateInput { get; set; }
     }
 }

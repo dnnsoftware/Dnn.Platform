@@ -345,8 +345,8 @@
             window.compareDate = function (source, arg) {
             	var id = source.controltovalidate;
             	var compareId = source.getAttribute("CompareControl");
-            	var time = $find(id).get_timeView().getTime();
-            	var compareTime = $find(id.substr(0, id.lastIndexOf("_") + 1) + compareId).get_timeView().getTime();
+            	var time = new Date($('#' + id).val());
+            	var compareTime = new Date($('#' + id.substr(0, id.lastIndexOf("_") + 1) + compareId).val());
             	arg.IsValid = compareTime == null || time > compareTime;
             };
         });
