@@ -331,7 +331,7 @@ namespace DotNetNuke.Services.Installer.Installers
             Package.PackageType = Util.ReadAttribute(manifestNav, "type", Log, Util.EXCEPTION_TypeMissing);
 
             //If Skin or Container then set PortalID
-            if (Package.PackageType == "Skin" || Package.PackageType == "Container")
+            if (Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
             {
                 Package.PortalID = Package.InstallerInfo.PortalID;
             }

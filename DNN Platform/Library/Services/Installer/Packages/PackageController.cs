@@ -318,19 +318,17 @@ namespace DotNetNuke.Services.Installer.Packages
                     case "Skin":
                     case "Container":
                         //Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
-                        string strRootSkin = package.PackageType == "Skin" ? SkinController.RootSkin : SkinController.RootContainer;
+                        string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
                         SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
-                                                                ? Path.Combine(Globals.HostMapPath, strRootSkin)
-                                                                : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
                         if (_SkinPackageInfo.PortalID != Null.NullInteger)
                         {
                             //To be compliant with all versions
                             strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
-                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);    
-                        }                        
+                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                        }
                         break;
                     case "Provider":
                         //Check if the provider is the default provider
@@ -454,8 +452,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                     XPathNavigator iconFileNav = nav.SelectSingleNode("iconFile");
                                     if (package.FolderName != string.Empty && iconFileNav != null)
                                     {
-
-                                        if ((iconFileNav.Value != string.Empty) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
+                                        if ((iconFileNav.Value != string.Empty) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
                                         {
                                             if (iconFileNav.Value.StartsWith("~/"))
                                             {
@@ -553,7 +550,7 @@ namespace DotNetNuke.Services.Installer.Packages
         [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
         public static PackageInfo GetPackage(int packageID)
         {
-	        return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
+            return Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == packageID);
         }
 
         [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)")]
@@ -589,13 +586,13 @@ namespace DotNetNuke.Services.Installer.Packages
         [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackagesByType(string type)
         {
-            return Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == type).ToList();
+            return Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)")]
         public static List<PackageInfo> GetPackagesByType(int portalId, string type)
         {
-            return Instance.GetExtensionPackages(portalId, p => p.PackageType == type).ToList();
+            return Instance.GetExtensionPackages(portalId, p => p.PackageType.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
         [Obsolete("Deprecated in DNN 7.2, Replaced by GetExtensionPackageType(Func<PackageType, bool> predicate)")]

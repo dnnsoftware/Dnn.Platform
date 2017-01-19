@@ -4965,18 +4965,18 @@ namespace DotNetNuke.Services.Upgrade
 		                var package = packages[file];
 
                         var installedPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
-                            p => p.Name.Equals(package.Name, StringComparison.InvariantCultureIgnoreCase) 
-                                    && p.PackageType.Equals(package.PackageType, StringComparison.InvariantCultureIgnoreCase));
+                            p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase) 
+                                    && p.PackageType.Equals(package.PackageType, StringComparison.OrdinalIgnoreCase));
 
-                        if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.InvariantCultureIgnoreCase)) > 1 
+                        if (packages.Values.Count(p => p.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)) > 1 
                                 || installedPackage != null)
 		                {
-			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName.Equals(package.FriendlyName, StringComparison.InvariantCultureIgnoreCase)
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName.Equals(package.FriendlyName, StringComparison.OrdinalIgnoreCase)
                                                                         && kvp.Value.Version < package.Version).ToList();
 
                             //if there already have higher version installed, remove current one from list.
 		                    if (installedPackage != null && package.Version <= installedPackage.Version)
-		                    {
+		                {
 		                        oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
 		                    }
 
