@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
             if (type == null)
             {
                 //This package type not registered

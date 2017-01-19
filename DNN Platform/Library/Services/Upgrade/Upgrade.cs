@@ -3205,7 +3205,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true)
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase) && p.PackageType.Equals(packageType, StringComparison.OrdinalIgnoreCase));
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
@@ -4917,7 +4917,7 @@ namespace DotNetNuke.Services.Upgrade
                 foreach (var package in dependentPackages)
                 {
                     if ( package.Value.Dependencies.All(
-                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
+                            d => sortedPackages.Any(p => p.Value.Name.Equals(d.PackageName, StringComparison.OrdinalIgnoreCase) && p.Value.Version >= d.Version) ) )
                     {
                         sortedPackages.Add(package.Key, package.Value);
                         addedPackages.Add(package.Key);

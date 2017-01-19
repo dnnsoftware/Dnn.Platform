@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             bool bCanDelete = true;
 
-            var dependencies = Instance.GetPackageDependencies(d => d.PackageName == package.Name && d.Version <= package.Version);
+            var dependencies = Instance.GetPackageDependencies(d => d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) && d.Version <= package.Version);
             if (dependencies.Count > 0)
             {
                 //There is at least one package dependent on this package.
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
                     //Check if there is an alternative package
                     var packages = Instance.GetExtensionPackages(package.PortalID,
-                                                                 p => p.Name == dep.PackageName
+                                                                 p => p.Name.Equals(dep.PackageName, StringComparison.OrdinalIgnoreCase)
                                                                         && p.Version >= dep.Version
                                                                         && p.PackageID != package.PackageID);
                     if (packages.Count == 0)

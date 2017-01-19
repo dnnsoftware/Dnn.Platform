@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     if (Package != null)
                     {
-                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType == Package.PackageType);
+                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
                         if ((pkgType != null) && (!string.IsNullOrEmpty(pkgType.EditorControlSrc)))
                         {
                             _control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
