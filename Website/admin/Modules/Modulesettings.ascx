@@ -38,7 +38,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plTags" runat="server" controlname="termsSelector" />
-                    <dnnweb:termsselector id="termsSelector" runat="server" height="250px" width="525px" IncludeTags="false" />
+                    <dnnweb:termsselector id="termsSelector" runat="server" IncludeTags="false" />
                 </div>
             </fieldset>
             <h2 id="dnnPanel-ModuleSecuritySettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Security")%></a></h2>
