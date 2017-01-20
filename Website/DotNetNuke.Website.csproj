@@ -282,13 +282,6 @@
     <Compile Include="admin\Modules\Import.ascx.designer.cs">
       <DependentUpon>import.ascx</DependentUpon>
     </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.designer.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
-    </Compile>
     <Compile Include="admin\Modules\ModulePermissions.ascx.cs">
       <DependentUpon>ModulePermissions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1686,7 +1679,6 @@
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />
     <Content Include="admin\Modules\import.ascx" />
     <Content Include="admin\Modules\module.css" />
-    <Content Include="admin\Modules\ModuleLocalization.ascx" />
     <Content Include="admin\Modules\ModulePermissions.ascx" />
     <Content Include="admin\Modules\Modulesettings.ascx" />
     <Content Include="admin\Modules\viewsource.ascx" />
