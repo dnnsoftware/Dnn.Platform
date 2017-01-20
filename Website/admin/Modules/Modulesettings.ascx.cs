@@ -400,6 +400,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
 
+                    BindTabModulesList();
+
                     //if tab is a  host tab, then add current tab
                     if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                     {
@@ -516,12 +518,13 @@ namespace DotNetNuke.Modules.Admin.Modules
             dgPermissions.InheritViewPermissionsFromTab = chkInheritPermissions.Checked;
         }
 
-        //protected void OnPagesGridNeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        //{
-        //    var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
-        //    tabsByModule.Remove(TabId);
-        //    dgOnTabs.DataSource = tabsByModule.Values;
-        //}
+        protected void BindTabModulesList()
+        {
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
+            tabsByModule.Remove(TabId);
+            dgOnTabs.DataSource = tabsByModule.Values;
+            dgOnTabs.DataBind();
+        }
 
         protected void OnUpdateClick(object sender, EventArgs e)
         {

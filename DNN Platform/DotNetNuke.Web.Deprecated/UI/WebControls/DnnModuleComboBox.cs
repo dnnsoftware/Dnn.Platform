@@ -40,7 +40,7 @@ using DotNetNuke.Services.Installer.Packages;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnModuleComboBox : WebControl
+    public class DnnModuleComboBox : DnnComboBox
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 

@@ -101,35 +101,15 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="UI\WebControls\DnnDateTimePicker.cs" />
-    <Compile Include="UI\WebControls\DnnFormEnumItem.cs" />
-    <Compile Include="UI\WebControls\DnnGridImageCommandColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridImageCommandColumnTemplate.cs" />
     <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
-    <Compile Include="UI\WebControls\DnnTreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\WebControls\DnnFormNumericTextBoxItem.cs" />
     <Compile Include="UI\WebControls\DnnModuleComboBox.cs" />
     <Compile Include="UI\WebControls\DnnFormComboBoxItem.cs" />
     <Compile Include="UI\WebControls\DnnFormToggleButtonItem.cs" />
-    <Compile Include="UI\WebControls\DnnGridItem.cs" />
-    <Compile Include="UI\WebControls\DnnMenuItem.cs" />
     <Compile Include="UI\WebControls\DnnScriptBlock.cs" />
     <Compile Include="UI\WebControls\DnnComboBox.cs" />
-    <Compile Include="UI\WebControls\DnnContextMenu.cs" />
     <Compile Include="UI\WebControls\DnnDatePicker.cs" />
     <Compile Include="UI\WebControls\DnnGrid.cs" />
-    <Compile Include="UI\WebControls\DnnGridBinaryImageColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridCalculatedColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridDateTimeColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridDropDownColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridExpandColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridAttachmentColumn.cs" />
-    <Compile Include="UI\WebControls\DnnListBox.cs" />
-    <Compile Include="UI\WebControls\DnnListView.cs" />
-    <Compile Include="UI\WebControls\DnnTreeView.cs" />
-    <Compile Include="UI\WebControls\DnnTreeViewContextMenuCollection.cs" />
-    <Compile Include="UI\WebControls\DnnTreeViewContextMenu.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
   </ItemGroup>
@@ -173,12 +153,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UI\WebControls\DnnGridBoundColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridCheckBoxColumn.cs" />
     <Compile Include="UI\WebControls\DnnGridClientSelectColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridEditColumn.cs" />
     <Compile Include="UI\WebControls\DnnGridTemplateColumn.cs" />
-    <Compile Include="UI\WebControls\DnnLanguageComboBox.cs" />
-    <Compile Include="UI\WebControls\TermsList.cs" />
     <Compile Include="UI\WebControls\TermsSelector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +173,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library.build">

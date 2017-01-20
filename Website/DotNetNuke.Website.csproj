@@ -3327,7 +3327,7 @@
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\Default.gif" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\ComboBox\rcbSprite.png" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DatePicker.Default.css" />
-    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\Grid.Default.css" />
+    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\Images\ItemHoveredBg.png" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\Images\ItemSelectedBg.png" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\Images\LoadingIcon.gif" />
