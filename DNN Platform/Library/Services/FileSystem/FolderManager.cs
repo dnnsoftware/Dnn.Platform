@@ -1033,13 +1033,13 @@ namespace DotNetNuke.Services.FileSystem
             }
             finally
             {
+                Monitor.Exit(_threadLocker);
+
                 // Restore original time-out
                 if (HttpContext.Current != null && scriptTimeOut != null)
                 {
                     SetScriptTimeout(scriptTimeOut.Value);
                 }
-
-                Monitor.Exit(_threadLocker);
             }
 
             return 0;
