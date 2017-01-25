@@ -20,8 +20,8 @@
             </Output>
         </GetVersion>
         <PropertyGroup>
-            <SourcePackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Source.zip</SourcePackageName>
-			<SymbolsPackageName>Dnn.PersonaBar.Extensions_$(FormattedBuildVersion)_Symbols.zip</SymbolsPackageName>
+            <SourcePackageName>Dnn.EditBar.UI_$(FormattedBuildVersion)_Source.zip</SourcePackageName>
+			<SymbolsPackageName>Dnn.EditBar.UI_$(FormattedBuildVersion)_Symbols.zip</SymbolsPackageName>
         </PropertyGroup>
         <Message Text="Zip Version : $(FormattedBuildVersion)" />
     </Target>
