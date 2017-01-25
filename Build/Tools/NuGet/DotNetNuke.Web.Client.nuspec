@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>DotNetNuke.Web.Client</id>
-    <version>9.0.1</version>
+    <version>9.1.0</version>
     <title>DNN Platform (Client Resources)</title>
     <authors>DNN Corp</authors>
     <owners>DNN Corp</owners>
