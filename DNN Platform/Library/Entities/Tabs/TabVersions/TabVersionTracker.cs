@@ -229,10 +229,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
             }
 
-            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
-                moduleVersion, TabVersionDetailAction.Deleted);            
-            TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
-
+            //Do not add module to Tab Version Details if it has been hard deleted
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(module.ModuleID, module.TabID, false);
+            if (moduleInfo != null)
+            {
+                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
+                    moduleVersion, TabVersionDetailAction.Deleted);
+                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            }
         }
 
         private static bool IsHostModule(ModuleInfo module)
