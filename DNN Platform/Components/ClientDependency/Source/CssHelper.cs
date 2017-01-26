@@ -33,22 +33,18 @@ namespace ClientDependency.Core
                          || path.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
                          || path.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        try
-                        {
-                            var uri = new Uri(path, UriKind.Absolute);
-                            var domain = $".{uri.Host}:{uri.Port}";
-                            var approvedDomains =
-                                ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.BundleDomains;
-                            if (!approvedDomains.Any(bundleDomain => domain.EndsWith(bundleDomain)))
-                            {
-                                continue;
-                            }
-                        }
-                        catch (Exception)
+                        if (!path.IsAbsoluteUrl())
                         {
                             continue;
                         }
-                        
+                        var uri = new Uri(path, UriKind.Absolute);
+                        var domain = $".{uri.Host}:{uri.Port}";
+                        var approvedDomains =
+                            ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.BundleDomains;
+                        if (!approvedDomains.Any(bundleDomain => domain.EndsWith(bundleDomain)))
+                        {
+                            continue;
+                        }
                     }
                 }
 
@@ -59,7 +55,7 @@ namespace ClientDependency.Core
                 var filePath = match.Groups[1].Value.Trim('\'', '"');
                 pathsFound.Add(filePath);
             }
-           
+
             importedPaths = pathsFound;
             return content.Trim();
         }

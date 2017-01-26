@@ -148,5 +148,15 @@ namespace ClientDependency.Core
             return isExt;
         }
 
+        /// <summary>
+        /// Determines if the string is absolute url or not.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool IsAbsoluteUrl(this string url)
+        {
+            Uri result;
+            return Uri.TryCreate(url, UriKind.Absolute, out result);
+        }
     }
 }
