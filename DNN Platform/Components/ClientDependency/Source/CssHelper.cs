@@ -33,11 +33,11 @@ namespace ClientDependency.Core
                          || path.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
                          || path.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)))
                     {
-                        if (!path.IsAbsoluteUrl())
+                        Uri uri;
+                        if (IsAbsoluteUrl(path, out uri))
                         {
                             continue;
                         }
-                        var uri = new Uri(path, UriKind.Absolute);
                         var domain = $".{uri.Host}:{uri.Port}";
                         var approvedDomains =
                             ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.BundleDomains;
@@ -115,6 +115,11 @@ namespace ClientDependency.Core
             body = Regex.Replace(body, @"/\*[\d\D]*?\*/", string.Empty);
             return body;
 
+        }
+
+        private static bool IsAbsoluteUrl(string url, out Uri uri)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out uri);
         }
     }
 }
