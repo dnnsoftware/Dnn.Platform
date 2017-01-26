@@ -1066,7 +1066,7 @@
     <value>CAPTCHA image</value>
   </data>
   <data name="PrivateConfirmationMessage.Text" xml:space="preserve">
-    <value>&lt;strong&gt;An email with your details has been sent to the Site Administrator for verification. You will be notified by email when your registration has been approved. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
+    <value>&lt;strong&gt;An email with your details has been sent to the Site Administrator for verification. You will be notified by email when your registration has been approved. In the meantime you can continue to browse this site.&lt;/strong&gt;  </value>
   </data>
   <data name="DNN_ReadingComponent.Text" xml:space="preserve">
     <value>Reading Component Manifest</value>
