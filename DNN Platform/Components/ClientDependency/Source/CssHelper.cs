@@ -34,7 +34,7 @@ namespace ClientDependency.Core
                          || path.StartsWith("//", StringComparison.InvariantCultureIgnoreCase)))
                     {
                         Uri uri;
-                        if (IsAbsoluteUrl(path, out uri))
+                        if (!IsAbsoluteUrl(path, out uri))
                         {
                             continue;
                         }
