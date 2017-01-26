@@ -800,41 +800,6 @@
     <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.designer.cs">
       <DependentUpon>UsageDetails.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.designer.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.designer.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.designer.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.designer.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
@@ -1784,16 +1749,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\hostsettings.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\block.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\checkmark.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\help-icn.gif" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\TimePicker.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\module.css" />
-    <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
     <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
     <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
@@ -3505,13 +3460,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
