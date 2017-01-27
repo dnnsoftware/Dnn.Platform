@@ -1390,15 +1390,19 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DeleteFiles(Array arrPaths)
         {
-            string strExceptions = "";
-            for (int i = 0; i < arrPaths.Length; i++)
+            var strExceptions = "";
+            for (var i = 0; i < arrPaths.Length; i++)
             {
-                string strPath = arrPaths.GetValue(i).ToString();
-                if (strPath.IndexOf("'") != -1)
+                var strPath = (arrPaths.GetValue(i) ?? "").ToString();
+                var pos = strPath.IndexOf("'", StringComparison.Ordinal);
+                if (pos != -1)
                 {
-                    strPath = strPath.Substring(0, strPath.IndexOf("'"));
+                    // the (') represents a comment to the end of the line
+                    strPath = strPath.Substring(0, pos);
                 }
-                if (!String.IsNullOrEmpty(strPath.Trim()))
+
+                strPath = strPath.Trim().Replace("/", "\\");
+                if (!string.IsNullOrEmpty(strPath))
                 {
                     strPath = Globals.ApplicationMapPath + "\\" + strPath;
                     if (strPath.EndsWith("\\"))
@@ -1412,17 +1416,13 @@ namespace DotNetNuke.Common.Utilities
                             catch (Exception ex)
                             {
                                 Logger.Error(ex);
-                                strExceptions += "Error: " + ex.Message + Environment.NewLine;
+                                strExceptions += $"Processing folder ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                             }
                         }
                     }
                     else
                     {
-                        if (Directory.Exists(strPath))
-                        {
-                            DeleteFolderRecursive(strPath);
-                        }
-                        else if (File.Exists(strPath))
+                        if (File.Exists(strPath))
                         {
                             try
                             {
@@ -1432,7 +1432,7 @@ namespace DotNetNuke.Common.Utilities
                             catch (Exception ex)
                             {
                                 Logger.Error(ex);
-                                strExceptions += "Error: " + ex.Message + Environment.NewLine;
+                                strExceptions += $"Processing file ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                             }
                         }
                     }

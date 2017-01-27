@@ -4150,18 +4150,17 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
+            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
             try
             {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
-
                 if (File.Exists(listFile))
                 {
-                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                    exceptions = FileSystemUtils.DeleteFiles(File.ReadAllLines(listFile));
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.Error("Error cleanup file " + listFile, ex);
 
                 exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                 // log the results
