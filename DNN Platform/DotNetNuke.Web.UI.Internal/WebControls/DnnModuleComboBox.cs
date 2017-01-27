@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.UI.Internal.WebControls
             }
         }
 
-        public string SelectedValue
+        public override string SelectedValue
         {
             get
             {

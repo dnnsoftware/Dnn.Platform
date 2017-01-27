@@ -920,7 +920,7 @@ namespace DotNetNuke.UI.ControlPanels
 		{
             if (ShowSwitchLanguagesPanel())
             {
-                const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
+                //const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
                 foreach (var lang in LoadLanguagesList())
                 {
                     var item = new ListItem(lang[0], lang[1]);

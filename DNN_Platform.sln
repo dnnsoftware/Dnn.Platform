@@ -57,12 +57,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Groups", "DNN Platform\Modules\Groups\DotNetNuke.Modules.Groups.csproj", "{839E7C68-1867-4B99-8507-FB50CE45EB10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Html", "DNN Platform\Modules\HTML\DotNetNuke.Modules.Html.csproj", "{CD8732D8-B4DD-435D-BF21-A90C2964ABA4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E7392A67-394E-49B8-B099-360C31846DED} = {E7392A67-394E-49B8-B099-360C31846DED}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Journal", "DNN Platform\Modules\Journal\DotNetNuke.Modules.Journal.csproj", "{E242FA80-7523-4AE5-A804-809175D0E702}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.MemberDirectory", "DNN Platform\Modules\MemberDirectory\DotNetNuke.Modules.MemberDirectory.csproj", "{BF41BE15-0E57-4DA7-A60B-658DB26B4BA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.RazorHost", "DNN Platform\Modules\RazorHost\DotNetNuke.Modules.RazorHost.csproj", "{94C9A90C-C0E9-41D0-AC33-FA5B35CB9C7D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E7392A67-394E-49B8-B099-360C31846DED} = {E7392A67-394E-49B8-B099-360C31846DED}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{5D82591D-1525-40A1-ACA3-1F89D817E9AD}"
 EndProject
@@ -198,6 +204,9 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebUtility", "DN
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.HtmlEditorManager", "DNN Platform\Modules\HtmlEditorManager\DotNetNuke.Modules.HtmlEditorManager.csproj", "{000181C6-C95F-4302-9130-A66B693FFFD2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33} = {9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Razor", "DNN Platform\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj", "{9806C125-8CA9-48CC-940A-CCD0442C5993}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -222,6 +231,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Websi
 		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345} = {A86EBC44-2BC8-4C4A-997B-2708E4AAC345}
 		{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6} = {3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}
 		{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD} = {4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}
+		{E7392A67-394E-49B8-B099-360C31846DED} = {E7392A67-394E-49B8-B099-360C31846DED}
 		{03E3AFA5-DDC9-48FB-A839-AD4282CE237E} = {03E3AFA5-DDC9-48FB-A839-AD4282CE237E}
 		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
 		{5DEAB0D5-0F54-44C9-A167-F48264A04B3D} = {5DEAB0D5-0F54-44C9-A167-F48264A04B3D}

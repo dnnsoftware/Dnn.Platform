@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Dnn.Modules.Lists">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DNN Platform\Admin Modules\Dnn.Modules.Lists\bin\Dnn.Modules.Lists.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DNN Platform\Library\bin\DotNetNuke.dll</HintPath>
@@ -643,167 +639,6 @@
     <Compile Include="DesktopModules\Admin\Authentication\Logoff.ascx.designer.cs">
       <DependentUpon>Logoff.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.cs">
-      <DependentUpon>AvailableExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx.designer.cs">
-      <DependentUpon>AvailableExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\BatchInstall.ascx.cs">
-      <DependentUpon>BatchInstall.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\BatchInstall.ascx.designer.cs">
-      <DependentUpon>BatchInstall.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Download.ascx.cs">
-      <DependentUpon>Download.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Download.ascx.designer.cs">
-      <DependentUpon>Download.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\EditExtension.ascx.cs">
-      <DependentUpon>EditExtension.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\EditExtension.ascx.designer.cs">
-      <DependentUpon>EditExtension.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx.cs">
-      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx.designer.cs">
-      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleControl.ascx.cs">
-      <DependentUpon>editmodulecontrol.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleControl.ascx.designer.cs">
-      <DependentUpon>editmodulecontrol.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx.cs">
-      <DependentUpon>EditModuleDefinition.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx.designer.cs">
-      <DependentUpon>EditModuleDefinition.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx.cs">
-      <DependentUpon>JavaScriptLibraryEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx.designer.cs">
-      <DependentUpon>JavaScriptLibraryEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx.cs">
-      <DependentUpon>LanguagePackEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx.designer.cs">
-      <DependentUpon>LanguagePackEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx.cs">
-      <DependentUpon>ModuleEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx.designer.cs">
-      <DependentUpon>ModuleEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx.cs">
-      <DependentUpon>SkinEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx.designer.cs">
-      <DependentUpon>SkinEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx.cs">
-      <DependentUpon>SkinObjectEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx.designer.cs">
-      <DependentUpon>SkinObjectEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Extensions.ascx.cs">
-      <DependentUpon>Extensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Extensions.ascx.designer.cs">
-      <DependentUpon>Extensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx.cs">
-      <DependentUpon>ExtensionWizard.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx.designer.cs">
-      <DependentUpon>ExtensionWizard.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Install.ascx.cs">
-      <DependentUpon>Install.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Install.ascx.designer.cs">
-      <DependentUpon>Install.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.cs">
-      <DependentUpon>InstalledExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx.designer.cs">
-      <DependentUpon>InstalledExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx.designer.cs">
-      <DependentUpon>LanguagePacks.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.cs">
-      <DependentUpon>MoreExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx.designer.cs">
-      <DependentUpon>MoreExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PackageWriter.ascx.cs">
-      <DependentUpon>PackageWriter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PackageWriter.ascx.designer.cs">
-      <DependentUpon>PackageWriter.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx.cs">
-      <DependentUpon>PurchasedExtensions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx.designer.cs">
-      <DependentUpon>PurchasedExtensions.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Store.ascx.cs">
-      <DependentUpon>Store.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\Store.ascx.designer.cs">
-      <DependentUpon>Store.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UnInstall.ascx.cs">
-      <DependentUpon>UnInstall.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UnInstall.ascx.designer.cs">
-      <DependentUpon>UnInstall.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.cs">
-      <DependentUpon>UsageDetails.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.designer.cs">
-      <DependentUpon>UsageDetails.ascx</DependentUpon>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
@@ -955,7 +790,6 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
@@ -1730,31 +1564,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\Extensions\AvailableExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\BatchInstall.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Download.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\EditExtension.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\AuthenticationEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\editmodulecontrol.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\EditModuleDefinition.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\JavaScriptLibraryEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\LanguagePackEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\ModuleEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\SkinEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\SkinObjectEditor.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Extensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\ExtensionWizard.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\Install.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\InstalledExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\module.css" />
-    <Content Include="DesktopModules\Admin\Extensions\MoreExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\PackageWriter.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\PurchasedExtensions.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\scripts\Gallery-compiled.js" />
-    <Content Include="DesktopModules\Admin\Extensions\scripts\Gallery.js" />
-    <Content Include="DesktopModules\Admin\Extensions\Store.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\UnInstall.ascx" />
-    <Content Include="DesktopModules\Admin\Extensions\UsageDetails.ascx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
     <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
     <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
@@ -3456,24 +3265,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\BatchInstall.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\EditExtension.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Extensions.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\ExtensionWizard.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\Install.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\LanguagePacks.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\PackageWriter.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\SharedResources.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UnInstall.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\App_LocalResources\UsageDetails.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\AuthenticationEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleControl.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\EditModuleDefinition.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\JavaScriptLibraryEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\LanguagePackEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\ModuleEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
