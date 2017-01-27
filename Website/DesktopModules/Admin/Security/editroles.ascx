@@ -4,7 +4,7 @@
 <%@ Register TagPrefix="dnn" TagName="Url" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
+<%@ Register TagPrefix="dnn" Assemby="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <div class="dnnForm dnnEditRole dnnClear" id="dnnEditRole">
     <ul class="dnnAdminTabNav dnnClear">
 		<li><a href="#erBasicSettings"><%=LocalizeString("BasicSettings")%></a></li>

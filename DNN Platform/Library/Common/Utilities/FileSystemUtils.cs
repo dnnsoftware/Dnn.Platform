@@ -1418,7 +1418,11 @@ namespace DotNetNuke.Common.Utilities
                     }
                     else
                     {
-                        if (File.Exists(strPath))
+                        if (Directory.Exists(strPath))
+                        {
+                            DeleteFolderRecursive(strPath);
+                        }
+                        else if (File.Exists(strPath))
                         {
                             try
                             {
@@ -1493,6 +1497,7 @@ namespace DotNetNuke.Common.Utilities
 
             try
             {
+                Directory.SetAttributes(strRoot, FileAttributes.Normal);
                 Directory.Delete(strRoot);
             }
             catch (Exception ex)

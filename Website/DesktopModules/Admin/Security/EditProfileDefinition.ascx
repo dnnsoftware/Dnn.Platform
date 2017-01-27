@@ -1,7 +1,7 @@
 <%@ Control Inherits="DotNetNuke.Modules.Admin.Users.EditProfileDefinition" Language="C#" AutoEventWireup="false" Codebehind="EditProfileDefinition.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls"%>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
+<%@ Register TagPrefix="dnn" Assemby="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="ListEntries" Src="~/DesktopModules/Admin/Lists/ListEntries.ascx" %>

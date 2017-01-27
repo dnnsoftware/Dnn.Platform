@@ -443,10 +443,11 @@ namespace DotNetNuke.Modules.Html
             cmdMasterContent.Click += OnMasterContentClick;
             ddlRender.SelectedIndexChanged += OnRenderSelectedIndexChanged;
             cmdSave.Click += OnSaveClick;
-            dgHistory.ItemDataBound += OnHistoryGridItemDataBound;
-            dgVersions.ItemCommand += OnVersionsGridItemCommand;
-            dgVersions.ItemDataBound += OnVersionsGridItemDataBound;
-            dgVersions.PageIndexChanged += OnVersionsGridPageIndexChanged;
+            //DNN-9145 TODO
+            //dgHistory.ItemDataBound += OnHistoryGridItemDataBound;
+            //dgVersions.ItemCommand += OnVersionsGridItemCommand;
+            //dgVersions.ItemDataBound += OnVersionsGridItemDataBound;
+            //dgVersions.PageIndexChanged += OnVersionsGridPageIndexChanged;
         }
 
         private void OnRenderSelectedIndexChanged(object sender, EventArgs e)

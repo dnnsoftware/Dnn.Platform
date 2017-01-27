@@ -56,29 +56,31 @@ namespace DotNetNuke.Modules.SearchResults
                     {
                         var list = Convert.ToString(Settings["ScopeForPortals"]).Split('|').ToList();
                         var portalList = LoadPortalsList().ToList();
-                        if (portalList.Any())
-                        {
-                            foreach (var portal in portalList)
-                            {
-                                var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
-                                comboBoxPortals.Items.Add(item);
-                            }
-                        }
-                        else
-                        {
-                            divPortalGroup.Visible = false;
-                        }
+                        //DNN-9145 TODO
+                        //if (portalList.Any())
+                        //{
+                        //    foreach (var portal in portalList)
+                        //    {
+                        //        var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
+                        //        comboBoxPortals.Items.Add(item);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    divPortalGroup.Visible = false;
+                        //}
                     }
                     else
                     {
                         var portalList = LoadPortalsList().ToList();
                         if (portalList.Any())
                         {
-                            foreach (var portal in portalList)
-                            {
-                                var item = new DnnComboBoxItem(portal[0], portal[1]) { Checked = PortalId.ToString() == portal[1] };
-                                comboBoxPortals.Items.Add(item);
-                            }
+                            //DNN-9145 TODO
+                            //foreach (var portal in portalList)
+                            //{
+                            //    var item = new DnnComboBoxItem(portal[0], portal[1]) { Checked = PortalId.ToString() == portal[1] };
+                            //    comboBoxPortals.Items.Add(item);
+                            //}
                         }
                         else
                         {
@@ -93,8 +95,9 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new DnnComboBoxItem(filter, filter) {Checked = list.Contains(filter)};
-                            comboBoxFilters.Items.Add(item);
+                            //DNN-9145 TODO
+                            //var item = new DnnComboBoxItem(filter, filter) {Checked = list.Contains(filter)};
+                            //comboBoxFilters.Items.Add(item);
                         }
                     }
                     else
@@ -102,8 +105,9 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new DnnComboBoxItem(filter, filter) {Checked = true};
-                            comboBoxFilters.Items.Add(item);
+                            //DNN-9145 TODO
+                            //var item = new DnnComboBoxItem(filter, filter) {Checked = true};
+                            //comboBoxFilters.Items.Add(item);
                         }
                     }
 
@@ -133,32 +137,33 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "LinkTarget", comboBoxLinkTarget.SelectedValue);
 
                     var selectedPortals = new StringBuilder();
-                    foreach (var p in comboBoxPortals.CheckedItems)
-                    {
-                        if (selectedPortals.Length > 0)
-                        {
-                            selectedPortals.AppendFormat("|{0}", p.Value);
-                        }
-                        else
-                        {
-                            selectedPortals.Append(p.Value);
-                        }
-                    }
+                    //DNN-9145 TODO
+                    //foreach (var p in comboBoxPortals.CheckedItems)
+                    //{
+                    //    if (selectedPortals.Length > 0)
+                    //    {
+                    //        selectedPortals.AppendFormat("|{0}", p.Value);
+                    //    }
+                    //    else
+                    //    {
+                    //        selectedPortals.Append(p.Value);
+                    //    }
+                    //}
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
 
                     var selectedFilters = new StringBuilder();
-                    foreach (var p in comboBoxFilters.CheckedItems)
-                    {
-                        if (selectedFilters.Length > 0)
-                        {
-                            selectedFilters.AppendFormat("|{0}", p.Value);
-                        }
-                        else
-                        {
-                            selectedFilters.Append(p.Value);
-                        }
-                    }
+                    //foreach (var p in comboBoxFilters.CheckedItems)
+                    //{
+                    //    if (selectedFilters.Length > 0)
+                    //    {
+                    //        selectedFilters.AppendFormat("|{0}", p.Value);
+                    //    }
+                    //    else
+                    //    {
+                    //        selectedFilters.Append(p.Value);
+                    //    }
+                    //}
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 

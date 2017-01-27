@@ -1,10 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.PurchasedExtensions" Codebehind="PurchasedExtensions.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<dnn:DnnAjaxLoadingPanel ID="loadingPanel" runat="server" Skin="Default">
-</dnn:DnnAjaxLoadingPanel>
-<dnn:DnnAjaxPanel ID="ajaxPanel" runat="server" LoadingPanelID="loadingPanel" RestoreOriginalRenderDelegate="false">
+<%@ Register TagPrefix="dnn" Assemby="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.WebControls" %>
     <div class="dnnForm dnnPurchasedExtensions dnnClear" id="dnnPurchasedExtensions">
         <h2 class="dnnFormSectionHead"><asp:Label ID="lblTitle" runat="server"><% =LocalizeString("PurchasedTitle")%></asp:Label></h2>
         <div class="dnnFormMessage dnnFormInfo"><asp:Label ID="lblHelp" runat="server"><% =LocalizeString("PurchasedHelp")%></asp:Label></div>
@@ -38,4 +35,3 @@
             <li><asp:HyperLink ID="updateCredentials" runat="server" CssClass="dnnSecondary" resourcekey="updateCredentials" /></li>
         </ul>
     </div>
-</dnn:DnnAjaxPanel>

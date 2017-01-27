@@ -36,9 +36,6 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
 
-using Telerik.Web.UI;
-
-
 #endregion
 
 namespace DotNetNuke.UI.ControlPanel
@@ -217,10 +214,10 @@ namespace DotNetNuke.UI.ControlPanel
         {
             SkinLst.ClearSelection();
             SkinLst.Items.Clear();
-            SkinLst.Items.Add(new RadComboBoxItem(GetString("DefaultSkin"), string.Empty));
+            SkinLst.Items.Add(new ListItem(GetString("DefaultSkin"), string.Empty));
 
             // load portal skins
-            var portalSkinsHeader = new RadComboBoxItem(GetString("PortalSkins"), string.Empty) {Enabled = false, CssClass = "SkinListHeader"};
+            var portalSkinsHeader = new ListItem(GetString("PortalSkins"), string.Empty) {Enabled = false};
             SkinLst.Items.Add(portalSkinsHeader);
 
             string[] arrFolders;
@@ -244,20 +241,21 @@ namespace DotNetNuke.UI.ControlPanel
                             }
                             strLastFolder = folder;
                         }
-                        SkinLst.Items.Add(new RadComboBoxItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
+                        SkinLst.Items.Add(new ListItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                                                               "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                     }
                 }
             }
 
+            //DNN-9145 TODO
             //No portal skins added, remove the header
-            if ((SkinLst.Items.Count == 2))
-            {
-                SkinLst.Items.Remove(1);
-            }
+            //if ((SkinLst.Items.Count == 2))
+            //{
+            //    SkinLst.Items.Remove(1);
+            //}
 
             //load host skins
-            var hostSkinsHeader = new RadComboBoxItem(GetString("HostSkins"), string.Empty) {Enabled = false, CssClass = "SkinListHeader"};
+            var hostSkinsHeader = new ListItem(GetString("HostSkins"), string.Empty) {Enabled = false};
             SkinLst.Items.Add(hostSkinsHeader);
 
             strRoot = Globals.HostMapPath + SkinController.RootSkin;
@@ -280,7 +278,7 @@ namespace DotNetNuke.UI.ControlPanel
                                 }
                                 strLastFolder = folder;
                             }
-                            SkinLst.Items.Add(new RadComboBoxItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
+                            SkinLst.Items.Add(new ListItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                                                                   "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                         }
                     }
@@ -291,7 +289,7 @@ namespace DotNetNuke.UI.ControlPanel
             SkinLst.SelectedIndex = 0;
             if ((!string.IsNullOrEmpty(CurrentTab.SkinSrc)))
             {
-                RadComboBoxItem selectItem = SkinLst.FindItemByValue(CurrentTab.SkinSrc);
+                var selectItem = SkinLst.FindItemByValue(CurrentTab.SkinSrc);
                 if (((selectItem != null)))
                 {
                     selectItem.Selected = true;
@@ -299,9 +297,9 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        private RadComboBoxItem GetSeparatorItem()
+        private ListItem GetSeparatorItem()
         {
-            return new RadComboBoxItem(GetString("SkinLstSeparator"), string.Empty) {CssClass = "SkinLstSeparator", Enabled = false};
+            return new ListItem(GetString("SkinLstSeparator"), string.Empty) {Enabled = false};
         }
 
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)

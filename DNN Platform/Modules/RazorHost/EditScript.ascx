@@ -1,10 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="EditScript.ascx.cs" Inherits="DotNetNuke.Modules.RazorHost.EditScript" %>
 <%@ Register Assembly="DotnetNuke" Namespace="DotNetNuke.UI.WebControls" TagPrefix="dnn" %>
 <%@ Register Assembly="DotnetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnn" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<dnn:DnnToolTipManager ID="toolTipManager" runat="server" Position="Center" RelativeTo="BrowserWindow" Width="500px" Height="200px" HideEvent="ManualClose" ShowEvent="OnClick" Modal="true" Skin="Default" RenderInPageRoot="true" AnimationDuration="200" ManualClose="true"
-	ManualCloseButtonText="Close" />
 <div class="dnnForm dnnRazorHostEditScript dnnClear" id="dnnEditScript">
     <fieldset>
         <div class="dnnFormItem">

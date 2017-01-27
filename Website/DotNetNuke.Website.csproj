@@ -162,9 +162,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\DNN Platform\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
@@ -288,13 +285,6 @@
     </Compile>
     <Compile Include="admin\Modules\Import.ascx.designer.cs">
       <DependentUpon>import.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Modules\ModuleLocalization.ascx.designer.cs">
-      <DependentUpon>ModuleLocalization.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Modules\ModulePermissions.ascx.cs">
       <DependentUpon>ModulePermissions.ascx</DependentUpon>
@@ -484,13 +474,6 @@
     </Compile>
     <Compile Include="admin\Skins\Language.ascx.designer.cs">
       <DependentUpon>language.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="admin\Skins\LeftMenu.ascx.designer.cs">
-      <DependentUpon>LeftMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="admin\Skins\Links.ascx.cs">
       <DependentUpon>links.ascx</DependentUpon>
@@ -821,107 +804,9 @@
     <Compile Include="DesktopModules\Admin\Extensions\UsageDetails.ascx.designer.cs">
       <DependentUpon>UsageDetails.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx.designer.cs">
-      <DependentUpon>EditIPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx.designer.cs">
-      <DependentUpon>FriendlyUrls.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\HostSettings.ascx.designer.cs">
-      <DependentUpon>hostsettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\IPFilters.ascx.designer.cs">
-      <DependentUpon>IPFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx.designer.cs">
-      <DependentUpon>RequestFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.cs">
-      <DependentUpon>Preview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\MobilePreview\Preview.ascx.designer.cs">
-      <DependentUpon>Preview.ascx</DependentUpon>
-    </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
-    <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.cs">
-      <DependentUpon>portals.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Portals.ascx.designer.cs">
-      <DependentUpon>portals.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Signup.ascx.cs">
-      <DependentUpon>signup.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Signup.ascx.designer.cs">
-      <DependentUpon>signup.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\SiteSettings.ascx.cs">
-      <DependentUpon>sitesettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\SiteSettings.ascx.designer.cs">
-      <DependentUpon>sitesettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Template.ascx.cs">
-      <DependentUpon>template.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Portals\Template.ascx.designer.cs">
-      <DependentUpon>template.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.cs">
-      <DependentUpon>editschedule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\EditSchedule.ascx.designer.cs">
-      <DependentUpon>editschedule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewSchedule.ascx.cs">
-      <DependentUpon>viewschedule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewSchedule.ascx.designer.cs">
-      <DependentUpon>viewschedule.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleHistory.ascx.cs">
-      <DependentUpon>viewschedulehistory.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleHistory.ascx.designer.cs">
-      <DependentUpon>viewschedulehistory.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleStatus.ascx.cs">
-      <DependentUpon>viewschedulestatus.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Scheduler\ViewScheduleStatus.ascx.designer.cs">
-      <DependentUpon>viewschedulestatus.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.cs">
       <DependentUpon>searchadmin.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -971,13 +856,6 @@
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.designer.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.cs">
-      <DependentUpon>manageusers.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.designer.cs">
-      <DependentUpon>manageusers.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\MemberServices.ascx.cs">
       <DependentUpon>MemberServices.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1006,13 +884,6 @@
     <Compile Include="DesktopModules\Admin\Security\Profile.ascx.designer.cs">
       <DependentUpon>Profile.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.cs">
-      <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.designer.cs">
-      <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.cs">
       <DependentUpon>Register.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1020,40 +891,12 @@
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Roles.ascx.cs">
-      <DependentUpon>roles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Roles.ascx.designer.cs">
-      <DependentUpon>roles.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.cs">
-      <DependentUpon>securityroles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.designer.cs">
-      <DependentUpon>securityroles.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.cs">
       <DependentUpon>User.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.designer.cs">
       <DependentUpon>User.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Users.ascx.cs">
-      <DependentUpon>users.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\Users.ascx.designer.cs">
-      <DependentUpon>users.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.cs">
-      <DependentUpon>UserSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\UserSettings.ascx.designer.cs">
-      <DependentUpon>UserSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
@@ -1136,6 +979,10 @@
     <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
+    <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
+    <Content Include="Resources\Shared\components\DatePicker\pikaday.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
@@ -1798,7 +1645,6 @@
     <Content Include="admin\Modules\icon_moduledefinitions_32px.gif" />
     <Content Include="admin\Modules\import.ascx" />
     <Content Include="admin\Modules\module.css" />
-    <Content Include="admin\Modules\ModuleLocalization.ascx" />
     <Content Include="admin\Modules\ModulePermissions.ascx" />
     <Content Include="admin\Modules\Modulesettings.ascx" />
     <Content Include="admin\Modules\viewsource.ascx" />
@@ -1837,8 +1683,6 @@
     <Content Include="admin\Skins\jQuery.xml" />
     <Content Include="admin\Skins\language.ascx" />
     <Content Include="admin\Skins\Language.xml" />
-    <Content Include="admin\Skins\LeftMenu.ascx" />
-    <Content Include="admin\Skins\LeftMenu.xml" />
     <Content Include="admin\Skins\links.ascx" />
     <Content Include="admin\Skins\Links.xml" />
     <Content Include="admin\Skins\LinkToFullSite.ascx" />
@@ -1931,30 +1775,6 @@
     <Content Include="DesktopModules\Admin\Extensions\Store.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\UnInstall.ascx" />
     <Content Include="DesktopModules\Admin\Extensions\UsageDetails.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\EditIPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\FriendlyUrls.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\hostsettings.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\block.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\checkmark.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\help-icn.gif" />
-    <Content Include="DesktopModules\Admin\HostSettings\images\TimePicker.png" />
-    <Content Include="DesktopModules\Admin\HostSettings\IPFilters.ascx" />
-    <Content Include="DesktopModules\Admin\HostSettings\module.css" />
-    <Content Include="DesktopModules\Admin\HostSettings\RequestFilters.ascx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Images\arrow.png" />
-    <Content Include="DesktopModules\Admin\MobilePreview\module.css" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Preview.ascx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\Scripts\PreviewEmulator.js" />
-    <Content Include="DesktopModules\Admin\Portals\module.css" />
-    <Content Include="DesktopModules\Admin\Portals\portals.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\signup.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\sitesettings.ascx" />
-    <Content Include="DesktopModules\Admin\Portals\template.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\editschedule.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\module.css" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedule.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedulehistory.ascx" />
-    <Content Include="DesktopModules\Admin\Scheduler\viewschedulestatus.ascx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
     <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
     <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
@@ -1970,20 +1790,14 @@
     <Content Include="DesktopModules\Admin\Security\icon_securityroles_32px.gif" />
     <Content Include="DesktopModules\Admin\Security\Images\socialLoginbuttons-icons.png" />
     <Content Include="DesktopModules\Admin\Security\Images\socialLoginbuttons-repeatingbg.png" />
-    <Content Include="DesktopModules\Admin\Security\manageusers.ascx" />
     <Content Include="DesktopModules\Admin\Security\MemberServices.ascx" />
     <Content Include="DesktopModules\Admin\Security\Membership.ascx" />
     <Content Include="DesktopModules\Admin\Security\module.css" />
     <Content Include="DesktopModules\Admin\Security\Password.ascx" />
     <Content Include="DesktopModules\Admin\Security\Profile.ascx" />
-    <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\Register.ascx" />
-    <Content Include="DesktopModules\Admin\Security\roles.ascx" />
     <Content Include="DesktopModules\Admin\Security\Scripts\dnn.PasswordComparer.js" />
-    <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
     <Content Include="DesktopModules\Admin\Security\User.ascx" />
-    <Content Include="DesktopModules\Admin\Security\users.ascx" />
-    <Content Include="DesktopModules\Admin\Security\UserSettings.ascx" />
     <Content Include="DesktopModules\Admin\ViewProfile\Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -3322,33 +3136,6 @@
     <Content Include="images\yellow-warning_16px.gif" />
     <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
-    <Content Include="Install\Cleanup\03.00.08.txt" />
-    <Content Include="Install\Cleanup\03.00.12.txt" />
-    <Content Include="Install\Cleanup\03.01.00.txt" />
-    <Content Include="Install\Cleanup\03.02.00.txt" />
-    <Content Include="Install\Cleanup\03.02.01.txt" />
-    <Content Include="Install\Cleanup\03.03.00.txt" />
-    <Content Include="Install\Cleanup\04.03.03.txt" />
-    <Content Include="Install\Cleanup\04.05.00.txt" />
-    <Content Include="Install\Cleanup\04.05.01.txt" />
-    <Content Include="Install\Cleanup\04.06.00.txt" />
-    <Content Include="Install\Cleanup\04.07.00.txt" />
-    <Content Include="Install\Cleanup\04.08.00.txt" />
-    <Content Include="Install\Cleanup\04.08.01.txt" />
-    <Content Include="Install\Cleanup\04.08.02.txt" />
-    <Content Include="Install\Cleanup\04.09.00.txt" />
-    <Content Include="Install\Cleanup\05.00.00.txt" />
-    <Content Include="Install\Cleanup\05.00.01.txt" />
-    <Content Include="Install\Cleanup\05.01.00.txt" />
-    <Content Include="Install\Cleanup\05.03.00.txt" />
-    <Content Include="Install\Cleanup\05.06.00.txt" />
-    <Content Include="Install\Cleanup\06.00.00.txt" />
-    <Content Include="Install\Cleanup\07.00.00.txt" />
-    <Content Include="Install\Cleanup\07.00.01.txt" />
-    <Content Include="Install\Cleanup\07.02.01.txt" />
-    <Content Include="Install\Cleanup\07.03.01.txt" />
-    <Content Include="Install\Cleanup\07.04.01.txt" />
-    <Content Include="Install\Cleanup\07.04.02.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
@@ -3710,24 +3497,6 @@
     <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\ModuleEditor.ascx.resx" />
     <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinEditor.ascx.resx" />
     <Content Include="DesktopModules\Admin\Extensions\Editors\App_LocalResources\SkinObjectEditor.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\EditIPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\FriendlyUrls.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\HostSettings.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\IPFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\HostSettings\App_LocalResources\RequestFilters.ascx.resx" />
-    <Content Include="DesktopModules\Admin\MobilePreview\App_LocalResources\Preview.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Portals.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\Signup.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\SiteSettings.ascx.resx">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="DesktopModules\Admin\Portals\App_LocalResources\template.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\EditSchedule.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewSchedule.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleHistory.ascx.resx" />
-    <Content Include="DesktopModules\Admin\Scheduler\App_LocalResources\ViewScheduleStatus.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
@@ -3797,12 +3566,6 @@
     <None Include="Config\SiteUrls.config" />
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
-    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DesktopModules\Admin\Portals\portal.template.xsx">
-      <DependentUpon>portal.template.xsd</DependentUpon>
-    </None>
     <None Include="development.config" />
     <None Include="Documentation\TELERIK_EULA.pdf" />
     <None Include="Install\Template\UserProfile.page.template" />
@@ -4009,9 +3772,9 @@
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
-      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
-      <Name>DotNetNuke.Web.Deprecated</Name>
+    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.UI.Internal\DotNetNuke.Web.UI.Internal.csproj">
+      <Project>{e7392a67-394e-49b8-b099-360c31846ded}</Project>
+      <Name>DotNetNuke.Web.UI.Internal</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>

@@ -115,10 +115,6 @@
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Modules\Taxonomy\DotNetNuke.Modules.Taxonomy.csproj">
-      <Project>{7B8E5F63-8BDD-454F-AFCE-0C824C7CAE67}</Project>
-      <Name>DotNetNuke.Modules.Taxonomy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Tests.Data\DotNetNuke.Tests.Data.csproj">
       <Project>{2595aade-d3e0-4205-b8af-109cb23f4223}</Project>
       <Name>DotNetNuke.Tests.Data</Name>

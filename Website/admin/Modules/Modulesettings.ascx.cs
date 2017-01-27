@@ -317,7 +317,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 cboCacheProvider.TextChanged += OnCacheProviderIndexChanged;
                 cmdDelete.Click += OnDeleteClick;
                 cmdUpdate.Click += OnUpdateClick;
-                dgOnTabs.NeedDataSource += OnPagesGridNeedDataSource;
 
 			    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
@@ -395,7 +394,11 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     dgPermissions.TabId = PortalSettings.ActiveTab.TabID;
                     dgPermissions.ModuleID = _moduleId;
-                    
+
+                    var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
+                    tabsByModule.Remove(TabId);
+                    dgOnTabs.DataSource = tabsByModule.Values;
+
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();
 
@@ -513,13 +516,6 @@ namespace DotNetNuke.Modules.Admin.Modules
         protected void OnInheritPermissionsChanged(Object sender, EventArgs e)
         {
             dgPermissions.InheritViewPermissionsFromTab = chkInheritPermissions.Checked;
-        }
-
-        protected void OnPagesGridNeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
-        {
-            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
-            tabsByModule.Remove(TabId);
-            dgOnTabs.DataSource = tabsByModule.Values;
         }
 
         protected void OnUpdateClick(object sender, EventArgs e)

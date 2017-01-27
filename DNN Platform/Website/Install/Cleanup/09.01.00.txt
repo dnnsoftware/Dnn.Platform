@@ -1,0 +1,24 @@
+'DNN-9145: Complete Removal of Legacy Extensions
+DesktopModules\Admin\Analytics
+DesktopModules\Admin\ConfigurationManager
+DesktopModules\Admin\Console
+DesktopModules\Admin\Dashboard
+DesktopModules\Admin\Extensions
+DesktopModules\Admin\HostSettings
+DesktopModules\Admin\HtmlEditorManager
+DesktopModules\Admin\Languages
+DesktopModules\Admin\Lists
+DesktopModules\Admin\LogViewer
+DesktopModules\Admin\MobilePreview
+DesktopModules\Admin\ModuleCreator
+DesktopModules\Admin\RecycleBin
+DesktopModules\Admin\Scheduler
+DesktopModules\Admin\Sitemap
+DesktopModules\Admin\SiteWizard
+DesktopModules\Admin\SkinManagement
+DesktopModules\Admin\Sql
+DesktopModules\Admin\Tabs
+DesktopModules\Admin\Taxonomy
+DesktopModules\Admin\UrlManagement
+DesktopModules\MobileManagement
+DesktopModules\PreviewProfileManagement

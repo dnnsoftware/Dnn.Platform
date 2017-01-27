@@ -26,7 +26,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
-using Telerik.Web.UI.PivotGrid.Core;
 
 #endregion
 

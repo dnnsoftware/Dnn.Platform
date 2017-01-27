@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -348,7 +349,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             foreach (var moduleFolder in moduleFolders)
 			{
                 var path = GetPathForComboBox(moduleFolder);
-				var item = new DnnComboBoxItem(path, path);
+				var item = new ListItem(path, path);
 				if (item.Value == selectedValue)
 				{
 					item.Selected = true;
@@ -384,7 +385,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                 if (files.Length == 0 || folder.Path.ToLower() == "admin")
                 {
                     var path = GetPathForComboBox(folder);
-					var item = new DnnComboBoxItem(path, path);
+					var item = new ListItem(path, path);
 					if (item.Value == selectedValue)
 					{
 						item.Selected = true;

@@ -1,7 +1,6 @@
 <%@ Control language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanel.AddPage" Codebehind="AddPage.ascx.cs" %>
-<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <div class="cbcpPageSettingsContent dnnFormItem">
     <div class="dnnClear">
         <asp:Label id="NameLbl" runat="server" Text="Name" AssociatedControlID="Name" ResourceKey="Name" />

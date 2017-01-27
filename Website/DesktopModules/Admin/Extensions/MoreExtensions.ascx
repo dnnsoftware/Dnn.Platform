@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
 <div id="dnnCatalog" class="dnnForm dnnCatalog dnnClear">
     <span id="loading" class="dnnCatalogLoading">Loading...</span>
     <div class="dnnCatalogSearch">

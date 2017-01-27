@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -35,7 +36,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -354,14 +354,15 @@ namespace DotNetNuke.Modules.SearchResults
 
             CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 
+            //DNN-9145 TODO
             foreach (string o in SearchContentSources)
             {
-                var item = new RadComboBoxItem(o, o) {Checked = CheckedScopeItem(o)};
+                var item = new ListItem(o, o) {};
                 SearchScopeList.Items.Add(item);
             }
 
-            SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
-                Localization.GetResourceFile(this, MyFileName));
+            //SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
+            //    Localization.GetResourceFile(this, MyFileName));
 
             var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
             if (pageSizeItem != null)
@@ -384,7 +385,7 @@ namespace DotNetNuke.Modules.SearchResults
 
             if (!string.IsNullOrEmpty(lastModifiedParam))
             {
-                var item = AdvnacedDatesList.Items.FirstOrDefault(x => x.Value == lastModifiedParam);
+                var item = AdvnacedDatesList.Items.Cast<ListItem>().FirstOrDefault(x => x.Value == lastModifiedParam);
                 if (item != null)
                 {
                     item.Selected = true;

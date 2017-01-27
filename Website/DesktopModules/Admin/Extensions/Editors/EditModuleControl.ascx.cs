@@ -25,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             {
                 string file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
 
-                var item = new DnnComboBoxItem(file, file.ToLower());
+                var item = new ListItem(file, file.ToLower());
                 if (ModuleControl != null && item.Value.Equals(ModuleControl.ControlSrc.ToLower()))
                 {
                     item.Selected = true;
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                     {
                         var shortFolder =folder.Substring(Request.MapPath(Globals.ApplicationPath).Length + 1).Replace('\\', '/');
 
-                        var item = new DnnComboBoxItem(shortFolder, shortFolder.ToLower());
+                        var item = new ListItem(shortFolder, shortFolder.ToLower());
                         if (item.Value.Equals(currentControlFolder))
                         {
                             item.Selected = true;

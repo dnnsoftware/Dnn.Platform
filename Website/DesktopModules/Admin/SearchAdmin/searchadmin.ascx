@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnnext" Namespace="DotNetNuke.ExtensionPoints" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
 <div class="dnnForm dnnSearchAdmin dnnClear" id="dnnSearchAdmin">
     <dnnext:EditPageTabExtensionControl runat="server" ID="SearchAdminTabExtensionControl"
         Module="SearchAdmin" Group="SearchAdminTabExtensions"

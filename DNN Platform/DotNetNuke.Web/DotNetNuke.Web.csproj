@@ -161,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+      <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Api\AuthFilterBase.cs" />
     <Compile Include="Api\AuthFilterContext.cs" />
