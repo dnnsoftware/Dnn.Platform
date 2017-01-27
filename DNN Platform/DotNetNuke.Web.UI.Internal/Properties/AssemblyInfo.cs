@@ -14,13 +14,13 @@ using System.Web.UI;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyTitle("DotNetNuke.Web.Deprecated")]
+[assembly: AssemblyTitle("DotNetNuke.Web.UI.Internal")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("a5e0864a-df43-4b6a-8e5f-3ba6b368d876")]
+[assembly: Guid("39671549-2280-46d7-a52e-e8af7a7fa734")]
 
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Messaging")]
