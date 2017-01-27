@@ -1,6 +1,6 @@
 <%@ Control language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanel.AddPage" Codebehind="AddPage.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <div class="cbcpPageSettingsContent dnnFormItem">
     <div class="dnnClear">
         <asp:Label id="NameLbl" runat="server" Text="Name" AssociatedControlID="Name" ResourceKey="Name" />

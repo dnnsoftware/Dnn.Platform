@@ -521,8 +521,8 @@
         $('#dnnSearchResultAdvancedSearch').on('click', function (e, isTrigger) {
             var tags = $('#advancedTagsCtrl').val() ? $('#advancedTagsCtrl').val().split(',') : [];
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlVal = afterCtrl.get_value();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
+            var afterCtrlVal = afterCtrl.val();
 
             var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
             var scopeCtrlItems = scopeCtrl.get_items();

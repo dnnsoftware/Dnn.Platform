@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <div class="dnnForm dnnEditDefinition dnnClear" id="dnnEditDefinition">
     <fieldset>
         <div class="dnnFormItem">
@@ -14,9 +14,9 @@
             </asp:DropDownList>--%>
             <dnn:DnnComboBox  ID="cboCreate" runat="server" AutoPostBack="True">
                 <Items>
-                    <dnn:DnnComboBoxItem Value="New" Text="New" ResourceKey="New" />
-                    <dnn:DnnComboBoxItem Value="Control" Text="Control" ResourceKey="Control" />
-                    <dnn:DnnComboBoxItem Value="Manifest" Text="Manifest" ResourceKey="Manifest" />
+                    <asp:ListItem Value="New" Text="New" ResourceKey="New" />
+                    <asp:ListItem Value="Control" Text="Control" ResourceKey="Control" />
+                    <asp:ListItem Value="Manifest" Text="Manifest" ResourceKey="Manifest" />
                 </Items>
             </dnn:DnnComboBox>
         </div>

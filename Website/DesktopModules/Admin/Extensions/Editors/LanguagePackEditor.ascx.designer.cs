@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboLanguage;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboLanguage;
         
         /// <summary>
         /// packageRow control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboPackage;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboPackage;
         
         /// <summary>
         /// cmdEdit control.

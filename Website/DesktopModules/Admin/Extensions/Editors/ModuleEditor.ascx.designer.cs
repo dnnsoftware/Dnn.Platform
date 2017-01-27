@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnFormComboBoxItem category;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnFormComboBoxItem category;
         
         /// <summary>
         /// controllerClass control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnFormComboBoxItem Shareable;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnFormComboBoxItem Shareable;
         
         /// <summary>
         /// IsPremiumm control.
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnFormToggleButtonItem IsPremiumm;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnFormToggleButtonItem IsPremiumm;
         
         /// <summary>
         /// PremiumModules control.
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Extensions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboDefinitions;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboDefinitions;
         
         /// <summary>
         /// cmdAddDefinition control.

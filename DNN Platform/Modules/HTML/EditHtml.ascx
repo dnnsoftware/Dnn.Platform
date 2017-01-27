@@ -2,8 +2,8 @@
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.WebControls"%>
 <%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 
 <dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
 
@@ -67,7 +67,6 @@
                 <h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead" runat="server"><a href=""><%=LocalizeString("dshHistory")%></a></h2>
                 <fieldset id="fsEditHtmlHistory" runat="server">
                     <dnnweb:DnnGrid ID="dgHistory" runat="server" AutoGenerateColumns="false">
-                        <mastertableview>
 						<Columns>
 								<dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="CreatedOnDate" />
 								<dnnweb:DnnGridBoundColumn HeaderText="User" DataField="DisplayName"/>
@@ -75,10 +74,9 @@
 								<dnnweb:DnnGridBoundColumn HeaderText="Approved" DataField="Approved" />
 								<dnnweb:DnnGridBoundColumn HeaderText="Comment" DataField="Comment"/>
 						</Columns>
-						<NoRecordsTemplate>
+						<EmptyDataTemplate>
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="NoHistory" />
-						</NoRecordsTemplate>
-					</mastertableview>
+						</EmptyDataTemplate>
                     </dnnweb:DnnGrid>
                 </fieldset>
             </asp:PlaceHolder>
@@ -91,7 +89,6 @@
                         </div>
                         <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5">
                             <pagerstyle mode="NextPrevAndNumeric"></pagerstyle>
-                            <mastertableview>
 					        <Columns>
 						        <dnnweb:DnnGridBoundColumn HeaderText="Version" DataField="Version" />
 						        <dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="LastModifiedOnDate"  />
@@ -118,10 +115,9 @@
 							        </ItemTemplate>
 						        </dnnweb:DnnGridTemplateColumn>
 					        </Columns>
-					        <NoRecordsTemplate>
+					        <EmptyDataTemplate>
 						        <asp:Label ID="lblNoRecords1" runat="server" resourcekey="NoVersions" />
-					        </NoRecordsTemplate>
-				        </mastertableview>
+					        </EmptyDataTemplate>
                         </dnnweb:DnnGrid>
                     </div>
                 </fieldset>

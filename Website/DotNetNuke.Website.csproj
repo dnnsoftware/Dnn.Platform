@@ -828,27 +828,6 @@
     <Compile Include="DesktopModules\Admin\SearchResults\SearchResults.ascx.designer.cs">
       <DependentUpon>SearchResults.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditGroups.ascx.cs">
-      <DependentUpon>EditGroups.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditGroups.ascx.designer.cs">
-      <DependentUpon>EditGroups.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx.cs">
-      <DependentUpon>EditProfileDefinition.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx.designer.cs">
-      <DependentUpon>EditProfileDefinition.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditRoles.ascx.cs">
-      <DependentUpon>editroles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\Security\EditRoles.ascx.designer.cs">
-      <DependentUpon>editroles.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -979,6 +958,7 @@
     <Content Include="DesktopModules\Admin\Extensions\LanguagePacks.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
+    <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
     <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
@@ -1782,9 +1762,6 @@
     <Content Include="DesktopModules\Admin\SearchResults\module.css" />
     <Content Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx" />
     <Content Include="DesktopModules\Admin\SearchResults\SearchResults.ascx" />
-    <Content Include="DesktopModules\Admin\Security\EditGroups.ascx" />
-    <Content Include="DesktopModules\Admin\Security\EditProfileDefinition.ascx" />
-    <Content Include="DesktopModules\Admin\Security\editroles.ascx" />
     <Content Include="DesktopModules\Admin\Security\EditUser.ascx" />
     <Content Include="DesktopModules\Admin\Security\icon_authentication_32px.gif" />
     <Content Include="DesktopModules\Admin\Security\icon_securityroles_32px.gif" />

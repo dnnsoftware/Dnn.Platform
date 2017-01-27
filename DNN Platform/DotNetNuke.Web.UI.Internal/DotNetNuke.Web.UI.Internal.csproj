@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E7392A67-394E-49B8-B099-360C31846DED}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>DotNetNuke.Web</RootNamespace>
+    <RootNamespace>DotNetNuke.Web.UI.Internal</RootNamespace>
     <AssemblyName>DotNetNuke.Web.UI.Internal</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WebControl</MyType>
@@ -100,18 +100,18 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="UI\WebControls\DnnDateTimePicker.cs" />
-    <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
+    <Compile Include="WebControls\DnnDateTimePicker.cs" />
+    <Compile Include="WebControls\DnnSkinComboBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\WebControls\DnnModuleComboBox.cs" />
-    <Compile Include="UI\WebControls\DnnFormComboBoxItem.cs" />
-    <Compile Include="UI\WebControls\DnnFormToggleButtonItem.cs" />
-    <Compile Include="UI\WebControls\DnnScriptBlock.cs" />
-    <Compile Include="UI\WebControls\DnnComboBox.cs" />
-    <Compile Include="UI\WebControls\DnnDatePicker.cs" />
-    <Compile Include="UI\WebControls\DnnGrid.cs" />
-    <Compile Include="UI\WebControls\PropertyEditorControls\DateEditControl.cs" />
-    <Compile Include="UI\WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
+    <Compile Include="WebControls\DnnModuleComboBox.cs" />
+    <Compile Include="WebControls\DnnFormComboBoxItem.cs" />
+    <Compile Include="WebControls\DnnFormToggleButtonItem.cs" />
+    <Compile Include="WebControls\DnnScriptBlock.cs" />
+    <Compile Include="WebControls\DnnComboBox.cs" />
+    <Compile Include="WebControls\DnnDatePicker.cs" />
+    <Compile Include="WebControls\DnnGrid.cs" />
+    <Compile Include="WebControls\PropertyEditorControls\DateEditControl.cs" />
+    <Compile Include="WebControls\PropertyEditorControls\DateTimeEditControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -152,9 +152,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\WebControls\DnnGridBoundColumn.cs" />
-    <Compile Include="UI\WebControls\DnnGridTemplateColumn.cs" />
-    <Compile Include="UI\WebControls\TermsSelector.cs" />
+    <Compile Include="WebControls\DnnGridBoundColumn.cs" />
+    <Compile Include="WebControls\DnnGridTemplateColumn.cs" />
+    <Compile Include="WebControls\TermsSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

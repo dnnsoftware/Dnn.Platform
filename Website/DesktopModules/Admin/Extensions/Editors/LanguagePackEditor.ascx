@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.LanguagePackEditor" Codebehind="LanguagePackEditor.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <h2 class="dnnFormSectionHead"><a href="" class="dnnLabelExpanded"><%=LocalizeString("Title")%></a></h2>
 <fieldset>

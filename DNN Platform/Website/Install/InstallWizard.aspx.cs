@@ -730,7 +730,7 @@ namespace DotNetNuke.Services.Install
                 {
 					var li = new ListItem { Value = package.Description, Text = package.Name };
 		            languageList.AddItem(li.Text, li.Value);
-		            RadComboBoxItem lastItem = languageList.Items[languageList.Items.Count - 1];
+		            var lastItem = languageList.Items[languageList.Items.Count - 1];
 					if (DotNetNukeContext.Current.Application.Version.Major != package.Version.Major
 						|| DotNetNukeContext.Current.Application.Version.Minor != package.Version.Minor
 						|| DotNetNukeContext.Current.Application.Version.Build != package.Version.Build)
@@ -747,20 +747,16 @@ namespace DotNetNuke.Services.Install
             finally
             {
                 //ensure there is always an en-us
-                if (languageList.Items.FindItemByValue("en-US") == null)
+                if (languageList.FindItemByValue("en-US") == null)
                 {
                     var myCIintl = new CultureInfo("en-US", true);
                     var li = new ListItem {Value = @"en-US", Text = myCIintl.NativeName};
                     languageList.AddItem(li.Text, li.Value);
                     var lastItem = languageList.Items[languageList.Items.Count - 1];
                     lastItem.Attributes.Add("onclick", "javascript:ClearLegacyLangaugePack();");
-                    languageList.Sort = RadComboBoxSort.Ascending;
-                    languageList.Items.Sort();
                 }
-                var item = languageList.Items.FindItemByValue(_culture);
-                languageList.SelectedIndex = item != null ? item.Index : languageList.Items.FindItemByValue("en-US").Index;
-                languageList.Sort = RadComboBoxSort.Ascending;
-                languageList.Items.Sort();
+                var item = languageList.FindItemByValue(_culture);
+                languageList.SelectedIndex = item != null ? languageList.Items.IndexOf(item) : languageList.Items.IndexOf(languageList.FindItemByValue("en-US"));
             }
         }
 
@@ -772,7 +768,7 @@ namespace DotNetNuke.Services.Install
             {
                 templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));
             }
-            templateList.SelectedIndex = templateList.FindItemByValue("Default Website.template").Index;
+            templateList.SelectedIndex = templateList.Items.IndexOf(templateList.FindItemByValue("Default Website.template"));
         }
 
 
@@ -937,9 +933,9 @@ namespace DotNetNuke.Services.Install
             // Hide Licensing Step if no License Info is available
             LicenseActivation.Visible = IsProOrEnterprise && !String.IsNullOrEmpty(_installConfig.License.AccountEmail) && !String.IsNullOrEmpty(_installConfig.License.InvoiceNumber);
 
-            if ((!IsProOrEnterprise) && templateList.Items.FindItemByValue("Mobile Website.template") != null)
+            if ((!IsProOrEnterprise) && templateList.FindItemByValue("Mobile Website.template") != null)
             {
-                templateList.Items.Remove(templateList.Items.FindItemByValue("Mobile Website.template"));
+                templateList.Items.Remove(templateList.FindItemByValue("Mobile Website.template"));
             }
 
             if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))

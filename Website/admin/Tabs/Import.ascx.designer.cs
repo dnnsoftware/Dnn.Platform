@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboTemplate;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboTemplate;
         
         /// <summary>
         /// valTemplate control.
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Tabs {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboPositionTab;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboPositionTab;
         
         /// <summary>
         /// plRedirect control.

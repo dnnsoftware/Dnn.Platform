@@ -1,1 +1,0 @@
-﻿DesktopModules/Admin/Sql/Sql.ascx.cs

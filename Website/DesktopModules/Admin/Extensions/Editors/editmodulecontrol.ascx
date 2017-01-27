@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <div class="dnnForm dnnEditModuleControl dnnClear" id="dnnEditModuleControl">
     <fieldset>
         <div class="dnnFormItem">
@@ -38,12 +38,12 @@
             <dnn:label id="plType" controlname="cboType" runat="server" />
             <dnn:DnnComboBox ID="cboType" runat="server">
                 <Items>
-                    <dnn:DnnComboBoxItem resourcekey="Skin" value="-2" />
-				    <dnn:DnnComboBoxItem resourcekey="Anonymous" value="-1" />
-				    <dnn:DnnComboBoxItem resourcekey="View" value="0" />
-				    <dnn:DnnComboBoxItem resourcekey="Edit" value="1" />
-				    <dnn:DnnComboBoxItem resourcekey="Admin" value="2" />
-				    <dnn:DnnComboBoxItem resourcekey="Host" value="3" />
+                    <asp:ListItem resourcekey="Skin" value="-2" />
+				    <asp:ListItem resourcekey="Anonymous" value="-1" />
+				    <asp:ListItem resourcekey="View" value="0" />
+				    <asp:ListItem resourcekey="Edit" value="1" />
+				    <asp:ListItem resourcekey="Admin" value="2" />
+				    <asp:ListItem resourcekey="Host" value="3" />
                 </Items>
             </dnn:DnnComboBox>
           <%--  <asp:dropdownlist id="cboType" runat="server">

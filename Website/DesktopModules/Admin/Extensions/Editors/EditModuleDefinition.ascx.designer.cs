@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboCreate;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboCreate;
         
         /// <summary>
         /// rowOwner1 control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboOwner;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboOwner;
         
         /// <summary>
         /// cmdAddOwner control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboModule;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboModule;
         
         /// <summary>
         /// cmdAddModule control.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboFile;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboFile;
         
         /// <summary>
         /// rowLang control.

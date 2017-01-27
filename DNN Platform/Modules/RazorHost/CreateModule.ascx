@@ -1,7 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="CreateModule.ascx.cs" Inherits="DotNetNuke.Modules.RazorHost.CreateModule" %>
 <%@ Register Assembly="DotnetNuke" Namespace="DotNetNuke.UI.WebControls" TagPrefix="dnn" %>
 <%@ Register Assembly="DotnetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnn" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm dnnRazorHostCreateModule dnnClear" id="dnnRazorHost">
     <fieldset>

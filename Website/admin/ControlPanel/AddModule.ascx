@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Entities.Modules" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <script type="text/javascript">   
     function popupShareableWarning() {
         // Hide the Add Module panel.
@@ -28,11 +28,11 @@
     function openShareableWarning() {
         var sharing = (dnn.getVar('moduleSharing') || 'false') == 'true';
         if (sharing) {
-            var siteCombo = $find('<%= SiteList.ClientID %>');
-            var selectedPortalId = siteCombo ? siteCombo.get_value() : '-1';
-            var tabCombo = $find('<%= PageLst.ClientID %>');
-            var selectedTabId = tabCombo ? tabCombo.get_value() : '-1';
-            var selectedModuleId = $find('<%= ModuleLst.RadComboBoxClientId %>').get_value();
+            var siteCombo = $('#<%= SiteList.ClientID %>');
+            var selectedPortalId = siteCombo ? siteCombo.val() : '-1';
+            var tabCombo = $('#<%= PageLst.ClientID %>');
+            var selectedTabId = tabCombo ? tabCombo.val() : '-1';
+            var selectedModuleId = $('#<%= ModuleLst.RadComboBoxClientId %>').val();
 
             if(selectedPortalId === '-1') {
                 return true;

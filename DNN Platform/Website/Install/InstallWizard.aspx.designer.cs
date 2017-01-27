@@ -397,7 +397,7 @@ namespace DotNetNuke.Services.Install {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox templateList;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox templateList;
         
         /// <summary>
         /// lblLanguage control.
@@ -415,7 +415,7 @@ namespace DotNetNuke.Services.Install {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox languageList;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox languageList;
         
         /// <summary>
         /// lblLegacyLangaugePack control.

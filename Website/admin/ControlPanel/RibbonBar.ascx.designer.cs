@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ddlUICulture;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox ddlUICulture;
         
         /// <summary>
         /// lblMode control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ddlMode;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox ddlMode;
         
         /// <summary>
         /// hypMessage control.

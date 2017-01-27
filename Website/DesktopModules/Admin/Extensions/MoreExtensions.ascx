@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Entities.Icons" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assemby="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
 <div id="dnnCatalog" class="dnnForm dnnCatalog dnnClear">
     <span id="loading" class="dnnCatalogLoading">Loading...</span>
     <div class="dnnCatalogSearch">
@@ -11,9 +11,9 @@
             <input type="text" id="searchText" title="<%=LocalizeString("SearchLabel.Help")%>" />
             <dnn:DnnComboBox ID="typeDDL" runat="server" OnClientSelectedIndexChanged="typeDDLchanged">
                 <Items>
-                    <dnn:DnnComboBoxItem Value="all" Text="All" />
-                    <dnn:DnnComboBoxItem Value="module" Text="Module" ResourceKey="CatalogModule" />
-                    <dnn:DnnComboBoxItem Value="skin" Text="Skin" ResourceKey="CatalogSkin" />
+                    <asp:ListItem Value="all" Text="All" />
+                    <asp:ListItem Value="module" Text="Module" ResourceKey="CatalogModule" />
+                    <asp:ListItem Value="skin" Text="Skin" ResourceKey="CatalogSkin" />
                 </Items>
             </dnn:DnnComboBox>
 

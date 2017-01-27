@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboSourceFolder;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboSourceFolder;
         
         /// <summary>
         /// plSource control.
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboSource;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboSource;
         
         /// <summary>
         /// txtSource control.
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboType;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboType;
         
         /// <summary>
         /// plViewOrder control.
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox cboIcon;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboIcon;
         
         /// <summary>
         /// plHelpURL control.

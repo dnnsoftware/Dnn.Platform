@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>                
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnn" Assemby="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web.UI.Internal" Namespace="DotNetNuke.Web.UI.Internal.WebControls" %>
 <div class="dnnFormMessage dnnFormInfo" id="lblUpdateRow" runat="server"><asp:Label ID="lblUpdate" runat="server" resourceKey="lblUpdate" /></div>
 <div class="dnnFormItem" id="languageSelectorRow" runat="server">
     <dnn:Label ID="plLocales" runat="server" ControlName="cboLocales" />

@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox comboBoxLinkTarget;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox comboBoxLinkTarget;
         
         /// <summary>
         /// divPortalGroup control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox comboBoxPortals;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox comboBoxPortals;
         
         /// <summary>
         /// portalsRequiedValidator control.
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox comboBoxFilters;
+        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox comboBoxFilters;
         
         /// <summary>
         /// filtersRequiredFieldValidator control.
