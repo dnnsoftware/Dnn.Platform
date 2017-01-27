@@ -5,7 +5,7 @@ export function formatDate(dateValue, longformat) {
         return "";
     }
     let date = new Date(dateValue);
-    let dayValue = date.getDate(),
+    let dayValue = date.getDate(), 
         monthValue = date.getMonth() + 1,
         yearValue = date.getFullYear(),
         hourValue = date.getHours(),
@@ -17,11 +17,14 @@ export function formatDate(dateValue, longformat) {
         return "-";
     }
 
-    let returnValue = monthValue + "/" + dayValue + "/" + yearValue;
+    let returnValue = pad2(monthValue) + "/" + pad2(dayValue) + "/" + yearValue;
     if (longformat === true) {
-        returnValue += " " + hourValue + ":" + minsValue + ":" + secsValue + " " + amPMValue;
+        returnValue += " " + pad2(hourValue) + ":" + pad2(minsValue) + ":" + pad2(secsValue) + " " + amPMValue;
     }
     return returnValue;
+}
+function pad2(number) {
+     return (number < 10 ? '0' : '') + number;
 }
 export function validateEmail(value) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
