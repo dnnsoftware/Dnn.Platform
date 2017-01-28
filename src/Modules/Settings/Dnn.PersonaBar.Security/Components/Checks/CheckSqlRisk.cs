@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using DotNetNuke.Common;
@@ -46,13 +48,41 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 var script = LoadScript(name);
                 if (!string.IsNullOrEmpty(script))
                 {
-                    using (var reader = DataProvider.Instance().ExecuteSQL(script))
+                    if (name == "ExecuteCommand")
                     {
-                        if (reader != null && reader.Read())
+                        //since sql error is expected here, do not go through DataProvider so that no error will be logged
+                        using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
                         {
-                            int affectCount;
-                            int.TryParse(reader[0].ToString(), out affectCount);
-                            return affectCount == 0;
+                            try
+                            {
+                                connection.Open();
+                                var command = new SqlCommand(script, connection) {CommandType = CommandType.Text};
+                                using (var reader = command.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        int affectCount;
+                                        int.TryParse(reader[0].ToString(), out affectCount);
+                                        return affectCount == 0;
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                //ignore;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (var reader = DataProvider.Instance().ExecuteSQL(script))
+                        {
+                            if (reader != null && reader.Read())
+                            {
+                                int affectCount;
+                                int.TryParse(reader[0].ToString(), out affectCount);
+                                return affectCount == 0;
+                            }
                         }
                     }
                 }
