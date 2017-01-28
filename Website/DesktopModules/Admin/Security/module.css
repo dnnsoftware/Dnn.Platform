@@ -642,3 +642,58 @@ ul.buttonList .windowslive a span
         min-width:inherit !important;
     }
 }
+
+/*DNN Profile Page Manage Services Tab Table(DNN-9321)*/
+@media only screen and (max-width: 570px) {
+    #dnn_ctr_EditUser_MemberServices_grdServices {
+        margin:1em auto;
+    }
+    #dnn_ctr_EditUser_MemberServices_grdServices table, #dnn_ctr_EditUser_MemberServices_grdServices thead,#dnn_ctr_EditUser_MemberServices_grdServices tbody,#dnn_ctr_EditUser_MemberServices_grdServices th,#dnn_ctr_EditUser_MemberServices_grdServices td,#dnn_ctr_EditUser_MemberServices_grdServices tr { 
+		display: block; 
+	}
+    #dnn_ctr_EditUser_MemberServices_grdServices tr.dnnGridHeader    { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+    #dnn_ctr_EditUser_MemberServices_grdServices tr { 
+        border: 1px solid;
+        margin-bottom:1em;
+    }
+
+    #dnn_ctr_EditUser_MemberServices_grdServices tr:last-of-type {
+        margin-bottom:0;
+    }
+	
+	#dnn_ctr_EditUser_MemberServices_grdServices td:not(:nth-child(1)) { 
+		border: none;
+		border-bottom: 1px solid; 
+		position: relative;
+		padding-left: 50%; 
+        min-height:35px;
+	}
+
+    #dnn_ctr_EditUser_MemberServices_grdServices td:nth-child(1)  { 
+        text-align:center;
+        padding-top:10px;
+        height:20px;
+	}
+
+	#dnn_ctr_EditUser_MemberServices_grdServices td:before { 		
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(1):before { content: ""; }
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(2):before { content: ""; }
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(3):before { content: "Name"; font-weight:bold; }
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(4):before { content: "Description"; font-weight:bold;}
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(5):before { content: "Fee"; font-weight:bold;}
+	#dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(6):before { content: "Trial"; font-weight:bold;}
+    #dnn_ctr_EditUser_MemberServices_grdServices td:nth-of-type(7):before { content: "Expiry Date"; font-weight:bold;}
+}
