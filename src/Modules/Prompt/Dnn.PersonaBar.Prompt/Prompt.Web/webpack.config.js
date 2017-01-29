@@ -5,7 +5,7 @@ module.exports = {
     context: path.resolve(__dirname, '.'),
     entry: "./src/app.js",
     output: {
-        path: path.resolve(__dirname, '../admin/personaBar/scripts/'),
+        path: path.resolve(__dirname, '../admin/personaBar/scripts/bundles/'),
         publicPath: '/scripts/',
         filename: 'prompt-bundle.js'
     },

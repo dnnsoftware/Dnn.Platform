@@ -111,6 +111,20 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Commands\Application\RestartApplication.cs" />
+    <Compile Include="Commands\Client\ClearHistory.cs" />
+    <Compile Include="Commands\Client\Cls.cs" />
+    <Compile Include="Commands\Client\Exit.cs" />
+    <Compile Include="Commands\Client\Reload.cs" />
+    <Compile Include="Common\BaseConsoleCommand.cs" />
+    <Compile Include="Common\BaseController.cs" />
+    <Compile Include="Interfaces\IConsoleCommand.cs" />
+    <Compile Include="Models\CommandInputModel.cs" />
+    <Compile Include="Models\ConsoleErrorResultModel.cs" />
+    <Compile Include="Models\ConsoleResultModel.cs" />
+    <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Services\CommandController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dnn.PersonaBar.Prompt.dnn" />
@@ -124,8 +138,9 @@
   <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="admin\personaBar\App_LocalResources\" />
+    <Content Include="admin\personaBar\App_LocalResources\Prompt.resx" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

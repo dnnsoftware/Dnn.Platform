@@ -111,10 +111,9 @@ class DnnPrompt {
             var bRedirect = false;
             if (cmd === "GOTO") { bRedirect = true; }
 
-            //var afVal = document.getElementsByName('__RequestVerificationToken')[0].value;
             var afVal = this.util.sf.antiForgeryToken;
 
-            var path = 'desktopmodules/kbprompt/api/prompt/cmd';
+            var path = 'API/PersonaBar/Command/Cmd';
             if (this.util.sf) { path = this.util.sf.getSiteRoot() + path } else { path = '/' + path };
 
             fetch(path, {
