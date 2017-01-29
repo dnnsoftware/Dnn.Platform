@@ -407,6 +407,18 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 fileExists = true;
             }
 
+
+            // Handle RTL css support 
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.IsRightToLeft && filePath.EndsWith(".css") && !filePath.EndsWith(".rtl.css"))
+            {
+                var rtlFilePath = filePath.Replace(".css", ".rtl.css");
+                if ((rtlFilePath.StartsWith("~") || rtlFilePath.StartsWith("/")) && File.Exists(page.Server.MapPath(rtlFilePath)))
+                {
+                    fileExists = true;
+                    filePath = rtlFilePath;
+                }
+            }
+
             if (fileExists || FileExists(page, filePath))
             {
                 var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };

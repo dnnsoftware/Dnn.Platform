@@ -185,8 +185,8 @@ namespace DesktopModules.Admin.Security
             var basePage = Page as PageBase;
             if (basePage != null)
             {
-				//Check if culture is RTL
-                ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
+				//Check if culture is RTL - now handled by CSS
+                //ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
             ProfileProperties.LocalResourceFile = LocalResourceFile;
         }
