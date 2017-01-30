@@ -1230,7 +1230,7 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
          width:100%;
          position:relative;
          min-height:25px;
-         height:150px;
+         height:120px;
     }
     
     .dnnModuleDigitalAssetsLeftPaneContents {
@@ -1238,8 +1238,21 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
          top:0;
          height:150px;
     }
+
     #dnnModuleDigitalAssetsContentPane {
         margin-left:0;
-        width:100%
+        width:100%;
+        padding-top:0;
+    }
+
+    #dnnModuleDigitalAssetsSearchBox {
+        min-width:inherit;
+        float:none;
+        margin:1em .5em;
+    }
+
+    .dnnModuleDigitalAssetsMainLoading, dnnModuleDigitalAssetsLoading {
+        /*TODO: apply background loading image*/
+        display:none;
     }
 }
