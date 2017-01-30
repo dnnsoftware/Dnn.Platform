@@ -621,10 +621,10 @@ namespace DotNetNuke.Common.Utilities
             switch (mode)
             {
                 case "install":
-                    response.Write("<h1>Installing DotNetNuke</h1>");
+                    response.Write("<h1>Installing DNN</h1>");
                     break;
                 case "upgrade":
-                    response.Write("<h1>Upgrading DotNetNuke</h1>");
+                    response.Write("<h1>Upgrading DNN</h1>");
                     break;
                 case "addPortal":
                     response.Write("<h1>Adding New Portal</h1>");
@@ -639,10 +639,10 @@ namespace DotNetNuke.Common.Utilities
                     response.Write("<h1>Nothing To Install At This Time</h1>");
                     break;
                 case "noDBVersion":
-                    response.Write("<h1>New DotNetNuke Database</h1>");
+                    response.Write("<h1>New DNN Database</h1>");
                     break;
                 case "error":
-                    response.Write("<h1>Error Installing DotNetNuke</h1>");
+                    response.Write("<h1>Error Installing DNN</h1>");
                     break;
                 default:
                     response.Write("<h1>" + mode + "</h1>");
