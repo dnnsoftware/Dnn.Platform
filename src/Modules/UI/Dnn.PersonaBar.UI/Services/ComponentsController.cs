@@ -65,16 +65,20 @@ namespace Dnn.PersonaBar.UI.Services
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
+                var totalRecords2 = 0;
                 var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
-                    ref totalRecords, false, false)
+                    ref totalRecords, false, false);
+                matchedUsers.AddRange(UserController.GetUsersByUserName(PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
+                var finalUsers = matchedUsers
                     .Cast<UserInfo>()
+                    .Where(x=>x.Membership.Approved)
                     .Select(u => new SuggestionDto()
                     {
                         Value = u.UserID,
                         Label = $"{u.DisplayName}"
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, matchedUsers);
+                return Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
             }
             catch (Exception ex)
             {
@@ -95,7 +99,8 @@ namespace Dnn.PersonaBar.UI.Services
 
                 var matchedRoles = RoleController.Instance.GetRoles(PortalId)
                     .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+                                && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
+                                   && r.Status == RoleStatus.Approved)
                     .Select(r => new SuggestionDto()
                     {
                         Value = r.RoleID,
