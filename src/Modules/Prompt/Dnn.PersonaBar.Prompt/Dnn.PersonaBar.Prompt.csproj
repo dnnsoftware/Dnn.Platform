@@ -27,7 +27,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.Recyclebin.xml</DocumentationFile>
+    <DocumentationFile>bin\Dnn.PersonaBar.Prompt.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>default</LangVersion>
@@ -52,7 +52,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\Dnn.PersonaBar.Recyclebin.xml</DocumentationFile>
+    <DocumentationFile>bin\Dnn.PersonaBar.Prompt.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -127,6 +127,10 @@
     <Compile Include="Services\CommandController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\personaBar\css\Prompt.css" />
+    <Content Include="admin\personaBar\Prompt.html" />
+    <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js" />
+    <Content Include="admin\personaBar\scripts\Prompt.js" />
     <Content Include="Dnn.PersonaBar.Prompt.dnn" />
     <Content Include="Dnn.PersonaBar.Prompt.nuspec" />
   </ItemGroup>
@@ -136,9 +140,14 @@
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dnn.PersonaBar.Prompt.dnn" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="admin\personaBar\scripts\bundles\prompt-bundle.js.map" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\App_LocalResources\Prompt.resx" />
   </ItemGroup>
