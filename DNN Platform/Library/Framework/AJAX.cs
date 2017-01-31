@@ -27,7 +27,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Host;
 using DotNetNuke.UI.WebControls;
-//using Telerik.Web.UI;
 
 #endregion
 

@@ -39,6 +39,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization.Internal;
@@ -50,7 +51,6 @@ using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -75,6 +75,7 @@ namespace DotNetNuke.Services.Install
         #region Private Members
         // Hide Licensing Step for Community Edition
         private static readonly bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
         
         private readonly DataProvider _dataProvider = DataProvider.Instance();
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -330,6 +331,7 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error("WIZARD ERROR:" + ex);
                     CurrentStepActivity("ERROR:" + ex.Message);
                     _installerRunning = false;
                     return;
