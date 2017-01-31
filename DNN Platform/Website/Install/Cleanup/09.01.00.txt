@@ -26,3 +26,6 @@ DesktopModules\Admin\XmlMerge\
 ' Other modules
 DesktopModules\DevicePreviewManagement\
 DesktopModules\MobileManagement\
+
+' libraries
+bin\DotNetNuke.Web.Deprecated.dll

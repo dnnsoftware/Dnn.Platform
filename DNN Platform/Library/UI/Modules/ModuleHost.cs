@@ -46,7 +46,6 @@ using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -328,20 +327,21 @@ namespace DotNetNuke.UI.Modules
             // Reference dnn.js to add attachEvent/detachEvent functions in IE11 to fix Telerik (see DNN-6167)
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
 
-            var loadingPanel = new RadAjaxLoadingPanel { ID = _control.ID + "_Prog", Skin = "Default" };
-
-            Controls.Add(loadingPanel);
-
-            var ajaxPanel = new RadAjaxPanel
-            {
-                ID = _control.ID + "_UP",
-                LoadingPanelID = loadingPanel.ID,
-                RestoreOriginalRenderDelegate = false
-            };
-            InjectMessageControl(ajaxPanel);
-            ajaxPanel.Controls.Add(_control);
-
-            Controls.Add(ajaxPanel);
+            //DNN-9145 TODO
+            //var loadingPanel = new RadAjaxLoadingPanel { ID = _control.ID + "_Prog", Skin = "Default" };
+            //
+            //Controls.Add(loadingPanel);
+            //
+            //var ajaxPanel = new RadAjaxPanel
+            //{
+            //    ID = _control.ID + "_UP",
+            //    LoadingPanelID = loadingPanel.ID,
+            //    RestoreOriginalRenderDelegate = false
+            //};
+            //InjectMessageControl(ajaxPanel);
+            //ajaxPanel.Controls.Add(_control);
+            //
+            //Controls.Add(ajaxPanel);
         }
 
         /// <summary>

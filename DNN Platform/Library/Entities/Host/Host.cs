@@ -1624,6 +1624,7 @@ namespace DotNetNuke.Entities.Host
 		/// <remarks>
 		///   Defaults to False
 		/// </remarks>
+		[Obsolete("Not used anymore")]
 		public static bool EnableTelerikCdn
 		{
 			get
@@ -1632,10 +1633,11 @@ namespace DotNetNuke.Entities.Host
 			}
 		}
 
-		/// <summary>
-		/// Get Telerik CDN Basic Path.
-		/// </summary>
-	    public static string TelerikCdnBasicUrl
+        /// <summary>
+        /// Get Telerik CDN Basic Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnBasicUrl
 	    {
 			get
 			{
@@ -1643,10 +1645,11 @@ namespace DotNetNuke.Entities.Host
 			}
 	    }
 
-		/// <summary>
-		/// Get Telerik CDN Secure Path.
-		/// </summary>
-		public static string TelerikCdnSecureUrl
+        /// <summary>
+        /// Get Telerik CDN Secure Path.
+        /// </summary>
+        [Obsolete("Not used anymore")]
+        public static string TelerikCdnSecureUrl
 		{
 			get
 			{

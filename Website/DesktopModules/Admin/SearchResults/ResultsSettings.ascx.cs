@@ -153,6 +153,7 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
 
                     var selectedFilters = new StringBuilder();
+                    //DNN-9145 TODO
                     //foreach (var p in comboBoxFilters.CheckedItems)
                     //{
                     //    if (selectedFilters.Length > 0)

@@ -1,0 +1,4 @@
+This DotNetNuke.Web.Deprecated library is separated from the Platform core
+in order to remove any legacy dependency on Telerik from the code. This is
+packaged as a stand-alone installable library for backward compatibility
+with some modules internal and third party that are still using Telerik.

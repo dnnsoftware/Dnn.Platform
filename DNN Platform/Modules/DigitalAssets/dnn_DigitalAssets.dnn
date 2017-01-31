@@ -14,7 +14,8 @@
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">07.01.00</dependency>
+        <dependency type="CoreVersion">09.01.00</dependency>
+        <dependency type="package" version="09.01.00">DotNetNuke.Web.Deprecated</dependency>
       </dependencies>
       <components>
         <component type="Module">

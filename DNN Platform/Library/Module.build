@@ -97,6 +97,7 @@
     <Zip Files="@(Selectize)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Selectize.zip" />
 
+    <!--
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -112,6 +113,7 @@
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
+    -->
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
