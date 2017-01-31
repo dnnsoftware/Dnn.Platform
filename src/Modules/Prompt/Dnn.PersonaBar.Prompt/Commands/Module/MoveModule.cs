@@ -144,8 +144,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         {
             List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
 
-            dynamic moduleIToBeMoved = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
-            dynamic targetTab = TabController.Instance.GetTab((int)TargetPageId, PortalId);
+            var moduleIToBeMoved = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
+            var targetTab = TabController.Instance.GetTab((int)TargetPageId, PortalId);
 
             if (targetTab == null)
             {
@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     return new ConsoleErrorResultModel("An error occurred while moving the module. See the DNN Event Viewer for Details.");
                 }
                 // get the new module
-                dynamic movedModule = ModuleController.Instance.GetModule(moduleIToBeMoved.ModuleID, (int)TargetPageId, true);
+                var movedModule = ModuleController.Instance.GetModule(moduleIToBeMoved.ModuleID, (int)TargetPageId, true);
                 lst.Add(ModuleInfoModel.FromDnnModuleInfo(movedModule));
             }
             else

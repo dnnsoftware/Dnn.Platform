@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         public ConsoleResultModel Run()
         {
 
-            dynamic tab = PortalSettings.ActiveTab;
+            var tab = PortalSettings.ActiveTab;
             List<ModuleInfoModel> lst = null;
 
             if (Deleted.HasValue)
@@ -169,7 +169,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
 
         private List<ModuleInfoModel> GetModulesOnPage(int tabId, string nameFilter = null)
         {
-            dynamic tab = TabController.Instance.GetTab(tabId, PortalId, true);
+            var tab = TabController.Instance.GetTab(tabId, PortalId, true);
             return GetModulesOnPage(tab, nameFilter);
         }
 

@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                     return new ConsoleErrorResultModel("An error occurred while copying the module. See the DNN Event Viewer for Details.");
                 }
                 // get the new module
-                dynamic copiedModule = ModuleController.Instance.GetModule(moduleToBeCopied.ModuleID, (int)TargetPageId, true);
+                var copiedModule = ModuleController.Instance.GetModule(moduleToBeCopied.ModuleID, (int)TargetPageId, true);
                 lst.Add(ModuleInfoModel.FromDnnModuleInfo(copiedModule));
             }
             else

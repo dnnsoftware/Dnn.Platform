@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         {
             List<ModuleInfoModel> lst = new List<ModuleInfoModel>();
 
-            dynamic moduleToRestore = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
+            var moduleToRestore = ModuleController.Instance.GetModule((int)ModuleId, (int)PageId, true);
 
             if (moduleToRestore != null)
             {
