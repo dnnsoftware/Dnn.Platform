@@ -53,31 +53,5 @@ namespace Dnn.PersonaBar.Prompt.Common
             return Request.CreateResponse(HttpStatusCode.NotImplemented, new ResponseModel(true, msg, data == null ? "" : data.ToString()));
         }
 
-        /// <summary>
-        /// To use these methods, set: Backbone.emulateHTTP = true; in the App initialization.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        protected bool IsDeleteMethod()
-        {
-            HttpRequest req = HttpContext.Current.Request;
-            string xheader = req.Headers["X-HTTP-Method-Override"];
-            if (!string.IsNullOrEmpty(xheader) && xheader.ToUpper() == "DELETE")
-            {
-                return true;
-            }
-            return false;
-        }
-        protected bool IsUpdateMethod()
-        {
-            HttpRequest req = HttpContext.Current.Request;
-            string xheader = req.Headers["X-HTTP-Method-Override"];
-            if (!string.IsNullOrEmpty(xheader) && xheader.ToUpper() == "PUT")
-            {
-                return true;
-            }
-            return false;
-        }
-
     }
 }
