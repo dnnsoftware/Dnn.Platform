@@ -1225,6 +1225,20 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     padding:.2em .2em;
 }
 
+/*DNN Digital Asset Management(DNN-9323)*/
+#dnnModuleDigitalAssetsSelectionToolbar {
+    min-height:25px;
+    padding: .2em .2em;
+}
+#dnnModuleDigitalAssetsMainToolbar {
+    min-height:40px;
+    padding: 0 .2em;
+}
+#dnnModuleDigitalAssetsListViewToolbar {
+    height:auto;
+    padding:.2em .2em;
+}
+
 @media only screen and (max-width: 573px) {
     #dnnModuleDigitalAssetsLeftPane {
          width:100%;
@@ -1236,7 +1250,7 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     .dnnModuleDigitalAssetsLeftPaneContents {
          position:relative;
          top:0;
-         height:150px;
+         height:120px;
     }
 
     #dnnModuleDigitalAssetsContentPane {
@@ -1251,8 +1265,7 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
         margin:1em .5em;
     }
 
-    .dnnModuleDigitalAssetsMainLoading, dnnModuleDigitalAssetsLoading {
-        /*TODO: apply background loading image*/
-        display:none;
+    .dnnModuleDigitalAssetsMainLoading {
+        display:none !important;
     }
 }
