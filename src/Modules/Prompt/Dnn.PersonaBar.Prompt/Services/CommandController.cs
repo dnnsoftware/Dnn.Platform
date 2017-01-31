@@ -17,7 +17,7 @@ using System.Web.Http;
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
-    [MenuPermission(MenuName = "Connect.UserAccess", Scope = ServiceScope.Admin)]
+    [MenuPermission(MenuName = "Dnn.Prompt", Scope = ServiceScope.Admin)]
     public class CommandController : BaseController
     {
         public static Dictionary<string, Type> Commands { get; private set; } 
