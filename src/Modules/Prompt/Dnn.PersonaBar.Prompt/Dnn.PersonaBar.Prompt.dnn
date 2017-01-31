@@ -40,8 +40,8 @@
                         <moduleName>Prompt</moduleName>
                         <resourceKey>nav_Prompt</resourceKey>
                         <path>Prompt</path>
-                        <parent>Prompt</parent>
-                        <order>30</order>
+                        <parent></parent>
+                        <order>17</order>
                         <defaultPermissions>Administrators</defaultPermissions>
                     </menu>
                 </component>
