@@ -118,6 +118,7 @@
     <Compile Include="Commands\Client\Cls.cs" />
     <Compile Include="Commands\Client\Exit.cs" />
     <Compile Include="Commands\Client\Reload.cs" />
+    <Compile Include="Commands\Extensions\NewExtension.cs" />
     <Compile Include="Commands\Host\GetHost.cs" />
     <Compile Include="Commands\Portal\GetPortal.cs" />
     <Compile Include="Commands\Portal\ListPortals.cs" />
