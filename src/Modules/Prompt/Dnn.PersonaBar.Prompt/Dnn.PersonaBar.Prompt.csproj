@@ -119,6 +119,7 @@
     <Compile Include="Commands\Client\Exit.cs" />
     <Compile Include="Commands\Client\Reload.cs" />
     <Compile Include="Commands\Host\GetHost.cs" />
+    <Compile Include="Commands\Portal\GetPortal.cs" />
     <Compile Include="Common\BaseConsoleCommand.cs" />
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Models\ConsoleErrorResultModel.cs" />
     <Compile Include="Models\ConsoleResultModel.cs" />
     <Compile Include="Models\HostModel.cs" />
+    <Compile Include="Models\PortalInfoModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Services\CommandController.cs" />
