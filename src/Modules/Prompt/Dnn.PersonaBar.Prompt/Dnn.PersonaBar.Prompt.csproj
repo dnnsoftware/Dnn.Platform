@@ -81,6 +81,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Newtonsoft.Json.dll</HintPath>
@@ -117,14 +118,19 @@
     <Compile Include="Commands\Client\Cls.cs" />
     <Compile Include="Commands\Client\Exit.cs" />
     <Compile Include="Commands\Client\Reload.cs" />
+    <Compile Include="Commands\Host\GetHost.cs" />
     <Compile Include="Common\BaseConsoleCommand.cs" />
     <Compile Include="Common\BaseController.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
     <Compile Include="Models\ConsoleErrorResultModel.cs" />
     <Compile Include="Models\ConsoleResultModel.cs" />
+    <Compile Include="Models\HostModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Services\CommandController.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="VersionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\css\Prompt.css" />
