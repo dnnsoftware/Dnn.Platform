@@ -174,9 +174,9 @@
         <td class="checkbox">
             <input type="checkbox" class="user-item" data-bind="checked: selected" />            
         </td>
-        <td class="username" data-bind="html: Username"></td>
-        <td class="displayname" data-bind="html: DisplayName"></td>
-        <td class="userdeleteddate" data-bind="css: null"><span data-bind="html: LastModifiedOnDate"></span></td>
+        <td class="username" data-bind="html: Username, click: $root.changeElementSelectedStatus"></td>
+        <td class="displayname" data-bind="html: DisplayName, click: $root.changeElementSelectedStatus"></td>
+        <td class="userdeleteddate" data-bind="click: $root.changeElementSelectedStatus"><span data-bind="html: LastModifiedOnDate"></span></td>
         <td class="actions">
             <span class="restore" data-bind="attr: { title: $root.resx.recyclebin_Restore }, click: $root.restoreUser, clickBubble: false, visible: mouseOver"></span>
             <span class="remove" data-bind="attr: { title: $root.resx.recyclebin_Delete }, click: $root.removeUser, clickBubble: false, visible: mouseOver"></span>

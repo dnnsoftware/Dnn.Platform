@@ -438,7 +438,10 @@ div#recycleBin-header.socialpanelheader .actions a.button.create-page {
     .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.title, 
     .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.pagename,
     .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.thumbnail.pagename, 
-    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.deleteddate {
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.deleteddate,
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.username,
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.displayname,
+    .recycleBinContainer table.dnnRBGrid tr.dnnRBGridBody td.userdeleteddate {
         cursor: pointer;
     }
 
