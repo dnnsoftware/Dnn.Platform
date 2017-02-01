@@ -3540,10 +3540,6 @@
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNN Platform\DotNetNuke.Web.UI.Internal\DotNetNuke.Web.UI.Internal.csproj">
-      <Project>{e7392a67-394e-49b8-b099-360c31846ded}</Project>
-      <Name>DotNetNuke.Web.UI.Internal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>

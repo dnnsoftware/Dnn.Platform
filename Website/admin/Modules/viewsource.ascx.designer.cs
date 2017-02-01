@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox cboFile;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox cboFile;
         
         /// <summary>
         /// lblSourceFile control.

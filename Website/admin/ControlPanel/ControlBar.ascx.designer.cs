@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox controlBar_SwitchSite;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox controlBar_SwitchSite;
         
         /// <summary>
         /// controlBar_SwitchLanguage control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox controlBar_SwitchLanguage;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox controlBar_SwitchLanguage;
         
         /// <summary>
         /// helpLink control.
@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox CategoryList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox CategoryList;
         
         /// <summary>
         /// PageList control.
@@ -91,6 +91,6 @@ namespace DotNetNuke.UI.ControlPanels {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox VisibilityLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox VisibilityLst;
     }
 }

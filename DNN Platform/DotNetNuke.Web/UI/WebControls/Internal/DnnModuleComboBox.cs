@@ -33,7 +33,7 @@ using DotNetNuke.Services.Installer.Packages;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnModuleComboBox : DnnComboBox
     {

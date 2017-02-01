@@ -56,19 +56,19 @@ namespace DotNetNuke.Modules.SearchResults
                     {
                         var list = Convert.ToString(Settings["ScopeForPortals"]).Split('|').ToList();
                         var portalList = LoadPortalsList().ToList();
-                        //DNN-9145 TODO
-                        //if (portalList.Any())
-                        //{
-                        //    foreach (var portal in portalList)
-                        //    {
-                        //        var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
-                        //        comboBoxPortals.Items.Add(item);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    divPortalGroup.Visible = false;
-                        //}
+                        if (portalList.Any())
+                        {
+                            //DNN-9145 TODO
+                            //foreach (var portal in portalList)
+                            //{
+                            //    var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
+                            //    comboBoxPortals.Items.Add(item);
+                            //}
+                        }
+                        else
+                        {
+                            divPortalGroup.Visible = false;
+                        }
                     }
                     else
                     {

@@ -247,12 +247,11 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            //DNN-9145 TODO
             //No portal skins added, remove the header
-            //if ((SkinLst.Items.Count == 2))
-            //{
-            //    SkinLst.Items.Remove(1);
-            //}
+            if ((SkinLst.Items.Count == 2))
+            {
+                SkinLst.Items.RemoveAt(1);
+            }
 
             //load host skins
             var hostSkinsHeader = new ListItem(GetString("HostSkins"), string.Empty) {Enabled = false};

@@ -325,7 +325,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnGrid dgHistory;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgHistory;
         
         /// <summary>
         /// phHistory control.
@@ -361,7 +361,7 @@ namespace DotNetNuke.Modules.Html {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnGrid dgVersions;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgVersions;
         
         /// <summary>
         /// cmdSave control.

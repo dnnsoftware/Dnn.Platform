@@ -32,7 +32,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class TermsSelector : TextBox
     {

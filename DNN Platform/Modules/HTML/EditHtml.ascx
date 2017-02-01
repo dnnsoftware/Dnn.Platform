@@ -1,9 +1,8 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Modules.Html.EditHtml" CodeBehind="EditHtml.ascx.cs" AutoEventWireup="false" Explicit="True" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
-<%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.UserControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
+<%@ Register TagPrefix="dnncl" Assembly="DotNetNuke.Web.Client" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" %>
 
 <dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
 
@@ -20,7 +19,7 @@
                                 </div>
                             </div>
                         </asp:PlaceHolder>
-                        <dnn:texteditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:texteditor>
+                        <dnn:textEditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:textEditor>
                     </div>
                     <div class="dnnFormItem" id="divSubmittedContent" runat="server">
                         <div id="Div3" class="html_preview" runat="server">
@@ -226,3 +225,6 @@
         });
     }(jQuery, window.Sys));
 </script>
+
+
+

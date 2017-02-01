@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox SiteList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox SiteList;
         
         /// <summary>
         /// CategoryListPanel control.
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox CategoryList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox CategoryList;
         
         /// <summary>
         /// PageListPanel control.
@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox PageLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox PageLst;
         
         /// <summary>
         /// ModuleLstLbl control.
@@ -154,7 +154,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnModuleComboBox ModuleLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnModuleComboBox ModuleLst;
         
         /// <summary>
         /// TitlePanel control.
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox VisibilityLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox VisibilityLst;
         
         /// <summary>
         /// Label2 control.
@@ -226,7 +226,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox PaneLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox PaneLst;
         
         /// <summary>
         /// PositionLstLbl control.
@@ -244,7 +244,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox PositionLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox PositionLst;
         
         /// <summary>
         /// PaneModulesLstLbl control.
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.Internal.WebControls.DnnComboBox PaneModulesLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox PaneModulesLst;
         
         /// <summary>
         /// chkCopyModule control.

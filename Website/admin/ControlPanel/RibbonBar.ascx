@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.ControlPanels.RibbonBar" Codebehind="RibbonBar.ascx.cs" %>
 <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="AddModule" Src="~/admin/ControlPanel/AddModule.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="AddPage" Src="~/admin/ControlPanel/AddPage.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="UpdatePage" Src="~/admin/ControlPanel/UpdatePage.ascx" %>
@@ -18,10 +18,10 @@
             <asp:Label id="lblMode" runat="server" ResourceKey="Mode" />
             <dnn:DnnComboBox ID="ddlMode" runat="server" AutoPostBack="true" OnClientSelectedIndexChanged="ddlModeClientSelectedIndexChanged">
                 <Items>
-                    <asp:ListItem value="VIEW" ResourceKey="ModeView" />
-                    <asp:ListItem value="EDIT" ResourceKey="ModeEdit" />
-                    <asp:ListItem value="LAYOUT" ResourceKey="ModeLayout" />
-                    <asp:ListItem value="PREVIEW" ResourceKey="ModeMobilePreview" />
+                    <dnn:DnnComboBoxItem value="VIEW" ResourceKey="ModeView" />
+                    <dnn:DnnComboBoxItem value="EDIT" ResourceKey="ModeEdit" />
+                    <dnn:DnnComboBoxItem value="LAYOUT" ResourceKey="ModeLayout" />
+                    <dnn:DnnComboBoxItem value="PREVIEW" ResourceKey="ModeMobilePreview" />
                 </Items>
             </dnn:DnnComboBox>
         </div>

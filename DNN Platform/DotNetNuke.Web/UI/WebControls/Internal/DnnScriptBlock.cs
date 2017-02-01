@@ -21,7 +21,7 @@
 
 using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnScriptBlock : Panel
     {

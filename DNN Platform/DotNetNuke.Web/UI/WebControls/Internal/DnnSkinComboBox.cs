@@ -29,7 +29,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.Skins;
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox

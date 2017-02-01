@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" Codebehind="SearchResults.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.Internal.WebControls" Assembly="DotNetNuke.Web.UI.Internal" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <div class="dnnSearchBoxPanel">
@@ -23,10 +23,10 @@
         <span class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></span>
         <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged">
             <Items>
-                <asp:ListItem runat="Server" Text="15" Value="15" />
-                <asp:ListItem runat="Server" Text="25" Value="25" />
-                <asp:ListItem runat="Server" Text="50" Value="50" />
-                <asp:ListItem runat="Server" Text="100" Value="100" />
+                <dnn:DnnComboBoxItem runat="Server" Text="15" Value="15" />
+                <dnn:DnnComboBoxItem runat="Server" Text="25" Value="25" />
+                <dnn:DnnComboBoxItem runat="Server" Text="50" Value="50" />
+                <dnn:DnnComboBoxItem runat="Server" Text="100" Value="100" />
             </Items>
         </dnn:DnnComboBox>
     </div>

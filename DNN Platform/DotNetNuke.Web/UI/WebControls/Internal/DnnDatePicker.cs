@@ -29,7 +29,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnDatePicker : TextBox
     {

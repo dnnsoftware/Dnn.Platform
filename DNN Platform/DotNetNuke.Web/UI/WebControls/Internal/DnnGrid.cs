@@ -19,28 +19,56 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-#region Usings
+using System;
+using System.Web.UI.WebControls;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
-using System.Collections.Generic;
+#region Usings
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+#region Usings
+
+#endregion
+
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    public class DnnDateTimePicker : DnnDatePicker
+    public class DnnGrid : GridView
     {
-        protected override string Format => "yyyy-MM-dd HH:mm:ss";
-        protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
 
-        protected override IDictionary<string, object> GetSettings()
+        #region public properties
+
+        public int ScreenRowNumber { get; set; }
+
+        public int RowHeight { get; set; }
+
+        public int CurrentPageIndex
         {
-            var settings = base.GetSettings();
+            get
+            {
+                return PageIndex;
+                
+            }
+            set { PageIndex = value; }
+        }
 
-            settings.Add("showTime", true);
-            settings.Add("use24hour", true);
-            settings.Add("autoClose", true);
+        #endregion
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.CssClass = "dnn-grid";
+            Utilities.ApplySkin(this);
 
-            return settings;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            AlternatingRowStyle.CssClass = "alter-row";
+            Style.Remove("border-collapse");
         }
     }
 }

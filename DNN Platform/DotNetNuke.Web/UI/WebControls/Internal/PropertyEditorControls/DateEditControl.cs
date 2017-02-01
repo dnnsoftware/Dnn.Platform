@@ -31,7 +31,7 @@ using DotNetNuke.UI.WebControls;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls.PropertyEditorControls
+namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>

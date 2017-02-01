@@ -27,7 +27,7 @@ using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.Internal.WebControls
+namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
