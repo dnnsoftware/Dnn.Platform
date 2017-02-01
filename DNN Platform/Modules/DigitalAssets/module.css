@@ -1211,7 +1211,6 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     margin: 5px 0 5px 0;
 }
 
-/*DNN Digital Asset Management(DNN-9323)*/
 #dnnModuleDigitalAssetsSelectionToolbar {
     min-height:25px;
     padding: .2em .2em;
@@ -1225,7 +1224,6 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     padding:.2em .2em;
 }
 
-/*DNN Digital Asset Management(DNN-9323)*/
 #dnnModuleDigitalAssetsSelectionToolbar {
     min-height:25px;
     padding: .2em .2em;
