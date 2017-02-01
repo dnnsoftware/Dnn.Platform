@@ -1,0 +1,131 @@
+<!-- get-user -->
+<section class="kb-prompt-inline-help">
+  <a name="get-user"></a>
+  <h3 class="mono">get-user</h3>
+  <p class="lead">Enables you to display the current user's information, or retrieve a user by their User ID, Username or Email address. Supports partial searching. Returns the first user found.</p>
+
+  <div>
+    <h4>Get Current User</h4>
+    <code class="block">
+      get-user
+    </code>
+
+    <h4>Get User by User ID</h4>
+
+    <h5>Implicit Use of <span class="mono">--id</span> flag</h5>
+    <p>When specifying a single value after the command name, if it is an integer, Prompt will assume it is a User ID</p>
+    <code class="block">get-user 345</code>
+
+    <h5>Explicit use of <span class="mono">--id</span> flag</h5>
+    <p>You can explicitly use the <span class="mono">--id</span> flag to avoid any confusion</p>
+    <code class="block">get-user --id 345</code>
+    <table class="command-result-tbl">
+      <tr><td>UserId</td><td>:</td><td>345</td></tr>
+      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+    </table>
+
+    <h4>Get User by Email</h4>
+
+    <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
+    <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
+    <code class="block">get-user jsmith@sample.com</code>
+
+    <h5>Explicit Use of <span class="mono">--email</span> flag</h5>
+    <p>You can explicitly use the <span class="mono">--email</span> flag to avoid any confusion</p>
+    <code class="block">get-user --email jsmith@sample.com</code>
+
+    <table class="command-result-tbl">
+      <tr><td>UserId</td><td>:</td><td>345</td></tr>
+      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+    </table>
+
+    <h4>Search for User by Email Using Wildcards</h4>
+    <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
+    <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
+    <code class="block">get-user jsmith*@sample.com</code>
+    <h5>Explicit Use of <span class="mono">--email</span> flag</h5>
+    <code class="block">get-user --email jsmith*@sample.com</code>
+
+    <table class="command-result-tbl">
+      <thead>
+      <tr>
+        <th>UserId</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>DisplayName</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>LastLogin</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>345</td>
+        <td>jsmith</td>
+        <td>jsmith@sample.com</td>
+        <td>John Smith</td>
+        <td>John</td>
+        <td>Smith</td>
+        <td>2016-12-06T09:31:38.413-07:00</td>
+      </tr>
+      <tr>
+        <td>345</td>
+        <td>jsmithson</td>
+        <td>jsmithson@sample.com</td>
+        <td>Jerry Smithson</td>
+        <td>Jerry</td>
+        <td>Smithson</td>
+        <td>2016-12-063T08:15:28.123-07:00</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Get User by Username</h4>
+    <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
+    <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
+    <code class="block">get-user jsmith</code>
+
+    <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
+    <p>You can explicitly use the <span class="mono">--username</span> flag to avoid any confusion</p>
+    <code class="block">get-user --username jsmith</code>
+
+    <table class="command-result-tbl">
+      <tr><td>UserId</td><td>:</td><td>345</td></tr>
+      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+    </table>
+
+    <h4>Search for User by Username Using Wildcards</h4>
+    <h5>Implicit Use of <span class="mono">--username</span> flag</h5>
+    <p>When specifying a single value after the command name, if it is not a number and does not contain the at symbol (<span class="mono"> @ </span>), Prompt will assume it is a Username</p>
+    <code class="block">get-user --username jsmith*</code>
+    <h5>Explicit Use of <span class="mono">--username</span> flag</h5>
+    <code class="block">get-user jsmith*</code> (value cannot have an @ symbol or be interpreted as an Integer for this to work)
+
+    <table class="command-result-tbl">
+      <tr><td>UserId</td><td>:</td><td>345</td></tr>
+      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+    </table>
+  </div>
+
+</section>
+

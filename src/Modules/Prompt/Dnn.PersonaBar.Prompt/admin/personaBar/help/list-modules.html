@@ -1,0 +1,168 @@
+<!-- list-modules -->
+<section class="kb-prompt-inline-help">
+  <a name="list-modules"></a>
+  <h3 class="mono">list-modules</h3>
+  <p class="lead">Retrieves a list of modules based on the search criteria</p>
+
+  <div>
+    <h4>Options</h4>
+    <table class="table">
+      <thead>
+      <tr><th>Flag</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="mono">--name</td><td>string</td><td>No</td><td></td><td>The name of the module to search for. This accepts the wildcard (*) character to do partial searches. The Module Name is not the same thing as the module's Friendly Name or the module's Title. To find the Module Name, <code>list-modules</code> on a page containing the module. Searches are case-insensitive</td>
+      </tr>
+      <tr>
+        <td class="mono">--title</td><td>string</td><td>No</td><td></td><td>The title of the module to search for. This accepts wildcard (*) placeholders representing 0 or more characters. Searches are case-insensitive.</td>
+      </tr>
+      <tr>
+        <td class="mono">--all</td><td>boolean</td><td>No</td><td></td><td>When specified, the command will operate on all modules for the current portal. This flag does not need a value. </td>
+      </tr>
+      <tr>
+        <td class="mono">--deleted</td><td>boolean</td><td></td><td></td><td>When specified, the command will find all module instances in the portal that are in the Recycle Bin (if <span class="mono">--deleted</span> is true), or all module instances <em>not</em> in the Recycle Bin (if operate <span class="mono">--deleted</span> is false). If the flag is specified but no value is given, it will default to <span class="mono">true</span>. This flag may be used with <span class="mono">--name</span> and <span class="mono">--title</span> to further refine the results</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>List Modules on Current Page</h4>
+    <code class="block">list-modules</code>
+
+    <h4>List Modules on Specific Page</h4>
+    <code class="block">list-modules 72</code>
+
+    <h4>List All Modules in the Current Portal</h4>
+    <code class="block">list-modules --all</code>
+
+    <h4>List Modules Filtered by Module Name</h4>
+    <p>This will return all XMod and XMod Pro modules in the current portal</p>
+    <code class="block">list-modules --all --name XMod*</code>
+
+    <h4>List Modules on a Specific Page Filtered by Module Name</h4>
+    <p>This will return all XMod and XMod Pro modules on the page with a Page/TabId of 72</p>
+    <code class="block">list-modules 72 --name XMod*</code>
+
+    <h4>List Modules on a Specific Page Filtered by Module Name</h4>
+    <p>This will return all XMod and XMod Pro modules on the page with a Page/TabId of 72</p>
+    <code class="block">list-modules 72 --name XMod*</code>
+
+    <h4>List All Modules Filtered on Name and Title</h4>
+    <p>This will return all modules in the portal whose Module Name starts with Site <strong>and</strong> Title starts with Configure.</p>
+    <code class="block">list-modules --all --title Configure* --name Site*</code>
+    <h4>Returns</h4>
+    <table class="command-result-tbl">
+      <thead>
+      <tr>
+        <th>ModuleId</th>
+        <th>Title</th>
+        <th>ModuleName</th>
+        <th>FriendlyName</th>
+        <th>ModuleDefId</th>
+        <th>TabModuleId</th>
+        <th>AddedToPages</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>394</td>
+        <td>Configure portal settings, page design and apply a template...</td>
+        <td>SiteWizard</td>
+        <td>Site Wizard</td>
+        <td>88</td>
+        <td>86</td>
+        <td>64</td>
+      </tr>
+      <tr>
+        <td>395</td>
+        <td>Configure the sitemap for submission to common search engines</td>
+        <td>Sitemap</td>
+        <td>Sitemap</td>
+        <td>106</td>
+        <td>87</td>
+        <td>65</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>List All Deleted Modules in Portal</h4>
+    <p>This will return all modules in the DNN Recycle Bin</p>
+    <code class="block">list-modules --deleted</code>
+    <h4>Returns</h4>
+    <table class="command-result-tbl">
+      <thead>
+      <tr>
+        <th>ModuleId</th>
+        <th>Title</th>
+        <th>Pane</th>
+        <th>ModuleName</th>
+        <th>FriendlyName</th>
+        <th>ModuleDefId</th>
+        <th>TabModuleId</th>
+        <th>IsDeleted</th>
+        <th>TabId</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>358</td>
+        <td>Home Banner</td>
+        <td>ContentPane</td>
+        <td>DNN_HTML</td>
+        <td>HTML</td>
+        <td>120</td>
+        <td>106</td>
+        <td>true</td>
+        <td>74</td>
+      </tr>
+      <tr>
+        <td>410</td>
+        <td>Module that was copied</td>
+        <td>ContentPane</td>
+        <td>DNN_HTML</td>
+        <td>HTML</td>
+        <td>120</td>
+        <td>104</td>
+        <td>true</td>
+        <td>71</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>List All Deleted Modules Filtered on Name and Title</h4>
+    <p>This will return all modules in the DNN Recycle Bin whose Module Name ends with &quot;HTML&quot; and whose Module Title contains &quot;that&quot;</p>
+    <code class="block">list-modules --deleted --name *HTML --title *that*</code>
+    <h4>Returns</h4>
+    <table class="command-result-tbl">
+      <thead>
+      <tr>
+        <th>ModuleId</th>
+        <th>Title</th>
+        <th>Pane</th>
+        <th>ModuleName</th>
+        <th>FriendlyName</th>
+        <th>ModuleDefId</th>
+        <th>TabModuleId</th>
+        <th>IsDeleted</th>
+        <th>TabId</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>410</td>
+        <td>Module that was copied</td>
+        <td>ContentPane</td>
+        <td>DNN_HTML</td>
+        <td>HTML</td>
+        <td>120</td>
+        <td>104</td>
+        <td>true</td>
+        <td>71</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</section>
+
