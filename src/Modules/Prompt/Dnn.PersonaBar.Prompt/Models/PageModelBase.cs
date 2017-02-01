@@ -11,16 +11,6 @@
         public bool IncludeInMenu { get; set; }
         public bool IsDeleted { get; set; }
 
-        public string[] FieldOrder
-        {
-            get
-            {
-                return new string[] {
-                    "TabId", "Name", "Title", "ParentId", "Skin", "Path", "IncludeInMenu", "IsDeleted"
-                };
-            }
-        }
-
         #region Command Links
         public string __TabId
         {

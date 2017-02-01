@@ -7,17 +7,6 @@
         public string Keywords;
         public string Description;
 
-        public new string[] FieldOrder
-        {
-            get
-            {
-                return new string[] {
-                    "TabId", "Name", "Title", "ParentId", "Skin", "Path", "IncludeInMenu", "IsDeleted",
-                    "Container", "Url", "Keywords", "Description"
-                };
-            }
-        }
-
         public PageModel()
         {
         }
