@@ -173,7 +173,7 @@ class DnnPrompt {
         method: 'post',
         headers: new Headers({
           'Content-Type': 'application/json',
-          'RequestVerificationToken': this.util.sf.antiForgeryToken
+          'RequestVerificationToken': afVal
         }),
         credentials: 'include',
         body: JSON.stringify({cmdLine: txt, currentPage: self.tabId})
