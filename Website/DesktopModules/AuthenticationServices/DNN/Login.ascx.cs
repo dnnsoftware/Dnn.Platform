@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
 
-                if (loginStatus != UserLoginStatus.LOGIN_FAILURE && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false) && loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT)
+                if (loginStatus != UserLoginStatus.LOGIN_FAILURE && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false) && loginStatus != UserLoginStatus.LOGIN_USERLOCKEDOUT && loginStatus != UserLoginStatus.LOGIN_USERNOTAPPROVED)
                 {
                     //make sure internal username matches current e-mail address
                     if (objUser.Username.ToLower() != objUser.Email.ToLower())
