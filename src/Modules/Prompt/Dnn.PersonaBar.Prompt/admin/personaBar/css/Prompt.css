@@ -1,65 +1,88 @@
 /* Font
 ----------------------------------*/
-.kb-prompt *
-{
-  font: 16px/16px 'Lucida Console', 'Consolas', 'Courier New' !important;
+.kb-prompt * {
+    font: 16px/16px 'Lucida Console', 'Consolas', 'Courier New' !important;
 }
 
 /* Control
 ----------------------------------*/
 .kb-prompt {
-  background: rgba(0,0,0,.8);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 5px;
-  padding-bottom: 1em; /* keep status bar from covering prompt input */
-  border: solid 1px rgba(255,255,255,.5);
-  box-shadow: 0 0 3px #000, 0 0 8px #000 inset;
-  overflow: auto;
-  z-index: 2000; /* make sure it is on top of action menus */
+    background: rgba(0,0,0,.8);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    padding-bottom: 1em; /* keep status bar from covering prompt input */
+    border: solid 1px rgba(255,255,255,.5);
+    box-shadow: 0 0 3px #000, 0 0 8px #000 inset;
+    overflow: auto;
+    z-index: 2000; /* make sure it is on top of action menus */
 }
 
 /* Input
 ----------------------------------*/
 .kb-prompt-input {
-  display: block; 
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #8AE234;
-  margin: 0;
-  padding: 0;
-  outline: none; /* Get rid of Chrome focus border */
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #8AE234;
+    margin: 0;
+    padding: 0;
+    outline: none; /* Get rid of Chrome focus border */
 }
 
-.kb-prompt-input::-ms-clear { display: none; } /* remove MS Edge clear button */
+    /* remove MS Edge clear button */
+    .kb-prompt-input::-ms-clear {
+        display: none;
+    }
 
 /* Output text
 ----------------------------------*/
 .kb-prompt-cmd {
-  color: #AAA;
+    color: #AAA;
+}
 
-}
 .kb-prompt-error {
-  color: #F00;
-  
+    margin-top: 10px;
+    color: #F00;
 }
+
 .kb-prompt-ok {
-  color: #0FF;
-  
+    color: #0FF;
 }
 
 /* Table */
-.kb-prompt-tbl { color: #8AE234; }
-.kb-prompt-tbl thead th { color: #03ade0; border-bottom: 1px dashed;}
-.kb-prompt-tbl td, .kb-prompt-tbl th { padding: 2px 5px; margin: 2px 5px;}
-.kb-prompt-tbl td:first-child, .kb-prompt-tbl th:first-child { padding-left: 0; margin-left: 0; }
-.kb-prompt-lbl { color: #FFF; }
-.kb-prompt-val { color: #D3D7CF; }
-a.kb-prompt-cmd-insert, 
+.kb-prompt-tbl {
+    color: #8AE234;
+}
+
+    .kb-prompt-tbl thead th {
+        color: #03ade0;
+        border-bottom: 1px dashed;
+    }
+
+    .kb-prompt-tbl td, .kb-prompt-tbl th {
+        padding: 2px 5px;
+        margin: 2px 5px;
+    }
+
+        .kb-prompt-tbl td:first-child, .kb-prompt-tbl th:first-child {
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+.kb-prompt-lbl {
+    color: #FFF;
+}
+
+.kb-prompt-val {
+    color: #D3D7CF;
+}
+
+a.kb-prompt-cmd-insert,
 a.kb-prompt-cmd-insert:link,
 a.kb-prompt-cmd-insert:visited,
 a.kb-prompt-cmd-insert:active {
@@ -82,3 +105,113 @@ a.kb-prompt-cmd-insert:active {
         transform: rotate(360deg);
     }
 }
+
+/* Persona Bar Styling for Help */
+
+section.kb-prompt-inline-help {
+    color: #AAA;
+    margin-top: 0.8em !important;
+}
+
+    section.kb-prompt-inline-help em {
+        font-style: italic !important;
+        font-size: 1em !important;
+    }
+
+    section.kb-prompt-inline-help strong {
+        font-weight: bold !important;
+        font-size: 1em !important;
+        color: #DDD;
+    }
+
+    section.kb-prompt-inline-help .text-danger {
+        color: red;
+    }
+
+    section.kb-prompt-inline-help h4 {
+        color: #FFF;
+        margin: 15px auto 10px auto !important;
+        font-size: 1.3em !important;
+    }
+
+    section.kb-prompt-inline-help h3 {
+        color: #03ade0 !important;
+        background-color: azure;
+        font-size: 1.5em !important;
+        margin: 10px auto !important;
+        padding: .5em;
+    }
+
+    section.kb-prompt-inline-help p {
+        margin: 10px auto;
+        line-height: 1.2em !important;
+    }
+
+        section.kb-prompt-inline-help p.lead {
+            font-size: 1.1em !important;
+        }
+
+    section.kb-prompt-inline-help blockquote {
+        line-height: 1.2em !important;
+        border: 1px solid rgba(0,255,0,.4);
+        border-left: 10px solid rgba(0,255,0,.4);
+        padding: 10px;
+        font-size: 0.85em !important;
+    }
+
+    section.kb-prompt-inline-help .mono {
+        color: rgb(255,140,0);
+    }
+
+    section.kb-prompt-inline-help li {
+        margin-left: 2.2em;
+        margin-bottom: .6em;
+    }
+
+    section.kb-prompt-inline-help code.block {
+        display: inline-block;
+        padding: 8px;
+        border: 1px solid rgba(255,140,0,.1);
+        background: rgba(255,140,0,.08);
+        color: rgb(255,140,0);
+        margin: 5px auto;
+    }
+
+    section.kb-prompt-inline-help table.table {
+        border: 1px solid rgba(255,255,255,.4);
+    }
+
+    section.kb-prompt-inline-help table thead th {
+        background: rgba(255,255,255,.4);
+        color: #FFF;
+        padding: 8px;
+    }
+
+    section.kb-prompt-inline-help table.table td {
+        padding: 5px;
+    }
+
+    section.kb-prompt-inline-help table.table tr td:first-child {
+        white-space: nowrap;
+    }
+
+    section.kb-prompt-inline-help table.command-result-tbl {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+        section.kb-prompt-inline-help table.command-result-tbl td {
+            font-size: .85em !important;
+        }
+
+        section.kb-prompt-inline-help table.command-result-tbl tr td:first-child {
+            white-space: nowrap;
+        }
+
+    section.kb-prompt-inline-help table tr.divider td {
+        text-transform: uppercase;
+        font-size: 1.3em !important;
+        text-align: center;
+        padding: 1em !important;
+        color: #DDD;
+    }
