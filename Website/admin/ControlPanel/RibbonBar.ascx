@@ -18,10 +18,10 @@
             <asp:Label id="lblMode" runat="server" ResourceKey="Mode" />
             <dnn:DnnComboBox ID="ddlMode" runat="server" AutoPostBack="true" OnClientSelectedIndexChanged="ddlModeClientSelectedIndexChanged">
                 <Items>
-                    <dnn:DnnComboBoxItem value="VIEW" ResourceKey="ModeView" />
-                    <dnn:DnnComboBoxItem value="EDIT" ResourceKey="ModeEdit" />
-                    <dnn:DnnComboBoxItem value="LAYOUT" ResourceKey="ModeLayout" />
-                    <dnn:DnnComboBoxItem value="PREVIEW" ResourceKey="ModeMobilePreview" />
+                    <asp:ListItem value="VIEW" ResourceKey="ModeView" />
+                    <asp:ListItem value="EDIT" ResourceKey="ModeEdit" />
+                    <asp:ListItem value="LAYOUT" ResourceKey="ModeLayout" />
+                    <asp:ListItem value="PREVIEW" ResourceKey="ModeMobilePreview" />
                 </Items>
             </dnn:DnnComboBox>
         </div>

@@ -23,10 +23,10 @@
         <span class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></span>
         <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged">
             <Items>
-                <dnn:DnnComboBoxItem runat="Server" Text="15" Value="15" />
-                <dnn:DnnComboBoxItem runat="Server" Text="25" Value="25" />
-                <dnn:DnnComboBoxItem runat="Server" Text="50" Value="50" />
-                <dnn:DnnComboBoxItem runat="Server" Text="100" Value="100" />
+                <asp:ListItem runat="Server" Text="15" Value="15" />
+                <asp:ListItem runat="Server" Text="25" Value="25" />
+                <asp:ListItem runat="Server" Text="50" Value="50" />
+                <asp:ListItem runat="Server" Text="100" Value="100" />
             </Items>
         </dnn:DnnComboBox>
     </div>

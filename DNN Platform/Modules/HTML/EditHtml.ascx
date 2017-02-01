@@ -1,6 +1,7 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Modules.Html.EditHtml" CodeBehind="EditHtml.ascx.cs" AutoEventWireup="false" Explicit="True" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.UserControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
 <%@ Register TagPrefix="dnncl" Assembly="DotNetNuke.Web.Client" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" %>
 
