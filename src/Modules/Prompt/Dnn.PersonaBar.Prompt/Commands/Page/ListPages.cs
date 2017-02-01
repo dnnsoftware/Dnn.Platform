@@ -216,7 +216,13 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             {
                 lstOut = lst;
             }
-            return new ConsoleResultModel(string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""))) { data = lstOut };
+
+            var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
+            return new ConsoleResultModel(msg) {
+                data = lstOut,
+                fieldOrder = new string[] {
+                    "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted" }
+            };
         }
 
         private List<PageModelBase> GetPagesByParentId(int parentId)

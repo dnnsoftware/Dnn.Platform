@@ -68,10 +68,10 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -85,7 +85,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 ;(function (factory) {
 	var registeredInModuleLoader = false;
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		registeredInModuleLoader = true;
 	}
 	if (( false ? 'undefined' : _typeof(exports)) === 'object') {
@@ -238,18 +242,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	return init(function () {});
 });
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 module.exports = jQuery;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {'use strict';
+/* WEBPACK VAR INJECTION */(function($) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -425,12 +429,15 @@ var DnnPrompt = function () {
                     var output = result.output;
                     var style = result.isError ? "error" : "ok";
                     var data = result.data;
+                    var fieldOrder = result.fieldOrder ? result.fieldOrder : null;
+
+                    console.log('fieldOrder', fieldOrder);
 
                     if (bRedirect) {
                         window.location.href = output;
                     } else {
                         if (data) {
-                            var html = self.renderData(data);
+                            var html = self.renderData(data, fieldOrder);
                             self.writeHtml(html);
                             if (output) {
                                 self.writeLine(output);
@@ -496,46 +503,54 @@ var DnnPrompt = function () {
         }
     }, {
         key: 'renderData',
-        value: function renderData(data) {
+        value: function renderData(data, fieldOrder) {
             if (data.length > 1) {
-                return this.renderTable(data);
+                return this.renderTable(data, fieldOrder);
             } else if (data.length == 1) {
-                return this.renderObject(data[0]);
+                return this.renderObject(data[0], fieldOrder);
             }
             return "";
         }
     }, {
         key: 'renderTable',
-        value: function renderTable(rows) {
-            var out = '<table class="kb-prompt-tbl"><thead><tr>';
-            var linkFields = [];
-            // find any command link fields
-            for (var fld in rows[0]) {
-                if (fld.startsWith("__")) {
-                    linkFields.push(fld.slice(2));
+        value: function renderTable(rows, fieldOrder) {
+            if (!rows || !rows.length) {
+                return;
+            }
+            var linkFields = this.extractLinkFields(rows[0]);
+
+            var columns = fieldOrder;
+            if (!columns || !columns.length) {
+                // get columns from first row
+                columns = [];
+                var row = rows[0];
+                for (var key in row) {
+                    if (!key.startsWith("__")) {
+                        columns.push(key);
+                    }
                 }
             }
 
+            // build header
+            var out = '<table class="kb-prompt-tbl"><thead><tr>';
+            for (var col in columns) {
+                out += '<th>' + columns[col] + '</th>';
+            }
+            out += '</tr></thead><tbody>';
+
+            // build rows
             for (var i = 0; i < rows.length; i++) {
                 var row = rows[i];
-                if (i == 0) {
-                    for (var key in row) {
-                        if (key.startsWith("__")) {
-                            out += '<th>' + key.slice(2) + '</th>';
-                        } else {
-                            if (linkFields.indexOf(key) === -1) {
-                                out += '<th>' + key + '</th>';
-                            }
-                        }
-                    }
-                    out += '</tr></thead><tbody>';
-                }
                 out += '<tr>';
-                for (var key in row) {
-                    if (key.startsWith("__")) {
-                        out += '<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="' + row[key] + '" title="' + row[key].replace(/'/g, '&quot;') + '">' + row[key.slice(2)] + '</a></td>';
-                    } else if (linkFields.indexOf(key) === -1) {
-                        out += '<td>' + row[key] + '</td>';
+                // only use specified columns
+                for (var fld in columns) {
+                    var fldName = columns[fld];
+                    var fldVal = row[fldName] ? row[fldName] : '';
+                    var cmd = row["__" + fldName] ? row["__" + fldName] : null;
+                    if (cmd) {
+                        out += '<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td>';
+                    } else {
+                        out += '<td> ' + fldVal + '</td>';
                     }
                 }
                 out += '</tr>';
@@ -545,14 +560,9 @@ var DnnPrompt = function () {
         }
     }, {
         key: 'renderObject',
-        value: function renderObject(data) {
-            var linkFields = [];
-            // find any link fields
-            for (var fld in data) {
-                if (fld.startsWith("__")) {
-                    linkFields.push(fld.slice(2));
-                }
-            }
+        value: function renderObject(data, fieldOrder) {
+            var linkFields = this.extractLinkFields(data);
+
             var out = '<table class="kb-prompt-tbl">';
             for (var key in data) {
                 if (key.startsWith("__")) {
@@ -565,6 +575,22 @@ var DnnPrompt = function () {
             }
             out += '</table>';
             return out;
+        }
+    }, {
+        key: 'extractLinkFields',
+        value: function extractLinkFields(row) {
+            var linkFields = [];
+            if (!row || !row.length) {
+                return linkFields;
+            }
+
+            // find any command link fields
+            for (var fld in row) {
+                if (fld.startsWith("__")) {
+                    linkFields.push(fld.slice(2));
+                }
+            }
+            return linkFields;
         }
     }, {
         key: 'showGreeting',
@@ -730,6 +756,6 @@ var DnnPrompt = function () {
 window.DnnPrompt = DnnPrompt;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=prompt-bundle.js.map
