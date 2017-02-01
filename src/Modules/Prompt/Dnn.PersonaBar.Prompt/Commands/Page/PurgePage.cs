@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public ConsoleResultModel Run()
         {
             TabController tc = new TabController();
-            List<PageInfoModel> lst = new List<PageInfoModel>();
+            List<PageModel> lst = new List<PageModel>();
             List<TabInfo> tabs = new List<TabInfo>();
 
             if (PageId.HasValue)

@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 tab.IsVisible = (bool)Visible;
 
                 // create the tab
-                var lstResults = new List<PageInfoModel>();
+                var lstResults = new List<PageModel>();
                 var newTabId = TabController.Instance.AddTab(tab);
                 if (newTabId > 0)
                 {
@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     {
                         return new ConsoleErrorResultModel(string.Format("Unable to retrieve newly created page with ID of '{0}'", newTabId));
                     }
-                    lstResults.Add(PageInfoModel.FromDnnTabInfo(addedTab));
+                    lstResults.Add(PageModel.FromDnnTabInfo(addedTab));
                 }
                 else
                 {

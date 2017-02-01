@@ -124,8 +124,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public ConsoleResultModel Run()
         {
             TabController tc = new TabController();
-            List<PageInfoModelSlim> lst = new List<PageInfoModelSlim>();
-            List<PageInfoModelSlim> lstOut = new List<PageInfoModelSlim>();
+            List<PageModelBase> lst = new List<PageModelBase>();
+            List<PageModelBase> lstOut = new List<PageModelBase>();
 
             if (ParentId.HasValue)
             {
@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 TabCollection tabs = tc.GetTabsByPortal(PortalId);
                 foreach (KeyValuePair<int, TabInfo> kvp in tabs)
                 {
-                    lst.Add(PageInfoModelSlim.FromDnnTabInfo(kvp.Value));
+                    lst.Add(PageModelBase.FromDnnTabInfo(kvp.Value));
                 }
             }
 
@@ -146,7 +146,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 var query = from page in lst
                             where page.IsDeleted == Deleted
                             select page;
-                List<PageInfoModelSlim> filteredList = query.ToList();
+                List<PageModelBase> filteredList = query.ToList();
                 lst = filteredList;
             }
 
@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             if (bSearchTitle || bSearchName || bSearchPath || bSearchSkin || bMatchVisibility)
             {
                 bool bIsMatch = false;
-                foreach (PageInfoModelSlim pim in lst)
+                foreach (PageModelBase pim in lst)
                 {
                     bIsMatch = true;
                     if (bSearchTitle)
@@ -219,14 +219,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             return new ConsoleResultModel(string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""))) { data = lstOut };
         }
 
-        private List<PageInfoModelSlim> GetPagesByParentId(int parentId)
+        private List<PageModelBase> GetPagesByParentId(int parentId)
         {
             var lstTabs = TabController.GetTabsByParent(parentId, PortalId);
-            List<PageInfoModelSlim> lstOut = new List<PageInfoModelSlim>();
+            List<PageModelBase> lstOut = new List<PageModelBase>();
 
             foreach (TabInfo tab in lstTabs)
             {
-                lstOut.Add(PageInfoModelSlim.FromDnnTabInfo(tab));
+                lstOut.Add(PageModelBase.FromDnnTabInfo(tab));
             }
 
             return lstOut;

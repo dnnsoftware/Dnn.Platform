@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         public ConsoleResultModel Run()
         {
             TabController tc = new TabController();
-            List<PageInfoModel> lst = new List<PageInfoModel>();
+            List<PageModel> lst = new List<PageModel>();
             List<TabInfo> tabs = new List<TabInfo>();
 
             if (PageId.HasValue)
@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 else
                 {
                     // good to delete
-                    lst.Add(PageInfoModel.FromDnnTabInfo(tab));
+                    lst.Add(PageModel.FromDnnTabInfo(tab));
                 }
             }
 
@@ -171,7 +171,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             }
 
             var sbResults = new StringBuilder();
-            foreach (PageInfoModel tabToDelete in lst)
+            foreach (PageModel tabToDelete in lst)
             {
                 // delete the pages
                 try

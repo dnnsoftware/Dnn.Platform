@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
-    public class PageInfoModelSlim
+    public class PageModelBase
     {
         // Order of properties is important for client-side display. Declare most important/useful properties first.
         public int TabId;
@@ -21,9 +21,9 @@ namespace Dnn.PersonaBar.Prompt.Models
         public bool IsDeleted;
         public string __IsDeleted;      // command link
 
-        public static PageInfoModelSlim FromDnnTabInfo(DotNetNuke.Entities.Tabs.TabInfo tab)
+        public static PageModelBase FromDnnTabInfo(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
-            PageInfoModelSlim page = new PageInfoModelSlim()
+            PageModelBase page = new PageModelBase()
             {
                 Name = tab.TabName,
                 ParentId = tab.ParentId,
