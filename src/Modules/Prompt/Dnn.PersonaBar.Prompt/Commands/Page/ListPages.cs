@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 TabCollection tabs = tc.GetTabsByPortal(PortalId);
                 foreach (KeyValuePair<int, TabInfo> kvp in tabs)
                 {
-                    lst.Add(PageModelBase.FromDnnTabInfo(kvp.Value));
+                    lst.Add(new PageModelBase(kvp.Value));
                 }
             }
 
@@ -226,7 +226,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             foreach (TabInfo tab in lstTabs)
             {
-                lstOut.Add(PageModelBase.FromDnnTabInfo(tab));
+                lstOut.Add(new PageModelBase(tab));
             }
 
             return lstOut;

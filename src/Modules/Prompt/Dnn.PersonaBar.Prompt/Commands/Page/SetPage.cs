@@ -159,7 +159,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 TabController.Instance.UpdateTab(tab);
 
                 var lstResults = new List<PageModel>();
-                lstResults.Add(PageModel.FromDnnTabInfo(TabController.Instance.GetTab(tab.TabID, tab.PortalID)));
+                lstResults.Add(new PageModel(TabController.Instance.GetTab(tab.TabID, tab.PortalID)));
                 return new ConsoleResultModel("Page has been updated") { data = lstResults };
             }
             catch (Exception ex)
