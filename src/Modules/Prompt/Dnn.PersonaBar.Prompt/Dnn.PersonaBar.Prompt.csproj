@@ -128,10 +128,36 @@
     <Compile Include="Commands\Module\PurgeModule.cs" />
     <Compile Include="Commands\Module\RestoreModule.cs" />
     <Compile Include="Commands\Module\AddModule.cs" />
+    <Compile Include="Commands\Page\GetPage.cs" />
+    <Compile Include="Commands\Page\GotoPage.cs" />
+    <Compile Include="Commands\Page\ListPages.cs" />
+    <Compile Include="Commands\Page\NewPage.cs" />
+    <Compile Include="Commands\Page\PurgePage.cs" />
+    <Compile Include="Commands\Page\RestorePage.cs" />
+    <Compile Include="Commands\Page\SetPage.cs" />
+    <Compile Include="Commands\Page\DeletePage.cs" />
     <Compile Include="Commands\Portal\GetPortal.cs" />
     <Compile Include="Commands\Portal\ListPortals.cs" />
+    <Compile Include="Commands\Roles\GetRole.cs" />
+    <Compile Include="Commands\Roles\ListRoles.cs" />
+    <Compile Include="Commands\Roles\NewRole.cs" />
+    <Compile Include="Commands\Roles\SetRole.cs" />
+    <Compile Include="Commands\Roles\DeleteRole.cs" />
+    <Compile Include="Commands\Scheduler\ListTask.cs" />
+    <Compile Include="Commands\Scheduler\SetTask.cs" />
+    <Compile Include="Commands\Scheduler\GetTask.cs" />
+    <Compile Include="Commands\User\DeleteUser.cs" />
+    <Compile Include="Commands\User\GetUser.cs" />
+    <Compile Include="Commands\User\ListUsers.cs" />
+    <Compile Include="Commands\User\NewUser.cs" />
+    <Compile Include="Commands\User\PurgeUser.cs" />
+    <Compile Include="Commands\User\ResetPassword.cs" />
+    <Compile Include="Commands\User\RestoreUser.cs" />
+    <Compile Include="Commands\User\AddRoles.cs" />
+    <Compile Include="Commands\Utilities\Echo.cs" />
     <Compile Include="Common\BaseConsoleCommand.cs" />
     <Compile Include="Common\BaseController.cs" />
+    <Compile Include="Common\EmailValidator.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
     <Compile Include="Models\ConsoleErrorResultModel.cs" />
@@ -139,9 +165,17 @@
     <Compile Include="Models\HostModel.cs" />
     <Compile Include="Models\ModuleInfoModel.cs" />
     <Compile Include="Models\ModuleInstanceModel.cs" />
+    <Compile Include="Models\PageInfoModel.cs" />
+    <Compile Include="Models\PageInfoModelSlim.cs" />
     <Compile Include="Models\PortalInfoModel.cs" />
     <Compile Include="Models\PortalInfoModelSlim.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\RoleInfoModel.cs" />
+    <Compile Include="Models\RoleInfoModelSlim.cs" />
+    <Compile Include="Models\TaskModel.cs" />
+    <Compile Include="Models\TaskModelSlim.cs" />
+    <Compile Include="Models\UserInfoModel.cs" />
+    <Compile Include="Models\UserInfoModelSlim.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Services\CommandController.cs" />
     <Compile Include="Utilities.cs" />
@@ -172,6 +206,7 @@
   <ItemGroup>
     <Content Include="admin\personaBar\App_LocalResources\Prompt.resx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
