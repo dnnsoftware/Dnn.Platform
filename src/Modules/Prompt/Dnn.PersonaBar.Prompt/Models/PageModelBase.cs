@@ -16,28 +16,28 @@
         {
             get
             {
-                return string.Format("get-page {0}", TabId);
+                return $"get-page {TabId}";
             }
         }
         public string __ParentId
         {
             get
             {
-                return string.Format("list-pages --parentid {0}", ParentId);
+                return $"list-pages --parentid {ParentId}";
             }
         }
         public string __IncludeInMenu
         {
             get
             {
-                return string.Format("list-pages --visible{0}", (IncludeInMenu ? "" : " false"));
+                return $"list-pages --visible{((IncludeInMenu ? "" : " false"))}";
             }
         }
         public string __IsDeleted
         {
             get
             {
-                return string.Format("list-pages --deleted{0}", (IsDeleted ? "" : " false"));
+                return $"list-pages --deleted{((IsDeleted ? "" : " false"))}";
             }
         }
         #endregion
