@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public ConsoleResultModel Run()
         {
-            List<UserInfoModel> lst = new List<UserInfoModel>();
+            List<UserModel> lst = new List<UserModel>();
 
             StringBuilder sbErrors = new StringBuilder();
             if (UserId.HasValue)
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                     {
                         if (UserController.RemoveUser(ui))
                         {
-                            lst.Add(UserInfoModel.FromDnnUserInfo(ui));
+                            lst.Add(new UserModel(ui));
                             return new ConsoleResultModel("The User has been permanently removed from the site.") { data = lst };
                         }
                     }

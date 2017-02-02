@@ -118,11 +118,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             }
 
 
-            List<UserInfoModel> lst = new List<UserInfoModel>();
+            List<UserModel> lst = new List<UserModel>();
             // this is a singular command. Only return the first result
             if (results.Count > 0)
             {
-                lst.Add(UserInfoModel.FromDnnUserInfo((UserInfo)results[0]));
+                lst.Add(new UserModel((UserInfo)results[0]));
             }
 
             if (lst.Count > 0)

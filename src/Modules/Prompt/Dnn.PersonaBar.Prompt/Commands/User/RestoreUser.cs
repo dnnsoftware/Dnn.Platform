@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public ConsoleResultModel Run()
         {
-            List<UserInfoModel> lst = new List<UserInfoModel>();
+            List<UserModel> lst = new List<UserModel>();
 
             StringBuilder sbErrors = new StringBuilder();
             if (UserId.HasValue)
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                         if (UserController.RestoreUser(ref ui))
                         {
                             var restoredUser = UserController.GetUserById(PortalId, (int)UserId);
-                            lst.Add(UserInfoModel.FromDnnUserInfo(restoredUser));
+                            lst.Add(new UserModel(restoredUser));
                             return new ConsoleResultModel("Successfully recovered the user.") { data = lst };
                         }
                         else

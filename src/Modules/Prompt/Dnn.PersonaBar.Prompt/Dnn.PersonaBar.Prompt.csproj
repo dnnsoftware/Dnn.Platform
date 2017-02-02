@@ -170,12 +170,12 @@
     <Compile Include="Models\PortalModel.cs" />
     <Compile Include="Models\PortalModelBase.cs" />
     <Compile Include="Models\ResponseModel.cs" />
-    <Compile Include="Models\RoleInfoModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RoleModelBase.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\TaskModelSlim.cs" />
-    <Compile Include="Models\UserInfoModel.cs" />
-    <Compile Include="Models\UserInfoModelSlim.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserModelBase.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
     <Compile Include="Services\CommandController.cs" />
     <Compile Include="Utilities.cs" />

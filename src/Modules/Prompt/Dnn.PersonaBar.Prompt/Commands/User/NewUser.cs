@@ -161,7 +161,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         public ConsoleResultModel Run()
         {
             StringBuilder sbError = new StringBuilder();
-            List<UserInfoModel> lstResult = new List<UserInfoModel>();
+            List<UserModel> lstResult = new List<UserModel>();
             
             UserInfo ui = new UserInfo(); 
             ui.FirstName = FirstName;
@@ -183,7 +183,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                 ui.Profile.SetProfileProperty("LastName", LastName);
                 var props = ui.Profile.ProfileProperties;
                 ProfileController.UpdateUserProfile(ui, props);
-                lstResult.Add(UserInfoModel.FromDnnUserInfo(ui));
+                lstResult.Add(new UserModel(ui));
                 // If nothing has been set for Notify, then use the site settings.
                 // If Notify is true, send notification
                 if (!Notify.HasValue || (bool)Notify)

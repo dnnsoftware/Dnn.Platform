@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         public ConsoleResultModel Run()
         {
-            List<UserInfoModelSlim> lst = new List<UserInfoModelSlim>();
+            List<UserModelBase> lst = new List<UserModelBase>();
             ArrayList results = new ArrayList();
             int recCount = 0;
 
@@ -135,12 +135,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
         }
 
-        private List<UserInfoModelSlim> ConvertList(IEnumerable lst)
+        private List<UserModelBase> ConvertList(IEnumerable lst)
         {
-            List<UserInfoModelSlim> lstUsers = new List<UserInfoModelSlim>();
+            List<UserModelBase> lstUsers = new List<UserModelBase>();
             foreach (UserInfo ui in lst)
             {
-                lstUsers.Add(UserInfoModelSlim.FromDnnUserInfo(ui));
+                lstUsers.Add(new UserModelBase(ui));
             }
             return lstUsers;
         }
