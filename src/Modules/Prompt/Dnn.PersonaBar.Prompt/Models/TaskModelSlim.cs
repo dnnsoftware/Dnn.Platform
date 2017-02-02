@@ -1,24 +1,30 @@
 ﻿using System;
+using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
-    public class TaskModelSlim
+    public class TaskModelBase
     {
         public int ScheduleId;
         public string FriendlyName;
         public DateTime NextStart;
-
         public bool Enabled;
-        public static TaskModelSlim FromDnnScheduleItem(DotNetNuke.Services.Scheduling.ScheduleItem item)
+
+        #region Constructors
+        public TaskModelBase()
         {
-            return new TaskModelSlim
-            {
-                Enabled = item.Enabled,
-                FriendlyName = item.FriendlyName,
-                NextStart = item.NextStart,
-                ScheduleId = item.ScheduleID
-            };
         }
 
+        public TaskModelBase(ScheduleItem item)
+        {
+            Enabled = item.Enabled;
+            FriendlyName = item.FriendlyName;
+            NextStart = item.NextStart;
+            ScheduleId = item.ScheduleID;
+        }
+        #endregion
+
+        #region CommandLinks
+        #endregion
     }
 }

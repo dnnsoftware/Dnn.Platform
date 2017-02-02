@@ -1,36 +1,29 @@
-﻿using System;
+﻿using DotNetNuke.Services.Scheduling;
+using System;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
     /// <summary>
-    /// Represents an DNN ScheduleItem
+    /// Represents a DNN ScheduleItem
     /// </summary>
-    public class TaskModel
+    public class TaskModel : TaskModelBase
     {
-        public int ScheduleId;
-        public string FriendlyName;
-        public string TypeName;
-        public DateTime NextStart;
-        public bool Enabled;
-        public bool CatchUp;
-        public DateTime Created;
-        public DateTime StartDate;
+        public string TypeName { get; set; }
+        public bool CatchUp { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public static TaskModel FromDnnScheduleItem(DotNetNuke.Services.Scheduling.ScheduleItem item)
+        #region Constructors
+        public TaskModel()
         {
-            return new TaskModel
-            {
-                CatchUp = item.CatchUpEnabled,
-                Created = item.CreatedOnDate,
-                Enabled = item.Enabled,
-                FriendlyName = item.FriendlyName,
-                NextStart = item.NextStart,
-                ScheduleId = item.ScheduleID,
-                StartDate = item.ScheduleStartDate,
-                TypeName = item.TypeFullName
-            };
-
         }
-
+        public TaskModel(ScheduleItem item):base(item)
+        {
+            CatchUp = item.CatchUpEnabled;
+            Created = item.CreatedOnDate;
+            StartDate = item.ScheduleStartDate;
+            TypeName = item.TypeFullName;
+        }
+        #endregion
     }
 }

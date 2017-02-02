@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         public ConsoleResultModel Run()
         {
             var lstSchedule = SchedulingController.GetSchedule();
-            List<TaskModelSlim> lst = new List<TaskModelSlim>();
+            List<TaskModelBase> lst = new List<TaskModelBase>();
 
             if (!string.IsNullOrEmpty(TaskName))
             {
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                 {
                     if (!Enabled.HasValue || Enabled == task.Enabled)
                     {
-                        lst.Add(TaskModelSlim.FromDnnScheduleItem(task));
+                        lst.Add(new TaskModelBase(task));
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                     // By default, if Enabled is not specified, return all scheduled tasks.
                     if (!Enabled.HasValue || (Enabled == task.Enabled))
                     {
-                        lst.Add(TaskModelSlim.FromDnnScheduleItem(task));
+                        lst.Add(new TaskModelBase(task));
                     }
                 }
             }

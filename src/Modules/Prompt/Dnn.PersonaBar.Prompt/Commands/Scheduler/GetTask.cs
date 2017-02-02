@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
             {
                 if (TaskId == task.ScheduleID)
                 {
-                    lst.Add(TaskModel.FromDnnScheduleItem(task));
+                    lst.Add(new TaskModel(task));
                     break; 
                 }
             }

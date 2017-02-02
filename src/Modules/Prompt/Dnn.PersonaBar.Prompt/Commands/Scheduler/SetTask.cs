@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
                 var updatedTask = SchedulingController.GetSchedule(Convert.ToInt32(TaskId));
                 if (updatedTask != null)
                 {
-                    lst.Add(TaskModel.FromDnnScheduleItem(updatedTask));
+                    lst.Add(new TaskModel(updatedTask));
                 }
 
             }
