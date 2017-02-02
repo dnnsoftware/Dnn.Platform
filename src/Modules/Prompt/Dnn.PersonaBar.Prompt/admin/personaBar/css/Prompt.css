@@ -1,12 +1,12 @@
 /* Font
 ----------------------------------*/
-.kb-prompt * {
+.dnn-prompt * {
     font: 16px/16px 'Lucida Console', 'Consolas', 'Courier New' !important;
 }
 
 /* Control
 ----------------------------------*/
-.kb-prompt {
+.dnn-prompt {
     background: rgba(0,0,0,.8);
     position: absolute;
     top: 0;
@@ -23,7 +23,7 @@
 
 /* Input
 ----------------------------------*/
-.kb-prompt-input {
+.dnn-prompt-input {
     display: block;
     width: 100%;
     background: transparent;
@@ -35,62 +35,62 @@
 }
 
     /* remove MS Edge clear button */
-    .kb-prompt-input::-ms-clear {
+    .dnn-prompt-input::-ms-clear {
         display: none;
     }
 
 /* Output text
 ----------------------------------*/
-.kb-prompt-cmd {
+.dnn-prompt-cmd {
     color: #AAA;
 }
 
-.kb-prompt-error {
+.dnn-prompt-error {
     margin-top: 10px;
     color: #F00;
 }
 
-.kb-prompt-ok {
+.dnn-prompt-ok {
     color: #0FF;
 }
 
 /* Table */
-.kb-prompt-tbl {
+.dnn-prompt-tbl {
     color: #8AE234;
 }
 
-    .kb-prompt-tbl thead th {
+    .dnn-prompt-tbl thead th {
         color: #03ade0;
         border-bottom: 1px dashed;
     }
 
-    .kb-prompt-tbl td, .kb-prompt-tbl th {
+    .dnn-prompt-tbl td, .dnn-prompt-tbl th {
         padding: 2px 5px;
         margin: 2px 5px;
     }
 
-        .kb-prompt-tbl td:first-child, .kb-prompt-tbl th:first-child {
+        .dnn-prompt-tbl td:first-child, .dnn-prompt-tbl th:first-child {
             padding-left: 0;
             margin-left: 0;
         }
 
-.kb-prompt-lbl {
+.dnn-prompt-lbl {
     color: #FFF;
 }
 
-.kb-prompt-val {
+.dnn-prompt-val {
     color: #D3D7CF;
 }
 
-a.kb-prompt-cmd-insert,
-a.kb-prompt-cmd-insert:link,
-a.kb-prompt-cmd-insert:visited,
-a.kb-prompt-cmd-insert:active {
+a.dnn-prompt-cmd-insert,
+a.dnn-prompt-cmd-insert:link,
+a.dnn-prompt-cmd-insert:visited,
+a.dnn-prompt-cmd-insert:active {
     color: #03ade0;
 }
 
 /* Busy/Loading Indicator */
-.kb-prompt-busy {
+.dnn-prompt-busy {
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -108,33 +108,33 @@ a.kb-prompt-cmd-insert:active {
 
 /* Persona Bar Styling for Help */
 
-section.kb-prompt-inline-help {
+section.dnn-prompt-inline-help {
     color: #AAA;
     margin-top: 0.8em !important;
 }
 
-    section.kb-prompt-inline-help em {
+    section.dnn-prompt-inline-help em {
         font-style: italic !important;
         font-size: 1em !important;
     }
 
-    section.kb-prompt-inline-help strong {
+    section.dnn-prompt-inline-help strong {
         font-weight: bold !important;
         font-size: 1em !important;
         color: #DDD;
     }
 
-    section.kb-prompt-inline-help .text-danger {
+    section.dnn-prompt-inline-help .text-danger {
         color: red;
     }
 
-    section.kb-prompt-inline-help h4 {
+    section.dnn-prompt-inline-help h4 {
         color: #FFF;
         margin: 15px auto 10px auto !important;
         font-size: 1.3em !important;
     }
 
-    section.kb-prompt-inline-help h3 {
+    section.dnn-prompt-inline-help h3 {
         color: #03ade0 !important;
         background-color: azure;
         font-size: 1.5em !important;
@@ -142,16 +142,16 @@ section.kb-prompt-inline-help {
         padding: .5em;
     }
 
-    section.kb-prompt-inline-help p {
+    section.dnn-prompt-inline-help p {
         margin: 10px auto;
         line-height: 1.2em !important;
     }
 
-        section.kb-prompt-inline-help p.lead {
+        section.dnn-prompt-inline-help p.lead {
             font-size: 1.1em !important;
         }
 
-    section.kb-prompt-inline-help blockquote {
+    section.dnn-prompt-inline-help blockquote {
         line-height: 1.2em !important;
         border: 1px solid rgba(0,255,0,.4);
         border-left: 10px solid rgba(0,255,0,.4);
@@ -159,16 +159,16 @@ section.kb-prompt-inline-help {
         font-size: 0.85em !important;
     }
 
-    section.kb-prompt-inline-help .mono {
+    section.dnn-prompt-inline-help .mono {
         color: rgb(255,140,0);
     }
 
-    section.kb-prompt-inline-help li {
+    section.dnn-prompt-inline-help li {
         margin-left: 2.2em;
         margin-bottom: .6em;
     }
 
-    section.kb-prompt-inline-help code.block {
+    section.dnn-prompt-inline-help code.block {
         display: inline-block;
         padding: 8px;
         border: 1px solid rgba(255,140,0,.1);
@@ -177,38 +177,38 @@ section.kb-prompt-inline-help {
         margin: 5px auto;
     }
 
-    section.kb-prompt-inline-help table.table {
+    section.dnn-prompt-inline-help table.table {
         border: 1px solid rgba(255,255,255,.4);
     }
 
-    section.kb-prompt-inline-help table thead th {
+    section.dnn-prompt-inline-help table thead th {
         background: rgba(255,255,255,.4);
         color: #FFF;
         padding: 8px;
     }
 
-    section.kb-prompt-inline-help table.table td {
+    section.dnn-prompt-inline-help table.table td {
         padding: 5px;
     }
 
-    section.kb-prompt-inline-help table.table tr td:first-child {
+    section.dnn-prompt-inline-help table.table tr td:first-child {
         white-space: nowrap;
     }
 
-    section.kb-prompt-inline-help table.command-result-tbl {
+    section.dnn-prompt-inline-help table.command-result-tbl {
         margin-top: 10px;
         margin-bottom: 10px;
     }
 
-        section.kb-prompt-inline-help table.command-result-tbl td {
+        section.dnn-prompt-inline-help table.command-result-tbl td {
             font-size: .85em !important;
         }
 
-        section.kb-prompt-inline-help table.command-result-tbl tr td:first-child {
+        section.dnn-prompt-inline-help table.command-result-tbl tr td:first-child {
             white-space: nowrap;
         }
 
-    section.kb-prompt-inline-help table tr.divider td {
+    section.dnn-prompt-inline-help table tr.divider td {
         text-transform: uppercase;
         font-size: 1.3em !important;
         text-align: center;

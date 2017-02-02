@@ -291,8 +291,8 @@ var DnnPrompt = function () {
         self.history = []; // Command history
         // restore history if it exists
         if (sessionStorage) {
-            if (sessionStorage.getItem('kb-prompt-console-history')) {
-                self.history = JSON.parse(sessionStorage.getItem('kb-prompt-console-history'));
+            if (sessionStorage.getItem('dnn-prompt-console-history')) {
+                self.history = JSON.parse(sessionStorage.getItem('dnn-prompt-console-history'));
             }
         }
         self.cmdOffset = 0; // reverse offset into history
@@ -326,7 +326,7 @@ var DnnPrompt = function () {
     }, {
         key: 'onClickHandler',
         value: function onClickHandler(e) {
-            if (e.target.classList.contains("kb-prompt-cmd-insert")) {
+            if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
                 // insert command and set focus
                 this.inputEl.value = e.target.dataset.cmd.replace(/'/g, '"');
                 this.inputEl.focus();
@@ -400,7 +400,7 @@ var DnnPrompt = function () {
             } // don't process if cmd is emtpy
             self.history.push(txt); // Add cmd to history
             if (sessionStorage) {
-                sessionStorage.setItem('kb-prompt-console-history', JSON.stringify(self.history));
+                sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(self.history));
             }
 
             // Client Command
@@ -425,7 +425,7 @@ var DnnPrompt = function () {
             }
             if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
                 self.history = [];
-                sessionStorage.removeItem('kb-prompt-console-history');
+                sessionStorage.removeItem('dnn-prompt-console-history');
                 self.writeLine("Session command history cleared");
                 return;
             }
@@ -498,7 +498,7 @@ var DnnPrompt = function () {
                         }
 
                         if (result.mustReload) {
-                            self.writeHtml('<div class="kb-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
+                            self.writeHtml('<div class="dnn-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
                             setTimeout(function () {
                                 return location.reload(true);
                             }, 3000);
@@ -536,7 +536,7 @@ var DnnPrompt = function () {
         value: function writeLine(txt, cssSuffix) {
             var span = document.createElement('span');
             cssSuffix = cssSuffix || 'ok';
-            span.className = 'kb-prompt-' + cssSuffix;
+            span.className = 'dnn-prompt-' + cssSuffix;
             span.innerText = txt;
             this.outputEl.appendChild(span);
             this.newLine();
@@ -583,7 +583,7 @@ var DnnPrompt = function () {
             }
 
             // build header
-            var out = '<table class="kb-prompt-tbl"><thead><tr>';
+            var out = '<table class="dnn-prompt-tbl"><thead><tr>';
             for (var col in columns) {
                 out += '<th>' + columns[col] + '</th>';
             }
@@ -599,7 +599,7 @@ var DnnPrompt = function () {
                     var fldVal = _row[fldName] ? _row[fldName] : '';
                     var cmd = _row["__" + fldName] ? _row["__" + fldName] : null;
                     if (cmd) {
-                        out += '<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td>';
+                        out += '<td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td>';
                     } else {
                         out += '<td> ' + fldVal + '</td>';
                     }
@@ -614,13 +614,13 @@ var DnnPrompt = function () {
         value: function renderObject(data, fieldOrder) {
             var linkFields = this.extractLinkFields(data);
 
-            var out = '<table class="kb-prompt-tbl">';
+            var out = '<table class="dnn-prompt-tbl">';
             for (var key in data) {
                 if (key.startsWith("__")) {
-                    out += '<tr><td class="kb-prompt-lbl">' + key.slice(2) + '</td><td>:</td><td><a href="#" class="kb-prompt-cmd-insert" data-cmd="' + data[key] + '" title="' + data[key].replace(/'/g, '&quot;') + '">' + data[key.slice(2)] + '</a></td></tr>';
+                    out += '<tr><td class="dnn-prompt-lbl">' + key.slice(2) + '</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + data[key] + '" title="' + data[key].replace(/'/g, '&quot;') + '">' + data[key.slice(2)] + '</a></td></tr>';
                 } else {
                     if (linkFields.indexOf(key) === -1) {
-                        out += '<tr><td class="kb-prompt-lbl">' + key + '</td><td>:</td><td>' + data[key] + '</td></tr>';
+                        out += '<tr><td class="dnn-prompt-lbl">' + key + '</td><td>:</td><td>' + data[key] + '</td></tr>';
                     }
                 }
             }
@@ -655,7 +655,7 @@ var DnnPrompt = function () {
                 if (response.status == 200) {
                     return response.text();
                 }
-                return '<div class="kb-prompt-error">Unable to find help for that command</div>';
+                return '<div class="dnn-prompt-error">Unable to find help for that command</div>';
             }).then(function (html) {
                 self.writeHtml(html);
             }).catch(function () {
@@ -703,11 +703,11 @@ var DnnPrompt = function () {
 
 
             // Add CSS
-            self.ctrlEl.className = "kb-prompt";
-            self.outputEl.className = "kb-prompt-output";
-            self.inputElWrapper.className = "kb-prompt-input-wrapper";
-            self.inputEl.className = "kb-prompt-input";
-            self.busyEl.className = "kb-prompt-busy";
+            self.ctrlEl.className = "dnn-prompt";
+            self.outputEl.className = "dnn-prompt-output";
+            self.inputElWrapper.className = "dnn-prompt-input-wrapper";
+            self.inputEl.className = "dnn-prompt-input";
+            self.busyEl.className = "dnn-prompt-busy";
 
             self.inputEl.setAttribute("spellcheck", "false");
 
@@ -719,7 +719,7 @@ var DnnPrompt = function () {
 
             self.ctrlEl.style.display = "block";
 
-            var consoleHeight = Cookies.get("kb-prompt-console-height");
+            var consoleHeight = Cookies.get("dnn-prompt-console-height");
             if (consoleHeight) {
                 self.configConsole(['config', consoleHeight]);
             }
@@ -790,7 +790,7 @@ var DnnPrompt = function () {
 
             if (height) {
                 this.ctrlEl.style.height = height;
-                Cookies.set("kb-prompt-console-height", height);
+                Cookies.set("dnn-prompt-console-height", height);
             }
         }
     }, {
