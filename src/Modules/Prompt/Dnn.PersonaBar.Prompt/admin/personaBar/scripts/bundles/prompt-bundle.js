@@ -463,7 +463,7 @@ var DnnPrompt = function () {
                         console.log('runCmd::result.fieldOrder', result.fieldOrder);
                         console.log('runCmd::(result.fieldOrder', result['fieldOrder']);
                         var fieldOrder = result.fieldOrder;
-                        if (typeof fieldOrder === 'undefined' || fieldOrder.length === 0) {
+                        if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
                             fieldOrder = null;
                         }
 
