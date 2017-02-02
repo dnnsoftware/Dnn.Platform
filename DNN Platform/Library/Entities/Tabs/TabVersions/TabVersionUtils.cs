@@ -73,12 +73,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return false;
             }
 
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-            if (currentPortal == null)
+            var currentPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (currentPortalSettings == null)
             {
                 return false;
             }
-            var isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            var isAdminUser = currentPortalSettings.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortalSettings.AdministratorRoleName);
             if (isAdminUser)
             {
                 return true;
