@@ -190,22 +190,20 @@ class DnnPrompt {
         const output = result.output;
         const style = result.isError ? "error" : "ok";
         const data = result.data;
-
-        if (bRedirect) {
-          window.location.href = output;
-        } else {
-          if (data) {
-            const html = self.renderData(data);
-            self.writeHtml(html);
-            if (output) {
-              self.writeLine(output);
-            }
-          } else if (result.isHtml) {
-            self.writeHtml(output);
-          } else {
-            self.writeLine(output, style);
-          }
-        }
+                    var fieldOrder = (result.fieldOrder) ? result.fieldOrder : null;
+                    if (bRedirect) {
+                        window.location.href = output;
+                    } else {
+                        if (data) {
+                            var html = self.renderData(data);
+                            self.writeHtml(html);
+                            if (output) { self.writeLine(output); }
+                        } else if (result.isHtml) {
+                            self.writeHtml(output);
+                        } else {
+                            self.writeLine(output, style);
+                        }
+                    }
 
         if (result.mustReload) {
           self.writeHtml('<div class="kb-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
@@ -255,71 +253,71 @@ class DnnPrompt {
     this.newLine();
   }
 
-  renderData(data) {
-    if (data.length > 1) {
-      return this.renderTable(data);
-    } else if (data.length == 1) {
-      return this.renderObject(data[0]);
-    }
-    return "";
-  }
-
-  renderTable(rows) {
-    let out = '<table class="kb-prompt-tbl"><thead><tr>';
-    let linkFields = [];
-    // find any command link fields
-    for (let fld in rows[0]) {
-      if (fld.startsWith("__")) {
-        linkFields.push(fld.slice(2));
-      }
+    renderData(data, fieldOrder) {
+        if (data.length > 1) {
+            return this.renderTable(data, fieldOrder);
+        } else if (data.length == 1) {
+            return this.renderObject(data[0], fieldOrder);
+        }
+        return "";
     }
 
-    for (let i = 0; i < rows.length; i++) {
-      let row = rows[i];
-      if (i == 0) {
-        for (let key in row) {
-          if (key.startsWith("__")) {
-            out += `<th>${key.slice(2)}</th>`;
-          } else {
-            if (linkFields.indexOf(key) === -1) {
-              out += `<th>${key}</th>`;
+    renderTable(rows, fieldOrder) {
+        if (!rows || !rows.length) { return; }
+        var linkFields = this.extractLinkFields(rows[0]);
+        
+        var columns = fieldOrder;
+        if (!columns || !columns.length) {
+            // get columns from first row
+            columns = [];
+            var row = rows[0];
+            for (var key in row) {
+                if (!key.startsWith("__")) {
+                    columns.push(key);
+                }
             }
-          }
+        }
+
+        // build header
+        var out = '<table class="kb-prompt-tbl"><thead><tr>';
+        for (var col in columns) {
+            out += `<th>${columns[col]}</th>`;
         }
         out += '</tr></thead><tbody>';
-      }
-      out += '<tr>';
-      for (let key in row) {
-        if (key.startsWith("__")) {
-          out += `<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${row[key]}" title="${row[key].replace(/'/g, '&quot;')}">${row[key.slice(2)]}</a></td>`;
-        } else if (linkFields.indexOf(key) === -1) {
-          out += `<td>${row[key]}</td>`;
-        }
-      }
-      out += '</tr>'
 
-    }
-    out += '</tbody></table>'
-    return out;
-  }
-
-  renderObject(data) {
-    let linkFields = [];
-    // find any link fields
-    for (let fld in data) {
-      if (fld.startsWith("__")) {
-        linkFields.push(fld.slice(2));
-      }
-    }
-    let out = '<table class="kb-prompt-tbl">'
-    for (let key in data) {
-      if (key.startsWith("__")) {
-        out += `<tr><td class="kb-prompt-lbl">${key.slice(2)}</td><td>:</td><td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${data[key]}" title="${data[key].replace(/'/g, '&quot;')}">${data[key.slice(2)]}</a></td></tr>`;
-      } else {
-        if (linkFields.indexOf(key) === -1) {
-          out += `<tr><td class="kb-prompt-lbl">${key}</td><td>:</td><td>${data[key]}</td></tr>`;
+        // build rows
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            out += '<tr>';
+            // only use specified columns
+            for (var fld in columns) {
+                var fldName = columns[fld];
+                var fldVal = row[fldName] ? row[fldName] : '';
+                var cmd = row["__" + fldName] ? row["__" + fldName] : null;
+                if (cmd) {
+                    out += `<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td>`;
+                } else {
+                    out += `<td> ${fldVal}</td>`;
+                }
+            }
+            out += '</tr>'
         }
-      }
+        out += '</tbody></table>'
+        return out;
+    }
+
+    renderObject(data, fieldOrder) {
+        var linkFields = this.extractLinkFields(data);
+
+        var out = '<table class="kb-prompt-tbl">'
+        for (var key in data) {
+            if (key.startsWith("__")) {
+                out += `<tr><td class="kb-prompt-lbl">${key.slice(2)}</td><td>:</td><td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${data[key]}" title="${data[key].replace(/'/g, '&quot;')}">${data[key.slice(2)]}</a></td></tr>`;
+            } else {
+                if (linkFields.indexOf(key) === -1) {
+                    out += `<tr><td class="kb-prompt-lbl">${key}</td><td>:</td><td>${data[key]}</td></tr>`;
+                }
+            }
 
     }
     out += '</table>';
@@ -371,6 +369,19 @@ class DnnPrompt {
     this.writeLine('Prompt [' + this.version + '] Type \'help\' to get a list of commands', 'cmd');
     this.newLine();
   }
+    extractLinkFields(row) {
+        var linkFields = [];
+        if (!row || !row.length) { return linkFields; }
+
+        // find any command link fields
+        for (var fld in row) {
+            if (fld.startsWith("__")) {
+                linkFields.push(fld.slice(2));
+            }
+        }
+        return linkFields;
+    }
+
 
   createElements() {
     const self = this;

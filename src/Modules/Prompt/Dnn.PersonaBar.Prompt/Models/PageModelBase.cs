@@ -1,48 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dnn.PersonaBar.Prompt.Models
+﻿namespace Dnn.PersonaBar.Prompt.Models
 {
     public class PageModelBase
     {
-        // Order of properties is important for client-side display. Declare most important/useful properties first.
-        public int TabId;
-        public string __TabId;          // command link
-        public string Name;
-        public string Title;
-        public int ParentId;
-        public string __ParentId;       // command link
-        public string Skin;
-        public string Path;
-        public bool IncludeInMenu;
-        public string __IncludeInMenu;  // command link
-        public bool IsDeleted;
-        public string __IsDeleted;      // command link
+        public int TabId { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public int ParentId { get; set; }
+        public string Skin { get; set; }
+        public string Path { get; set; }
+        public bool IncludeInMenu { get; set; }
+        public bool IsDeleted { get; set; }
 
-        public static PageModelBase FromDnnTabInfo(DotNetNuke.Entities.Tabs.TabInfo tab)
+        #region Command Links
+        public string __TabId
         {
-            PageModelBase page = new PageModelBase()
+            get
             {
-                Name = tab.TabName,
-                ParentId = tab.ParentId,
-                Path = tab.TabPath,
-                TabId = tab.TabID,
-                Skin = tab.SkinSrc,
-                Title = tab.Title,
-                IncludeInMenu = tab.IsVisible,
-                IsDeleted = tab.IsDeleted,
-            };
-
-            page.__ParentId = string.Format("list-pages --parentid {0}", page.ParentId);
-            page.__TabId = string.Format("get-page {0}", page.TabId);
-            page.__IncludeInMenu = string.Format("list-pages --visible{0}", (page.IncludeInMenu ? "" : " false"));
-            page.__IsDeleted = string.Format("list-pages --deleted{0}", (page.IsDeleted ? "" : " false"));
-
-
-            return page;
+                return string.Format("get-page {0}", TabId);
+            }
         }
-    }
+        public string __ParentId
+        {
+            get
+            {
+                return string.Format("list-pages --parentid {0}", ParentId);
+            }
+        }
+        public string __IncludeInMenu
+        {
+            get
+            {
+                return string.Format("list-pages --visible{0}", (IncludeInMenu ? "" : " false"));
+            }
+        }
+        public string __IsDeleted
+        {
+            get
+            {
+                return string.Format("list-pages --deleted{0}", (IsDeleted ? "" : " false"));
+            }
+        }
+        #endregion
 
+        #region constructors
+        public PageModelBase()
+        {
+        }
+        public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
+        {
+            Name = tab.TabName;
+            ParentId = tab.ParentId;
+            Path = tab.TabPath;
+            TabId = tab.TabID;
+            Skin = tab.SkinSrc;
+            Title = tab.Title;
+            IncludeInMenu = tab.IsVisible;
+            IsDeleted = tab.IsDeleted;
+        }
+        #endregion
+    }
 }

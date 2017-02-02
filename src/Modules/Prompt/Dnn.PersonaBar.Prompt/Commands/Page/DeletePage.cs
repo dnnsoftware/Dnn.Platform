@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 else
                 {
                     // good to delete
-                    lst.Add(PageModel.FromDnnTabInfo(tab));
+                    lst.Add(new PageModel(tab));
                 }
             }
 

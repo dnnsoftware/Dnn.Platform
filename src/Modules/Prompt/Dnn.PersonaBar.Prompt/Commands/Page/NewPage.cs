@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                     {
                         return new ConsoleErrorResultModel(string.Format("Unable to retrieve newly created page with ID of '{0}'", newTabId));
                     }
-                    lstResults.Add(PageModel.FromDnnTabInfo(addedTab));
+                    lstResults.Add(new PageModel(addedTab));
                 }
                 else
                 {

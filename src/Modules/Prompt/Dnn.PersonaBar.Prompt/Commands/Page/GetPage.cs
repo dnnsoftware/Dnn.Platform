@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 var tab = tc.GetTab((int)PageId, PortalId);
                 if (tab != null)
                 {
-                    lst.Add(PageModel.FromDnnTabInfo(tab));
+                    lst.Add(new PageModel(tab));
                 }
 
             }
@@ -109,7 +109,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 }
 
                 if (tab != null)
-                    lst.Add(PageModel.FromDnnTabInfo(tab));
+                    lst.Add(new PageModel(tab));
             }
 
             return new ConsoleResultModel(string.Format("{0} page{1} found", lst.Count, (lst.Count != 1 ? "s" : ""))) { data = lst };

@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
                 TabCollection tabs = tc.GetTabsByPortal(PortalId);
                 foreach (KeyValuePair<int, TabInfo> kvp in tabs)
                 {
-                    lst.Add(PageModelBase.FromDnnTabInfo(kvp.Value));
+                    lst.Add(new PageModelBase(kvp.Value));
                 }
             }
 
@@ -216,7 +216,13 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             {
                 lstOut = lst;
             }
-            return new ConsoleResultModel(string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""))) { data = lstOut };
+
+            var msg = string.Format("{0} page{1} found", lstOut.Count, (lstOut.Count != 1 ? "s" : ""));
+            return new ConsoleResultModel(msg) {
+                data = lstOut,
+                fieldOrder = new string[] {
+                    "TabId", "ParentId", "Name", "Title", "Skin", "Path", "IncludeInMenu", "IsDeleted" }
+            };
         }
 
         private List<PageModelBase> GetPagesByParentId(int parentId)
@@ -226,7 +232,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
 
             foreach (TabInfo tab in lstTabs)
             {
-                lstOut.Add(PageModelBase.FromDnnTabInfo(tab));
+                lstOut.Add(new PageModelBase(tab));
             }
 
             return lstOut;
