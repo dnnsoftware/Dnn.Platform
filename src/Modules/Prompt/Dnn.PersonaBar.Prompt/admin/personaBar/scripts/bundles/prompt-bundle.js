@@ -460,13 +460,18 @@ var DnnPrompt = function () {
                         var output = result.output;
                         var style = result.isError ? "error" : "ok";
                         var data = result.data;
-                        var fieldOrder = result.fieldOrder ? result.fieldOrder : null;
+                        console.log('runCmd::result.fieldOrder', result.fieldOrder);
+                        console.log('runCmd::(result.fieldOrder', result['fieldOrder']);
+                        var fieldOrder = result.fieldOrder;
+                        if (typeof fieldOrder === 'undefined' || fieldOrder.length === 0) {
+                            fieldOrder = null;
+                        }
 
                         if (bRedirect) {
                             window.location.href = output;
                         } else {
                             if (data) {
-                                var html = self.renderData(data);
+                                var html = self.renderData(data, fieldOrder);
                                 self.writeHtml(html);
                                 if (output) {
                                     self.writeLine(output);
@@ -533,6 +538,7 @@ var DnnPrompt = function () {
     }, {
         key: 'renderData',
         value: function renderData(data, fieldOrder) {
+            console.log('renderData::fieldOrder', fieldOrder);
             if (data.length > 1) {
                 return this.renderTable(data, fieldOrder);
             } else if (data.length == 1) {
@@ -543,6 +549,7 @@ var DnnPrompt = function () {
     }, {
         key: 'renderTable',
         value: function renderTable(rows, fieldOrder) {
+            console.log('renderTable::fieldOrder', fieldOrder);
             if (!rows || !rows.length) {
                 return;
             }
@@ -550,6 +557,7 @@ var DnnPrompt = function () {
 
             var columns = fieldOrder;
             if (!columns || !columns.length) {
+                console.log('columns', columns);
                 // get columns from first row
                 columns = [];
                 var row = rows[0];

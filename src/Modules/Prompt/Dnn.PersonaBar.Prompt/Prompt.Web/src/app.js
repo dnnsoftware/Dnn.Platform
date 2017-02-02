@@ -188,13 +188,18 @@ class DnnPrompt {
                     const output = result.output;
                     const style = result.isError ? "error" : "ok";
                     const data = result.data;
-                    const fieldOrder = (result.fieldOrder) ? result.fieldOrder : null;
+                    console.log('runCmd::result.fieldOrder', result.fieldOrder);
+                    console.log('runCmd::(result.fieldOrder', (result['fieldOrder']));
+                    let fieldOrder = result.fieldOrder;
+                    if (typeof fieldOrder === 'undefined' || fieldOrder.length === 0) {
+                        fieldOrder = null;
+                    } 
 
                     if (bRedirect) {
                         window.location.href = output;
                     } else {
                         if (data) {
-                            var html = self.renderData(data);
+                            var html = self.renderData(data, fieldOrder);
                             self.writeHtml(html);
                             if (output) { self.writeLine(output); }
                         } else if (result.isHtml) {
@@ -253,6 +258,7 @@ class DnnPrompt {
     }
 
     renderData(data, fieldOrder) {
+        console.log('renderData::fieldOrder', fieldOrder);
         if (data.length > 1) {
             return this.renderTable(data, fieldOrder);
         } else if (data.length == 1) {
@@ -262,11 +268,13 @@ class DnnPrompt {
     }
 
     renderTable(rows, fieldOrder) {
+        console.log('renderTable::fieldOrder', fieldOrder);
         if (!rows || !rows.length) { return; }
         const linkFields = this.extractLinkFields(rows[0]);
 
         var columns = fieldOrder;
         if (!columns || !columns.length) {
+            console.log('columns', columns);
             // get columns from first row
             columns = [];
             const row = rows[0];
