@@ -23,15 +23,26 @@
 
 /* Input
 ----------------------------------*/
+.kb-prompt-input-wrapper {
+    position: relative;
+}
 .kb-prompt-input {
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: 98%;
     background: transparent;
     border: none;
     color: #8AE234;
     margin: 0;
     padding: 0;
     outline: none; /* Get rid of Chrome focus border */
+    position: absolute;
+    left: 17px;
+}
+.kb-prompt-input-wrapper::before {
+    content: ">";
+    color: #8AE234;
+    margin-left: 3px;
+    display: inline-block;
 }
 
 /* remove MS Edge clear button */

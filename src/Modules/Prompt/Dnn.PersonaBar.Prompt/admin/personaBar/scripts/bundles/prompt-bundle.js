@@ -63,11 +63,25 @@
 /******/ 	__webpack_require__.p = "/scripts/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.commands = function () {
+  return [{ name: 'cls', flags: [] }, { name: 'console', flags: [] }, { name: 'reload', flags: [] }, { name: 'get-module', flags: ['id'] }, { name: 'list-modules', flags: ['name', 'title', 'all'] }, { name: 'get-page', flags: ['id', 'name', 'parentid'] }, { name: 'list-pages', flags: ['parentid'] }, { name: 'set-page', flags: ['description', 'id', 'keywords', 'name', 'title', 'visible'] }, { name: 'get-portal', flags: ['id'] }, { name: 'list-roles', flags: [] }, { name: 'new-role', flags: ['autoassign', 'description', 'name', 'public'] }, { name: 'set-role', flags: ['description', 'id', 'name', 'public'] }, { name: 'get-task', flags: ['id'] }, { name: 'list-tasks', flags: ['enabled', 'name'] }, { name: 'set-task', flags: ['enabled', 'id'] }, { name: 'add-roles', flags: ['end', 'id', 'roles', 'start'] }, { name: 'delete-user', flags: ['id', 'notify'] }, { name: 'get-user', flags: ['email', 'id', 'username'] }, { name: 'list-users', flags: ['email', 'role', 'email'] }, {
+    name: 'new-user',
+    flags: ['approved', 'displayname', 'email', 'firstname', 'lastname', 'notify', 'password', 'username']
+  }, { name: 'purge-user', flags: ['id'] }, { name: 'reset-password', flags: ['id', 'notify'] }, { name: 'restore-user', flags: ['id'] }];
+};
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -243,13 +257,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -259,8 +273,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Cookies = __webpack_require__(0);
-var Commands = __webpack_require__(3);
+var Cookies = __webpack_require__(1);
+var Commands = __webpack_require__(0);
 
 var DnnPrompt = function () {
     function DnnPrompt(vsn, wrapper, util, params) {
@@ -681,9 +695,9 @@ var DnnPrompt = function () {
             var doc = document;
 
             // Create and store CLI elements
-            //self.ctrlEl = doc.createElement("div"); //CLI control outer frame
             self.ctrlEl = doc.getElementById("prompt"); //CLI control outer frame
             self.outputEl = doc.createElement("div"); //div holding cosole output
+            self.inputElWrapper = doc.createElement("div"); // div holding the input control
             self.inputEl = doc.createElement("input"); //Input control
             self.busyEl = doc.createElement("div"); // Indicate busy/loading
 
@@ -691,6 +705,7 @@ var DnnPrompt = function () {
             // Add CSS
             self.ctrlEl.className = "kb-prompt";
             self.outputEl.className = "kb-prompt-output";
+            self.inputElWrapper.className = "kb-prompt-input-wrapper";
             self.inputEl.className = "kb-prompt-input";
             self.busyEl.className = "kb-prompt-busy";
 
@@ -698,7 +713,8 @@ var DnnPrompt = function () {
 
             // Assemble HTML
             self.ctrlEl.appendChild(self.outputEl);
-            self.ctrlEl.appendChild(self.inputEl);
+            self.inputElWrapper.appendChild(self.inputEl);
+            self.ctrlEl.appendChild(self.inputElWrapper);
             self.ctrlEl.appendChild(self.busyEl);
 
             self.ctrlEl.style.display = "block";
@@ -713,7 +729,7 @@ var DnnPrompt = function () {
         value: function busy(b) {
             this.isBusy = b;
             this.busyEl.style.display = b ? "block" : "none";
-            this.inputEl.style.display = b ? "none" : "block";
+            this.inputEl.style.display = b ? "none" : "inline-block";
         }
     }, {
         key: 'isFlag',
@@ -812,21 +828,7 @@ var DnnPrompt = function () {
 }();
 
 window.DnnPrompt = DnnPrompt;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.commands = function () {
-  return [{ name: 'cls', flags: [] }, { name: 'console', flags: [] }, { name: 'reload', flags: [] }, { name: 'get-module', flags: ['id'] }, { name: 'list-modules', flags: ['name', 'title', 'all'] }, { name: 'get-page', flags: ['id', 'name', 'parentid'] }, { name: 'list-pages', flags: ['parentid'] }, { name: 'set-page', flags: ['description', 'id', 'keywords', 'name', 'title', 'visible'] }, { name: 'get-portal', flags: ['id'] }, { name: 'list-roles', flags: [] }, { name: 'new-role', flags: ['autoassign', 'description', 'name', 'public'] }, { name: 'set-role', flags: ['description', 'id', 'name', 'public'] }, { name: 'get-task', flags: ['id'] }, { name: 'list-tasks', flags: ['enabled', 'name'] }, { name: 'set-task', flags: ['enabled', 'id'] }, { name: 'add-roles', flags: ['end', 'id', 'roles', 'start'] }, { name: 'delete-user', flags: ['id', 'notify'] }, { name: 'get-user', flags: ['email', 'id', 'username'] }, { name: 'list-users', flags: ['email', 'role', 'email'] }, {
-    name: 'new-user',
-    flags: ['approved', 'displayname', 'email', 'firstname', 'lastname', 'notify', 'password', 'username']
-  }, { name: 'purge-user', flags: ['id'] }, { name: 'reset-password', flags: ['id', 'notify'] }, { name: 'restore-user', flags: ['id'] }];
-};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ })
 /******/ ]);

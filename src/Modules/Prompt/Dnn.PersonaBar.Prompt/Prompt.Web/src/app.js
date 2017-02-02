@@ -395,9 +395,9 @@ class DnnPrompt {
         const doc = document;
 
         // Create and store CLI elements
-        //self.ctrlEl = doc.createElement("div"); //CLI control outer frame
         self.ctrlEl = doc.getElementById("prompt"); //CLI control outer frame
         self.outputEl = doc.createElement("div"); //div holding cosole output
+        self.inputElWrapper = doc.createElement("div"); // div holding the input control
         self.inputEl = doc.createElement("input"); //Input control
         self.busyEl = doc.createElement("div"); // Indicate busy/loading
 
@@ -405,6 +405,7 @@ class DnnPrompt {
         // Add CSS
         self.ctrlEl.className = "kb-prompt";
         self.outputEl.className = "kb-prompt-output";
+        self.inputElWrapper.className = "kb-prompt-input-wrapper";
         self.inputEl.className = "kb-prompt-input";
         self.busyEl.className = "kb-prompt-busy"
 
@@ -412,7 +413,8 @@ class DnnPrompt {
 
         // Assemble HTML
         self.ctrlEl.appendChild(self.outputEl);
-        self.ctrlEl.appendChild(self.inputEl);
+        self.inputElWrapper.appendChild(self.inputEl);
+        self.ctrlEl.appendChild(self.inputElWrapper);
         self.ctrlEl.appendChild(self.busyEl);
 
         self.ctrlEl.style.display = "block";
@@ -426,7 +428,7 @@ class DnnPrompt {
     busy(b) {
         this.isBusy = b;
         this.busyEl.style.display = b ? "block" : "none";
-        this.inputEl.style.display = b ? "none" : "block";
+        this.inputEl.style.display = b ? "none" : "inline-block";
     }
 
     isFlag(token) {
