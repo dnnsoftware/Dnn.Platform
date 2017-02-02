@@ -242,9 +242,6 @@
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dnn.PersonaBar.Prompt.dnn" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="app.config" />
   </ItemGroup>
   <ItemGroup>
