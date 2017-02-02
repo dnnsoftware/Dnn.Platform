@@ -70,12 +70,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         public ConsoleResultModel Run()
         {
             RoleController rc = new RoleController();
-            List<RoleInfoModel> lst = new List<RoleInfoModel>();
+            List<RoleModel> lst = new List<RoleModel>();
 
             var role = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
             if (role != null)
             {
-                lst.Add(RoleInfoModel.FromDnnRoleInfo(role));
+                lst.Add(new RoleModel(role));
             }
             else
             {

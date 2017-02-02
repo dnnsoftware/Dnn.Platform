@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
 
             try
             {
-                List<RoleInfoModel> lstResults = new List<RoleInfoModel>();
+                List<RoleModel> lstResults = new List<RoleModel>();
 
                 // only act if role doesn't yet exist
                 if (Prompt.Utilities.RoleExists(RoleName, PortalId))
@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
                 var newRole = Prompt.Utilities.CreateRole(RoleName, PortalId, Description, (bool)IsPublic, (bool)AutoAssign);
                 if (newRole != null)
                 {
-                    lstResults.Add(RoleInfoModel.FromDnnRoleInfo(newRole));
+                    lstResults.Add(new RoleModel(newRole));
                 }
 
                 return new ConsoleResultModel("Role successfully created.") { data = lstResults };

@@ -135,8 +135,8 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
                 // update the role
                 var updatedRole = Prompt.Utilities.UpdateRole(role);
 
-                var lstResults = new List<RoleInfoModel>();
-                lstResults.Add(RoleInfoModel.FromDnnRoleInfo(updatedRole));
+                var lstResults = new List<RoleModel>();
+                lstResults.Add(new RoleModel(updatedRole));
                 return new ConsoleResultModel("Role has been updated") { data = lstResults };
             }
             catch (Exception ex)

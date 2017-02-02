@@ -171,7 +171,7 @@
     <Compile Include="Models\PortalModelBase.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleInfoModel.cs" />
-    <Compile Include="Models\RoleInfoModelSlim.cs" />
+    <Compile Include="Models\RoleModelBase.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\TaskModelSlim.cs" />
     <Compile Include="Models\UserInfoModel.cs" />

@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         public ConsoleResultModel Run()
         {
             RoleController rc = new RoleController();
-            List<RoleInfoModel> lst = new List<RoleInfoModel>();
+            List<RoleModel> lst = new List<RoleModel>();
 
             var role = RoleController.Instance.GetRoleById(PortalId, (int)RoleId);
 
@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
                 try
                 {
                     rc.DeleteRole(role);
-                    lst.Add(RoleInfoModel.FromDnnRoleInfo(role));
+                    lst.Add(new RoleModel(role));
                     return new ConsoleResultModel(string.Format("Successfully deleted role '{0}' ({1})", role.RoleName, role.RoleID));
                 }
                 catch (Exception ex)

@@ -28,14 +28,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         public ConsoleResultModel Run()
         {
             RoleController rc = new RoleController();
-            List<RoleInfoModelSlim> lst = new List<RoleInfoModelSlim>();
+            List<RoleModelBase> lst = new List<RoleModelBase>();
 
             var results = rc.GetRoles(PortalId);
             if (results != null)
             {
                 foreach (RoleInfo role in results)
                 {
-                    lst.Add(RoleInfoModelSlim.FromDnnRoleInfo(role));
+                    lst.Add(new RoleModelBase(role));
                 }
             }
 
