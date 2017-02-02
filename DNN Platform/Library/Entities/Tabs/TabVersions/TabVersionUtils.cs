@@ -74,6 +74,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+            if (currentPortal == null)
+            {
+                return false;
+            }
             var isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
             if (isAdminUser)
             {
