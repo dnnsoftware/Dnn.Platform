@@ -167,8 +167,8 @@
     <Compile Include="Models\ModuleInstanceModel.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\PageModelBase.cs" />
-    <Compile Include="Models\PortalInfoModel.cs" />
-    <Compile Include="Models\PortalInfoModelSlim.cs" />
+    <Compile Include="Models\PortalModel.cs" />
+    <Compile Include="Models\PortalModelBase.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleInfoModel.cs" />
     <Compile Include="Models\RoleInfoModelSlim.cs" />

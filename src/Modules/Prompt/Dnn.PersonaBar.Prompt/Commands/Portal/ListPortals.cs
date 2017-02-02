@@ -41,12 +41,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.Portal
         public ConsoleResultModel Run()
         {
             var pc = PortalController.Instance;
-            List<PortalInfoModelSlim> lst = new List<PortalInfoModelSlim>();
+            List<PortalModelBase> lst = new List<PortalModelBase>();
 
             var alPortals = pc.GetPortals();
             foreach (PortalInfo portal in alPortals)
             {
-                lst.Add(PortalInfoModelSlim.FromDnnPortalInfo(portal));
+                lst.Add(new PortalModelBase(portal));
             }
 
             return new ConsoleResultModel(string.Empty) { data = lst };
