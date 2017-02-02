@@ -333,7 +333,7 @@ class DnnPrompt {
 
     renderHelp(tokens) {
         const self = this;
-        let path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/help/'
+        let path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/'
         if (!tokens || tokens.length == 1) {
             // render list of help commands
             path += 'index.html';

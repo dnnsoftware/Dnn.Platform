@@ -631,7 +631,7 @@ var DnnPrompt = function () {
         key: 'renderHelp',
         value: function renderHelp(tokens) {
             var self = this;
-            var path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/help/';
+            var path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/';
             if (!tokens || tokens.length == 1) {
                 // render list of help commands
                 path += 'index.html';
