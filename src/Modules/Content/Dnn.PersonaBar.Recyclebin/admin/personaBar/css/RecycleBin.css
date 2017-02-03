@@ -213,7 +213,7 @@ div#recycleBin-header.socialpanelheader .actions {
 /*Recycle Bin Grid*/
 
 .recycleBinContainer table.dnnRBGrid {
-    width: 100% !important;
+    width: 98% !important;
     margin-bottom: 20px;
     border: 1px solid #c9c9c9;
     border-collapse: collapse;
