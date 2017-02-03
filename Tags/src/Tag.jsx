@@ -9,9 +9,9 @@ export default class Tag extends Component {
             return false;
         }
         return (
-            <div className="dnn-uicommon-tag-input">
+            <div className={"dnn-uicommon-tag-input" + (this.props.enabled ? "": " disabled")}>
                 <span>{this.props.tag}</span>
-                <span className="close" onClick={this.props.onRemove }>×</span>
+                {this.props.enabled && <span className="close" onClick={this.props.onRemove }>×</span>}
             </div>
         );
     }
@@ -19,5 +19,10 @@ export default class Tag extends Component {
 
 Tag.propTypes = {
     tag: PropTypes.string.isRequired,
-    onRemove: PropTypes.func.isRequired
+    onRemove: PropTypes.func.isRequired,
+    enabled: PropTypes.bool.isRequired
+};
+
+Tag.defaultProps = {
+    enabled: true
 };

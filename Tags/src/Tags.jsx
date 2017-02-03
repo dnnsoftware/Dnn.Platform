@@ -116,7 +116,7 @@ export default class Tags extends Component {
 
     render() {
         const Tags = this.props.tags.map((tag, index) => {
-            return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) }/>;
+            return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) } enabled={this.props.enabled} />;
         });
         const inputStyle = {
             width: this.state.inputWidth,
@@ -126,6 +126,13 @@ export default class Tags extends Component {
 
         let className = "dnn-uicommon-tags-field-input" +
             (this.state.tagInputActive ? " active " : "");
+
+        const opts = {};
+
+        if(!this.props.enabled) {
+            opts["disabled"] = "disabled";
+            className += " disabled";
+        }
         
         return (
             <div className={className} 
@@ -143,6 +150,7 @@ export default class Tags extends Component {
                         onChange={this.onChange.bind(this) }
                         onFocus={this.onTagFocus.bind(this) }
                         onBlur={this.onTagBlur.bind(this) }
+                        {...opts}
                        />
                 </div>                
             </div>
@@ -153,5 +161,10 @@ export default class Tags extends Component {
 Tags.propTypes = {
     tags: PropTypes.array.isRequired,
     onUpdateTags: PropTypes.func.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    enabled: PropTypes.bool.isRequired
+};
+
+Tags.defaultProps = {
+    enabled: true
 };
