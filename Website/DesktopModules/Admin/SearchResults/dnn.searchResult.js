@@ -524,7 +524,7 @@
             var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
             var afterCtrlVal = afterCtrl.val();
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
             var scopeCtrlItems = scopeCtrl.get_items();
             var scopeList = [];
             for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
@@ -560,15 +560,15 @@
         $('#dnnSearchResultAdvancedClear').on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
             var afterCtrlItem = afterCtrl.get_items().getItem(0);
             afterCtrlItem.select();
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
             var scopeCtrlItems = scopeCtrl.get_items();
             for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
                 var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.set_checked(true);
+                scopeCtrlItem.select();
             }
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');
@@ -592,15 +592,15 @@
         $('#dnnSearchResult_dnnSearchBox_input').prev().on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedDates);
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
             var afterCtrlItem = afterCtrl.get_items().getItem(0);
             afterCtrlItem.select();
 
-            var scopeCtrl = $find(dnn.searchResult.defaultSettings.comboAdvancedScope);
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
             var scopeCtrlItems = scopeCtrl.get_items();
             for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
                 var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.set_checked(true);
+                scopeCtrlItem.select();
             }
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');

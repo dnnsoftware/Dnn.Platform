@@ -25,13 +25,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
@@ -58,12 +57,11 @@ namespace DotNetNuke.Modules.SearchResults
                         var portalList = LoadPortalsList().ToList();
                         if (portalList.Any())
                         {
-                            //DNN-9145 TODO
-                            //foreach (var portal in portalList)
-                            //{
-                            //    var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
-                            //    comboBoxPortals.Items.Add(item);
-                            //}
+                            foreach (var portal in portalList)
+                            {
+                                var item = new ListItem(portal[0], portal[1]) {Selected = list.Contains(portal[1])};
+                                comboBoxPortals.Items.Add(item);
+                            }
                         }
                         else
                         {
@@ -75,12 +73,11 @@ namespace DotNetNuke.Modules.SearchResults
                         var portalList = LoadPortalsList().ToList();
                         if (portalList.Any())
                         {
-                            //DNN-9145 TODO
-                            //foreach (var portal in portalList)
-                            //{
-                            //    var item = new DnnComboBoxItem(portal[0], portal[1]) { Checked = PortalId.ToString() == portal[1] };
-                            //    comboBoxPortals.Items.Add(item);
-                            //}
+                            foreach (var portal in portalList)
+                            {
+                                var item = new ListItem(portal[0], portal[1]) { Selected = PortalId.ToString() == portal[1] };
+                                comboBoxPortals.Items.Add(item);
+                            }
                         }
                         else
                         {
@@ -95,9 +92,8 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            //DNN-9145 TODO
-                            //var item = new DnnComboBoxItem(filter, filter) {Checked = list.Contains(filter)};
-                            //comboBoxFilters.Items.Add(item);
+                            var item = new ListItem(filter, filter) {Selected = list.Contains(filter)};
+                            comboBoxFilters.Items.Add(item);
                         }
                     }
                     else
@@ -105,9 +101,8 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            //DNN-9145 TODO
-                            //var item = new DnnComboBoxItem(filter, filter) {Checked = true};
-                            //comboBoxFilters.Items.Add(item);
+                            var item = new ListItem(filter, filter) {Selected = true};
+                            comboBoxFilters.Items.Add(item);
                         }
                     }
 

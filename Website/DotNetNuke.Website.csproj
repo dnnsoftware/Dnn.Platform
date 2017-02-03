@@ -642,13 +642,6 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
-    <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.cs">
-      <DependentUpon>searchadmin.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DesktopModules\Admin\SearchAdmin\SearchAdmin.ascx.designer.cs">
-      <DependentUpon>searchadmin.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx.cs">
       <DependentUpon>ResultsSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1564,9 +1557,6 @@
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\Logoff.ascx" />
     <Content Include="DesktopModules\Admin\Authentication\module.css" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\dnn.SearchAdmin.js" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\module.css" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\searchadmin.ascx" />
     <Content Include="DesktopModules\Admin\SearchResults\dnn.searchResult.js" />
     <Content Include="DesktopModules\Admin\SearchResults\module.css" />
     <Content Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx" />
@@ -3265,7 +3255,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DesktopModules\Admin\Authentication\App_LocalResources\Logoff.ascx.resx" />
-    <Content Include="DesktopModules\Admin\SearchAdmin\App_LocalResources\SearchAdmin.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\ResultsSettings.ascx.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchableModules.resx" />
     <Content Include="DesktopModules\Admin\SearchResults\App_LocalResources\SearchResults.ascx.resx" />

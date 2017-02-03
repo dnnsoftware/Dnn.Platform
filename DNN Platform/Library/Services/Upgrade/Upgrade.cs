@@ -5325,6 +5325,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "7.4.2":
                             UpgradeToVersion742();
                             break;
+                        case "9.1.0":
+                            UpgradeToVersion910();
+                            break;
                     }
                 }
                 else
@@ -5461,6 +5464,32 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//DynamicContentTypeManager");
             UninstallPackage("Dnn.DynamicContentManager", "Module");
             UninstallPackage("Dnn.DynamicContentViewer", "Module");
+        }
+
+        private static void UpgradeToVersion910()
+        {
+            RemoveAdminPages("//Admin//Extensions");
+            RemoveAdminPages("//Admin//FileManagement");
+            RemoveAdminPages("//Admin//UserAccounts");
+            RemoveHostPage("File Management");
+
+            // Normal Modules
+            UninstallPackage("DotNetNuke.MobileManagement", "Module");
+            UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
+
+            // Admin Modules
+            UninstallPackage("DotNetNuke.Google Analytics", "Module");
+            UninstallPackage("DotNetNuke.Languages", "Module");
+            UninstallPackage("DotNetNuke.Lists", "Module");
+            UninstallPackage("DotNetNuke.LogViewer", "Module");
+            UninstallPackage("DotNetNuke.RecycleBin", "Module");
+            UninstallPackage("DotNetNuke.Sitemap", "Module");
+            UninstallPackage("DotNetNuke.SiteWizard", "Module");
+            UninstallPackage("Dnn.Themes", "Module"); // aka. Skin Management
+            UninstallPackage("DotNetNuke.Tabs", "Module");
+
+            // at last remove "/Admin" / "/Host" pages
+            UninstallPackage("Dnn.Modules.Console", "Module");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

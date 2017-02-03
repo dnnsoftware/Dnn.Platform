@@ -15,6 +15,7 @@ DesktopModules\Admin\Portals\
 DesktopModules\Admin\RecycleBin\
 DesktopModules\Admin\Scheduler\
 DesktopModules\Admin\Sitemap\
+DesktopModules\Admin\SearchAdmin\
 DesktopModules\Admin\SiteWizard\
 DesktopModules\Admin\SkinManagement\
 DesktopModules\Admin\Sql\

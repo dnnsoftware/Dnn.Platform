@@ -335,8 +335,8 @@
     <Compile Include="UI\WebControls\Extensions\ListControlExtensions.cs" />
     <Compile Include="UI\WebControls\Extensions\WebControlExtensions.cs" />
     <Compile Include="UI\WebControls\IDnnRibbonBarTool.cs" />
+    <Compile Include="UI\WebControls\Internal\DnnCheckBoxList.cs" />
     <Compile Include="UI\WebControls\Internal\DnnComboBox.cs" />
-    <Compile Include="UI\WebControls\Internal\DnnComboBoxItem.cs" />
     <Compile Include="UI\WebControls\Internal\DnnDatePicker.cs" />
     <Compile Include="UI\WebControls\Internal\DnnDateTimePicker.cs" />
     <Compile Include="UI\WebControls\Internal\DnnFormComboBoxItem.cs" />

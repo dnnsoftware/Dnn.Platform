@@ -354,13 +354,14 @@ namespace DotNetNuke.Modules.SearchResults
 
             CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 
-            //DNN-9145 TODO
             foreach (string o in SearchContentSources)
             {
-                var item = new ListItem(o, o) {};
+                //DNN-9145 TODO
+                var item = new ListItem(o, o);//{Selected = CheckedScopeItem(o)};
                 SearchScopeList.Items.Add(item);
             }
 
+            //DNN-9145 TODO
             //SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
             //    Localization.GetResourceFile(this, MyFileName));
 

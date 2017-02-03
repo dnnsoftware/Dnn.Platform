@@ -90,8 +90,9 @@
 </div>
 
 <script type="text/javascript">
+    //DNN-9145 TODO: fix event handler
     function dnnSearchResultScopeItemChecking(sender, e) {
-        var combo = $find('<%= SearchScopeList.ClientID %>');
+        var combo = $('#<%= SearchScopeList.ClientID %>');
         var items = combo.get_items();
         var countOfChecked = 0;
         for (var i = 0; i < items.get_count(); i++) {
@@ -106,7 +107,7 @@
     }
 
     function dnnSearchResultPageSizeChanged(sender, e) {
-        var combo = $find('<%= ResultsPerPageList.ClientID %>');
+        var combo = $('#<%= ResultsPerPageList.ClientID %>');
         var pageSize = combo.get_value();
         if (typeof dnn != 'undefined' && dnn.searchResult) {
             dnn.searchResult.queryOptions.pageSize = pageSize;
