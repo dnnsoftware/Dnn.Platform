@@ -124,13 +124,14 @@ export default class Tags extends Component {
         };
         const placeholderText =  this.state.tags.length ? "" : "Add Tags";
 
-        const className = "dnn-uicommon-tags-field-input" +
+        let className = "dnn-uicommon-tags-field-input" +
             (this.state.tagInputActive ? " active " : "");
 
         const opts = {};
 
         if(!this.props.enabled) {
             opts["disabled"] = "disabled";
+            className += " disabled";
         }
         
         return (
