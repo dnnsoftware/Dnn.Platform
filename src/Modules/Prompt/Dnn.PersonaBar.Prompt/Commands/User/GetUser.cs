@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             {
                 UserInfo foundUser = (UserInfo)results[0];
                 // ensure users cannot get info on super user accounts
-                if (!foundUser.IsSuperUser)
+                if (User.IsSuperUser || !foundUser.IsSuperUser)
                 {
                     lst.Add(new UserModel((UserInfo)results[0]));
                 }
