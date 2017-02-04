@@ -5478,7 +5478,6 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
 
             // Admin Modules
-            UninstallPackage("DotNetNuke.Google Analytics", "Module");
             UninstallPackage("DotNetNuke.Languages", "Module");
             UninstallPackage("DotNetNuke.Lists", "Module");
             UninstallPackage("DotNetNuke.LogViewer", "Module");
