@@ -122,7 +122,12 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             // this is a singular command. Only return the first result
             if (results.Count > 0)
             {
-                lst.Add(new UserModel((UserInfo)results[0]));
+                UserInfo foundUser = (UserInfo)results[0];
+                // ensure users cannot get info on super user accounts
+                if (!foundUser.IsSuperUser)
+                {
+                    lst.Add(new UserModel((UserInfo)results[0]));
+                }
             }
 
             if (lst.Count > 0)
