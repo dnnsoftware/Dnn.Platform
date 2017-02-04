@@ -59,6 +59,8 @@ $(document).ready(function () {
                 searchActive == true && (searchToggleIcon.click())
             }
         }), searchInput.keyup(buttonUp), $("a#search-action").click(function () {
-            $("#search-top").toggleClass("active")
+            var searchTop = $("#search-top");
+            searchTop.toggleClass("active");
+            searchTop.hasClass("active") ? searchTop.css("overflow", "visible") : searchTop.css("overflow", "hidden");
         })
 });
