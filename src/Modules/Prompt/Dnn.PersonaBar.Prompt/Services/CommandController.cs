@@ -21,14 +21,14 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : BaseController
     {
         public static Dictionary<string, Type> Commands { get; private set; } 
-        public static Dictionary<string, ConsoleCommandAttribute> CommandAttributes { get; private set; } 
+        public static SortedDictionary<string, ConsoleCommandAttribute> CommandAttributes { get; private set; } 
 
         public CommandController()
         {
             try
             {
                 Commands = new Dictionary<string, Type>();
-                CommandAttributes = new Dictionary<string, ConsoleCommandAttribute>();
+                CommandAttributes = new SortedDictionary<string, ConsoleCommandAttribute>();
                 foreach(var cmd in GetAllCommands())
                 {
                     var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault();
@@ -48,7 +48,13 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         }
 
-        [ValidateAntiForgeryToken()]
+        [HttpGet]
+        public HttpResponseMessage List()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, CommandAttributes.Values);
+        }
+
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public HttpResponseMessage Cmd([FromBody] CommandInputModel command)
         {
