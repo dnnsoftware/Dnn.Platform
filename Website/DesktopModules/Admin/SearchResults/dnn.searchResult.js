@@ -657,7 +657,6 @@
             dnn.searchResult.generateAdvancedSearchTerm();
         });
 
-
         if (dnn.searchResult.queryOptions.sortOption === 1) {
             $('.dnnSearchResultSortOptions > li').removeClass('active');
             $('.dnnSearchResultSortOptions > li > a[href="#byDate"]').parent().addClass('active');
