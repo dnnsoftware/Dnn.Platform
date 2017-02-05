@@ -38,6 +38,15 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var args = command.GetArgs();
                 var cmdName = args.First().ToUpper();
                 var Commands = CommandRepository.Instance.GetCommands();
+                if (!Commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                {
+                    var seek = Commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
+                    // if there is a command which matches then we assume the user meant that namespace
+                    if (seek != null)
+                    {
+                        cmdName = string.Format("{0}.{1}", seek.NameSpace.ToUpper(), cmdName);
+                    }
+                }
 
                 // if no command found notify
                 if (!Commands.ContainsKey(cmdName))
