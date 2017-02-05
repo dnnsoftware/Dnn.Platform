@@ -107,3 +107,6 @@ npm-debug.log
 
 [Ww]ebsite/
 sed.exe.stackdump
+/.vs
+/src/Modules/Prompt/Dnn.PersonaBar.Prompt/copy.bat
+/src/Modules/Prompt/Dnn.PersonaBar.Prompt/Prompt.Web/help

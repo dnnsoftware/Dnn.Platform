@@ -1,0 +1,93 @@
+<!-- get-role -->
+<section class="dnn-prompt-inline-help">
+  <a name="get-role"></a>
+  <h3 class="mono">get-role</h3>
+  <p class="lead">Retrieves the details of a given DNN Security Role. </p>
+
+  <h4>Options</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="mono">--id</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td></td>
+      <td>The ID of the security role. This value is required. However, if you pass the id as the first argument after the command, you do not need to explicitly use the <span class="mono">--id</span> flag.</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h4>Get A DNN Security Role</h4>
+  <code class="block">
+    get-role 11
+  </code>
+
+  <h4>Results</h4>
+  <table class="command-result-tbl">
+    <tr>
+      <td>RoleId</td><td>:</td><td>11</td>
+    </tr>
+    <tr>
+      <td>RoleGroupId</td><td>:</td><td>-1</td>
+    </tr>
+    <tr>
+      <td>RoleName</td>
+      <td>:</td>
+      <td>Public</td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td>:</td>
+      <td>Role for all users</td>
+    </tr>
+    <tr>
+      <td>IsPublic</td>
+      <td>:</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>AutoAssign</td>
+      <td>:</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>UserCount</td>
+      <td>:</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>CreatedDate</td>
+      <td>:</td>
+      <td>2016-12-31T14:53:44.033</td>
+    </tr>
+    <tr>
+      <td>CreatedBy</td>
+      <td>:</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>ModifiedDate</td>
+      <td>:</td>
+      <td>2017-01-02T08:07:39.233</td>
+    </tr>
+    <tr>
+      <td>ModifiedBy</td>
+      <td>:</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="3">1 role found</td>
+    </tr>
+  </table>
+
+</section>
+
