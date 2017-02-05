@@ -23,8 +23,9 @@
 
 using System;
 using System.IO;
+using System.Text;
 
-#if NET_2_0
+#if NET_2_0 || MONO_2_0
 using System.Net.Mail;
 #else
 using System.Web.Mail;
@@ -110,7 +111,7 @@ namespace log4net.Appender
 		public string To
 		{
 			get { return m_to; }
-			set { m_to = value; }
+			set { m_to = MaybeTrimSeparators(value); }
 		}
 
         /// <summary>
@@ -136,7 +137,7 @@ namespace log4net.Appender
         public string Cc
         {
             get { return m_cc; }
-            set { m_cc = value; }
+            set { m_cc = MaybeTrimSeparators(value); }
         }
 
         /// <summary>
@@ -154,7 +155,7 @@ namespace log4net.Appender
         public string Bcc
         {
             get { return m_bcc; }
-            set { m_bcc = value; }
+            set { m_bcc = MaybeTrimSeparators(value); }
         }
 
 		/// <summary>
@@ -323,7 +324,7 @@ namespace log4net.Appender
 			set { m_mailPriority = value; }
 		}
 
-#if NET_2_0
+#if NET_2_0 || MONO_2_0
         /// <summary>
         /// Enable or disable use of SSL when sending e-mail message
         /// </summary>
@@ -348,6 +349,30 @@ namespace log4net.Appender
             set { m_replyTo = value; }
         }
 #endif
+
+		/// <summary>
+		/// Gets or sets the subject encoding to be used.
+		/// </summary>
+		/// <remarks>
+		/// The default encoding is the operating system's current ANSI codepage.
+		/// </remarks>
+		public Encoding SubjectEncoding
+		{
+			get { return m_subjectEncoding; }
+			set { m_subjectEncoding = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the body encoding to be used.
+		/// </summary>
+		/// <remarks>
+		/// The default encoding is the operating system's current ANSI codepage.
+		/// </remarks>
+		public Encoding BodyEncoding
+		{
+			get { return m_bodyEncoding; }
+			set { m_bodyEncoding = value; }
+		}
 
 		#endregion // Public Instance Properties
 
@@ -419,7 +444,7 @@ namespace log4net.Appender
 		/// <param name="messageBody">the body text to include in the mail</param>
 		virtual protected void SendEmail(string messageBody)
 		{
-#if NET_2_0
+#if NET_2_0 || MONO_2_0
 			// .NET 2.0 has a new API for SMTP email System.Net.Mail
 			// This API supports credentials and multiple hosts correctly.
 			// The old API is deprecated.
@@ -448,6 +473,7 @@ namespace log4net.Appender
             using (MailMessage mailMessage = new MailMessage())
             {
                 mailMessage.Body = messageBody;
+				mailMessage.BodyEncoding = m_bodyEncoding;
                 mailMessage.From = new MailAddress(m_from);
                 mailMessage.To.Add(m_to);
                 if (!String.IsNullOrEmpty(m_cc))
@@ -462,13 +488,14 @@ namespace log4net.Appender
                 {
                     // .NET 4.0 warning CS0618: 'System.Net.Mail.MailMessage.ReplyTo' is obsolete:
                     // 'ReplyTo is obsoleted for this type.  Please use ReplyToList instead which can accept multiple addresses. http://go.microsoft.com/fwlink/?linkid=14202'
-#if !NET_4_0
+#if !NET_4_0 && !MONO_4_0
                     mailMessage.ReplyTo = new MailAddress(m_replyTo);
 #else
                     mailMessage.ReplyToList.Add(new MailAddress(m_replyTo));
 #endif
                 }
                 mailMessage.Subject = m_subject;
+				mailMessage.SubjectEncoding = m_subjectEncoding;
                 mailMessage.Priority = m_mailPriority;
 
                 // TODO: Consider using SendAsync to send the message without blocking. This would be a change in
@@ -480,6 +507,7 @@ namespace log4net.Appender
 
 				MailMessage mailMessage = new MailMessage();
 				mailMessage.Body = messageBody;
+				mailMessage.BodyEncoding = m_bodyEncoding;
 				mailMessage.From = m_from;
 				mailMessage.To = m_to;
                 if (m_cc != null && m_cc.Length > 0)
@@ -491,6 +519,9 @@ namespace log4net.Appender
                     mailMessage.Bcc = m_bcc;
                 }
 				mailMessage.Subject = m_subject;
+#if !MONO && !NET_1_0 && !NET_1_1 && !CLI_1_0
+				mailMessage.SubjectEncoding = m_subjectEncoding;
+#endif
 				mailMessage.Priority = m_mailPriority;
 
 #if NET_1_1
@@ -548,7 +579,7 @@ namespace log4net.Appender
 
 				SmtpMail.Send(mailMessage);
 #endif // if NET_2_0
-        }
+		}
 
 		#endregion // Protected Methods
 
@@ -560,6 +591,8 @@ namespace log4net.Appender
 		private string m_from;
 		private string m_subject;
 		private string m_smtpHost;
+		private Encoding m_subjectEncoding = Encoding.UTF8;
+		private Encoding m_bodyEncoding = Encoding.UTF8;
 
 		// authentication fields
 		private SmtpAuthentication m_authentication = SmtpAuthentication.None;
@@ -571,7 +604,7 @@ namespace log4net.Appender
 
 		private MailPriority m_mailPriority = MailPriority.Normal;
 
-#if NET_2_0
+#if NET_2_0 || MONO_2_0
         private bool m_enableSsl = false;
         private string m_replyTo;
 #endif
@@ -613,7 +646,20 @@ namespace log4net.Appender
 		}
 
 		#endregion // SmtpAuthentication Enum
-	}
+
+            private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
+            
+            /// <summary>
+            ///   trims leading and trailing commas or semicolons
+            /// </summary>
+            private static string MaybeTrimSeparators(string s) {
+#if NET_2_0 || MONO_2_0
+                return string.IsNullOrEmpty(s) ? s : s.Trim(ADDRESS_DELIMITERS);
+#else
+                return s != null && s.Length > 0 ? s : s.Trim(ADDRESS_DELIMITERS);
+#endif
+            }
+        }
 }
 
 #endif // !NETCF && !SSCLI

@@ -41,14 +41,14 @@ namespace log4net.Layout.Pattern
     /// <author>Adam Davies</author>
     internal class StackTraceDetailPatternConverter : StackTracePatternConverter
     {
-        internal override string GetMethodInformation(System.Reflection.MethodBase method)
+        internal override string GetMethodInformation(MethodItem method)
         {
             string returnValue="";
 
             try
             {
                 string param = "";
-                string[] names = GetMethodParameterNames(method);
+                string[] names = method.Parameters;
                 StringBuilder sb = new StringBuilder();
                 if (names != null && names.GetUpperBound(0) > 0)
                 {
@@ -72,28 +72,6 @@ namespace log4net.Layout.Pattern
             }
 
             return returnValue;
-        }
-
-        private string[] GetMethodParameterNames(System.Reflection.MethodBase methodBase)
-        {
-            ArrayList methodParameterNames = new ArrayList();
-            try
-            {
-                System.Reflection.ParameterInfo[] methodBaseGetParameters = methodBase.GetParameters();
-                
-                int methodBaseGetParametersCount = methodBaseGetParameters.GetUpperBound(0);
-
-                for (int i = 0; i <= methodBaseGetParametersCount; i++)
-                {
-                    methodParameterNames.Add(methodBaseGetParameters[i].ParameterType + " " + methodBaseGetParameters[i].Name);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogLog.Error(declaringType, "An exception ocurred while retreiving method parameters.", ex);
-            }
-
-            return (string[])methodParameterNames.ToArray(typeof (string));
         }
 
         #region Private Static Fields

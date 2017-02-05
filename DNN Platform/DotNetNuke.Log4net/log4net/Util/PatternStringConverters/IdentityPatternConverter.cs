@@ -48,7 +48,7 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		override protected void Convert(TextWriter writer, object state) 
 		{
-#if (NETCF || SSCLI)
+#if (NETCF || SSCLI || NETSTANDARD1_3)
 			// On compact framework there's no notion of current thread principals
 			writer.Write( SystemInfo.NotAvailableText );
 #else

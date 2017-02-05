@@ -26,7 +26,10 @@ namespace log4net.Core
 	/// A strongly-typed collection of <see cref="Level"/> objects.
 	/// </summary>
 	/// <author>Nicko Cadell</author>
-	public class LevelCollection : ICollection, IList, IEnumerable, ICloneable
+	public class LevelCollection : ICollection, IList, IEnumerable
+#if !NETSTANDARD1_3
+		, ICloneable
+#endif
 	{
 		#region Interfaces
 
@@ -205,10 +208,10 @@ namespace log4net.Core
 		/// <summary>
 		/// Gets a value indicating whether access to the collection is synchronized (thread-safe).
 		/// </summary>
-		/// <value>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</value>
+		/// <returns>false, because the backing type is an array, which is never thread-safe.</returns>
 		public virtual bool IsSynchronized
 		{
-			get { return m_array.IsSynchronized; }
+			get { return false; }
 		}
 
 		/// <summary>
@@ -216,7 +219,7 @@ namespace log4net.Core
 		/// </summary>
 		public virtual object SyncRoot
 		{
-			get { return m_array.SyncRoot; }
+			get { return m_array; }
 		}
 
 		#endregion

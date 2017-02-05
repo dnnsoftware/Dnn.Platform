@@ -19,6 +19,9 @@
 
 using System;
 using System.Globalization;
+#if NETSTANDARD1_3
+using System.Linq;
+#endif
 using System.Reflection;
 using System.Collections;
 
@@ -33,8 +36,8 @@ namespace log4net.Util.TypeConverters
 	/// types.
 	/// </para>
 	/// <para>
-	/// Use the <see cref="AddConverter(Type, object)"/> and 
-	/// <see cref="AddConverter(Type, Type)"/> methods to register new converters.
+	/// Use the <see cref="M:AddConverter(Type, object)"/> and 
+	/// <see cref="M:AddConverter(Type, Type)"/> methods to register new converters.
 	/// The <see cref="GetConvertTo"/> and <see cref="GetConvertFrom"/> methods
 	/// lookup appropriate converters to use.
 	/// </para>

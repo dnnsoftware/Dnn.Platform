@@ -286,7 +286,11 @@ namespace log4net.Util
 			}
 			else
 			{
+#if NETSTANDARD1_3
+				if (target.GetTypeInfo().IsEnum)
+#else
 				if (target.IsEnum)
+#endif
 				{
 					// Target type is an enum.
 
@@ -303,7 +307,11 @@ namespace log4net.Util
 					if (meth != null)
 					{
 						// Call the Parse method
+#if NETSTANDARD1_3
+						return meth.Invoke(target, new[] { txt });
+#else
 						return meth.Invoke(null, BindingFlags.InvokeMethod, null, new object[] {txt}, CultureInfo.InvariantCulture);
+#endif
 					}
 					else
 					{
@@ -475,7 +483,11 @@ namespace log4net.Util
 			{
 				try 
 				{
+#if NETSTANDARD1_3
+					Type classObj = SystemInfo.GetTypeFromString(superClass.GetTypeInfo().Assembly, className, true, true);
+#else
 					Type classObj = SystemInfo.GetTypeFromString(className, true, true);
+#endif
 					if (!superClass.IsAssignableFrom(classObj)) 
 					{
 						LogLog.Error(declaringType, "OptionConverter: A [" + className + "] object is not assignable to a [" + superClass.FullName + "] variable.");

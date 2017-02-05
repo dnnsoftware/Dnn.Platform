@@ -20,6 +20,9 @@
 using System;
 using System.Collections;
 using System.IO;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
 
 using log4net.Util;
 using log4net.Util.PatternStringConverters;
@@ -59,6 +62,15 @@ namespace log4net.Util
 	///         </description>
 	///     </item>
 	///     <item>
+	///         <term>appsetting</term>
+	///         <description>
+	///             <para>
+	///             Used to output the value of a specific appSetting key in the application
+	///             configuration file.
+	///             </para>
+	///         </description>
+	///     </item>
+	///     <item>
 	///         <term>date</term>
 	///         <description>
 	/// 			<para>
@@ -73,7 +85,7 @@ namespace log4net.Util
 	/// 			</para>
 	/// 			<para>
 	/// 			The date format specifier admits the same syntax as the
-	/// 			time pattern string of the <see cref="DateTime.ToString(string)"/>.
+	/// 			time pattern string of the <see cref="M:DateTime.ToString(string)"/>.
 	/// 			</para>
 	/// 			<para>
 	/// 			For better results it is recommended to use the log4net date
@@ -86,7 +98,7 @@ namespace log4net.Util
 	/// 			</para>
 	/// 			<para>
 	/// 			These dedicated date formatters perform significantly
-	/// 			better than <see cref="DateTime.ToString(string)"/>.
+	/// 			better than <see cref="M:DateTime.ToString(string)"/>.
 	/// 			</para>
 	///         </description>
 	///     </item>
@@ -208,7 +220,7 @@ namespace log4net.Util
 	/// 			</para>
 	/// 			<para>
 	/// 			The date format specifier admits the same syntax as the
-	/// 			time pattern string of the <see cref="DateTime.ToString(string)"/>.
+	/// 			time pattern string of the <see cref="M:DateTime.ToString(string)"/>.
 	/// 			</para>
 	/// 			<para>
 	/// 			For better results it is recommended to use the log4net date
@@ -221,7 +233,7 @@ namespace log4net.Util
 	/// 			</para>
 	/// 			<para>
 	/// 			These dedicated date formatters perform significantly
-	/// 			better than <see cref="DateTime.ToString(string)"/>.
+	/// 			better than <see cref="M:DateTime.ToString(string)"/>.
 	/// 			</para>
 	///         </description>
 	///     </item>
@@ -236,8 +248,8 @@ namespace log4net.Util
 	/// </list>
 	/// <para>
 	/// Additional pattern converters may be registered with a specific <see cref="PatternString"/>
-	/// instance using <see cref="AddConverter(ConverterInfo)"/> or
-	/// <see cref="AddConverter(string, Type)" />.
+	/// instance using <see cref="M:AddConverter(ConverterInfo)"/> or
+	/// <see cref="M:AddConverter(string, Type)" />.
 	/// </para>
 	/// <para>
 	/// See the <see cref="log4net.Layout.PatternLayout"/> for details on the 
@@ -282,13 +294,15 @@ namespace log4net.Util
 		/// </summary>
 		static PatternString()
 		{
-			s_globalRulesRegistry = new Hashtable(15);
+			s_globalRulesRegistry = new Hashtable(18);
 
 			s_globalRulesRegistry.Add("appdomain", typeof(AppDomainPatternConverter));
 			s_globalRulesRegistry.Add("date", typeof(DatePatternConverter));
 #if !NETCF
 			s_globalRulesRegistry.Add("env", typeof(EnvironmentPatternConverter));
-            s_globalRulesRegistry.Add("envFolderPath", typeof(EnvironmentFolderPathPatternConverter));
+#if !NETSTANDARD1_3 // EnvironmentFolderPathPatternConverter not yet supported
+			s_globalRulesRegistry.Add("envFolderPath", typeof(EnvironmentFolderPathPatternConverter));
+#endif
 #endif
 			s_globalRulesRegistry.Add("identity", typeof(IdentityPatternConverter));
 			s_globalRulesRegistry.Add("literal", typeof(LiteralPatternConverter));
@@ -301,6 +315,13 @@ namespace log4net.Util
 			s_globalRulesRegistry.Add("utcdate", typeof(UtcDatePatternConverter));
 			s_globalRulesRegistry.Add("utcDate", typeof(UtcDatePatternConverter));
 			s_globalRulesRegistry.Add("UtcDate", typeof(UtcDatePatternConverter));
+#if !NETCF && !NETSTANDARD1_3
+			// TODO - have added common variants of casing like utcdate above.
+			// Wouldn't it be better to use a case-insensitive Hashtable?
+			s_globalRulesRegistry.Add("appsetting", typeof(AppSettingPatternConverter));
+			s_globalRulesRegistry.Add("appSetting", typeof(AppSettingPatternConverter));
+			s_globalRulesRegistry.Add("AppSetting", typeof(AppSettingPatternConverter));
+#endif
 		}
 
 		#endregion Static Constructor
@@ -462,7 +483,7 @@ namespace log4net.Util
 		/// <remarks>
 		/// <para>
 		/// This version of the method is used by the configurator.
-		/// Programmatic users should use the alternative <see cref="AddConverter(string,Type)"/> method.
+		/// Programmatic users should use the alternative <see cref="M:AddConverter(string,Type)"/> method.
 		/// </para>
 		/// </remarks>
 		public void AddConverter(ConverterInfo converterInfo)

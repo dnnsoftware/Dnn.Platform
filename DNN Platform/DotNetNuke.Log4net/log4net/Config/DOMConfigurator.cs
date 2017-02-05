@@ -309,10 +309,10 @@ namespace log4net.Config
 		/// </para>
 		/// <para>
 		/// For more information on how to configure log4net using
-		/// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+		/// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="Configure(FileInfo)"/>
+		/// <seealso cref="M:Configure(FileInfo)"/>
 		[Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch")]
 		static public void ConfigureAndWatch(FileInfo configFile)
 		{
@@ -341,10 +341,10 @@ namespace log4net.Config
 		/// </para>
 		/// <para>
 		/// For more information on how to configure log4net using
-		/// a separate configuration file, see <see cref="Configure(FileInfo)"/>.
+		/// a separate configuration file, see <see cref="M:Configure(FileInfo)"/>.
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="Configure(FileInfo)"/>
+		/// <seealso cref="M:Configure(FileInfo)"/>
 		[Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch")]
 		static public void ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
 		{

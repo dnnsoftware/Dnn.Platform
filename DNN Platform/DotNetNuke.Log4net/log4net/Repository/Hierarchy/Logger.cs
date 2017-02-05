@@ -73,7 +73,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		protected Logger(string name) 
 		{
-#if NETCF
+#if NETCF || NETSTANDARD1_3
 			// NETCF: String.Intern causes Native Exception
 			m_name = name;
 #else
@@ -432,7 +432,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
+#if !NET_2_0 && !MONO_2_0 && !MONO_3_5 && !MONO_4_0 && !NETSTANDARD1_3
 			catch
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
@@ -469,7 +469,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
+#if !NET_2_0 && !MONO_2_0 && !MONO_3_5 && !MONO_4_0 && !NETSTANDARD1_3
 			catch
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
@@ -509,7 +509,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
 			}
-#if !NET_2_0 && !MONO_2_0
+#if !NET_2_0 && !MONO_2_0 && !MONO_3_5 && !MONO_4_0 && !NETSTANDARD1_3
 			catch
 			{
 				log4net.Util.LogLog.Error(declaringType, "Exception while logging");
@@ -599,13 +599,14 @@ namespace log4net.Repository.Hierarchy
 			//
 			if (!m_hierarchy.EmittedNoAppenderWarning && writes == 0) 
 			{
+				m_hierarchy.EmittedNoAppenderWarning = true;
 				LogLog.Debug(declaringType, "No appenders could be found for logger [" + Name + "] repository [" + Repository.Name + "]");
 				LogLog.Debug(declaringType, "Please initialize the log4net system properly.");
 				try
 				{
 					LogLog.Debug(declaringType, "    Current AppDomain context information: ");
 					LogLog.Debug(declaringType, "       BaseDirectory   : " + SystemInfo.ApplicationBaseDirectory);
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 					LogLog.Debug(declaringType, "       FriendlyName    : " + AppDomain.CurrentDomain.FriendlyName);
 					LogLog.Debug(declaringType, "       DynamicDirectory: " + AppDomain.CurrentDomain.DynamicDirectory);
 #endif
@@ -614,7 +615,6 @@ namespace log4net.Repository.Hierarchy
 				{
 					// Insufficient permissions to display info from the AppDomain
 				}
-				m_hierarchy.EmittedNoAppenderWarning = true;
 			}
 		}
 

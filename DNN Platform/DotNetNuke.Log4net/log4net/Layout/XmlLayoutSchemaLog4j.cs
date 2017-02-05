@@ -180,7 +180,7 @@ method="run" file="Generator.java" line="94"/>
 			// We must convert the TimeStamp to UTC before performing any mathematical
 			// operations. This allows use to take into account discontinuities
 			// caused by daylight savings time transitions.
-			TimeSpan timeSince1970 = loggingEvent.TimeStamp.ToUniversalTime() - s_date1970;
+			TimeSpan timeSince1970 = loggingEvent.TimeStampUtc - s_date1970;
 
 			writer.WriteAttributeString("timestamp", XmlConvert.ToString((long)timeSince1970.TotalMilliseconds));
 			writer.WriteAttributeString("level", loggingEvent.Level.DisplayName);

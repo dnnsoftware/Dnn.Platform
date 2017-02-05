@@ -50,7 +50,7 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			writer.Write( TimeDifferenceInMillis(LoggingEvent.StartTime, loggingEvent.TimeStamp).ToString(System.Globalization.NumberFormatInfo.InvariantInfo) );
+			writer.Write( TimeDifferenceInMillis(LoggingEvent.StartTimeUtc, loggingEvent.TimeStampUtc).ToString(System.Globalization.NumberFormatInfo.InvariantInfo) );
 		}
 
 		/// <summary>

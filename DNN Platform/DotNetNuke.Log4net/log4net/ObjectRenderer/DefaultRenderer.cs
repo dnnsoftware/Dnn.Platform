@@ -73,7 +73,7 @@ namespace log4net.ObjectRenderer
 		/// The <paramref name="rendererMap"/> parameter is
 		/// provided to lookup and render other objects. This is
 		/// very useful where <paramref name="obj"/> contains
-		/// nested objects of unknown type. The <see cref="RendererMap.FindAndRender(object)"/>
+		/// nested objects of unknown type. The <see cref="M:RendererMap.FindAndRender(object)"/>
 		/// method can be used to render these objects.
 		/// </para>
 		/// <para>
