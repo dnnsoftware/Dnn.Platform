@@ -118,6 +118,7 @@
     <Compile Include="Commands\Client\Cls.cs" />
     <Compile Include="Commands\Client\Exit.cs" />
     <Compile Include="Commands\Client\Reload.cs" />
+    <Compile Include="Commands\Commands\ListCommands.cs" />
     <Compile Include="Commands\Extensions\NewExtension.cs" />
     <Compile Include="Commands\Host\GetHost.cs" />
     <Compile Include="Commands\Module\CopyModule.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Commands\Utilities\Echo.cs" />
     <Compile Include="Common\BaseConsoleCommand.cs" />
     <Compile Include="Common\BaseController.cs" />
+    <Compile Include="Common\Command.cs" />
     <Compile Include="Common\EmailValidator.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserModelBase.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
+    <Compile Include="Repositories\CommandRepository.cs" />
     <Compile Include="Services\CommandController.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="VersionInfo.cs" />

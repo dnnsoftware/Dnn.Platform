@@ -400,10 +400,6 @@ var DnnPrompt = function () {
                 self.renderHelp(tokens);
                 return;
             }
-            if (cmd === "HELP2") {
-                self.renderHelp2();
-                return;
-            }
             if (cmd === "CONFIG") {
                 self.configConsole(tokens);
                 return;
@@ -670,12 +666,6 @@ var DnnPrompt = function () {
                 self.busy(false);
                 self.focus();
             });
-        }
-    }, {
-        key: 'renderHelp2',
-        value: function renderHelp2() {
-            var self = this;
-            self.writeHtml(self.renderTable(self.commands, ['Name', 'Description']));
         }
     }, {
         key: 'showGreeting',

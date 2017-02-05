@@ -131,10 +131,6 @@ class DnnPrompt {
             self.renderHelp(tokens);
             return;
         }
-        if (cmd === "HELP2") {
-            self.renderHelp2();
-            return;
-        }
         if (cmd === "CONFIG") {
             self.configConsole(tokens);
             return;
@@ -394,11 +390,6 @@ class DnnPrompt {
                 self.focus();
             });
 
-    }
-
-    renderHelp2() {
-        const self = this;
-        self.writeHtml(self.renderTable(self.commands, ['Name', 'Description']));
     }
 
     showGreeting() {
