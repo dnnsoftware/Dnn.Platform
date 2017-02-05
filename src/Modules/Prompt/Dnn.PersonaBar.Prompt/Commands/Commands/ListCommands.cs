@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Dnn.PersonaBar.Prompt.Commands.Commands
 {
-    [ConsoleCommand("List-Commands", "Lists all available commands", new string[] { })]
+    [ConsoleCommand("list-commands", "Lists all available commands", new string[] { })]
     public class ListCommands : BaseConsoleCommand, IConsoleCommand
     {
         public string ValidationMessage { get; private set; }
