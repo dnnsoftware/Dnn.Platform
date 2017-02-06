@@ -3,7 +3,7 @@
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
-      <PersonaBar-views Include="admin/personaBar/*.html;admin/personaBar/*/*.html" />
+      <PersonaBar-views Include="admin/personaBar/*.html" />
       <PersonaBar-images Include="admin/personaBar/images/**/*" />
       <PersonaBar-data Include="admin/personaBar/data/*.resources" />
       <PersonaBar-css Include="admin/personaBar/css/**/*" />
