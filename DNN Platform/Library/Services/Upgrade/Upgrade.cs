@@ -5469,9 +5469,11 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion910()
         {
             RemoveAdminPages("//Admin//Extensions");
-            RemoveAdminPages("//Admin//FileManagement");
             RemoveAdminPages("//Admin//UserAccounts");
+            RemoveAdminPages("//Admin");
+
             RemoveHostPage("File Management");
+            RemoveHostPage("Host");
 
             // Normal Modules
             UninstallPackage("DotNetNuke.MobileManagement", "Module");

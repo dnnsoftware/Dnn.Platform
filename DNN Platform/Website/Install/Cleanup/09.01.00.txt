@@ -30,3 +30,5 @@ DesktopModules\MobileManagement\
 
 ' libraries
 bin\DotNetNuke.Web.Deprecated.dll
+bin\Telerik.Web.UI.dll
+bin\Telerik.Web.UI.Skins.dll

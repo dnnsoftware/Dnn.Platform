@@ -27,6 +27,10 @@
               <path>bin</path>
               <name>Telerik.Web.UI.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Telerik.Web.UI.Skins.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="Config">

@@ -95,6 +95,9 @@
       <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
