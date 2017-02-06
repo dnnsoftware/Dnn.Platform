@@ -130,8 +130,9 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyProduct("log4net")]
 [assembly: AssemblyDefaultAlias("log4net")]
-[assembly: AssemblyCulture("")]		
-		
+[assembly: AssemblyCulture("")]
+[assembly: AssemblyDescription("DotNetNuke branded version of log4net")]
+
 #if STRONG && (CLI_1_0 || NET_1_0 || NET_1_1 || NETCF_1_0 || SSCLI)
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"..\..\..\log4net.snk")]
