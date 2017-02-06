@@ -1,5 +1,4 @@
 const Cookies = require('./js-cookie');
-const Commands = require('./commands');
 
 class DnnPrompt {
     constructor(vsn, wrapper, util, params) {
@@ -14,18 +13,18 @@ class DnnPrompt {
         self.history = []; // Command history
         // restore history if it exists
         if (sessionStorage) {
-            if (sessionStorage.getItem('kb-prompt-console-history')) {
-                self.history = JSON.parse(sessionStorage.getItem('kb-prompt-console-history'));
+            if (sessionStorage.getItem('dnn-prompt-console-history')) {
+                self.history = JSON.parse(sessionStorage.getItem('dnn-prompt-console-history'));
             }
         }
         self.cmdOffset = 0; // reverse offset into history
-        self.commands = Commands;
 
         self.createElements();
         self.wireEvents();
         self.showGreeting();
         self.busy(false);
         self.focus();
+        self.getCommands();
     }
 
     wireEvents() {
@@ -46,7 +45,7 @@ class DnnPrompt {
     }
 
     onClickHandler(e) {
-        if (e.target.classList.contains("kb-prompt-cmd-insert")) {
+        if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
             // insert command and set focus
             this.inputEl.value = e.target.dataset.cmd.replace(/'/g, '"');
             this.inputEl.focus();
@@ -113,7 +112,7 @@ class DnnPrompt {
         } // don't process if cmd is emtpy
         self.history.push(txt); // Add cmd to history
         if (sessionStorage) {
-            sessionStorage.setItem('kb-prompt-console-history', JSON.stringify(self.history));
+            sessionStorage.setItem('dnn-prompt-console-history', JSON.stringify(self.history));
         }
 
         // Client Command
@@ -138,7 +137,7 @@ class DnnPrompt {
         }
         if (cmd === "CLH" || cmd === "CLEAR-HISTORY") {
             self.history = [];
-            sessionStorage.removeItem('kb-prompt-console-history');
+            sessionStorage.removeItem('dnn-prompt-console-history');
             self.writeLine("Session command history cleared");
             return;
         }
@@ -193,7 +192,7 @@ class DnnPrompt {
                     let fieldOrder = result.fieldOrder;
                     if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
                         fieldOrder = null;
-                    } 
+                    }
 
                     if (bRedirect) {
                         window.location.href = output;
@@ -210,7 +209,7 @@ class DnnPrompt {
                     }
 
                     if (result.mustReload) {
-                        self.writeHtml('<div class="kb-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
+                        self.writeHtml('<div class="dnn-prompt-ok"><strong>Reloading in 3 seconds</strong></div>');
                         setTimeout(() => location.reload(true), 3000);
                     }
                 })
@@ -226,6 +225,27 @@ class DnnPrompt {
             self.inputEl.blur(); // remove focus from input elment
         }
 
+    }
+
+    getCommands() {
+        const self = this;
+        let path = 'API/PersonaBar/Command/List';
+        if (this.util.sf) {
+            path = this.util.sf.getSiteRoot() + path
+        } else {
+            path = '/' + path
+        }
+
+        fetch(path, {
+            method: 'get',
+            credentials: 'include'
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (result) {
+                self.commands = result;
+            })
     }
 
     focus() {
@@ -244,7 +264,7 @@ class DnnPrompt {
     writeLine(txt, cssSuffix) {
         let span = document.createElement('span');
         cssSuffix = cssSuffix || 'ok';
-        span.className = 'kb-prompt-' + cssSuffix;
+        span.className = 'dnn-prompt-' + cssSuffix;
         span.innerText = txt;
         this.outputEl.appendChild(span);
         this.newLine();
@@ -286,7 +306,7 @@ class DnnPrompt {
         }
 
         // build header
-        var out = '<table class="kb-prompt-tbl"><thead><tr>';
+        var out = '<table class="dnn-prompt-tbl"><thead><tr>';
         for (let col in columns) {
             out += `<th>${columns[col]}</th>`;
         }
@@ -302,7 +322,7 @@ class DnnPrompt {
                 let fldVal = row[fldName] ? row[fldName] : '';
                 let cmd = row["__" + fldName] ? row["__" + fldName] : null;
                 if (cmd) {
-                    out += `<td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td>`;
+                    out += `<td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td>`;
                 } else {
                     out += `<td> ${fldVal}</td>`;
                 }
@@ -316,13 +336,13 @@ class DnnPrompt {
     renderObject(data, fieldOrder) {
         const linkFields = this.extractLinkFields(data);
 
-        let out = '<table class="kb-prompt-tbl">'
+        let out = '<table class="dnn-prompt-tbl">'
         for (let key in data) {
             if (key.startsWith("__")) {
-                out += `<tr><td class="kb-prompt-lbl">${key.slice(2)}</td><td>:</td><td><a href="#" class="kb-prompt-cmd-insert" data-cmd="${data[key]}" title="${data[key].replace(/'/g, '&quot;')}">${data[key.slice(2)]}</a></td></tr>`;
+                out += `<tr><td class="dnn-prompt-lbl">${key.slice(2)}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${data[key]}" title="${data[key].replace(/'/g, '&quot;')}">${data[key.slice(2)]}</a></td></tr>`;
             } else {
                 if (linkFields.indexOf(key) === -1) {
-                    out += `<tr><td class="kb-prompt-lbl">${key}</td><td>:</td><td>${data[key]}</td></tr>`;
+                    out += `<tr><td class="dnn-prompt-lbl">${key}</td><td>:</td><td>${data[key]}</td></tr>`;
                 }
             }
 
@@ -333,7 +353,7 @@ class DnnPrompt {
 
     renderHelp(tokens) {
         const self = this;
-        let path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/'
+        let path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/help/'
         if (!tokens || tokens.length == 1) {
             // render list of help commands
             path += 'index.html';
@@ -356,7 +376,7 @@ class DnnPrompt {
         })
             .then(function (response) {
                 if (response.status == 200) { return response.text(); }
-                return '<div class="kb-prompt-error">Unable to find help for that command</div>';
+                return '<div class="dnn-prompt-error">Unable to find help for that command</div>';
             })
             .then(function (html) {
                 self.writeHtml(html);
@@ -403,11 +423,11 @@ class DnnPrompt {
 
 
         // Add CSS
-        self.ctrlEl.className = "kb-prompt";
-        self.outputEl.className = "kb-prompt-output";
-        self.inputElWrapper.className = "kb-prompt-input-wrapper";
-        self.inputEl.className = "kb-prompt-input";
-        self.busyEl.className = "kb-prompt-busy"
+        self.ctrlEl.className = "dnn-prompt";
+        self.outputEl.className = "dnn-prompt-output";
+        self.inputElWrapper.className = "dnn-prompt-input-wrapper";
+        self.inputEl.className = "dnn-prompt-input";
+        self.busyEl.className = "dnn-prompt-busy"
 
         self.inputEl.setAttribute("spellcheck", "false");
 
@@ -419,7 +439,7 @@ class DnnPrompt {
 
         self.ctrlEl.style.display = "block";
 
-        const consoleHeight = Cookies.get("kb-prompt-console-height");
+        const consoleHeight = Cookies.get("dnn-prompt-console-height");
         if (consoleHeight) {
             self.configConsole(['config', consoleHeight]);
         }
@@ -483,7 +503,7 @@ class DnnPrompt {
 
         if (height) {
             this.ctrlEl.style.height = height;
-            Cookies.set("kb-prompt-console-height", height)
+            Cookies.set("dnn-prompt-console-height", height)
         }
     }
 

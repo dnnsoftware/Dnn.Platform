@@ -4,6 +4,7 @@ using Dnn.PersonaBar.Prompt.Attributes;
 using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Interfaces;
 using Dnn.PersonaBar.Prompt.Models;
+using Dnn.PersonaBar.Prompt.Repositories;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Web.Api;
 using System;
@@ -20,35 +21,14 @@ namespace Dnn.PersonaBar.Prompt.Services
     [MenuPermission(MenuName = "Dnn.Prompt", Scope = ServiceScope.Admin)]
     public class CommandController : BaseController
     {
-        public static Dictionary<string, Type> Commands { get; private set; } 
-        public static Dictionary<string, ConsoleCommandAttribute> CommandAttributes { get; private set; } 
 
-        public CommandController()
+        [HttpGet]
+        public HttpResponseMessage List()
         {
-            try
-            {
-                Commands = new Dictionary<string, Type>();
-                CommandAttributes = new Dictionary<string, ConsoleCommandAttribute>();
-                foreach(var cmd in GetAllCommands())
-                {
-                    var attr = cmd.GetCustomAttributes(typeof(ConsoleCommandAttribute), false).FirstOrDefault();
-                    if (attr != null)
-                    {
-                        var cmdAttr = (ConsoleCommandAttribute)attr;
-                        Commands.Add(cmdAttr.Name.ToUpper(), cmd);
-                        CommandAttributes.Add(cmdAttr.Name.ToUpper(), cmdAttr);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-
-
+            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommands().Values);
         }
 
-        [ValidateAntiForgeryToken()]
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public HttpResponseMessage Cmd([FromBody] CommandInputModel command)
         {
@@ -57,6 +37,16 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 var args = command.GetArgs();
                 var cmdName = args.First().ToUpper();
+                var Commands = CommandRepository.Instance.GetCommands();
+                if (!Commands.ContainsKey(cmdName) && cmdName.IndexOf('.') == -1)
+                {
+                    var seek = Commands.Values.FirstOrDefault(c => c.Name.ToUpper() == cmdName);
+                    // if there is a command which matches then we assume the user meant that namespace
+                    if (seek != null)
+                    {
+                        cmdName = string.Format("{0}.{1}", seek.NameSpace.ToUpper(), cmdName);
+                    }
+                }
 
                 // if no command found notify
                 if (!Commands.ContainsKey(cmdName))
@@ -71,7 +61,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
                     return BadRequestResponse(sbError.ToString());
                 }
-                Type cmdTypeToRun = Commands[cmdName];
+                Type cmdTypeToRun = Commands[cmdName].CommandType;
 
                 // Instantiate and run the command
                 try
@@ -200,17 +190,6 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
 
             return string.Empty;
-        }
-
-        private static IEnumerable<Type> GetAllCommands()
-        {
-            var typeLocator = new TypeLocator();
-            return typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
-                     typeof(BaseConsoleCommand).IsAssignableFrom(t));
         }
 
     }

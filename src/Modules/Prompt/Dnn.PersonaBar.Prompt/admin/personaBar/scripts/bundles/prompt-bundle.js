@@ -63,29 +63,15 @@
 /******/ 	__webpack_require__.p = "/scripts/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-exports.commands = function () {
-  return [{ name: 'cls', flags: [] }, { name: 'console', flags: [] }, { name: 'reload', flags: [] }, { name: 'get-module', flags: ['id'] }, { name: 'list-modules', flags: ['name', 'title', 'all'] }, { name: 'get-page', flags: ['id', 'name', 'parentid'] }, { name: 'list-pages', flags: ['parentid'] }, { name: 'set-page', flags: ['description', 'id', 'keywords', 'name', 'title', 'visible'] }, { name: 'get-portal', flags: ['id'] }, { name: 'list-roles', flags: [] }, { name: 'new-role', flags: ['autoassign', 'description', 'name', 'public'] }, { name: 'set-role', flags: ['description', 'id', 'name', 'public'] }, { name: 'get-task', flags: ['id'] }, { name: 'list-tasks', flags: ['enabled', 'name'] }, { name: 'set-task', flags: ['enabled', 'id'] }, { name: 'add-roles', flags: ['end', 'id', 'roles', 'start'] }, { name: 'delete-user', flags: ['id', 'notify'] }, { name: 'get-user', flags: ['email', 'id', 'username'] }, { name: 'list-users', flags: ['email', 'role', 'email'] }, {
-    name: 'new-user',
-    flags: ['approved', 'displayname', 'email', 'firstname', 'lastname', 'notify', 'password', 'username']
-  }, { name: 'purge-user', flags: ['id'] }, { name: 'reset-password', flags: ['id', 'notify'] }, { name: 'restore-user', flags: ['id'] }];
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -99,11 +85,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 ;(function (factory) {
 	var registeredInModuleLoader = false;
 	if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
-				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 		registeredInModuleLoader = true;
 	}
 	if (( false ? 'undefined' : _typeof(exports)) === 'object') {
@@ -256,25 +238,24 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	return init(function () {});
 });
 
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
 
 module.exports = jQuery;
 
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {
+/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Cookies = __webpack_require__(1);
-var Commands = __webpack_require__(0);
+var Cookies = __webpack_require__(0);
 
 var DnnPrompt = function () {
     function DnnPrompt(vsn, wrapper, util, params) {
@@ -296,13 +277,13 @@ var DnnPrompt = function () {
             }
         }
         self.cmdOffset = 0; // reverse offset into history
-        self.commands = Commands;
 
         self.createElements();
         self.wireEvents();
         self.showGreeting();
         self.busy(false);
         self.focus();
+        self.getCommands();
     }
 
     _createClass(DnnPrompt, [{
@@ -516,6 +497,26 @@ var DnnPrompt = function () {
             }
         }
     }, {
+        key: 'getCommands',
+        value: function getCommands() {
+            var self = this;
+            var path = 'API/PersonaBar/Command/List';
+            if (this.util.sf) {
+                path = this.util.sf.getSiteRoot() + path;
+            } else {
+                path = '/' + path;
+            }
+
+            fetch(path, {
+                method: 'get',
+                credentials: 'include'
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                self.commands = result;
+            });
+        }
+    }, {
         key: 'focus',
         value: function focus() {
             this.inputEl.focus();
@@ -631,7 +632,7 @@ var DnnPrompt = function () {
         key: 'renderHelp',
         value: function renderHelp(tokens) {
             var self = this;
-            var path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/';
+            var path = 'DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Prompt/help/';
             if (!tokens || tokens.length == 1) {
                 // render list of help commands
                 path += 'index.html';
@@ -828,8 +829,8 @@ var DnnPrompt = function () {
 }();
 
 window.DnnPrompt = DnnPrompt;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
-/***/ })
+/***/ }
 /******/ ]);
 //# sourceMappingURL=prompt-bundle.js.map
