@@ -1,3 +1,5 @@
+var css = require('../css/Prompt.css');
+
 const Cookies = require('./js-cookie');
 
 class DnnPrompt {
