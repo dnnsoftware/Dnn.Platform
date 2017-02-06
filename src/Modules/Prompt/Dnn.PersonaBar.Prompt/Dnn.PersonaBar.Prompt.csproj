@@ -120,6 +120,7 @@
     <Compile Include="Commands\Client\Reload.cs" />
     <Compile Include="Commands\Commands\ListCommands.cs" />
     <Compile Include="Commands\Extensions\NewExtension.cs" />
+    <Compile Include="Commands\Host\ClearCache.cs" />
     <Compile Include="Commands\Host\GetHost.cs" />
     <Compile Include="Commands\Module\CopyModule.cs" />
     <Compile Include="Commands\Module\DeleteModule.cs" />
