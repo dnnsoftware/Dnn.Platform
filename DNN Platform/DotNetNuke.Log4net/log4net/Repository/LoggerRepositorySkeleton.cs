@@ -23,6 +23,7 @@ using log4net.ObjectRenderer;
 using log4net.Core;
 using log4net.Util;
 using log4net.Plugin;
+using System.Threading;
 
 namespace log4net.Repository
 {
@@ -40,7 +41,7 @@ namespace log4net.Repository
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-	public abstract class LoggerRepositorySkeleton : ILoggerRepository
+	public abstract class LoggerRepositorySkeleton : ILoggerRepository, Appender.IFlushable
 	{
 		#region Member Variables
 
@@ -307,7 +308,7 @@ namespace log4net.Repository
 		/// This method should not normally be used to log.
 		/// The <see cref="ILog"/> interface should be used 
 		/// for routine logging. This interface can be obtained
-		/// using the <see cref="log4net.LogManager.GetLogger(string)"/> method.
+		/// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
 		/// </para>
 		/// <para>
 		/// The <c>logEvent</c> is delivered to the appropriate logger and
@@ -573,5 +574,59 @@ namespace log4net.Repository
 		{
 			OnConfigurationChanged(e);
 		}
+
+        private static int GetWaitTime(DateTime startTimeUtc, int millisecondsTimeout)
+        {
+            if (millisecondsTimeout == Timeout.Infinite) return Timeout.Infinite;
+            if (millisecondsTimeout == 0) return 0;
+
+            int elapsedMilliseconds = (int)(DateTime.UtcNow - startTimeUtc).TotalMilliseconds;
+            int timeout = millisecondsTimeout - elapsedMilliseconds;
+            if (timeout < 0) timeout = 0;
+            return timeout;
+        }
+
+        /// <summary>
+        /// Flushes all configured Appenders that implement <see cref="log4net.Appender.IFlushable"/>.
+        /// </summary>
+        /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed,
+        /// or <see cref="Timeout.Infinite"/> to wait indefinitely.</param>
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        public bool Flush(int millisecondsTimeout)
+        {
+            if (millisecondsTimeout < -1) throw new ArgumentOutOfRangeException("millisecondsTimeout", "Timeout must be -1 (Timeout.Infinite) or non-negative");
+
+            // Assume success until one of the appenders fails
+            bool result = true;
+
+            // Use DateTime.UtcNow rather than a System.Diagnostics.Stopwatch for compatibility with .NET 1.x
+            DateTime startTimeUtc = DateTime.UtcNow;
+
+            // Do buffering appenders first.  These may be forwarding to other appenders
+            foreach(log4net.Appender.IAppender appender in GetAppenders())
+            {
+                log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
+                if (flushable == null) continue;
+                if (appender is Appender.BufferingAppenderSkeleton)
+                {
+                    int timeout = GetWaitTime(startTimeUtc, millisecondsTimeout);
+                    if (!flushable.Flush(timeout)) result = false;
+                }
+            }
+
+            // Do non-buffering appenders.
+            foreach (log4net.Appender.IAppender appender in GetAppenders())
+            {
+                log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
+                if (flushable == null) continue;
+                if (!(appender is Appender.BufferingAppenderSkeleton))
+                {
+                    int timeout = GetWaitTime(startTimeUtc, millisecondsTimeout);
+                    if (!flushable.Flush(timeout)) result = false;
+                }
+            }
+
+            return result;
+        }
 	}
 }

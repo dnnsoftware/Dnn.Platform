@@ -26,7 +26,10 @@ namespace log4net.Appender
 	/// A strongly-typed collection of <see cref="IAppender"/> objects.
 	/// </summary>
 	/// <author>Nicko Cadell</author>
-	public class AppenderCollection : ICollection, IList, IEnumerable, ICloneable
+	public class AppenderCollection : ICollection, IList, IEnumerable
+#if !NETSTANDARD1_3
+		, ICloneable
+#endif
 	{
 		#region Interfaces
 		/// <summary>
@@ -216,10 +219,10 @@ namespace log4net.Appender
 		/// <summary>
 		/// Gets a value indicating whether access to the collection is synchronized (thread-safe).
 		/// </summary>
-		/// <returns>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</returns>
+		/// <returns>false, because the backing type is an array, which is never thread-safe.</returns>
 		public virtual bool IsSynchronized
 		{
-			get { return m_array.IsSynchronized; }
+			get { return false; }
 		}
 
 		/// <summary>
@@ -227,7 +230,7 @@ namespace log4net.Appender
 		/// </summary>
 		public virtual object SyncRoot
 		{
-			get { return m_array.SyncRoot; }
+			get { return m_array; }
 		}
 
 		#endregion
@@ -879,6 +882,16 @@ namespace log4net.Appender
 			}
 
 			public override int AddRange(IAppender[] x)
+			{
+				throw new NotSupportedException("This is a Read Only Collection and can not be modified");
+			}
+
+			public override IAppender[] ToArray()
+			{
+				return m_collection.ToArray();
+			}
+
+			public override void TrimToSize()
 			{
 				throw new NotSupportedException("This is a Read Only Collection and can not be modified");
 			}

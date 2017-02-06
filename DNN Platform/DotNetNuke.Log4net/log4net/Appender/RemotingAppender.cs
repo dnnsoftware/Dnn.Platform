@@ -138,7 +138,7 @@ namespace log4net.Appender
 		/// <see cref="ActivateOptions"/> must be called again.
 		/// </para>
 		/// </remarks>
-#if NET_4_0
+#if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
         override public void ActivateOptions() 
@@ -216,6 +216,17 @@ namespace log4net.Appender
 			{
 				ErrorHandler.Error("RemotingAppender ["+Name+"] failed to send all queued events before close, in OnClose.");
 			}
+		}
+
+		/// <summary>
+		/// Flushes any buffered log data.
+		/// </summary>
+		/// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+		/// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+		public override bool Flush(int millisecondsTimeout)
+		{
+			base.Flush();
+			return m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
 		}
 
 		#endregion

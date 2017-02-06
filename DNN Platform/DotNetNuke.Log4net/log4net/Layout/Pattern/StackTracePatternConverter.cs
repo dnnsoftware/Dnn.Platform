@@ -95,7 +95,7 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			StackFrame[] stackframes = loggingEvent.LocationInformation.StackFrames;
+			StackFrameItem[] stackframes = loggingEvent.LocationInformation.StackFrames;
 			if ((stackframes == null) || (stackframes.Length <= 0))
 			{
 				LogLog.Error(declaringType, "loggingEvent.LocationInformation.StackFrames was null or empty.");
@@ -105,14 +105,14 @@ namespace log4net.Layout.Pattern
 			int stackFrameIndex = m_stackFrameLevel - 1;
 			while (stackFrameIndex >= 0)
 			{
-				if (stackFrameIndex > stackframes.Length)
+				if (stackFrameIndex >= stackframes.Length)
 				{
 					stackFrameIndex--;
 					continue;
 				}
 				
-				StackFrame stackFrame = stackframes[stackFrameIndex];
-                writer.Write("{0}.{1}", stackFrame.GetMethod().DeclaringType.Name, GetMethodInformation(stackFrame.GetMethod()));
+				StackFrameItem stackFrame = stackframes[stackFrameIndex];
+                writer.Write("{0}.{1}", stackFrame.ClassName, GetMethodInformation(stackFrame.Method));
 				if (stackFrameIndex > 0)
 				{
                     // TODO: make this user settable?
@@ -128,7 +128,7 @@ namespace log4net.Layout.Pattern
         /// <param name="method"></param>
         /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter</remarks>
         /// <returns>string</returns>
-        internal virtual string GetMethodInformation(System.Reflection.MethodBase method)
+        internal virtual string GetMethodInformation(MethodItem method)
         {
             return method.Name;
         }

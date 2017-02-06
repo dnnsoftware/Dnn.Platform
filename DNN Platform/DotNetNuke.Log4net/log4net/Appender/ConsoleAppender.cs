@@ -22,6 +22,7 @@ using System.Globalization;
 
 using log4net.Layout;
 using log4net.Core;
+using log4net.Util;
 
 namespace log4net.Appender
 {
@@ -120,8 +121,8 @@ namespace log4net.Appender
 			set
 			{
 				string v = value.Trim();
-				
-				if (string.Compare(ConsoleError, v, true, CultureInfo.InvariantCulture) == 0) 
+
+				if (SystemInfo.EqualsIgnoringCase(ConsoleError, v))
 				{
 					m_writeToErrorStream = true;
 				} 
@@ -137,7 +138,7 @@ namespace log4net.Appender
 		#region Override implementation of AppenderSkeleton
 
 		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
+		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
 		/// </summary>
 		/// <param name="loggingEvent">The event to log.</param>
 		/// <remarks>

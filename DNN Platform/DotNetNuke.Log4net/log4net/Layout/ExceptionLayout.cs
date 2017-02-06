@@ -90,7 +90,7 @@ namespace log4net.Layout
 		/// <remarks>
 		/// <para>
 		/// Write the exception string to the <see cref="TextWriter"/>.
-		/// The exception string is retrieved from <see cref="LoggingEvent.GetExceptionString()"/>.
+		/// The exception string is retrieved from <see cref="M:LoggingEvent.GetExceptionString()"/>.
 		/// </para>
 		/// </remarks>
 		override public void Format(TextWriter writer, LoggingEvent loggingEvent) 

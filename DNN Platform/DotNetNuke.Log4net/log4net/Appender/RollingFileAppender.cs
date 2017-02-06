@@ -24,6 +24,7 @@ using System.IO;
 
 using log4net.Util;
 using log4net.Core;
+using System.Threading;
 
 namespace log4net.Appender
 {
@@ -233,6 +234,24 @@ namespace log4net.Appender
 		/// </remarks>
 		public RollingFileAppender() 
 		{
+		}
+
+		/// <summary>
+		/// Cleans up all resources used by this appender.
+		/// </summary>
+		~RollingFileAppender()
+		{
+#if !NETCF
+			if (m_mutexForRolling != null)
+			{
+#if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
+				m_mutexForRolling.Dispose();
+#else
+				m_mutexForRolling.Close();
+#endif
+				m_mutexForRolling = null;
+			}
+#endif
 		}
 
 		#endregion Public Instance Constructors
@@ -592,25 +611,46 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void AdjustFileBeforeAppend()
 		{
-			if (m_rollDate) 
+			// reuse the file appenders locking model to lock the rolling
+#if !NETCF
+			try
 			{
-				DateTime n = m_dateTime.Now;
-				if (n >= m_nextCheck) 
+				// if rolling should be locked, acquire the lock
+				if (m_mutexForRolling != null)
 				{
-					m_now = n;
-					m_nextCheck = NextCheckDate(m_now, m_rollPoint);
-	
-					RollOverTime(true);
+					m_mutexForRolling.WaitOne();
+				}
+#endif
+				if (m_rollDate)
+				{
+					DateTime n = m_dateTime.Now;
+					if (n >= m_nextCheck)
+					{
+						m_now = n;
+						m_nextCheck = NextCheckDate(m_now, m_rollPoint);
+
+						RollOverTime(true);
+					}
+				}
+
+				if (m_rollSize)
+				{
+					if ((File != null) && ((CountingQuietTextWriter)QuietWriter).Count >= m_maxFileSize)
+					{
+						RollOverSize();
+					}
+				}
+#if !NETCF
+			}
+			finally
+			{
+				// if rolling should be locked, release the lock
+				if (m_mutexForRolling != null)
+				{
+					m_mutexForRolling.ReleaseMutex();
 				}
 			}
-	
-			if (m_rollSize) 
-			{
-				if ((File != null) && ((CountingQuietTextWriter)QuietWriter).Count >= m_maxFileSize) 
-				{
-					RollOverSize();
-				}
-			}
+#endif
 		}
 
 		/// <summary>
@@ -737,7 +777,7 @@ namespace log4net.Appender
 		{
             if (m_preserveLogFileNameExtension)
             {
-                return Path.GetFileNameWithoutExtension(baseFileName) + ".*" + Path.GetExtension(baseFileName);
+                return Path.GetFileNameWithoutExtension(baseFileName) + "*" + Path.GetExtension(baseFileName);
             }
             else
             {
@@ -813,7 +853,7 @@ namespace log4net.Appender
 
 					if (!(last.ToString(m_datePattern,System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(m_now.ToString(m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))) 
 					{
-						m_scheduledFilename = m_baseFileName + last.ToString(m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo);
+						m_scheduledFilename = CombinePath(m_baseFileName, last.ToString(m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo));
 						LogLog.Debug(declaringType, "Initial roll over to ["+m_scheduledFilename+"]");
 						RollOverTime(false);
 						LogLog.Debug(declaringType, "curSizeRollBackups after rollOver at ["+m_curSizeRollBackups+"]");
@@ -904,7 +944,10 @@ namespace log4net.Appender
 			// Only look for files in the current roll point
 			if (m_rollDate && !m_staticLogFileName)
 			{
-				if (! curFileName.StartsWith(CombinePath(baseFile, m_dateTime.Now.ToString(m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo))))
+				string date = m_dateTime.Now.ToString(m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo);
+				string prefix = m_preserveLogFileNameExtension ? Path.GetFileNameWithoutExtension(baseFile) + date : baseFile + date;
+				string suffix = m_preserveLogFileNameExtension ? Path.GetExtension(baseFile) : "";
+				if (!curFileName.StartsWith(prefix) || !curFileName.EndsWith(suffix))
 				{
 					LogLog.Debug(declaringType, "Ignoring file ["+curFileName+"] because it is from a different date period");
 					return;
@@ -1114,6 +1157,11 @@ namespace log4net.Appender
 				// Store fully qualified base file name
 				m_baseFileName = base.File;
 			}
+
+#if !NETCF
+			// initialize the mutex that is used to lock rolling
+			m_mutexForRolling = new Mutex(false, m_baseFileName.Replace("\\", "_").Replace(":", "_").Replace("/", "_"));
+#endif
 
 			if (m_rollDate && File != null && m_scheduledFilename == null)
 			{
@@ -1640,7 +1688,14 @@ namespace log4net.Appender
 		/// FileName provided in configuration.  Used for rolling properly
 		/// </summary>
 		private string m_baseFileName;
-  
+
+#if !NETCF
+		/// <summary>
+		/// A mutex that is used to lock rolling of files.
+		/// </summary>
+		private Mutex m_mutexForRolling;
+#endif
+
 		#endregion Private Instance Fields
 
 		#region Static Members

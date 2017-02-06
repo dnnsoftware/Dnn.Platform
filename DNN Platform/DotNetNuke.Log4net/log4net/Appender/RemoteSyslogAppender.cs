@@ -23,8 +23,9 @@ using log4net.Core;
 using log4net.Appender;
 using log4net.Util;
 using log4net.Layout;
+using System.Text;
 
-namespace log4net.Appender 
+namespace log4net.Appender
 {
 	/// <summary>
 	/// Logs events to a remote syslog daemon.
@@ -66,7 +67,7 @@ namespace log4net.Appender
 	/// </remarks>
 	/// <author>Rob Lyon</author>
 	/// <author>Nicko Cadell</author>
-	public class RemoteSyslogAppender : UdpAppender 
+	public class RemoteSyslogAppender : UdpAppender
 	{
 		/// <summary>
 		/// Syslog port 514
@@ -268,7 +269,7 @@ namespace log4net.Appender
 		/// This instance of the <see cref="RemoteSyslogAppender" /> class is set up to write 
 		/// to a remote syslog daemon.
 		/// </remarks>
-		public RemoteSyslogAppender() 
+		public RemoteSyslogAppender()
 		{
 			// syslog udp defaults
 			this.RemotePort = DefaultSyslogPort;
@@ -279,7 +280,7 @@ namespace log4net.Appender
 		#endregion Public Instance Constructors
 
 		#region Public Instance Properties
-		
+
 		/// <summary>
 		/// Message identity
 		/// </summary>
@@ -310,7 +311,7 @@ namespace log4net.Appender
 			get { return m_facility; }
 			set { m_facility = value; }
 		}
-		
+
 		#endregion Public Instance Properties
 
 		/// <summary>
@@ -330,7 +331,7 @@ namespace log4net.Appender
 		#region AppenderSkeleton Implementation
 
 		/// <summary>
-		/// This method is called by the <see cref="AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
+		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
 		/// </summary>
 		/// <param name="loggingEvent">The event to log.</param>
 		/// <remarks>
@@ -341,48 +342,90 @@ namespace log4net.Appender
 		/// The format of the output will depend on the appender's layout.
 		/// </para>
 		/// </remarks>
-		protected override void Append(LoggingEvent loggingEvent) 
+		protected override void Append(LoggingEvent loggingEvent)
 		{
-			try 
-			{
-				System.IO.StringWriter writer = new System.IO.StringWriter(System.Globalization.CultureInfo.InvariantCulture);
+            try
+            {
+                // Priority
+                int priority = GeneratePriority(m_facility, GetSeverity(loggingEvent.Level));
 
-				// Priority
-				int priority = GeneratePriority(m_facility, GetSeverity(loggingEvent.Level));
-				writer.Write('<');
-				writer.Write(priority);
-				writer.Write('>');
+                // Identity
+                string identity;
 
-				// Identity
-				if (m_identity != null)
-				{
-					m_identity.Format(writer, loggingEvent);
-				}
-				else
-				{
-					writer.Write(loggingEvent.Domain);
-				}
-				writer.Write(": ");
+                if (m_identity != null)
+                {
+                    identity = m_identity.Format(loggingEvent);
+                }
+                else
+                {
+                    identity = loggingEvent.Domain;
+                }
 
-				// Message. The message goes after the tag/identity
-				RenderLoggingEvent(writer, loggingEvent);
+                // Message. The message goes after the tag/identity
+                string message = RenderLoggingEvent(loggingEvent);
 
-				// Grab as a byte array
-				string fullMessage = writer.ToString();
-				Byte [] buffer = this.Encoding.GetBytes(fullMessage.ToCharArray());
+                Byte[] buffer;
+                int i = 0;
+                char c;
 
-				this.Client.Send(buffer, buffer.Length, this.RemoteEndPoint);
-			} 
-			catch (Exception e) 
-			{
-				ErrorHandler.Error(
-					"Unable to send logging event to remote syslog " + 
-					this.RemoteAddress.ToString() + 
-					" on port " + 
-					this.RemotePort + ".", 
-					e, 
-					ErrorCode.WriteFailure);
-			}
+                StringBuilder builder = new StringBuilder();
+
+                while (i < message.Length)
+                {
+                    // Clear StringBuilder
+                    builder.Length = 0;
+
+                    // Write priority
+                    builder.Append('<');
+                    builder.Append(priority);
+                    builder.Append('>');
+
+                    // Write identity
+                    builder.Append(identity);
+                    builder.Append(": ");
+
+                    for (; i < message.Length; i++)
+                    {
+                        c = message[i];
+
+                        // Accept only visible ASCII characters and space. See RFC 3164 section 4.1.3
+                        if (((int)c >= 32) && ((int)c <= 126))
+                        {
+                            builder.Append(c);
+                        }
+                        // If character is newline, break and send the current line
+                        else if ((c == '\r') || (c == '\n'))
+                        {
+                            // Check the next character to handle \r\n or \n\r
+                            if ((message.Length > i + 1) && ((message[i + 1] == '\r') || (message[i + 1] == '\n')))
+                            {
+                                i++;
+                            }
+                            i++;
+                            break;
+                        }
+                    }
+
+                    // Grab as a byte array
+                    buffer = this.Encoding.GetBytes(builder.ToString());
+
+#if NETSTANDARD1_3
+                    Client.SendAsync(buffer, buffer.Length, RemoteEndPoint).Wait();
+#else
+                    this.Client.Send(buffer, buffer.Length, this.RemoteEndPoint);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorHandler.Error(
+                    "Unable to send logging event to remote syslog " +
+                    this.RemoteAddress.ToString() +
+                    " on port " +
+                    this.RemotePort + ".",
+                    e,
+                    ErrorCode.WriteFailure);
+            }
 		}
 
 		/// <summary>
@@ -425,30 +468,30 @@ namespace log4net.Appender
 			// Fallback to sensible default values
 			//
 
-			if (level >= Level.Alert) 
+			if (level >= Level.Alert)
 			{
 				return SyslogSeverity.Alert;
-			} 
-			else if (level >= Level.Critical) 
+			}
+			else if (level >= Level.Critical)
 			{
 				return SyslogSeverity.Critical;
-			} 
-			else if (level >= Level.Error) 
+			}
+			else if (level >= Level.Error)
 			{
 				return SyslogSeverity.Error;
-			} 
-			else if (level >= Level.Warn) 
+			}
+			else if (level >= Level.Warn)
 			{
 				return SyslogSeverity.Warning;
-			} 
-			else if (level >= Level.Notice) 
+			}
+			else if (level >= Level.Notice)
 			{
 				return SyslogSeverity.Notice;
-			} 
-			else if (level >= Level.Info) 
+			}
+			else if (level >= Level.Info)
 			{
 				return SyslogSeverity.Informational;
-			} 
+			}
 			// Default setting
 			return SyslogSeverity.Debug;
 		}
@@ -505,10 +548,19 @@ namespace log4net.Appender
 		/// </summary>
 		private LevelMapping m_levelMapping = new LevelMapping();
 
+		/// <summary>
+		/// Initial buffer size
+		/// </summary>
+		private const int c_renderBufferSize = 256;
+
+		/// <summary>
+		/// Maximum buffer size before it is recycled
+		/// </summary>
+		private const int c_renderBufferMaxCapacity = 1024;
+
 		#endregion Private Instances Fields
 
 		#region LevelSeverity LevelMapping Entry
-
 		/// <summary>
 		/// A class to act as a mapping between the level that a logging call is made at and
 		/// the syslog severity that is should be logged at.

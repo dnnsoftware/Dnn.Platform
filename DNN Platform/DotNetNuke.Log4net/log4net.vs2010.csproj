@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 
  Licensed to the Apache Software Foundation (ASF) under one
@@ -66,7 +66,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\build\bin\net\2.0\debug\</OutputPath>
+    <OutputPath>..\build\bin\net\4.0\debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -86,13 +86,13 @@
     <CodeAnalysisRuleSet>SecurityRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\build\bin\net\1.0\release\</OutputPath>
+    <OutputPath>..\build\bin\net\4.0\release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;STRONG;NET;NET_1_0;</DefineConstants>
+    <DefineConstants>TRACE;STRONG;NET;NET_2_0;NET_4_0</DefineConstants>
     <DocumentationFile>log4net.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
@@ -166,9 +166,13 @@
     <Compile Include="Appender\IBulkAppender.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Appender\IFlushable.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Appender\LocalSyslogAppender.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Appender\ManagedColoredConsoleAppender.cs" />
     <Compile Include="Appender\MemoryAppender.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -316,10 +320,16 @@
     <Compile Include="Core\LogImpl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\MethodItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\SecurityContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\SecurityContextProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\StackFrameItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Core\TimeEvaluator.cs" />
@@ -378,6 +388,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ILog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Layout\DynamicPatternLayout.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Layout\ExceptionLayout.cs">
@@ -606,6 +619,9 @@
     <Compile Include="Util\GlobalContextProperties.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\ILogExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Util\LevelMapping.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -646,6 +662,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\PatternStringConverters\AppDomainPatternConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\PatternStringConverters\AppSettingPatternConverter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\PatternStringConverters\DatePatternConverter.cs">
@@ -710,7 +729,13 @@
     <Compile Include="Util\ThreadContextProperties.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\LogicalThreadContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Util\ThreadContextStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\LogicalThreadContextStacks.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\ThreadContextStacks.cs">

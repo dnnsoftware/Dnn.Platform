@@ -18,7 +18,6 @@
 #endregion
 
 using System;
-using System.Text;
 using System.IO;
 
 using log4net.Core;
@@ -69,7 +68,7 @@ namespace log4net.Layout.Pattern
 	/// 		<description>
 	/// 		Any other pattern string uses the <see cref="SimpleDateFormatter"/> formatter. 
 	/// 		This formatter passes the pattern string to the <see cref="DateTime"/> 
-	/// 		<see cref="DateTime.ToString(string)"/> method.
+	/// 		<see cref="M:DateTime.ToString(string)"/> method.
 	/// 		For details on valid patterns see 
 	/// 		<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpref/html/frlrfsystemglobalizationdatetimeformatinfoclasstopic.asp">DateTimeFormatInfo Class</a>.
 	/// 		</description>
@@ -119,20 +118,20 @@ namespace log4net.Layout.Pattern
 			{
 				dateFormatStr = AbsoluteTimeDateFormatter.Iso8601TimeDateFormat;
 			}
-			
-			if (string.Compare(dateFormatStr, AbsoluteTimeDateFormatter.Iso8601TimeDateFormat, true, System.Globalization.CultureInfo.InvariantCulture) == 0) 
+
+			if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.Iso8601TimeDateFormat))
 			{
 				m_dateFormatter = new Iso8601DateFormatter();
 			}
-			else if (string.Compare(dateFormatStr, AbsoluteTimeDateFormatter.AbsoluteTimeDateFormat, true, System.Globalization.CultureInfo.InvariantCulture) == 0)
+			else if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.AbsoluteTimeDateFormat))
 			{
 				m_dateFormatter = new AbsoluteTimeDateFormatter();
 			}
-			else if (string.Compare(dateFormatStr, AbsoluteTimeDateFormatter.DateAndTimeDateFormat, true, System.Globalization.CultureInfo.InvariantCulture) == 0)
+			else if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.DateAndTimeDateFormat))
 			{
 				m_dateFormatter = new DateTimeDateFormatter();
 			}
-			else 
+			else
 			{
 				try 
 				{

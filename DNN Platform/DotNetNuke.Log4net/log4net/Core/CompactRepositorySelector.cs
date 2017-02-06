@@ -124,7 +124,7 @@ namespace log4net.Core
 		/// <para>
 		/// Get the named <see cref="ILoggerRepository"/>. The default 
 		/// repository is <c>log4net-default-repository</c>. Other repositories 
-		/// must be created using the <see cref="CreateRepository(string, Type)"/>.
+		/// must be created using the <see cref="M:CreateRepository(string, Type)"/>.
 		/// If the named repository does not exist an exception is thrown.
 		/// </para>
 		/// </remarks>
@@ -203,7 +203,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// The <see cref="ILoggerRepository"/> created will be associated with the repository
-		/// specified such that a call to <see cref="GetRepository(string)"/> with the
+		/// specified such that a call to <see cref="M:GetRepository(string)"/> with the
 		/// same repository specified will return the same repository instance.
 		/// </para>
 		/// <para>
@@ -267,8 +267,8 @@ namespace log4net.Core
 		/// <returns><c>true</c> if the repository exists</returns>
 		/// <remarks>
 		/// <para>
-		/// Test if a named repository exists. Use <see cref="CreateRepository(string, Type)"/>
-		/// to create a new repository and <see cref="GetRepository(string)"/> to retrieve 
+		/// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
+		/// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve 
 		/// a repository.
 		/// </para>
 		/// </remarks>

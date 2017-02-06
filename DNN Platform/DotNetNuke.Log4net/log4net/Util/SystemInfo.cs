@@ -18,7 +18,11 @@
 #endregion
 
 using System;
+#if NETSTANDARD1_3
+using System.Globalization;
+#else
 using System.Configuration;
+#endif
 using System.Reflection;
 using System.Text;
 using System.IO;
@@ -143,7 +147,9 @@ namespace log4net.Util
 			get 
 			{
 #if NETCF
-				return System.IO.Path.GetDirectoryName(SystemInfo.EntryAssemblyLocation) + System.IO.Path.DirectorySeparatorChar;
+-				return System.IO.Path.GetDirectoryName(SystemInfo.EntryAssemblyLocation) + System.IO.Path.DirectorySeparatorChar;
+#elif NETSTANDARD1_3
+				return Directory.GetCurrentDirectory();
 #else
 				return AppDomain.CurrentDomain.BaseDirectory;
 #endif
@@ -168,7 +174,7 @@ namespace log4net.Util
 		{
 			get 
 			{
-#if NETCF
+#if NETCF || NETSTANDARD1_3
 				return SystemInfo.EntryAssemblyLocation+".config";
 #else
 				return System.AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
@@ -191,6 +197,8 @@ namespace log4net.Util
 			{
 #if NETCF
 				return SystemInfo.NativeEntryAssemblyLocation;
+#elif NETSTANDARD1_3 // TODO GetEntryAssembly is available for netstandard1.5
+				return AppContext.BaseDirectory;
 #else
 				return System.Reflection.Assembly.GetEntryAssembly().Location;
 #endif
@@ -225,7 +233,7 @@ namespace log4net.Util
 			{
 #if NETCF_1_0
 				return System.Threading.Thread.CurrentThread.GetHashCode();
-#elif NET_2_0 || NETCF_2_0 || MONO_2_0
+#elif NET_2_0 || NETCF_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD1_3
 				return System.Threading.Thread.CurrentThread.ManagedThreadId;
 #else
 				return AppDomain.GetCurrentThreadId();
@@ -263,13 +271,19 @@ namespace log4net.Util
 						// Lookup the host name
 						s_hostName = System.Net.Dns.GetHostName();
 					}
-					catch(System.Net.Sockets.SocketException)
+					catch (System.Net.Sockets.SocketException)
 					{
+						LogLog.Debug(declaringType, "Socket exception occurred while getting the dns hostname. Error Ignored.");
 					}
-					catch(System.Security.SecurityException)
+					catch (System.Security.SecurityException)
 					{
 						// We may get a security exception looking up the hostname
 						// You must have Unrestricted DnsPermission to access resource
+						LogLog.Debug(declaringType, "Security exception occurred while getting the dns hostname. Error Ignored.");
+					}
+					catch (Exception ex)
+					{
+						LogLog.Debug(declaringType, "Some other exception occurred while getting the dns hostname. Error Ignored.", ex);
 					}
 
 					// Get the NETBIOS machine name of the current machine
@@ -277,7 +291,9 @@ namespace log4net.Util
 					{
 						try
 						{
-#if (!SSCLI && !NETCF)
+#if NETSTANDARD1_3
+							s_hostName = Environment.GetEnvironmentVariable("COMPUTERNAME");
+#elif (!SSCLI && !NETCF)
 							s_hostName = Environment.MachineName;
 #endif
 						}
@@ -295,6 +311,7 @@ namespace log4net.Util
 					if (s_hostName == null || s_hostName.Length == 0)
 					{
 						s_hostName = s_notAvailableText;
+						LogLog.Debug(declaringType, "Could not determine the hostname. Error Ignored. Empty host name will be used");
 					}
 				}
 				return s_hostName;
@@ -324,7 +341,7 @@ namespace log4net.Util
 				{
 					try
 					{
-#if !NETCF
+#if !(NETCF || NETSTANDARD1_3)
 						s_appFriendlyName = AppDomain.CurrentDomain.FriendlyName;
 #endif
 					}
@@ -377,9 +394,35 @@ namespace log4net.Util
 		/// will be set per AppDomain.
 		/// </para>
 		/// </remarks>
+        [Obsolete("Use ProcessStartTimeUtc and convert to local time if needed.")]
 		public static DateTime ProcessStartTime
 		{
-			get { return s_processStartTime; }
+			get { return s_processStartTimeUtc.ToLocalTime(); }
+		}
+
+        /// <summary>
+        /// Get the UTC start time for the current process.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is the UTC time at which the log4net library was loaded into the
+        /// AppDomain. Due to reports of a hang in the call to <c>System.Diagnostics.Process.StartTime</c>
+        /// this is not the start time for the current process.
+        /// </para>
+        /// <para>
+        /// The log4net library should be loaded by an application early during its
+        /// startup, therefore this start time should be a good approximation for
+        /// the actual start time.
+        /// </para>
+        /// <para>
+        /// Note that AppDomains may be loaded and unloaded within the
+        /// same process without the process terminating, however this start time
+        /// will be set per AppDomain.
+        /// </para>
+        /// </remarks>
+        public static DateTime ProcessStartTimeUtc
+        {
+            get { return s_processStartTimeUtc; }
 		}
 
 		/// <summary>
@@ -441,6 +484,8 @@ namespace log4net.Util
 		{
 #if NETCF
 			return "Not supported on Microsoft .NET Compact Framework";
+#elif NETSTANDARD1_3  // TODO Assembly.Location available in netstandard1.5
+            return "Not supported on .NET Core";
 #else
 			if (myAssembly.GlobalAssemblyCache)
 			{
@@ -450,12 +495,44 @@ namespace log4net.Util
 			{
 				try
 				{
-					// This call requires FileIOPermission for access to the path
-					// if we don't have permission then we just ignore it and
-					// carry on.
-					return myAssembly.Location;
+#if NET_4_0 || MONO_4_0
+					if (myAssembly.IsDynamic)
+					{
+						return "Dynamic Assembly";
+					}
+#else
+					if (myAssembly is System.Reflection.Emit.AssemblyBuilder)
+					{
+						return "Dynamic Assembly";
+					}
+					else if(myAssembly.GetType().FullName == "System.Reflection.Emit.InternalAssemblyBuilder")
+					{
+						return "Dynamic Assembly";
+					}
+#endif
+					else
+					{
+						// This call requires FileIOPermission for access to the path
+						// if we don't have permission then we just ignore it and
+						// carry on.
+						return myAssembly.Location;
+					}
 				}
-				catch(System.Security.SecurityException)
+				catch (NotSupportedException)
+				{
+					// The location information may be unavailable for dynamic assemblies and a NotSupportedException
+					// is thrown in those cases. See: http://msdn.microsoft.com/de-de/library/system.reflection.assembly.location.aspx
+					return "Dynamic Assembly";
+				}
+				catch (TargetInvocationException ex)
+				{
+					return "Location Detect Failed (" + ex.Message + ")";
+				}
+				catch (ArgumentException ex)
+				{
+					return "Location Detect Failed (" + ex.Message + ")";
+				}
+				catch (System.Security.SecurityException)
 				{
 					return "Location Permission Denied";
 				}
@@ -479,7 +556,12 @@ namespace log4net.Util
 		/// </remarks>
 		public static string AssemblyQualifiedName(Type type)
 		{
-			return type.FullName + ", " + type.Assembly.FullName;
+			return type.FullName + ", "
+#if NETSTANDARD1_3
+				+ type.GetTypeInfo().Assembly.FullName;
+#else
+				+ type.Assembly.FullName;
+#endif
 		}
 
 		/// <summary>
@@ -531,7 +613,7 @@ namespace log4net.Util
 		/// </remarks>
 		public static string AssemblyFileName(Assembly myAssembly)
 		{
-#if NETCF
+#if NETCF || NETSTANDARD1_3 // TODO Assembly.Location is in netstandard1.5 System.Reflection
 			// This is not very good because it assumes that only
 			// the entry assembly can be an EXE. In fact multiple
 			// EXEs can be loaded in to a process.
@@ -566,7 +648,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified, it will be loaded from the assembly
@@ -576,9 +658,14 @@ namespace log4net.Util
 		/// </remarks>
 		public static Type GetTypeFromString(Type relativeType, string typeName, bool throwOnError, bool ignoreCase)
 		{
+#if NETSTANDARD1_3
+			return GetTypeFromString(relativeType.GetTypeInfo().Assembly, typeName, throwOnError, ignoreCase);
+#else
 			return GetTypeFromString(relativeType.Assembly, typeName, throwOnError, ignoreCase);
+#endif
 		}
 
+#if !NETSTANDARD1_3
 		/// <summary>
 		/// Loads the type specified in the type string.
 		/// </summary>
@@ -590,7 +677,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified it will be loaded from the
@@ -602,6 +689,7 @@ namespace log4net.Util
 		{
 			return GetTypeFromString(Assembly.GetCallingAssembly(), typeName, throwOnError, ignoreCase);
 		}
+#endif
 
 		/// <summary>
 		/// Loads the type specified in the type string.
@@ -615,7 +703,7 @@ namespace log4net.Util
 		/// <para>
 		/// If the type name is fully qualified, i.e. if contains an assembly name in 
 		/// the type name, the type will be loaded from the system using 
-		/// <see cref="Type.GetType(string,bool)"/>.
+		/// <see cref="M:Type.GetType(string,bool)"/>.
 		/// </para>
 		/// <para>
 		/// If the type name is not fully qualified it will be loaded from the specified
@@ -629,7 +717,9 @@ namespace log4net.Util
 			if(typeName.IndexOf(',') == -1)
 			{
 				//LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
-#if NETCF
+#if NETSTANDARD1_3
+				return relativeAssembly.GetType(typeName, throwOnError, ignoreCase);
+#elif NETCF
 				return relativeAssembly.GetType(typeName, throwOnError);
 #else
 				// Attempt to lookup the type from the relativeAssembly
@@ -653,17 +743,29 @@ namespace log4net.Util
 
 				if (loadedAssemblies != null)
 				{
+					Type fallback = null;
 					// Search the loaded assemblies for the type
 					foreach (Assembly assembly in loadedAssemblies) 
 					{
-						type = assembly.GetType(typeName, false, ignoreCase);
-						if (type != null)
+						Type t = assembly.GetType(typeName, false, ignoreCase);
+						if (t != null)
 						{
 							// Found type in loaded assembly
 							LogLog.Debug(declaringType, "Loaded type ["+typeName+"] from assembly ["+assembly.FullName+"] by searching loaded assemblies.");
-							return type;
+                                                        if (assembly.GlobalAssemblyCache)
+                                                        {
+                                                            fallback = t;
+                                                        }
+                                                        else
+                                                        {
+                                                            return t;
+                                                        }
 						}
 					}
+                                        if (fallback != null)
+                                        {
+                                            return fallback;
+                                        }
 				}
 
 				// Didn't find the type
@@ -897,7 +999,7 @@ namespace log4net.Util
 		{
 			try
 			{
-#if NETCF
+#if NETCF || NETSTANDARD1_3
 				// Configuration APIs are not suported under the Compact Framework
 #elif NET_2_0
 				return ConfigurationManager.AppSettings[key];
@@ -976,12 +1078,35 @@ namespace log4net.Util
 		{
 #if NETCF_1_0
 			return new Hashtable(CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default);
-#elif NETCF_2_0 || NET_2_0 || MONO_2_0
+#elif NETCF_2_0 || NET_2_0 || MONO_2_0 || MONO_3_5 || MONO_4_0
 			return new Hashtable(StringComparer.OrdinalIgnoreCase);
 #else
 			return System.Collections.Specialized.CollectionsUtil.CreateCaseInsensitiveHashtable();
 #endif
 		}
+
+        /// <summary>
+        /// Tests two strings for equality, the ignoring case.
+        /// </summary>
+        /// <remarks>
+        /// If the platform permits, culture information is ignored completely (ordinal comparison).
+        /// The aim of this method is to provide a fast comparison that deals with <c>null</c> and ignores different casing.
+        /// It is not supposed to deal with various, culture-specific habits.
+        /// Use it to compare against pure ASCII constants, like keywords etc.
+        /// </remarks>
+        /// <param name="a">The one string.</param>
+        /// <param name="b">The other string.</param>
+        /// <returns><c>true</c> if the strings are equal, <c>false</c> otherwise.</returns>
+        public static Boolean EqualsIgnoringCase(String a, String b)
+        {
+#if NET_1_0 || NET_1_1 || NETCF_1_0
+            return string.Compare(a, b, true, System.Globalization.CultureInfo.InvariantCulture) == 0
+#elif NETSTANDARD1_3
+            return CultureInfo.InvariantCulture.CompareInfo.Compare(a, b, CompareOptions.IgnoreCase) == 0;
+#else // >= .NET-2.0
+            return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+#endif
+        }
 
 		#endregion Public Static Methods
 
@@ -1075,7 +1200,7 @@ namespace log4net.Util
 		/// <summary>
 		/// Start time for the current process.
 		/// </summary>
-		private static DateTime s_processStartTime = DateTime.Now;
+		private static DateTime s_processStartTimeUtc = DateTime.UtcNow;
 
 		#endregion
 

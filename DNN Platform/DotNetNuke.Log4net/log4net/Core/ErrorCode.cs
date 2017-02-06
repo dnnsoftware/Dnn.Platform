@@ -22,11 +22,11 @@ using System;
 namespace log4net.Core
 {
 	/// <summary>
-	/// Defined error codes that can be passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
+	/// Defined error codes that can be passed to the <see cref="M:IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Values passed to the <see cref="IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
+	/// Values passed to the <see cref="M:IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
 	/// </para>
 	/// </remarks>
 	/// <author>Nicko Cadell</author>

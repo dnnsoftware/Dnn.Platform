@@ -18,6 +18,9 @@
 #endregion
 
 using System;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
 
 namespace log4net.Core
 {
@@ -27,7 +30,7 @@ namespace log4net.Core
 	/// <remarks>
 	/// <para>
 	/// This evaluator will trigger if the type of the Exception
-	/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+	/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 	/// is equal to a Type in <see cref="ExceptionType"/>.    /// 
 	/// </para>
 	/// </remarks>
@@ -98,7 +101,7 @@ namespace log4net.Core
 		/// <remarks>
 		/// <para>
 		/// This evaluator will trigger if the Exception Type of the event
-		/// passed to <see cref="IsTriggeringEvent(LoggingEvent)"/>
+		/// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
 		/// is <see cref="ExceptionType"/>.
 		/// </para>
 		/// </remarks>

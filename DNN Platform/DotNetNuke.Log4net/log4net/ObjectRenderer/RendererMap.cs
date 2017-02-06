@@ -19,6 +19,10 @@
 
 using System;
 using System.IO;
+#if NETSTANDARD1_3
+using System.Reflection;
+#endif
+
 using log4net.Util;
 
 namespace log4net.ObjectRenderer
@@ -33,7 +37,7 @@ namespace log4net.ObjectRenderer
 	/// is used to render them.
 	/// </para>
 	/// <para>
-	/// The <see cref="FindAndRender(object)"/> method is used to render an
+	/// The <see cref="M:FindAndRender(object)"/> method is used to render an
 	/// <c>object</c> using the appropriate renderers defined in this map.
 	/// </para>
 	/// </remarks>
@@ -77,7 +81,7 @@ namespace log4net.ObjectRenderer
 		/// <remarks>
 		/// <para>
 		/// This is a convenience method used to render an object to a string.
-		/// The alternative method <see cref="FindAndRender(object,TextWriter)"/>
+		/// The alternative method <see cref="M:FindAndRender(object,TextWriter)"/>
 		/// should be used when streaming output to a <see cref="TextWriter"/>.
 		/// </para>
 		/// </remarks>
@@ -104,7 +108,7 @@ namespace log4net.ObjectRenderer
 		/// <para>
 		/// Find the appropriate renderer for the type of the
 		/// <paramref name="obj"/> parameter. This is accomplished by calling the
-		/// <see cref="Get(Type)"/> method. Once a renderer is found, it is
+		/// <see cref="M:Get(Type)"/> method. Once a renderer is found, it is
 		/// applied on the object <paramref name="obj"/> and the result is returned
 		/// as a <see cref="string"/>.
 		/// </para>
@@ -174,7 +178,7 @@ namespace log4net.ObjectRenderer
 		/// Gets the renderer for the specified object type.
 		/// </param>
 		/// <param>
-		/// Syntactic sugar method that calls <see cref="Get(Type)"/> 
+		/// Syntactic sugar method that calls <see cref="M:Get(Type)"/> 
 		/// with the type of the object parameter.
 		/// </param>
 		/// </remarks>
@@ -216,7 +220,11 @@ namespace log4net.ObjectRenderer
 
 			if (result == null)
 			{
+#if NETSTANDARD1_3
+				for (Type cur = type; cur != null; cur = cur.GetTypeInfo().BaseType)
+#else
 				for(Type cur = type; cur != null; cur = cur.BaseType)
+#endif
 				{
 					// Search the type's interfaces
 					result = SearchTypeAndInterfaces(cur);
@@ -303,7 +311,7 @@ namespace log4net.ObjectRenderer
 		/// <remarks>
 		/// <para>
 		/// Register an object renderer for a specific source type.
-		/// This renderer will be returned from a call to <see cref="Get(Type)"/>
+		/// This renderer will be returned from a call to <see cref="M:Get(Type)"/>
 		/// specifying the same <paramref name="typeToRender"/> as an argument.
 		/// </para>
 		/// </remarks>
