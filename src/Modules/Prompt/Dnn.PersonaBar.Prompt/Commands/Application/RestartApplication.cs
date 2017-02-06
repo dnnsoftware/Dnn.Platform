@@ -11,7 +11,7 @@ using Dnn.PersonaBar.Prompt.Models;
 namespace Dnn.PersonaBar.Prompt.Commands.Application
 {
     [ConsoleCommand("restart-application", "Restarts the application and reloads the page", new string[] { })]
-    public class RestartApplication : BaseConsoleCommand, IConsoleCommand
+    public class RestartApplication : ConsoleCommandBase, IConsoleCommand
     {
         public string ValidationMessage { get; }
 

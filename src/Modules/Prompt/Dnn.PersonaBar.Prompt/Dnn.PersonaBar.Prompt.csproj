@@ -156,8 +156,8 @@
     <Compile Include="Commands\User\RestoreUser.cs" />
     <Compile Include="Commands\User\AddRoles.cs" />
     <Compile Include="Commands\Utilities\Echo.cs" />
-    <Compile Include="Common\BaseConsoleCommand.cs" />
-    <Compile Include="Common\BaseController.cs" />
+    <Compile Include="Common\ConsoleCommandBase.cs" />
+    <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\EmailValidator.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />

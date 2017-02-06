@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "id",
         "notify"
     })]
-    public class DeleteUser : BaseConsoleCommand, IConsoleCommand
+    public class DeleteUser : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_NOTIFY = "notify";

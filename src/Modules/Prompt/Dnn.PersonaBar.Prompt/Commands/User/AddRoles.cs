@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "start",
         "end"
     })]
-    public class AddRoles : BaseConsoleCommand, IConsoleCommand
+    public class AddRoles : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_ROLES = "roles";

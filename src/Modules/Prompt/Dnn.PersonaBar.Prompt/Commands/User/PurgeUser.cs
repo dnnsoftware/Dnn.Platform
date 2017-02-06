@@ -10,7 +10,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
     [ConsoleCommand("purge-user", "Completely removes a previously deleted user from the portal.", new string[] { "id" })]
-    public class PurgeUser : BaseConsoleCommand, IConsoleCommand
+    public class PurgeUser : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

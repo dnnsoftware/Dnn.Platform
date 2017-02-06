@@ -16,7 +16,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
 {
     [ConsoleCommand("get-task", "Retrieves details for a specified scheduled task", new string[] { "id" })]
-    public class GetTask : BaseConsoleCommand, IConsoleCommand
+    public class GetTask : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
 

@@ -10,7 +10,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Host
 {
     [ConsoleCommand("get-host", "Retrieves information about the current DNN Installation", new string[] { "id" })]
-    public class GetHost : BaseConsoleCommand, IConsoleCommand
+    public class GetHost : ConsoleCommandBase, IConsoleCommand
     {
 
         public string ValidationMessage { get; private set; }

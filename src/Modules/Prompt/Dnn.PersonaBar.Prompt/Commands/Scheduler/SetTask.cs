@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         "id",
         "enabled"
     })]
-    public class SetTask : BaseConsoleCommand, IConsoleCommand
+    public class SetTask : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

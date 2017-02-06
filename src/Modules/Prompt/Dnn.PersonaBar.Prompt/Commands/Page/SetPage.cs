@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "keywords",
         "visible"
     })]
-    public class SetPage : BaseConsoleCommand, IConsoleCommand
+    public class SetPage : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_TITLE = "title";

@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "id",
         "parentid"
     })]
-    public class PurgePage : BaseConsoleCommand, IConsoleCommand
+    public class PurgePage : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

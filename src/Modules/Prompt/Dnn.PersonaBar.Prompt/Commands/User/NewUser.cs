@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "approved",
         "notify"
     })]
-    public class NewUser : BaseConsoleCommand, IConsoleCommand
+    public class NewUser : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_EMAIL = "email";
         private const string FLAG_USERNAME = "username";

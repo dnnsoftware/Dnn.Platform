@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Dnn.PersonaBar.Prompt.Commands.Role
 {
     [ConsoleCommand("list-roles", "Retrieves a list of DNN security roles for this portal", new string[] { })]
-    public class ListRoles : BaseConsoleCommand, IConsoleCommand
+    public class ListRoles : ConsoleCommandBase, IConsoleCommand
     {
 
         public string ValidationMessage { get; }

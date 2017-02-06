@@ -11,7 +11,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Role
 {
     [ConsoleCommand("get-role", "Retrieves a DNN security role for this portal", new string[] { })]
-    public class GetRole : BaseConsoleCommand, IConsoleCommand
+    public class GetRole : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
 

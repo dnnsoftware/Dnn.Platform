@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         "description",
         "public"
     })]
-    public class SetRole : BaseConsoleCommand, IConsoleCommand
+    public class SetRole : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

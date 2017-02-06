@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "path",
         "skin"
     })]
-    public class ListPages : BaseConsoleCommand, IConsoleCommand
+    public class ListPages : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_PARENTID = "parentid";
         private const string FLAG_DELETED = "deleted";

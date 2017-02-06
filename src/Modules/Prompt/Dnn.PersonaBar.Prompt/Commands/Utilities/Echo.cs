@@ -15,7 +15,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Utilities
 {
     [ConsoleCommand("echo", "Echos back the first argument received", new string[] { })]
-    public class Echo : BaseConsoleCommand, IConsoleCommand
+    public class Echo : ConsoleCommandBase, IConsoleCommand
     {
 
         public string ValidationMessage { get; }

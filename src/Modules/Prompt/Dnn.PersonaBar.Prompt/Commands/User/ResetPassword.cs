@@ -12,7 +12,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "id",
         "notify"
     })]
-    public class ResetPassword : BaseConsoleCommand, IConsoleCommand
+    public class ResetPassword : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_NOTIFY = "notify";

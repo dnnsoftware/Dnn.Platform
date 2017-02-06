@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         "id",
         "pageid"
 })]
-    public class RestoreModule : BaseConsoleCommand, IConsoleCommand
+    public class RestoreModule : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

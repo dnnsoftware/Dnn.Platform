@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Dnn.PersonaBar.Prompt.Common
 {
-    public abstract class BaseController : PersonaBarApiController
+    public abstract class ControllerBase : PersonaBarApiController
     {
         protected HttpResponseMessage OKResponse(string msg, object data = null)
         {

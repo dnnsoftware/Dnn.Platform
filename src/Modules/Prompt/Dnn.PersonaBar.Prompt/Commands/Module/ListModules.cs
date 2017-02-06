@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
         "all",
         "pageid"
     })]
-    public class ListModules : BaseConsoleCommand, IConsoleCommand
+    public class ListModules : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_NAME = "name";

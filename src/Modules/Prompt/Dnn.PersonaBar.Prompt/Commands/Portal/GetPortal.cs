@@ -17,7 +17,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("get-portal", "Retrieves information about the current portal", new string[] { "id" })]
-    public class GetPortal : BaseConsoleCommand, IConsoleCommand
+    public class GetPortal : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
 

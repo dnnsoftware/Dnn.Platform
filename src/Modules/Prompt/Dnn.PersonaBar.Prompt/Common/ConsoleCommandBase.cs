@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Dnn.PersonaBar.Prompt.Common
 {
-    public class BaseConsoleCommand
+    public class ConsoleCommandBase
     {
 
         protected PortalSettings PortalSettings { get; private set; }

@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "id",
         "name"
     })]
-    public class Goto : BaseConsoleCommand, IConsoleCommand
+    public class Goto : ConsoleCommandBase, IConsoleCommand
     {
 
         public string ValidationMessage { get; private set; }

@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Scheduler
         "enabled",
         "name"
     })]
-    public class ListTasks : BaseConsoleCommand, IConsoleCommand
+    public class ListTasks : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ENABLED = "enabled";
         private const string FLAG_NAME = "name";

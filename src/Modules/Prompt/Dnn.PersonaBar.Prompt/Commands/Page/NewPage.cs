@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "keywords",
         "visible"
     })]
-    public class NewPage : BaseConsoleCommand, IConsoleCommand
+    public class NewPage : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_PARENTID = "parentid";
         private const string FLAG_TITLE = "title";

@@ -12,7 +12,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("get-module", "Gets module information for module specified", new string[] { "id" })]
-    public class GetModule : BaseConsoleCommand, IConsoleCommand
+    public class GetModule : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

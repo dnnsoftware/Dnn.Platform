@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
         "email",
         "username"
     })]
-    public class GetUser : BaseConsoleCommand, IConsoleCommand
+    public class GetUser : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_EMAIL = "email";

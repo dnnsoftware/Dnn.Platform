@@ -12,7 +12,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Role
 {
     [ConsoleCommand("delete-role", "Deletes the specified DNN security role for this portal", new string[] { })]
-    public class DeleteRole : BaseConsoleCommand, IConsoleCommand
+    public class DeleteRole : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

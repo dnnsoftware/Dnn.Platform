@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         "public",
         "autoassign"
     })]
-    public class NewRole : BaseConsoleCommand, IConsoleCommand
+    public class NewRole : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_IS_PUBLIC = "public";

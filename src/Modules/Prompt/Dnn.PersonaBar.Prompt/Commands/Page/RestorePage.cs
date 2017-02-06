@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "name",
         "parentid"
     })]
-    public class RestorePage : BaseConsoleCommand, IConsoleCommand
+    public class RestorePage : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_NAME = "name";
         private const string FLAG_PARENTID = "parentid";

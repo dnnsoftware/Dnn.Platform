@@ -10,7 +10,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.User
 {
     [ConsoleCommand("restore-user", "Recovers a user that has previously been deleted or 'unregistered'", new string[] { "id" })]
-    public class RestoreUser : BaseConsoleCommand, IConsoleCommand
+    public class RestoreUser : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

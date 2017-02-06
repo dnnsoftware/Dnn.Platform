@@ -11,7 +11,7 @@ using System.Linq;
 namespace Dnn.PersonaBar.Prompt.Commands.Commands
 {
     [ConsoleCommand("list-commands", "Lists all available commands", new string[] { })]
-    public class ListCommands : BaseConsoleCommand, IConsoleCommand
+    public class ListCommands : ConsoleCommandBase, IConsoleCommand
     {
         public string ValidationMessage { get; private set; }
 

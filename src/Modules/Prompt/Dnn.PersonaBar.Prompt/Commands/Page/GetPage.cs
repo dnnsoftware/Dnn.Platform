@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "parentid",
         "name"
     })]
-    public class GetPage : BaseConsoleCommand, IConsoleCommand
+    public class GetPage : ConsoleCommandBase, IConsoleCommand
     {
 
         public string ValidationMessage { get; private set; }

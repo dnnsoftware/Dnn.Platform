@@ -13,7 +13,7 @@ using System;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("move-module", "Copies the module specified", new string[] { "id" })]
-    public class MoveModule : BaseConsoleCommand, IConsoleCommand
+    public class MoveModule : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_ID = "id";

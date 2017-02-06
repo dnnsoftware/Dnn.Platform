@@ -11,7 +11,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("delete-module", "Delete a module instance", new string[] { "id", "pageid" })]
-    public class DeleteModule : BaseConsoleCommand, IConsoleCommand
+    public class DeleteModule : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_ID = "id";
         private const string FLAG_PAGEID = "pageid";

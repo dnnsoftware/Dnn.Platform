@@ -19,7 +19,7 @@ using System.Web.Http;
 namespace Dnn.PersonaBar.Prompt.Services
 {
     [MenuPermission(MenuName = "Dnn.Prompt", Scope = ServiceScope.Admin)]
-    public class CommandController : BaseController
+    public class CommandController : ControllerBase
     {
 
         [HttpGet]

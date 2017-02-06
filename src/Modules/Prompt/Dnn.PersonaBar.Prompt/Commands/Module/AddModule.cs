@@ -15,7 +15,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Module
 {
     [ConsoleCommand("add-module", "Adds a new module instance to a page", new string[] { "id" })]
-    public class AddModule : BaseConsoleCommand, IConsoleCommand
+    public class AddModule : ConsoleCommandBase, IConsoleCommand
     {
 
         private const string FLAG_NAME = "name";

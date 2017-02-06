@@ -10,7 +10,7 @@ using System.Text;
 namespace Dnn.PersonaBar.Prompt.Commands.Portal
 {
     [ConsoleCommand("list-portals", "Retrieves a list of portals for the current DNN Installation", new string[] { })]
-    public class ListPortals : BaseConsoleCommand, IConsoleCommand
+    public class ListPortals : ConsoleCommandBase, IConsoleCommand
     {
         public string ValidationMessage { get; private set; }
         public int? PortalIdFlagValue { get; private set; }

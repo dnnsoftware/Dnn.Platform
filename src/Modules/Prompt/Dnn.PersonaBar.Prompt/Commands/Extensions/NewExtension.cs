@@ -22,7 +22,7 @@ using System.Web.UI;
 namespace Dnn.PersonaBar.Prompt.Commands.Extensions
 {
     [ConsoleCommand("new-extension", "Creates a new extension from a manifest or package", new string[]{ "path" })]
-public class NewExtension : BaseConsoleCommand, IConsoleCommand
+public class NewExtension : ConsoleCommandBase, IConsoleCommand
 {
 
     public string ValidationMessage { get; private set; }

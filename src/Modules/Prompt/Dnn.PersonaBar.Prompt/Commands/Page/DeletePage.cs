@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
         "id",
         "name"
     })]
-    public class DeletePage : BaseConsoleCommand, IConsoleCommand
+    public class DeletePage : ConsoleCommandBase, IConsoleCommand
     {
         private const string FLAG_NAME = "name";
         private const string FLAG_PARENTID = "parentid";
