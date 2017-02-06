@@ -1,5 +1,7 @@
 var path = require('path'),
-    webpack = require('webpack');
+    webpack = require('webpack'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname, '.'),
@@ -11,16 +13,20 @@ module.exports = {
     },
     devtool: '#source-map',
     resolve: {
-        extensions: ['*', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx']
+        extensions: ['*', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx', '.css']
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             exclude: /(node_modules|bower_components)/,
             loader: 'babel-loader',
-            query: {
+            options: {
                 presets: ['es2015']
             }
+        },
+        {
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract({ use: 'css-loader' })
         }]
     },
     externals: {
@@ -32,8 +38,15 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
         }),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: { warnings: false }
-        // })
+        new webpack.optimize.UglifyJsPlugin({
+            compress: { warnings: false }
+        }),
+        new ExtractTextPlugin('../../css/Prompt.css'),
+        new OptimizeCssAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: { discardComments: { removeAll: true } },
+            canPrint: true
+        })
     ]
 }

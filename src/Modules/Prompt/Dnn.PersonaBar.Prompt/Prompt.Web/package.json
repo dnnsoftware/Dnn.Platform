@@ -7,11 +7,14 @@
     "watch": "node_modules\\.bin\\webpack --watch"
   },
   "devDependencies": {
-    "babel-core": "^6.21.0",
+    "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2015": "^6.22.0",
     "bootstrap": "^3.3.7",
-    "webpack": "^2.1.0-beta.28"
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "optimize-css-assets-webpack-plugin": "^1.3.0",
+    "webpack": "^2.2.1"
   },
   "dependencies": {}
 }
