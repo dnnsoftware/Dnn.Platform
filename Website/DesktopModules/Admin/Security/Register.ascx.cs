@@ -117,7 +117,9 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 		}
 
-		#endregion
+	    protected override bool AddUser { get; } = true;
+
+	    #endregion
 
 		#region Event Handlers
 
