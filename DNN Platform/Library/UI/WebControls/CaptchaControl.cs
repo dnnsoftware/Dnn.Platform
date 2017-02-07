@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2017
 // by DotNetNuke Corporation
 // 
@@ -551,34 +551,37 @@ namespace DotNetNuke.UI.WebControls
 			string[] Settings = Regex.Split(encodedText, _Separator);
 			try
 			{
-				int width = int.Parse(Settings[0]);
-				int height = int.Parse(Settings[1]);
-				string text = Settings[2];
-				string backgroundImage = Settings[3];
+                int width;
+                int height;
+                if (int.TryParse(Settings[0], out width) && int.TryParse(Settings[1], out height))
+                {
+                    string text = Settings[2];
+                    string backgroundImage = Settings[3];
 
-				Graphics g;
-				Brush b = new SolidBrush(Color.LightGray);
-				Brush b1 = new SolidBrush(Color.Black);
-				if (String.IsNullOrEmpty(backgroundImage))
-				{
-					bmp = CreateImage(width, height);
-				}
-				else
-				{
-					bmp = (Bitmap) System.Drawing.Image.FromFile(HttpContext.Current.Request.MapPath(backgroundImage));
-				}
-				g = Graphics.FromImage(bmp);
+                    Graphics g;
+                    Brush b = new SolidBrush(Color.LightGray);
+                    Brush b1 = new SolidBrush(Color.Black);
+                    if (String.IsNullOrEmpty(backgroundImage))
+                    {
+                        bmp = CreateImage(width, height);
+                    }
+                    else
+                    {
+                        bmp = (Bitmap)System.Drawing.Image.FromFile(HttpContext.Current.Request.MapPath(backgroundImage));
+                    }
+                    g = Graphics.FromImage(bmp);
 
-				//Create Text
-				GraphicsPath textPath = CreateText(text, width, height, g);
-				if (String.IsNullOrEmpty(backgroundImage))
-				{
-					g.FillPath(b, textPath);
-				}
-				else
-				{
-					g.FillPath(b1, textPath);
-				}
+                    //Create Text
+                    GraphicsPath textPath = CreateText(text, width, height, g);
+                    if (String.IsNullOrEmpty(backgroundImage))
+                    {
+                        g.FillPath(b, textPath);
+                    }
+                    else
+                    {
+                        g.FillPath(b1, textPath);
+                    }
+                }				
 			}
 			catch (Exception exc)
 			{
