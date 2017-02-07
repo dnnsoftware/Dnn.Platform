@@ -138,7 +138,9 @@
     <Compile Include="Commands\Page\RestorePage.cs" />
     <Compile Include="Commands\Page\SetPage.cs" />
     <Compile Include="Commands\Page\DeletePage.cs" />
+    <Compile Include="Commands\Portal\GetSite.cs" />
     <Compile Include="Commands\Portal\GetPortal.cs" />
+    <Compile Include="Commands\Portal\ListSites.cs" />
     <Compile Include="Commands\Portal\ListPortals.cs" />
     <Compile Include="Commands\Roles\GetRole.cs" />
     <Compile Include="Commands\Roles\ListRoles.cs" />
