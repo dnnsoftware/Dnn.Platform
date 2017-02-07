@@ -47,6 +47,9 @@
             <file>
               <name>selectize.default.css</name>
             </file>
+            <file>
+              <name>dnn.combobox.js</name>
+            </file>
           </files>
         </component>
       </components>

@@ -363,6 +363,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Skins.Xcillion",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Selectize", "Selectize", "{FC9953A0-E403-4129-AF4F-3398E58F8ACF}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Selectize\dnn.combobox.js = DNN Platform\JavaScript Libraries\Selectize\dnn.combobox.js
 		DNN Platform\JavaScript Libraries\Selectize\releaseNotes.txt = DNN Platform\JavaScript Libraries\Selectize\releaseNotes.txt
 		DNN Platform\JavaScript Libraries\Selectize\Selectize (Apache).txt = DNN Platform\JavaScript Libraries\Selectize\Selectize (Apache).txt
 		DNN Platform\JavaScript Libraries\Selectize\selectize.css = DNN Platform\JavaScript Libraries\Selectize\selectize.css

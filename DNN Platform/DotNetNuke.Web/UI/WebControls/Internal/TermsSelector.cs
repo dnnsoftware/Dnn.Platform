@@ -34,23 +34,17 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    public class TermsSelector : TextBox
+    public class TermsSelector : DnnComboBox
     {
-        private string _initOptions;
-        public TermsSelector()
-        {
-            IncludeSystemVocabularies = false;
-            IncludeTags = true;
-            EnableViewState = false;
-        }
+        private IList<ListItem> _initOptions = new List<ListItem>();
 
         #region Public Properties
 
         public int PortalId { get; set; }
 
-        public bool IncludeSystemVocabularies { get; set; }
+        public bool IncludeSystemVocabularies { get; set; } = false;
 
-        public bool IncludeTags { get; set; }
+        public bool IncludeTags { get; set; } = true;
 
         public List<Term> Terms
         {
@@ -81,9 +75,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             set
             {
                 Text = string.Join(",", value.Select(t => t.TermId.ToString()));
-                _initOptions = $"[{string.Join(",", value.Select(t => $"{{value: {t.TermId}, text: \"{t.Name}\"}}"))}]";
+                _initOptions = value.Select(t => new ListItem(t.Name, t.TermId.ToString())).ToList();
             }
         }
+
+        public override bool MultipleSelect { get; set; } = true;
 
         #endregion
 
@@ -93,8 +89,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnInit(e);
 
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-
             if (!string.IsNullOrEmpty(CssClass))
             {
                 CssClass = string.Format("{0} TermsSelector", CssClass);
@@ -103,74 +97,36 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 CssClass = "TermsSelector";
             }
-        }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-        }
+            var includeSystem = IncludeSystemVocabularies.ToString().ToLowerInvariant();
+            var includeTags = IncludeTags.ToString().ToLowerInvariant();
+            var apiPath = Globals.ResolveUrl($"~/API/InternalServices/ItemListService/GetTerms?includeSystem={includeSystem}&includeTags={includeTags}&q=");
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
+            Options.Preload = "focus";
+            Options.Plugins.Add("remove_button");
+            Options.Render = new RenderOption
+                {
+                    Option = "function(item, escape) {return '<div>' + item.text + '</div>';}}"
+                };
 
-            RegisterRequestResources();
+            Options.Load = $@"function(query, callback) {{
+                                $.ajax({{
+                                        url: '{apiPath}' + encodeURIComponent(query),
+                                    type: 'GET',
+                                    error: function() {{
+                                        callback();
+                                    }},
+                                    success: function(data) {{
+                                        callback(data);
+                                    }}
+                            }});
+";
+            Options.Items = _initOptions;
         }
 
         #endregion
 
         #region Private Methods
-
-        private void RegisterRequestResources()
-        {
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            var package = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == "Selectize");
-            if (package != null)
-            {
-                JavaScript.RequestRegistration("Selectize");
-
-                var libraryPath =
-                    $"~/Resources/Libraries/{package.LibraryName}/{DotNetNuke.Common.Globals.FormatVersion(package.Version, "00", 3, "_")}/";
-                ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.css");
-                ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.default.css");
-
-                var includeSystem = IncludeSystemVocabularies.ToString().ToLowerInvariant();
-                var includeTags = IncludeTags.ToString().ToLowerInvariant();
-                var apiPath = Globals.ResolveUrl($"~/API/InternalServices/ItemListService/GetTerms?includeSystem={includeSystem}&includeTags={includeTags}&q=");
-
-                var initScripts = $@"
-$('#{ClientID}').selectize({{
-    valueField: 'value',
-    labelField: 'text',
-    searchField: 'text',
-    create: false,
-    preload: 'focus',
-    highlight: false,
-    plugins: ['remove_button'],
-    render: {{
-        option: function(item, escape) {{
-            return '<div>' + item.text + '</div>';
-        }}
-    }},
-    load: function(query, callback) {{
-        $.ajax({{
-                url: '{apiPath}' + encodeURIComponent(query),
-            type: 'GET',
-            error: function() {{
-                callback();
-            }},
-            success: function(data) {{
-                callback(data);
-            }}
-        }});
-    }},
-    options: {_initOptions}
-}});";
-
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
-            }
-        }
 
 
         #endregion

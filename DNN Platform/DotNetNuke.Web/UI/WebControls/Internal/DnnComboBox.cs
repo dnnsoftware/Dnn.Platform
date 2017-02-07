@@ -21,11 +21,15 @@
 #region Usings
 
 using System;
+using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls.Extensions;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -33,7 +37,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnComboBox : DropDownList
     {
+        #region Fields
+
         private string _initValue;
+
+        #endregion
+
+        #region Properties
+
         public override string SelectedValue
         {
             get
@@ -54,9 +65,41 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        public virtual bool CheckBoxes { get; set; } = false;
+
+        public virtual bool MultipleSelect { get; set; } = false;
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return MultipleSelect || CheckBoxes ? HtmlTextWriterTag.Input : HtmlTextWriterTag.Select;
+            }
+        }
+
+        protected DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
+
+        #endregion
+
+        #region Override Methods
+
+        protected override void RenderContents(HtmlTextWriter writer)
+        {
+            if (TagKey == HtmlTextWriterTag.Select)
+            {
+                base.RenderContents(writer);
+            }
+        }
+
         protected override void OnPreRender(EventArgs e)
         {
             Utilities.ApplySkin(this);
+
+            if (TagKey == HtmlTextWriterTag.Input)
+            {
+                Options.Items = Items.Cast<ListItem>();
+            }
+
             RegisterRequestResources();
 
             base.OnPreRender(e);
@@ -73,6 +116,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 base.DataBind();
             }
         }
+
+        #endregion
+
+        #region Public Methods
 
         public void AddItem(string text, string value)
         {
@@ -129,6 +176,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return Items.IndexOf(FindItemByValue(value));
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void RegisterRequestResources()
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -142,14 +193,24 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                     var libraryPath =
                         $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
+
+                    ClientResourceManager.RegisterScript(Page, $"{libraryPath}dnn.combobox.js");
                     ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.css");
                     ClientResourceManager.RegisterStyleSheet(Page, $"{libraryPath}selectize.default.css");
 
-                    var initScripts = $"$('#{ClientID}').selectize({{}});";
+                    var options = JsonConvert.SerializeObject(Options, Formatting.None,
+                                    new JsonSerializerSettings
+                                    {
+                                        NullValueHandling = NullValueHandling.Ignore
+                                    });
+
+                    var initScripts = $"$('#{ClientID}').dnnComboBox({options});";
 
                     Page.ClientScript.RegisterStartupScript(Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
                 }
             }
         }
+
+        #endregion
     }
 }

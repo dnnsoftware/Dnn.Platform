@@ -322,28 +322,6 @@ namespace DotNetNuke.UI.Modules
             _control.ViewStateMode = ViewStateMode.Enabled;
         }
 
-        private void LoadAjaxPanel()
-        {
-            // Reference dnn.js to add attachEvent/detachEvent functions in IE11 to fix Telerik (see DNN-6167)
-            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-
-            //DNN-9145 TODO
-            //var loadingPanel = new RadAjaxLoadingPanel { ID = _control.ID + "_Prog", Skin = "Default" };
-            //
-            //Controls.Add(loadingPanel);
-            //
-            //var ajaxPanel = new RadAjaxPanel
-            //{
-            //    ID = _control.ID + "_UP",
-            //    LoadingPanelID = loadingPanel.ID,
-            //    RestoreOriginalRenderDelegate = false
-            //};
-            //InjectMessageControl(ajaxPanel);
-            //ajaxPanel.Controls.Add(_control);
-            //
-            //Controls.Add(ajaxPanel);
-        }
-
         /// <summary>
         /// LoadUpdatePanel optionally loads an AJAX Update Panel
         /// </summary>
@@ -506,7 +484,7 @@ namespace DotNetNuke.UI.Modules
                 //if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
                 if (!_isCached && _moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
                 {
-                    LoadAjaxPanel();
+                    LoadUpdatePanel();
                 }
                 else
                 {
