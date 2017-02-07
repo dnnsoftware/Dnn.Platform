@@ -652,6 +652,11 @@
 
         });
 
+        // Recalculate input box width and close icon margin
+        $(window).resize(function () {
+            dnn.searchResult.generateAdvancedSearchTerm();
+        });
+
         if (dnn.searchResult.queryOptions.sortOption === 1) {
             $('.dnnSearchResultSortOptions > li').removeClass('active');
             $('.dnnSearchResultSortOptions > li > a[href="#byDate"]').parent().addClass('active');
