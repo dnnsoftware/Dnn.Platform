@@ -38,7 +38,7 @@ const PageService = function () {
     let api = null;
     function getApi() {
         if (api === null) {
-            api = new Api(window.dnn.pages.apiController);
+            return new Api("Pages");
         }        
         return api;
     }
