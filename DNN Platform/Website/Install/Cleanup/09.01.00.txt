@@ -11,7 +11,6 @@ DesktopModules\Admin\Languages\
 DesktopModules\Admin\Lists\
 DesktopModules\Admin\LogViewer\
 DesktopModules\Admin\MobilePreview\
-DesktopModules\Admin\Portals\
 DesktopModules\Admin\RecycleBin\
 DesktopModules\Admin\Scheduler\
 DesktopModules\Admin\Sitemap\
@@ -27,6 +26,15 @@ DesktopModules\Admin\XmlMerge\
 ' Other modules
 DesktopModules\DevicePreviewManagement\
 DesktopModules\MobileManagement\
+
+' others
+App_LocalResources
+DesktopModules\Admin\Portals\App_LocalResources\
+DesktopModules\Admin\Portals\module.css
+DesktopModules\Admin\Portals\portals.ascx
+DesktopModules\Admin\Portals\signup.ascx
+DesktopModules\Admin\Portals\sitesettings.ascx
+DesktopModules\Admin\Portals\template.ascx
 
 ' libraries
 bin\DotNetNuke.Web.Deprecated.dll
