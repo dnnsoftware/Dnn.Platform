@@ -99,22 +99,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
-            var module = ModuleController.Instance.GetModulesByDefinition(portalId, "Extensions")
-                .Cast<ModuleInfo>().FirstOrDefault();
-            if (module == null)
-            {
-                return string.Empty;
-            }
-
-            var tabId = TabController.Instance.GetTabsByModuleID(module.ModuleID).Keys.FirstOrDefault();
-            if (tabId <= 0)
-            {
-                return string.Empty;
-            }
-
-            // Ex.: /Admin/Extensions/ctl/Edit/mid/##/packageid/##/mode/settings?popUp=true
-            return Globals.NavigateURL(tabId, PortalSettings.Current, "Edit",
-                "mid=" + module.ModuleID,
+            return Globals.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "EditExtension",
                 "packageid=" + authSystemPackageId,
                 "popUp=true",
                 "mode=settings");
