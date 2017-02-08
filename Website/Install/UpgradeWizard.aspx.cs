@@ -451,6 +451,9 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
                 // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
                 HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+
+                //DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
             }
         }
 
