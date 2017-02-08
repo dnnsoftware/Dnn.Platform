@@ -38,7 +38,7 @@ export default class ContentLoadWrapper extends Component {
         if (props.loadError) {
             clearTimeout(this.setTimeout);
             if (this._isMounted) {
-                this.setState({ percent: 0 }, () => {
+                this.setState({ percent: 100 }, () => {
                 });
             }
             setTimeout(() => {
@@ -76,21 +76,20 @@ export default class ContentLoadWrapper extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const { props } = this;
         let {percent} = this.state;
-        const className = "dnn-content-load-wrapper" + (props.loadComplete ? " complete" : "") + (props.loadError ? " upload-error" : "");
-        if (typeof props.loadComplete === "undefined" || props.loadComplete) {
-            return props.children;
+        const className = "dnn-content-load-wrapper" + (this.props.loadComplete ? " complete" : "") + (this.props.loadError ? " upload-error" : "");
+        if (typeof this.props.loadComplete === "undefined" || this.props.loadComplete) {
+            return this.props.children;
         }
 
         return <div className={className}>
-            {props.svgSkeleton}
-            {props.loadError &&
+            {this.props.svgSkeleton}
+            {this.props.loadError &&
                 <div className="try-load-again">
                     <div>
                         <div className="upload-icon" dangerouslySetInnerHTML={{ __html: ErrorStateIcon }} />
-                        <p>{props.failedToLoadText}</p>
-                        <span onClick={this.onTryAgain.bind(this)}>[{props.tryAgainText}]</span>
+                        <p>{this.props.failedToLoadText}</p>
+                        <span onClick={this.onTryAgain.bind(this)}>[{this.props.tryAgainText}]</span>
                     </div>
                 </div>}
             <div className="upload-bar-container">
@@ -104,14 +103,15 @@ export default class ContentLoadWrapper extends Component {
 
 ContentLoadWrapper.propTypes = {
     loadComplete: PropTypes.bool.isRequired,
-    failedToLoad: PropTypes.string,
+    failedToLoadText: PropTypes.string,
+    children: PropTypes.node,
     svgSkeleton: PropTypes.node,
     tryAgainText: PropTypes.string,
     loadError: PropTypes.bool,
     onTryAgain: PropTypes.func
 };
 
-ContentLoadWrapper.propTypes = {
+ContentLoadWrapper.defaultProps = {
     failedToLoadText: "Failed To Load",
     tryAgainText: "Retry"
 };
