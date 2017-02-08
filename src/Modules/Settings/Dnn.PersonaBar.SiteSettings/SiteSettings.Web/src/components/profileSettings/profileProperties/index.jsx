@@ -270,7 +270,7 @@ class ProfilePropertiesPanel extends Component {
                     </div>
                     <div className="property-items-grid">
                         {this.renderHeader()}
-                        <Collapse isOpened={opened} fixedHeight={560} autoScroll={true} style={{ float: "left", width: "100%" }}>
+                        <Collapse isOpened={opened} autoScroll={true} style={{ float: "left", width: "100%" }}>
                             <ProfilePropertyRow
                                 name={"-"}
                                 dataType={"-"}
