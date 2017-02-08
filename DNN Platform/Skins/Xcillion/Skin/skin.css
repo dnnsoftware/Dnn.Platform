@@ -493,7 +493,8 @@ a.cta-button:hover, button.cta-button:hover {
 
 #search-top.active {
     height: auto;
-    padding: 15px 0
+    padding: 15px 0;
+    overflow:visible;
 }
 
 #search-top span {
@@ -538,6 +539,19 @@ a.cta-button:hover, button.cta-button:hover {
     }
     #login {
         padding-right: 21px
+    }
+}
+
+@media only screen and (max-width: 500px){
+    ul.searchSkinObjectPreview {
+        width:auto;
+        min-width:240px;
+    }
+}
+
+@media only screen and (max-width: 350px){
+    ul.searchSkinObjectPreview {
+        right:-30px;
     }
 }
 
