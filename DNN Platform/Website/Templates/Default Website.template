@@ -3069,6 +3069,130 @@
       <tabUrls />
     </tab>
     <tab>
+      <content>Website Administration</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>false</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>Admin</name>
+      <title>Website Administration</title>
+      <url type="Normal" />
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <contentKey />
+              <moduleID>421</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod />
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc />
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile />
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>Basic Features</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>62592bc6-53da-4115-b97e-fb666aa14953</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings>
+                <modulesetting>
+                  <settingname>OrderTabsByHierarchy</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ConsoleWidth</settingname>
+                  <settingvalue></settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowSizeChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultSize</settingname>
+                  <settingvalue>IconFileLarge</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>ShowTooltip</settingname>
+                  <settingvalue>True</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>DefaultView</settingname>
+                  <settingvalue>Hide</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>AllowViewChange</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Console</definition>
+              <moduledefinition>Console</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+      <tabUrls />
+    </tab>
+    <tab>
       <content>File Management</content>
       <contentKey />
       <containersrc />
@@ -3077,7 +3201,7 @@
       <disabled>false</disabled>
       <enddate>0001-01-01T00:00:00</enddate>
       <issecure>false</issecure>
-      <visible>false</visible>
+      <visible>true</visible>
       <issystem>false</issystem>
       <keywords />
       <pageheadtext />
