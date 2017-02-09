@@ -1,11 +1,20 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
-  </Target>
-  <Target Name="DebugProject">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Deprecated.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Deprecated.pdb" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Deprecated.xml" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\WebFormsMvp.1.4.1.0\lib\WebFormsMvp.dll" DestinationFolder="..\..\Website\bin\" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>dnn_Web_Deprecated</DNNFileName>
+    <PackageName>DNNCE_01_Web.Deprecated</PackageName>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <ModuleFolderName>$(WebsitePath)</ModuleFolderName>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;Package" />
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

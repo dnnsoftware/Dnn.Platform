@@ -74,10 +74,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -91,7 +87,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Web.UI.Skins">
+      <HintPath>..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -240,10 +239,6 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Management" />
-    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
-      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
-      <Name>ClientDependency.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -259,10 +254,6 @@
     <ProjectReference Include="..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
       <Name>DotNetNuke.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
-      <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
-      <Name>DotNetNuke.HttpModules</Name>
     </ProjectReference>
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
@@ -291,6 +282,9 @@
     <Compile Include="UI\WebControls\DnnGridButtonColumn.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dnn_Web_Deprecated.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Library.build">
       <SubType>Designer</SubType>
     </None>
@@ -299,9 +293,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
+    <Content Include="license.txt" />
+    <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.css" />
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
   <Import Project="Library.build" />

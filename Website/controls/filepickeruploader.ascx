@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Web.UI.WebControls.DnnFilePickerUploader" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <asp:Panel runat="server" ID="dnnFileUploadScope" CssClass="dnnFileUploadScope">
     <div class="dnnLeft">
         <div class="dnnFormItem dnnFileUploadFolder">

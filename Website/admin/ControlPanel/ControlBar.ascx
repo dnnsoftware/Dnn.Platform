@@ -2,7 +2,7 @@
 <%@ Import Namespace="DotNetNuke.Security.Permissions" %>
 <%@ Import Namespace="DotNetNuke.Entities.Modules" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <!--SEO NOINDEX-->
 <asp:Panel ID="ControlPanel" runat="server">
     <div id="ControlBar">

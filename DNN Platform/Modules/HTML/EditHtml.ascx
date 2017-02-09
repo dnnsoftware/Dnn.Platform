@@ -1,9 +1,9 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Modules.Html.EditHtml" CodeBehind="EditHtml.ascx.cs" AutoEventWireup="false" Explicit="True" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.UserControls" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls"%>
-<%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
+<%@ Register TagPrefix="dnncl" Assembly="DotNetNuke.Web.Client" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" %>
 
 <dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
 
@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                         </asp:PlaceHolder>
-                        <dnn:texteditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:texteditor>
+                        <dnn:textEditor id="txtContent" runat="server" height="400" width="100%" ChooseMode="false" ></dnn:textEditor>
                     </div>
                     <div class="dnnFormItem" id="divSubmittedContent" runat="server">
                         <div id="Div3" class="html_preview" runat="server">
@@ -67,7 +67,6 @@
                 <h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead" runat="server"><a href=""><%=LocalizeString("dshHistory")%></a></h2>
                 <fieldset id="fsEditHtmlHistory" runat="server">
                     <dnnweb:DnnGrid ID="dgHistory" runat="server" AutoGenerateColumns="false">
-                        <mastertableview>
 						<Columns>
 								<dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="CreatedOnDate" />
 								<dnnweb:DnnGridBoundColumn HeaderText="User" DataField="DisplayName"/>
@@ -75,10 +74,9 @@
 								<dnnweb:DnnGridBoundColumn HeaderText="Approved" DataField="Approved" />
 								<dnnweb:DnnGridBoundColumn HeaderText="Comment" DataField="Comment"/>
 						</Columns>
-						<NoRecordsTemplate>
+						<EmptyDataTemplate>
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="NoHistory" />
-						</NoRecordsTemplate>
-					</mastertableview>
+						</EmptyDataTemplate>
                     </dnnweb:DnnGrid>
                 </fieldset>
             </asp:PlaceHolder>
@@ -91,7 +89,6 @@
                         </div>
                         <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5">
                             <pagerstyle mode="NextPrevAndNumeric"></pagerstyle>
-                            <mastertableview>
 					        <Columns>
 						        <dnnweb:DnnGridBoundColumn HeaderText="Version" DataField="Version" />
 						        <dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="LastModifiedOnDate"  />
@@ -118,10 +115,9 @@
 							        </ItemTemplate>
 						        </dnnweb:DnnGridTemplateColumn>
 					        </Columns>
-					        <NoRecordsTemplate>
+					        <EmptyDataTemplate>
 						        <asp:Label ID="lblNoRecords1" runat="server" resourcekey="NoVersions" />
-					        </NoRecordsTemplate>
-				        </mastertableview>
+					        </EmptyDataTemplate>
                         </dnnweb:DnnGrid>
                     </div>
                 </fieldset>
@@ -230,3 +226,6 @@
         });
     }(jQuery, window.Sys));
 </script>
+
+
+

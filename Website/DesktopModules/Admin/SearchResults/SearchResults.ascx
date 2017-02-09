@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.SearchResults.SearchResults" Codebehind="SearchResults.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web.Deprecated" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <div class="dnnSearchBoxPanel">
@@ -23,10 +23,10 @@
         <span class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></span>
         <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged">
             <Items>
-                <dnn:DnnComboBoxItem runat="Server" Text="15" Value="15" />
-                <dnn:DnnComboBoxItem runat="Server" Text="25" Value="25" />
-                <dnn:DnnComboBoxItem runat="Server" Text="50" Value="50" />
-                <dnn:DnnComboBoxItem runat="Server" Text="100" Value="100" />
+                <asp:ListItem runat="Server" Text="15" Value="15" />
+                <asp:ListItem runat="Server" Text="25" Value="25" />
+                <asp:ListItem runat="Server" Text="50" Value="50" />
+                <asp:ListItem runat="Server" Text="100" Value="100" />
             </Items>
         </dnn:DnnComboBox>
     </div>
@@ -62,12 +62,12 @@
         <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />
         <dnn:DnnComboBox ID="AdvnacedDatesList" runat="server">
             <Items>
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionAll.Text" Value="" Selected="True" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionDay.Text" Value="day" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionWeek.Text" Value="week" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionMonth.Text" Value="month" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionQuarter.Text" Value="quarter" />
-                <dnn:DnnComboBoxItem runat="Server" ResourceKey="optionYear.Text" Value="year" />
+                <asp:ListItem runat="Server" ResourceKey="optionAll.Text" Value="" Selected="True" />
+                <asp:ListItem runat="Server" ResourceKey="optionDay.Text" Value="day" />
+                <asp:ListItem runat="Server" ResourceKey="optionWeek.Text" Value="week" />
+                <asp:ListItem runat="Server" ResourceKey="optionMonth.Text" Value="month" />
+                <asp:ListItem runat="Server" ResourceKey="optionQuarter.Text" Value="quarter" />
+                <asp:ListItem runat="Server" ResourceKey="optionYear.Text" Value="year" />
             </Items>
         </dnn:DnnComboBox>
     </div>
@@ -90,8 +90,9 @@
 </div>
 
 <script type="text/javascript">
+    //DNN-9145 TODO: fix event handler
     function dnnSearchResultScopeItemChecking(sender, e) {
-        var combo = $find('<%= SearchScopeList.ClientID %>');
+        var combo = $('#<%= SearchScopeList.ClientID %>');
         var items = combo.get_items();
         var countOfChecked = 0;
         for (var i = 0; i < items.get_count(); i++) {
@@ -106,7 +107,7 @@
     }
 
     function dnnSearchResultPageSizeChanged(sender, e) {
-        var combo = $find('<%= ResultsPerPageList.ClientID %>');
+        var combo = $('#<%= ResultsPerPageList.ClientID %>');
         var pageSize = combo.get_value();
         if (typeof dnn != 'undefined' && dnn.searchResult) {
             dnn.searchResult.queryOptions.pageSize = pageSize;

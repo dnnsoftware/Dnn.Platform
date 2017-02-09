@@ -1,0 +1,42 @@
+'DNN-9145: Complete Removal of Legacy Extensions
+
+' Admin/Host modules
+DesktopModules\Admin\Analytics\
+DesktopModules\Admin\ConfigurationManager\
+DesktopModules\Admin\Console\
+DesktopModules\Admin\Dashboard\
+DesktopModules\Admin\Extensions\
+DesktopModules\Admin\HostSettings\
+DesktopModules\Admin\Languages\
+DesktopModules\Admin\Lists\
+DesktopModules\Admin\LogViewer\
+DesktopModules\Admin\MobilePreview\
+DesktopModules\Admin\RecycleBin\
+DesktopModules\Admin\Scheduler\
+DesktopModules\Admin\Sitemap\
+DesktopModules\Admin\SearchAdmin\
+DesktopModules\Admin\SiteWizard\
+DesktopModules\Admin\SkinManagement\
+DesktopModules\Admin\Sql\
+DesktopModules\Admin\Tabs\
+DesktopModules\Admin\Taxonomy\
+DesktopModules\Admin\UrlManagement\
+DesktopModules\Admin\XmlMerge\
+
+' Other modules
+DesktopModules\DevicePreviewManagement\
+DesktopModules\MobileManagement\
+
+' others
+App_LocalResources
+DesktopModules\Admin\Portals\App_LocalResources\
+DesktopModules\Admin\Portals\module.css
+DesktopModules\Admin\Portals\portals.ascx
+DesktopModules\Admin\Portals\signup.ascx
+DesktopModules\Admin\Portals\sitesettings.ascx
+DesktopModules\Admin\Portals\template.ascx
+
+' libraries
+bin\DotNetNuke.Web.Deprecated.dll
+bin\Telerik.Web.UI.dll
+bin\Telerik.Web.UI.Skins.dll

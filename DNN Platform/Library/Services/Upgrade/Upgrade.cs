@@ -4150,18 +4150,17 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
             }
 
+            string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
             try
             {
-                string listFile = Globals.InstallMapPath + "Cleanup\\" + stringVersion + ".txt";
-
                 if (File.Exists(listFile))
                 {
-                    exceptions = FileSystemUtils.DeleteFiles(FileSystemUtils.ReadFile(listFile).Split('\r', '\n'));
+                    exceptions = FileSystemUtils.DeleteFiles(File.ReadAllLines(listFile));
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.Error("Error cleanup file " + listFile, ex);
 
                 exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
                 // log the results
@@ -5326,6 +5325,9 @@ namespace DotNetNuke.Services.Upgrade
                         case "7.4.2":
                             UpgradeToVersion742();
                             break;
+                        case "9.1.0":
+                            UpgradeToVersion910();
+                            break;
                     }
                 }
                 else
@@ -5462,6 +5464,33 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//DynamicContentTypeManager");
             UninstallPackage("Dnn.DynamicContentManager", "Module");
             UninstallPackage("Dnn.DynamicContentViewer", "Module");
+        }
+
+        private static void UpgradeToVersion910()
+        {
+            //DNN-9145: the following has to stay for PB to show site settings in iFrame
+            //RemoveAdminPages("//Admin//Extensions");
+            //RemoveAdminPages("//Admin");
+            //RemoveAdminPages("//Admin//UserAccounts");
+            //RemoveHostPage("File Management");
+            //RemoveHostPage("Host");
+
+            // Normal Modules
+            UninstallPackage("DotNetNuke.MobileManagement", "Module");
+            UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
+
+            // Admin Modules
+            UninstallPackage("DotNetNuke.Languages", "Module");
+            UninstallPackage("DotNetNuke.Lists", "Module");
+            UninstallPackage("DotNetNuke.LogViewer", "Module");
+            UninstallPackage("DotNetNuke.RecycleBin", "Module");
+            UninstallPackage("DotNetNuke.Sitemap", "Module");
+            UninstallPackage("DotNetNuke.SiteWizard", "Module");
+            UninstallPackage("Dnn.Themes", "Module"); // aka. Skin Management
+            UninstallPackage("DotNetNuke.Tabs", "Module");
+
+            // at last remove "/Admin" / "/Host" pages
+            UninstallPackage("Dnn.Modules.Console", "Module");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)

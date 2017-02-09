@@ -37,6 +37,7 @@
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
+      <Selectize Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize\*.*" />
     </ItemGroup>
   </Target>
   
@@ -93,6 +94,10 @@
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
 
+    <Zip Files="@(Selectize)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize"
+        ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Selectize.zip" />
+
+    <!--
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -108,6 +113,7 @@
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
+    -->
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

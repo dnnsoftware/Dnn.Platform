@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ResultsPerPageList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox ResultsPerPageList;
         
         /// <summary>
         /// lblAdvancedTags control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox AdvnacedDatesList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox AdvnacedDatesList;
         
         /// <summary>
         /// lblAdvancedScope control.
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.SearchResults {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox SearchScopeList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox SearchScopeList;
         
         /// <summary>
         /// lblAdvancedExactSearch control.

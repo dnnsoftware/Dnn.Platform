@@ -71,8 +71,7 @@ namespace DotNetNuke.Web.Api
         {
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
                    || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                         && !actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>()
-                                .Any(t => !(t is SupportedModulesAttribute) && !(t is ValidateAntiForgeryTokenAttribute)));
+                         && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
         }
     }
 }

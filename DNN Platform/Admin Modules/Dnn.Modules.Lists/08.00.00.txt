@@ -1,3 +1,0 @@
-﻿' Remove the original files from the old installation
-DesktopModules/Admin/Lists/ListEditor.ascx.cs
-DesktopModules/Admin/Lists/ListEntries.ascx.cs

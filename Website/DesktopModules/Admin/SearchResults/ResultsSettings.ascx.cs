@@ -25,13 +25,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.UI.WebControls;
 
 #endregion
 
@@ -60,7 +59,7 @@ namespace DotNetNuke.Modules.SearchResults
                         {
                             foreach (var portal in portalList)
                             {
-                                var item = new DnnComboBoxItem(portal[0], portal[1]) {Checked = list.Contains(portal[1])};
+                                var item = new ListItem(portal[0], portal[1]) {Selected = list.Contains(portal[1])};
                                 comboBoxPortals.Items.Add(item);
                             }
                         }
@@ -76,7 +75,7 @@ namespace DotNetNuke.Modules.SearchResults
                         {
                             foreach (var portal in portalList)
                             {
-                                var item = new DnnComboBoxItem(portal[0], portal[1]) { Checked = PortalId.ToString() == portal[1] };
+                                var item = new ListItem(portal[0], portal[1]) { Selected = PortalId.ToString() == portal[1] };
                                 comboBoxPortals.Items.Add(item);
                             }
                         }
@@ -93,7 +92,7 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new DnnComboBoxItem(filter, filter) {Checked = list.Contains(filter)};
+                            var item = new ListItem(filter, filter) {Selected = list.Contains(filter)};
                             comboBoxFilters.Items.Add(item);
                         }
                     }
@@ -102,7 +101,7 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new DnnComboBoxItem(filter, filter) {Checked = true};
+                            var item = new ListItem(filter, filter) {Selected = true};
                             comboBoxFilters.Items.Add(item);
                         }
                     }
@@ -133,32 +132,34 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "LinkTarget", comboBoxLinkTarget.SelectedValue);
 
                     var selectedPortals = new StringBuilder();
-                    foreach (var p in comboBoxPortals.CheckedItems)
-                    {
-                        if (selectedPortals.Length > 0)
-                        {
-                            selectedPortals.AppendFormat("|{0}", p.Value);
-                        }
-                        else
-                        {
-                            selectedPortals.Append(p.Value);
-                        }
-                    }
+                    //DNN-9145 TODO
+                    //foreach (var p in comboBoxPortals.CheckedItems)
+                    //{
+                    //    if (selectedPortals.Length > 0)
+                    //    {
+                    //        selectedPortals.AppendFormat("|{0}", p.Value);
+                    //    }
+                    //    else
+                    //    {
+                    //        selectedPortals.Append(p.Value);
+                    //    }
+                    //}
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
 
                     var selectedFilters = new StringBuilder();
-                    foreach (var p in comboBoxFilters.CheckedItems)
-                    {
-                        if (selectedFilters.Length > 0)
-                        {
-                            selectedFilters.AppendFormat("|{0}", p.Value);
-                        }
-                        else
-                        {
-                            selectedFilters.Append(p.Value);
-                        }
-                    }
+                    //DNN-9145 TODO
+                    //foreach (var p in comboBoxFilters.CheckedItems)
+                    //{
+                    //    if (selectedFilters.Length > 0)
+                    //    {
+                    //        selectedFilters.AppendFormat("|{0}", p.Value);
+                    //    }
+                    //    else
+                    //    {
+                    //        selectedFilters.Append(p.Value);
+                    //    }
+                    //}
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 

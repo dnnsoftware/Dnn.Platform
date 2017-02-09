@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 var strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _fileName);
                 if (File.Exists(strListFile))
                 {
-                    FileSystemUtils.DeleteFiles(Regex.Split(FileSystemUtils.ReadFile(strListFile), Environment.NewLine));
+                    FileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
                 }
             }
             catch (Exception ex)

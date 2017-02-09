@@ -1,4 +1,0 @@
-﻿' Remove the original files from the old installation
-DesktopModules/Admin/Sitemap/SitemapSettings.ascx.cs
-
-' Remove folders

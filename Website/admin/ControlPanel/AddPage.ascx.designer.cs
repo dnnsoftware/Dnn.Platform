@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox TemplateLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox TemplateLst;
         
         /// <summary>
         /// LocationLst control.
@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox LocationLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox LocationLst;
         
         /// <summary>
         /// PageLst control.
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.ControlPanel {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox PageLst;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox PageLst;
         
         /// <summary>
         /// IncludeInMenu control.
