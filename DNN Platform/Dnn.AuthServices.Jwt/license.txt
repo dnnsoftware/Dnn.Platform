@@ -1,4 +1,4 @@
-DorNetNuke(R) - http://www.dnnsoftware.com<br/>
+DotNetNuke(R) - http://www.dnnsoftware.com<br/>
 Copyright (C) 2002-2017<br/>
 DNN Software Corporation<br/>
 All Rights Reserved<br/>
