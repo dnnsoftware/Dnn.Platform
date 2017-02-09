@@ -9,10 +9,10 @@ namespace Dnn.PersonaBar.Library.Data
         protected static readonly DotNetNuke.Data.DataProvider DataProvider = DotNetNuke.Data.DataProvider.Instance();
 
         public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
-            string link, string cssClass, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
+            string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
             return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu", identifier, moduleName, folderName, controller, resourceKey, path,
-                Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
+                Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value), Null.GetNull(iconFile, DBNull.Value),
                 Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId);
         }
 

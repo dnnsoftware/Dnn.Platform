@@ -154,6 +154,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Path = Util.ReadElement(menuNavigator, "path"),
                 Link = Util.ReadElement(menuNavigator, "link"),
                 CssClass = Util.ReadElement(menuNavigator, "css"),
+                IconFile = Util.ReadElement(menuNavigator, "icon"),
                 ParentId = Null.NullInteger,
                 Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
                 AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").ToLowerInvariant() == "true",

@@ -85,6 +85,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Path = menuItem.Path,
                     Link = menuItem.Link,
                     CssClass = menuItem.CssClass,
+                    IconFile = menuItem.IconFile,
                     AllowHost = menuItem.AllowHost,
                     Order = menuItem.Order,
                     ParentId = menuItem.ParentId

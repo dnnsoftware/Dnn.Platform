@@ -72,6 +72,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 item.Path,
                 item.Link,
                 item.CssClass,
+                item.IconFile,
                 item.ParentId,
                 item.Order,
                 item.AllowHost,

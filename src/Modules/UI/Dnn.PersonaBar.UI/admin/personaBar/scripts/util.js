@@ -349,6 +349,7 @@ define(['jquery'], function ($) {
                             query: menuItem.Query,
                             link: menuItem.Link,
                             css: menuItem.CssClass,
+                            icon: menuItem.IconFile,
                             displayName: menuItem.DisplayName,
                             settings: menuItem.Settings,
                             menuItems: []
@@ -365,6 +366,7 @@ define(['jquery'], function ($) {
                                     query: menuItem.Query,
                                     link: menuItem.Link,
                                     css: menuItem.CssClass,
+                                    icon: menuItem.IconFile,
                                     displayName: menuItem.DisplayName,
                                     settings: menuItem.Settings
                                 }

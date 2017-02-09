@@ -749,6 +749,30 @@ transform: rotate(180deg);
 .personabarnav > li > span {
     display: none;
 }
+.personabarnav > li > span.icon-loader {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+}
+.personabarnav > li > span.icon-loader img {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+}
+.personabarnav > li > span.icon-loader svg {
+    fill: #868484;
+}
+.personabarnav > li:hover > span.icon-loader svg,
+.personabarnav > li.active > span.icon-loader svg,
+.personabarnav > li.selected > span.icon-loader svg {
+    fill: #FFFFFF;
+}
+.personabarnav > li.pending > span.icon-loader svg {
+    fill: #9FDBF0;
+}
 .personabarnav > li.btn_panel.disabled {
     cursor: default;
 }
@@ -762,64 +786,13 @@ transform: rotate(180deg);
     background-color: #2f2f2f;
     border-right: none !important;
 }
-.personabarnav > li:before {
-    display: block;
-    content: "";
-    width:24px;
-    height: 24px;
-    margin: 0;
-}
 .personabarnav > li.pending {
     border-right: 3px solid #9FDBF0;
-}
-.personabarnav > li#Content:before {
-    background: url('../images/nav_content.svg') no-repeat;
-}
-.personabarnav > li#Content:hover:before,
-.personabarnav > li#Content.active:before,
-.personabarnav > li#Content.selected:before{
-    background: url('../images/nav_content_selected.svg') no-repeat;
-}
-.personabarnav > li#Content.pending:before{
-    background: url('../images/nav_content_pending.svg') no-repeat;
-}
-
-
-.personabarnav > li#Manage:before {
-    background: url('../images/nav_manage.svg') no-repeat;
-}
-.personabarnav > li#Manage:hover:before,
-.personabarnav > li#Manage.active:before,
-.personabarnav > li#Manage.selected:before{
-    background: url('../images/nav_manage_selected.svg') no-repeat;
-}
-.personabarnav > li#Manage.pending:before{
-    background: url('../images/nav_manage_pending.svg') no-repeat;
-}
-
-.personabarnav > li#Settings:before {
-    background: url('../images/nav_settings.svg') no-repeat;
-}
-.personabarnav > li#Settings:hover:before,
-.personabarnav > li#Settings.active:before,
-.personabarnav > li#Settings.selected:before{
-    background: url('../images/nav_settings_selected.svg') no-repeat;
-}
-.personabarnav > li#Settings.pending:before{
-    background: url('../images/nav_settings_pending.svg') no-repeat;
 }
 
 .personabarnav > li#Edit.selected {
     color: #737171;
     background-color: transparent;
-}
-.personabarnav > li#Edit:before {
-    background: url('../images/nav_edit.svg') no-repeat;
-}
-.personabarnav > li#Edit:hover:before,
-.personabarnav > li#Edit.active:before,
-.personabarnav > li#Edit.selected:before{
-    background: url('../images/nav_edit_selected.svg') no-repeat;
 }
 
 .personabarnav > li#showsite {

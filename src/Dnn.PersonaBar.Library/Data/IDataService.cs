@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Library.Data
     public interface IDataService
     {
         int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
-            string link, string cssClass, int parentId, int order, bool allowHost, bool enabled, int currentUserId);
+            string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId);
 
         IDataReader GetPersonaBarMenu();
 

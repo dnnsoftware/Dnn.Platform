@@ -202,13 +202,6 @@
     <Content Include="admin\personaBar\images\module_icon_32x32.png" />
     <Content Include="admin\personaBar\images\more_hover.svg" />
     <Content Include="admin\personaBar\images\more.svg" />
-    <Content Include="admin\personaBar\images\nav_content_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_content_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_edit_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_manage_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_manage_selected.svg" />
-    <Content Include="admin\personaBar\images\nav_settings_pending.svg" />
-    <Content Include="admin\personaBar\images\nav_settings_selected.svg" />
     <Content Include="admin\personaBar\images\notify.png" />
     <Content Include="admin\personaBar\images\notify_check.svg" />
     <Content Include="admin\personaBar\images\notify_error.svg" />
@@ -218,6 +211,7 @@
     <Content Include="admin\personaBar\images\nav_manage.svg" />
     <Content Include="admin\personaBar\images\nav_settings.svg" />
     <Content Include="admin\personaBar\images\x_thin.svg" />
+    <Content Include="admin\personaBar\scripts\menuIconLoader.js" />
     <Content Include="admin\personaBar\scripts\contrib\jquery.hoverIntent.min.js" />
     <Content Include="admin\personaBar\scripts\serversummary.js" />
     <Content Include="admin\personaBar\UserControls\PersonaBarContainer.ascx">
@@ -248,6 +242,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Providers\DataProviders\SqlDataProvider\01.02.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
@@ -293,6 +288,7 @@
     <Content Include="admin\personaBar\scripts\validator.js" />
     <Content Include="Images\icon-personabarapp-16px.png" />
     <Content Include="Images\icon-personabarapp-32px.png" />
+    <Content Include="01.02.00.txt" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>

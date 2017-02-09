@@ -48,6 +48,9 @@ namespace Dnn.PersonaBar.Library.Model
         public string CssClass { get; set; }
 
         [DataMember]
+        public string IconFile { get; set; }
+
+        [DataMember]
         public int ParentId { get; set; }
 
         [DataMember]
@@ -121,6 +124,7 @@ namespace Dnn.PersonaBar.Library.Model
             Path = dr["Path"].ToString();
             Link = dr["Link"].ToString();
             CssClass = dr["CssClass"].ToString();
+            IconFile = dr["IconFile"].ToString();
             AllowHost = Convert.ToBoolean(dr["AllowHost"]);
             Enabled = Convert.ToBoolean(dr["Enabled"]);
             ParentId = Null.SetNullInteger(dr["ParentId"]);

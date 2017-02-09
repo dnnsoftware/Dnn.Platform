@@ -60,8 +60,8 @@ if (window.parent['personaBarSettings'].debugMode === true) {
 }
 
 require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../extension',
-        '../persistent', '../eventEmitter', '../gateway', 'domReady!', '../exports/export-bundle'],
-    function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, Gateway) {
+        '../persistent', '../eventEmitter', '../menuIconLoader', '../gateway', 'domReady!', '../exports/export-bundle'],
+    function ($, ko, moment, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;
         
@@ -442,6 +442,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                         });
 
                         ko.applyBindings(viewModel, document.getElementById('personabar'));
+
+                        iconLoader.load();
 
                         util.sf.moduleRoot = 'personabar';
                         util.sf.controller = "serversummary";

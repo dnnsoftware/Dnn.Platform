@@ -1,0 +1,7 @@
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_content_pending.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_content_selected.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_settings_pending.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_settings_selected.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_manage_pending.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_manage_selected.svg
+DesktopModules\admin\Dnn.PersonaBar\Images\nav_edit_selected.svg
