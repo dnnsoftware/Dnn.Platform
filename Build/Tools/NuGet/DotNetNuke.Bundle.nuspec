@@ -36,9 +36,6 @@
     <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Modules\DigitalAssets\Bin\DotNetNuke.Modules.DigitalAssets.pdb" target="lib\"/>
 
-    <file src="DNN.Platform\DNN Platform\Modules\UrlManagement\Bin\DotNetNuke.Modules.UrlManagement.dll" target="lib\"/>
-    <file src="DNN.Platform\DNN Platform\Modules\UrlManagement\Bin\DotNetNuke.Modules.UrlManagement.pdb" target="lib\"/>
-
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll" target="lib\"/>
     <file src="DNN.Platform\DNN Platform\Tests\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.pdb" target="lib\"/>
 
