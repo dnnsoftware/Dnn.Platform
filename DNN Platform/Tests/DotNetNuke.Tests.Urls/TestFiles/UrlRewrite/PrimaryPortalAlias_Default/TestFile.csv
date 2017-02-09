@@ -6,7 +6,7 @@ Terms Language Alias,					fr-FR,		,				REDIRECT,		fr.dnntest.com,			http://,	Hom
 Login Language Alias,					fr-FR,		,				REDIRECT,		fr.dnntest.com,			http://,	About Us,		http://{usealias}/Login,								{defaultPage}?PortalId={portalId}&ctl=Login&language=fr-FR,		200
 Edit Page Home Language Alias,			fr-FR,		,				REDIRECT,		fr.dnntest.com,			http://,	Home,			http://{usealias}/Home/ctl/Edit/mid/100,				{defaultPage}?TabId={tabId}&language=fr-FR&ctl=Edit&mid=100,	200
 Edit Page About Us Language Alias,		fr-FR,		,				REDIRECT,		fr.dnntest.com,			http://,	About Us,		http://{usealias}/About-Us/ctl/Edit/mid/200,			{defaultPage}?TabId={tabId}&language=fr-FR&ctl=Edit&mid=200,	200
-Home Skin,								,			MySkin,			REDIRECT,		skin.dnntest.com,		http://,	Home,			http://{usealias}/,										{defaultPage}?TabId={tabId}&language=en-US,						200
+Home Skin,								,			MySkin,			REDIRECT,		skin.dnntest.com,		http://,	Home,			http://{usealias}/,										{defaultPage}?TabId={tabId},						200
 About Us Skin,							,			MySkin,			REDIRECT,		skin.dnntest.com,		http://,	About Us,		http://{usealias}/About-Us,								{defaultPage}?TabId={tabId}&SkinSrc=MySkin,						200
 Profile Messages Skin,					,			MySkin,			REDIRECT,		skin.dnntest.com,		http://,	Messages,		http://{usealias}/Activity-Feed/Messages,				{defaultPage}?TabId={tabId}&SkinSrc=MySkin,						200
 Terms Skin,								,			MySkin,			REDIRECT,		skin.dnntest.com,		http://,	Home,			http://{usealias}/Terms,								{defaultPage}?PortalId={portalId}&ctl=Terms&SkinSrc=MySkin,		200
