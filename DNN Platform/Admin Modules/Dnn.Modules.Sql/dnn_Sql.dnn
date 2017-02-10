@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.SQL" type="Module" version="09.00.01">
+        <package name="DotNetNuke.SQL" type="Module" version="09.00.02">
             <friendlyName>SQL</friendlyName>
             <description>The Super User can execute SQL statements against the database.</description>
             <iconFile>~/Icons/Sigma/Sql_32x32_Standard.png</iconFile>

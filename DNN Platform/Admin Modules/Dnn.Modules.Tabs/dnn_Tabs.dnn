@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Tabs" type="Module" version="09.00.01">
+		<package name="DotNetNuke.Tabs" type="Module" version="09.00.02">
 			<friendlyName>Pages</friendlyName>
 			<description>Administrators can manage the Pages within the site. This module allows you to create a new page, modify an existing page, delete pages, change the page order, and change the hierarchical page level.</description>
 			<iconFile>~/Icons/Sigma/Tabs_32X32_Standard.png</iconFile>

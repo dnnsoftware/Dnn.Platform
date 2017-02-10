@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Dashboard" type="Module" version="09.00.01">
+        <package name="DotNetNuke.Dashboard" type="Module" version="09.00.02">
             <friendlyName>Dashboard</friendlyName>
             <description>Provides a snapshot of your DotNetNuke Application.</description>
             <iconFile>~/Icons/Sigma/Dashboard_32X32_Standard.png</iconFile>

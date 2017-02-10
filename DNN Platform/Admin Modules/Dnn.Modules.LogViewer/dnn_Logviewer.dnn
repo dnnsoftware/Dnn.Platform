@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.LogViewer" type="Module" version="09.00.01">
+        <package name="DotNetNuke.LogViewer" type="Module" version="09.00.02">
             <friendlyName>Log Viewer</friendlyName>
             <description>Administrators can send bulk email to all users belonging to a particular Role.</description>
             <iconFile>~/Icons/Sigma/ViewStats_32X32_Standard.png</iconFile>
