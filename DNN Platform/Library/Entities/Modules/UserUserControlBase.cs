@@ -191,6 +191,12 @@ namespace DotNetNuke.Entities.Modules
 
         #endregion
 
+        #region "Properties"
+
+        protected override bool AddUser => !Request.IsAuthenticated || base.AddUser;
+
+        #endregion
+
         #region Nested type: BaseUserEventArgs
 
         /// -----------------------------------------------------------------------------
