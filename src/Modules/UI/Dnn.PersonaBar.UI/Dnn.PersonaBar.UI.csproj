@@ -242,7 +242,7 @@
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Providers\DataProviders\SqlDataProvider\01.02.00.SqlDataprovider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\01.03.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\01.01.00.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Install.SqlDataprovider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
@@ -288,7 +288,7 @@
     <Content Include="admin\personaBar\scripts\validator.js" />
     <Content Include="Images\icon-personabarapp-16px.png" />
     <Content Include="Images\icon-personabarapp-32px.png" />
-    <Content Include="01.02.00.txt" />
+    <Content Include="01.03.00.txt" />
     <Content Include="license.txt" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>

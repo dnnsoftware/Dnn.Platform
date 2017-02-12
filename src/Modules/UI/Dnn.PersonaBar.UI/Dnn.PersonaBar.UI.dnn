@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.PersonaBar.UI" type="Library" version="01.02.00">
+        <package name="Dnn.PersonaBar.UI" type="Library" version="01.03.00">
             <friendlyName>Dnn.PersonaBar.UI</friendlyName>
             <description></description>
             <dependencies/>
@@ -108,8 +108,8 @@
                         </script>
                         <script type="Install">
                             <path>Providers\DataProviders\SqlDataProvider</path>
-                            <name>01.02.00.SqlDataProvider</name>
-                            <version>01.02.00</version>
+                            <name>01.03.00.SqlDataProvider</name>
+                            <version>01.03.00</version>
                         </script>
                         <script type="UnInstall">
                             <path>Providers\DataProviders\SqlDataProvider</path>
@@ -122,12 +122,12 @@
                     <files>
                         <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
                         <file>
-                            <name>01.02.00.txt</name>
+                            <name>01.03.00.txt</name>
                             <sourceFileName>01.02.00.txt</sourceFileName>
                         </file>
                     </files>
                 </component>
-                <component type="Cleanup" version="01.02.00" fileName ="01.02.00.txt" />
+                <component type="Cleanup" version="01.03.00" fileName ="01.03.00.txt" />
             </components>
             <eventMessage>
                 <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
