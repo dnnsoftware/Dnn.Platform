@@ -7,8 +7,8 @@
         <dnn:Label ID="plTitleLinkTarget" runat="server" ControlName="comboBoxLinkTarget" />
         <dnn:DnnComboBox ID="comboBoxLinkTarget" runat="server" Width="437px">
             <Items>
-                <dnn:DnnComboBoxItem ResourceKey="linkTargetOnSamePage.Text" Value="0" />
-                <dnn:DnnComboBoxItem ResourceKey="linkTargetOpenNewPage.Text" Value="1" />
+                <asp:ListItem ResourceKey="linkTargetOnSamePage.Text" Value="0" />
+                <asp:ListItem ResourceKey="linkTargetOpenNewPage.Text" Value="1" />
             </Items>
         </dnn:DnnComboBox>
     </div>
