@@ -123,7 +123,7 @@
                         <basePath>DesktopModules\admin\Dnn.PersonaBar</basePath>
                         <file>
                             <name>01.03.00.txt</name>
-                            <sourceFileName>01.02.00.txt</sourceFileName>
+                            <sourceFileName>01.03.00.txt</sourceFileName>
                         </file>
                     </files>
                 </component>
