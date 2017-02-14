@@ -121,8 +121,11 @@ namespace Dnn.PersonaBar.UI.Services
             {
                 var key = resourcesFile.Key;
                 var relativePath = resourcesFile.Value.Replace(Globals.ApplicationMapPath, "~").Replace("\\", "/");
-                var keys = GetLocalizedDictionary(relativePath, culture);
-                resources.Add(key, keys);
+                if (File.Exists(HttpContext.Current.Server.MapPath(relativePath)))
+                {
+                    var keys = GetLocalizedDictionary(relativePath, culture);
+                    resources.Add(key, keys);
+                }
             }
 
             var content = JsonConvert.SerializeObject(resources);
