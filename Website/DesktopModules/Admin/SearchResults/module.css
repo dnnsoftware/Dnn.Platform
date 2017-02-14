@@ -29,7 +29,7 @@
     background-color: #ddd;
 }
 
-    .dnnSearchResultPanel .RadComboBox {
+    .dnnSearchResultPanel .selectize-control {
         width: 100px;
     }
 

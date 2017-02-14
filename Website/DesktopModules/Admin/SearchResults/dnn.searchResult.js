@@ -524,16 +524,9 @@
             var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
             var afterCtrlVal = afterCtrl.val();
 
-            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            var scopeList = [];
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                if (scopeCtrlItem.get_checked()) {
-                    scopeList.push(scopeCtrlItem.get_text());
-                }
-            }
-            if (scopeList.length == scopeCtrlItems.get_count())
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            var scopeList = scopeCtrl.get_items();
+            if (scopeList.length === scopeCtrl.get_options().length)
                 scopeList = [];
 
             var exactSearch = $('#dnnSearchResultAdvancedExactSearch').is(':checked');

@@ -261,7 +261,7 @@
                     <dnn:label id="plTab" runat="server" controlname="cboTab" />
                     <%--<asp:DropDownList ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId"
                         runat="server" />--%>
-                    <dnnweb:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server"  ViewStateMode="Disabled"/>
+                    <dnnweb:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server" />
                 </div>
             </fieldset>
         </div>
