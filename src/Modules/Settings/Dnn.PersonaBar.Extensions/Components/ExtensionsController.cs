@@ -217,8 +217,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                 var existPackage = validPackages.Values.First(p => p.Name == package.Name);
                                 if (package.Version > existPackage.Version)
                                 {
-                                    validPackages.Values.Remove(existPackage);
-                                    validPackages.Add(cultureCode, package);
+                                    existPackage.Version = package.Version;
                                 }
                             }
                             else
