@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             Options.Plugins.Add("remove_button");
             Options.Render = new RenderOption
                 {
-                    Option = "function(item, escape) {return '<div>' + item.text + '</div>';}}"
+                    Option = "function(item, escape) {return '<div>' + item.text + '</div>';}"
                 };
 
             Options.Load = $@"function(query, callback) {{
@@ -119,7 +119,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                                     success: function(data) {{
                                         callback(data);
                                     }}
-                            }});
+                                }});
+                            }}
 ";
             Options.Items = _initOptions;
         }

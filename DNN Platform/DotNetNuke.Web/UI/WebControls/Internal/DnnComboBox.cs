@@ -69,6 +69,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public virtual bool MultipleSelect { get; set; } = false;
 
+        public virtual string OnClientSelectedIndexChanged { get; set; }
+
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -98,7 +100,18 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             if (TagKey == HtmlTextWriterTag.Input)
             {
                 Options.Items = Items.Cast<ListItem>();
+                Attributes.Add("value", string.Join(",", Options.Items.Where(i => i.Selected).Select(i => i.Value)));
             }
+            else
+            {
+                Options.MaxItems = 1;
+            }
+
+            Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
+            Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+
+            Options.Checkbox = CheckBoxes;
+            Options.OnChangeEvent = OnClientSelectedIndexChanged;
 
             RegisterRequestResources();
 

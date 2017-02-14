@@ -73,7 +73,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedScope" runat="server" ResourceKey="lblAdvancedScope" />
-        <dnn:DnnComboBox ID="SearchScopeList" runat="server" CheckBoxes="true" Width="235px" OnClientItemChecking="dnnSearchResultScopeItemChecking" />
+        <dnn:DnnComboBox ID="SearchScopeList" runat="server" CheckBoxes="true" Width="235px" OnClientSelectedIndexChanged="dnnSearchResultScopeItemChanged" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
@@ -90,25 +90,18 @@
 </div>
 
 <script type="text/javascript">
-    //DNN-9145 TODO: fix event handler
-    function dnnSearchResultScopeItemChecking(sender, e) {
-        var combo = $('#<%= SearchScopeList.ClientID %>');
-        var items = combo.get_items();
-        var countOfChecked = 0;
-        for (var i = 0; i < items.get_count(); i++) {
-            var checked = items.getItem(i).get_checked();
-            if (checked) countOfChecked++;
-        }
-
-        if (countOfChecked == 1) {
-            var item = e.get_item();
-            if (item.get_checked()) e.set_cancel(true);
+    function dnnSearchResultScopeItemChanged(value) {
+        if (value === '') {
+            var self = this;
+            setTimeout(function() {
+                self.addItem(self.$activeOption.data('value'));
+                self.refreshOptions(true);
+            }, 0);
         }
     }
 
-    function dnnSearchResultPageSizeChanged(sender, e) {
-        var combo = $('#<%= ResultsPerPageList.ClientID %>');
-        var pageSize = combo.get_value();
+    function dnnSearchResultPageSizeChanged(value) {
+        var pageSize = value;
         if (typeof dnn != 'undefined' && dnn.searchResult) {
             dnn.searchResult.queryOptions.pageSize = pageSize;
             dnn.searchResult.queryOptions.pageIndex = 1;

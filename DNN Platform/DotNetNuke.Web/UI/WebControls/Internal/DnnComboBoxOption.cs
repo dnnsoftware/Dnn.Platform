@@ -59,11 +59,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         [DataMember(Name = "plugins")]
         public IList<string> Plugins { get; set; } = new List<string>();
 
-        [DataMember(Name = "render")]
-        public RenderOption Render { get; set; }
+        [DataMember(Name = "checkbox")]
+        public bool Checkbox { get; set; }
 
-        [DataMember(Name = "load")]
-        public string Load { get; set; }
+        [DataMember(Name = "maxOptions")]
+        public int MaxOptions { get; set; } = 100;
+
+        [DataMember(Name = "maxItems")]
+        public int MaxItems { get; set; } = 10;
 
         [IgnoreDataMember]
         public IEnumerable<ListItem> Items { get; set; }
@@ -71,8 +74,24 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         [DataMember(Name = "options")]
         public IEnumerable<OptionItem> Options
         {
-            get { return Items?.Select(i => new OptionItem {Text = i.Text, Value = i.Value}); }
+            get { return Items?.Select(i => new OptionItem {Text = i.Text, Value = i.Value, Selected = i.Selected}); }
         }
+
+        [DataMember(Name = "localization")]
+        public IDictionary<string, string> Localization { get; set; } = new Dictionary<string, string>();
+
+        #region Events
+
+        [DataMember(Name = "render")]
+        public RenderOption Render { get; set; }
+
+        [DataMember(Name = "load")]
+        public string Load { get; set; }
+
+        [DataMember(Name = "onChange")]
+        public string OnChangeEvent { get; set; }
+
+        #endregion
     }
 
     [DataContract]
@@ -95,5 +114,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         [DataMember(Name = "value")]
         public string Value { get; set; }
+
+        [DataMember(Name = "selected")]
+        public bool Selected { get; set; }
     }
 }

@@ -356,8 +356,7 @@ namespace DotNetNuke.Modules.SearchResults
 
             foreach (string o in SearchContentSources)
             {
-                //DNN-9145 TODO
-                var item = new ListItem(o, o);//{Selected = CheckedScopeItem(o)};
+                var item = new ListItem(o, o) {Selected = CheckedScopeItem(o)};
                 SearchScopeList.Items.Add(item);
             }
 
