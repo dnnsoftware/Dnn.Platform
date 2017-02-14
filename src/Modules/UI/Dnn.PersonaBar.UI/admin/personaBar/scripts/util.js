@@ -300,7 +300,7 @@ define(['jquery'], function ($) {
                     return moment().startOf('day').add(seconds, 'seconds').format(format);
                 },
                 getApplicationRootPath: function getApplicationRootPath() {
-                    var rootPath = location.protocol + '//' + location.host + (location.port ? (':' + location.port) : '');
+                    var rootPath = location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '');
                     if (rootPath.substr(rootPath.length - 1, 1) === '/') {
                         rootPath = rootPath.substr(0, rootPath.length - 1);
                     }
