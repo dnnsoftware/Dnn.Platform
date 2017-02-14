@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public UserModel()
         {
         }
-        public UserModel(UserInfo user)
+        public UserModel(UserInfo user): base(user)
         {
             DisplayName = user.DisplayName;
             FirstName = user.FirstName;
