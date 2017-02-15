@@ -134,7 +134,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             StringBuilder sbErrors = new StringBuilder();
             foreach (TabInfo tab in tabs)
             {
-                if (tab.HasChildren)
+                if (tab.TabID == PortalSettings.HomeTabId)
+                {
+                    sbErrors.AppendFormat("Cannot delete the Home page ({0}) ", tab.TabID);
+                }
+                else if (tab.HasChildren)
                 {
                     sbErrors.AppendFormat("Detected a page ({0}) with child pages. Delete or move those first. ", tab.TabID);
                 }
