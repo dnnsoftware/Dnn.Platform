@@ -308,9 +308,9 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_USER_AUTHORIZED_SUBJECT";
                     body = "EMAIL_USER_AUTHORIZED_BODY";
                     break;
-                case MessageType.UserDeAuthorized:
-                    subject = "EMAIL_USER_DEAUTHORIZED_SUBJECT";
-                    body = "EMAIL_USER_DEAUTHORIZED_BODY";
+                case MessageType.UserUnAuthorized:
+                    subject = "EMAIL_USER_UNAUTHORIZED_SUBJECT";
+                    body = "EMAIL_USER_UNAUTHORIZED_BODY";
                     break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";
