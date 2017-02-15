@@ -134,20 +134,19 @@ namespace Dnn.PersonaBar.Prompt.Commands.Page
             StringBuilder sbErrors = new StringBuilder();
             foreach (TabInfo tab in tabs)
             {
-                var _with1 = tab;
-                if (_with1.HasChildren)
+                if (tab.HasChildren)
                 {
                     sbErrors.AppendFormat("Detected a page ({0}) with child pages. Delete or move those first. ", tab.TabID);
                 }
-                else if (_with1.IsSuperTab)
+                else if (tab.IsSuperTab)
                 {
                     sbErrors.AppendFormat("Cannot delete a Host page ({0}) ", tab.TabID);
                 }
-                else if (_with1.IsDeleted)
+                else if (tab.IsDeleted)
                 {
                     sbErrors.AppendFormat("Cannot delete a page ({0}) that has already been deleted. ", tab.TabID);
                 }
-                else if (_with1.TabPath.StartsWith("//Admin", StringComparison.InvariantCulture))
+                else if (tab.TabPath.StartsWith("//Admin", StringComparison.InvariantCulture))
                 {
                     sbErrors.AppendFormat("Cannot delete an Admin page ({0}). ", tab.TabID);
                 }
