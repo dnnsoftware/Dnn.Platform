@@ -29,6 +29,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
 using System.Collections.Generic;
 using System.IO;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Users.Services
 {
@@ -311,12 +312,29 @@ namespace Dnn.PersonaBar.Users.Services
                     return response;
                 if (IsCurrentUser(userId, out response))
                     return response;
+                if (user.Membership.Approved == authorized)//Do nothing if the new status is same as current status.
+                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
 
                 user.Membership.Approved = authorized;
 
                 //Update User
                 UserController.UpdateUser(PortalId, user);
+                if (authorized)
+                {
+                    //Update User Roles if needed
+                    if (!user.IsSuperUser && user.IsInRole("Unverified Users") &&
+                        PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                    {
+                        UserController.ApproveUser(user);
+                    }
 
+                    Mail.SendMail(user, MessageType.UserAuthorized, PortalSettings);
+                }
+                else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", PortalId,
+                    false))
+                {
+                    Mail.SendMail(user, MessageType.UserUnAuthorized, PortalSettings);
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
             }
             catch (Exception ex)
