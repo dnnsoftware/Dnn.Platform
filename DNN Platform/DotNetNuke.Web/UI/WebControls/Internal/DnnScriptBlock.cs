@@ -19,12 +19,37 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.IO;
+using System.Text;
+using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    public class DnnScriptBlock : Panel
+    public class DnnScriptBlock : Control
     {
-
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (!DesignMode)
+            {
+                ScriptManager scriptManager = AJAX.GetScriptManager(Page);
+                if (scriptManager.IsInAsyncPostBack)
+                {
+                    StringBuilder scriBuilder = new StringBuilder();
+                    base.Render(new HtmlTextWriter(new StringWriter(scriBuilder)));
+                    ScriptManager.RegisterClientScriptBlock(Page, typeof (Page), this.UniqueID, scriBuilder.ToString(),
+                        false);
+                }
+                else
+                {
+                    base.Render(writer);
+                }
+            }
+            else
+            {
+                base.Render(writer);
+            }
+        }
     }
 }

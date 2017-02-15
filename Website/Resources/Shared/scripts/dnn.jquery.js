@@ -337,11 +337,11 @@
                 var skin, container;
 
                 if (opts.useComboBox) {
-                    var skinComboBox = $find(opts.skinSelector);
-                    var containerComboBox = $find(opts.containerSelector);
+                    var skinComboBox = $('#' + opts.skinSelector);
+                    var containerComboBox = $('#' + opts.containerSelector);;
 
-                    skin = skinComboBox ? skinComboBox.get_value() : '';
-                    container = containerComboBox ? containerComboBox.get_value() : '';
+                    skin = skinComboBox.length ? skinComboBox[0].selectize.getValue() : '';
+                    container = containerComboBox.length ? containerComboBox[0].selectize.getValue() : '';
                 }
                 else {
                     skin = $this.find(opts.skinSelector).val();

@@ -218,7 +218,7 @@
                 </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
-                    <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" ViewStateMode="Disabled" />
+                    <dnnweb:DnnSkinComboBox ID="moduleContainerCombo" runat="server" />
                     <a href="#" class="dnnSecondaryAction">
                         <%=LocalizeString("ContainerPreview")%></a>
                 </div>

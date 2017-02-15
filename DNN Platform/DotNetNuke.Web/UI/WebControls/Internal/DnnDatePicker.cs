@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -108,7 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             var settings = Json.Serialize(GetSettings()).Replace("\"$", "").Replace("$\"", "");
             var script = $"$('#{ClientID}').pikaday({settings});";
 
-            Page.ClientScript.RegisterStartupScript(Page.GetType(), "DnnDatePicker" + ClientID, script, true);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "DnnDatePicker" + ClientID, script, true);
         }
     }
 }

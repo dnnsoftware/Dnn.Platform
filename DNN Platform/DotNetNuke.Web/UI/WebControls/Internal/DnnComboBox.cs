@@ -222,7 +222,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                     var initScripts = $"$('#{ClientID}').dnnComboBox({options});";
 
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), $"{ClientID}Sctipts", initScripts, true);
                 }
             }
         }
