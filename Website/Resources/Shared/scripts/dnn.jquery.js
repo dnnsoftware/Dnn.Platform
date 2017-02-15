@@ -4258,7 +4258,7 @@
             $('.dnnForm input[type="checkbox"]').dnnCheckbox();
             $('.dnnForm input[type="radio"]').dnnCheckbox({ cls: 'dnnRadiobutton' });
             $('.dnnTooltip').dnnTooltip();
-            $('.dnnForm input[type="text"], .dnnForm input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
+            $('.dnnForm input[type="text"], .dnnForm input[type="password"]').off('focus', inputFocusFix).on('focus', inputFocusFix);
             $('.dnnForm :file').dnnFileInput();
 	        $('.dnnForm input[data-default]').dnnPlaceholder();
         }, 200);
