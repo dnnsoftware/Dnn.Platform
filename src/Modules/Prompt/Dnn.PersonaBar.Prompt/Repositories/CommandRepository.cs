@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Repositories
                     var version = assy.Version.ToString();
                     var assyName = assy.Name;
                     var cmdAttr = (ConsoleCommandAttribute)attr;
-                    var key = cmdAttr.NameSpace == "" ? cmdAttr.Name.ToUpper() : $"{cmdAttr.Name.ToUpper()}.{cmdAttr.NameSpace.ToUpper()}";
+                    var key = cmdAttr.NameSpace == "" ? cmdAttr.Name.ToUpper() : string.Format("{0}.{1}", cmdAttr.NameSpace.ToUpper(), cmdAttr.Name.ToUpper());
                     res.Add(key, new Command()
                     {
                         AssemblyName = assyName,
