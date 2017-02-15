@@ -1608,4 +1608,21 @@ Sincerely,
   <data name="ThereIsAInstallationCurrentlyInProgress.Error" xml:space="preserve">
     <value>There is an installation currently in progress. Please try again later.</value>
   </data>
+  <data name="EMAIL_USER_DEAUTHORIZED_BODY.Text" xml:space="preserve">
+    <value>Dear [User:DisplayName],
+
+Your account for [Portal:PortalName] has been un-authorized.
+
+Website Address: [Portal:URL]
+Username: [User:UserName]
+
+If you have any queries, feel free to contact the admin at [Portal:Email]
+
+Thank you, we appreciate your support...
+
+[Portal:PortalName]</value>
+  </data>
+  <data name="EMAIL_USER_DEAUTHORIZED_SUBJECT.Text" xml:space="preserve">
+    <value>Your account has been un-authorized for [Portal:URL]</value>
+  </data>
 </root>

@@ -281,10 +281,11 @@ namespace DotNetNuke.Services.Mail
                     if (HttpContext.Current != null)
                     {
                         custom = new ArrayList
-                                     {
-                                         HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
-                                         HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null, user, Scope.SystemMessages, ref propertyNotFound))
-                                     };
+                        {
+                            HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
+                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null,
+                                user, Scope.SystemMessages, ref propertyNotFound))
+                        };
                     }
                     break;
                 case MessageType.PasswordReminder:
@@ -307,12 +308,16 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_USER_AUTHORIZED_SUBJECT";
                     body = "EMAIL_USER_AUTHORIZED_BODY";
                     break;
+                case MessageType.UserDeAuthorized:
+                    subject = "EMAIL_USER_DEAUTHORIZED_SUBJECT";
+                    body = "EMAIL_USER_DEAUTHORIZED_BODY";
+                    break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";
                     body = "EMAIL_USER_UPDATED_OWN_PASSWORD_BODY";
                     break;
             }
-          
+
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
 

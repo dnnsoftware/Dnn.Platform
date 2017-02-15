@@ -24,10 +24,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Services.Mail;
 
 namespace DotNetNuke.Web.InternalServices
 {
@@ -47,7 +48,15 @@ namespace DotNetNuke.Web.InternalServices
 
             user.Membership.Approved = true;
             UserController.UpdateUser(PortalSettings.PortalId, user);
-            
+
+            //Update User Roles if needed
+            if (!user.IsSuperUser && user.IsInRole("Unverified Users") && PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+            {
+                UserController.ApproveUser(user);
+            }
+
+            Mail.SendMail(user, MessageType.UserAuthorized, PortalSettings);
+
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
