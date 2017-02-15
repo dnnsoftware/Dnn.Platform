@@ -56,6 +56,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         [DataMember(Name = "highlight")]
         public bool Highlight { get; set; }
 
+        [DataMember(Name = "allowEmptyOption")]
+        public bool AllowEmptyOption { get; set; }
+
         [DataMember(Name = "plugins")]
         public IList<string> Plugins { get; set; } = new List<string>();
 
@@ -63,10 +66,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public bool Checkbox { get; set; }
 
         [DataMember(Name = "maxOptions")]
-        public int MaxOptions { get; set; } = 100;
+        public int MaxOptions { get; set; }
 
         [DataMember(Name = "maxItems")]
-        public int MaxItems { get; set; } = 10;
+        public int MaxItems { get; set; }
 
         [IgnoreDataMember]
         public IEnumerable<ListItem> Items { get; set; }

@@ -398,6 +398,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
                     tabsByModule.Remove(TabId);
                     dgOnTabs.DataSource = tabsByModule.Values;
+                    dgOnTabs.DataBind();
 
                     cboTab.DataSource = TabController.GetPortalTabs(PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     cboTab.DataBind();

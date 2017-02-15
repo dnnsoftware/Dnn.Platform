@@ -104,7 +104,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
             else
             {
-                Options.MaxItems = 1;
+                if (Items.Cast<ListItem>().Any(i => string.IsNullOrEmpty(i.Value)))
+                {
+                    Options.AllowEmptyOption = true;
+                }
             }
 
             Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));

@@ -28,39 +28,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnGridTemplateColumn : TemplateField
     {
-        //#region "Public Properties"
-
-        //public string LocalResourceFile
-        //{
-        //    get
-        //    {
-        //        return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
-        //    }
-        //}
-
-        //#endregion
-
-        //#region "Public Methods"
-
-        //public override GridColumn Clone()
-        //{
-        //    DnnGridTemplateColumn dnnGridColumn = new DnnGridTemplateColumn();
-
-        //    //you should override CopyBaseProperties if you have some column specific properties
-        //    dnnGridColumn.CopyBaseProperties(this);
-
-        //    return dnnGridColumn;
-        //}
-
-        //public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
-        //{
-        //    base.InitializeCell(cell, columnIndex, inItem);
-        //    if (inItem is GridHeaderItem && HeaderTemplate == null && !String.IsNullOrEmpty(HeaderText))
-        //    {
-        //        cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
-        //    }
-        //}
-
-        //#endregion
+        
     }
 }

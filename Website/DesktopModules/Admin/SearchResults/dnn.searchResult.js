@@ -553,16 +553,13 @@
         $('#dnnSearchResultAdvancedClear').on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlItem = afterCtrl.get_items().getItem(0);
-            afterCtrlItem.select();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates)[0].selectize;
+            afterCtrl.setValue('');
 
-            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.select();
-            }
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            $.each(scopeCtrl.get_options(), function (index, item) {
+                scopeCtrl.addItem(item.id);
+            });
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');
 
@@ -585,16 +582,13 @@
         $('#dnnSearchResult_dnnSearchBox_input').prev().on('click', function () {
             $('#advancedTagsCtrl').dnnImportTags('');
 
-            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates);
-            var afterCtrlItem = afterCtrl.get_items().getItem(0);
-            afterCtrlItem.select();
+            var afterCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedDates)[0].selectize;
+            afterCtrl.setValue('');
 
-            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope);
-            var scopeCtrlItems = scopeCtrl.get_items();
-            for (var i = 0; i < scopeCtrlItems.get_count() ; i++) {
-                var scopeCtrlItem = scopeCtrlItems.getItem(i);
-                scopeCtrlItem.select();
-            }
+            var scopeCtrl = $('#' + dnn.searchResult.defaultSettings.comboAdvancedScope)[0].selectize;
+            $.each(scopeCtrl.get_options(), function (index, item) {
+                scopeCtrl.addItem(item.id);
+            });
 
             $('#dnnSearchResultAdvancedExactSearch').removeAttr('checked');
 

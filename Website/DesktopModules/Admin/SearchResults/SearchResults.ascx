@@ -94,15 +94,17 @@
         if (value === '') {
             var self = this;
             setTimeout(function() {
-                self.addItem(self.$activeOption.data('value'));
-                self.refreshOptions(true);
+                if (self.$activeOption) {
+                    self.addItem(self.$activeOption.data('value'));
+                    self.refreshOptions(true);
+                }
             }, 0);
         }
     }
 
     function dnnSearchResultPageSizeChanged(value) {
         var pageSize = value;
-        if (typeof dnn != 'undefined' && dnn.searchResult) {
+        if (typeof dnn != 'undefined' && dnn.searchResult && pageSize) {
             dnn.searchResult.queryOptions.pageSize = pageSize;
             dnn.searchResult.queryOptions.pageIndex = 1;
             dnn.searchResult.doSearch();

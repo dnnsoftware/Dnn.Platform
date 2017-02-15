@@ -45,6 +45,14 @@
             }
         }
 
+        if (opts.maxOptions <= 0) {
+            opts.maxOptions = undefined;
+        }
+
+        if (opts.maxItems <= 0) {
+            opts.maxItems = undefined;
+        }
+
         if (opts.checkbox) {
             opts.hideSelected = false;
             opts.render = $.extend({}, {

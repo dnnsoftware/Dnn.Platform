@@ -35,7 +35,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     public class DnnGrid : GridView
     {
-
         #region public properties
 
         public int ScreenRowNumber { get; set; }
@@ -52,13 +51,18 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             set { PageIndex = value; }
         }
 
+        public TableItemStyle ItemStyle => RowStyle;
+        public TableItemStyle AlternatingItemStyle => AlternatingRowStyle;
+        public TableItemStyle EditItemStyle => EditRowStyle;
+        public TableItemStyle SelectedItemStyle => SelectedRowStyle;
+
+
         #endregion
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             this.CssClass = "dnn-grid";
             Utilities.ApplySkin(this);
-
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
