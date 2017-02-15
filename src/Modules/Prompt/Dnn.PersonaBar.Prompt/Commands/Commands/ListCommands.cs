@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Commands
 
             try
             {
-                var lstOut = CommandRepository.Instance.GetCommands().Values;
+                var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name);
                 return new ConsoleResultModel(string.Format("Found {0} commands", lstOut.Count()))
                 {
                     data = lstOut,
