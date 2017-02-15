@@ -2,6 +2,7 @@
 using Dnn.PersonaBar.Prompt.Common;
 using Dnn.PersonaBar.Prompt.Interfaces;
 using Dnn.PersonaBar.Prompt.Models;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -94,6 +95,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
             var results = ModuleController.Instance.GetAllTabsModulesByModuleID((int)ModuleId);
             if (results != null)
             {
+                var module = (ModuleInfo)results[0];
                 if (PageId.HasValue)
                 {
                     // we can do a soft Delete
@@ -103,6 +105,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Module
                 else
                 {
                     ModuleController.Instance.DeleteModule((int)ModuleId);
+                    DataCache.ClearModuleCache(module.TabID);
                     return new ConsoleResultModel(string.Format("Module {0} permanently deleted", ModuleId));
                 }
             }
