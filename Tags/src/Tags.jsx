@@ -56,6 +56,10 @@ export default class Tags extends Component {
         if (!newTagText) {
             return;
         }
+        this.internalAddTag(newTagText);
+    }
+
+    internalAddTag(newTagText) {
         if (this.props.tags.find(t=> t === newTagText)) {
             this.setState({ newTagText: "" });
             return;
@@ -108,12 +112,26 @@ export default class Tags extends Component {
 
     onChange(event) {
         this.setState({ newTagText: event.target.value }, this.resizeInputField.bind(this));
+        if (this.props.autoSuggest) {
+            this.props.onAddingNewTagChange(event.target.value);
+        }
     }
     
     focusInput() {
         this.refs.inputField.focus();
     }
 
+    getSuggestions() {
+        if (!this.props.autoSuggest) {
+            return null;
+        }
+
+        return (<ul className="suggestions">
+            {this.props.suggestions.map((suggestion, index) => {
+                return <li className="suggestion" key={index} onClick={this.internalAddTag.bind(this, suggestion.value)}>{suggestion.value}</li>;
+            })}
+            </ul>);
+    }
     render() {
         const Tags = this.props.tags.map((tag, index) => {
             return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) } enabled={this.props.enabled} />;
@@ -140,18 +158,22 @@ export default class Tags extends Component {
                 ref="tagsField" style={this.props.style}>
                 <div type="text">
                     {Tags}
-                    <input
-                        ref="inputField"
-                        type="text"
-                        placeholder={placeholderText}
-                        style={inputStyle}
-                        onKeyDown={this.onKeyDown}
-                        value={this.state.newTagText}
-                        onChange={this.onChange.bind(this) }
-                        onFocus={this.onTagFocus.bind(this) }
-                        onBlur={this.onTagBlur.bind(this) }
-                        {...opts}
-                       />
+                    <div className="input-container">
+                        <input
+                            ref="inputField"
+                            type="text"
+                            placeholder={placeholderText}
+                            style={inputStyle}
+                            onKeyDown={this.onKeyDown}
+                            value={this.state.newTagText}
+                            onChange={this.onChange.bind(this) }
+                            onFocus={this.onTagFocus.bind(this) }
+                            onBlur={this.onTagBlur.bind(this) }
+                            {...opts}
+                        />
+                        {this.props.autoSuggest &&
+                            this.getSuggestions()}
+                    </div>
                 </div>                
             </div>
         );
@@ -162,9 +184,13 @@ Tags.propTypes = {
     tags: PropTypes.array.isRequired,
     onUpdateTags: PropTypes.func.isRequired,
     style: PropTypes.object,
-    enabled: PropTypes.bool.isRequired
+    enabled: PropTypes.bool.isRequired,
+    autoSuggest: PropTypes.bool.isRequired,
+    onAddingNewTagChange: PropTypes.func,
+    suggestions: PropTypes.arrayOf(PropTypes.object)
 };
 
 Tags.defaultProps = {
-    enabled: true
+    enabled: true,
+    autoSuggest: false
 };

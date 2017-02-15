@@ -30,6 +30,32 @@
         float: left;
         margin: 0 !important;
     }
+
+    .input-container {
+        float: left;
+        position: relative;
+
+        .suggestions {
+            position: absolute;
+            left: -5px;
+            top: 20px;
+            padding: 10px;
+
+            .suggestion {
+                color: gray !important;
+                padding: 5px;
+                border: 1px solid #E3E3E3;
+                background-color: #FFFFFF;
+                cursor: pointer;
+                width: 100%;
+
+                &:hover {
+                    background-color: #F0F0F0;
+                }
+            }
+        }
+    }
+
     input {
         padding: 0;
         padding: 9px 12px;
