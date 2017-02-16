@@ -89,6 +89,11 @@ BEGIN
     INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'EditExtension', N'Package Editor', N'DesktopModules/Admin/EditExtension/EditExtension.ascx', N'~/Icons/Sigma/Extensions_32X32_Standard.png', 2, 0, N'', 0, NULL, GETDATE(), -1, GETDATE(), 1)
 END
 GO
+
+/***** DNN-9145: cleanup database. *****/
+DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%DotNetNuke.Modules.Taxonomy%'
+DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%Dnn.Modules.SkinManagement%'
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
