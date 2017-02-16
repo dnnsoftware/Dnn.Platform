@@ -249,15 +249,18 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (string.IsNullOrEmpty(_UninstallFileName))
             {
-				//Create an XmlDocument for the config file
-                _TargetConfig = new XmlDocument();
-                TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
+                if (!string.IsNullOrEmpty(UnInstallConfig))
+                {
+                    //Create an XmlDocument for the config file
+                    _TargetConfig = new XmlDocument();
+                    TargetConfig.Load(Path.Combine(PhysicalSitePath, TargetFile.FullName));
 
-                //Create XmlMerge instance from UnInstallConfig source
-                var merge = new XmlMerge(new StringReader(UnInstallConfig), Package.Version.ToString(), Package.Name);
+                    //Create XmlMerge instance from UnInstallConfig source
+                    var merge = new XmlMerge(new StringReader(UnInstallConfig), Package.Version.ToString(), Package.Name);
 
-                //Update the Config file - Note that this method does save the file
-                merge.UpdateConfig(TargetConfig, TargetFile.FullName);
+                    //Update the Config file - Note that this method does save the file
+                    merge.UpdateConfig(TargetConfig, TargetFile.FullName);
+                }
             }
             else
             {
