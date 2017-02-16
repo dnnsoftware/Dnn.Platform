@@ -149,7 +149,7 @@ class DnnPrompt {
         }
         // using if/else to allow reload if hash in URL and also prevent 'syntax invalid' message;
         if (cmd === "RELOAD") {
-            location.reload(true);
+            window.top.location.reload(true);
         } else {
             // Server Command
             self.busy(true);
