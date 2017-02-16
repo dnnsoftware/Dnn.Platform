@@ -5,10 +5,10 @@
             <description></description>
             <iconFile>~/Images/icon-personabarapp-32px.png</iconFile>
             <owner>
-                <name>DNN</name>
-                <organization>DNN Corp.</organization>
-                <url>http://www.dnnsoftware.com</url>
-                <email>support@dnnsoftware.com</email>
+                <name>Kelly Ford</name>
+                <organization>KnowBetter Creative Services LLC</organization>
+                <url>http://www.dnndev.com</url>
+                <email>info@dnndev.com</email>
             </owner>
             <license src="License.txt"></license>
             <releaseNotes src="ReleaseNotes.txt"></releaseNotes>

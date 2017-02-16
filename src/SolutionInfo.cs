@@ -1,7 +1,7 @@
 ﻿#region Copyright
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2016
-// by DotNetNuke Corporation
+// DotNetNuke� - http://www.dnndev.com
+// Copyright (c) 2017
+// by KnowBetter Creative Services LLC
 // All Rights Reserved
 #endregion
 #region Usings
@@ -16,10 +16,10 @@ using System.Reflection;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyCompany("DNN Corporation")]
-[assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2016 by DNN Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DNN")]
+[assembly: AssemblyCompany("KnowBetter Creative Services")]
+[assembly: AssemblyProduct("http://www.dnndev.com")]
+[assembly: AssemblyCopyright("Prompt is copyright 2017 by KnowBetter Creative Services LLC. All Rights Reserved.")]
+[assembly: AssemblyTrademark("KnowBetter Creative")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
