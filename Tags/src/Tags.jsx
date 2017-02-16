@@ -121,6 +121,11 @@ export default class Tags extends Component {
         this.refs.inputField.focus();
     }
 
+    onSelectSuggestion(suggestion) {
+        this.internalAddTag(suggestion);
+        this.props.onSelectSuggestion(suggestion);
+    }
+
     getSuggestions() {
         if (!this.props.autoSuggest) {
             return null;
@@ -128,7 +133,7 @@ export default class Tags extends Component {
 
         return (<ul className="suggestions">
             {this.props.suggestions.map((suggestion, index) => {
-                return <li className="suggestion" key={index} onClick={this.internalAddTag.bind(this, suggestion.value)}>{suggestion.value}</li>;
+                return <li className="suggestion" key={index} onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</li>;
             })}
             </ul>);
     }
@@ -147,7 +152,7 @@ export default class Tags extends Component {
 
         const opts = {};
 
-        if(!this.props.enabled) {
+        if (!this.props.enabled) {
             opts["disabled"] = "disabled";
             className += " disabled";
         }
@@ -187,6 +192,7 @@ Tags.propTypes = {
     enabled: PropTypes.bool.isRequired,
     autoSuggest: PropTypes.bool.isRequired,
     onAddingNewTagChange: PropTypes.func,
+    onSelectSuggestion: PropTypes.func,
     suggestions: PropTypes.arrayOf(PropTypes.object)
 };
 
