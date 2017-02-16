@@ -1771,6 +1771,7 @@ namespace DotNetNuke.Security.Membership
                     {
                         //Unlock User
                         user.Membership.LockedOut = false;
+                        password = aspnetUser.ResetPassword();
                     }
                     else
                     {
