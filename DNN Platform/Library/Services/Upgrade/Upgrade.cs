@@ -5468,14 +5468,21 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion910()
         {
+            RemoveHostPage("Host Settings");
+            RemoveHostPage("Site Management");
+            RemoveHostPage("Schedule");
+            RemoveHostPage("Superuser Accounts");
+            RemoveHostPage("Extensions");
+            RemoveHostPage("Device Detection Management");
+
             RemoveAdminPages("//Admin//Extensions");
-
-            //DNN-9145: the following has to stay for PB to show site settings in iFrame
-
-            //RemoveAdminPages("//Admin");
-            //RemoveAdminPages("//Admin//UserAccounts");
-            //RemoveHostPage("File Management");
-            //RemoveHostPage("Host");
+            RemoveAdminPages("//Admin//SiteSettings");
+            RemoveAdminPages("//Admin//SecurityRoles");
+            RemoveAdminPages("//Admin//UserAccounts");
+            RemoveAdminPages("//Admin//Taxonomy");
+            RemoveAdminPages("//Admin//SiteRedirectionManagement");
+            RemoveAdminPages("//Admin//DevicePreviewManagement");
+            RemoveAdminPages("//Admin//SearchAdmin");
 
             // Normal Modules
             UninstallPackage("DotNetNuke.MobileManagement", "Module");

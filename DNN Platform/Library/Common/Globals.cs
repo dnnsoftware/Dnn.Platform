@@ -1911,8 +1911,13 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
-                TabPermissionController.CanAddContentToPage();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings == null)
+            {
+                return false;
+            }
+
+            return portalSettings.UserMode == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
