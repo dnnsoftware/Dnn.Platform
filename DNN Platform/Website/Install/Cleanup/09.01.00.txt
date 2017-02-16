@@ -55,8 +55,3 @@ DesktopModules\Admin\Portals\portals.ascx
 DesktopModules\Admin\Portals\signup.ascx
 DesktopModules\Admin\Portals\sitesettings.ascx
 DesktopModules\Admin\Portals\template.ascx
-
-' libraries
-bin\DotNetNuke.Web.Deprecated.dll
-bin\Telerik.Web.UI.dll
-bin\Telerik.Web.UI.Skins.dll

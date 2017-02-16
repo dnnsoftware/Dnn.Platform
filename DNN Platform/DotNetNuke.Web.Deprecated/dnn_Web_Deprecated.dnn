@@ -23,50 +23,7 @@
               <path>bin</path>
               <name>DotNetNuke.Web.Deprecated.dll</name>
             </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>Telerik.Web.UI.dll</name>
-            </assembly>
-            <assembly>
-              <path>bin</path>
-              <name>Telerik.Web.UI.Skins.dll</name>
-            </assembly>
           </assemblies>
-        </component>
-        <component type="Config">
-          <config>
-            <configFile>web.config</configFile>
-            <install>
-              <configuration>
-                <nodes>
-                  <node path="/configuration/appSettings"  action="update" key="name" collision="overwrite">
-                    <add key="Telerik.Web.UI.ScriptFolders" value="~/Portals;" />
-                    <add key="Telerik.Web.SkinsAssembly" value="Telerik.Web.UI.Skins, Version=2013.2.717.40, Culture=neutral, PublicKeyToken=121fae78165ba3d4" />
-                  </node>
-                  <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
-                    <add name="RadUploadModule" type="Telerik.Web.UI.RadUploadHttpModule, Telerik.Web.UI" preCondition="managedHandler"/>
-                  </node>
-                  <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
-                    <add name="Telerik.Web.UI.WebResource" verb="*" path="Telerik.Web.UI.WebResource.axd" type="Telerik.Web.UI.WebResource, Telerik.Web.UI" preCondition="integratedMode" />
-                    <add name="Telerik.Web.UI.ChartHttpHandler" path="ChartImage.axd" verb="*" type="Telerik.Web.UI.ChartHttpHandler, Telerik.Web.UI, Culture=neutral, PublicKeyToken=121fae78165ba3d4" preCondition="integratedMode" />
-                    <add name="RadProgressHandler" verb="*" path="Telerik.RadUploadProgressHandler.ashx" type="Telerik.Web.UI.Upload.RadUploadProgressHandler, Telerik.Web.UI" preCondition="integratedMode"/>
-                  </node>
-                </nodes>
-              </configuration>
-            </install>
-            <uninstall>
-              <configuration>
-                <nodes>
-                  <node path="/configuration/appSettings/add[@key='Telerik.Web.UI.ScriptFolders']" action="remove" />
-                  <node path="/configuration/appSettings/add[@key='Telerik.Web.SkinsAssembly']" action="remove" />
-                  <node path="/configuration/system.webServer/modules/add[@name='RadUploadModule']" action="remove" />
-                  <node path="/configuration/system.webServer/handlers/add[@name='Telerik.Web.UI.WebResource']" action="remove" />
-                  <node path="/configuration/system.webServer/handlers/add[@name='Telerik.Web.UI.ChartHttpHandler']" action="remove" />
-                  <node path="/configuration/system.webServer/handlers/add[@name='RadProgressHandler']" action="remove" />
-                </nodes>
-              </configuration>
-            </uninstall>
-          </config>
         </component>
       </components>
     </package>
