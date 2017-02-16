@@ -27,6 +27,26 @@ DesktopModules\Admin\XmlMerge\
 DesktopModules\DevicePreviewManagement\
 DesktopModules\MobileManagement\
 
+'security module files
+DesktopModules\Admin\Security\EditGroups.ascx
+DesktopModules\Admin\Security\EditGroups.ascx.cs
+DesktopModules\Admin\Security\EditProfileDefinition.ascx
+DesktopModules\Admin\Security\EditProfileDefinition.ascx.cs
+DesktopModules\Admin\Security\editroles.ascx
+DesktopModules\Admin\Security\editroles.ascx.cs
+DesktopModules\Admin\Security\manageusers.ascx
+DesktopModules\Admin\Security\manageusers.ascx.cs
+DesktopModules\Admin\Security\ProfileDefinitions.ascx
+DesktopModules\Admin\Security\ProfileDefinitions.ascx.cs
+DesktopModules\Admin\Security\roles.ascx
+DesktopModules\Admin\Security\roles.ascx.cs
+DesktopModules\Admin\Security\securityroles.ascx
+DesktopModules\Admin\Security\securityroles.ascx.cs
+DesktopModules\Admin\Security\users.ascx
+DesktopModules\Admin\Security\users.ascx.cs
+DesktopModules\Admin\Security\usersettings.ascx
+DesktopModules\Admin\Security\usersettings.ascx.cs
+
 ' others
 App_LocalResources
 DesktopModules\Admin\Portals\App_LocalResources\
