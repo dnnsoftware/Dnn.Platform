@@ -86,7 +86,7 @@ GO
 /***** DNN-9359: set global module control for edit extension. *****/
 IF NOT EXISTS (SELECT ModuleControlID FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ControlKey = 'EditExtension' AND ModuleDefID IS NULL)
 BEGIN
-    INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'EditExtension', N'Package Editor', N'DesktopModules/Admin/Extensions/EditExtension.ascx', N'~/Icons/Sigma/Extensions_32X32_Standard.png', 2, 0, N'', 0, NULL, GETDATE(), -1, GETDATE(), 1)
+    INSERT INTO {databaseOwner}[{objectQualifier}ModuleControls] ([ModuleDefID], [ControlKey], [ControlTitle], [ControlSrc], [IconFile], [ControlType], [ViewOrder], [HelpUrl], [SupportsPartialRendering], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [SupportsPopUps]) VALUES (NULL, N'EditExtension', N'Package Editor', N'DesktopModules/Admin/EditExtension/EditExtension.ascx', N'~/Icons/Sigma/Extensions_32X32_Standard.png', 2, 0, N'', 0, NULL, GETDATE(), -1, GETDATE(), 1)
 END
 GO
 /************************************************************/

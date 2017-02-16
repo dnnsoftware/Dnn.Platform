@@ -642,6 +642,13 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
+    <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.cs">
+      <DependentUpon>EditExtension.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.designer.cs">
+      <DependentUpon>EditExtension.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\SearchResults\ResultsSettings.ascx.cs">
       <DependentUpon>ResultsSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -783,6 +790,7 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
+    <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />

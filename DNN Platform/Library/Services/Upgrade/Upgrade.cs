@@ -5468,8 +5468,10 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion910()
         {
+            RemoveAdminPages("//Admin//Extensions");
+
             //DNN-9145: the following has to stay for PB to show site settings in iFrame
-            //RemoveAdminPages("//Admin//Extensions");
+
             //RemoveAdminPages("//Admin");
             //RemoveAdminPages("//Admin//UserAccounts");
             //RemoveHostPage("File Management");
@@ -5479,7 +5481,15 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.MobileManagement", "Module");
             UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
 
+            UninstallPackage("DotNetNuke.Dashboard.WebServer", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Database", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Host", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Portals", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Modules", "DashboardControl");
+            UninstallPackage("DotNetNuke.Dashboard.Skins", "DashboardControl");
+
             // Admin Modules
+            UninstallPackage("DotNetNuke.HostSettings", "Module");
             UninstallPackage("DotNetNuke.Languages", "Module");
             UninstallPackage("DotNetNuke.Lists", "Module");
             UninstallPackage("DotNetNuke.LogViewer", "Module");
@@ -5490,7 +5500,18 @@ namespace DotNetNuke.Services.Upgrade
             UninstallPackage("DotNetNuke.Tabs", "Module");
 
             // at last remove "/Admin" / "/Host" pages
-            UninstallPackage("Dnn.Modules.Console", "Module");
+            UninstallPackage("DotNetNuke.Console", "Module");
+            UninstallPackage("DotNetNuke.Portals", "Module");
+            UninstallPackage("DotNetNuke.Scheduler", "Module");
+            UninstallPackage("DotNetNuke.SearchAdmin", "Module");
+            UninstallPackage("DotNetNuke.SQL", "Module");
+            UninstallPackage("DotNetNuke.Extensions", "Module");
+            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
+            UninstallPackage("DotNetNuke.Dashboard", "Module");
+            UninstallPackage("DotNetNuke.Google Analytics", "Module");
+            UninstallPackage("DotNetNuke.Taxonomy", "Module");
+
+            UninstallPackage("UrlManagement", "Library");
         }
 
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
