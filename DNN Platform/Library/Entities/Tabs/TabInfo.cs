@@ -543,8 +543,8 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                var key = string.Format("{0}_{1}", TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
-                                            Thread.CurrentThread.CurrentCulture);
+                string urlAlias = TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
+                var key = string.Format("{0}_{1}", urlAlias, Thread.CurrentThread.CurrentCulture);
 
                 string fullUrl;
                 using (_fullUrlDictionary.GetReadLock())
@@ -572,7 +572,7 @@ namespace DotNetNuke.Entities.Tabs
                                 break;
                             case TabType.Url:
                                 //external url
-                                fullUrl = Url;
+                                fullUrl = (Url.StartsWith("~") ? urlAlias + Url.Substring(1) : Url);
                                 break;
                         }
 
