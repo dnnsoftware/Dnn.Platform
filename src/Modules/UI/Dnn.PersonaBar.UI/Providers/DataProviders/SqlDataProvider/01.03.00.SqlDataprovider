@@ -28,12 +28,12 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}PersonaBar_SavePersonaBarMenu]
     @Path                       NVARCHAR(260),
     @Link                       NVARCHAR(260),
     @CssClass                   NVARCHAR(50),
-    @IconFile                   NVARCHAR(260),
     @ParentId                   INT,
     @Order                      INT,
     @AllowHost                  BIT,
     @Enabled                    BIT,
-    @CurrentUserId              INT
+    @CurrentUserId              INT,
+    @IconFile                   NVARCHAR(260) = ''
 AS
 BEGIN
     IF EXISTS(SELECT Identifier FROM {databaseOwner}[{objectQualifier}PersonaBarMenu] WHERE Identifier = @Identifier)
