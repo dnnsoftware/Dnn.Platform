@@ -194,10 +194,12 @@
             if ($('.ehccContent.EditView').length)
             {
                 // RadEditor
-                var editor = $find($(".RadEditor").attr('id'));
-                if (editor) {
-                    editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
-                    $('.ehCurrentContent').css('overflow', 'hidden');
+                if (typeof $find === "function") {
+                    var editor = $find($(".RadEditor").attr('id'));
+                    if (editor) {
+                        editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
+                        $('.ehCurrentContent').css('overflow', 'hidden');
+                    }
                 }
                 // CK Editor
                 var editorid = $(".ehCurrentContent textarea.editor").attr('id');

@@ -18,7 +18,7 @@
 </dnn:DnnFormEditor>
 <div class="dnnFormGroup dnnFormItem dnnFormShort" id="renameUserPortals" runat="server" Visible="False">
     <dnn:Label ID="numSites" runat="server"></dnn:Label>
-    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" ViewStateMode="Disabled"/>
+    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" />
 </div>
 
 <asp:panel id="pnlAddUser" runat="server" visible="False" CssClass="dnnForm dnnFormPassword">
