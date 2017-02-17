@@ -1108,7 +1108,7 @@ namespace DNNConnect.CKEditorProvider
 
             lblPortal.Text += _portalSettings.PortalName;
 
-            ModuleDefinitionInfo moduleDefinitionInfo;
+            ModuleDefinitionInfo moduleDefinitionInfo = null;
             var moduleInfo = new ModuleController().GetModuleByDefinition(
                 _portalSettings.PortalId, "User Accounts");
 
@@ -1119,8 +1119,11 @@ namespace DNNConnect.CKEditorProvider
             }
             catch (Exception)
             {
-                moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
-                    "User Accounts", moduleInfo.DesktopModuleID);
+                if (moduleInfo != null)
+                {
+                    moduleDefinitionInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(
+                        "User Accounts", moduleInfo.DesktopModuleID);
+                }
             }
 
             try
@@ -1154,7 +1157,7 @@ namespace DNNConnect.CKEditorProvider
             }
             catch (Exception)
             {
-                lblModName.Text += moduleInfo.ModuleTitle;
+                lblModName.Text += moduleInfo?.ModuleTitle;
             }
 
             if (request.QueryString["minc"] != null)
