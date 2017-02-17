@@ -131,35 +131,11 @@ namespace DotNetNuke.Modules.SearchResults
                 {
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "LinkTarget", comboBoxLinkTarget.SelectedValue);
 
-                    var selectedPortals = new StringBuilder();
-                    //DNN-9145 TODO
-                    //foreach (var p in comboBoxPortals.CheckedItems)
-                    //{
-                    //    if (selectedPortals.Length > 0)
-                    //    {
-                    //        selectedPortals.AppendFormat("|{0}", p.Value);
-                    //    }
-                    //    else
-                    //    {
-                    //        selectedPortals.Append(p.Value);
-                    //    }
-                    //}
+                    var selectedPortals = comboBoxPortals.Value.Replace(",", "|");
 
-                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForPortals", selectedPortals);
 
-                    var selectedFilters = new StringBuilder();
-                    //DNN-9145 TODO
-                    //foreach (var p in comboBoxFilters.CheckedItems)
-                    //{
-                    //    if (selectedFilters.Length > 0)
-                    //    {
-                    //        selectedFilters.AppendFormat("|{0}", p.Value);
-                    //    }
-                    //    else
-                    //    {
-                    //        selectedFilters.Append(p.Value);
-                    //    }
-                    //}
+                    var selectedFilters = comboBoxFilters.Value.Replace(",", "|");
 
                     ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScopeForFilters", selectedFilters.ToString());
 

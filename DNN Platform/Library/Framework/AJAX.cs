@@ -63,24 +63,13 @@ namespace DotNetNuke.Framework
                                 {
                                     ID = "ScriptManager",
                                     EnableScriptGlobalization = true,
-                                    SupportsPartialRendering = true,
-                                    //EnableHandlerDetection = false //DNN-9145 TODO
+                                    SupportsPartialRendering = true
                                 })
                         {
                             if (checkCdn)
                             {
                                 scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
                                 scriptManager.EnableCdnFallback = Host.EnableMsAjaxCdn;
-                                //DNN-9145 TODO
-                                //scriptManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
-                                //if (scriptManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
-                                //{
-                                //	scriptManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
-                                //}
-                                //if (scriptManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
-                                //{
-                                //	scriptManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
-                                //}
                             }
                             page.Form.Controls.AddAt(0, scriptManager);
                         }

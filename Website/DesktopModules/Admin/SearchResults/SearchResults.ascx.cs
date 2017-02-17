@@ -360,9 +360,8 @@ namespace DotNetNuke.Modules.SearchResults
                 SearchScopeList.Items.Add(item);
             }
 
-            //DNN-9145 TODO
-            //SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
-            //    Localization.GetResourceFile(this, MyFileName));
+            SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString("AllFeaturesSelected",
+                Localization.GetResourceFile(this, MyFileName));
 
             var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
             if (pageSizeItem != null)

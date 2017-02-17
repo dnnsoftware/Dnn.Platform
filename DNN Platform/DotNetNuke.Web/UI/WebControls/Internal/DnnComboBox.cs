@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -40,6 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         #region Fields
 
         private string _initValue;
+        private string _multipleValue;
 
         #endregion
 
@@ -58,7 +60,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     _initValue = value;
                 }
-                else
+
+                if (Items.Cast<ListItem>().Any(i => i.Value == value))
                 {
                     base.SelectedValue = value;
                 }
@@ -71,6 +74,29 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public virtual string OnClientSelectedIndexChanged { get; set; }
 
+        public string Value
+        {
+            get
+            {
+                if (TagKey == HtmlTextWriterTag.Input)
+                {
+                    return _multipleValue ?? string.Empty;
+                }
+
+                return SelectedValue ?? string.Empty;
+            }
+            set
+            {
+                if (TagKey == HtmlTextWriterTag.Input)
+                {
+                    Attributes.Remove("value");
+                    Attributes.Add("value", value);
+                }
+
+                SelectedValue = value;
+            }
+        }
+
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -79,11 +105,22 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        protected DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
+        public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
 
         #endregion
 
         #region Override Methods
+
+        protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            var postData = postCollection[postDataKey];
+            if (!string.IsNullOrEmpty(postData))
+            {
+                _multipleValue = postData;
+            }
+
+            return base.LoadPostData(postDataKey, postCollection);
+        }
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
@@ -100,7 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             if (TagKey == HtmlTextWriterTag.Input)
             {
                 Options.Items = Items.Cast<ListItem>();
-                Attributes.Add("value", string.Join(",", Options.Items.Where(i => i.Selected).Select(i => i.Value)));
+                Value = string.Join(",", Options.Items.Where(i => i.Selected).Select(i => i.Value));
             }
             else
             {
@@ -110,8 +147,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 }
             }
 
-            Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
-            Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+            if (!Options.Localization.ContainsKey("ItemsChecked"))
+            {
+                Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
+            }
+            if (!Options.Localization.ContainsKey("AllItemsChecked"))
+            {
+                Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
+            }
 
             Options.Checkbox = CheckBoxes;
             Options.OnChangeEvent = OnClientSelectedIndexChanged;
