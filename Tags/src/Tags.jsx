@@ -112,7 +112,7 @@ export default class Tags extends Component {
 
     onChange(event) {
         this.setState({ newTagText: event.target.value }, this.resizeInputField.bind(this));
-        if (this.props.autoSuggest) {
+        if (this.props.autoSuggest && typeof(this.props.onAddingNewTagChange) === "function") {
             this.props.onAddingNewTagChange(event.target.value);
         }
     }
@@ -123,7 +123,9 @@ export default class Tags extends Component {
 
     onSelectSuggestion(suggestion) {
         this.internalAddTag(suggestion);
-        this.props.onSelectSuggestion(suggestion);
+        if (typeof (this.props.onSelectSuggestion) === "function") {
+            this.props.onSelectSuggestion(suggestion);
+        }
     }
 
     getSuggestions() {
@@ -198,5 +200,6 @@ Tags.propTypes = {
 
 Tags.defaultProps = {
     enabled: true,
-    autoSuggest: false
+    autoSuggest: false,
+    suggestions: []
 };
