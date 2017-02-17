@@ -268,7 +268,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             var tabs = TabController.GetPortalTabs(portalSettings.PortalId, adminTabId, false, true, false, true);
             var pages = from t in tabs
-                        where (t.ParentId != adminTabId) &&
+                        where (t.ParentId != adminTabId || t.ParentId == Null.NullInteger) &&
                                 !t.IsSystem &&
                                     ((string.IsNullOrEmpty(searchKey) && (t.ParentId == parentId))
                                         || (!string.IsNullOrEmpty(searchKey) &&
