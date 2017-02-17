@@ -621,6 +621,13 @@
     <Compile Include="DesktopModules\Admin\Security\EditUser.ascx.designer.cs">
       <DependentUpon>EditUser.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.cs">
+      <DependentUpon>ManageUsers.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\ManageUsers.ascx.designer.cs">
+      <DependentUpon>ManageUsers.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\Security\MemberServices.ascx.cs">
       <DependentUpon>MemberServices.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -649,12 +656,26 @@
     <Compile Include="DesktopModules\Admin\Security\Profile.ascx.designer.cs">
       <DependentUpon>Profile.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.cs">
+      <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx.designer.cs">
+      <DependentUpon>ProfileDefinitions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.cs">
       <DependentUpon>Register.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\Register.ascx.designer.cs">
       <DependentUpon>Register.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.cs">
+      <DependentUpon>securityroles.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.designer.cs">
+      <DependentUpon>securityroles.ascx</DependentUpon>
     </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.cs">
       <DependentUpon>User.ascx</DependentUpon>
@@ -742,6 +763,9 @@
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
+    <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
+    <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
+    <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
