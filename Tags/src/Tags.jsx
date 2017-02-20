@@ -140,9 +140,18 @@ export default class Tags extends Component {
             </ul>);
     }
     render() {
-        const Tags = this.props.tags.map((tag, index) => {
-            return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) } enabled={this.props.enabled} />;
-        });
+        let Tags;
+        
+        if (typeof this.props.renderItem === "function") {
+            Tags = this.props.tags.map((tag, index) => {
+                return this.props.renderItem(tag, index, this.removeTagByName.bind(this, tag), this.props.enabled);
+            });
+        } else {
+            Tags = this.props.tags.map((tag, index) => {
+                return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag) } enabled={this.props.enabled} />;
+            });
+        }
+        
         const inputStyle = {
             width: this.state.inputWidth,
             display: (this.state.isInputVisible === false ? "none" : "block")
@@ -195,7 +204,8 @@ Tags.propTypes = {
     autoSuggest: PropTypes.bool.isRequired,
     onAddingNewTagChange: PropTypes.func,
     onSelectSuggestion: PropTypes.func,
-    suggestions: PropTypes.arrayOf(PropTypes.object)
+    suggestions: PropTypes.arrayOf(PropTypes.object),
+    renderItem: PropTypes.func
 };
 
 Tags.defaultProps = {
