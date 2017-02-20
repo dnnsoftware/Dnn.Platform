@@ -501,6 +501,7 @@
                 url: this._uploadFromLocalUrl(),
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
+                pasteZone: null,
                 sequentialUpload: true,
                 progressInterval: 20,
                 autoUpload: false
