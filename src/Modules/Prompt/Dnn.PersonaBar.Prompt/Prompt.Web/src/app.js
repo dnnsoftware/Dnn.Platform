@@ -32,6 +32,8 @@ class DnnPrompt {
     wireEvents() {
         const self = this;
 
+        self.isDragging = false;
+
         // intermediary functions so that 'this' points to class and not event source
         self.keyDownHandler = function (e) {
             self.onKeyDown(e);
@@ -39,14 +41,36 @@ class DnnPrompt {
         self.clickHandler = function (e) {
             self.onClickHandler(e);
         };
+        self.mouseDownHandler = function (e) {
+            self.onMouseDownHandler(e);
+        };
+        self.mouseUpHandler = function (e) {
+            self.onMouseUpHandler(e);
+        }
 
         // register on parent doc so panel can be loaded with keypress combo
         window.parent.document.addEventListener('keydown', self.keyDownHandler);
         document.addEventListener('keydown', self.keyDownHandler);
+        self.ctrlEl.addEventListener('mousedown', self.mouseDownHandler);
+        self.ctrlEl.addEventListener('mouseup', self.mouseUpHandler);
         self.ctrlEl.addEventListener('click', self.clickHandler);
     }
 
+    onMouseDownHandler(e) {
+        console.log('onMouseDown e', e);
+        this.mouseX = e.clientX;
+        this.mouseY = e.clientY;
+    }
+    onMouseUpHandler(e) {
+        console.log('onMouseUp e', e);
+        if (Math.abs(this.mouseX - e.clientX) > 10 || Math.abs(this.mouseY - e.clientY) > 5) {
+            this.isDragging = true;
+        } else {
+            this.isDragging = false;
+        }
+    }
     onClickHandler(e) {
+        if (this.isDragging) return;
         if (e.target.classList.contains("dnn-prompt-cmd-insert")) {
             // insert command and set focus
             this.inputEl.value = e.target.dataset.cmd.replace(/'/g, '"');
@@ -197,7 +221,7 @@ class DnnPrompt {
                     }
 
                     if (bRedirect) {
-                        window.location.href = output;
+                        window.top.location.href = output;
                     } else {
                         if (data) {
                             var html = self.renderData(data, fieldOrder);
@@ -539,3 +563,4 @@ class DnnPrompt {
 }
 
 window.DnnPrompt = DnnPrompt;
+//@ sourceURL=prompt-app.js
