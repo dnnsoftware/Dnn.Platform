@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public RoleModel()
         {
         }
-        public RoleModel(RoleInfo role)
+        public RoleModel(RoleInfo role): base(role)
         {
             CreatedDate = role.CreatedOnDate;
             CreatedBy = role.CreatedByUserID;
