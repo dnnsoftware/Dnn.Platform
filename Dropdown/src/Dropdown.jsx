@@ -254,7 +254,8 @@ class Dropdown extends Component {
                         <Scrollbars
                             autoHide={true}
                             style={props.scrollAreaStyle}
-                            ref="dropdownScrollContainer">
+                            ref="dropdownScrollContainer"
+                            onUpdate={this.props.onScrollUpdate}>
                             <div>
                                 <ul>
                                     {options}
@@ -291,7 +292,8 @@ Dropdown.propTypes = {
     closeOnClick: PropTypes.bool,
     prependWith: PropTypes.string,
     labelIsMultiLine: PropTypes.bool,
-    title: PropTypes.string
+    title: PropTypes.string,
+    onScrollUpdate: PropTypes.func
 };
 
 Dropdown.defaultProps = {
