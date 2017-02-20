@@ -1,6 +1,6 @@
 {
   "name": "dnn-react-common",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common.git"

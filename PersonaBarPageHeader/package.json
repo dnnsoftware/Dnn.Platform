@@ -6,7 +6,7 @@
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
