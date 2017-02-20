@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                     }
                 }
                 Password = (string.IsNullOrEmpty(Flag(FLAG_PASSWORD)) ? UserController.GeneratePassword() : Flag(FLAG_PASSWORD));
-                bool bApproved = false;
+                bool bApproved = true;
 
                 // approved is True by default since admin/host would be using Prompt
                 if (HasFlag(FLAG_APPROVED))
