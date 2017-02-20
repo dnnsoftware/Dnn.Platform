@@ -64,6 +64,7 @@
       <tr><td>FirstName</td><td>:</td><td>John</td></tr>
       <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
       <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
     </table>
 
     <h4>Get User by Email</h4>
@@ -84,47 +85,28 @@
       <tr><td>FirstName</td><td>:</td><td>John</td></tr>
       <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
       <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
     </table>
 
     <h4>Search for User by Email Using Wildcards</h4>
     <h5>Implicit Use of <span class="mono">--email</span> flag</h5>
-    <p>When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email</p>
+    <p>
+      When specifying a single value after the command name, if it contains the at symbol (<span class="mono"> @ </span>), Prompt will assume it is an Email.
+      Only the first matched user record will be returned. Try using <span class="mono">list-users</span> if you would like to find all matching users.
+    </p>
     <code class="block">get-user jsmith*@sample.com</code>
     <h5>Explicit Use of <span class="mono">--email</span> flag</h5>
     <code class="block">get-user --email jsmith*@sample.com</code>
 
     <table class="command-result-tbl">
-      <thead>
-      <tr>
-        <th>UserId</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>DisplayName</th>
-        <th>FirstName</th>
-        <th>LastName</th>
-        <th>LastLogin</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>345</td>
-        <td>jsmith</td>
-        <td>jsmith@sample.com</td>
-        <td>John Smith</td>
-        <td>John</td>
-        <td>Smith</td>
-        <td>2016-12-06T09:31:38.413-07:00</td>
-      </tr>
-      <tr>
-        <td>345</td>
-        <td>jsmithson</td>
-        <td>jsmithson@sample.com</td>
-        <td>Jerry Smithson</td>
-        <td>Jerry</td>
-        <td>Smithson</td>
-        <td>2016-12-063T08:15:28.123-07:00</td>
-      </tr>
-      </tbody>
+      <tr><td>UserId</td><td>:</td><td>345</td></tr>
+      <tr><td>Username</td><td>:</td><td>jsmith</td></tr>
+      <tr><td>Email</td><td>:</td><td>jsmith@sample.com</td></tr>
+      <tr><td>DisplayName</td><td>:</td><td>John Smith</td></tr>
+      <tr><td>FirstName</td><td>:</td><td>John</td></tr>
+      <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
+      <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
     </table>
 
     <h4>Get User by Username</h4>
@@ -144,6 +126,7 @@
       <tr><td>FirstName</td><td>:</td><td>John</td></tr>
       <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
       <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
     </table>
 
     <h4>Search for User by Username Using Wildcards</h4>
@@ -161,6 +144,7 @@
       <tr><td>FirstName</td><td>:</td><td>John</td></tr>
       <tr><td>LastName</td><td>:</td><td>Smith</td></tr>
       <tr><td>LastLogin</td><td>:</td><td>2016-12-06T09:31:38.413-07:00</td></tr>
+      <tr><td>IsAuthorized</td><td>:</td><td>true</td></tr>
     </table>
   </div>
 

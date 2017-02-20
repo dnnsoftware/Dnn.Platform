@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
+        public bool IsAuthorized { get; set; }
 
         #region Constructors
         public UserModelBase()
@@ -23,6 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Models
             UserId = user.UserID;
             Username = user.Username;
             IsDeleted = user.IsDeleted;
+            IsAuthorized = user.Membership.Approved;
         }
         #endregion
 
