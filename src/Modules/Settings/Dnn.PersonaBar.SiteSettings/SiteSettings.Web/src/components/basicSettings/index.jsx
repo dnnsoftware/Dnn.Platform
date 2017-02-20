@@ -276,7 +276,7 @@ class BasicSettingsPanelBody extends Component {
                         selectedFile={state.basicSettings.FavIcon}
                         folderName={state.basicSettings.FavIcon ? state.basicSettings.FavIcon.FolderName : null}
                         onSelectFile={this.onSettingChange.bind(this, "FavIcon")}
-                        fileFormats={["image/ico"]}
+                        fileFormats={["image/x-icon"]}
                         />
                 </InputGroup>
             </div>;
