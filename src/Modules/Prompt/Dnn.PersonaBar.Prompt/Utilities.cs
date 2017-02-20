@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Prompt
             return lst;
         }
 
-        public static RoleInfo CreateRole(string roleName, int portalId, string description = "", bool isPublic = false, bool autoAssign = false, int roleGroupId = -1)
+        public static RoleInfo CreateRole(string roleName, int portalId, RoleStatus status, string description = "", bool isPublic = false, bool autoAssign = false, int roleGroupId = -1)
         {
             var ri = new RoleInfo
             {
@@ -52,6 +52,7 @@ namespace Dnn.PersonaBar.Prompt
                 PortalID = portalId,
                 IsPublic = isPublic,
                 AutoAssignment = autoAssign,
+                Status = status,
                 RoleGroupID = roleGroupId,
                 SecurityMode = SecurityMode.SecurityRole
             };

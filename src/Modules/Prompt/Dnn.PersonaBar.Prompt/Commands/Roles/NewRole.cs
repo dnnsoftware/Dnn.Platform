@@ -4,6 +4,7 @@ using Dnn.PersonaBar.Prompt.Interfaces;
 using Dnn.PersonaBar.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,12 +24,14 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
         private const string FLAG_AUTO_ASSIGN = "autoassign";
         private const string FLAG_ROLE_NAME = "name";
         private const string FLAG_DESCRIPTION = "description";
+        private const string FLAG_STATUS = "status";
 
         public string ValidationMessage { get; private set; }
         public string RoleName { get; private set; }
         public string Description { get; private set; }
         public bool? IsPublic { get; private set; }
         public bool? AutoAssign { get; private set; }
+        public RoleStatus Status { get; private set; }
 
 
         public void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
@@ -99,6 +102,31 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
             if (!AutoAssign.HasValue)
                 AutoAssign = false;
 
+            if (HasFlag(FLAG_STATUS))
+            {
+                string status = Flag(FLAG_STATUS).ToLower();
+                switch (status)
+                {
+                    case "pending":
+                        Status = RoleStatus.Pending;
+                        break;
+                    case "approved":
+                        Status = RoleStatus.Approved;
+                        break;
+                    case "disabled":
+                        Status = RoleStatus.Disabled;
+                        break;
+                    default:
+                        sbErrors.AppendFormat("Invalid value '{0}' passed for --{1}. Expecting 'pending', 'approved', or 'disabled'", Flag(FLAG_STATUS), FLAG_STATUS);
+                        break;
+                }
+
+            }
+            else
+            {
+                // default to 'approved'
+                Status = RoleStatus.Approved;
+            }
             ValidationMessage = sbErrors.ToString();
         }
 
@@ -122,7 +150,7 @@ namespace Dnn.PersonaBar.Prompt.Commands.Role
                     return new ConsoleErrorResultModel(string.Format("Cannot create role: A role with the name '{0}' already exists.", RoleName));
                 }
 
-                var newRole = Prompt.Utilities.CreateRole(RoleName, PortalId, Description, (bool)IsPublic, (bool)AutoAssign);
+                var newRole = Prompt.Utilities.CreateRole(RoleName, PortalId, Status, Description, (bool)IsPublic, (bool)AutoAssign);
                 if (newRole != null)
                 {
                     lstResults.Add(new RoleModel(newRole));
