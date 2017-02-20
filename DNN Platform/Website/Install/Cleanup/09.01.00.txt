@@ -36,8 +36,6 @@ DesktopModules\Admin\Security\editroles.ascx
 DesktopModules\Admin\Security\editroles.ascx.cs
 DesktopModules\Admin\Security\roles.ascx
 DesktopModules\Admin\Security\roles.ascx.cs
-DesktopModules\Admin\Security\users.ascx
-DesktopModules\Admin\Security\users.ascx.cs
 DesktopModules\Admin\Security\usersettings.ascx
 DesktopModules\Admin\Security\usersettings.ascx.cs
 

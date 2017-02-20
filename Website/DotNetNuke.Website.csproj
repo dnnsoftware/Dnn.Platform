@@ -677,6 +677,13 @@
     <Compile Include="DesktopModules\Admin\Security\SecurityRoles.ascx.designer.cs">
       <DependentUpon>securityroles.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\Security\Users.ascx.cs">
+      <DependentUpon>Users.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\Security\Users.ascx.designer.cs">
+      <DependentUpon>Users.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\Security\User.ascx.cs">
       <DependentUpon>User.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -766,6 +773,7 @@
     <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
+    <Content Include="DesktopModules\Admin\Security\Users.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />

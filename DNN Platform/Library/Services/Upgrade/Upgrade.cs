@@ -5478,7 +5478,6 @@ namespace DotNetNuke.Services.Upgrade
             RemoveAdminPages("//Admin//Extensions");
             RemoveAdminPages("//Admin//SiteSettings");
             RemoveAdminPages("//Admin//SecurityRoles");
-            RemoveAdminPages("//Admin//UserAccounts");
             RemoveAdminPages("//Admin//Taxonomy");
             RemoveAdminPages("//Admin//SiteRedirectionManagement");
             RemoveAdminPages("//Admin//DevicePreviewManagement");

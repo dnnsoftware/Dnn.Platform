@@ -93,6 +93,8 @@ GO
 /***** DNN-9145: cleanup database. *****/
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%DotNetNuke.Modules.Taxonomy%'
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%Dnn.Modules.SkinManagement%'
+
+UPDATE {databaseOwner}[{objectQualifier}Tabs] SET IsVisible = 0 WHERE TabPath = '//Admin//UserAccounts'
 GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
