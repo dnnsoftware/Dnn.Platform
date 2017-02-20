@@ -3186,5 +3186,97 @@
       </panes>
       <tabUrls />
     </tab>
+    <tab>
+      <content>User Accounts</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description>Manage user accounts for the portal.</description>
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>false</visible>
+      <issystem>false</issystem>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <skinsrc />
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>User Accounts</name>
+      <title>User Accounts</title>
+      <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
+      <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
+      <url type="Normal" />
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <parent>Admin</parent>
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
+            <module>
+              <contentKey />
+              <moduleID>439</moduleID>
+              <alignment />
+              <alltabs>false</alltabs>
+              <border />
+              <cachemethod />
+              <cachetime>0</cachetime>
+              <color />
+              <containersrc />
+              <displayprint>true</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <footer />
+              <header />
+              <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <iswebslice>false</iswebslice>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <title>User Accounts</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <cultureCode />
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>True</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>Security</definition>
+              <moduledefinition>User Accounts</moduledefinition>
+            </module>
+          </modules>
+        </pane>
+      </panes>
+      <tabUrls />
+    </tab>
   </tabs>
 </portal>
