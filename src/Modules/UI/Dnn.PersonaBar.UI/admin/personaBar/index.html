@@ -10,6 +10,17 @@
     <script type="text/javascript">
         window.Sys = !window.Sys ? window.top.Sys : window.Sys;
         window.dnn = !window.dnn ? window.top.dnn : window.dnn;
+
+        if (typeof window.Sys._isInstanceOfType === "function") {
+            var originalFunc = window.Sys._isInstanceOfType;
+            window.Sys._isInstanceOfType = function(type, instance) {
+                if (typeof type === "function" && typeof instance === "function") {
+                    return true;
+                }
+
+                return originalFunc.apply(this, arguments);
+            }
+        }
     </script>
 </head>
 <body>
