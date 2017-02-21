@@ -4,9 +4,11 @@ import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
 import DateInput from "./DateInput";
+import Checkbox from "dnn-checkbox";
 import "./style.less";
 
 const DefaultControllerClassName = "calendar-controller";
+const FakeDateForDisabling = new Date(0);
 
 function Weekday({ weekday, className, localeUtils, locale }) {
     const weekdayName = localeUtils.formatWeekdayLong(weekday, locale);
@@ -33,7 +35,8 @@ export default class DatePicker extends Component {
 
         this.savedDate = {
             FirstDate: firstDate !== undefined ? firstDate : null,
-            SecondDate: secondDate !== undefined ? secondDate : null
+            SecondDate: secondDate !== undefined ? secondDate : null,
+            clearDatesChecked: false
         };
 
         this.state = {
@@ -41,8 +44,8 @@ export default class DatePicker extends Component {
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
-            }
-
+            },
+            clearDatesChecked: false
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -108,16 +111,24 @@ export default class DatePicker extends Component {
     }
 
     firstDisableDates(day) {
-        const maxDate = this.props.maxDate ? this.resetHours(new Date(this.props.maxDate)) : null;
-        const minDate = this.props.minDate ? this.resetHours(new Date(this.props.minDate)) : null;
+        const maxDate = this.getDateForDisabling(this.props.maxDate)
+             ? this.resetHours(new Date(this.getDateForDisabling(this.props.maxDate))) : null;
+        const minDate = this.getDateForDisabling(this.props.minDate)
+            ? this.resetHours(new Date(this.getDateForDisabling(this.props.minDate))) : null;
         const SecondDate = this.state.Date.SecondDate ? this.resetHours(new Date(this.state.Date.SecondDate)) : null;
         return this.disableDates(null, SecondDate, day, maxDate, minDate);
     }
 
+    getDateForDisabling(date) {
+        return this.state.clearDatesChecked ? FakeDateForDisabling : date;
+    }
+
     secondDisableDates(day) {
         const FirstDate = this.state.Date.FirstDate ? this.resetHours(new Date(this.state.Date.FirstDate)) : null;
-        const minDate = this.props.minSecondDate ? this.resetHours(new Date(this.props.minSecondDate)) : null;
-        const maxDate = this.props.maxSecondDate ? this.resetHours(new Date(this.props.maxSecondDate)) : null;
+        const minDate = this.getDateForDisabling(this.props.minSecondDate)
+            ? this.resetHours(new Date( this.getDateForDisabling(this.props.minSecondDate))) : null;
+        const maxDate = this.getDateForDisabling(this.props.maxSecondDate)
+            ? this.resetHours(new Date(this.getDateForDisabling(this.props.maxSecondDate))) : null;
         return this.disableDates(FirstDate, null, day, maxDate, minDate);
     }
 
@@ -188,7 +199,8 @@ export default class DatePicker extends Component {
         const {Date} = this.state;
         const FirstDate = Date.FirstDate;
         const SecondDate = Date.SecondDate;
-        this.savedDate = { FirstDate, SecondDate };
+        const clearDatesChecked = this.state.clearDatesChecked;
+        this.savedDate = { FirstDate, SecondDate, clearDatesChecked };
     }
 
     apply() {
@@ -200,7 +212,8 @@ export default class DatePicker extends Component {
         this.hideCalendar();
         const FirstDate = this.savedDate.FirstDate;
         const SecondDate = this.savedDate.SecondDate;
-        this.setState({ Date: { FirstDate, SecondDate } });
+        const clearDatesChecked = this.savedDate.clearDatesChecked;
+        this.setState({ Date: { FirstDate, SecondDate }, clearDatesChecked });
     }
 
     updateFirstTime(time) {
@@ -276,6 +289,16 @@ export default class DatePicker extends Component {
         this.setState({Date}, this.apply.bind(this));
     }
 
+    onChangeClearDates() {
+        const clearDatesChecked = !this.state.clearDatesChecked;
+
+        if(clearDatesChecked) {
+            const Date = {FirstDate: null, SecondDate: null};            
+            this.setState({Date});
+        }
+        this.setState({clearDatesChecked});
+    }
+
     render() {
         this.date = this.state.Date.FirstDate;
         this.secondDate = this.state.Date.SecondDate;
@@ -313,9 +336,12 @@ export default class DatePicker extends Component {
         const buttonStyle = this.props.isDateRange ? {} : {margin: "10px auto", float: "none"};
         const inputClassName = "calendar-text" + ( this.props.hasTimePicker ? " with-time-picker" : "");
 
+        const showCheckBox = !!this.props.isDateRange && this.props.showCheckBoxClearDates;
+
         /* eslint-disable react/no-danger */
         return <div className="dnn-day-picker">
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
+                {this.props.prependWith && <span>{this.props.prependWith}</span>}
                 {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
                 {this.props.isInputReadOnly && displayDate}
                 {!this.props.isInputReadOnly && <div style={{ float: "right" }}>
@@ -353,9 +379,15 @@ export default class DatePicker extends Component {
                         />
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
+                {showCheckBox && 
+                    <div className="clear-filter-checkbox">
+                        <Checkbox label="No Filter by Date"
+                            value={this.state.clearDatesChecked} onChange={this.onChangeClearDates.bind(this)} />
+                    </div>
+                }
                 {showButton && <button style={buttonStyle} role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
             </div>
-        </div >;
+        </div>;
     }
 }
 
@@ -406,5 +438,13 @@ DatePicker.propTypes = {
     //to be able to click on element without hiding the calendar it's needed to provide class name of a controller or give to controller a default className - "calendar-controller"
     controllerClassName: PropTypes.string,
 
-    showClearDateButton:  PropTypes.bool
+    showClearDateButton:  PropTypes.bool,
+
+    showCheckBoxClearDates: PropTypes.bool.isRequired,
+
+    prependWith: PropTypes.string
+};
+
+DatePicker.defaultProps = {
+    showCheckBoxClearDates: false
 };
