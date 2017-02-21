@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             {
                 if (_controller.IsSystemVocabulary(vocabularyDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
 
                 var vocabulary = new Vocabulary(vocabularyDto.Name, vocabularyDto.Description);
