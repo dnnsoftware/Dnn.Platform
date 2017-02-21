@@ -135,10 +135,13 @@
     <Content Include="App_LocalResources\ProviderConfiguration.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj">
-      <Project>{9ba59b3d-9ffb-4a9e-bd7d-8b58d08b3a33}</Project>
-      <Name>DotNetNuke.Web.Deprecated</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
