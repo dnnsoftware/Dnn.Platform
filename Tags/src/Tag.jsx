@@ -4,6 +4,7 @@ import "./style.less";
 export default class Tag extends Component {
 
     render() {
+        const {onRemove} = this.props;
         const tagName = this.props.tag.trim();
         if (!tagName) {
             return false;
@@ -11,7 +12,10 @@ export default class Tag extends Component {
         return (
             <div className={"dnn-uicommon-tag-input" + (this.props.enabled ? "": " disabled")}>
                 <span>{this.props.tag}</span>
-                {this.props.enabled && <span className="close" onClick={this.props.onRemove }>×</span>}
+                {this.props.enabled && <span className="close" onClick={e => {
+                    e.stopPropagation();
+                    onRemove();
+                }}>×</span>}
             </div>
         );
     }

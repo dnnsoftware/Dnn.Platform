@@ -78,17 +78,13 @@ class Tags extends Component {
     
     render() {
         let Tags;
-        const removeTagByName = this.removeTagByName.bind(this);
         if (typeof this.props.renderItem === "function") {
             Tags = this.props.tags.map((tag, index) => {
                 return this.props.renderItem(tag, index, this.removeTagByName.bind(this, tag), this.props.enabled);
             });
         } else {
             Tags = this.props.tags.map((tag, index) => {
-                return <Tag tag={tag} key={index} onRemove={e => {
-                    e.stopPropagation();
-                    removeTagByName(tag);
-                }} enabled={this.props.enabled} />;
+                return <Tag tag={tag} key={index} onRemove={this.removeTagByName.bind(this, tag)} enabled={this.props.enabled} />;
             });
         }
         
