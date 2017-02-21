@@ -387,7 +387,7 @@ export default class DatePicker extends Component {
                 }
                 {showButton && <button style={buttonStyle} role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
             </div>
-        </div >;
+        </div>;
     }
 }
 
