@@ -341,6 +341,7 @@ export default class DatePicker extends Component {
         /* eslint-disable react/no-danger */
         return <div className="dnn-day-picker">
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
+                {this.props.prependWith && <span>{this.props.prependWith}</span>}
                 {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
                 {this.props.isInputReadOnly && displayDate}
                 {!this.props.isInputReadOnly && <div style={{ float: "right" }}>
@@ -439,7 +440,9 @@ DatePicker.propTypes = {
 
     showClearDateButton:  PropTypes.bool,
 
-    showCheckBoxClearDates: PropTypes.bool.isRequired
+    showCheckBoxClearDates: PropTypes.bool.isRequired,
+
+    prependWith: PropTypes.string
 };
 
 DatePicker.defaultProps = {
