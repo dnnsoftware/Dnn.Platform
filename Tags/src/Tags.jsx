@@ -37,8 +37,7 @@ class Tags extends Component {
         this.updateTags(tags);
     }
 
-    removeTagByName(e, tag) {
-        e.stopPropagation();
+    removeTagByName(tag) {
         const tags = this.props.tags.filter((_tag) => { return _tag !== tag; }).slice();
         this.updateTags(tags);
     }
@@ -87,7 +86,7 @@ class Tags extends Component {
             Tags = this.props.tags.map((tag, index) => {
                 return <Tag tag={tag} key={index} onRemove={e => {
                     e.stopPropagation();
-                    removeTagByName(e, tag);
+                    removeTagByName(tag);
                 }} enabled={this.props.enabled} />;
             });
         }
