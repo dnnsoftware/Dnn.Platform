@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Pages.Components
             input.Keywords = Clean(input.Keywords);
             input.Tags = Clean(input.Tags);
             input.Url = Clean(input.Url);
-            input.PageHeadText = Clean(input.PageHeadText);
+            input.PageHeadText = Clean(input.PageHeadText, PortalSecurity.FilterFlag.NoScripting);
             input.PageType = Clean(input.PageType);
             input.Alias = Clean(input.Alias);
             input.LocalizedName = Clean(input.LocalizedName);
