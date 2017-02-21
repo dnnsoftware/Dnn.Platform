@@ -121,13 +121,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     {
                         fileName = logoFile.FileName,
                         folderPath = logoFile.Folder,
-                        fileId = logoFile.FileId
+                        fileId = logoFile.FileId,
+                        folderId = logoFile.FolderId
                     } : null,
                     FavIcon = favIcon != null ? new FileDto()
                     {
                         fileName = favIcon.FileName,
                         folderPath = favIcon.Folder,
-                        fileId = favIcon.FileId
+                        fileId = favIcon.FileId,
+                        folderId = favIcon.FolderId
                     } : null,
                     IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
