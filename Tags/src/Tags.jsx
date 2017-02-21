@@ -9,7 +9,7 @@ const KEY = {
     COMMA: 188
 };
 
-export default class Tags extends Component {
+class Tags extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -213,3 +213,6 @@ Tags.defaultProps = {
     autoSuggest: false,
     suggestions: []
 };
+
+export default Tags;
+export { Tag };
