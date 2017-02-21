@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                if(UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("EDIT"))
+                if(!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("EDIT"))
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
                 }
