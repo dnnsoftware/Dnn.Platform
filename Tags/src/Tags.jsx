@@ -18,13 +18,6 @@ class Tags extends Component {
         return (" " + element.className + " ").indexOf(" " + className + " ") > -1;
     }
 
-    addTag(tag) {
-        if (!tag) {
-            return;
-        }
-        this.internalAddTag(tag);
-    }
-
     internalAddTag(newTagText) {
         if (this.props.tags.find(t=> t === newTagText)) {
             this.setState({ newTagText: "" });
@@ -35,6 +28,7 @@ class Tags extends Component {
         const tags = this.props.tags.slice();
         tags.push(newTagText.trim());         
         this.updateTags(tags);
+        this.props.onNewTag(newTagText);
     }
 
     removeTagByName(tag) {
@@ -71,10 +65,17 @@ class Tags extends Component {
         this.props.onAddingNewTagChange("");
     }
 
+    addTag(tag) {
+        if (!tag) {
+            return;
+        }
+        this.internalAddTag(tag);
+    }
+
     onSelectSuggestion(suggestion) {
         this.internalAddTag(suggestion);
-        this.props.onSelectSuggestion(suggestion);
     }
+    
     render() {
         let Tags;
         const removeTagByName = this.removeTagByName.bind(this);
@@ -133,7 +134,7 @@ Tags.propTypes = {
     enabled: PropTypes.bool.isRequired,
     autoSuggest: PropTypes.bool.isRequired,
     onAddingNewTagChange: PropTypes.func,
-    onSelectSuggestion: PropTypes.func,
+    onNewTag: PropTypes.func,
     suggestions: PropTypes.arrayOf(PropTypes.object),
     renderItem: PropTypes.func
 };
