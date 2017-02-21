@@ -57,12 +57,10 @@ class DnnPrompt {
     }
 
     onMouseDownHandler(e) {
-        console.log('onMouseDown e', e);
         this.mouseX = e.clientX;
         this.mouseY = e.clientY;
     }
     onMouseUpHandler(e) {
-        console.log('onMouseUp e', e);
         if (Math.abs(this.mouseX - e.clientX) > 10 || Math.abs(this.mouseY - e.clientY) > 5) {
             this.isDragging = true;
         } else {
@@ -213,8 +211,6 @@ class DnnPrompt {
                     const output = result.output;
                     const style = result.isError ? "error" : "ok";
                     const data = result.data;
-                    console.log('runCmd::result.fieldOrder', result.fieldOrder);
-                    console.log('runCmd::(result.fieldOrder', (result['fieldOrder']));
                     let fieldOrder = result.fieldOrder;
                     if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
                         fieldOrder = null;
@@ -239,7 +235,8 @@ class DnnPrompt {
                         setTimeout(() => location.reload(true), 3000);
                     }
                 })
-                .catch(function () {
+                .catch(function (err) {
+                    console.log('err', err);
                     self.writeLine("Error sending request to server", "error")
                 })
                 .then(function () {
@@ -314,13 +311,11 @@ class DnnPrompt {
     }
 
     renderTable(rows, fieldOrder) {
-        console.log('renderTable::fieldOrder', fieldOrder);
         if (!rows || !rows.length) { return; }
         const linkFields = this.extractLinkFields(rows[0]);
 
         var columns = fieldOrder;
         if (!columns || !columns.length) {
-            console.log('columns', columns);
             // get columns from first row
             columns = [];
             const row = rows[0];
@@ -361,15 +356,25 @@ class DnnPrompt {
 
     renderObject(data, fieldOrder) {
         const linkFields = this.extractLinkFields(data);
-
-        let out = '<table class="dnn-prompt-tbl">'
-        for (let key in data) {
-            if (key.startsWith("__")) {
-                out += `<tr><td class="dnn-prompt-lbl">${key.slice(2)}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${data[key]}" title="${data[key].replace(/'/g, '&quot;')}">${data[key.slice(2)]}</a></td></tr>`;
-            } else {
-                if (linkFields.indexOf(key) === -1) {
-                    out += `<tr><td class="dnn-prompt-lbl">${key}</td><td>:</td><td>${data[key]}</td></tr>`;
+        var columns = fieldOrder;
+        if (!columns || !columns.length) {
+            // no field order. Generate it
+            for (let key in data) {
+                if (!key.startsWith("__")) {
+                    columns.push(key);
                 }
+            }
+        }
+        let out = '<table class="dnn-prompt-tbl">'
+        for (let fld in columns) {
+            let fldName = columns[fld];
+            let fldVal = data[fldName] ? data[fldName] : '';
+            let cmd = data["__" + fldName] ? data["__" + fldName] : null;
+
+            if (cmd) {
+                out += `<tr><td class="dnn-prompt-lbl">${fldName}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td></tr>`;
+            } else {
+                out += `<tr><td class="dnn-prompt-lbl">${fldName}</td><td>:</td><td>${fldVal}</td></tr>`;
             }
 
         }

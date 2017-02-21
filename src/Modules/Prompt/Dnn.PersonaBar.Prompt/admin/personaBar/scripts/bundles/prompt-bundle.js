@@ -329,14 +329,12 @@ var DnnPrompt = function () {
     }, {
         key: 'onMouseDownHandler',
         value: function onMouseDownHandler(e) {
-            console.log('onMouseDown e', e);
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
         }
     }, {
         key: 'onMouseUpHandler',
         value: function onMouseUpHandler(e) {
-            console.log('onMouseUp e', e);
             if (Math.abs(this.mouseX - e.clientX) > 10 || Math.abs(this.mouseY - e.clientY) > 5) {
                 this.isDragging = true;
             } else {
@@ -495,8 +493,6 @@ var DnnPrompt = function () {
                         var output = result.output;
                         var style = result.isError ? "error" : "ok";
                         var data = result.data;
-                        console.log('runCmd::result.fieldOrder', result.fieldOrder);
-                        console.log('runCmd::(result.fieldOrder', result['fieldOrder']);
                         var fieldOrder = result.fieldOrder;
                         if (typeof fieldOrder === 'undefined' || !fieldOrder || fieldOrder.length === 0) {
                             fieldOrder = null;
@@ -524,7 +520,8 @@ var DnnPrompt = function () {
                                 return location.reload(true);
                             }, 3000);
                         }
-                    }).catch(function () {
+                    }).catch(function (err) {
+                        console.log('err', err);
                         self.writeLine("Error sending request to server", "error");
                     }).then(function () {
                         // finally
@@ -604,7 +601,6 @@ var DnnPrompt = function () {
     }, {
         key: 'renderTable',
         value: function renderTable(rows, fieldOrder) {
-            console.log('renderTable::fieldOrder', fieldOrder);
             if (!rows || !rows.length) {
                 return;
             }
@@ -612,7 +608,6 @@ var DnnPrompt = function () {
 
             var columns = fieldOrder;
             if (!columns || !columns.length) {
-                console.log('columns', columns);
                 // get columns from first row
                 columns = [];
                 var row = rows[0];
@@ -654,15 +649,25 @@ var DnnPrompt = function () {
         key: 'renderObject',
         value: function renderObject(data, fieldOrder) {
             var linkFields = this.extractLinkFields(data);
-
-            var out = '<table class="dnn-prompt-tbl">';
-            for (var key in data) {
-                if (key.startsWith("__")) {
-                    out += '<tr><td class="dnn-prompt-lbl">' + key.slice(2) + '</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + data[key] + '" title="' + data[key].replace(/'/g, '&quot;') + '">' + data[key.slice(2)] + '</a></td></tr>';
-                } else {
-                    if (linkFields.indexOf(key) === -1) {
-                        out += '<tr><td class="dnn-prompt-lbl">' + key + '</td><td>:</td><td>' + data[key] + '</td></tr>';
+            var columns = fieldOrder;
+            if (!columns || !columns.length) {
+                // no field order. Generate it
+                for (var key in data) {
+                    if (!key.startsWith("__")) {
+                        columns.push(key);
                     }
+                }
+            }
+            var out = '<table class="dnn-prompt-tbl">';
+            for (var fld in columns) {
+                var fldName = columns[fld];
+                var fldVal = data[fldName] ? data[fldName] : '';
+                var cmd = data["__" + fldName] ? data["__" + fldName] : null;
+
+                if (cmd) {
+                    out += '<tr><td class="dnn-prompt-lbl">' + fldName + '</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td></tr>';
+                } else {
+                    out += '<tr><td class="dnn-prompt-lbl">' + fldName + '</td><td>:</td><td>' + fldVal + '</td></tr>';
                 }
             }
             out += '</table>';
