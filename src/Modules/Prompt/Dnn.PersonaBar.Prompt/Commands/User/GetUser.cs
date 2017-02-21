@@ -132,7 +132,26 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
 
             if (lst.Count > 0)
             {
-                return new ConsoleResultModel(string.Empty) { data = lst };
+                return new ConsoleResultModel(string.Empty) {
+                    data = lst,
+                    fieldOrder = new string[]
+                    {
+                        "UserId",
+                        "Username",
+                        "DisplayName",
+                        "FirstName",
+                        "LastName",
+                        "Email",
+                        "LastActivity",
+                        "LastLogin",
+                        "LastLockout",
+                        "LastPasswordChange",
+                        "IsDeleted",
+                        "IsAuthorized",
+                        "IsLockedOut",
+                        "Created"
+                    }
+                };
             }
             return new ConsoleResultModel("No user found");
         }
