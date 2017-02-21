@@ -178,7 +178,7 @@
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RoleModelBase.cs" />
     <Compile Include="Models\TaskModel.cs" />
-    <Compile Include="Models\TaskModelSlim.cs" />
+    <Compile Include="Models\TaskModelBase.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserModelBase.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
