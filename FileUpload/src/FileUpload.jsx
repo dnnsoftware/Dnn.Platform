@@ -51,7 +51,7 @@ export default class FileUpload extends Component {
     componentWillMount() {
         const file = this.props.selectedFile;
         if (file) {
-            const selectedFolder = { value: file.folderPath };
+            const selectedFolder = { value: file.folderPath, key: file.folderId };
             const selectedFile = { value: file.fileName, key: file.fileId };
             const fileExist = true;
             this.setState({fileExist, selectedFile, selectedFolder}, () => {

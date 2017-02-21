@@ -1,6 +1,6 @@
 {
   "name": "dnn-file-upload",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "DNN File Uploader",
   "main": "index.js",
   "scripts": {
