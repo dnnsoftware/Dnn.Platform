@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Dnn.PersonaBar.Library;
@@ -11,7 +12,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api.Internal;
 
 namespace Dnn.PersonaBar.UI.Services
 {
@@ -22,15 +25,20 @@ namespace Dnn.PersonaBar.UI.Services
     public class ComponentsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ComponentsController));
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         #region API in Admin Level
 
         [HttpGet]
-        [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
             {
+                if(UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("EDIT"))
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
+                }
+
                 if (reload)
                 {
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, PortalId));
