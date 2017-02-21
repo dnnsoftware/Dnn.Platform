@@ -11,6 +11,9 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string DisplayName;
         public string FirstName;
         public string LastName;
+        public DateTime LastActivity;
+        public DateTime LastLockout;
+        public DateTime LastPasswordChange;
         public DateTime Created;
 
         #region Constructors
@@ -22,6 +25,9 @@ namespace Dnn.PersonaBar.Prompt.Models
             DisplayName = user.DisplayName;
             FirstName = user.FirstName;
             LastName = user.LastName;
+            LastActivity = user.Membership.LastActivityDate;
+            LastLockout = user.Membership.LastLockoutDate;
+            LastPasswordChange = user.Membership.LastPasswordChangeDate;
             Created = user.CreatedOnDate;
         }
         #endregion
