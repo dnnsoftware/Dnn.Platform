@@ -8,6 +8,9 @@
     box-sizing: border-box;
     position: relative;
     border-radius: 0px;
+    font-size: 11px;
+    font-family: proxima_nova_semibold, arial;
+
     &.error {
         border-bottom: 2px solid red;
     }
@@ -24,36 +27,47 @@
     &.active {
         border: 1px solid @curiousBlue;
     }
-    .text {
+    div[type="text"] {
+        width: 100%;
         padding: 0px !important;
         height: auto;
         float: left;
         margin: 0 !important;
     }
 
+    div.typing-text {
+        height: 15px;
+        padding: 9px;
+        color: #C8C8C8;
+    }
+
     .input-container {
+        width: 100%;
         float: left;
         position: relative;
 
         .suggestions {
             position: absolute;
-            left: -5px;
-            top: 20px;
+            left: -10px;
+            top: 23px;
             padding: 10px;
             list-style-type: none;
+            width: 100%;
+            z-index: 9999;
 
             .suggestion {
                 color: gray !important;
-                padding: 5px;
+                padding: 9px;
                 border: 1px solid #E3E3E3;
                 background-color: #FFFFFF;
                 cursor: pointer;
-                width: 100%;
                 margin: 0px;
                 list-style: none;
+                height: 15px;
 
                 &:hover {
                     background-color: #F0F0F0;
+                    color: #1E88EC !important;
                 }
             }
         }
@@ -74,7 +88,7 @@
         float: left;
         position: relative;
         padding: 3px 18px 3px 7px !important;
-        margin: 7px 0 0 9px !important;
+        margin: 7px 0 5px 9px !important;
         background: @curiousBlue;
         border: none;
         color: white;
