@@ -138,6 +138,7 @@
     <Compile Include="Commands\Page\RestorePage.cs" />
     <Compile Include="Commands\Page\SetPage.cs" />
     <Compile Include="Commands\Page\DeletePage.cs" />
+    <Compile Include="Commands\Portal\ClearLog.cs" />
     <Compile Include="Commands\Portal\GetSite.cs" />
     <Compile Include="Commands\Portal\GetPortal.cs" />
     <Compile Include="Commands\Portal\ListSites.cs" />
@@ -190,6 +191,7 @@
   <ItemGroup>
     <Content Include="admin\personaBar\css\Prompt.css" />
     <Content Include="admin\personaBar\help\add-roles.html" />
+    <Content Include="admin\personaBar\help\clear-log.html" />
     <Content Include="admin\personaBar\help\clear-cache.html" />
     <Content Include="admin\personaBar\help\clear-history.html" />
     <Content Include="admin\personaBar\help\clear-screen.html" />
