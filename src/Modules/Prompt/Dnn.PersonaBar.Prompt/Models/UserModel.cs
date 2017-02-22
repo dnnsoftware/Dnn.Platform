@@ -16,6 +16,25 @@ namespace Dnn.PersonaBar.Prompt.Models
         public DateTime LastPasswordChange;
         public DateTime Created;
 
+        // provide a default field order for use of callers
+        public static new string[] FieldOrder = 
+        {
+            "UserId",
+            "Username",
+            "DisplayName",
+            "FirstName",
+            "LastName",
+            "Email",
+            "LastActivity",
+            "LastLogin",
+            "LastLockout",
+            "LastPasswordChange",
+            "IsDeleted",
+            "IsAuthorized",
+            "IsLockedOut",
+            "Created"
+        };
+
         #region Constructors
         public UserModel()
         {
