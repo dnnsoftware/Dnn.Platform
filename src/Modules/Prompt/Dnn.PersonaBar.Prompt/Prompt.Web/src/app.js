@@ -569,4 +569,4 @@ class DnnPrompt {
 }
 
 window.DnnPrompt = DnnPrompt;
-//@ sourceURL=prompt-app.js
+//# sourceURL=prompt-app.js

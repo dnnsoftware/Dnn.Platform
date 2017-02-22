@@ -875,7 +875,7 @@ var DnnPrompt = function () {
 }();
 
 window.DnnPrompt = DnnPrompt;
-//@ sourceURL=prompt-app.js
+//# sourceURL=prompt-app.js
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ })
