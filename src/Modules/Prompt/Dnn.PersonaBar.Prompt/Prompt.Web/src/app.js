@@ -359,6 +359,7 @@ class DnnPrompt {
         var columns = fieldOrder;
         if (!columns || !columns.length) {
             // no field order. Generate it
+            columns = [];
             for (let key in data) {
                 if (!key.startsWith("__")) {
                     columns.push(key);
