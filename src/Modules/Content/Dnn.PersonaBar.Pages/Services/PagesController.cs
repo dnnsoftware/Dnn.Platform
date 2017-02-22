@@ -609,16 +609,16 @@ namespace Dnn.PersonaBar.Pages.Services
         // POST /api/personabar/pages/UpdateTabLocalization
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateTabLocalization(DnnPagesDto pages)
+        public HttpResponseMessage UpdateTabLocalization(DnnPagesRequest request)
         {
             try
             {
-                if (pages.Pages.Any(x => x.TabId > 0 && !_securityService.CanManagePage(x.TabId)))
+                if (request.Pages.Any(x => x.TabId > 0 && !_securityService.CanManagePage(x.TabId)))
                 {
                     return GetForbiddenResponse();
                 }
 
-                SaveNonLocalizedPages(pages);
+                SaveNonLocalizedPages(request);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
@@ -908,7 +908,7 @@ namespace Dnn.PersonaBar.Pages.Services
             return dnnPages;
         }
 
-        private void SaveNonLocalizedPages(DnnPagesDto pages)
+        private void SaveNonLocalizedPages(DnnPagesRequest pages)
         {
             // check all pages
             foreach (var page in pages.Pages)
@@ -969,21 +969,20 @@ namespace Dnn.PersonaBar.Pages.Services
                         {
                             if (moduleToCopyFrom.ModuleId > 0)
                             {
-                                var miCopy = moduleController.GetTabModule(moduleToCopyFrom.ModuleId);
+                                var toTabInfo = GetLocalizedTab(moduleToCopyFrom.TabId, moduleDto.CultureCode);
+                                var miCopy = moduleController.GetTabModule(moduleToCopyFrom.TabModuleId);
                                 if (miCopy.DefaultLanguageGuid == Null.NullGuid)
                                 {
                                     // default
-                                    var toTabInfo = _tabController.GetTab(moduleToCopyFrom.TabId, PortalSettings.PortalId, false);
                                     DisableTabVersioningAndWorkflow(toTabInfo);
                                     moduleController.CopyModule(miCopy, toTabInfo, Null.NullString, true);
                                     EnableTabVersioningAndWorkflow(toTabInfo);
-                                    var localizedModule = moduleController.GetModule(miCopy.ModuleID, moduleToCopyFrom.TabId, false);
+                                    var localizedModule = moduleController.GetModule(miCopy.ModuleID, toTabInfo.TabID, false);
                                     moduleController.LocalizeModule(localizedModule, LocaleController.Instance.GetLocale(localizedModule.CultureCode));
                                 }
                                 else
                                 {
                                     var miCopyDefault = moduleController.GetModuleByUniqueID(miCopy.DefaultLanguageGuid);
-                                    var toTabInfo = _tabController.GetTab(moduleToCopyFrom.TabId, PortalSettings.PortalId, false);
                                     moduleController.CopyModule(miCopyDefault, toTabInfo, Null.NullString, true);
                                 }
 
@@ -1154,6 +1153,24 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             var layout = _themesController.GetThemeFile(PortalSettings.Current, layoutSrc, ThemeType.Skin);
             return layout?.ThemeName;
+        }
+
+        private TabInfo GetLocalizedTab(int tabId, string cultureCode)
+        {
+            var currentTab = _tabController.GetTab(tabId, PortalId, false);
+
+            //Unique id of default language page
+            var uniqueId = currentTab.DefaultLanguageGuid != Null.NullGuid
+                ? currentTab.DefaultLanguageGuid
+                : currentTab.UniqueId;
+
+            // get all non admin pages and not deleted
+            var allPages = _tabController.GetTabsByPortal(PortalId).Values.Where(
+                t => t.TabID != PortalSettings.AdminTabId && (Null.IsNull(t.ParentId) || t.ParentId != PortalSettings.AdminTabId));
+            allPages = allPages.Where(t => t.IsDeleted == false);
+            // get all localized pages of current page
+            var tabInfos = allPages as IList<TabInfo> ?? allPages.ToList();
+            return tabInfos.SingleOrDefault(t => (t.DefaultLanguageGuid == uniqueId || t.UniqueId == uniqueId) && t.CultureCode == cultureCode);
         }
     }
 }

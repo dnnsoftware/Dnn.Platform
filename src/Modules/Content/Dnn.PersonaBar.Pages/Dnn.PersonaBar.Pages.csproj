@@ -148,8 +148,10 @@
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
     <Compile Include="Services\Dto\DnnModuleDto.cs" />
+    <Compile Include="Services\Dto\DnnModulesRequest.cs" />
     <Compile Include="Services\Dto\DnnModulesDto.cs" />
     <Compile Include="Services\Dto\DnnPageDto.cs" />
+    <Compile Include="Services\Dto\DnnPagesRequest.cs" />
     <Compile Include="Services\Dto\DnnPagesDto.cs" />
     <Compile Include="Services\Dto\ModuleItem.cs" />
     <Compile Include="Services\Dto\PageFolderTemplate.cs" />
