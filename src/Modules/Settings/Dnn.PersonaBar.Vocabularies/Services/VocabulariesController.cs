@@ -153,7 +153,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             {
                 if (_controller.IsSystemVocabulary(vocabularyId))
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = "CannotDeleteSystemVocabulary" });
                 }
                 _controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -244,7 +244,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             {
                 if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 if (termDto.ParentTermId != Null.NullInteger)
@@ -279,7 +279,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             {
                 if (_controller.IsSystemVocabulary(termDto.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 var term = new Term(termDto.Name, termDto.Description, termDto.VocabularyId);
                 term.TermId = termDto.TermId;
@@ -316,7 +316,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 var term = _controller.GetTerm(termId);
                 if (_controller.IsSystemVocabulary(term.VocabularyId) && !UserInfo.IsSuperUser)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, Message = AuthFailureMessage });
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, new { Success = true, Message = AuthFailureMessage });
                 }
                 _controller.DeleteTerm(term);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
