@@ -151,6 +151,7 @@
     <Compile Include="Commands\Scheduler\SetTask.cs" />
     <Compile Include="Commands\Scheduler\GetTask.cs" />
     <Compile Include="Commands\User\DeleteUser.cs" />
+    <Compile Include="Commands\User\SetUser.cs" />
     <Compile Include="Commands\User\GetUser.cs" />
     <Compile Include="Commands\User\ListUsers.cs" />
     <Compile Include="Commands\User\NewUser.cs" />
@@ -208,6 +209,7 @@
     <Content Include="admin\personaBar\help\get-portal.html" />
     <Content Include="admin\personaBar\help\get-role.html" />
     <Content Include="admin\personaBar\help\get-task.html" />
+    <Content Include="admin\personaBar\help\set-user.html" />
     <Content Include="admin\personaBar\help\get-user.html" />
     <Content Include="admin\personaBar\help\goto.html" />
     <Content Include="admin\personaBar\help\index.html" />
