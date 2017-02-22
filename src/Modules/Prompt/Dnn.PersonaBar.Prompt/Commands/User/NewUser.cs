@@ -142,6 +142,10 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
                         sbErrors.AppendFormat("--{0} must either be True or False, you specified '{1}'; ", FLAG_APPROVED, Flag(FLAG_APPROVED));
                     }
                 }
+                else
+                {
+                    Approved = bApproved;
+                }
 
                 if (Approved && (!Notify.HasValue || Notify == true) && PortalSettings.UserRegistration == (int)PortalRegistrationType.VerifiedRegistration)
                 {
@@ -178,6 +182,11 @@ namespace Dnn.PersonaBar.Prompt.Commands.User
             var statusCreate = UserController.CreateUser(ref ui);
             if (statusCreate == DotNetNuke.Security.Membership.UserCreateStatus.Success)
             {
+                if (PortalSettings.UserRegistration == (int)PortalRegistrationType.VerifiedRegistration)
+                {
+                    // ensure user placed in appropriate roles
+                    UserController.ApproveUser(ui);
+                }
                 ui.Profile.InitialiseProfile(PortalId);
                 ui.Profile.SetProfileProperty("FirstName", FirstName);
                 ui.Profile.SetProfileProperty("LastName", LastName);
