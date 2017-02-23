@@ -56,6 +56,9 @@
         .dnnSearchBox > input[type="text"].dnnPlaceholder {
             color: #666;
         }
+    .dnnSearchBox > input[type="text"] + a + label {
+        display: none;
+    }
 
     .dnnSearchBox > a.dnnSearchBoxClearText
      {

@@ -5,7 +5,7 @@
     color: #999; /*padding: 8px; 	border: 1px solid #c9c9c9;*/
     display: inline-block !important;
 }
-.selectize-control.show-checkbox .items .item {
+.selectize-control.show-checkbox .items .item, .selectize-control.show-checkbox .items label {
     display: none;
 }
 .selectize-control.show-checkbox .items .summary {

@@ -943,6 +943,8 @@ a.dnnFormHelp {
     background: url(../../../../../images/helpI-icn-grey.png) no-repeat left 2px;
     padding: 0 !important;
     margin: 0 !important;
+    text-indent: 100px;
+    overflow: hidden;
 }
 
 .dnnLabel {
@@ -1052,7 +1054,7 @@ td > .dnnLabel {
     border-bottom: 7px solid #000;
 }
 
-a.pinHelp {
+span.pinHelp {
     display: block;
     position: absolute;
     left: 7px;
@@ -1063,8 +1065,8 @@ a.pinHelp {
     background: url(../../../../../images/pin-icn.png) no-repeat 0 0;
 }
 
-    .ui-draggable a.pinHelp,
-    a.pinHelp:hover {
+    .ui-draggable span.pinHelp,
+    span.pinHelp:hover {
         opacity: 1;
     }
 
@@ -1371,7 +1373,7 @@ div.dnnTagsInput span.tag {
         color: #444;
     }
 
-    div.dnnTagsInput span.tag a {
+    div.dnnTagsInput span.tag span.remove {
         display: inline-block;
         width: 8px;
         height: 8px;
@@ -1379,7 +1381,9 @@ div.dnnTagsInput span.tag {
         background: transparent url(../../../../../images/dnnTagClose.png) no-repeat;
         background-position: center;
     }
-
+div.dnnTagsInput > div > label {
+    display: none;
+}
 div.dnnTagsInput > div > input,
 div.dnnTagsInput > div > input:focus {
     border: none;

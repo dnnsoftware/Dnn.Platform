@@ -503,7 +503,7 @@
     };
 
     $.fn.dnnTooltip.defaultOptions = {
-        pinSelector: 'a.pinHelp',
+        pinSelector: 'span.pinHelp',
         helpSelector: '.dnnFormHelpContent',
         pinnedClass: 'dnnTooltipPinned'
     };
@@ -1823,7 +1823,7 @@
             if (value != '' && skipTag != true) {
                 $('<span>').addClass('tag').append(
                     $('<span>').text(value).append('&nbsp;&nbsp;'),
-                    $('<a>', {
+                    $('<span class="remove">', {
                         href: '#',
                         title: 'Removing tag'
                     }).click(function () {
@@ -1902,6 +1902,7 @@
         };
         var settings = jQuery.extend({
             interactive: true,
+            addLabel: 'Add',
             defaultText: 'Add a tag',
             minChars: 0,
             maxChars: 50,
@@ -1969,6 +1970,7 @@
             markup += '<div id="' + id + '_addTag">';
 
             if (settings.interactive) {
+                markup += '<label for="' + id + '_tag">' + settings.addLabel + '</label>';
                 markup += '<input id="' + id + '_tag" value="" data-default="' + settings.defaultText + '" autocomplete="off" />';
             }
 

@@ -133,9 +133,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
             spanTag.Attributes.Add("class", "dnnHelpText");
             spanTag.SetInnerText(helpText);
 
-            aTag = new TagBuilder("a");
+            aTag = new TagBuilder("span");
             aTag.Attributes.Add("class", "pinHelp");
-            aTag.Attributes.Add("href", "#");
 
             toolTipContentTag.InnerHtml = spanTag.ToString();
             toolTipContentTag.InnerHtml += aTag.ToString();

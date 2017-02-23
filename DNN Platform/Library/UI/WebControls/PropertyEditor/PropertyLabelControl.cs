@@ -274,9 +274,8 @@ namespace DotNetNuke.UI.WebControls
             lblHelp = new Label { ID = ID + "_lblHelp", EnableViewState = false };
             pnlHelp.Controls.Add(lblHelp);
 
-            var aHelpPin = new HyperLink();
+            var aHelpPin = new Label();
             aHelpPin.CssClass = "pinHelp";
-            aHelpPin.Attributes.Add("href", "#");
             pnlHelp.Controls.Add(aHelpPin);
 
             //Controls.Add(label);

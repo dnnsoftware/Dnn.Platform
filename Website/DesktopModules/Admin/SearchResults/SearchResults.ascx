@@ -5,7 +5,7 @@
 
 <div class="dnnSearchBoxPanel">
     <a href="javascript:void(0)" class="dnnSearchResultAdvancedTip"><%= LinkAdvancedTipText %></a>
-    <input type="text" id="dnnSearchResult_dnnSearchBox" value="<%= HttpUtility.HtmlAttributeEncode(SearchTerm) %>" />
+    <input type="hidden" id="dnnSearchResult_dnnSearchBox" value="<%= HttpUtility.HtmlAttributeEncode(SearchTerm) %>" />
     <div id="dnnSearchResult-advancedTipContainer">
         <%= AdvancedSearchHintText %>
     </div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="dnnRight">
-        <span class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></span>
+        <label for="<%=ResultsPerPageList.ClientID %>" class="dnnSearchResultCountPerPage"><%= ResultsPerPageText %></label>
         <dnn:DnnComboBox ID="ResultsPerPageList" runat="server" OnClientSelectedIndexChanged="dnnSearchResultPageSizeChanged">
             <Items>
                 <asp:ListItem runat="Server" Text="15" Value="15" />
@@ -55,11 +55,11 @@
 
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
+        <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" ControlName="advancedTagsCtrl" />
         <input type="text" id="advancedTagsCtrl" value="<%= HttpUtility.HtmlAttributeEncode(TagsQuery) %>" />
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />
+        <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" ControlName="AdvnacedDatesList" />
         <dnn:DnnComboBox ID="AdvnacedDatesList" runat="server">
             <Items>
                 <asp:ListItem runat="Server" ResourceKey="optionAll.Text" Value="" Selected="True" />
@@ -72,11 +72,11 @@
         </dnn:DnnComboBox>
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedScope" runat="server" ResourceKey="lblAdvancedScope" />
+        <dnn:Label ID="lblAdvancedScope" runat="server" ResourceKey="lblAdvancedScope" ControlName="SearchScopeList" />
         <dnn:DnnComboBox ID="SearchScopeList" runat="server" CheckBoxes="true" Width="235px" OnClientSelectedIndexChanged="dnnSearchResultScopeItemChanged" />
     </div>
     <div class="dnnFormItem">
-        <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
+        <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" ControlName="dnnSearchResultAdvancedExactSearch" />
         <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" <%= CheckedExactSearch %> />
     </div>
     <ul class="dnnActions dnnClear">
