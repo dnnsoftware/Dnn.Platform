@@ -329,7 +329,8 @@ class DnnPrompt {
         // build header
         var out = '<table class="dnn-prompt-tbl"><thead><tr>';
         for (let col in columns) {
-            out += `<th>${columns[col]}</th>`;
+           let lbl = this.formatLabel(columns[col]);
+           out += `<th>${lbl}</th>`;
         }
         out += '</tr></thead><tbody>';
 
@@ -369,18 +370,26 @@ class DnnPrompt {
         let out = '<table class="dnn-prompt-tbl">'
         for (let fld in columns) {
             let fldName = columns[fld];
+            let lbl = this.formatLabel(fldName);
             let fldVal = data[fldName] ? data[fldName] : '';
             let cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
             if (cmd) {
-                out += `<tr><td class="dnn-prompt-lbl">${fldName}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td></tr>`;
+                out += `<tr><td class="dnn-prompt-lbl">${lbl}</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="${cmd}" title="${cmd.replace(/'/g, '&quot;')}">${fldVal}</a></td></tr>`;
             } else {
-                out += `<tr><td class="dnn-prompt-lbl">${fldName}</td><td>:</td><td>${fldVal}</td></tr>`;
+                out += `<tr><td class="dnn-prompt-lbl">${lbl}</td><td>:</td><td>${fldVal}</td></tr>`;
             }
 
         }
         out += '</table>';
         return out;
+    }
+
+    formatLabel(input) {
+        // format camelcase and remove Is from labels
+        let output = input.replace(/^(Is)(.+)/i, "$2");
+        output = output.match(/[A-Z][a-z]+/g).join(" "); // rudimentary but should handle normal Camelcase
+        return output;
     }
 
     renderHelp(tokens) {

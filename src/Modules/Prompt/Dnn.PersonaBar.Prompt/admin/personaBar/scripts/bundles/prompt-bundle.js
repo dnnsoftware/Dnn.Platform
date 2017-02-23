@@ -621,7 +621,8 @@ var DnnPrompt = function () {
             // build header
             var out = '<table class="dnn-prompt-tbl"><thead><tr>';
             for (var col in columns) {
-                out += '<th>' + columns[col] + '</th>';
+                var lbl = this.formatLabel(columns[col]);
+                out += '<th>' + lbl + '</th>';
             }
             out += '</tr></thead><tbody>';
 
@@ -662,17 +663,26 @@ var DnnPrompt = function () {
             var out = '<table class="dnn-prompt-tbl">';
             for (var fld in columns) {
                 var fldName = columns[fld];
+                var lbl = this.formatLabel(fldName);
                 var fldVal = data[fldName] ? data[fldName] : '';
                 var cmd = data["__" + fldName] ? data["__" + fldName] : null;
 
                 if (cmd) {
-                    out += '<tr><td class="dnn-prompt-lbl">' + fldName + '</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td></tr>';
+                    out += '<tr><td class="dnn-prompt-lbl">' + lbl + '</td><td>:</td><td><a href="#" class="dnn-prompt-cmd-insert" data-cmd="' + cmd + '" title="' + cmd.replace(/'/g, '&quot;') + '">' + fldVal + '</a></td></tr>';
                 } else {
-                    out += '<tr><td class="dnn-prompt-lbl">' + fldName + '</td><td>:</td><td>' + fldVal + '</td></tr>';
+                    out += '<tr><td class="dnn-prompt-lbl">' + lbl + '</td><td>:</td><td>' + fldVal + '</td></tr>';
                 }
             }
             out += '</table>';
             return out;
+        }
+    }, {
+        key: 'formatLabel',
+        value: function formatLabel(input) {
+            // format camelcase and remove Is from labels
+            var output = input.replace(/^(Is)(.+)/i, "$2");
+            output = output.match(/[A-Z][a-z]+/g).join(" "); // rudimentary but should handle normal Camelcase
+            return output;
         }
     }, {
         key: 'renderHelp',
