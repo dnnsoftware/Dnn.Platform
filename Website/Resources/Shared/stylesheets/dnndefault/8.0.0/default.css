@@ -1063,6 +1063,7 @@ span.pinHelp {
     height: 15px;
     opacity: 0.5;
     background: url(../../../../../images/pin-icn.png) no-repeat 0 0;
+    cursor: pointer;
 }
 
     .ui-draggable span.pinHelp,
