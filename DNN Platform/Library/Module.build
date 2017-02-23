@@ -53,6 +53,7 @@
     <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll" DestinationFolder="$(WebsiteBinPath)" />
