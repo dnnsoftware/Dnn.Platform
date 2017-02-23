@@ -51,6 +51,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
         private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         #region Extensions Lists API
 
@@ -709,8 +710,14 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var tabsWithModule = TabController.Instance.GetTabsByPackageID(portalId, packageId, false);
-                var allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
+                var pid = portalId == -2 ? Null.NullInteger : portalId;
+                if (!UserInfo.IsSuperUser && pid != PortalId)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                var tabsWithModule = TabController.Instance.GetTabsByPackageID(pid, packageId, false);
+                var allPortalTabs = TabController.Instance.GetTabsByPortal(pid);
                 IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
                 foreach (var tab in allPortalTabs.Values)
