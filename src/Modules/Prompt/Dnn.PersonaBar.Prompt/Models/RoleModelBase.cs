@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public bool IsPublic { get; set; }
         public bool AutoAssign { get; set; }
         public int UserCount { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public string ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
 
         #region Constructors
@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public RoleModelBase(RoleInfo role)
         {
             AutoAssign = role.AutoAssignment;
-            ModifiedDate = role.LastModifiedOnDate;
+            ModifiedDate = role.LastModifiedOnDate.ToShortDateString();
             ModifiedBy = role.LastModifiedByUserID;
             IsPublic = role.IsPublic;
             RoleGroupId = role.RoleGroupID;

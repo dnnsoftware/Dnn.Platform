@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Prompt.Models
     public class RoleModel : RoleModelBase
     {
         public string Description;
-        public DateTime CreatedDate;
+        public string CreatedDate;
         public int CreatedBy;
 
         #region Constructors
@@ -15,7 +15,8 @@ namespace Dnn.PersonaBar.Prompt.Models
         }
         public RoleModel(RoleInfo role): base(role)
         {
-            CreatedDate = role.CreatedOnDate;
+            ModifiedDate = role.LastModifiedOnDate.ToString("F");
+            CreatedDate = role.CreatedOnDate.ToString("F");
             CreatedBy = role.CreatedByUserID;
             Description = role.Description;
         }
