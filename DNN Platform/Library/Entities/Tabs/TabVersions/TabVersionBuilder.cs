@@ -704,6 +704,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private int RollBackDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
+            if (moduleInfo == null) return Null.NullInteger;
 
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController == null) return Null.NullInteger;
