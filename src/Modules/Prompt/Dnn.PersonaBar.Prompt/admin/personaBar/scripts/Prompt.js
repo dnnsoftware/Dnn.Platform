@@ -1,7 +1,7 @@
 define(['jquery'], function ($) {
     return {
         init: function (wrapper, util, params, callback) {
-            const vsn = "1.0.0.0";
+            const vsn = "v0.3-alpha";
             $.ajax({
                 dataType: "script",
                 cache: true,
