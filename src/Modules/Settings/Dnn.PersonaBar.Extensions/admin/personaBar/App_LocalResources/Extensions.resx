@@ -1205,4 +1205,16 @@ Common issues with bad installation files:
   <data name="BackToExtensions.Text" xml:space="preserve">
     <value>Back To Extensions</value>
   </data>
+  <data name="ModuleUsageTitle.Text" xml:space="preserve">
+    <value>Module Usage for {0}</value>
+  </data>
+  <data name="PagesFromSite.Text" xml:space="preserve">
+    <value>Showing Pages from Site:</value>
+  </data>
+  <data name="ModuleUsageDetail.Text" xml:space="preserve">
+    <value>This module is used on {0} {1} page(s):</value>
+  </data>
+  <data name="NoModuleUsageDetail.Text" xml:space="preserve">
+    <value>This module does not exist on any {0} pages.</value>
+  </data>
 </root>

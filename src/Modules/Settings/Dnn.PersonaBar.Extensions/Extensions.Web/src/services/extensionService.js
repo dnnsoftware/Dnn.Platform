@@ -153,6 +153,18 @@ class ExtensionService {
         const sf = this.getServiceFramework("Extensions");
         sf.get("GetAllPackagesListExceptLangPacks", {}, callback, errorCallback);
     }
+    getPackageUsageFilter(callback) {
+        const sf = this.getServiceFramework("Extensions");
+        sf.get("GetPackageUsageFilter", {}, callback);
+    }
+    getPackageUsage(portalId, packageId, callback) {
+        const sf = this.getServiceFramework("Extensions");
+        const parameters = {
+            portalId: portalId,
+            packageId: packageId
+        };
+        sf.get("GetPackageUsage?" + serializeQueryStringParameters(parameters), {}, callback);
+    }
 }
 const extensionService = new ExtensionService();
 export default extensionService;

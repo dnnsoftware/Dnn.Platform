@@ -28,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Authentication;
@@ -49,7 +50,7 @@ namespace Dnn.PersonaBar.Extensions.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
         private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
-        private static readonly string[] SpecialModuleFolders = new[] {"mvc"};
+        private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
 
         #region Extensions Lists API
 
@@ -166,37 +167,37 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-//        /// GET: api/Extensions/GetPackageUsage
-//        /// <summary>
-//        /// Gets package usage
-//        /// </summary>
-//        /// <param name="portalId"></param>
-//        /// <param name="packageId"></param>
-//        /// <returns>List of tabs using a specific package</returns>
-//        [HttpGet]
-//        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
-//        {
-//            try
-//            {
-//                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
-//                {
-//                    TabLink = _controller.GetFormattedTabLink(portalId, t)
-//                }).ToList();
-//
-//                var response = new
-//                {
-//                    Success = true,
-//                    Results = packages,
-//                    TotalResults = packages.Count
-//                };
-//                return Request.CreateResponse(HttpStatusCode.OK, response);
-//            }
-//            catch (Exception ex)
-//            {
-//                Logger.Error(ex);
-//                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-//            }
-//        }
+        //        /// GET: api/Extensions/GetPackageUsage
+        //        /// <summary>
+        //        /// Gets package usage
+        //        /// </summary>
+        //        /// <param name="portalId"></param>
+        //        /// <param name="packageId"></param>
+        //        /// <returns>List of tabs using a specific package</returns>
+        //        [HttpGet]
+        //        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
+        //        {
+        //            try
+        //            {
+        //                var packages = _controller.GetPackageUsage(portalId, packageId).Select(t => new
+        //                {
+        //                    TabLink = _controller.GetFormattedTabLink(portalId, t)
+        //                }).ToList();
+        //
+        //                var response = new
+        //                {
+        //                    Success = true,
+        //                    Results = packages,
+        //                    TotalResults = packages.Count
+        //                };
+        //                return Request.CreateResponse(HttpStatusCode.OK, response);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Logger.Error(ex);
+        //                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+        //            }
+        //        }
 
         [HttpGet]
         [RequireHost]
@@ -412,12 +413,12 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                     if (!string.IsNullOrEmpty(error))
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, new {Success = false, Error = error});
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Error = error });
                     }
                 }
 
                 var packageDetail = packageEditor?.GetPackageDetail(packageSettings.PortalId, package) ?? new PackageInfoDto(packageSettings.PortalId, package);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageDetail = packageDetail});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, PackageDetail = packageDetail });
             }
             catch (Exception ex)
             {
@@ -469,7 +470,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var installer = new Installer(package, Globals.ApplicationMapPath);
                 installer.UnInstall(deletePackage.DeleteFiles);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -664,6 +665,77 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        [HttpGet]
+        public HttpResponseMessage GetPackageUsageFilter()
+        {
+            try
+            {
+                var portals = UserInfo.IsSuperUser ? PortalController.Instance.GetPortals().OfType<PortalInfo>() : PortalController.Instance.GetPortals().OfType<PortalInfo>().Where(p => p.PortalID == PortalId);
+                var availablePortals = portals.Select(v => new
+                {
+                    v.PortalID,
+                    v.PortalName,
+                    IsCurrentPortal = PortalId == v.PortalID
+                }).ToList();
+
+                if (UserInfo.IsSuperUser)
+                {
+                    availablePortals.Insert(0, new
+                    {
+                        PortalID = -2,
+                        PortalName = "Host",
+                        IsCurrentPortal = false
+                    });
+                }
+
+                var response = new
+                {
+                    Success = true,
+                    Results = availablePortals,
+                    TotalResults = availablePortals.Count
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetPackageUsage(int portalId, int packageId)
+        {
+            try
+            {
+                var tabsWithModule = TabController.Instance.GetTabsByPackageID(portalId, packageId, false);
+                var allPortalTabs = TabController.Instance.GetTabsByPortal(portalId);
+                IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
+
+                foreach (var tab in allPortalTabs.Values)
+                {
+                    AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
+                }
+                var response = new
+                {
+                    Success = true,
+                    Results = tabsInOrder.Select(t => new
+                    {
+                        TabUrl = GetFormattedLink(t.Value)
+                    }).ToList(),
+                    TotalResults = tabsInOrder.Count
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         #endregion
 
         #region Create Extension API
@@ -675,7 +747,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var package = new PackageInfo {PortalID = packageSettings.PortalId};
+                var package = new PackageInfo { PortalID = packageSettings.PortalId };
                 var type = package.GetType();
                 foreach (var kvp in packageSettings.Settings.Where(kpv => kpv.Value != null))
                 {
@@ -768,7 +840,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         }
                         break;
                     case PackageTypes.SkinObject:
-                        var skinControl = new SkinControlInfo {PackageID = package.PackageID, ControlKey = package.Name};
+                        var skinControl = new SkinControlInfo { PackageID = package.PackageID, ControlKey = package.Name };
                         SkinControlController.SaveSkinControl(skinControl);
                         break;
                 }
@@ -785,7 +857,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, PackageId = package.PackageID});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, PackageId = package.PackageID });
             }
             catch (Exception ex)
             {
@@ -927,7 +999,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)
             {
@@ -1215,7 +1287,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 var logs = writer.Log.Logs.Select(l => l.ToString()).ToList();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, Logs = logs});
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Logs = logs });
             }
             catch (Exception ex)
             {
@@ -1393,7 +1465,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             if (!string.IsNullOrEmpty(ownerFolder))
             {
                 return Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\" + ownerFolder)
-                    .Select(folder => new ModuleFolderDto {Path = folder, IsSpecial = false})
+                    .Select(folder => new ModuleFolderDto { Path = folder, IsSpecial = false })
                     .ToList();
             }
 
@@ -1409,7 +1481,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             if (!File.Exists(filePath))
             {
-                return new ParseResultDto() {Success = false, Message = "FileNotFound"};
+                return new ParseResultDto() { Success = false, Message = "FileNotFound" };
             }
 
             using (var stream = new FileStream(filePath, FileMode.Open))
@@ -1422,7 +1494,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             if (!File.Exists(filePath))
             {
-                return new InstallResultDto() {Success = false, Message = "FileNotFound"};
+                return new InstallResultDto() { Success = false, Message = "FileNotFound" };
             }
 
             using (var stream = new FileStream(filePath, FileMode.Open))
@@ -1465,7 +1537,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             var stream = FileWrapper.Instance.OpenRead(packagePath);
             var fileName = Path.GetFileNameWithoutExtension(packagePath) + ".zip";
 
-            var result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new StreamContent(stream)};
+            var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(stream) };
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = fileName;
@@ -1479,6 +1551,47 @@ namespace Dnn.PersonaBar.Extensions.Services
             {
                 return objStreamReader.ReadToEnd();
             }
+        }
+
+        private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
+        {
+            if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID)) return;
+            tabsInOrder.Add(currentTab.TabID, currentTab);
+            foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
+            {
+                AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
+            }
+        }
+
+        protected string GetFormattedLink(object dataItem)
+        {
+            var returnValue = new StringBuilder();
+            if ((dataItem is TabInfo))
+            {
+                var tab = (TabInfo)dataItem;
+                {
+                    var index = 0;
+                    TabController.Instance.PopulateBreadCrumbs(ref tab);
+                    foreach (TabInfo t in tab.BreadCrumbs)
+                    {
+                        if (index > 0)
+                        {
+                            returnValue.Append(" > ");
+                        }
+                        if ((tab.BreadCrumbs.Count - 1 == index))
+                        {
+                            var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList()[0].HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                        }
+                        else
+                        {
+                            returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                        }
+                        index = index + 1;
+                    }
+                }
+            }
+            return returnValue.ToString();
         }
 
         #endregion

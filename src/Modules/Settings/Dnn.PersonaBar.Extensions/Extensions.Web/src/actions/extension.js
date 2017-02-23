@@ -353,6 +353,32 @@ const extensionActions = {
                 }
             }, errorCallback);
         };
+    },
+    GetPackageUsageFilter(callback) {
+        return (dispatch) => {
+            ExtensionService.getPackageUsageFilter(payload => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PACKAGE_USAGE_FILTER,
+                    payload: payload
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback); 
+        };
+    },
+    getPackageUsage(portalId, packageId, callback) {
+        return (dispatch) => {
+            ExtensionService.getPackageUsage(portalId, packageId, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PACKAGE_USAGE,
+                    payload: data
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
     }
 };
 

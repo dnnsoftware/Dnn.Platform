@@ -155,6 +155,14 @@ export default function extension(state = {
             return { ...state,
                 availablePackages: [...state.availablePackages.slice(0, action.payload.updatedPackageIndex), action.payload.updatedPackage, ...state.availablePackages.slice(action.payload.updatedPackageIndex + 1)]
             };
+        case ActionTypes.RETRIEVED_PACKAGE_USAGE_FILTER:
+            return { ...state,
+                usageFilter: action.payload.Results
+            };
+        case ActionTypes.RETRIEVED_PACKAGE_USAGE:
+            return { ...state,
+                tabUrls: action.payload.Results
+            };
         default:
             return state;
     }
