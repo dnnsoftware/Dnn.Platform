@@ -187,7 +187,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             avatar.ImageUrl = GetAvatarUrl(userInfo);
                             avatar.NavigateUrl = enhancedRegisterLink.NavigateUrl;
-                            avatar.ToolTip = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
+                            avatar.ToolTip = avatar.Text = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
                             avatarGroup.Visible = true;                            
                         }
                         else
