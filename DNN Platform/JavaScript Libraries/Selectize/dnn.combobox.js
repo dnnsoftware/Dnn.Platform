@@ -75,7 +75,7 @@
 
             var buildSummary = function() {
                 this.$control.find('input.summary').remove();
-                var $summary = $('<input id="' + id + '" class="summary" aria-label="Summary" />').prependTo(this.$control);
+                var $summary = $('<input class="summary" aria-label="Summary" />').prependTo(this.$control);
 
                 var options = this.get_options().length;
                 var items = this.items.length;
