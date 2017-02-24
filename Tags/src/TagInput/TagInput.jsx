@@ -10,9 +10,6 @@ const KEY = {
 export default class TagInput extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            newTagText: ""
-        };
         this.onKeyDown = this.onKeyDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
@@ -40,16 +37,17 @@ export default class TagInput extends Component {
         this.node = null;
     }
 
-    onSelectSuggestion(suggestion) {
-        if (typeof (this.props.onSelectSuggestion) === "function") {
-            this.props.onSelectSuggestion(suggestion);
+    addTag(tag){
+        if (typeof (this.props.addTag) === "function") {
+            this.props.addTag(tag);    
         }
-        this.props.onClose();
+        
+        const inputField = this.refs.inputField;
+        setTimeout(() => { inputField.focus(); }, 0);
     }
 
     onChange(event) {
-        this.setState({ newTagText: event.target.value });
-        if (this.props.autoSuggest && typeof(this.props.onAddingNewTagChange) === "function") {
+        if (typeof(this.props.onAddingNewTagChange) === "function") {
             this.props.onAddingNewTagChange(event.target.value);
         }
     }
@@ -58,80 +56,61 @@ export default class TagInput extends Component {
         this.props.onClose();
     }
 
+    removeLastTag() {
+        if (this.props.newTagText) {
+            return;
+        }
+        this.props.removeLastTag();
+    }
+
     onKeyDown(event) {
         switch (event.keyCode) {
             case KEY.ENTER:
             case KEY.COMMA:
             case KEY.TAB:
-                if (this.state.newTagText) {
+                if (this.props.newTagText) {
                     event.preventDefault();
-                    this.props.addTag(this.state.newTagText);
-                    this.close();
+                    this.addTag(this.props.newTagText);
                 }
                 break;
             case KEY.BACKSPACE:
+                this.removeLastTag();
                 break;
         }
-    }
-
-    getSuggestions() {
-        if (!this.props.autoSuggest) {
-            return null;
-        }
-
-        return (<div className="suggestions">
-            {this.props.suggestions.map((suggestion, index) => {
-                return <div className="suggestion" key={index} onClick={this.onSelectSuggestion.bind(this, suggestion.value)}>{suggestion.value}</div>;
-            })}
-            </div>);
     }
 
     focusInput() {
         this.refs.inputField.focus();
     }
 
-    onSuggestionsBlur() {
-        const {autoSuggest, suggestions} = this.props;
-        if (autoSuggest && suggestions.length == 0) {
-            return;
-        }
-
-        this.close();
-    }
-    
     render() {
-        const {opts, autoSuggest} = this.props;
+        const {opts} = this.props;
 
         return (
-            <div className="input-container" 
+            <div
                 ref={node => this.node = node}>
-                <input
-                    ref="inputField"
-                    type="text"
-                    placeholder={__("Add tags")}
-                    onKeyDown={this.onKeyDown.bind(this)}
-                    value={this.state.newTagText}
-                    
-                    onChange={this.onChange.bind(this)}
-                    {...opts}
-                />
-                {autoSuggest &&
-                    this.getSuggestions()}
+                <div className="input-container">
+                    <input
+                        ref="inputField"
+                        type="text"
+                        placeholder={__("Add tags")}
+                        onKeyDown={this.onKeyDown.bind(this)}
+                        value={this.props.newTagText}
+                        
+                        onChange={this.onChange.bind(this)}
+                        {...opts}
+                    />
+                </div>
             </div>
         );
     }
 }
 
 TagInput.propTypes = {
+    newTagText: PropTypes.string.isRequired,
     onAddingNewTagChange: PropTypes.func.isRequired,
     opts: PropTypes.object.isRequired,
-    autoSuggest: PropTypes.bool,
-    suggestions: PropTypes.array,
-    onSelectSuggestion: PropTypes.func.isRequired,
     addTag: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired
-};
-
-TagInput.defaultProps = {
-    suggestions: []
+    onClose: PropTypes.func.isRequired,
+    removeLastTag: PropTypes.func.isRequired
 };

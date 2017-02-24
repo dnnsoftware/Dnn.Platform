@@ -1,6 +1,6 @@
 {
   "name": "dnn-tags",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Tags Input",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "eslint-plugin-spellcheck": "0.0.7",  
     "less": "2.6.1",
     "less-loader": "2.2.2",  
+    "react-custom-scrollbars": "4.0.2",
     "style-loader": "0.13.0",
     "webpack": "1.13.1"
   }

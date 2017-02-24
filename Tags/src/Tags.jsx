@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import Tag from "./Tag";
+import Suggestions from "./Suggestions";
 import TagInput from "./TagInput/TagInput";
 import "./style.less";
 
@@ -7,6 +8,7 @@ class Tags extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            newTagText: "",
             tags: this.props.tags || [],
             inputWidth: 13,
             isInputVisible: false,
@@ -19,16 +21,18 @@ class Tags extends Component {
     }
 
     internalAddTag(newTagText) {
+        if (newTagText) {
+            this.props.onNewTag(newTagText);
+        }
+
+        this.setState({ newTagText: "" });
         if (this.props.tags.find(t=> t === newTagText)) {
-            this.setState({ newTagText: "" });
             return;
         }
 
-        this.setState({ isInputVisible: false });
         const tags = this.props.tags.slice();
         tags.push(newTagText.trim());         
         this.updateTags(tags);
-        this.props.onNewTag(newTagText);
     }
 
     removeTagByName(tag) {
@@ -71,11 +75,10 @@ class Tags extends Component {
         }
         this.internalAddTag(tag);
     }
-
-    onSelectSuggestion(suggestion) {
-        this.internalAddTag(suggestion);
+    onAddingNewTagChange(value) {
+        this.setState({newTagText:value});
+        this.props.onAddingNewTagChange(value);
     }
-    
     render() {
         let Tags;
         if (typeof this.props.renderItem === "function") {
@@ -104,20 +107,26 @@ class Tags extends Component {
                 onClick={this.onClick.bind(this) }
                 ref="tagsField" style={this.props.style}>
                 <div type="text">
-                    {!this.state.isInputVisible && Tags.length > 0 && Tags}
+                    {Tags.length > 0 && Tags}
                     {!this.state.isInputVisible && Tags.length == 0 &&
                         <div className="typing-text">{typingText}</div>}
                     {this.state.isInputVisible && 
                     <TagInput
                         value={this.state.newTagText}
                         addTag={this.addTag.bind(this)}
-                        onAddingNewTagChange={this.props.onAddingNewTagChange}
+                        onAddingNewTagChange={this.onAddingNewTagChange.bind(this)}
                         onClose={this.onInputClose.bind(this) }
                         opts={opts}
-                        autoSuggest={this.props.autoSuggest}
+                        newTagText={this.state.newTagText}
                         suggestions={this.props.suggestions}
-                        onSelectSuggestion={this.onSelectSuggestion.bind(this)} />}
-                </div>                
+                        removeLastTag={this.removeLastTag.bind(this)} />}
+                </div>
+                {this.props.autoSuggest && this.props.suggestions.length > 0 &&
+                <div className="suggestions-container">
+                    <Suggestions suggestions={this.props.suggestions} 
+                        onSelectSuggestion={this.addTag.bind(this)}
+                        onScrollUpdate={this.props.onScrollUpdate} />
+                </div>}
             </div>
         );
     }
@@ -132,7 +141,8 @@ Tags.propTypes = {
     onAddingNewTagChange: PropTypes.func,
     onNewTag: PropTypes.func,
     suggestions: PropTypes.arrayOf(PropTypes.object),
-    renderItem: PropTypes.func
+    renderItem: PropTypes.func,
+    onScrollUpdate: PropTypes.func
 };
 
 Tags.defaultProps = {
