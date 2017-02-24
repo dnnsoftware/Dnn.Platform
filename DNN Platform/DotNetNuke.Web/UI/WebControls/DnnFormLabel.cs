@@ -86,9 +86,10 @@ namespace DotNetNuke.Web.UI.WebControls
 				var helpLabel = new Label { ID = "Text", CssClass="dnnHelpText", Text = LocalizeString(ToolTipKey) };
 				panel.Controls.Add(helpLabel);
 
-				var pinLink = new HyperLink {CssClass = "pinHelp"};
-			    pinLink.Attributes.Add("href", "#");
-				panel.Controls.Add(pinLink);
+				var pinLink = new HyperLink { CssClass = "pinHelp"};
+                pinLink.Attributes.Add("href", "#");
+                pinLink.Attributes.Add("aria-label", "Pin");
+                panel.Controls.Add(pinLink);
 
                 JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);

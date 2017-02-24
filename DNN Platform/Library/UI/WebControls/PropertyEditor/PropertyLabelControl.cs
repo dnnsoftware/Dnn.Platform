@@ -277,6 +277,7 @@ namespace DotNetNuke.UI.WebControls
             var aHelpPin = new HyperLink();
             aHelpPin.CssClass = "pinHelp";
             aHelpPin.Attributes.Add("href", "#");
+            aHelpPin.Attributes.Add("aria-label", "Pin");
             pnlHelp.Controls.Add(aHelpPin);
 
             //Controls.Add(label);

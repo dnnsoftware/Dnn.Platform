@@ -45,6 +45,15 @@
             }
         }
 
+        var originalInitialize = opts.onInitialize;
+        opts.onInitialize = function () {
+            this.$control_input.attr('aria-label', "Search");
+
+            if (typeof originalInitialize === "function") {
+                originalInitialize.apply(this, arguments);
+            }
+        };
+
         if (opts.maxOptions <= 0) {
             opts.maxOptions = undefined;
         }
@@ -66,7 +75,7 @@
 
             var buildSummary = function() {
                 this.$control.find('input.summary').remove();
-                var $summary = $('<input class="summary" />').prependTo(this.$control);
+                var $summary = $('<input class="summary" aria-label="Summary" />').prependTo(this.$control);
 
                 var options = this.get_options().length;
                 var items = this.items.length;
