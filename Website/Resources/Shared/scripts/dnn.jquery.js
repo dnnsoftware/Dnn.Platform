@@ -89,6 +89,7 @@
 
             if (defaultAction || opts.isButton) {
                 $dnnDialog = $("<div class='dnnDialog'></div>").html(opts.text).dialog(opts);
+                $dnnDialog.parent().find('.ui-dialog-titlebar-close').html('Close');
                 $this.click(function (e, isTrigger) {
                     if (isTrigger) {
                         return true;
@@ -134,6 +135,7 @@
                         }
                         ]
                     });
+
                     $dnnDialog.dialog('open');
                     e.preventDefault();
                     return false;

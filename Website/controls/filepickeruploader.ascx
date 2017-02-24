@@ -12,7 +12,7 @@
             <span><%= FileLabel  %></span><dnn:DnnFileDropDownList runat="server" ID="FilesComboBox" />
         </div>
         <div class="dnnFormItem">
-            <input type="file" name="postfile" multiple style="display: none" class="normalFileUpload" />
+            <input type="file" name="postfile" multiple style="display: none" class="normalFileUpload" aria-label="Upload" />
             <input type="button" name="uploadFileButton" value="<%= UploadFileLabel  %>"/>
             <dnn:DnnFileUpload runat="server" ID="FileUploadControl"></dnn:DnnFileUpload>
         </div>

@@ -84,7 +84,8 @@ namespace DotNetNuke.UI.WebControls
 		private void RenderModeButtons(HtmlTextWriter writer)
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-			if (DisplayMode == "English")
+			writer.AddAttribute("aria-label", "Mode");
+            if (DisplayMode == "English")
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
 			}
@@ -98,7 +99,8 @@ namespace DotNetNuke.UI.WebControls
 			//writer.Write("<br />");
 
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-			if (DisplayMode == "Native")
+            writer.AddAttribute("aria-label", "Mode");
+            if (DisplayMode == "Native")
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
 			}

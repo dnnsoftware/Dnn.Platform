@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.WebControls
             if (!DesignMode)
             {
                 cmdHelp = new LinkButton { ID = ID + "_cmdHelp", CssClass = "dnnFormHelp", CausesValidation = false, EnableViewState = false, TabIndex = -1 };
-
+                cmdHelp.Attributes.Add("aria-label", "Help");
                 lblLabel = new Label { ID = ID + "_label", EnableViewState = false };
 
                 label.Controls.Add(lblLabel);

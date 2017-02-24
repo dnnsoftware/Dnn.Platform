@@ -41,7 +41,7 @@
       
                                     <div class="subscriptions-page-size">
                                         <%= LocalizeString("ItemsPerPage") %>
-                                        <select data-bind="value: pageSize, event: { change: function () { changePage(0) } }">
+                                        <select data-bind="value: pageSize, event: { change: function () { changePage(0) } }" aria-label="Page Size">
                                             <option value="10" selected="selected">10</option>
                                             <option value="25">25</option>
                                             <option value="50">50</option>                                        
