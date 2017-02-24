@@ -663,10 +663,10 @@
 &amp;lt;h3&amp;gt;[Tab.Home.SocialLinks.Title]&amp;lt;/h3&amp;gt;
 
 &amp;lt;ul class=&amp;quot;row&amp;quot;&amp;gt;
- &amp;lt;li class=&amp;quot;facebook col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Facebook.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;linkedin col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.LinkedIn.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;twitter col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Twitter.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
- &amp;lt;li class=&amp;quot;youtube col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Youtube.Link]&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;nbsp;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;facebook col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Facebook.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Facebook.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;linkedin col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.LinkedIn.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.LinkedIn.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;twitter col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Twitter.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Twitter.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+ &amp;lt;li class=&amp;quot;youtube col-xs-4&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;[Tab.Home.SocialLinks.Youtube.Link]&amp;quot; target=&amp;quot;_blank&amp;quot; aria-label=&amp;quot;[Tab.Home.SocialLinks.Youtube.Text]&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
 &amp;lt;/ul&amp;gt;
 &amp;lt;/div&amp;gt;
 

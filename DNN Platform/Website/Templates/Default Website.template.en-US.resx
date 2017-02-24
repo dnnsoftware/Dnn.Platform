@@ -1015,4 +1015,16 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
   </data>
+  <data name="Tab.Home.SocialLinks.Facebook.Text" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.LinkedIn.Text" xml:space="preserve">
+    <value>LinkedIn</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Twitter.Text" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="Tab.Home.SocialLinks.Youtube.Text" xml:space="preserve">
+    <value>Youtube</value>
+  </data>
 </root>

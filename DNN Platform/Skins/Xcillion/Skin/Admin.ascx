@@ -43,8 +43,7 @@
                         <dnn:SEARCH ID="dnnSearch" runat="server" ShowSite="false" ShowWeb="false" EnableTheming="true" Submit="Search" CssClass="SearchButton" />
                     </div>
                     <%-- search action for Search function on small devices --%>
-                    <a href="#" id="search-action">
-                    </a>
+                    <a id="search-action" aria-label="Search"></a>
                     <div id="login" class="pull-right">
                         <dnn:LOGIN ID="dnnLogin" CssClass="LoginLink" runat="server" LegacyMode="false" />
                         <dnn:USER ID="dnnUser" runat="server" LegacyMode="false" /> 
