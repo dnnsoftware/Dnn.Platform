@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import Tag from "./Tag";
 import Suggestions from "./Suggestions";
-import TagInput from "./TagInput/TagInput";
+import TagInput from "./TagInput";
 import "./style.less";
 
 class Tags extends Component {
@@ -65,7 +65,7 @@ class Tags extends Component {
             return;
         }
 
-        this.setState({ isInputVisible: false });
+        this.setState({ isInputVisible: false,  newTagText: ""});
         this.props.onAddingNewTagChange("");
     }
 
@@ -108,7 +108,7 @@ class Tags extends Component {
                 ref="tagsField" style={this.props.style}>
                 <div type="text">
                     {Tags.length > 0 && Tags}
-                    {!this.state.isInputVisible && Tags.length == 0 &&
+                    {!this.state.isInputVisible && Tags.length === 0 &&
                         <div className="typing-text">{typingText}</div>}
                     {this.state.isInputVisible && 
                     <TagInput
@@ -117,11 +117,12 @@ class Tags extends Component {
                         onAddingNewTagChange={this.onAddingNewTagChange.bind(this)}
                         onClose={this.onInputClose.bind(this) }
                         opts={opts}
+                        onFocus={this.props.onInputFocus}
                         newTagText={this.state.newTagText}
                         suggestions={this.props.suggestions}
                         removeLastTag={this.removeLastTag.bind(this)} />}
                 </div>
-                {this.props.autoSuggest && this.props.suggestions.length > 0 &&
+                {this.state.isInputVisible && this.props.autoSuggest && this.props.suggestions.length > 0 &&
                 <div className="suggestions-container">
                     <Suggestions suggestions={this.props.suggestions} 
                         onSelectSuggestion={this.addTag.bind(this)}
@@ -142,7 +143,9 @@ Tags.propTypes = {
     onNewTag: PropTypes.func,
     suggestions: PropTypes.arrayOf(PropTypes.object),
     renderItem: PropTypes.func,
-    onScrollUpdate: PropTypes.func
+    onScrollUpdate: PropTypes.func,
+    onInputFocus: PropTypes.func,
+    onInputBlur: PropTypes.func
 };
 
 Tags.defaultProps = {
