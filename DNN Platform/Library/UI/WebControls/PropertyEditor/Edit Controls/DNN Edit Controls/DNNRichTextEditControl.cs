@@ -120,6 +120,7 @@ namespace DotNetNuke.UI.WebControls
                                              Height = ControlStyle.Height.IsEmpty ? new Unit(250) : ControlStyle.Height,
                                              TextMode = TextBoxMode.MultiLine
                                          };
+                    _defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
 
                 Controls.Clear();

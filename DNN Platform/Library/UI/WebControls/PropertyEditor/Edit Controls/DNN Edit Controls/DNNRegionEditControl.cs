@@ -197,7 +197,8 @@ namespace DotNetNuke.UI.WebControls
 			Regions.ControlStyle.CopyFrom(ControlStyle);
 			Regions.ID = ID + "_dropdown";
 			Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
-			Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
+			Regions.Attributes.Add("aria-label", "Region");
+            Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
 			Controls.Add(Regions);
 
 			Region.ControlStyle.CopyFrom(ControlStyle);
