@@ -71,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		    outerLabel.Controls.Add(label);			
 
             var link = new LinkButton { ID = "Link", CssClass = "dnnFormHelp", TabIndex = -1 };
+            link.Attributes.Add("aria-label", "Help");
             Controls.Add(link);
 			
 			if (!String.IsNullOrEmpty(toolTipText))
