@@ -2631,6 +2631,7 @@
                 url: url,
                 beforeSend: service.setModuleHeaders,
                 dropZone: $('#' + settings.dropZoneId),
+                pasteZone: null,
                 replaceFileInput: false,
                 submit: function (e, data) {
                     data.formData = { folder: settings.folder, filter: settings.fileFilter, overwrite: 'true' };
