@@ -47,14 +47,7 @@
 
         var originalInitialize = opts.onInitialize;
         opts.onInitialize = function () {
-            this.$input.each(function() {
-                var $this = $(this);
-                var id = $this.attr('id');
-                if (id && $('label[for="' + id + '"]').length === 0) {
-                    var $label = $('<label />').attr('for', id).attr('style', 'display: none').html('Default Label');
-                    $this.before($label);
-                }
-            });
+            this.$control_input.attr('aria-label', "Search");
 
             if (typeof originalInitialize === "function") {
                 originalInitialize.apply(this, arguments);
@@ -81,10 +74,8 @@
             }, opts.render);
 
             var buildSummary = function() {
-                this.$control.find('input.summary, label').remove();
-                var id = this.$control_input.attr('id') + "_summary";
-                $('<label for="' + id + '" >Default</label>').prependTo(this.$control);
-                var $summary = $('<input id="' + id + '" class="summary" />').prependTo(this.$control);
+                this.$control.find('input.summary').remove();
+                var $summary = $('<input id="' + id + '" class="summary" aria-label="Summary" />').prependTo(this.$control);
 
                 var options = this.get_options().length;
                 var items = this.items.length;

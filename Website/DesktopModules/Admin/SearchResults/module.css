@@ -79,7 +79,7 @@
                 color: #333;
             }
 
-    .dnnSearchResultPanel > .dnnRight > label.dnnSearchResultCountPerPage {
+    .dnnSearchResultPanel > .dnnRight > span.dnnSearchResultCountPerPage {
         display: inline-block;
         margin: 10px 5px 0 0;
         color: #666;

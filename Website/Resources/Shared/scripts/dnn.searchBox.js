@@ -40,9 +40,9 @@
             if (advancedEnabled) {
                 markup += '<span class="dnnSearchBox_advanced_query" /><a class="dnnSearchBoxClearAdvanced"></a>';
             }
-            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" />' +
+            markup += '<input id="' + this.options.id + '_input" type="text" autocomplete="off" aria-label="Search" />' +
                             '<a class="dnnSearchBoxClearText"></a>';
-            markup += '<label for="' + this.options.id + '_input">Default</label>';
+
             markup += '<a class="dnnSearchButton"></a>';
 
             if (advancedEnabled) {
