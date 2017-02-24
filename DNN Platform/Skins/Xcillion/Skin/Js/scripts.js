@@ -58,7 +58,7 @@ $(document).ready(function () {
             if (!($(event.target).parents(".search").length)) {
                 searchActive == true && (searchToggleIcon.click())
             }
-        }), searchInput.keyup(buttonUp), $("span#search-action").click(function () {
+        }), searchInput.keyup(buttonUp), $("a#search-action").click(function () {
             $("#search-top").toggleClass("active")
         })
 });
