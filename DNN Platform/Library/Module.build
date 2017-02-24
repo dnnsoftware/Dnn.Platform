@@ -17,7 +17,7 @@
     <ItemGroup>
       <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
-      <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
+      <RadSpell Include="..\Components\Telerik\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
