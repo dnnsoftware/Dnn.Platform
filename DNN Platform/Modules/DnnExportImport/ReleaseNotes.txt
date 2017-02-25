@@ -1,0 +1,13 @@
+﻿<h3>DigitalAssets</h3>
+<p class="Contributor">
+	DotNetNuke Corporation <br />
+	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
+	<a href=http://www.dnnsoftware.com>http://www.dnnsoftware.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the DigitalAssets</h3>
+	<p class="Owner">
+		<b>Version 09.01.00</b><br /><br />
+	</p>
+</div>
