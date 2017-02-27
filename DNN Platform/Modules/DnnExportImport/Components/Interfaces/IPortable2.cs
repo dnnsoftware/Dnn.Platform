@@ -42,6 +42,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         /// Whether the import operation can be rolled back if interrupted/cancelled while in progress.
         /// </summary>
-        bool CanRoolback { get; }
+        bool CanRollback { get; }
     }
 }
