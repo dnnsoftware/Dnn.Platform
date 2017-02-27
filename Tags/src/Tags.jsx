@@ -11,8 +11,7 @@ class Tags extends Component {
             newTagText: "",
             tags: this.props.tags || [],
             inputWidth: 13,
-            isInputVisible: false,
-            tagInputActive: false
+            isInputVisible: false
         };
     }
 
@@ -92,7 +91,7 @@ class Tags extends Component {
         }
         
         let className = "dnn-uicommon-tags-field-input" +
-            (this.state.tagInputActive ? " active " : "");
+            (this.state.isInputVisible ? " active " : "");
 
         const opts = {};
 
