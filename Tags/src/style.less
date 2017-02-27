@@ -53,8 +53,8 @@
 
         .suggestions {
             position: absolute;
-            left: -10px;
-            top: -10px;
+            left: -11px;
+            top: -9px;
             padding: 10px;
             list-style-type: none;
             width: 100%;
@@ -63,7 +63,6 @@
             .suggestion {
                 color: gray !important;
                 padding: 9px;
-                border: 1px solid #E3E3E3;
                 background-color: #FFFFFF;
                 cursor: pointer;
                 margin: 0px;
@@ -71,8 +70,8 @@
                 height: 15px;
 
                 &:hover {
-                    background-color: #F0F0F0;
-                    color: #1E88EC !important;
+                    background-color: @gallery;
+                    color: @curiousBlue !important;
                 }
             }
         }
@@ -94,7 +93,7 @@
         position: relative;
         padding: 3px 18px 3px 7px !important;
         margin: 7px 0 5px 9px !important;
-        background: @curiousBlue;
+        background: @seagull;
         border: none;
         color: white;
         font-size: 11px;

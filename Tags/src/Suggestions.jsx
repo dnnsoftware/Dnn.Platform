@@ -3,7 +3,9 @@ import {Scrollbars} from "react-custom-scrollbars";
 
 const style = {
     list: {
-        height: 268
+        height: 170,
+        border: "1px solid #E3E3E3",
+        backgroundColor: "#FFFFFF"
     }
 };
 
