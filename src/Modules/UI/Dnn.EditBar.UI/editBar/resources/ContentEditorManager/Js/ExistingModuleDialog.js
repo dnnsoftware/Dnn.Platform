@@ -211,7 +211,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                                             '<input type="hidden" id="AddExistingModule_FolderPicker_State" />' +
                                         '</li>' +
                                         '<li>' +
-                                            '<input type="checkbox" class="copy-module" /><label>Make a copy</label>' +
+                                            '<input type="checkbox" class="copy-module" aria-label="Copy" /><label>Make a copy</label>' +
                                         '</li>' +
                                         '<div class="clear"></div>' +
                                     '</ul>' +
@@ -332,7 +332,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
 
         _getItemTemplate: function () {
             return '<li class="dnnModuleItem" data-moduleid="[$ModuleID$]">' +
-                '<span class="icon [$ModuleName|css]"><img src="[$ModuleImage$]" /></span>' +
+                '<span class="icon [$ModuleName|css]"><img src="[$ModuleImage$]" alt="[$ModuleName$]" /></span>' +
                 '<span class="title {0}">[$ModuleName$]</span>' +
                 '</li>';
         },

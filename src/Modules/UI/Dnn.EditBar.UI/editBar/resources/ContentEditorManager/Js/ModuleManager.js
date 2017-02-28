@@ -76,7 +76,7 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
         },
 
         _generateLayout: function () {
-            return $('<a href="#" class="addModuleHandler"><span></span></a><a href="#" class="addExistingModuleHandler"><span></span></a>');
+            return $('<a href="#" class="addModuleHandler" aria-label="Add Module"><span></span></a><a href="#" class="addExistingModuleHandler" aria-label="Add Existing Module"><span></span></a>');
         },
         
         _injectVisualEffects: function () {
