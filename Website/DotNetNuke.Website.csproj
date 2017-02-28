@@ -593,6 +593,13 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.designer.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.cs">
       <DependentUpon>EditExtension.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -769,6 +776,7 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
+    <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
