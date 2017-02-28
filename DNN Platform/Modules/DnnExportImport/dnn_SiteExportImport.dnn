@@ -41,11 +41,6 @@
             </assembly>
           </assemblies>
         </component>
-        <component type="File">
-          <files>
-            <basePath>DesktopModules/SiteExportImport</basePath>
-          </files>
-        </component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/SiteExportImport</basePath>
@@ -58,7 +53,7 @@
           <scripts>
             <basePath>DesktopModules/SiteExportImport</basePath>
             <script type="Install">
-              <path>Providers/DataProviders/SqlDataProvider</path>
+              <path>Providers\DataProviders\SqlDataProvider</path>
               <name>09.01.00.SqlDataProvider</name>
               <version>09.01.00</version>
             </script>

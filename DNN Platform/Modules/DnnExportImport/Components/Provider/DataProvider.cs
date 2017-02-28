@@ -48,22 +48,22 @@ namespace Dnn.ExportImport.Components.Provider
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
             return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>(
-                "ImportExportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
+                "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
         }
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("ImportExportJobs_UpdateStatus", jobStatus);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobStatus);
         }
 
         public IDataReader GetFirstActiveJob()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ImportExportJobs_FirstActive");
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
         }
 
         public IDataReader GetAllJobs(int? portalId, int? pageSize, int?pageIndex)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ImportExportJobs_GetAll", portalId, pageSize, pageIndex);
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
         }
 
         #endregion

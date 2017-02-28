@@ -85,8 +85,8 @@ namespace Dnn.ExportImport.Components.Scheduler
                 if (job != null)
                 {
                     var lastSuccessFulDateTime = GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
-                    Logger.Trace("Export/Import: Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                    ScheduleHistoryItem.AddLogNote($"Starting. Content change start time <b>{lastSuccessFulDateTime:g}</b>");
+                    Logger.Trace("Export/Import: Starting. Start time " + lastSuccessFulDateTime.ToString("g"));
+                    ScheduleHistoryItem.AddLogNote($"Starting. Start time <b>{lastSuccessFulDateTime:g}</b>");
                     ExportImportResult result;
                     var engine = new ExportImportEngine();
                     switch (job.JobType)

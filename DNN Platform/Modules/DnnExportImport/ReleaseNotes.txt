@@ -1,4 +1,4 @@
-﻿<h3>DigitalAssets</h3>
+﻿<h3>SiteExportImport</h3>
 <p class="Contributor">
 	DotNetNuke Corporation <br />
 	<a href="mailto:support@dnnsoftware.com">support@dnnsoftware.com</a><br />
@@ -6,7 +6,7 @@
 </p>
 <hr/>
 <div class="License">
-	<h3>About the DigitalAssets</h3>
+	<h3>About the SiteExportImport</h3>
 	<p class="Owner">
 		<b>Version 09.01.00</b><br /><br />
 	</p>

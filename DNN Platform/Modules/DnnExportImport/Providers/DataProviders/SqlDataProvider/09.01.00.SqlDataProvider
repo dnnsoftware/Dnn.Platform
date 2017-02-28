@@ -41,8 +41,8 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]', N'U') IS NULL
-	CREATE TABLE {databaseOwner}[{objectQualifier}ImportExportJobs](
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobs](
 		[JobId]       int IDENTITY(1,1) NOT NULL,
 		[PortalId]    int NOT NULL,
 		[JobType]     int NOT NULL,
@@ -54,36 +54,36 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]', N'U') IS NUL
 		[ExportFile]  nvarchar(100),
 		[JobObject]   nvarchar(max),
 
-		CONSTRAINT [PK_{objectQualifier}ImportExportJobs] PRIMARY KEY ([JobId])
+		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId])
 	)
 GO
 
 IF NOT EXISTS ( SELECT 1 FROM sys.indexes
-				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
-				AND name = N'IX_{objectQualifier}ImportExportJobs_JobType')
-	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_JobType]
-		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([JobType])
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_JobType')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_JobType]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([JobType])
 GO
 
 IF NOT EXISTS ( SELECT 1 FROM sys.indexes
-				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
-				AND name = N'IX_{objectQualifier}ImportExportJobs_JobStatus')
-	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_JobStatus]
-		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([JobStatus])
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_JobStatus')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_JobStatus]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([JobStatus])
 GO
 
 IF NOT EXISTS ( SELECT 1 FROM sys.indexes
-				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
-				AND name = N'IX_{objectQualifier}ImportExportJobs_CreatedOn')
-	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_CreatedOn]
-		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([CreatedOn])
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_CreatedOn')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_CreatedOn]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOn])
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_Add]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_Add]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_Add]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 	@PortalId int,
 	@JobType int,
 	@CreatedBy int,
@@ -92,7 +92,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_Add]
 AS
 BEGIN
 	INSERT INTO
-		{databaseOwner}[{objectQualifier}ImportExportJobs]
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
 		(
 			PortalId,
 			JobType,
@@ -113,18 +113,18 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
 	@JobId int,
 	@JobStatus int,
 	@CompletedOn datetime = NULL
 AS
 BEGIN
 	UPDATE
-		{databaseOwner}[{objectQualifier}ImportExportJobs]
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
 	SET
 		JobStatus = @JobStatus,
 		UpdatedOn = GetUtcDate(),
@@ -134,21 +134,21 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 AS
 BEGIN
 	SELECT
 		TOP(1) *
 	FROM
-		{databaseOwner}[{objectQualifier}ImportExportJobs]
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
 	WHERE
 		JobStatus in (0, 1) -- 0=Submitted, 1=InProgress
 	ORDER BY
@@ -156,7 +156,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
     @PortalID  int = -1, -- might be null or -1 for all portals
     @PageSize  int = 10, -- number of items per page
     @PageIndex int =  0  -- page number starting at 0
@@ -170,7 +170,7 @@ BEGIN
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY JobId ASC) AS RowNum, *
 		FROM
-			{databaseOwner}[{objectQualifier}ImportExportJobs]
+			{databaseOwner}[{objectQualifier}ExportImportJobs]
 		WHERE
 			PortalID = @PortalID
 	)
