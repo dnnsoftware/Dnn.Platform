@@ -19,17 +19,19 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Provider;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
     public class ImportController
     {
-        public string QueueOperation(ImportDto importDto)
+        public int QueueOperation(int userId, ImportDto importDto)
         {
-            //TODO: implement this
-            return Guid.NewGuid().ToString("N");
+            var dataObject = JsonConvert.SerializeObject(importDto);
+            return DataProvider.Instance().AddNewJob(importDto.PortalId,
+                userId, JobType.Import, importDto.FileName, dataObject);
         }
     }
 }

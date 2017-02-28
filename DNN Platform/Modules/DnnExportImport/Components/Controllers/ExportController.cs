@@ -21,15 +21,19 @@
 
 using System;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Provider;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
     public class ExportController
     {
-        public string QueueOperation(ExportDto exportDto)
+        public int QueueOperation(int userId, ExportDto exportDto)
         {
-            //TODO: implement this
-            return Guid.NewGuid().ToString("N");
+            var exportFileName = DateTime.UtcNow.ToString(Constants.ExportDateFormat);
+            var dataObject = JsonConvert.SerializeObject(exportDto);
+            return DataProvider.Instance().AddNewJob(
+                exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);
         }
     }
 }

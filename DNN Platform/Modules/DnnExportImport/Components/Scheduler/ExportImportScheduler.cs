@@ -22,11 +22,12 @@
 using System;
 using System.Data.SqlTypes;
 using System.Globalization;
+using Dnn.ExportImport.Components.Controllers;
+using Dnn.ExportImport.Components.Engines;
+using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
 
 namespace Dnn.ExportImport.Components.Scheduler
 {
@@ -37,9 +38,8 @@ namespace Dnn.ExportImport.Components.Scheduler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
-        private const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-        private const string LastSuccessExportName = "EXPORT_LastSuccessOn";
-        private const string LastIndexKeyFormat = "{0}_{1}";
+        private const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        private const string LastJobSuccessDate = "EXPORT_LastSuccessOn";
 
         private static DateTime FixSqlDateTime(DateTime datim)
         {
@@ -50,21 +50,14 @@ namespace Dnn.ExportImport.Components.Scheduler
             return datim;
         }
 
-        private DateTimeOffset GetLastSuccessfulIndexingDateTime(int scheduleId)
+        private static DateTimeOffset GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
-            var lastValue = settings[LastSuccessExportName] as string;
-
-            if (string.IsNullOrEmpty(lastValue))
-            {
-                // try to fallback to old location where this was stored
-                var name = string.Format(LastIndexKeyFormat, LastSuccessExportName, scheduleId);
-                lastValue = HostController.Instance.GetString(name, Null.NullString);
-            }
+            var lastValue = settings[LastJobSuccessDate] as string;
 
             DateTime lastTime;
             if (!string.IsNullOrEmpty(lastValue) &&
-                DateTime.TryParseExact(lastValue, ReindexDateTimeFormat, null, DateTimeStyles.None, out lastTime))
+                DateTime.TryParseExact(lastValue, JobRunDateTimeFormat, null, DateTimeStyles.None, out lastTime))
             {
                 // retrieves the date as UTC but returns to caller as local
                 lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
@@ -78,40 +71,54 @@ namespace Dnn.ExportImport.Components.Scheduler
             return lastTime;
         }
 
-        public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
+        private static void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
-                LastSuccessExportName, startDateLocal.ToUniversalTime().ToString(ReindexDateTimeFormat));
+                LastJobSuccessDate, startDateLocal.ToUniversalTime().ToString(JobRunDateTimeFormat));
         }
 
         public override void DoWork()
         {
             try
             {
-                var lastSuccessFulDateTime = GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
-                Logger.Trace("Export/Import: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                ScheduleHistoryItem.AddLogNote($"Starting. Content change start time <b>{lastSuccessFulDateTime:g}</b>");
+                var job = EntitiesController.Instance.GetFirstActiveJob();
+                if (job != null)
+                {
+                    var lastSuccessFulDateTime = GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
+                    Logger.Trace("Export/Import: Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
+                    ScheduleHistoryItem.AddLogNote($"Starting. Content change start time <b>{lastSuccessFulDateTime:g}</b>");
+                    ExportImportResult result;
+                    var engine = new ExportImportEngine();
+                    switch (job.JobType)
+                    {
+                        case JobType.Export:
+                            result = engine.Export(job, ScheduleHistoryItem);
+                            break;
+                        case JobType.Import:
+                            result = engine.Import(job, ScheduleHistoryItem);
+                            break;
+                        default:
+                            throw new Exception("Unknown job type: " + job.JobType);
+                    }
 
-                //var engine = new ExportImportEngine(ScheduleHistoryItem, lastSuccessFulDateTime);
-                //try
-                //{
-                //    //TODO:
-                //    throw new NotImplementedException();
-                //}
-                //finally
-                //{
-                //    engine.Commit();
-                //}
+                    if (result != null)
+                    {
+                        ScheduleHistoryItem.Succeeded = true;
+                        EntitiesController.Instance.UpdateJobStatus(job);
+                        var msg = job.JobType == JobType.Export
+                            ? "<br/><b>EXPORT Successful</b>"
+                            : "<br/><b>IMPORT Successful</b>";
+                        ScheduleHistoryItem.AddLogNote(msg + "<br/>Status: " + job.JobStatus);
+                    }
 
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote("<br/><b>Exporting Successful</b>");
-                Logger.Trace("Export/Import: Site Crawler - Indexing Successful");
+                    Logger.Trace("Export/Import: Job Completed");
+                }
                 SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)
             {
                 ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
+                ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
                 Errored(ref ex);
                 if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
                 {

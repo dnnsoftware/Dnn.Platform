@@ -1,1 +1,184 @@
-﻿--TODO: add SQL code here
+﻿-- DNN-9447: Import/Export feature
+
+IF NOT EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
+				WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+	(   [TypeFullName]
+	  , [TimeLapse]
+	  , [TimeLapseMeasurement]
+	  , [RetryTimeLapse]
+	  , [RetryTimeLapseMeasurement]
+	  , [RetainHistoryNum]
+	  , [AttachToEvent]
+	  , [CatchUpEnabled]
+	  , [Enabled]
+	  , [ObjectDependencies]
+	  , [Servers]
+	  , [CreatedByUserID]
+	  , [CreatedOnDate]
+	  , [LastModifiedByUserID]
+	  , [LastModifiedOnDate]
+	  , [FriendlyName]
+	) VALUES
+    (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
+	  , 5
+	  , N'm'
+	  , 1
+	  , N'm'
+	  , 100
+	  , N''
+	  , 0
+	  , 1
+	  , N''
+	  , NULL
+	  , NULL
+	  , NULL
+	  , NULL
+	  , NULL
+	  , N'Site Import/Export'
+	 )
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ImportExportJobs](
+		[JobId]       int IDENTITY(1,1) NOT NULL,
+		[PortalId]    int NOT NULL,
+		[JobType]     int NOT NULL,
+		[JobStatus]   int NOT NULL DEFAULT 0,
+		[CreatedBy]   int NOT NULL,
+		[CreatedOn]   DateTime NOT NULL DEFAULT GetUtcDate(),
+		[UpdatedOn]   DateTime NOT NULL DEFAULT GetUtcDate(),
+		[CompletedOn] DateTime,  -- UTC date
+		[ExportFile]  nvarchar(100),
+		[JobObject]   nvarchar(max),
+
+		CONSTRAINT [PK_{objectQualifier}ImportExportJobs] PRIMARY KEY ([JobId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
+				AND name = N'IX_{objectQualifier}ImportExportJobs_JobType')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_JobType]
+		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([JobType])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
+				AND name = N'IX_{objectQualifier}ImportExportJobs_JobStatus')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_JobStatus]
+		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([JobStatus])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ImportExportJobs]')
+				AND name = N'IX_{objectQualifier}ImportExportJobs_CreatedOn')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ImportExportJobs_CreatedOn]
+		ON {databaseOwner}[{objectQualifier}ImportExportJobs] ([CreatedOn])
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_Add]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_Add]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_Add]
+	@PortalId int,
+	@JobType int,
+	@CreatedBy int,
+	@ExportFile nvarchar(100),
+	@JobObject nvarchar(max)
+AS
+BEGIN
+	INSERT INTO
+		{databaseOwner}[{objectQualifier}ImportExportJobs]
+		(
+			PortalId,
+			JobType,
+			CreatedBy,
+			ExportFile,
+			JobObject
+		)
+	VALUES
+		(
+			IsNull(@PortalId, -1),
+			@JobType,
+			IsNull(@CreatedBy, -1),
+			@ExportFile,
+			@JobObject
+		)
+
+	SELECT @@IDENTITY
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_UpdateStatus]
+	@JobId int,
+	@JobStatus int,
+	@CompletedOn datetime = NULL
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ImportExportJobs]
+	SET
+		JobStatus = @JobStatus,
+		UpdatedOn = GetUtcDate(),
+		CompletedOn = @CompletedOn
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_FirstActive]
+AS
+BEGIN
+	SELECT
+		TOP(1) *
+	FROM
+		{databaseOwner}[{objectQualifier}ImportExportJobs]
+	WHERE
+		JobStatus in (0, 1) -- 0=Submitted, 1=InProgress
+	ORDER BY
+		JobId ASC
+END
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ImportExportJobs_GetAll]
+    @PortalID  int = -1, -- might be null or -1 for all portals
+    @PageSize  int = 10, -- number of items per page
+    @PageIndex int =  0  -- page number starting at 0
+AS
+BEGIN
+	SET @PortalId = IsNull(@PortalId, -1)
+	SET @PageSize = IsNull(@PortalId, 10)
+	SET @PageIndex = IsNull(@PageIndex, 0)
+
+	; WITH AllJobs AS (
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY JobId ASC) AS RowNum, *
+		FROM
+			{databaseOwner}[{objectQualifier}ImportExportJobs]
+		WHERE
+			PortalID = @PortalID
+	)
+	SELECT
+		TOP(@PageSize) *
+	FROM
+		AllJobs
+	WHERE
+		RowNum >= (@PageIndex * @PageSize + 1)
+END
+GO

@@ -22,22 +22,31 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Dnn.ExportImport.Components;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
-using DotNetNuke.Security;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.ExportImport.Services
 {
-    [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Host)]
+    [DnnAuthorize(StaticRoles = "Administrators")]
     public class ExportImportController : DnnApiController
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Export(ExportDto exportDto)
         {
+            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+            if (!isHostUser && exportDto.PortalId != PortalSettings.PortalId)
+            {
+                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+            }
+
             var controller = new ExportController();
-            var operationId = controller.QueueOperation(exportDto);
+            var operationId = controller.QueueOperation(PortalSettings.UserId, exportDto);
             return Request.CreateResponse(HttpStatusCode.OK, new { refId = operationId });
         }
 
@@ -45,14 +54,21 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Import(ImportDto importDto)
         {
+            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+            if (!isHostUser && importDto.PortalId != PortalSettings.PortalId)
+            {
+                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+            }
+
             var controller = new ImportController();
-            var operationId = controller.QueueOperation(importDto);
+            var operationId = controller.QueueOperation(PortalSettings.UserId, importDto);
             return Request.CreateResponse(HttpStatusCode.OK, new { refId = operationId });
         }
 
         [HttpGet]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage ProgressStatus(string operationRef)
+        public HttpResponseMessage ProgressStatus(int operationId)
         {
             //TODO: implement
             return Request.CreateResponse(HttpStatusCode.OK, "10%");
