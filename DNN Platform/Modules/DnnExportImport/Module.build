@@ -3,7 +3,7 @@
   <Import Project="..\..\..\DNN_Platform.build" />
   <PropertyGroup>
     <Extension>zip</Extension>
-    <DNNFileName>dnn_DigitalAssets</DNNFileName>
+    <DNNFileName>dnn_SiteExportImport</DNNFileName>
     <PackageName>DNNCE_SiteExportImport</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\SiteExportImport</ModuleFolderName>
   </PropertyGroup>
