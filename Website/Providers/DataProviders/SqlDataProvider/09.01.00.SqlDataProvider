@@ -90,6 +90,22 @@ BEGIN
 END
 GO
 
+UPDATE {databaseOwner}[{objectQualifier}PackageTypes] SET EditorControlSrc = NULL
+    WHERE PackageType IN (
+                            'Container',
+                            'CoreLanguagePack',
+                            'ExtensionLanguagePack',
+                            'JavaScript_Library',
+                            'Module',
+                            'Skin',
+                            'SkinObject'
+                         ) 
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PackageTypes] SET EditorControlSrc = N'DesktopModules/Admin/EditExtension/AuthenticationEditor.ascx'
+    WHERE PackageType =  'Auth_System'
+GO
+
 /***** DNN-9145: cleanup database. *****/
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%DotNetNuke.Modules.Taxonomy%'
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%Dnn.Modules.SkinManagement%'
