@@ -162,7 +162,7 @@
 	                $wrap.dialog("widget").find('.ui-dialog-buttonpane').empty();
                     $div.appendTo($wrap.dialog("widget").find('.ui-dialog-buttonpane'));
                     $wrap.dialog("widget").find('.ui-dialog-buttonset').hide();
-					
+                    $wrap.dialog("widget").find('.ui-dialog-titlebar-close').attr('aria-label', 'Close');
 					if(typeof $.ui.dialog.prototype.options.open == 'function')
 					    $.ui.dialog.prototype.options.open();
                 },

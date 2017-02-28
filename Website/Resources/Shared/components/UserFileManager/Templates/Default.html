@@ -4,7 +4,7 @@
         <p>
           <span data-bind="foreach: currentBreadcrumbs">
             <span data-bind="visible: id === $root.chosenFolderId(), text: name"></span>
-            <span data-bind="visible: id !== $root.chosenFolderId()"><a href="#" data-bind="text: name, click: $root.goToFolder"></a> /</span>
+            <span data-bind="visible: id !== $root.chosenFolderId()"><a href="#" data-bind="text: name, click: $root.goToFolder" aria-label="Visit"></a> /</span>
           </span>
         </p>
         </div>
@@ -13,10 +13,10 @@
             <table data-bind="with: chosenFolderData" width="100%" border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        <th class="fm-number" width="4%"></th>
-                        <th class="fm-name" width="50%" data-bind="text: $root.nameHeaderText"></th>
-                        <th class="fm-type" width="23%" data-bind="text: $root.typeHeaderText"></th>
-                        <th class="fm-last-modified" width="23%" data-bind="text: $root.lastModifiedHeaderText"></th>
+                        <th class="fm-number" width="4%" data-bind="text: 'Number'">Number</th>
+                        <th class="fm-name" width="50%" data-bind="text: $root.nameHeaderText">Name</th>
+                        <th class="fm-type" width="23%" data-bind="text: $root.typeHeaderText">Type</th>
+                        <th class="fm-last-modified" width="23%" data-bind="text: $root.lastModifiedHeaderText">Last Modified</th>
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: children, updateRowNumbers: children">
