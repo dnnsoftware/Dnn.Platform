@@ -170,7 +170,7 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)'><i class='fa fa-" + rootIcon + "' /></a><ul></ul>");
+            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)' aria-label=\"" + rootText + "\"><i class='fa fa-" + rootIcon + "' /></a><ul></ul>");
             var parent = root.find("li." + rootClass + " > ul");
 
             return parent;
@@ -210,9 +210,9 @@
                     }
 
                     if (isEnabled(action)) {
-                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
+                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span></a>";
                     } else {
-                        htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
+                        htmlString += "<img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span>";
                     }
 
                     $parent.append(htmlString);

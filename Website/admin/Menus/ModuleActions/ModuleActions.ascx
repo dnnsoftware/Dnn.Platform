@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Admin.Containers.ModuleActions" Codebehind="ModuleActions.ascx.cs" %>
-<asp:LinkButton runat="server" ID="actionButton" />
+<asp:LinkButton runat="server" ID="actionButton" aria-label="Actions" />
 
 <%
     if (SupportsQuickSettings)
