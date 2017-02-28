@@ -105,8 +105,7 @@
                         <li data-bind="css: {'active': !Read() && $root.showInbox()}">
                             <ul>
                                 <li class="ListCol-1">
-                                    <label data-bind="for: MessageIDName"></label>
-                                    <input type="checkbox" data-bind="checked: messageSelected, id: MessageIDName, visible: $root.showInbox()" class="normalCheckBox" />
+                                    <input type="checkbox" data-bind="checked: messageSelected, visible: $root.showInbox()" class="normalCheckBox" aria-label="Select" />
                                 </li>
                                 <li class="ListCol-2"><a class="profileImg" data-bind="attr: { href: SenderProfileUrl }"><span><em>
                                     <img alt="" data-bind="attr: { src: SenderAvatar, alt: From, title: From }" /></em></span></a>
