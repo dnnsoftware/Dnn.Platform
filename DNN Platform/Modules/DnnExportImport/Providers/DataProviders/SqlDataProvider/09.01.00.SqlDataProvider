@@ -134,10 +134,6 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 GO
@@ -154,6 +150,10 @@ BEGIN
 	ORDER BY
 		JobId ASC
 END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
