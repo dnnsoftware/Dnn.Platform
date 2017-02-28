@@ -365,9 +365,9 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
         _addSearchBox: function () {
             var searchBox = $(
                     '<div class="search-container"><div class="search-input-container">' +
-                    '<input type="text" id="AddModule_SearchModulesInput" placeholder="' + dnn.ContentEditorManagerResources.searchPlaceHolder + '" class="search-input"/></div>' +
-                    '<a href="javascript:void(0);" title="Search" class="search-button"></a>' +
-                    '<a href="javascript:void(0);" title="Clear" class="clear-button"></a></div>' +
+                    '<input type="text" id="AddModule_SearchModulesInput" placeholder="' + dnn.ContentEditorManagerResources.searchPlaceHolder + '" class="search-input" aria-label="Search"/></div>' +
+                    '<a href="javascript:void(0);" title="Search" class="search-button" aria-label="Search"></a>' +
+                    '<a href="javascript:void(0);" title="Clear" class="clear-button" aria-label="Clear"></a></div>' +
                     '</div>');
 
             $(".dnnModuleDialog .dnnDialogTitle .title").after(searchBox);
@@ -595,10 +595,10 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
 
         _getItemTemplate: function () {
             return '<li class="dnnModuleItem" data-moduleid="[$ModuleID$]">' +
-                '<span class="icon [$ModuleName|css]"><img src="[$ModuleImage$]" /></span>' +
+                '<span class="icon [$ModuleName|css]"><img src="[$ModuleImage$]" alt="[$ModuleName$]" /></span>' +
                 '<span class="title {0}">[$ModuleName$]</span>' +
                 '<span class="actions">' +
-                    '<a href="#" class="button bookmarkModule" data-moduleid="[$ModuleID$]"></a>' +
+                    '<a href="#" class="button bookmarkModule" data-moduleid="[$ModuleID$]" aria-label="Bookmark"></a>' +
                 '</span>' +
                 '</li>';
         },

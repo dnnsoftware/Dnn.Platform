@@ -469,7 +469,8 @@
     border: 1px solid #C8C8C8;
     border-radius: 0;
     height: 20px;
-    padding: 6px;
+    padding: 0 6px;
+    min-height: 32px;
 }
 .dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .search-container .search-input-container input {
     min-height: 30px;
