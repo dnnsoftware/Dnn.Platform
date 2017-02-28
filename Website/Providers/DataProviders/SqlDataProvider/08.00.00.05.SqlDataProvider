@@ -6,24 +6,17 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
- @Server varchar(150)
+ @Server nVarChar(150)
 AS
 BEGIN
-SELECT
-  S.*
-  , (SELECT max(S1.NextStart)
-   FROM {databaseOwner}{objectQualifier}ScheduleHistory S1
-   WHERE S1.ScheduleID = S.ScheduleID) as NextStart
- FROM {databaseOwner}{objectQualifier}Schedule S
- WHERE
-	(
-		@Server IS NULL OR 
-		S.Servers LIKE '%,' + @Server + ',%' OR
-		S.Servers LIKE @Server + ',%' OR
-		S.Servers LIKE '%,' + @Server OR
-		S.Servers = @Server OR
-		S.Servers IS NULL)
-	ORDER BY FriendlyName ASC
+    SELECT S.*, 
+           (SELECT max(S1.NextStart)
+             FROM  {databaseOwner}{objectQualifier}ScheduleHistory S1
+             WHERE S1.ScheduleID = S.ScheduleID) AS NextStart
+     FROM  {databaseOwner}{objectQualifier}Schedule S
+     WHERE IsNull(S.Servers, N'') = N''
+        OR N',' + S.Servers + N',' LIKE N'%,' + IsNull(@Server, N'%') + N',%'
+     ORDER BY FriendlyName ASC
 END
 GO
 
