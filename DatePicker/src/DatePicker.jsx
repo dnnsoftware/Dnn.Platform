@@ -243,10 +243,7 @@ export default class DatePicker extends Component {
         return false;
     }
 
-    showCalendar(e) {
-        if (e.target.tagName === "SELECT"|| hasClass(e.target, "select-container") || e.target.tagName === "SPAN") {
-            return;
-        }
+    showCalendar() {       
         this.setState({ isCalendarVisible: true });
     }
 
