@@ -19,12 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Dnn.ExportImport.Components.Entities;
+
 namespace Dnn.ExportImport.Components.Interfaces
 {
     public interface IPortable2
     {
         /// <summary>
-        /// Category name for the exportable module. For example: "ASSETS"
+        /// Category name for the exportable module. For example: "ASSETS".
         /// </summary>
         string Category { get; }
 
@@ -46,14 +48,13 @@ namespace Dnn.ExportImport.Components.Interfaces
 
 
         /// <summary>
-        ///  Performs export operation of the object
+        ///  Performs export operation of the object.
         /// </summary>
-        void ExportData(int portalId);
+        void ExportData(ExportImportJob exportJob);
 
         /// <summary>
-        ///  Performs import operation of the object
+        ///  Performs import operation of the object.
         /// </summary>
-        void ImportData(int portalId);
-
+        void ImportData(ExportImportJob importJob);
     }
 }

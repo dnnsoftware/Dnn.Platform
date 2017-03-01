@@ -75,8 +75,8 @@ namespace Dnn.ExportImport.Components.Engines
                     continue;
                 }
 
+                portable2Obj.ExportData(exportJob);
                 //TODO:
-                //portable2Obj.Export(exportDto);
                 return null;
             }
 

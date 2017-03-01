@@ -25,6 +25,7 @@ using System.Web.Http;
 using Dnn.ExportImport.Components;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
@@ -42,7 +43,7 @@ namespace Dnn.ExportImport.Services
 
 #if DEBUG
             //TODO: This code is here for testing only.
-            UsersExportService.Instance.ExportData(0);
+            new UsersExportService().ExportData(new ExportImportJob {PortalId = 0});
 #endif
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
             if (!isHostUser && exportDto.PortalId != PortalSettings.PortalId)
@@ -62,7 +63,7 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Read()
         {
-            UsersExportService.Instance.ImportData(0);
+            new UsersExportService().ImportData(new ExportImportJob { PortalId = 0 });
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 #endif

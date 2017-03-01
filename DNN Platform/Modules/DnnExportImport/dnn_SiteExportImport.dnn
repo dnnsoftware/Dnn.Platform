@@ -39,6 +39,10 @@
               <path>bin</path>
               <name>DotNetNuke.Modules.SiteExportImport.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>LiteDB.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">
