@@ -23,8 +23,9 @@ namespace Dnn.ExportImport.Components.Models
 {
     public class ExportImportResult
     {
-        public string OperationId { get; set; }
+        public int JobId { get; set; }
         public ProgressToken Token { get; set; }
         public JobStatus Status { get; set; }
+        public int ProcessedCount { get; set; }
     }
 }

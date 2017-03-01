@@ -20,6 +20,7 @@
 #endregion
 
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Repository;
 
 namespace Dnn.ExportImport.Components.Interfaces
 {
@@ -50,11 +51,11 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
-        void ExportData(ExportImportJob exportJob);
+        void ExportData(ExportImportJob exportJob, IExportImportRepository repository);
 
         /// <summary>
         ///  Performs import operation of the object.
         /// </summary>
-        void ImportData(ExportImportJob importJob);
+        void ImportData(ExportImportJob importJob, IExportImportRepository repository);
     }
 }

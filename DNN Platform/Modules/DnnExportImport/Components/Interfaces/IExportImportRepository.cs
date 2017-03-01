@@ -1,15 +1,13 @@
-﻿using Dnn.ExportImport.Components.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Dnn.ExportImport.Components.Dto;
 using LiteDB;
 
-namespace Dnn.ExportImport.Components.LiteDBRepository
+namespace Dnn.ExportImport.Components.Interfaces
 {
-    public interface IRepository : IDisposable
+    public interface IExportImportRepository : IDisposable
     {
-        string LiteDatabase { get; set; }
-
         T CreateItem<T>(T item, int portalId) where T : BasicExportObject;
         IEnumerable<T> CreateItems<T>(IEnumerable<T> items, int portalId) where T : BasicExportObject;
 

@@ -2,10 +2,10 @@
 using System.Linq;
 using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Interfaces;
-using Dnn.ExportImport.Components.LiteDBRepository;
 using DotNetNuke.Data;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Repository;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -21,18 +21,18 @@ namespace Dnn.ExportImport.Components.Services
 
         public int ProgressPercentage => GetProgress();
 
-        public void ExportData(ExportImportJob exportJob)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository)
         {
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
-            var PageSize = 100;
+            var pageSize = 100;
             var totalProcessed = 0;
             try
             {
                 //var dataReader = PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.Text,
                 //    $"Select U.* FROM {MakeTableName("Users")} U INNER JOIN {MakeTableName("UserPortals")} UP ON U.UserID=UP.UserId WHERE UP.PortalId={portalId}");
                 var dataReader = DataProvider.Instance()
-                .ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, PageSize, false);
+                .ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, pageSize, false);
                 var allUser =
                     CBO.FillCollection<Users>(dataReader).ToList();
                 var firstOrDefault = allUser.FirstOrDefault();
@@ -54,21 +54,21 @@ namespace Dnn.ExportImport.Components.Services
                             var userPortal = CBO.FillObject<UserPortals>(DataProvider.Instance()
                                 .ExecuteReader("ExportImport_GetUserPortal", portalId, user.UserId));
 
-                            LiteDbSingleCollectionRepository.Instance.CreateItem(aspnetUser, portalId);
-                            LiteDbSingleCollectionRepository.Instance.CreateItem(aspnetMembership, portalId);
+                            repository.CreateItem(aspnetUser, portalId);
+                            repository.CreateItem(aspnetMembership, portalId);
 
-                            LiteDbSingleCollectionRepository.Instance.CreateItem(userPortal, portalId);
+                            repository.CreateItem(userPortal, portalId);
                             user.AspnetUsers = aspnetUser;
                             user.AspnetMembership = aspnetMembership;
                             user.UserPortals = userPortal;
-                            LiteDbSingleCollectionRepository.Instance.CreateItem(user, portalId);
+                            repository.CreateItem(user, portalId);
                             userRoles.ForEach(x => { x.ReferenceUserId = user.Id; });
-                            LiteDbSingleCollectionRepository.Instance.CreateItems(userRoles, portalId);
+                            repository.CreateItems(userRoles, portalId);
                         }
-                        totalProcessed += PageSize;
+                        totalProcessed += pageSize;
                         pageIndex++;
                         dataReader = DataProvider.Instance()
-                            .ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, PageSize, false);
+                            .ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, pageSize, false);
                         allUser =
                             CBO.FillCollection<Users>(dataReader).ToList();
                     } while (totalProcessed < totalUsers);
@@ -80,15 +80,15 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ImportData(ExportImportJob importJob)
+        public void ImportData(ExportImportJob importJob, IExportImportRepository repository)
         {
             var portalId = importJob.PortalId;
-            var users = LiteDbSingleCollectionRepository.Instance.GetAllItems<Users>(new Users().CollectionName,
+            var users = repository.GetAllItems<Users>(new Users().CollectionName,
                 portalId)
                 .Include(x => x.AspnetUsers)
                 .Include(x => x.AspnetMembership)
                 .Include(x => x.UserPortals).FindAll().ToList();
-            var userRoles = LiteDbSingleCollectionRepository.Instance.GetAllItems<UserRoles>(new UserRoles().CollectionName,
+            var userRoles = repository.GetAllItems<UserRoles>(new UserRoles().CollectionName,
                 portalId).FindAll().ToList();
             users.ForEach(x => { x.UserRoles = userRoles.Where(y => y.ReferenceUserId == x.Id); });
         }

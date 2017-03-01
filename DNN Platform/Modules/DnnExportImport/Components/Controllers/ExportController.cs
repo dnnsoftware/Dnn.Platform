@@ -30,7 +30,7 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
-            var exportFileName = DateTime.UtcNow.ToString(Constants.ExportDateFormat);
+            var exportFileName = DateTime.UtcNow.ToString(Constants.ExportDateFormat) + "_" + exportDto.PortalId;
             var dataObject = JsonConvert.SerializeObject(exportDto);
             return DataProvider.Instance().AddNewJob(
                 exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);

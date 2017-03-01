@@ -21,11 +21,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Models;
+using Dnn.ExportImport.Components.Repository;
+using DotNetNuke.Common;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Scheduling;
@@ -37,23 +40,31 @@ namespace Dnn.ExportImport.Components.Engines
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
-        public int ProgressPercentage
+        static ExportImportEngine()
         {
-            get
+            var folder = Globals.ApplicationPath + Constants.ExportFolder;
+            if (!Directory.Exists(folder))
             {
-                //TODO:
-                throw new NotImplementedException();
+                Directory.CreateDirectory(folder);
             }
         }
 
+        public int ProgressPercentage { get; private set; } = 1;
+
         public ExportImportResult Export(ExportImportJob exportJob, ScheduleHistoryItem scheduleHistoryItem)
         {
+            var result = new ExportImportResult
+            {
+                JobId = exportJob.JobId,
+                Status = JobStatus.DoneFailure,
+            };
+
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
             if (exportDto == null)
             {
                 exportJob.CompletedOn = DateTime.UtcNow;
                 exportJob.JobStatus = JobStatus.DoneFailure;
-                return null; //TODO: return result
+                return result;
             }
 
             if (!exportDto.ItemsToExport.Any())
@@ -61,47 +72,82 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.CompletedOn = DateTime.UtcNow;
                 exportJob.JobStatus = JobStatus.DoneFailure;
                 scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
-                return null; //TODO: return result
+                return result;
             }
 
-            var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
-            foreach (var portable2Obj in implementors)
+            var dbName = Globals.ApplicationPath + Constants.ExportFolder + exportJob.ExportFile + Constants.ExportDbExt;
+            using (var ctx = new ExportImportRepository(dbName))
             {
-                var selected = exportDto.ItemsToExport.FirstOrDefault(
-                    x => x.Equals(portable2Obj.Category, StringComparison.InvariantCultureIgnoreCase));
-
-                if (string.IsNullOrEmpty(selected))
+                var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
+                if (implementors.Any())
                 {
-                    continue;
+                    foreach (var portable2Obj in implementors)
+                    {
+                        var selected = exportDto.ItemsToExport.FirstOrDefault(
+                            x => x.Equals(portable2Obj.Category, StringComparison.InvariantCultureIgnoreCase));
+
+                        if (string.IsNullOrEmpty(selected))
+                        {
+                            continue;
+                        }
+
+                        portable2Obj.ExportData(exportJob, ctx);
+                        scheduleHistoryItem.AddLogNote("<br/>Processed Item: " + portable2Obj.Category);
+                        result.Status = JobStatus.InProgress;
+                        result.ProcessedCount += 1;
+                    }
                 }
 
-                portable2Obj.ExportData(exportJob);
-                //TODO:
-                return null;
+                foreach (var page in exportDto.Pages)
+                {
+                    //TODO: export pages
+                    if (page != null)
+                    {
+                    }
+                    result.Status = JobStatus.InProgress;
+                }
             }
 
-            //TODO: export pages
+            exportJob.JobStatus = result.Status;
 
-            exportJob.JobStatus = JobStatus.InProgress;
-            return null; //TODO: return result
+            return result;
         }
 
         public ExportImportResult Import(ExportImportJob importJob, ScheduleHistoryItem scheduleHistoryItem)
         {
+            var result = new ExportImportResult
+            {
+                JobId = importJob.JobId,
+                Status = JobStatus.DoneFailure,
+            };
+
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
                 importJob.CompletedOn = DateTime.UtcNow;
                 importJob.JobStatus = JobStatus.DoneFailure;
+                return result;
             }
 
-            foreach (var portable2Object in GetPortableImplementors())
+            var dbName = Globals.ApplicationPath + Constants.ExportFolder + importDto.FileName;
+            if (!File.Exists(dbName))
             {
-                //TODO: select items from database and if any then
+                scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
+                importJob.CompletedOn = DateTime.UtcNow;
+                importJob.JobStatus = JobStatus.DoneFailure;
+                return result;
             }
 
-            importJob.JobStatus = JobStatus.InProgress;
-            throw new NotImplementedException();
+            using (var ctx = new ExportImportRepository(dbName))
+            {
+                foreach (var portable2Object in GetPortableImplementors())
+                {
+                    //TODO: select items from database and if any then
+                }
+            }
+            importJob.JobStatus =
+                result.Status = JobStatus.InProgress;
+            return result;
         }
 
         private static IEnumerable<IPortable2> GetPortableImplementors()
