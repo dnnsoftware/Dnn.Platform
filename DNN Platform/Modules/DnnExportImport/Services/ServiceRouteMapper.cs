@@ -27,7 +27,7 @@ namespace Dnn.ExportImport.Services
     {
         public void RegisterRoutes(IMapRoute routeManager)
         {
-            routeManager.MapHttpRoute("DNNCorp/ImportExport",
+            routeManager.MapHttpRoute("SiteExportImport",
                                       "default",
                                       "{controller}/{action}",
                                       new[] { typeof(ServiceRouteMapper).Namespace });

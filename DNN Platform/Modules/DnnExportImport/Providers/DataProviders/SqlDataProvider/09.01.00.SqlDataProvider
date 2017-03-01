@@ -182,3 +182,154 @@ BEGIN
 		RowNum >= (@PageIndex * @PageSize + 1)
 END
 GO
+
+-- Users Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserName]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserName]
+(
+	@userId Int
+)
+RETURNS 
+	nVarChar(255)
+AS
+	BEGIN
+		DECLARE @Username AS nVarChar(255)
+
+		SELECT  @Username = Username FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
+		RETURN  @Username
+	END
+GO
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+(
+	@username Int
+)
+RETURNS 
+	int
+AS
+	BEGIN
+		DECLARE @UserId AS int
+
+		SELECT  @UserId = UserID FROM {databaseOwner}[{objectQualifier}Users] WHERE Username = @username
+		RETURN  @UserId
+	END
+GO
+
+
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+	@PortalID        int,
+	@PageIndex       int,
+	@PageSize        INT,
+	@IncludeDeleted  bit
+AS
+BEGIN
+	DECLARE 
+		@PageLowerBound INT, 
+		@PageUpperBound INT, 
+		@RowsToReturn int
+
+	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+		 
+	BEGIN
+		WITH [tmpUsers] AS (
+			SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS rowid
+			,  row_number() over (order by U.CreatedOnDate DESC) AS rowiddesc
+				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
+				WHERE VU.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+		)
+		SELECT (rowiddesc + rowid - 1) Total,  * FROM [tmpUsers]
+			WHERE rowid > @PageLowerBound AND rowid < @PageUpperBound
+			ORDER by rowid
+	END
+	SET ROWCOUNT 0;
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+	@PortalId  int,
+	@UserId    int
+AS
+SELECT 
+	   [UserId]
+      ,[PortalId]
+      ,[UserPortalId]
+      ,[CreatedDate]
+      ,[Authorised]
+      ,[IsDeleted]
+      ,[RefreshRoles]
+      ,[VanityUrl]
+ 	FROM {databaseOwner}[{objectQualifier}UserPortals]
+	WHERE UserId = @UserId AND PortalId = @PortalId
+GO
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+@Username nvarchar(256)
+AS
+SELECT * 
+ 	FROM {databaseOwner}[aspnet_Users]
+	WHERE  UserName=@Username
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+@UserId uniqueidentifier,
+@ApplicationId uniqueidentifier
+AS
+SELECT * 
+ 	FROM {databaseOwner}[aspnet_Membership]
+	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+	@PortalId  int,
+	@UserId    int
+AS
+	SELECT [UserRoleID]
+      ,[RoleID]
+      ,[UserID]
+      ,[PortalID]
+      ,[RoleName]
+      ,[ExpiryDate]
+	  ,[IsTrialUsed]
+	  ,[EffectiveDate]
+	  ,[CreatedByUserID]
+      ,[CreatedOnDate]
+      ,[LastModifiedByUserID]
+      ,[LastModifiedOnDate]
+	  ,[Status]
+      ,[IsOwner]
+	  ,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName
+	  ,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
+	WHERE UserID = @UserId AND PortalID = @PortalId
+GO

@@ -43,5 +43,17 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// Whether the import operation can be rolled back if interrupted/cancelled while in progress.
         /// </summary>
         bool CanRollback { get; }
+
+
+        /// <summary>
+        ///  Performs export operation of the object
+        /// </summary>
+        void ExportData(int portalId);
+
+        /// <summary>
+        ///  Performs import operation of the object
+        /// </summary>
+        void ImportData(int portalId);
+
     }
 }

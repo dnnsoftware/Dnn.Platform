@@ -23,3 +23,23 @@ IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule
 	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
 GO
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+GO
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+GO
+
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+GO
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+GO

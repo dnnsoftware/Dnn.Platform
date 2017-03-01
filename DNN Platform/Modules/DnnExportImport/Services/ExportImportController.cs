@@ -25,6 +25,7 @@ using System.Web.Http;
 using Dnn.ExportImport.Components;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
@@ -38,6 +39,11 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Export(ExportDto exportDto)
         {
+
+#if DEBUG
+            //TODO: This code is here for testing only.
+            UsersExportService.Instance.ExportData(0);
+#endif
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
             if (!isHostUser && exportDto.PortalId != PortalSettings.PortalId)
             {
@@ -47,8 +53,19 @@ namespace Dnn.ExportImport.Services
 
             var controller = new ExportController();
             var operationId = controller.QueueOperation(PortalSettings.UserId, exportDto);
-            return Request.CreateResponse(HttpStatusCode.OK, new { refId = operationId });
+            return Request.CreateResponse(HttpStatusCode.OK, new {refId = operationId});
         }
+
+#if DEBUG
+        //TODO: This code is here for testing only.
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage Read()
+        {
+            UsersExportService.Instance.ImportData(0);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+#endif
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -63,7 +80,7 @@ namespace Dnn.ExportImport.Services
 
             var controller = new ImportController();
             var operationId = controller.QueueOperation(PortalSettings.UserId, importDto);
-            return Request.CreateResponse(HttpStatusCode.OK, new { refId = operationId });
+            return Request.CreateResponse(HttpStatusCode.OK, new {refId = operationId});
         }
 
         [HttpGet]
