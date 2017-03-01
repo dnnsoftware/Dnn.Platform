@@ -40,12 +40,14 @@ namespace Dnn.ExportImport.Components.Engines
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
+        private static readonly string _dbFolder;
+
         static ExportImportEngine()
         {
-            var folder = Globals.ApplicationPath + Constants.ExportFolder;
-            if (!Directory.Exists(folder))
+            _dbFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
+            if (!Directory.Exists(_dbFolder))
             {
-                Directory.CreateDirectory(folder);
+                Directory.CreateDirectory(_dbFolder);
             }
         }
 
@@ -75,7 +77,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            var dbName = Globals.ApplicationPath + Constants.ExportFolder + exportJob.ExportFile + Constants.ExportDbExt;
+            var dbName = Path.Combine(_dbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             using (var ctx = new ExportImportRepository(dbName))
             {
                 var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
@@ -129,7 +131,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            var dbName = Globals.ApplicationPath + Constants.ExportFolder + importDto.FileName;
+            var dbName = Path.Combine(_dbFolder, importDto.FileName);
             if (!File.Exists(dbName))
             {
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);

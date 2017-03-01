@@ -20,10 +20,16 @@ namespace Dnn.ExportImport.Components.Repository
 
         ~ExportImportRepository()
         {
-            Dispose();
+            Dispose(false);
         }
 
         public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool isDisposing)
         {
             var temp = Interlocked.Exchange(ref _lightDb, null);
             if (temp != null)
