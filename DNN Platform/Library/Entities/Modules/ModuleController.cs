@@ -1277,7 +1277,10 @@ namespace DotNetNuke.Entities.Modules
             ModuleInfo moduleInfo = GetModule(moduleId, tabId, false);            
             DeleteTabModuleInternal(moduleInfo, softDelete);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleDeletion(moduleInfo, Null.NullInteger, userId);
+            if (softDelete)
+            {
+                TabChangeTracker.Instance.TrackModuleDeletion(moduleInfo, Null.NullInteger, userId);
+            }
         }
 
         /// <summary>
@@ -2065,15 +2068,18 @@ namespace DotNetNuke.Entities.Modules
                             var moduleId = Convert.ToInt32(dr2["ModuleID"]);
                             var paneName = Convert.ToString(dr["PaneName"]);
                             var isDeleted = Convert.ToBoolean(dr2["IsDeleted"]);
-                            var moduleOrder = (moduleCounter * 2) - 1;
+                            var existingOrder = Convert.ToInt32(dr2["ModuleOrder"]);
+                            var newOrder = (moduleCounter * 2) - 1;
 
-                            dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
+                            if (existingOrder == newOrder) continue;
+                            dataProvider.UpdateModuleOrder(tabId, moduleId, newOrder, paneName);
 
                             if (!isDeleted)
                             {
                                 var moduleInfo = GetModule(moduleId, tabId, true);
                                 var userInfo = UserController.Instance.GetCurrentUserInfo();
-                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger, userInfo.UserID);                                
+                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger,
+                                    userInfo.UserID);
                             }
                         }
                     }
