@@ -32,10 +32,7 @@ namespace Dnn.ExportImport.Components.Repository
         private void Dispose(bool isDisposing)
         {
             var temp = Interlocked.Exchange(ref _lightDb, null);
-            if (temp != null)
-            {
-                _lightDb.Dispose();
-            }
+            temp?.Dispose();
         }
 
         public T CreateItem<T>(T item, int portalId) where T : BasicExportObject

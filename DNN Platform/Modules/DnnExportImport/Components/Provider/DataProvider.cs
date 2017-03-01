@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Components.Provider
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobStatus);
+            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus);
         }
 
         public IDataReader GetFirstActiveJob()
