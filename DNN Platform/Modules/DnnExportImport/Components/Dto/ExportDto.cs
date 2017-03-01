@@ -35,12 +35,12 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Name of export job.
         /// </summary>
-        public int ExportName { get; set; }
+        public string ExportName { get; set; }
 
         /// <summary>
         /// Description of export job.
         /// </summary>
-        public int ExportDescription { get; set; }
+        public string ExportDescription { get; set; }
 
         /// <summary>
         /// Names of items to export

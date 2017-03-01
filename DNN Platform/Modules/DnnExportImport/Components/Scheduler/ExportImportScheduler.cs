@@ -38,6 +38,11 @@ namespace Dnn.ExportImport.Components.Scheduler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
 
+        public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
+        {
+            ScheduleHistoryItem = objScheduleHistoryItem;
+        }
+
         private const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         private const string LastJobSuccessDate = "EXPORT_LastSuccessOn";
 
@@ -112,6 +117,11 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     Logger.Trace("Export/Import: Job Completed");
+                }
+                else
+                {
+                    ScheduleHistoryItem.Succeeded = true;
+                    ScheduleHistoryItem.AddLogNote("<br/>No Export/Import jobs queued for processing.");
                 }
                 SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
