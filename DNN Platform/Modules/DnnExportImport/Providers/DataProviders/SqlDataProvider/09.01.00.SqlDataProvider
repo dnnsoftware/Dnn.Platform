@@ -246,14 +246,14 @@ BEGIN
 		 
 	BEGIN
 		WITH [tmpUsers] AS (
-			SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS rowid
-			,  row_number() over (order by U.CreatedOnDate DESC) AS rowiddesc
+			SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
+			,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
 				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
 				WHERE VU.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 		)
-		SELECT (rowiddesc + rowid - 1) Total,  * FROM [tmpUsers]
-			WHERE rowid > @PageLowerBound AND rowid < @PageUpperBound
-			ORDER by rowid
+		SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
+			WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
+			ORDER by RowId
 	END
 	SET ROWCOUNT 0;
 END

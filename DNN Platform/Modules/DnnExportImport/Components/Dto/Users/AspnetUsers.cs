@@ -2,7 +2,7 @@
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
-    public class AspnetUsers : BasicExportObject
+    public class AspnetUsers : BasicExportImportDto
     {
         public Guid ApplicationId { get; set; }
         public Guid UserId { get; set; }

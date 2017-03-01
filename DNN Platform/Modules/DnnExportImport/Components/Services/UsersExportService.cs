@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Data;
@@ -48,22 +49,18 @@ namespace Dnn.ExportImport.Components.Services
                                 CBO.FillObject<AspnetUsers>(DataProvider.Instance()
                                     .ExecuteReader("ExportImport_GetAspNetUser", user.Username));
                             var aspnetMembership = CBO.FillObject<AspnetMembership>(DataProvider.Instance()
-                                .ExecuteReader("ExportImport_GetUserMembership", aspnetUser.UserId, aspnetUser.ApplicationId));
+                                .ExecuteReader("ExportImport_GetUserMembership", aspnetUser.UserId,
+                                    aspnetUser.ApplicationId));
                             var userRoles = CBO.FillCollection<UserRoles>(DataProvider.Instance()
                                 .ExecuteReader("ExportImport_GetUserRoles", portalId, user.UserId));
                             var userPortal = CBO.FillObject<UserPortals>(DataProvider.Instance()
                                 .ExecuteReader("ExportImport_GetUserPortal", portalId, user.UserId));
 
-                            repository.CreateItem(aspnetUser, portalId);
-                            repository.CreateItem(aspnetMembership, portalId);
-
-                            repository.CreateItem(userPortal, portalId);
-                            user.AspnetUsers = aspnetUser;
-                            user.AspnetMembership = aspnetMembership;
-                            user.UserPortals = userPortal;
-                            repository.CreateItem(user, portalId);
-                            userRoles.ForEach(x => { x.ReferenceUserId = user.Id; });
-                            repository.CreateItems(userRoles, portalId);
+                            repository.CreateItem(user, null);
+                            repository.CreateItem(aspnetUser, user.Id);
+                            repository.CreateItem(aspnetMembership, user.Id);
+                            repository.CreateItem(userPortal, user.Id);
+                            repository.CreateItems(userRoles, user.Id);
                         }
                         totalProcessed += pageSize;
                         pageIndex++;
@@ -71,7 +68,7 @@ namespace Dnn.ExportImport.Components.Services
                             .ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, pageSize, false);
                         allUser =
                             CBO.FillCollection<Users>(dataReader).ToList();
-                    } while (totalProcessed < totalUsers);
+                    } while (totalProcessed < 1000);
                 }
             }
             catch (Exception ex)
@@ -83,14 +80,18 @@ namespace Dnn.ExportImport.Components.Services
         public void ImportData(ExportImportJob importJob, IExportImportRepository repository)
         {
             var portalId = importJob.PortalId;
-            var users = repository.GetAllItems<Users>(new Users().CollectionName,
-                portalId)
-                .Include(x => x.AspnetUsers)
-                .Include(x => x.AspnetMembership)
-                .Include(x => x.UserPortals).FindAll().ToList();
-            var userRoles = repository.GetAllItems<UserRoles>(new UserRoles().CollectionName,
-                portalId).FindAll().ToList();
-            users.ForEach(x => { x.UserRoles = userRoles.Where(y => y.ReferenceUserId == x.Id); });
+            var users = repository.GetAllItems<Users>(new Users().CollectionName, null, true, 10, 100);
+            foreach (var user in users)
+            {
+                var userRoles = repository.GetRelatedItems<UserRoles>(user.Id, new UserRoles().CollectionName).ToList();
+                var aspNetUser =
+                    repository.GetRelatedItems<AspnetUsers>(user.Id, new AspnetUsers().CollectionName).FirstOrDefault();
+                var aspnetMembership =
+                    repository.GetRelatedItems<AspnetMembership>(user.Id, new AspnetMembership().CollectionName)
+                        .FirstOrDefault();
+                var userPortal =
+                    repository.GetRelatedItems<UserPortals>(user.Id, new UserPortals().CollectionName).FirstOrDefault();
+            }
         }
 
         private int GetProgress()

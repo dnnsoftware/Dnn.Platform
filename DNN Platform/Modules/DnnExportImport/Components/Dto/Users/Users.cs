@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using LiteDB;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
-    public class Users : BasicExportObject
+    public class Users : BasicExportImportDto
     {
-        [BsonIgnore]
+        [JsonIgnore]
         public int Total { get; set; }
-        [BsonIgnore]
-        public int rowid { get; set; }
-        [BsonIgnore]
-        public int rowiddesc { get; set; }
+        [JsonIgnore]
+        public int RowId { get; set; }
+        [JsonIgnore]
+        public int RowIdDesc { get; set; }
 
-        [BsonField(Name = "UserID")]
+        [JsonProperty(PropertyName= "UserID")]
         public int UserId { get; set; }
 
         public string Username { get; set; }
@@ -26,33 +24,22 @@ namespace Dnn.ExportImport.Components.Dto.Users
         public string DisplayName { get; set; }
         public bool UpdatePassword { get; set; }
 
-        [BsonField(Name = "LastIPAddress")]
+        [JsonProperty(PropertyName = "LastIPAddress")]
         public string LastIpAddress { get; set; }
 
         public bool IsDeleted { get; set; }
 
-        [BsonField(Name = "CreatedByUserID")]
+        [JsonProperty(PropertyName= "CreatedByUserID")]
         public int CreatedByUserId { get; set; } //How do we insert this value?
         public string CreatedByUserName { get; set; }//This could be used to find "CreatedByUserId"
         public DateTime? CreatedOnDate { get; set; }
 
-        [BsonField(Name = "LastModifiedByUserID")]
+        [JsonProperty(PropertyName= "LastModifiedByUserID")]
         public int LastModifiedByUserId { get; set; } //How do we insert this value?
         public string LastModifiedByUserName { get; set; }//This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
         public Guid PasswordResetToken { get; set; }
         public DateTime? PasswordResetExpiration { get; set; }
         public string LowerEmail { get; set; }
-
-        [BsonRef("aspnetusers")] // where "aspnetusers" are AspnetUsers collection name
-        public AspnetUsers AspnetUsers { get; set; }
-
-        [BsonRef("aspnetmembership")] // where "aspnetmembership" are AspnetMembership collection name
-        public AspnetMembership AspnetMembership { get; set; }
-
-        public IEnumerable<UserRoles> UserRoles { get; set; }
-
-        [BsonRef("userportals")] // where "userportals" are UserPortals collection name
-        public UserPortals UserPortals { get; set; }
     }
 }

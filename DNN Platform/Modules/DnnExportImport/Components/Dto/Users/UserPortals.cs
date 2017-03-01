@@ -1,14 +1,12 @@
 ﻿using System;
-using LiteDB;
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
-    public class UserPortals : BasicExportObject
+    public class UserPortals : BasicExportImportDto
     {
         public int UserId { get; set; }
 
-        [BsonIndex]
-        public override int PortalId { get; set; }
+        public int PortalId { get; set; }
 
         public int UserPortalId { get; set; }
         public DateTime CreatedDate { get; set; }

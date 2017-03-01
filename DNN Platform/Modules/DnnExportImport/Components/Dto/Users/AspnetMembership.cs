@@ -1,9 +1,9 @@
 ﻿using System;
-using LiteDB;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
-    public class AspnetMembership : BasicExportObject
+    public class AspnetMembership : BasicExportImportDto
     {
         public Guid ApplicationId { get; set; }
         public Guid UserId { get; set; }
@@ -11,7 +11,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
         public int PasswordFormat { get; set; }
         public string PasswordSalt { get; set; }
 
-        [BsonField(Name = "MobilePIN")]
+        [JsonProperty(PropertyName= "MobilePIN")]
         public string MobilePin { get; set; }
 
         public string Email { get; set; }

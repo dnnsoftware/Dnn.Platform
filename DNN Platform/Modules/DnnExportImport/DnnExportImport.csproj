@@ -67,7 +67,7 @@
     <Compile Include="Components\Controllers\EntitiesController.cs" />
     <Compile Include="Components\Controllers\ExportController.cs" />
     <Compile Include="Components\Controllers\ImportController.cs" />
-    <Compile Include="Components\Dto\BasicExportObject.cs" />
+    <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
