@@ -4,7 +4,6 @@ import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
 import DateInput from "./DateInput";
-import Checkbox from "dnn-checkbox";
 import "./style.less";
 
 const DefaultControllerClassName = "calendar-controller";
@@ -24,7 +23,15 @@ function hasClass(element, className) {
 
 Weekday.propTypes = WeekdayPropTypes;
 
-const clearButtonStyle = {
+const clearButtonStyleVisible = {
+    transition: "300ms",
+    transformOrigin: "100% 0% 0px",
+    transform: "scale(1)",
+    marginRight: 0,
+    opacity: 1
+};
+
+const clearButtonStyleInvisible = {
     transition: "300ms",
     transformOrigin: "100% 0% 0px",
     transform: "scale(1)",
@@ -50,7 +57,7 @@ export default class DatePicker extends Component {
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
-            },
+            }
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -325,11 +332,7 @@ export default class DatePicker extends Component {
         const inputClassName = "calendar-text" + ( this.props.hasTimePicker ? " with-time-picker" : "");
 
         const showCheckBox = !!this.props.isDateRange && this.props.showCheckBoxClearDates;
-        if (this.state.Date.FirstDate || this.state.Date.SecondDate) {
-            clearButtonStyle.opacity = 1;
-        } else {
-            clearButtonStyle.opacity = 0;
-        } 
+        const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
         /* eslint-disable react/no-danger */
         return <div className="dnn-day-picker">
