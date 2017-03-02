@@ -17,7 +17,6 @@ module.exports = {
         "sourceType": "module"
     },        
     "globals": {
-        "__": false,
         "Promise": false,
     },
     "rules": {

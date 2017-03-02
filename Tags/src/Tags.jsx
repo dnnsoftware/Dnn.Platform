@@ -20,7 +20,7 @@ class Tags extends Component {
     }
 
     internalAddTag(newTagText) {
-        if (newTagText) {
+        if (newTagText && typeof(this.props.onNewTag) === "function") {
             this.props.onNewTag(newTagText);
         }
 
@@ -50,7 +50,6 @@ class Tags extends Component {
             this.props.onUpdateTags(tags);
         });
     }
-
     
     onClick() {
         if (this.state.isInputVisible) {
@@ -59,13 +58,17 @@ class Tags extends Component {
 
         this.setState({ isInputVisible: true });
     }
+
     onInputClose() {
         if (!this.state.isInputVisible) {
             return;
         }
 
         this.setState({ isInputVisible: false,  newTagText: ""});
-        this.props.onAddingNewTagChange("");
+        
+        if (typeof(this.props.onAddingNewTagChange) === "function") {
+            this.props.onAddingNewTagChange("");
+        }
     }
 
     addTag(tag) {
@@ -74,13 +77,18 @@ class Tags extends Component {
         }
         this.internalAddTag(tag);
     }
+
     onAddingNewTagChange(value) {
         this.setState({newTagText:value});
-        this.props.onAddingNewTagChange(value);
+
+        if (typeof(this.props.onAddingNewTagChange) === "function") {
+            this.props.onAddingNewTagChange(value);
+        }
     }
+
     render() {
         let Tags;
-        if (typeof this.props.renderItem === "function") {
+        if (typeof(this.props.renderItem) === "function") {
             Tags = this.props.tags.map((tag, index) => {
                 return this.props.renderItem(tag, index, this.removeTagByName.bind(this, tag), this.props.enabled);
             });
@@ -100,7 +108,7 @@ class Tags extends Component {
             className += " disabled";
         }
         
-        const typingText = this.props.autoSuggest ? __("Begin typing to search tags") : __("Add tags");
+        const typingText = this.props.autoSuggest ? this.props.searchTagsPlaceholder : this.props.addTagsPlaceholder;
         return (
             <div className={className} 
                 onClick={this.onClick.bind(this) }
@@ -119,9 +127,13 @@ class Tags extends Component {
                         onFocus={this.props.onInputFocus}
                         newTagText={this.state.newTagText}
                         suggestions={this.props.suggestions}
-                        removeLastTag={this.removeLastTag.bind(this)} />}
+                        removeLastTag={this.removeLastTag.bind(this)}
+                        addTagsPlaceholder={this.props.addTagsPlaceholder} />}
                 </div>
-                {this.state.isInputVisible && this.props.autoSuggest && this.props.suggestions.length > 0 &&
+                {this.state.isInputVisible && 
+                    this.props.autoSuggest && 
+                    this.props.suggestions && 
+                    this.props.suggestions.length > 0 &&
                 <div className="suggestions-container">
                     <Suggestions suggestions={this.props.suggestions} 
                         onSelectSuggestion={this.addTag.bind(this)}
@@ -144,10 +156,13 @@ Tags.propTypes = {
     renderItem: PropTypes.func,
     onScrollUpdate: PropTypes.func,
     onInputFocus: PropTypes.func,
-    onInputBlur: PropTypes.func
+    addTagsPlaceholder: PropTypes.string.isRequired,
+    searchTagsPlaceholder: PropTypes.string
 };
 
 Tags.defaultProps = {
+    addTagsPlaceholder: "Add Tags",
+    searchTagsPlaceholder: "Begin typing to search tags",
     enabled: true,
     autoSuggest: false,
     suggestions: []
