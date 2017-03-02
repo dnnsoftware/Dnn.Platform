@@ -315,7 +315,7 @@ export default class DatePicker extends Component {
             displayDate += " - " + displaySecondDate;
         }
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
-        const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " show" : " hidden");
+        const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " visible" : " invisible");
 
         firstDate = firstDate ? new Date(firstDate) : null;
         secondDate = secondDate ? new Date(secondDate) : null;
