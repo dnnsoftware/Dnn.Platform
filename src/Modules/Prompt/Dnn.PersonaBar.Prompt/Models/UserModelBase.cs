@@ -1,5 +1,5 @@
 ﻿using DotNetNuke.Entities.Users;
-using System;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public int UserId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public DateTime LastLogin { get; set; }
+        public string LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
         public bool IsAuthorized { get; set; }
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public UserModelBase(UserInfo user)
         {
             Email = user.Email;
-            LastLogin = user.Membership.LastLoginDate;
+            LastLogin = user.Membership.LastLoginDate.ToPromptShortDateString();
             UserId = user.UserID;
             Username = user.Username;
             IsDeleted = user.IsDeleted;

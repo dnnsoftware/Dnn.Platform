@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Dnn.PersonaBar.Prompt.Common;
 using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.PersonaBar.Prompt.Models
@@ -7,7 +7,7 @@ namespace Dnn.PersonaBar.Prompt.Models
     {
         public int ScheduleId;
         public string FriendlyName;
-        public DateTime NextStart;
+        public string NextStart;
         public bool Enabled;
 
         #region Constructors
@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         {
             Enabled = item.Enabled;
             FriendlyName = item.FriendlyName;
-            NextStart = item.NextStart;
+            NextStart = item.NextStart.ToPromptShortDateAndTimeString();
             ScheduleId = item.ScheduleID;
         }
         #endregion

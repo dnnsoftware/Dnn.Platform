@@ -1,5 +1,5 @@
-﻿using System;
-using DotNetNuke.Security.Roles;
+﻿using DotNetNuke.Security.Roles;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Models
         public RoleModelBase(RoleInfo role)
         {
             AutoAssign = role.AutoAssignment;
-            ModifiedDate = role.LastModifiedOnDate.ToShortDateString();
+            ModifiedDate = role.LastModifiedOnDate.ToPromptShortDateString();
             ModifiedBy = role.LastModifiedByUserID;
             IsPublic = role.IsPublic;
             RoleGroupId = role.RoleGroupID;

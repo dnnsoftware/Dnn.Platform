@@ -165,6 +165,7 @@
     <Compile Include="Common\ControllerBase.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="Common\EmailValidator.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Interfaces\IConsoleCommand.cs" />
     <Compile Include="Models\CommandInputModel.cs" />
     <Compile Include="Models\ConsoleErrorResultModel.cs" />

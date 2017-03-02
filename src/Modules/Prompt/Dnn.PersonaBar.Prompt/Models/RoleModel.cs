@@ -1,5 +1,5 @@
 ﻿using DotNetNuke.Security.Roles;
-using System;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -15,8 +15,8 @@ namespace Dnn.PersonaBar.Prompt.Models
         }
         public RoleModel(RoleInfo role): base(role)
         {
-            ModifiedDate = role.LastModifiedOnDate.ToString("F");
-            CreatedDate = role.CreatedOnDate.ToString("F");
+            ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
+            CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
             CreatedBy = role.CreatedByUserID;
             Description = role.Description;
         }

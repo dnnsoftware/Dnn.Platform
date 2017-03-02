@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DotNetNuke.Entities.Users;
+﻿using DotNetNuke.Entities.Users;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -11,10 +8,10 @@ namespace Dnn.PersonaBar.Prompt.Models
         public string DisplayName;
         public string FirstName;
         public string LastName;
-        public DateTime LastActivity;
-        public DateTime LastLockout;
-        public DateTime LastPasswordChange;
-        public DateTime Created;
+        public string LastActivity;
+        public string LastLockout;
+        public string LastPasswordChange;
+        public string Created;
 
         // provide a default field order for use of callers
         public static new string[] FieldOrder = 
@@ -41,13 +38,14 @@ namespace Dnn.PersonaBar.Prompt.Models
         }
         public UserModel(UserInfo user): base(user)
         {
+            LastLogin = user.Membership.LastLoginDate.ToPromptLongDateString();
             DisplayName = user.DisplayName;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            LastActivity = user.Membership.LastActivityDate;
-            LastLockout = user.Membership.LastLockoutDate;
-            LastPasswordChange = user.Membership.LastPasswordChangeDate;
-            Created = user.CreatedOnDate;
+            LastActivity = user.Membership.LastActivityDate.ToPromptLongDateString();
+            LastLockout = user.Membership.LastLockoutDate.ToPromptLongDateString();
+            LastPasswordChange = user.Membership.LastPasswordChangeDate.ToPromptLongDateString();
+            Created = user.CreatedOnDate.ToPromptLongDateString();
         }
         #endregion
 

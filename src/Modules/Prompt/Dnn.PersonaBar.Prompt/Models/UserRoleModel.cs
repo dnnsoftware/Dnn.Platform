@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -9,9 +9,9 @@ namespace Dnn.PersonaBar.Prompt.Models
         public bool IsPublic;
         public int PortalId;
         public int UserRoleId;
-        public DateTime Start;
+        public string Start;
 
-        public DateTime End;
+        public string End;
         public static UserRoleModel FromDnnUserRoleInfo(DotNetNuke.Entities.Users.UserRoleInfo ri)
         {
             UserRoleModel urm = new UserRoleModel
@@ -20,8 +20,8 @@ namespace Dnn.PersonaBar.Prompt.Models
                 RoleName = ri.RoleName,
                 IsPublic = ri.IsPublic,
                 PortalId = ri.PortalID,
-                Start = ri.EffectiveDate,
-                End = ri.ExpiryDate
+                Start = ri.EffectiveDate.ToPromptShortDateString(),
+                End = ri.ExpiryDate.ToPromptShortDateString()
             };
             return urm;
         }

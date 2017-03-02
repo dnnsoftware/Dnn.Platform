@@ -1,5 +1,5 @@
 ﻿using DotNetNuke.Services.Scheduling;
-using System;
+using Dnn.PersonaBar.Prompt.Common;
 
 namespace Dnn.PersonaBar.Prompt.Models
 {
@@ -10,8 +10,8 @@ namespace Dnn.PersonaBar.Prompt.Models
     {
         public string TypeName { get; set; }
         public bool CatchUp { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime StartDate { get; set; }
+        public string Created { get; set; }
+        public string StartDate { get; set; }
 
         #region Constructors
         public TaskModel()
@@ -19,9 +19,10 @@ namespace Dnn.PersonaBar.Prompt.Models
         }
         public TaskModel(ScheduleItem item):base(item)
         {
+            NextStart = item.NextStart.ToPromptLongDateString();
             CatchUp = item.CatchUpEnabled;
-            Created = item.CreatedOnDate;
-            StartDate = item.ScheduleStartDate;
+            Created = item.CreatedOnDate.ToPromptLongDateString();
+            StartDate = item.ScheduleStartDate.ToPromptLongDateString();
             TypeName = item.TypeFullName;
         }
         #endregion
