@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Data;
@@ -74,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ImportData(ExportImportJob importJob, IExportImportRepository repository)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
         {
             var portalId = importJob.PortalId;
             var users = repository.GetAllItems<Users>(null, true, 10, 100);

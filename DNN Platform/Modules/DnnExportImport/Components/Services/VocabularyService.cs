@@ -19,12 +19,21 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
+using System.Web.UI.WebControls;
+using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Taxonomy;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Users;
+using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -72,60 +81,172 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage += 25;
         }
 
-        public void ImportData(ExportImportJob importJob, IExportImportRepository repository)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
         {
             ProgressPercentage = 0;
 
-            var otherScopeTypes = repository.GetAllItems<TaxonomyScopeType>();
+            var otherScopeTypes = repository.GetAllItems<TaxonomyScopeType>().ToList();
+            ProcessScopeTypes(exporteDto, otherScopeTypes);
+            ProgressPercentage += 25;
+
+            //var otherVocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>();
+            //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
+            ProgressPercentage += 25;
+
+            var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>();
+            ProcessVocabularies(importJob, exporteDto, repository, otherScopeTypes, otherVocabularies);
+            ProgressPercentage += 25;
+
+            var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
+            ProcessTaxonomyTerms(importJob, exporteDto, repository, otherScopeTypes, otherTaxonomyTerms);
+            ProgressPercentage += 25;
+        }
+
+        private static void ProcessScopeTypes(ExportDto exporteDto,
+            IEnumerable<TaxonomyScopeType> otherScopeTypes)
+        {
+            var dataService = Util.GetDataService();
             var localScopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
+
             foreach (var other in otherScopeTypes)
             {
                 var local = localScopeTypes.FirstOrDefault(s => s.ScopeType == other.ScopeType);
+                if (local != null)
+                {
+                    switch (exporteDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Ignore:
+                            break;
+                        case CollisionResolution.Overwrite:
+                            var sType = new ScopeType
+                            {
+                                ScopeTypeId = local.ScopeTypeID,
+                                ScopeType = other.ScopeType,
+                            };
+                            dataService.UpdateScopeType(sType);
+                            other.LocalId = local.ScopeTypeID;
+                            break;
+                        case CollisionResolution.Duplicate:
+                            local = null; // so we can write new one below
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                    }
+                }
+
                 if (local == null)
                 {
-                    //TODO: add remote object to local database
-                }
-                else
-                {
-                    other.LocalId = local.ScopeTypeID;
-                    //TODO: check collision and behave accordingly
+                    var sType = new ScopeType
+                    {
+                        ScopeType = other.ScopeType
+                    };
+
+                    other.LocalId = Util.GetDataService().AddScopeType(sType);
                 }
             }
-            ProgressPercentage += 25;
+        }
 
-            var otherSocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>();
-            var localVocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-            foreach (var other in otherSocabularyTypes)
+        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository,
+            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
+        {
+            var dataService = Util.GetDataService();
+            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
+            foreach (var other in otherVocabularies)
             {
-                var local = localVocabularyTypes.FirstOrDefault(s => s.VocabularyType == other.VocabularyType);
+                var addedBy = GetUserId(importJob, other.CreatedByUserID ?? -1, other.CreatedByUserName);
+                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID ?? -1, other.LastModifiedByUserName);
+                var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
+
+                if (local != null)
+                {
+                    switch (exporteDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Ignore:
+                            break;
+                        case CollisionResolution.Overwrite:
+                            //TODO: add logic here
+                            break;
+                        case CollisionResolution.Duplicate:
+                            local = null; // so we can add new one below
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                    }
+                }
+
                 if (local == null)
                 {
-                    //TODO: add remote object to local database
-                }
-                else
-                {
-                    //TODO: check collision and behave accordingly
+                    //TODO add new
                 }
             }
-            ProgressPercentage += 25;
+        }
 
-            var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>();
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository,
+            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyTerm> otherTaxonomyTerms)
+        {
+            var dataService = Util.GetDataService();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
             foreach (var other in otherTaxonomyTerms)
             {
-                //TODO
-                if (localTaxonomyTerms.Any()) { }
-            }
-            ProgressPercentage += 25;
+                var addedBy = GetUserId(importJob, other.CreatedByUserID ?? -1, other.CreatedByUserName);
+                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID ?? -1, other.LastModifiedByUserName);
+                var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
 
-            var otherTaxonomyVocabulary = repository.GetAllItems<TaxonomyVocabulary>();
-            var localTaxonomyVocabulary = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
-            foreach (var other in otherTaxonomyVocabulary)
-            {
-                //TODO
-                if (localTaxonomyVocabulary.Any()) { }
+                if (local != null)
+                {
+                    switch (exporteDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Ignore:
+                            break;
+                        case CollisionResolution.Overwrite:
+                            //TODO: adjust VocabularyID
+                            var term = new Term(other.Name, other.Description, other.VocabularyID)
+                            {
+                                //Name = other.Name,
+                                //VocabularyID = other.VocabularyID, //TODO: adjust ID
+                                //ParentTermID = other.ParentTermID,
+                                //Description = other.Description,
+                                //Weight = other.Weight,
+                                //TermLeft = other.TermLeft,
+                                //CreatedByUserID = addedBy,
+                                //CreatedOnDate = other.CreatedOnDate,
+                                //LastModifiedByUserID = modifiedBy,
+                                //LastModifiedOnDate = other.LastModifiedOnDate,
+                            };
+
+                            //dataService.UpdateSimpleTerm(term);
+                            break;
+                        case CollisionResolution.Duplicate:
+                            local = null; // so we can write new one below
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                    }
+
+                }
+
+                if (local == null)
+                {
+                    //TODO add new
+                    var term = new Term
+                    {
+
+                    };
+
+                    //dataService.AddHeirarchicalTerm()
+                }
             }
-            ProgressPercentage += 25;
+        }
+
+        private int GetUserId(ExportImportJob importJob, int exportedUserId, string exportUsername)
+        {
+            if (exportedUserId <= 0)
+                return -1;
+            if (exportedUserId == 1)
+                return 1;
+
+            var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
+            return user.UserID < 0 ? importJob.CreatedBy : user.UserID;
         }
     }
 }

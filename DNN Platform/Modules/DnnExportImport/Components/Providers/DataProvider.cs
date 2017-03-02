@@ -20,6 +20,7 @@
 #endregion
 
 using System.Data;
+using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Providers
 {
@@ -50,43 +51,43 @@ namespace Dnn.ExportImport.Components.Providers
 
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>(
+            return PlatformDataProvider.Instance().ExecuteScalar<int>(
                 "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
         }
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
         {
-            DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus);
+            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus);
         }
 
         public IDataReader GetFirstActiveJob()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
         }
 
         public IDataReader GetAllJobs(int? portalId, int? pageSize, int?pageIndex)
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
         }
 
         public IDataReader GetAllScopeTypes()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_ScopeTypes");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_ScopeTypes");
         }
 
         public IDataReader GetAllVocabularyTypes()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_VocabularyTypes");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_VocabularyTypes");
         }
 
         public IDataReader GetAllTerms()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms");
         }
 
         public IDataReader GetAllVocabularies()
         {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies");
         }
         #endregion
     }

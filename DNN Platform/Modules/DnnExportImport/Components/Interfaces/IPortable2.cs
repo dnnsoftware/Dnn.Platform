@@ -19,8 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Repository;
+using DotNetNuke.UI.UserControls;
 
 namespace Dnn.ExportImport.Components.Interfaces
 {
@@ -47,7 +49,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// </summary>
         bool CanRollback { get; }
 
-
         /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
@@ -56,6 +57,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs import operation of the object.
         /// </summary>
-        void ImportData(ExportImportJob importJob, IExportImportRepository repository);
+        void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository);
     }
 }

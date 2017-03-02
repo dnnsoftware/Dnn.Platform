@@ -158,7 +158,7 @@ namespace Dnn.ExportImport.Components.Engines
                             continue;
                         }
 
-                        portable2Obj.ImportData(importJob, ctx);
+                        portable2Obj.ImportData(importJob, exporedtDto, ctx);
                         scheduleHistoryItem.AddLogNote("<br/>Processed Item: " + portable2Obj.Category);
                         result.Status = JobStatus.InProgress;
                         result.ProcessedCount += 1;
