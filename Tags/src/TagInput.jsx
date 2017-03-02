@@ -96,7 +96,7 @@ export default class TagInput extends Component {
                     <input
                         ref="inputField"
                         type="text"
-                        placeholder={__("Add tags")}
+                        placeholder={this.props.addTagsPlaceholder}
                         onKeyDown={this.onKeyDown.bind(this)}
                         value={this.props.newTagText}
                         
@@ -116,5 +116,6 @@ TagInput.propTypes = {
     addTag: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     removeLastTag: PropTypes.func.isRequired,
+    addTagsPlaceholder: PropTypes.string.isRequired,
     onFocus: PropTypes.func
 };

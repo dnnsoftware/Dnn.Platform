@@ -108,7 +108,7 @@ class Tags extends Component {
             className += " disabled";
         }
         
-        const typingText = this.props.autoSuggest ? __("Begin typing to search tags") : __("Add tags");
+        const typingText = this.props.autoSuggest ? this.props.searchTagsPlaceholder : this.props.addTagsPlaceholder;
         return (
             <div className={className} 
                 onClick={this.onClick.bind(this) }
@@ -127,7 +127,8 @@ class Tags extends Component {
                         onFocus={this.props.onInputFocus}
                         newTagText={this.state.newTagText}
                         suggestions={this.props.suggestions}
-                        removeLastTag={this.removeLastTag.bind(this)} />}
+                        removeLastTag={this.removeLastTag.bind(this)}
+                        addTagsPlaceholder={this.props.addTagsPlaceholder} />}
                 </div>
                 {this.state.isInputVisible && 
                     this.props.autoSuggest && 
@@ -154,10 +155,14 @@ Tags.propTypes = {
     suggestions: PropTypes.arrayOf(PropTypes.object),
     renderItem: PropTypes.func,
     onScrollUpdate: PropTypes.func,
-    onInputFocus: PropTypes.func
+    onInputFocus: PropTypes.func,
+    addTagsPlaceholder: PropTypes.string.isRequired,
+    searchTagsPlaceholder: PropTypes.string
 };
 
 Tags.defaultProps = {
+    addTagsPlaceholder: "Add Tags",
+    searchTagsPlaceholder: "Begin typing to search tags",
     enabled: true,
     autoSuggest: false,
     suggestions: []
