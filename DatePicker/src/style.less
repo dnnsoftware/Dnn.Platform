@@ -18,7 +18,7 @@
         height: 0;
         border: none;
     }
-    .calendar-container {
+    .calendar-container {       
         position: absolute;
         width: 256px;
         left: 0px;
@@ -27,11 +27,13 @@
         box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
         opacity: 0;
         pointer-events: none;
-        transition: @transition;
+        transition: 300ms;
+        transform-origin: 100% 0% 0px;
+        transform: scale(1);
         z-index: 1;
         background: white;
         text-align: center;
-        &.hidden {
+        &.invisible {
             * {
                 pointer-events: none !important;
             }
@@ -40,33 +42,10 @@
             width: 256px;
             float: left;
         }
-        &.show {
+        &.visible  {
             opacity: 1;
             pointer-events: all;
-        }
-        .clear-filter-checkbox { 
-            float: left;
-            width: 280px;
-            height: 32px;
-            text-align: left;
-            .dnn-checkbox-container {    
-                display: inline-block;  
-                margin-left: 12px;
-                margin-top: 6px;      
-                .checkbox {
-                    display: inline-block;
-                }
-                label {
-                    position: relative;
-                    padding: 0 3px 0 3px;
-                    color: #000000;
-                }
-                .dnn-label {
-                    position: relative;
-                    top: -5px;                                
-                }
-            }
-        }
+        }        
     }
     .calendar-icon {
         width: 30px;
@@ -322,7 +301,7 @@
             box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
             transition: @transition;
             opacity: 0;
-            &.show {
+            &.visible {
                 opacity: 1;
             }
             .time-options {
