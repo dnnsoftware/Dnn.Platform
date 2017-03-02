@@ -37,7 +37,7 @@ export default class TagInput extends Component {
         this.node = null;
     }
 
-    addTag(tag){
+    addTag(tag) {
         if (typeof (this.props.addTag) === "function") {
             this.props.addTag(tag);    
         }

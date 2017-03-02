@@ -10,7 +10,7 @@ const style = {
 };
 
 export default class Suggestions extends Component {
-    onSelectSuggestion(tag){
+    onSelectSuggestion(tag) {
         if (typeof (this.props.onSelectSuggestion) === "function") {
             this.props.onSelectSuggestion(tag);    
         }

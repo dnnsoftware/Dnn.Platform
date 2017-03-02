@@ -20,7 +20,7 @@ class Tags extends Component {
     }
 
     internalAddTag(newTagText) {
-        if (newTagText) {
+        if (newTagText && typeof(this.props.onNewTag) === "function") {
             this.props.onNewTag(newTagText);
         }
 
@@ -50,7 +50,6 @@ class Tags extends Component {
             this.props.onUpdateTags(tags);
         });
     }
-
     
     onClick() {
         if (this.state.isInputVisible) {
@@ -59,13 +58,17 @@ class Tags extends Component {
 
         this.setState({ isInputVisible: true });
     }
+
     onInputClose() {
         if (!this.state.isInputVisible) {
             return;
         }
 
         this.setState({ isInputVisible: false,  newTagText: ""});
-        this.props.onAddingNewTagChange("");
+        
+        if (typeof(this.props.onAddingNewTagChange) === "function") {
+            this.props.onAddingNewTagChange("");
+        }
     }
 
     addTag(tag) {
@@ -74,13 +77,18 @@ class Tags extends Component {
         }
         this.internalAddTag(tag);
     }
+
     onAddingNewTagChange(value) {
         this.setState({newTagText:value});
-        this.props.onAddingNewTagChange(value);
+
+        if (typeof(this.props.onAddingNewTagChange) === "function") {
+            this.props.onAddingNewTagChange(value);
+        }
     }
+
     render() {
         let Tags;
-        if (typeof this.props.renderItem === "function") {
+        if (typeof(this.props.renderItem) === "function") {
             Tags = this.props.tags.map((tag, index) => {
                 return this.props.renderItem(tag, index, this.removeTagByName.bind(this, tag), this.props.enabled);
             });
@@ -121,7 +129,10 @@ class Tags extends Component {
                         suggestions={this.props.suggestions}
                         removeLastTag={this.removeLastTag.bind(this)} />}
                 </div>
-                {this.state.isInputVisible && this.props.autoSuggest && this.props.suggestions.length > 0 &&
+                {this.state.isInputVisible && 
+                    this.props.autoSuggest && 
+                    this.props.suggestions && 
+                    this.props.suggestions.length > 0 &&
                 <div className="suggestions-container">
                     <Suggestions suggestions={this.props.suggestions} 
                         onSelectSuggestion={this.addTag.bind(this)}
@@ -143,8 +154,7 @@ Tags.propTypes = {
     suggestions: PropTypes.arrayOf(PropTypes.object),
     renderItem: PropTypes.func,
     onScrollUpdate: PropTypes.func,
-    onInputFocus: PropTypes.func,
-    onInputBlur: PropTypes.func
+    onInputFocus: PropTypes.func
 };
 
 Tags.defaultProps = {
