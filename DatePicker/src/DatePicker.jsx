@@ -286,8 +286,7 @@ export default class DatePicker extends Component {
 
     onClearDatesPressed() {
         const Date = {FirstDate: null, SecondDate: null };        
-        this.setState({ Date });
-        setTimeout(() => this.callUpdateDate(), 0);
+        this.setState({ Date }, () => this.callUpdateDate());
     }
    
     render() {
