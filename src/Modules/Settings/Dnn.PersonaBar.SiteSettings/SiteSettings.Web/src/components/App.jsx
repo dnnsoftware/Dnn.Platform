@@ -56,6 +56,7 @@ class App extends Component {
     }
 
     changePortalId(portalId) {
+        if (portalId === undefined) return;
         this.setState({
             bodyShowing: false
         }, () => {
@@ -67,6 +68,7 @@ class App extends Component {
     }
 
     changeCultureCode(cultureCode) {
+        if (cultureCode === undefined) return;
         this.setState({
             bodyShowing: false
         }, () => {
@@ -78,15 +80,24 @@ class App extends Component {
     }
 
     changePortalIdCultureCode(portalId, cultureCode) {
-        this.setState({
-            bodyShowing: false
-        }, () => {
+        if (portalId === undefined && cultureCode === undefined) return;
+        else if (portalId === undefined) {
+            this.changeCultureCode(cultureCode);
+        }
+        else if (cultureCode === undefined) {
+            this.changePortalId(portalId);
+        }
+        else {
             this.setState({
-                bodyShowing: true,
-                portalId,
-                cultureCode
+                bodyShowing: false
+            }, () => {
+                this.setState({
+                    bodyShowing: true,
+                    portalId,
+                    cultureCode
+                });
             });
-        });
+        }
     }
 
     updateReferrerInfo(event) {
@@ -102,23 +113,17 @@ class App extends Component {
 
         // // Listen for the event.
         document.addEventListener("portalIdChanged", (e) => {
-            if (state.portalId !== e.portalId) {
-                this.changePortalId(e.portalId);
-            }
+            this.changePortalId(e.portalId);
             this.updateReferrerInfo(e);
         }, false);
 
         document.addEventListener("cultureCodeChanged", (e) => {
-            if (state.cultureCode !== e.cultureCode) {
-                this.changeCultureCode(e.cultureCode);
-            }
+            this.changeCultureCode(e.cultureCode);
             this.updateReferrerInfo(e);
         }, false);
 
         document.addEventListener("portalIdCultureCodeChanged", (e) => {
-            if (state.cultureCode !== e.cultureCode && this.state.portalId !== e.portalId) {
-                this.changePortalIdCultureCode(e.portalId, e.cultureCode);
-            }
+            this.changePortalIdCultureCode(e.portalId, e.cultureCode);
             this.updateReferrerInfo(e);
         }, false);
 
@@ -135,10 +140,13 @@ class App extends Component {
 
     componentWillReceiveProps(props) {
         const {state} = this;
-        if (state.portalId !== props.portalId && props.portalId !== undefined) {
+        if (state.portalId !== props.portalId && state.cultureCode !== props.cultureCode) {
+            this.changePortalIdCultureCode(props.portalId, props.cultureCode);
+        }
+        else if (state.portalId !== props.portalId) {
             this.changePortalId(props.portalId);
         }
-        if (state.cultureCode !== props.cultureCode && props.cultureCode !== undefined) {
+        else if (state.cultureCode !== props.cultureCode) {
             this.changeCultureCode(props.cultureCode);
         }
     }
@@ -163,7 +171,7 @@ class App extends Component {
                     referrer={state.referrer}
                     referrerText={state.referrerText}
                     backToReferrerFunc={state.backToReferrerFunc}
-                    />
+                />
                 <PersonaBarPage isOpen={props.selectedPage === 0}>
                     <PersonaBarPageHeader title={resx.get("nav_SiteSettings")}>
                     </PersonaBarPageHeader>
@@ -178,7 +186,7 @@ class App extends Component {
                         openHtmlEditorManager={this.openPersonaBarPage.bind(this, Pages.HtmlEditorManager)}
                         openLocalizedContent={this.openPersonaBarPage.bind(this, Pages.LocalizedContent)}
                         cultureCode={state.cultureCode}
-                        />
+                    />
                 </PersonaBarPage>
 
                 <PersonaBarPage isOpen={props.selectedPage === Pages.HtmlEditorManager}>
