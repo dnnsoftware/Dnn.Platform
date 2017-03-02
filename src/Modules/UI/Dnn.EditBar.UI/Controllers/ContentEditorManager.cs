@@ -157,12 +157,9 @@ namespace Dnn.EditBar.UI.Controllers
 
                 try
                 {
-                    if (!Page.IsPostBack)
-                    {
-                        //find update panels in pane and fire the unload event for a known issue: CONTENT-4039
-                        var updatePanels = GetUpdatePanelsInPane(pane);
-                        updatePanels.ForEach(p => p.Unload += UpdatePanelUnloadEvent);
-                    }
+                    //find update panels in pane and fire the unload event for a known issue: CONTENT-4039
+                    var updatePanels = GetUpdatePanelsInPane(pane);
+                    updatePanels.ForEach(p => p.Unload += UpdatePanelUnloadEvent);
 
                     var paneIndex = pane.Parent.Controls.IndexOf(pane);
                     pane.Parent.Controls.AddAt(paneIndex, ajaxPanel);
