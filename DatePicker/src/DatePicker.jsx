@@ -25,16 +25,12 @@ Weekday.propTypes = WeekdayPropTypes;
 
 const clearButtonStyleVisible = {
     transition: "300ms",
-    transformOrigin: "100% 0% 0px",
-    transform: "scale(1)",
     marginRight: 0,
     opacity: 1
 };
 
 const clearButtonStyleInvisible = {
     transition: "300ms",
-    transformOrigin: "100% 0% 0px",
-    transform: "scale(1)",
     marginRight: 0,
     opacity: 0
 };
