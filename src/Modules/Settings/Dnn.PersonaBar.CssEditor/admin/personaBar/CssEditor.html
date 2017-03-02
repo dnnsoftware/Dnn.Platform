@@ -6,11 +6,11 @@
     <div class="cssForm">
         <div class="form-item" data-bind="visible:portals().length >1 ">
             <div>
-                <select data-bind="options: portals, optionsText: 'PortalName', value: portal, disable: portals().length < 2"></select>
+                <select data-bind="options: portals, optionsText: 'PortalName', value: portal, disable: portals().length < 2" aria-label="Sites"></select>
             </div>
         </div>
         <div class="form-item">
-            <textarea data-bind="value: stylesheet"></textarea>
+            <textarea data-bind="value: stylesheet" aria-label="Content"></textarea>
         </div>
         <div class="actions">
             <button class="button cancel dnn-ui-common-button small" data-bind="html: resx.RestoreDefault, click: restoreStyleSheet"></button>
