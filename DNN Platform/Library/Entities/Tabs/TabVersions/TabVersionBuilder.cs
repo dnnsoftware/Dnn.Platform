@@ -721,7 +721,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
 
-            if (_moduleController.IsSharedModule(moduleInfo))
+            if (moduleInfo == null || _moduleController.IsSharedModule(moduleInfo))
             {
                 return;
             }
