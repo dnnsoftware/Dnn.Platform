@@ -70,6 +70,10 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\Taxonomy\TaxonomyScopeType.cs" />
+    <Compile Include="Components\Dto\Taxonomy\TaxonomyTerm.cs" />
+    <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabulary.cs" />
+    <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabularyType.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Interfaces\IPortable2.cs" />
@@ -83,10 +87,11 @@
     <Compile Include="Components\Interfaces\IExportImportRepository.cs" />
     <Compile Include="Components\Repository\ExportImportRepository.cs" />
     <Compile Include="Components\Models\ProgressToken.cs" />
-    <Compile Include="Components\Provider\DataProvider.cs" />
+    <Compile Include="Components\Providers\DataProvider.cs" />
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
     <Compile Include="Components\Services\UsersExportService.cs" />
+    <Compile Include="Components\Services\VocabularyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExportImportController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />

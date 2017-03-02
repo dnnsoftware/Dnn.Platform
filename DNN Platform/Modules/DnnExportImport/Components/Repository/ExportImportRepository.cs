@@ -26,19 +26,36 @@ namespace Dnn.ExportImport.Components.Repository
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         private void Dispose(bool isDisposing)
         {
             var temp = Interlocked.Exchange(ref _lightDb, null);
             temp?.Dispose();
+            if (isDisposing)
+                GC.SuppressFinalize(this);
+        }
+
+        public T AddSingleItem<T>(T item) where T : class
+        {
+            var collection = _lightDb.GetCollection<T>(item.GetType().Name.ToLowerInvariant());
+            collection.Insert(item);
+            return item;
+        }
+
+        public T GetSingleItem<T>() where T : class
+        {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
+            var collection = _lightDb.GetCollection<T>(collectionName);
+            var first = collection.Min();
+            return collection.FindById(first);
         }
 
         public T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto
         {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
             item.ReferenceId = referenceId;
-            var collection = _lightDb.GetCollection<T>(item.CollectionName);
+            var collection = _lightDb.GetCollection<T>(collectionName);
             item.Id = collection.Insert(item);
             if (referenceId.HasValue)
             {
@@ -50,39 +67,41 @@ namespace Dnn.ExportImport.Components.Repository
 
         public IEnumerable<T> CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
         {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
             var allItems = items.ToList();
             foreach (var item in allItems)
             {
                 item.ReferenceId = referenceId;
-                var collection = _lightDb.GetCollection<T>(item.CollectionName);
+                var collection = _lightDb.GetCollection<T>(collectionName);
                 item.Id = collection.Insert(item);
             }
             return allItems;
         }
 
-        public T GetItem<T>(Expression<Func<T, bool>> predicate, string collectionName) where T : BasicExportImportDto
+        public T GetItem<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
         {
-            return InternalGetItems(predicate, collectionName).FirstOrDefault();
+            return InternalGetItems(predicate).FirstOrDefault();
         }
 
-        public IEnumerable<T> GetItems<T>(Expression<Func<T, bool>> predicate, string collectionName,
+        public IEnumerable<T> GetItems<T>(Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {
-            return InternalGetItems(predicate, collectionName, orderKeySelector, asc, skip, max);
+            return InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
 
-        public IEnumerable<T> GetAllItems<T>(string collectionName,
+        public IEnumerable<T> GetAllItems<T>(
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {
-            return InternalGetItems(null, collectionName, orderKeySelector, asc, skip, max);
+            return InternalGetItems(null, orderKeySelector, asc, skip, max);
         }
 
-        private IEnumerable<T> InternalGetItems<T>(Expression<Func<T, bool>> predicate, string collectionName,
+        private IEnumerable<T> InternalGetItems<T>(Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
             var collection = _lightDb.GetCollection<T>(collectionName);
             var result = predicate != null ? collection.Find(predicate) : collection.FindAll();
 
@@ -100,29 +119,31 @@ namespace Dnn.ExportImport.Components.Repository
             return result.AsEnumerable();
         }
 
-        public T GetItem<T>(int id, string collectionName) where T : BasicExportImportDto
+        public T GetItem<T>(int id) where T : BasicExportImportDto
         {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
             var collection = _lightDb.GetCollection<T>(collectionName);
             return collection.FindById(id);
         }
 
-        public IEnumerable<T> GetItems<T>(IEnumerable<int> idList, string collectionName)
+        public IEnumerable<T> GetItems<T>(IEnumerable<int> idList)
             where T : BasicExportImportDto
         {
             Expression<Func<T, bool>> predicate = p => idList.Contains(p.Id);
-            return InternalGetItems(predicate, collectionName);
+            return InternalGetItems(predicate);
         }
 
-        public IEnumerable<T> GetRelatedItems<T>(int referenceId, string collectionName)
+        public IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto
         {
             Expression<Func<T, bool>> predicate = p => p.ReferenceId == referenceId;
-            return InternalGetItems(predicate, collectionName);
+            return InternalGetItems(predicate);
         }
 
         public T UpdateItem<T>(int id, T item, int? referenceId) where T : BasicExportImportDto
         {
-            var collection = _lightDb.GetCollection<T>(item.CollectionName);
+            var collectionName = typeof(T).Name.ToLowerInvariant();
+            var collection = _lightDb.GetCollection<T>(collectionName);
 
             if (collection.FindById(id) == null) throw new KeyNotFoundException();
 
@@ -136,8 +157,9 @@ namespace Dnn.ExportImport.Components.Repository
             return item;
         }
 
-        public bool DeleteItem<T>(int id, string collectionName) where T : BasicExportImportDto
+        public bool DeleteItem<T>(int id) where T : BasicExportImportDto
         {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
             var collection = _lightDb.GetCollection<T>(collectionName);
             var item = collection.FindById(id);
             if (item == null) throw new KeyNotFoundException();

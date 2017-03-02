@@ -21,7 +21,7 @@
 
 using System;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Provider;
+using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
@@ -30,7 +30,8 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
-            var exportFileName = DateTime.UtcNow.ToString(Constants.ExportDateFormat) + "_" + exportDto.PortalId;
+            var exportFileName = string.Join("_", "DNN_EXPORT",
+                DateTime.UtcNow.ToString(Constants.ExportDateFormat), exportDto.PortalId.ToString());
             var dataObject = JsonConvert.SerializeObject(exportDto);
             return DataProvider.Instance().AddNewJob(
                 exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);

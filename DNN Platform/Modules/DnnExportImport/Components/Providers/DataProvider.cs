@@ -19,11 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Data;
-using DotNetNuke.Common;
 
-namespace Dnn.ExportImport.Components.Provider
+namespace Dnn.ExportImport.Components.Providers
 {
     public class DataProvider
     {
@@ -39,6 +37,11 @@ namespace Dnn.ExportImport.Components.Provider
         public static DataProvider Instance()
         {
             return Provider;
+        }
+
+        private DataProvider()
+        {
+            // so it can't be instantiated outside this class
         }
 
         #endregion
@@ -66,6 +69,25 @@ namespace Dnn.ExportImport.Components.Provider
             return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
         }
 
+        public IDataReader GetAllScopeTypes()
+        {
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_ScopeTypes");
+        }
+
+        public IDataReader GetAllVocabularyTypes()
+        {
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_VocabularyTypes");
+        }
+
+        public IDataReader GetAllTerms()
+        {
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms");
+        }
+
+        public IDataReader GetAllVocabularies()
+        {
+            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies");
+        }
         #endregion
     }
 }

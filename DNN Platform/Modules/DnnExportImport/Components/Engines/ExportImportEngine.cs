@@ -80,6 +80,8 @@ namespace Dnn.ExportImport.Components.Engines
             var dbName = Path.Combine(_dbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             using (var ctx = new ExportImportRepository(dbName))
             {
+                ctx.AddSingleItem(exportDto);
+
                 var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
                 if (implementors.Any())
                 {
@@ -142,9 +144,34 @@ namespace Dnn.ExportImport.Components.Engines
 
             using (var ctx = new ExportImportRepository(dbName))
             {
-                foreach (var portable2Object in GetPortableImplementors())
+                var exporedtDto = ctx.GetSingleItem<ExportDto>();
+                var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
+                if (implementors.Any())
                 {
-                    //TODO: select items from database and if any then
+                    foreach (var portable2Obj in implementors)
+                    {
+                        var selected = exporedtDto.ItemsToExport.FirstOrDefault(
+                            x => x.Equals(portable2Obj.Category, StringComparison.InvariantCultureIgnoreCase));
+
+                        if (string.IsNullOrEmpty(selected))
+                        {
+                            continue;
+                        }
+
+                        portable2Obj.ImportData(importJob, ctx);
+                        scheduleHistoryItem.AddLogNote("<br/>Processed Item: " + portable2Obj.Category);
+                        result.Status = JobStatus.InProgress;
+                        result.ProcessedCount += 1;
+                    }
+                }
+
+                foreach (var page in exporedtDto.Pages)
+                {
+                    //TODO: import pages
+                    if (page != null)
+                    {
+                    }
+                    result.Status = JobStatus.InProgress;
                 }
             }
             importJob.JobStatus =

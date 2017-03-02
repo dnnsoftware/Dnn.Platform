@@ -203,7 +203,6 @@ AS
 	END
 GO
 
-
 IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
     DROP FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
 GO
@@ -222,9 +221,6 @@ AS
 		RETURN  @UserId
 	END
 GO
-
-
-
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
@@ -280,7 +276,6 @@ SELECT
 	WHERE UserId = @UserId AND PortalId = @PortalId
 GO
 
-
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
 GO
@@ -332,4 +327,57 @@ AS
 	  ,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
 	WHERE UserID = @UserId AND PortalID = @PortalId
+GO
+
+--Taxonomy procedures
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+AS
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_ScopeTypes
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+AS
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+AS
+	SELECT
+		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+AS
+	SELECT
+		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on v.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on v.LastModifiedByUserID = u2.UserID
 GO

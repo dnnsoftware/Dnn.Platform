@@ -20,7 +20,7 @@
 #endregion
 
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Provider;
+using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
