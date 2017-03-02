@@ -40,7 +40,11 @@ namespace Dnn.ExportImport.Components.Repository
             item.ReferenceId = referenceId;
             var collection = _lightDb.GetCollection<T>(item.CollectionName);
             item.Id = collection.Insert(item);
-            collection.EnsureIndex(x => x.ReferenceId);
+            if (referenceId.HasValue)
+            {
+                collection.EnsureIndex(x => x.ReferenceId);
+            }
+
             return item;
         }
 
@@ -125,7 +129,10 @@ namespace Dnn.ExportImport.Components.Repository
             item.ReferenceId = referenceId;
             item.Id = id;
             collection.Update(item);
-            collection.EnsureIndex(x => x.ReferenceId);
+            if (referenceId.HasValue)
+            {
+                collection.EnsureIndex(x => x.ReferenceId);
+            }
             return item;
         }
 
