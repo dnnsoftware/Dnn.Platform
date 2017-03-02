@@ -22,8 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.Web.UI.WebControls;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Taxonomy;
 using Dnn.ExportImport.Components.Entities;
@@ -33,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Users;
-using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -89,16 +86,16 @@ namespace Dnn.ExportImport.Components.Services
             ProcessScopeTypes(exporteDto, otherScopeTypes);
             ProgressPercentage += 25;
 
-            //var otherVocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>();
+            //var otherVocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>().ToList();
             //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
             ProgressPercentage += 25;
 
-            var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>();
-            ProcessVocabularies(importJob, exporteDto, repository, otherScopeTypes, otherVocabularies);
+            var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
+            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
             ProgressPercentage += 25;
 
             var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
-            ProcessTaxonomyTerms(importJob, exporteDto, repository, otherScopeTypes, otherTaxonomyTerms);
+            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
             ProgressPercentage += 25;
         }
 
@@ -113,6 +110,7 @@ namespace Dnn.ExportImport.Components.Services
                 var local = localScopeTypes.FirstOrDefault(s => s.ScopeType == other.ScopeType);
                 if (local != null)
                 {
+                    other.LocalId = local.ScopeTypeID;
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
@@ -124,7 +122,6 @@ namespace Dnn.ExportImport.Components.Services
                                 ScopeType = other.ScopeType,
                             };
                             dataService.UpdateScopeType(sType);
-                            other.LocalId = local.ScopeTypeID;
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can write new one below
@@ -146,25 +143,34 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository,
+        private static void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
             IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var dataService = Util.GetDataService();
             var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
             foreach (var other in otherVocabularies)
             {
-                var addedBy = GetUserId(importJob, other.CreatedByUserID ?? -1, other.CreatedByUserName);
-                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID ?? -1, other.LastModifiedByUserName);
+                var createdBy = GetUserId(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
+                var scope = otherScopeTypes.FirstOrDefault(s => s.ScopeTypeID == other.ScopeTypeID);
 
                 if (local != null)
                 {
+                    other.LocalId = local.VocabularyID;
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             break;
                         case CollisionResolution.Overwrite:
-                            //TODO: add logic here
+                            var vocabulary = new Vocabulary(other.Name, other.Description)
+                            {
+                                IsSystem = other.IsSystem,
+                                Weight = other.Weight,
+                                ScopeId = other.ScopeID ?? 0,
+                                ScopeTypeId = scope?.LocalId ?? 0,
+                            };
+                            dataService.UpdateVocabulary(vocabulary, modifiedBy);
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can add new one below
@@ -176,45 +182,53 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (local == null)
                 {
-                    //TODO add new
+                    var vocabulary = new Vocabulary(other.Name, other.Description)
+                    {
+                        IsSystem = other.IsSystem,
+                        Weight = other.Weight,
+                        ScopeId = other.ScopeID ?? 0,
+                        ScopeTypeId = scope?.LocalId ?? 0,
+                    };
+                    other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
                 }
             }
         }
 
-        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository,
-            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyTerm> otherTaxonomyTerms)
+        private static void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
+            IList<TaxonomyVocabulary> otherVocabularies, IEnumerable<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
             foreach (var other in otherTaxonomyTerms)
             {
-                var addedBy = GetUserId(importJob, other.CreatedByUserID ?? -1, other.CreatedByUserName);
-                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID ?? -1, other.LastModifiedByUserName);
+                var createdBy = GetUserId(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
+                var vocabulary = otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.VocabularyID);
+                var vocabularyId = vocabulary?.LocalId ?? 0;
 
                 if (local != null)
                 {
+                    other.LocalId = local.TermID;
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             break;
                         case CollisionResolution.Overwrite:
-                            //TODO: adjust VocabularyID
-                            var term = new Term(other.Name, other.Description, other.VocabularyID)
+                            var parent = other.ParentTermID.HasValue
+                                ? otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.ParentTermID.Value)
+                                : null;
+                            var term = new Term(other.Name, other.Description, vocabularyId)
                             {
-                                //Name = other.Name,
-                                //VocabularyID = other.VocabularyID, //TODO: adjust ID
-                                //ParentTermID = other.ParentTermID,
-                                //Description = other.Description,
-                                //Weight = other.Weight,
-                                //TermLeft = other.TermLeft,
-                                //CreatedByUserID = addedBy,
-                                //CreatedOnDate = other.CreatedOnDate,
-                                //LastModifiedByUserID = modifiedBy,
-                                //LastModifiedOnDate = other.LastModifiedOnDate,
+                                Name = other.Name,
+                                ParentTermId = parent?.LocalId,
+                                Weight = other.Weight,
                             };
 
-                            //dataService.UpdateSimpleTerm(term);
+                            if (term.ParentTermId.HasValue)
+                                dataService.UpdateHeirarchicalTerm(term, modifiedBy);
+                            else
+                                dataService.UpdateSimpleTerm(term, modifiedBy);
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can write new one below
@@ -227,21 +241,32 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (local == null)
                 {
-                    //TODO add new
-                    var term = new Term
+                    var parent = other.ParentTermID.HasValue
+                        ? otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.ParentTermID.Value)
+                        : null;
+                    var term = new Term(other.Name, other.Description, vocabularyId)
                     {
-
+                        Name = other.Name,
+                        ParentTermId = parent?.LocalId,
+                        Weight = other.Weight,
                     };
 
-                    //dataService.AddHeirarchicalTerm()
+
+                    other.LocalId = term.ParentTermId.HasValue
+                        ? dataService.AddHeirarchicalTerm(term, createdBy)
+                        : dataService.AddSimpleTerm(term, createdBy);
                 }
             }
         }
 
-        private int GetUserId(ExportImportJob importJob, int exportedUserId, string exportUsername)
+        private static int GetUserId(ExportImportJob importJob, int? exportedUserId, string exportUsername)
         {
+            if (!exportedUserId.HasValue)
+                return -1;
+
             if (exportedUserId <= 0)
                 return -1;
+
             if (exportedUserId == 1)
                 return 1;
 

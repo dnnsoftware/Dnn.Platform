@@ -19,8 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Newtonsoft.Json;
+
 namespace Dnn.ExportImport.Components.Dto
 {
+    [JsonObject]
     public class ImportDto
     {
         /// <summary>

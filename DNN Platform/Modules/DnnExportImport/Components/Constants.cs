@@ -24,8 +24,8 @@ namespace Dnn.ExportImport.Components
     public class Constants
     {
         public const string ExportFolder = @"\Install\ExportImport\";
-        public const string ExportDateFormat = "yyyyMMddHHmmss";
-        public const string ExportDbExt = ".xdb"; // exportDB file extension
+        public const string ExportDateFormat = "yyyyMMdd-HHmmss";
+        public const string ExportDbExt = ".dnndb"; // exportDB file extension
         public const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
 
         public const string SharedResources = "/DesktopModules/DnnExportImport/App_LocalResources/ExportImport.resx";

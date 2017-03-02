@@ -5,6 +5,7 @@ using DotNetNuke.Entities.Modules;
 
 namespace Dnn.ExportImport.Components.Entities
 {
+    [Serializable]
     public class ExportImportJob : IHydratable
     {
         public int JobId { get; set; }
