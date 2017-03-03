@@ -73,7 +73,7 @@ export default class FolderPicker extends Component {
             <div className={"item-picker-container" + (this.state.showFolderPicker ? " show" : "") } >
                 <div className="inner-box">
                     <div className="search">
-                        <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder="Search Folders..." />
+                        <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder="Search Folders..." aria-label="Search" />
                         {this.state.searchFolderText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
