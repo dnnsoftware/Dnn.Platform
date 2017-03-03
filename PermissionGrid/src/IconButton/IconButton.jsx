@@ -111,7 +111,7 @@ class IconButton extends Component {
         const {props} = this;
 
         if (typeof props.onClick === "function") {
-            return <a href="#" className={this.getClassName() } style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} onClick={this.onClick.bind(this) } />;
+            return <a href="#" className={this.getClassName() } style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} onClick={this.onClick.bind(this) }  aria-label={props.type} />;
         } else {
             return <span className="icon-flat"  style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} />;
         }

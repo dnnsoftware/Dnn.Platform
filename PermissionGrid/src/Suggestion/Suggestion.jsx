@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM, { findDOMNode } from "react-dom";
 import {debounce} from "throttle-debounce";
 import DropDown from "dnn-dropdown";
 import Label from "dnn-label";
@@ -18,11 +18,16 @@ class Suggestion extends Component {
             selectedValue: {value: -1, label: ""}
         };
 
+        this.comboBoxDom =null;
         this.debounceGetSuggestions = debounce(500, this.debounceGetSuggestions);
     }
 
     componentWillReceiveProps(){
         this.setState({ selectedValue: { value: -1, label: "" }, suggestions: [] });
+    }
+
+    componentDidMount(){
+        findDOMNode(this.comboBoxDom).childNodes[1].setAttribute('aria-label', 'Suggestion');
     }
 
     getSuggestions() {
@@ -84,6 +89,7 @@ class Suggestion extends Component {
             <div className="dnn-suggestion">
                 <span>
                     <Combobox suggest={false}
+                        ref={(dom) => {this.comboBoxDom = dom;}}
                         placeholder={props.localization.placeHolder}
                         open={this.state.suggestions.length > 0 }
                         onToggle={this.onUserSelectorToggle.bind(this) }
