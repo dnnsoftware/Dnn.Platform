@@ -207,6 +207,34 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        &:hover {
+            background: @cerulean;
+        }
+        &:active {
+            background: @matisse;
+        }
+    }
+    button[role="secondary"] {
+        float: right;
+        height: 34px;
+        margin: 10px;
+        background: @white;
+        color: @curiousBlue;
+        padding: 0 22px;
+        border: 1px solid @curiousBlue;        
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+            color: @cerulean;
+            border-color: @cerulean;
+        }
+        &:focus{
+            outline: none;
+        }
+        &:active {
+            color: @matisse;
+            border-color: @matisse;
+        }
     }
     .date-input {
         span {
