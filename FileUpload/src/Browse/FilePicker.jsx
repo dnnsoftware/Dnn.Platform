@@ -115,7 +115,7 @@ export default class FilePicker extends Component {
             <div className={"item-picker-container" + (this.state.showFilePicker ? " show" : "") } >
                 <div className="inner-box">
                     <div className="search">
-                        <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder="Search Files..." />
+                        <input type="text" value={this.state.searchFileText} onChange={this.onChangeSearchFileText.bind(this) } placeholder="Search Files..." aria-label="Search" />
                         {this.state.searchFileText && <div onClick={this.clearSearch.bind(this) } className="clear-button">×</div>}
                         <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
                     </div>
