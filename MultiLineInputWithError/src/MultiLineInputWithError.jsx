@@ -43,6 +43,7 @@ class MultiLineInputWithError extends Component {
                         placeholder={props.placeholder}
                         enabled={props.enabled}
                         maxLength={props.maxLength}
+                        aria-label="Content"
                         />
                     <Tooltip
                         messages={errorMessages}
