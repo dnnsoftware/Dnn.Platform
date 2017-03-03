@@ -125,7 +125,7 @@ namespace Dnn.ExportImport.Components.Services
                                 IsSystem = other.IsSystem,
                                 Weight = other.Weight,
                                 ScopeId = other.ScopeID ?? 0,
-                                ScopeTypeId = scope?.LocalId ?? 0,
+                                ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                             };
                             dataService.UpdateVocabulary(vocabulary, modifiedBy);
                             changed = true;
@@ -145,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
                         IsSystem = other.IsSystem,
                         Weight = other.Weight,
                         ScopeId = other.ScopeID ?? 0,
-                        ScopeTypeId = scope?.LocalId ?? 0,
+                        ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                     };
                     other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
                     changed = true;
