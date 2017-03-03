@@ -99,7 +99,7 @@ export default class TagInput extends Component {
                         placeholder={this.props.addTagsPlaceholder}
                         onKeyDown={this.onKeyDown.bind(this)}
                         value={this.props.newTagText}
-                        
+                        aria-label="Tag"
                         onChange={this.onChange.bind(this)}
                         {...opts}
                     />
