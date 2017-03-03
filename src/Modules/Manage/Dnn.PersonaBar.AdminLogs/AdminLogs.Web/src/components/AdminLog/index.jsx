@@ -209,7 +209,6 @@ class AdminLogPanelBody extends Component {
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
                 <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this)} />
-                <label htmlFor="selectAll"></label>
             </div>
         </div>);
 
