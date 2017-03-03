@@ -28,6 +28,11 @@ namespace Dnn.ExportImport.Components.Dto
     public class ExportDto
     {
         /// <summary>
+        /// Specifies the version of the exportes schema.
+        /// </summary>
+        public string SchemaVersion { get; set; } = "1.0.0";
+
+        /// <summary>
         /// ID of portal to export items from.
         /// </summary>
         public int PortalId { get; set; }

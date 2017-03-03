@@ -83,69 +83,26 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 0;
 
             var otherScopeTypes = repository.GetAllItems<TaxonomyScopeType>().ToList();
-            ProcessScopeTypes(exporteDto, otherScopeTypes);
-            ProgressPercentage += 25;
+            //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
+            ProgressPercentage += 10;
 
             //var otherVocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>().ToList();
             //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
-            ProgressPercentage += 25;
+            ProgressPercentage += 10;
 
             var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
             ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
-            ProgressPercentage += 25;
+            ProgressPercentage += 40;
 
             var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
             ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
-            ProgressPercentage += 25;
-        }
-
-        private static void ProcessScopeTypes(ExportDto exporteDto,
-            IEnumerable<TaxonomyScopeType> otherScopeTypes)
-        {
-            var dataService = Util.GetDataService();
-            var localScopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-
-            foreach (var other in otherScopeTypes)
-            {
-                var local = localScopeTypes.FirstOrDefault(s => s.ScopeType == other.ScopeType);
-                if (local != null)
-                {
-                    other.LocalId = local.ScopeTypeID;
-                    switch (exporteDto.CollisionResolution)
-                    {
-                        case CollisionResolution.Ignore:
-                            break;
-                        case CollisionResolution.Overwrite:
-                            var sType = new ScopeType
-                            {
-                                ScopeTypeId = local.ScopeTypeID,
-                                ScopeType = other.ScopeType,
-                            };
-                            dataService.UpdateScopeType(sType);
-                            break;
-                        case CollisionResolution.Duplicate:
-                            local = null; // so we can write new one below
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
-                    }
-                }
-
-                if (local == null)
-                {
-                    var sType = new ScopeType
-                    {
-                        ScopeType = other.ScopeType
-                    };
-
-                    other.LocalId = Util.GetDataService().AddScopeType(sType);
-                }
-            }
+            ProgressPercentage += 40;
         }
 
         private static void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
             IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
+            var changed = false;
             var dataService = Util.GetDataService();
             var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
             foreach (var other in otherVocabularies)
@@ -171,6 +128,7 @@ namespace Dnn.ExportImport.Components.Services
                                 ScopeTypeId = scope?.LocalId ?? 0,
                             };
                             dataService.UpdateVocabulary(vocabulary, modifiedBy);
+                            changed = true;
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can add new one below
@@ -182,7 +140,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (local == null)
                 {
-                    var vocabulary = new Vocabulary(other.Name, other.Description)
+                    var vocabulary = new Vocabulary(other.Name, other.Description, (VocabularyType)other.VocabularyTypeID)
                     {
                         IsSystem = other.IsSystem,
                         Weight = other.Weight,
@@ -190,12 +148,15 @@ namespace Dnn.ExportImport.Components.Services
                         ScopeTypeId = scope?.LocalId ?? 0,
                     };
                     other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
+                    changed = true;
                 }
             }
+            if (changed)
+                DataCache.ClearCache(DataCache.VocabularyCacheKey);
         }
 
         private static void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
-            IList<TaxonomyVocabulary> otherVocabularies, IEnumerable<TaxonomyTerm> otherTaxonomyTerms)
+            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
@@ -229,6 +190,7 @@ namespace Dnn.ExportImport.Components.Services
                                 dataService.UpdateHeirarchicalTerm(term, modifiedBy);
                             else
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
+                            DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can write new one below
@@ -236,13 +198,12 @@ namespace Dnn.ExportImport.Components.Services
                         default:
                             throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
                     }
-
                 }
 
                 if (local == null)
                 {
                     var parent = other.ParentTermID.HasValue
-                        ? otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.ParentTermID.Value)
+                        ? otherTaxonomyTerms.FirstOrDefault(v => v.TermID == other.ParentTermID.Value)
                         : null;
                     var term = new Term(other.Name, other.Description, vocabularyId)
                     {
