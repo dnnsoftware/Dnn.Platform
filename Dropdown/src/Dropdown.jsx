@@ -244,6 +244,7 @@ class Dropdown extends Component {
                     value={this.state.dropdownText}
                     onKeyDown={this.onKeyDown.bind(this)}
                     style={{ position: "absolute", opacity: 0, pointerEvents: "none", width: 0, height: 0, padding: 0, margin: 0 }}
+                    aria-label="Search"
                     />
                 {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this)}></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
