@@ -23,6 +23,8 @@ namespace Dnn.ExportImport.Components.Interfaces
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto;
 
+        int GetCount<T>() where T : BasicExportImportDto;
+
         T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto;
 

@@ -90,6 +90,13 @@ namespace Dnn.ExportImport.Components.Repository
             return InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
 
+        public int GetCount<T>() where T : BasicExportImportDto
+        {
+            var collectionName = typeof (T).Name.ToLowerInvariant();
+            var collection = _lightDb.GetCollection<T>(collectionName);
+            return collection?.Count() ?? 0;
+        }
+
         public IEnumerable<T> GetAllItems<T>(
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
