@@ -195,12 +195,12 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}UserName]
 RETURNS 
 	nVarChar(255)
 AS
-	BEGIN
-		DECLARE @Username AS nVarChar(255)
+BEGIN
+	DECLARE @Username AS nVarChar(255)
 
-		SELECT  @Username = Username FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
-		RETURN  @Username
-	END
+	SELECT  @Username = Username FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
+	RETURN  @Username
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
@@ -214,12 +214,12 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
 RETURNS 
 	int
 AS
-	BEGIN
-		DECLARE @UserId AS int
+BEGIN
+	DECLARE @UserId AS int
 
-		SELECT  @UserId = UserID FROM {databaseOwner}[{objectQualifier}Users] WHERE Username = @username
-		RETURN  @UserId
-	END
+	SELECT  @UserId = UserID FROM {databaseOwner}[{objectQualifier}Users] WHERE Username = @username
+	RETURN  @UserId
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
@@ -229,28 +229,27 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
 	@PortalID        int,
 	@PageIndex       int,
-	@PageSize        INT,
+	@PageSize        int,
 	@IncludeDeleted  bit
 AS
 BEGIN
 	DECLARE 
-		@PageLowerBound INT, 
-		@PageUpperBound INT, 
+		@PageLowerBound int, 
+		@PageUpperBound int, 
 		@RowsToReturn int
 
 	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
 		 
-	BEGIN
-		WITH [tmpUsers] AS (
-			SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
-			,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
-				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
-				WHERE VU.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
-		)
-		SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
-			WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
-			ORDER by RowId
-	END
+	; WITH [tmpUsers] AS (
+		SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
+		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
+			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
+			WHERE VU.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+	)
+	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
+		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
+		ORDER by RowId
+
 	SET ROWCOUNT 0;
 END
 GO
@@ -263,15 +262,15 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
 	@PortalId  int,
 	@UserId    int
 AS
-SELECT 
-	   [UserId]
-      ,[PortalId]
-      ,[UserPortalId]
-      ,[CreatedDate]
-      ,[Authorised]
-      ,[IsDeleted]
-      ,[RefreshRoles]
-      ,[VanityUrl]
+	SELECT 
+		 [UserId]
+		,[PortalId]
+		,[UserPortalId]
+		,[CreatedDate]
+		,[Authorised]
+		,[IsDeleted]
+		,[RefreshRoles]
+		,[VanityUrl]
  	FROM {databaseOwner}[{objectQualifier}UserPortals]
 	WHERE UserId = @UserId AND PortalId = @PortalId
 GO
@@ -281,9 +280,9 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
-@Username nvarchar(256)
+	@Username nvarchar(256)
 AS
-SELECT * 
+	SELECT * 
  	FROM {databaseOwner}[aspnet_Users]
 	WHERE  UserName=@Username
 GO
@@ -293,10 +292,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]'
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
-@UserId uniqueidentifier,
-@ApplicationId uniqueidentifier
+	@UserId uniqueidentifier,
+	@ApplicationId uniqueidentifier
 AS
-SELECT * 
+	SELECT * 
  	FROM {databaseOwner}[aspnet_Membership]
 	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
 GO
@@ -309,27 +308,28 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
 	@PortalId  int,
 	@UserId    int
 AS
-	SELECT [UserRoleID]
-      ,[RoleID]
-      ,[UserID]
-      ,[PortalID]
-      ,[RoleName]
-      ,[ExpiryDate]
-	  ,[IsTrialUsed]
-	  ,[EffectiveDate]
-	  ,[CreatedByUserID]
-      ,[CreatedOnDate]
-      ,[LastModifiedByUserID]
-      ,[LastModifiedOnDate]
-	  ,[Status]
-      ,[IsOwner]
-	  ,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName
-	  ,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	SELECT
+		 [UserRoleID]
+		,[RoleID]
+		,[UserID]
+		,[PortalID]
+		,[RoleName]
+		,[ExpiryDate]
+		,[IsTrialUsed]
+		,[EffectiveDate]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,[Status]
+		,[IsOwner]
+		,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName
+		,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
 	WHERE UserID = @UserId AND PortalID = @PortalId
 GO
 
---Taxonomy procedures
+-- Taxonomy Import/Export
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
 GO
@@ -381,3 +381,58 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on v.LastModifiedByUserID = u2.UserID
 GO
+
+-- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
+	@PortalID int
+AS
+	SELECT
+		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}RoleGroups AS rg
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on rg.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rg.LastModifiedByUserID = u2.UserID
+	WHERE
+		rg.PortalID = @PortalID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
+	@PortalID int
+AS
+	SELECT
+		r.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Roles AS r
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}RoleGroups AS rg on r.RoleGroupID = rg.RoleGroupID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on r.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on r.LastModifiedByUserID = u2.UserID
+	WHERE
+		r.PortalID = @PortalID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+	@PortalID int
+AS
+	SELECT
+		rs.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}RoleSettings AS rs
+			INNER JOIN {databaseOwner}{objectQualifier}Roles AS r on r.RoleID = rs.RoleID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on rs.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rs.LastModifiedByUserID = u2.UserID
+	WHERE
+		r.PortalID = @PortalID
+GO
+

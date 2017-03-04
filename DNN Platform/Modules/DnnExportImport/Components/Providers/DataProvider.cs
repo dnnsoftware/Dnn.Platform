@@ -52,7 +52,7 @@ namespace Dnn.ExportImport.Components.Providers
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
             return PlatformDataProvider.Instance().ExecuteScalar<int>(
-                "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
+                "ExportImportJobs_Add", portalId, (int) jobType, userId, exportFile, serializedObject);
         }
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
@@ -65,7 +65,7 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
         }
 
-        public IDataReader GetAllJobs(int? portalId, int? pageSize, int?pageIndex)
+        public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
         }
@@ -89,6 +89,22 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies");
         }
+
+        public IDataReader GetAllRoleGroups(int portalId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleGroups", portalId);
+        }
+
+        public IDataReader GetAllRoles(int portalId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_Roles", portalId);
+        }
+
+        public IDataReader GetAllRoleSettings(int portalId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId);
+        }
+
         #endregion
     }
 }

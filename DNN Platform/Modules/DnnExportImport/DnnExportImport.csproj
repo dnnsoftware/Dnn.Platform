@@ -62,6 +62,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExportImport.resx</DependentUpon>
     </Compile>
+    <Compile Include="Components\Common\Util.cs" />
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Controllers\BusinessController.cs" />
     <Compile Include="Components\Controllers\EntitiesController.cs" />
@@ -70,6 +71,9 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\Roles\ExportRole.cs" />
+    <Compile Include="Components\Dto\Roles\ExportRoleGroup.cs" />
+    <Compile Include="Components\Dto\Roles\ExportRoleSetting.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyScopeType.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyTerm.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabulary.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="Components\Providers\DataProvider.cs" />
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
+    <Compile Include="Components\Services\RolesService.cs" />
     <Compile Include="Components\Services\UsersExportService.cs" />
     <Compile Include="Components\Services\VocabularyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,14 +24,13 @@ IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
 	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
 GO
 
-
+-- Users Import/Export
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
 GO
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
 GO
-
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
@@ -40,6 +39,38 @@ GO
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
 GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
 GO
+
+-- Taxonomy Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+GO
+
+-- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoleGroups]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoleGroups]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoles]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoleSettings]
+GO
+

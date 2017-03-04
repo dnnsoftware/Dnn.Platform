@@ -30,7 +30,6 @@ using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -107,8 +106,8 @@ namespace Dnn.ExportImport.Components.Services
             var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
             foreach (var other in otherVocabularies)
             {
-                var createdBy = GetUserId(importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
                 var scope = otherScopeTypes.FirstOrDefault(s => s.ScopeTypeID == other.ScopeTypeID);
 
@@ -162,8 +161,8 @@ namespace Dnn.ExportImport.Components.Services
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
             foreach (var other in otherTaxonomyTerms)
             {
-                var createdBy = GetUserId(importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = GetUserId(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
                 var vocabulary = otherVocabularies.FirstOrDefault(v => v.VocabularyID == other.VocabularyID);
                 var vocabularyId = vocabulary?.LocalId ?? 0;
@@ -218,21 +217,6 @@ namespace Dnn.ExportImport.Components.Services
                         : dataService.AddSimpleTerm(term, createdBy);
                 }
             }
-        }
-
-        private static int GetUserId(ExportImportJob importJob, int? exportedUserId, string exportUsername)
-        {
-            if (!exportedUserId.HasValue)
-                return -1;
-
-            if (exportedUserId <= 0)
-                return -1;
-
-            if (exportedUserId == 1)
-                return 1;
-
-            var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
-            return user.UserID < 0 ? importJob.CreatedBy : user.UserID;
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Dnn.ExportImport.Components.Dto.Taxonomy
         public string Name { get; set; }
         public string Description { get; set; }
         public int Weight { get; set; }
-        public int TermLeft { get; set; }
-        public int TermRight { get; set; }
+        //public int TermLeft { get; set; }
+        //public int TermRight { get; set; }
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedOnDate { get; set; }
         public int? LastModifiedByUserID { get; set; }
