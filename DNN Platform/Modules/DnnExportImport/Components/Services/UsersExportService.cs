@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Data;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Common;
+using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using UserProfile = Dnn.ExportImport.Components.Dto.Users.UserProfile;
 
 namespace Dnn.ExportImport.Components.Services
@@ -66,11 +71,15 @@ namespace Dnn.ExportImport.Components.Services
                                 .ExecuteReader("ExportImport_GetUserRoles", portalId, user.UserId));
                             var userPortal = CBO.FillObject<UserPortals>(DataProvider.Instance()
                                 .ExecuteReader("ExportImport_GetUserPortal", portalId, user.UserId));
+                            var userAuthentications = CBO.FillCollection<UserAuthentication>(DataProvider.Instance()
+                                .ExecuteReader("GetUserAuthentication", user.UserId));
+                            
                             repository.CreateItem(user, null);
                             repository.CreateItem(aspnetUser, user.Id);
                             repository.CreateItem(aspnetMembership, user.Id);
                             repository.CreateItem(userPortal, user.Id);
                             repository.CreateItems(userRoles, user.Id);
+                            repository.CreateItems(userAuthentications, user.Id);
                         }
                         totalProcessed += pageSize;
                         pageIndex++;
@@ -93,14 +102,16 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 0;
             var portalId = importJob.PortalId;
             var totalUsersToImport = repository.GetCount<Users>();
-            var users = repository.GetAllItems<Users>(null, true, 10, 100);
+            var users = repository.GetAllItems<Users>(null, true, 0, 100);
             foreach (var user in users)
             {
                 var userRoles = repository.GetRelatedItems<UserRoles>(user.Id).ToList();
+                var userAuthentications = repository.GetRelatedItems<UserAuthentication>(user.Id).ToList();
                 var aspNetUser = repository.GetRelatedItems<AspnetUsers>(user.Id).FirstOrDefault();
                 var aspnetMembership = repository.GetRelatedItems<AspnetMembership>(user.Id).FirstOrDefault();
                 var userPortal = repository.GetRelatedItems<UserPortals>(user.Id).FirstOrDefault();
                 var existingUser = UserController.GetUserByName(portalId, user.Username);
+
                 if (existingUser != null)
                 {
                     switch (exporteDto.CollisionResolution)
@@ -108,7 +119,7 @@ namespace Dnn.ExportImport.Components.Services
                         case CollisionResolution.Overwrite:
                             //UserController.CreateUser()
                             break;
-                        case CollisionResolution.Ignore://Just ignore the record
+                        case CollisionResolution.Ignore: //Just ignore the record
                             //TODO: Log that user was ignored.
                             break;
                         case CollisionResolution.Duplicate: //Duplicate option will not work for users.
@@ -118,11 +129,89 @@ namespace Dnn.ExportImport.Components.Services
                             throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
                     }
                 }
+                else
+                {
+                    if (aspNetUser != null && aspnetMembership != null)
+                    {
+                        using (var db = new PetaPocoDataContext(DataProvider.Instance().Settings["connectionStringName"], "aspnet_"))
+                        {
+                            var applicationName = Globals.GetApplicationName(portalId);
+                            var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
+                                $"SELECT TOP 1 ApplicationId FROM aspnet_Applications WHERE ApplicationName='DotNetNuke'");
+                            aspNetUser.UserId = Guid.Empty;
+                            aspNetUser.ApplicationId = applicationId;
+                            aspNetUser.LastActivityDate = DateTime.UtcNow;
+                            var repAspnetUsers = db.GetRepository<AspnetUsers>();
+                            repAspnetUsers.Insert(aspNetUser);
+                            var repAspnetMembership = db.GetRepository<AspnetMembership>();
+                            aspnetMembership.UserId = aspNetUser.UserId;
+                            aspnetMembership.ApplicationId = applicationId;
+                            aspnetMembership.CreateDate = DateTime.UtcNow;
+                            aspnetMembership.LastLoginDate =
+                                aspnetMembership.LastPasswordChangedDate =
+                                    aspnetMembership.LastLockoutDate =
+                                        aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
+                                            aspnetMembership.FailedPasswordAttemptWindowStart = new DateTime(1970, 1, 1);
+//                            aspnetMembership.FailedPasswordAnswerAttemptCount =
+//                                aspnetMembership.FailedPasswordAttemptCount = 0;
+                            repAspnetMembership.Insert(aspnetMembership);
+                        }
+                        using (var db = DataContext.Instance())
+                        {
+                            user.Id = 0;
+                            user.CreatedByUserId = GetUserId(importJob, user.CreatedByUserId, user.CreatedByUserName);
+                            user.LastModifiedByUserId = GetUserId(importJob, user.LastModifiedByUserId,
+                                user.LastModifiedByUserName);
+                            user.CreatedOnDate = user.LastModifiedOnDate = DateTime.UtcNow;
+                            var repUser = db.GetRepository<Users>();
+                            repUser.Insert(user);
+                            if (userPortal != null)
+                            {
+                                var repUserPortal = db.GetRepository<UserPortals>();
+                                userPortal.UserId = user.UserId;
+                                userPortal.PortalId = portalId;
+                                userPortal.CreatedDate = DateTime.UtcNow;
+                                repUserPortal.Insert(userPortal);
+                            }
+                            if (!userRoles.Any()) continue;
+
+                            var repUserRoles = db.GetRepository<UserRoles>();
+
+                            foreach (var userRole in userRoles)
+                            {
+                                var roleId = GetRoleId(importJob, userRole.RoleId, userRole.RoleName);
+                                if (roleId == null) continue;
+
+                                userRole.UserId = user.UserId;
+                                userRole.RoleId = roleId.Value;
+                                userRole.CreatedOnDate = DateTime.UtcNow;
+                                userRole.LastModifiedOnDate = DateTime.UtcNow;
+                                userRole.EffectiveDate = userRole.EffectiveDate != null
+                                    ? (DateTime?) DateTime.UtcNow
+                                    : null;
+                                userRole.CreatedByUserId = GetUserId(importJob, user.CreatedByUserId, user.CreatedByUserName);
+                                userRole.LastModifiedByUserId = GetUserId(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
+                                repUserRoles.Insert(userRole);
+                            }
+                            if (!userAuthentications.Any()) continue;
+
+                            var repUserAuthentication = db.GetRepository<UserAuthentication>();
+                            foreach (var userAuthentication in userAuthentications)
+                            {
+                                userAuthentication.UserId = user.UserId;
+                                userAuthentication.CreatedOnDate = DateTime.UtcNow;
+                                userAuthentication.LastModifiedOnDate = DateTime.UtcNow;
+                                userAuthentication.CreatedByUserId = GetUserId(importJob, user.CreatedByUserId, user.CreatedByUserName);
+                                userAuthentication.LastModifiedByUserId = GetUserId(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
+                                repUserAuthentication.Insert(userAuthentication);
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        private Users UpdateUser(Users user, AspnetUsers aspnetUsers, AspnetMembership aspnetMembership,
-            IEnumerable<UserRoles> userRoles, UserPortals userPortals, IEnumerable<UserProfile> userProfiles)
+        private Users UpdateUser(Users user)
         {
             using (var db = DataContext.Instance())
             {
@@ -192,6 +281,12 @@ namespace Dnn.ExportImport.Components.Services
 
             var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
             return user.UserID < 0 ? importJob.CreatedBy : user.UserID;
+        }
+
+        private int? GetRoleId(ExportImportJob importJob, int exportedRoleId, string exportRolename)
+        {
+            var role = RoleController.Instance.GetRoleByName(importJob.PortalId, exportRolename);
+            return role?.RoleID;
         }
     }
 }

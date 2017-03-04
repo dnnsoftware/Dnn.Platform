@@ -1,7 +1,13 @@
 ﻿using System;
+using DotNetNuke.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
+    [JsonObject]
+    [Serializable]
+    [TableName("Users")]
+    [PrimaryKey("UserId")]
     public class AspnetUsers : BasicExportImportDto
     {
         public Guid ApplicationId { get; set; }

@@ -74,7 +74,9 @@
     <Compile Include="Components\Dto\Taxonomy\TaxonomyTerm.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabulary.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabularyType.cs" />
+    <Compile Include="Components\Dto\Users\UserAuthentication.cs" />
     <Compile Include="Components\Dto\Users\UserProfile.cs" />
+    <Compile Include="Components\Dto\Users\UserRelationships.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Interfaces\IPortable2.cs" />

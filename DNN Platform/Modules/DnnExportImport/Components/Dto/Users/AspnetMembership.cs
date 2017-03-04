@@ -1,8 +1,13 @@
 ﻿using System;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Users
 {
+    [JsonObject]
+    [Serializable]
+    [TableName("Membership")]
+    [PrimaryKey("UserId", AutoIncrement=false)]
     public class AspnetMembership : BasicExportImportDto
     {
         public Guid ApplicationId { get; set; }
@@ -12,6 +17,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
         public string PasswordSalt { get; set; }
 
         [JsonProperty(PropertyName= "MobilePIN")]
+        [ColumnName("MobilePIN")]
         public string MobilePin { get; set; }
 
         public string Email { get; set; }
