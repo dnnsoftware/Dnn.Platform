@@ -108,36 +108,36 @@ namespace Dnn.ExportImport.Components.Providers
 
         public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted);
         }
 
         public IDataReader GetAspNetUser(string username)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetAspNetUser", username);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetAspNetUser", username);
         }
 
         public IDataReader GetUserMembership(Guid userId, Guid applicationId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserMembership", userId, applicationId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserMembership", userId, applicationId);
         }
 
         public IDataReader GetUserRoles(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserRoles", portalId, userId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserRoles", portalId, userId);
         }
 
         public IDataReader GetUserPortal(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserPortal", portalId, userId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserPortal", portalId, userId);
         }
         public IDataReader GetUserAuthentication(int userId)
         {
             return PlatformDataProvider.Instance().ExecuteReader("GetUserAuthentication", userId);
         }
 
-        public IDataReader GetUserProfile(int portalId, int userId)
+        public IDataReader GetUserProfile(int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("GetProfile", userId, portalId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserProfile", userId);
         }
         #region Users
 

@@ -22,6 +22,10 @@ namespace Dnn.ExportImport.Components.Dto.Users
         [ColumnName("PropertyDefinitionID")]
         public int PropertyDefinitionId { get; set; }
 
+        [IgnoreColumn]
+        [JsonIgnore]
+        public string PropertyName { get; set; }
+
         public string PropertyValue { get; set; }
         public string PropertyText { get; set; }
         public int Visibility { get; set; }

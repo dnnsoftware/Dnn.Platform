@@ -222,11 +222,11 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@PortalID        int,
 	@PageIndex       int,
 	@PageSize        int,
@@ -254,11 +254,11 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
 	@PortalId  int,
 	@UserId    int
 AS
@@ -275,11 +275,33 @@ AS
 	WHERE UserId = @UserId AND PortalId = @PortalId
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
+	@UserId    int
+AS
+	SELECT
+		UP.ProfileID,
+		UP.UserID,
+		UP.PropertyDefinitionID,
+		CASE WHEN (UP.PropertyValue Is Null) THEN UP.PropertyText ELSE UP.PropertyValue END AS 'PropertyValue',
+		UP.Visibility,
+		UP.ExtendedVisibility,
+		UP.LastUpdatedDate,
+		PPD.PropertyName
+ 	FROM {databaseOwner}[{objectQualifier}UserProfile] UP 
+	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD 
+	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
+	WHERE UserId = @UserId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
 	@Username nvarchar(256)
 AS
 	SELECT * 
@@ -287,11 +309,11 @@ AS
 	WHERE  UserName=@Username
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
 	@UserId uniqueidentifier,
 	@ApplicationId uniqueidentifier
 AS
@@ -300,11 +322,11 @@ AS
 	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
 	@PortalId  int,
 	@UserId    int
 AS
