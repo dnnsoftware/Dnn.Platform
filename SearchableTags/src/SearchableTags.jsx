@@ -229,7 +229,8 @@ export default class SearchableTags extends Component {
                     value={this.state.newTagText}
                     onChange={this.onChange.bind(this) }
                     onFocus={this.onTagFocus.bind(this) }
-                    onBlur={this.onTagBlur.bind(this) } />
+                    onBlur={this.onTagBlur.bind(this) } 
+                    aria-label="Tag" />
             </div>
             {searchResults && <div className="tag-search-results">
                 {searchResults}
