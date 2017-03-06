@@ -112,7 +112,6 @@ namespace Dnn.ExportImport.Components.Services
             while (totalProcessed < totalUsers)
             {
                 var users = repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
-                totalProcessed += pageSize > users.Count ? users.Count : pageSize;
                 foreach (var user in users)
                 {
                     var userRoles = repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
@@ -129,15 +128,7 @@ namespace Dnn.ExportImport.Components.Services
                         switch (exporteDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
-                                user.UserId = existingUser.UserID;
-                                existingUser.FirstName = user.FirstName;
-                                existingUser.LastName = user.LastName;
-                                existingUser.DisplayName = user.DisplayName;
-                                existingUser.Email = user.Email;
-                                existingUser.IsDeleted = user.IsDeleted;
-                                existingUser.IsSuperUser = user.IsSuperUser;
-                                existingUser.VanityUrl = userPortal?.VanityUrl;
-                                MembershipProvider.Instance().UpdateUser(existingUser);
+                                ProcessUserUpdate(existingUser, user, userPortal);
                                 break;
                             case CollisionResolution.Ignore: //Just ignore the record
                                 //TODO: Log that user was ignored.
@@ -169,8 +160,21 @@ namespace Dnn.ExportImport.Components.Services
                         }
                     }
                 }
+                totalProcessed += pageSize > users.Count ? users.Count : pageSize;
                 ProgressPercentage += progressStep;
             }
+        }
+
+        private static void ProcessUserUpdate(UserInfo existingUser, ExportUser user, ExportUserPortal userPortal)
+        {
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.DisplayName = user.DisplayName;
+            existingUser.Email = user.Email;
+            existingUser.IsDeleted = user.IsDeleted;
+            existingUser.IsSuperUser = user.IsSuperUser;
+            existingUser.VanityUrl = userPortal?.VanityUrl;
+            MembershipProvider.Instance().UpdateUser(existingUser);
         }
 
         private static void ProcessUser(IDataContext db,
