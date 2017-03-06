@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     /// date properties.
     /// </summary>
     /// <remarks>
-    /// This control is added only for internal use, please don't reference it in any other place as it may be removed in future.
+    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
