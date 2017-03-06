@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Data;
 using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
@@ -105,6 +106,42 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId);
         }
 
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted);
+        }
+
+        public IDataReader GetAspNetUser(string username)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetAspNetUser", username);
+        }
+
+        public IDataReader GetUserMembership(Guid userId, Guid applicationId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserMembership", userId, applicationId);
+        }
+
+        public IDataReader GetUserRoles(int portalId, int userId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserRoles", portalId, userId);
+        }
+
+        public IDataReader GetUserPortal(int portalId, int userId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImport_GetUserPortal", portalId, userId);
+        }
+        public IDataReader GetUserAuthentication(int userId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("GetUserAuthentication", userId);
+        }
+
+        public IDataReader GetUserProfile(int portalId, int userId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("GetProfile", userId, portalId);
+        }
+        #region Users
+
+        #endregion  
         #endregion
     }
 }

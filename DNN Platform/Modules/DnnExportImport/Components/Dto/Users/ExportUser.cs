@@ -9,7 +9,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("Users")]
     [PrimaryKey("UserID")]
-    public class Users : BasicExportImportDto
+    public class ExportUser : BasicExportImportDto
     {
         [IgnoreColumn]
         [JsonIgnore]

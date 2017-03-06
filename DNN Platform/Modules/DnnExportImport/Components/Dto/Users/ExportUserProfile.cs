@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("UserProfile")]
     [PrimaryKey("ProfileID")]
-    public class UserProfile : BasicExportImportDto
+    public class ExportUserProfile : BasicExportImportDto
     {
         [JsonProperty(PropertyName = "ProfileID")]
         [ColumnName("ProfileID")]

@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("UserRoles")]
     [PrimaryKey("UserRoleID")]
-    public class UserRoles : BasicExportImportDto
+    public class ExportUserRole : BasicExportImportDto
     {
         [JsonProperty(PropertyName = "UserRoleID")]
         [ColumnName("UserRoleID")]

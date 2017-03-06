@@ -9,7 +9,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [TableName("UserPortals")]
     //[PrimaryKey("UserId,PortalId", AutoIncrement = false)]
     [PrimaryKey("UserPortalId")]
-    public class UserPortals : BasicExportImportDto
+    public class ExportUserPortal : BasicExportImportDto
     {
         public int UserId { get; set; }
 

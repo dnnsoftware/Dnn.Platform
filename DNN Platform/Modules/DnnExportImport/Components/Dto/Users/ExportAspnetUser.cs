@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("Users")]
     [PrimaryKey("UserId")]
-    public class AspnetUsers : BasicExportImportDto
+    public class ExportAspnetUser : BasicExportImportDto
     {
         public Guid ApplicationId { get; set; }
         public Guid UserId { get; set; }

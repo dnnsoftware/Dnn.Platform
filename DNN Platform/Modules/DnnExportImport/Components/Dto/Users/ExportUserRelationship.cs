@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("UserRelationships")]
     [PrimaryKey("UserRelationshipID")]
-    public class UserRelationships : BasicExportImportDto // Do we import Relationships table as well?
+    public class ExportUserRelationship : BasicExportImportDto // Do we import Relationships table as well?
     {
         [ColumnName("UserRelationshipID")]
         [JsonProperty(PropertyName = "UserRelationshipID")]
