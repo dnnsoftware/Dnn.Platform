@@ -28,7 +28,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox modeList;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox modeList;
         
         /// <summary>
         /// parentTabRow control.
@@ -127,7 +127,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultSize;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox DefaultSize;
         
         /// <summary>
         /// lblAllowResize control.
@@ -163,7 +163,7 @@ namespace Dnn.Modules.Console {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultView;
+        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnComboBox DefaultView;
         
         /// <summary>
         /// lblAllowViewChange control.
