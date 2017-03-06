@@ -35,7 +35,7 @@ class RadioButtons extends Component {
         });
         return (
             <div className={"dnn-radio-buttons " + props.float}>
-                <label>{props.label}</label>
+                {!!props.label && <label>{props.label}</label>}
                 <Tooltip
                     messages={tooltipMessages}
                     type="info"
