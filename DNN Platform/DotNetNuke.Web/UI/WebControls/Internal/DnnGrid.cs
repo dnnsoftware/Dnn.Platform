@@ -19,20 +19,19 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+#region Usings
+
 using System;
 using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
-
-#region Usings
-
-#endregion
-
-#region Usings
 
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    ///<remarks>
+    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+    /// </remarks>
     public class DnnGrid : GridView
     {
         #region public properties

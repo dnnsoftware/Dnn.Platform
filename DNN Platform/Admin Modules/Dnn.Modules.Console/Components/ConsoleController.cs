@@ -18,32 +18,52 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-
 #region Usings
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Xml;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Exceptions;
 
 #endregion
 
-namespace DotNetNuke.Web.UI.WebControls.Internal
+namespace Dnn.Modules.Console.Components
 {
-    ///<remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
-    public class DnnDateTimePicker : DnnDatePicker
+    /// <summary>
+    /// Controls the Console
+    /// </summary>
+    public class ConsoleController
     {
-        protected override string Format => "yyyy-MM-dd HH:mm:ss";
-        protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
-
-        protected override IDictionary<string, object> GetSettings()
+        /// <summary>
+        /// Gets the size values.
+        /// </summary>
+        /// <returns>A list with different icon types</returns>
+        public static IList<string> GetSizeValues()
         {
-            var settings = base.GetSettings();
+            IList<string> returnValue = new List<string>();
+            returnValue.Add("IconFile");
+            returnValue.Add("IconFileLarge");
+            returnValue.Add("IconNone");
+            return returnValue;
+        }
 
-            settings.Add("showTime", true);
-            settings.Add("use24hour", true);
-            settings.Add("autoClose", true);
-
-            return settings;
+        /// <summary>
+        /// Gets the view values.
+        /// </summary>
+        /// <returns>Show or Hide</returns>
+        public static IList<string> GetViewValues()
+        {
+            IList<string> returnValue = new List<string>();
+            returnValue.Add("Hide");
+            returnValue.Add("Show");
+            return returnValue;
         }
     }
 }
