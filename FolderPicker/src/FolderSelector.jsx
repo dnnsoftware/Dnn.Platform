@@ -87,7 +87,8 @@ export default class FolderSelector extends Component {
                                 type="text" 
                                 value={this.state.searchFolderText} 
                                 onChange={this.onChangeSearchFolderText.bind(this) } 
-                                placeholder={searchFolderPlaceHolder} />
+                                placeholder={searchFolderPlaceHolder}
+                                aria-label="Search" />
                             {this.state.searchFolderText && 
                                 <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>
                             }
