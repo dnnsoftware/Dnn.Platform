@@ -31,6 +31,9 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    ///<remarks>
+    /// This control is added only for internal use, please don't reference it in any other places as it may removed in future.
+    /// </remarks>
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {

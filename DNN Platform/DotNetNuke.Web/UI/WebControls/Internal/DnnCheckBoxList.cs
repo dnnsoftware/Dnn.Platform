@@ -33,6 +33,9 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    ///<remarks>
+    /// This control is added only for internal use, please don't reference it in any other places as it may removed in future.
+    /// </remarks>
     public class DnnCheckBoxList : CheckBoxList
     {
         protected override void OnInit(EventArgs e)

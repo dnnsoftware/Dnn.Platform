@@ -34,6 +34,9 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    ///<remarks>
+    /// This control is added only for internal use, please don't reference it in any other places as it may removed in future.
+    /// </remarks>
     public class TermsSelector : DnnComboBox
     {
         private IList<ListItem> _initOptions = new List<ListItem>();

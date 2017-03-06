@@ -33,19 +33,20 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 {
-	/// -----------------------------------------------------------------------------
-	/// Project:    DotNetNuke
-	/// Namespace:  DotNetNuke.UI.WebControls
-	/// Class:      DateEditControl
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// The DateEditControl control provides a standard UI component for editing
-	/// date properties.
-	/// </summary>
-	/// <remarks>
-	/// </remarks>
-	/// -----------------------------------------------------------------------------
-	[ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
+    /// -----------------------------------------------------------------------------
+    /// Project:    DotNetNuke
+    /// Namespace:  DotNetNuke.UI.WebControls
+    /// Class:      DateEditControl
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// The DateEditControl control provides a standard UI component for editing
+    /// date properties.
+    /// </summary>
+    /// <remarks>
+    /// This control is added only for internal use, please don't reference it in any other places as it may removed in future.
+    /// </remarks>
+    /// -----------------------------------------------------------------------------
+    [ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
 	public class DateTimeEditControl : EditControl
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateTimeEditControl));

@@ -19,39 +19,38 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.IO;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Framework;
+using System;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Services.Upgrade;
 
-namespace DotNetNuke.Web.UI.WebControls.Internal
+namespace Dnn.Modules.Console.Components
 {
-    ///<remarks>
-    /// This control is added only for internal use, please don't reference it in any other places as it may removed in future.
-    /// </remarks>
-    public class DnnScriptBlock : Control
+    /// <summary>
+    /// 
+    /// </summary>
+    public class BusinessController : IUpgradeable
     {
-        protected override void Render(HtmlTextWriter writer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public string UpgradeModule(string version)
         {
-            if (!DesignMode)
+            try
             {
-                ScriptManager scriptManager = AJAX.GetScriptManager(Page);
-                if (scriptManager.IsInAsyncPostBack)
+                switch (version)
                 {
-                    StringBuilder scriBuilder = new StringBuilder();
-                    base.Render(new HtmlTextWriter(new StringWriter(scriBuilder)));
-                    ScriptManager.RegisterClientScriptBlock(Page, typeof (Page), this.UniqueID, scriBuilder.ToString(),
-                        false);
+                    case "08.00.00":
+
+                        break;
                 }
-                else
-                {
-                    base.Render(writer);
-                }
+                return "Success";
             }
-            else
+            catch (Exception)
             {
-                base.Render(writer);
+                return "Failed";
             }
         }
     }
