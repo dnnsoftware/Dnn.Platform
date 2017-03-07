@@ -112,7 +112,6 @@ admin\Skins\Text.ascx.cs
 admin\Skins\Toast.ascx.cs
 admin\Skins\TreeViewMenu.ascx.cs
 admin\Skins\User.ascx.cs
-admin\Skins\UserAndLogin.ascx.cs
 admin\Tabs\Export.ascx.cs
 admin\Tabs\Import.ascx.cs
 admin\Users\ViewProfile.ascx.cs
