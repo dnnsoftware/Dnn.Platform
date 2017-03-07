@@ -7,7 +7,7 @@ namespace Dnn.ExportImport.Components.Dto.Roles
     public class ExportRoleSetting : BasicExportImportDto
     {
         public int RoleSettingID { get; set; }
-        public int PortalID { get; set; }
+        public int RoleID { get; set; }
         public string SettingName { get; set; }
         public string SettingValue { get; set; }
         public int? CreatedByUserID { get; set; }

@@ -106,6 +106,24 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId);
         }
 
+        public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
+        {
+            PlatformDataProvider.Instance().ExecuteNonQuery(
+                "Export_UpdateRoleGroupChangers", roleGroupId, createdBy, modifiedBy);
+        }
+
+        public void UpdateRoleChangers(int roleId, int createdBy, int modifiedBy)
+        {
+            PlatformDataProvider.Instance().ExecuteNonQuery(
+                "Export_UpdateRoleChangers", roleId, createdBy, modifiedBy);
+        }
+
+        public void UpdateRoleSettingChangers(int roleId, string settingName, int createdBy, int modifiedBy)
+        {
+            PlatformDataProvider.Instance().ExecuteNonQuery(
+                "Export_UpdateRoleSettingChangers", roleId, settingName, createdBy, modifiedBy);
+        }
+
         public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted)
         {
             return PlatformDataProvider.Instance().ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted);

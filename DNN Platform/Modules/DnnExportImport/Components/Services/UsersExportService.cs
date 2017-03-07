@@ -112,11 +112,14 @@ namespace Dnn.ExportImport.Components.Services
                     var userRoles = repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                     var userAuthentications = repository.GetRelatedItems<ExportUserAuthentication>(user.Id).ToList();
                     var aspNetUser = repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                    if (aspNetUser == null) continue;
+
                     var aspnetMembership = repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                    if (aspnetMembership == null) continue;
+
                     var userPortal = repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                     var userProfiles = repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
                     var existingUser = UserController.GetUserByName(portalId, user.Username);
-                    if (aspNetUser == null || aspnetMembership == null) continue;
 
                     if (existingUser != null)
                     {
@@ -214,7 +217,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var userRole in userRoles)
             {
-                var roleId = Common.Util.GetRoleId(importJob, userRole.RoleId, userRole.RoleName);
+                var roleId = Common.Util.GetRoleId(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
                 userRole.UserId = userId;
@@ -238,7 +241,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var userProfile in userProfiles)
             {
-                var profileDefinitionId = Common.Util.GetProfilePropertyId(importJob, userProfile.PropertyDefinitionId,
+                var profileDefinitionId = Common.Util.GetProfilePropertyId(importJob.PortalId, userProfile.PropertyDefinitionId,
                     userProfile.PropertyName);
                 if (profileDefinitionId == null) continue;
 

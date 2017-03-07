@@ -458,3 +458,59 @@ AS
 		r.PortalID = @PortalID
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
+	@RoleGroupID int,
+	@CreatedBy int,
+	@ModifiedBy int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}RoleGroups
+	SET
+		CreatedByUserID = @CreatedBy,
+		LastModifiedByUserID = @ModifiedBy
+	WHERE
+		RoleGroupID = @RoleGroupID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
+	@RoleID int,
+	@CreatedBy int,
+	@ModifiedBy int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}Roles
+	SET
+		CreatedByUserID = @CreatedBy,
+		LastModifiedByUserID = @ModifiedBy
+	WHERE
+		RoleID = @RoleID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+	@RoleID int,
+	@SettingName nvarchar(50),
+	@CreatedBy int,
+	@ModifiedBy int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}RoleSettings
+	SET
+		CreatedByUserID = @CreatedBy,
+		LastModifiedByUserID = @ModifiedBy
+	WHERE
+		RoleID = @RoleID
+      AND
+        SettingName = @SettingName
+GO
