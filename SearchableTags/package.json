@@ -1,13 +1,13 @@
 {
   "name": "dnn-searchable-tags",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "DNN Searchible Tags",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "set NODE_ENV=production&&webpack -p"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.Evoq.Microservices.UI.Common.git"

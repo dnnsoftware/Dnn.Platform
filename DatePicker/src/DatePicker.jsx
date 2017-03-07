@@ -32,7 +32,8 @@ const clearButtonStyleVisible = {
 const clearButtonStyleInvisible = {
     transition: "300ms",
     marginRight: 0,
-    opacity: 0
+    opacity: 0,
+    cursor: "default"
 };
 
 export default class DatePicker extends Component {
@@ -285,8 +286,10 @@ export default class DatePicker extends Component {
     }
 
     onClearDatesPressed() {
-        const Date = {FirstDate: null, SecondDate: null };        
-        this.setState({ Date }, () => this.callUpdateDate());
+        if(this.state.Date.FirstDate || this.state.Date.SecondDate) {
+            const Date = { FirstDate: null, SecondDate: null };
+            this.setState({ Date }, () => this.callUpdateDate());
+        }
     }
    
     render() {
@@ -326,7 +329,7 @@ export default class DatePicker extends Component {
         const buttonStyle = this.props.isDateRange ? {} : {margin: "10px auto", float: "none"};
         const inputClassName = "calendar-text" + ( this.props.hasTimePicker ? " with-time-picker" : "");
 
-        const showCheckBox = !!this.props.isDateRange && this.props.showCheckBoxClearDates;
+        const showClearDates = !!this.props.isDateRange && this.props.showClearDates;
         const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
         /* eslint-disable react/no-danger */
@@ -371,7 +374,7 @@ export default class DatePicker extends Component {
                     {this.props.hasTimePicker && <TimePicker updateTime={this.updateSecondTime.bind(this) } time={this.formatDate(this.secondDate, "LT") }/>}
                 </div>}
                 {showButton && <button style={buttonStyle} role="primary" onClick={this.apply.bind(this) }>{this.props.applyButtonText || "Apply"}</button>}
-                {showCheckBox && <button role="primary" style={clearButtonStyle} onClick={this.onClearDatesPressed.bind(this)}>Clear</button> }                
+                {showClearDates && <button role="secondary" style={clearButtonStyle} onClick={this.onClearDatesPressed.bind(this)}>Clear</button> }                
             </div>
         </div>;
     }
@@ -426,11 +429,11 @@ DatePicker.propTypes = {
 
     showClearDateButton:  PropTypes.bool,
 
-    showCheckBoxClearDates: PropTypes.bool.isRequired,
+    showClearDates: PropTypes.bool.isRequired,
 
     prependWith: PropTypes.string
 };
 
 DatePicker.defaultProps = {
-    showCheckBoxClearDates: false
+    showClearDates: false
 };

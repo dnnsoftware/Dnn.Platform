@@ -60,8 +60,9 @@ export default class Checkbox extends Component {
                         id={this.id}
                         checked={this.state.checked}
                         onChange={() => {}}
+                        aria-label={label ? "" : "Select"}
                         />
-                    <label htmlFor={this.id} onClick={this.onClick.bind(this)}></label>
+                    <label htmlFor={this.id} onClick={this.onClick.bind(this)}>Check</label>
                 </div>
                 {(!!label && props.labelPlace === "right") &&
                     <Label

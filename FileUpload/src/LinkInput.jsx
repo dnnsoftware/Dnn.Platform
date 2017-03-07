@@ -45,7 +45,7 @@ export default class LinkInput extends Component {
         return <div className="file-upload-container">
             <h4>{"URL Link"}</h4>
             <div className="textarea-container">
-                <textarea value={this.state.url} onChange={this.onChange.bind(this) } placeholder="http://example.com/imagename.jpg"/>
+                <textarea value={this.state.url} onChange={this.onChange.bind(this) } placeholder="http://example.com/imagename.jpg" aria-label="Link" />
                 <span>Press <strong onClick={this.onSave.bind(this)}>[ENTER]</strong> to save, or <strong onClick={this.props.onCancel}>[ESC]</strong> to cancel</span>
             </div>
         </div>;

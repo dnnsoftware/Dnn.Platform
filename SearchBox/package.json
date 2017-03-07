@@ -1,13 +1,13 @@
 {
   "name": "dnn-search-box",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Search Box",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "set NODE_ENV=production&&webpack -p"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/dnnsoftware/Dnn.React.Common"
