@@ -194,16 +194,16 @@ export default class DateInput extends Component {
     render() {
         const className = "date-input" + (this.props.hasTimePicker ? " with-time-picker" : "" );
         return <div className={className}>
-            <input type="text" value={this.state.month} onBlur={this.setMonth.bind(this) } onChange={this.updateValue.bind(this, "month") } placeholder="MM"/>
+            <input type="text" value={this.state.month} onBlur={this.setMonth.bind(this) } onChange={this.updateValue.bind(this, "month") } placeholder="MM" aria-label="Month"/>
             <span>/</span>
-            <input type="text" value={this.state.day} onBlur={this.setDay.bind(this) } onChange={this.updateValue.bind(this, "day") } placeholder="DD"/>
+            <input type="text" value={this.state.day} onBlur={this.setDay.bind(this) } onChange={this.updateValue.bind(this, "day") } placeholder="DD" aria-label="Day"/>
             <span>/</span>
-            <input type="text" className="year" value={this.state.year} onBlur={this.setYear.bind(this) } onChange={this.updateValue.bind(this, "year") } placeholder="YYYY"/>
+            <input type="text" className="year" value={this.state.year} onBlur={this.setYear.bind(this) } onChange={this.updateValue.bind(this, "year") } placeholder="YYYY" aria-label="Year"/>
             {this.props.hasTimePicker && <div>
                 <span>&nbsp; </span>
-                <input type="text" value={this.state.hours} onBlur={this.setHours.bind(this) } onChange={this.updateValue.bind(this, "hours") } placeholder="hh"/>
+                <input type="text" value={this.state.hours} onBlur={this.setHours.bind(this) } onChange={this.updateValue.bind(this, "hours") } placeholder="hh" aria-label="Hour"/>
                 <span>: </span>
-                <input type="text" value={this.state.minutes} onBlur={this.setMinutes.bind(this) } onChange={this.updateValue.bind(this, "minutes") } placeholder="mm"/>
+                <input type="text" value={this.state.minutes} onBlur={this.setMinutes.bind(this) } onChange={this.updateValue.bind(this, "minutes") } placeholder="mm" aria-label="Minute"/>
                 <span>&nbsp; </span>
                 <div className="select-container" onClick={this.setPeriod.bind(this)}>
                     <span>{this.state.period}</span>
