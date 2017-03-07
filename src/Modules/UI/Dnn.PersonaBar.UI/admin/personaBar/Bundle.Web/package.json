@@ -21,7 +21,7 @@
     "css-loader": "0.23.1",
     "dnn-back-to-link": "0.0.2",
     "dnn-button": "0.0.7",
-    "dnn-checkbox": "0.1.0",
+    "dnn-checkbox": "0.1.2",
     "dnn-collapsible": "0.0.8",
     "dnn-collapsible-row": "0.0.5",
     "dnn-content-load-wrapper": "0.0.1",
