@@ -1,11 +1,8 @@
-﻿using System;
-using System.Data;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
+﻿using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace Dnn.ExportImport.Components.Dto
 {
-    public abstract class BasicExportImportDto//: IHydratable
+    public abstract class BasicExportImportDto
     {
         /// <summary>
         /// Id of the object in the export/import database.
@@ -25,9 +22,5 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         [IgnoreColumn]
         public int? LocalId { get; set; }
-
-//        public int KeyID { get; set; }
-//
-//        public abstract void Fill(IDataReader dr);
     }
 }

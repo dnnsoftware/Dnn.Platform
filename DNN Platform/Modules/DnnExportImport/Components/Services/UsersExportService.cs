@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Security;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
@@ -49,55 +50,49 @@ namespace Dnn.ExportImport.Components.Services
             var pageSize = 1000;
             var totalProcessed = 0;
             ProgressPercentage = 0;
-            try
-            {
-                var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
-                var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
-                var firstOrDefault = allUser.FirstOrDefault();
-                if (firstOrDefault == null) return;
+            var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
+            var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
+            var firstOrDefault = allUser.FirstOrDefault();
+            if (firstOrDefault == null) return;
 
-                var totalUsers = allUser.Any() ? firstOrDefault.Total : 0;
-                var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
-                do
+            var totalUsers = allUser.Any() ? firstOrDefault.Total : 0;
+            var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
+            do
+            {
+                foreach (var user in allUser)
                 {
-                    foreach (var user in allUser)
-                    {
-                        var aspnetUser =
-                            CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
-                        var aspnetMembership =
-                            CBO.FillObject<ExportAspnetMembership>(
-                                DataProvider.Instance()
-                                    .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
-                        var userRoles =
-                            CBO.FillCollection<ExportUserRole>(DataProvider.Instance()
-                                .GetUserRoles(portalId, user.UserId));
-                        var userPortal =
-                            CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(portalId, user.UserId));
-                        var userAuthentications =
-                            CBO.FillCollection<ExportUserAuthentication>(
-                                DataProvider.Instance().GetUserAuthentication(user.UserId));
-                        var userProfiles = CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(user.UserId));
+                    var aspnetUser =
+                        CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
+                    var aspnetMembership =
+                        CBO.FillObject<ExportAspnetMembership>(
+                            DataProvider.Instance()
+                                .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
+                    var userRoles =
+                        CBO.FillCollection<ExportUserRole>(DataProvider.Instance()
+                            .GetUserRoles(portalId, user.UserId));
+                    var userPortal =
+                        CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(portalId, user.UserId));
+                    var userAuthentications =
+                        CBO.FillCollection<ExportUserAuthentication>(
+                            DataProvider.Instance().GetUserAuthentication(user.UserId));
+                    var userProfiles =
+                        CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(user.UserId));
 
-                        repository.CreateItem(user, null);
-                        repository.CreateItem(aspnetUser, user.Id);
-                        repository.CreateItem(aspnetMembership, user.Id);
-                        repository.CreateItem(userPortal, user.Id);
-                        repository.CreateItems(userProfiles, user.Id);
-                        repository.CreateItems(userRoles, user.Id);
-                        repository.CreateItems(userAuthentications, user.Id);
-                    }
-                    totalProcessed += allUser.Count;
-                    pageIndex++;
-                    ProgressPercentage += progressStep;
-                    dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
-                    allUser =
-                        CBO.FillCollection<ExportUser>(dataReader).ToList();
-                } while (totalProcessed < totalUsers);
-            }
-            catch (Exception ex)
-            {
-
-            }
+                    repository.CreateItem(user, null);
+                    repository.CreateItem(aspnetUser, user.Id);
+                    repository.CreateItem(aspnetMembership, user.Id);
+                    repository.CreateItem(userPortal, user.Id);
+                    repository.CreateItems(userProfiles, user.Id);
+                    repository.CreateItems(userRoles, user.Id);
+                    repository.CreateItems(userAuthentications, user.Id);
+                }
+                totalProcessed += allUser.Count;
+                pageIndex++;
+                ProgressPercentage += progressStep;
+                dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
+                allUser =
+                    CBO.FillCollection<ExportUser>(dataReader).ToList();
+            } while (totalProcessed < totalUsers);
         }
 
         public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
@@ -151,12 +146,19 @@ namespace Dnn.ExportImport.Components.Services
                         using (var db = DataContext.Instance())
                         {
                             ProcessUser(db, user, createdById, modifiedById);
-                            //TODO: All the steps listed below should be done as Pass 2
+                            //TODO: All the steps listed below should be done as Pass 2?
                             ProcessUserPortal(importJob, db, userPortal, user.UserId);
                             ProcessUserRoles(importJob, db, userRoles, user.UserId, createdById, modifiedById);
                             ProcessUserProfiles(importJob, db, userProfiles, user.UserId);
                             ProcessUserAuthentications(db, userAuthentications, user.UserId, createdById,
                                 modifiedById);
+
+                            //Update the source repository local ids.
+                            repository.UpdateItem(user);
+                            repository.UpdateItem(userPortal);
+                            repository.UpdateItems(userRoles);
+                            repository.UpdateItems(userProfiles);
+                            repository.UpdateItems(userAuthentications);
                         }
                     }
                 }
@@ -175,17 +177,20 @@ namespace Dnn.ExportImport.Components.Services
             existingUser.IsSuperUser = user.IsSuperUser;
             existingUser.VanityUrl = userPortal?.VanityUrl;
             MembershipProvider.Instance().UpdateUser(existingUser);
+            DataCache.ClearCache(DataCache.UserCacheKey);
         }
 
         private static void ProcessUser(IDataContext db,
             ExportUser user, int createdById, int modifiedById)
         {
-            user.Id = 0;
+            user.UserId = 0;
             user.CreatedByUserId = createdById;
             user.LastModifiedByUserId = modifiedById;
             user.CreatedOnDate = user.LastModifiedOnDate = DateTime.UtcNow;
             var repUser = db.GetRepository<ExportUser>();
             repUser.Insert(user);
+            user.LocalId = user.UserId;
+
         }
 
         private static void ProcessUserPortal(ExportImportJob importJob, IDataContext db,
@@ -199,10 +204,11 @@ namespace Dnn.ExportImport.Components.Services
             userPortal.PortalId = portalId;
             userPortal.CreatedDate = DateTime.UtcNow;
             repUserPortal.Insert(userPortal);
+            userPortal.LocalId = userPortal.UserPortalId;
         }
 
         private static void ProcessUserRoles(ExportImportJob importJob, IDataContext db,
-           IEnumerable<ExportUserRole> userRoles, int userId, int createdById, int modifiedById)
+            IEnumerable<ExportUserRole> userRoles, int userId, int createdById, int modifiedById)
         {
             var repUserRoles = db.GetRepository<ExportUserRole>();
 
@@ -216,11 +222,12 @@ namespace Dnn.ExportImport.Components.Services
                 userRole.CreatedOnDate = DateTime.UtcNow;
                 userRole.LastModifiedOnDate = DateTime.UtcNow;
                 userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?)DateTime.UtcNow
+                    ? (DateTime?) DateTime.UtcNow
                     : null;
                 userRole.CreatedByUserId = createdById;
                 userRole.LastModifiedByUserId = modifiedById;
                 repUserRoles.Insert(userRole);
+                userRole.LocalId = userRole.UserRoleId;
             }
         }
 
@@ -239,6 +246,7 @@ namespace Dnn.ExportImport.Components.Services
                 userProfile.PropertyDefinitionId = profileDefinitionId.Value;
                 userProfile.LastUpdatedDate = DateTime.UtcNow;
                 repUserProfile.Insert(userProfile);
+                userProfile.LocalId = userProfile.ProfileId;
             }
         }
 
@@ -254,6 +262,7 @@ namespace Dnn.ExportImport.Components.Services
                 userAuthentication.CreatedByUserId = createdById;
                 userAuthentication.LastModifiedByUserId = modifiedById;
                 repUserAuthentication.Insert(userAuthentication);
+                userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
             }
         }
 
@@ -264,7 +273,7 @@ namespace Dnn.ExportImport.Components.Services
                     "aspnet_"))
             {
                 var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
-                    $"SELECT TOP 1 ApplicationId FROM aspnet_Applications WHERE ApplicationName='DotNetNuke'");
+                    $"SELECT TOP 1 ApplicationId FROM aspnet_Applications");
 
                 //AspnetUser
 
@@ -273,6 +282,7 @@ namespace Dnn.ExportImport.Components.Services
                 aspNetUser.LastActivityDate = DateTime.UtcNow;
                 var repAspnetUsers = db.GetRepository<ExportAspnetUser>();
                 repAspnetUsers.Insert(aspNetUser);
+                //aspNetUser.LocalId = aspNetUser.UserId;
 
                 //AspnetMembership
                 var repAspnetMembership = db.GetRepository<ExportAspnetMembership>();
@@ -284,10 +294,11 @@ namespace Dnn.ExportImport.Components.Services
                         aspnetMembership.LastLockoutDate =
                             aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
                                 aspnetMembership.FailedPasswordAttemptWindowStart =
-                                    new DateTime(1970, 1, 1);
+                                    new DateTime(1754, 1, 1);
                 //                            aspnetMembership.FailedPasswordAnswerAttemptCount =
                 //                                aspnetMembership.FailedPasswordAttemptCount = 0;
                 repAspnetMembership.Insert(aspnetMembership);
+                //aspnetMembership.LocalId = aspnetMembership.UserId;
             }
         }
     }

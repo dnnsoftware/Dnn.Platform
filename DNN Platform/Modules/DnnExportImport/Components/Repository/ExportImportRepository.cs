@@ -61,7 +61,6 @@ namespace Dnn.ExportImport.Components.Repository
             {
                 collection.EnsureIndex(x => x.ReferenceId);
             }
-
             return item;
         }
 
@@ -69,12 +68,13 @@ namespace Dnn.ExportImport.Components.Repository
         {
             var collectionName = typeof(T).Name.ToLowerInvariant();
             var allItems = items.ToList();
+            var collection = _lightDb.GetCollection<T>(collectionName);
             foreach (var item in allItems)
             {
                 item.ReferenceId = referenceId;
-                var collection = _lightDb.GetCollection<T>(collectionName);
                 item.Id = collection.Insert(item);
             }
+
             return allItems;
         }
 
@@ -147,21 +147,32 @@ namespace Dnn.ExportImport.Components.Repository
             return InternalGetItems(predicate);
         }
 
-        public T UpdateItem<T>(int id, T item, int? referenceId) where T : BasicExportImportDto
+        public void UpdateItem<T>(T item) where T : BasicExportImportDto
         {
             var collectionName = typeof(T).Name.ToLowerInvariant();
             var collection = _lightDb.GetCollection<T>(collectionName);
 
-            if (collection.FindById(id) == null) throw new KeyNotFoundException();
-
-            item.ReferenceId = referenceId;
-            item.Id = id;
+            if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
             collection.Update(item);
-            if (referenceId.HasValue)
+            if (item.ReferenceId.HasValue)
             {
                 collection.EnsureIndex(x => x.ReferenceId);
             }
-            return item;
+        }
+
+        public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
+        {
+            var collectionName = typeof(T).Name.ToLowerInvariant();
+            var collection = _lightDb.GetCollection<T>(collectionName);
+            foreach (var item in items)
+            {
+                if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
+                collection.Update(item);
+                if (item.ReferenceId.HasValue)
+                {
+                    collection.EnsureIndex(x => x.ReferenceId);
+                }
+            }
         }
 
         public bool DeleteItem<T>(int id) where T : BasicExportImportDto

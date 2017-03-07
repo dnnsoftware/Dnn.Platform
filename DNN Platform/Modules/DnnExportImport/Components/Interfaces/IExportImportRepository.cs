@@ -36,7 +36,9 @@ namespace Dnn.ExportImport.Components.Interfaces
         IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto;
 
-        T UpdateItem<T>(int id, T item, int? referenceId) where T : BasicExportImportDto;
+        void UpdateItem<T>(T item) where T : BasicExportImportDto;
+
+        void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto;
 
         bool DeleteItem<T>(int id) where T : BasicExportImportDto;
     }
