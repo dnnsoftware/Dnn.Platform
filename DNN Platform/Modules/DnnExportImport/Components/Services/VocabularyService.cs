@@ -37,9 +37,11 @@ namespace Dnn.ExportImport.Components.Services
     {
         private int _progressPercentage;
 
-        public string Category => "VOCABULARY";
+        public string Category => "VOCABULARIES";
 
-        public uint Priority => 2;
+        public string ParentCategory => "USERS";
+
+        public uint Priority => 1;
 
         public bool CanCancel => true;
 

@@ -34,6 +34,12 @@ namespace Dnn.ExportImport.Components.Interfaces
         string Category { get; }
 
         /// <summary>
+        /// Category name for the parent exportable module. For example: "USERS".
+        /// If this is null, then the category is a top parent.
+        /// </summary>
+        string ParentCategory { get; }
+
+        /// <summary>
         /// A priority for exporting/importing the object. Objects with higher 
         /// priority are exported/imported first. Highest priority is 0.
         /// </summary>

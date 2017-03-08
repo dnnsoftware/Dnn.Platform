@@ -38,6 +38,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public string Category => "ROLES";
 
+        public string ParentCategory => "USERS";
+
         public uint Priority => 2;
 
         public bool CanCancel => true;

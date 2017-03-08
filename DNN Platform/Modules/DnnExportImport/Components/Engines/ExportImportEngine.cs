@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web.UI;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
@@ -39,6 +40,8 @@ namespace Dnn.ExportImport.Components.Engines
     public class ExportImportEngine
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+
+        const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
         private static readonly string _dbFolder;
 
@@ -81,25 +84,47 @@ namespace Dnn.ExportImport.Components.Engines
             using (var ctx = new ExportImportRepository(dbName))
             {
                 ctx.AddSingleItem(exportDto);
-
-                var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
+                var implementors = GetPortableImplementors().ToList();
                 if (implementors.Any())
                 {
-                    foreach (var portable2Obj in implementors)
-                    {
-                        var selected = exportDto.ItemsToExport.FirstOrDefault(
-                            x => x.Equals(portable2Obj.Category, StringComparison.InvariantCultureIgnoreCase));
+                    // there must be one parent implementor at least for this to work
+                    var parents = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                    implementors = implementors.Except(parents).ToList();
+                    var nextLevelImplementors = new List<IPortable2>();
 
-                        if (string.IsNullOrEmpty(selected))
+                    do
+                    {
+                        foreach (var service in parents.OrderBy(x => x.Priority))
                         {
-                            continue;
+                            if (implementors.Count > 0)
+                            {
+                                // collect children for next iteration
+                                var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                                nextLevelImplementors.AddRange(children);
+                                implementors = implementors.Except(nextLevelImplementors).ToList();
+                            }
+
+                            if (exportDto.ItemsToExport.Any(x => x.Equals(service.Category, IgnoreCaseComp)))
+                            {
+                                service.ExportData(exportJob, ctx);
+                                scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
+                                result.Status = JobStatus.InProgress;
+                                result.ProcessedCount += 1;
+                            }
                         }
 
-                        portable2Obj.ExportData(exportJob, ctx);
-                        scheduleHistoryItem.AddLogNote("<br/>Processed Item: " + portable2Obj.Category);
-                        result.Status = JobStatus.InProgress;
-                        result.ProcessedCount += 1;
-                    }
+                        parents = new List<IPortable2>(nextLevelImplementors);
+                        nextLevelImplementors.Clear();
+                        if (implementors.Count > 0 && parents.Count == 0)
+                        {
+                            //WARN: this is a case where there is a broken parnets-children hierarchy
+                            //      and/or there are IPortable2 implementations without a known parent.
+                            parents = implementors;
+                            implementors.Clear();
+                            scheduleHistoryItem.AddLogNote(
+                                "<br/><b>Orphaned services:</b> " + string.Join(",", parents.Select(x => x.Category)));
+                        }
+                    } while (parents.Count > 0);
                 }
 
                 foreach (var page in exportDto.Pages)
@@ -112,6 +137,7 @@ namespace Dnn.ExportImport.Components.Engines
                 }
             }
 
+            //result.Status = JobStatus.DoneSuccess; // TODO:
             exportJob.JobStatus = result.Status;
 
             return result;
@@ -145,24 +171,48 @@ namespace Dnn.ExportImport.Components.Engines
             using (var ctx = new ExportImportRepository(dbName))
             {
                 var exporedtDto = ctx.GetSingleItem<ExportDto>();
-                var implementors = GetPortableImplementors().OrderBy(x => x.Priority).ToArray();
+
+                var implementors = GetPortableImplementors().ToList();
                 if (implementors.Any())
                 {
-                    foreach (var portable2Obj in implementors)
-                    {
-                        var selected = exporedtDto.ItemsToExport.FirstOrDefault(
-                            x => x.Equals(portable2Obj.Category, StringComparison.InvariantCultureIgnoreCase));
+                    // there must be one parent implementor at least for this to work
+                    var parents = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                    implementors = implementors.Except(parents).ToList();
+                    var nextLevelImplementors = new List<IPortable2>();
 
-                        if (string.IsNullOrEmpty(selected))
+                    do
+                    {
+                        foreach (var service in parents.OrderBy(x => x.Priority))
                         {
-                            continue;
+                            if (implementors.Count > 0)
+                            {
+                                // collect children for next iteration
+                                var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                                nextLevelImplementors.AddRange(children);
+                                implementors = implementors.Except(nextLevelImplementors).ToList();
+                            }
+
+                            if (exporedtDto.ItemsToExport.Any(x => x.Equals(service.Category, IgnoreCaseComp)))
+                            {
+                                service.ImportData(importJob, exporedtDto, ctx);
+                                scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
+                                result.Status = JobStatus.InProgress;
+                                result.ProcessedCount += 1;
+                            }
                         }
 
-                        portable2Obj.ImportData(importJob, exporedtDto, ctx);
-                        scheduleHistoryItem.AddLogNote("<br/>Processed Item: " + portable2Obj.Category);
-                        result.Status = JobStatus.InProgress;
-                        result.ProcessedCount += 1;
-                    }
+                        parents = new List<IPortable2>(nextLevelImplementors);
+                        nextLevelImplementors.Clear();
+                        if (implementors.Count > 0 && parents.Count == 0)
+                        {
+                            //WARN: this is a case where there is a broken parnets-children hierarchy
+                            //      and/or there are IPortable2 implementations without a known parent.
+                            parents = implementors;
+                            implementors.Clear();
+                            scheduleHistoryItem.AddLogNote(
+                                "<br/><b>Orphaned services:</b> " + string.Join(",", parents.Select(x => x.Category)));
+                        }
+                    } while (parents.Count > 0);
                 }
 
                 foreach (var page in exporedtDto.Pages)
@@ -174,8 +224,9 @@ namespace Dnn.ExportImport.Components.Engines
                     result.Status = JobStatus.InProgress;
                 }
             }
-            importJob.JobStatus =
-                result.Status = JobStatus.InProgress;
+
+            //result.Status = JobStatus.DoneSuccess; // TODO:
+            importJob.JobStatus = result.Status;
             return result;
         }
 
