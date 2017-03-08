@@ -486,7 +486,7 @@ namespace Dnn.Modules.Console
                 {
                     sb.Append("<div class=\"console-none \">");
                 }
-                sb.Append("<a href=\"{0}\">");
+                sb.Append("<a href=\"{0}\" aria-label=\"{3}\">");
 
                 if (DefaultSize != "IconNone" || (AllowSizeChange || AllowViewChange))
                 {
