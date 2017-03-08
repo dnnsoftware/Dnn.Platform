@@ -8,8 +8,8 @@ class ExtensionHeader extends Component {
             <GridCell columnSize={100} className="header-row">
                 {
                     this.props.headers.map((header) => {
-                        return <GridCell columnSize={header.size}>
-                            <h6>{header.header }</h6>
+                        return <GridCell columnSize={header.size} className={header.header ? "" : "empty"}>
+                            <h6>{header.header || "Default"}</h6>
                         </GridCell>;
                     })
                 }
