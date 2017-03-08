@@ -110,7 +110,7 @@ class LocalizedContent extends Component {
                             />
                         <div>
                             <div className="language-flag">
-                                <img src={defaultLanguage.Icon} />
+                                {!!defaultLanguage.Icon && <img src={defaultLanguage.Icon} alt={defaultLanguage.EnglishName} />}
                             </div>
                             <div className="language-name">{defaultLanguage.EnglishName}</div>
                         </div>

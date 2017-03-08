@@ -219,7 +219,7 @@ class ProfilePropertyEditor extends Component {
                 return {
                     label: <div style={{ float: "left", display: "flex" }}>
                         <div className="language-flag">
-                            <img src={item.Icon} />
+                            <img src={item.Icon} alt={item.Text} />
                         </div>
                         <div className="language-name">{item.Text}</div>
                     </div>, value: item.Value

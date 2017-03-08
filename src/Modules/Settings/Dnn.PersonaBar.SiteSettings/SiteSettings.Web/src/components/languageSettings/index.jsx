@@ -139,7 +139,7 @@ class LanguageSettingsPanelBody extends Component {
                     return {
                         label: <div style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} />
+                                <img src={item.Icon} alt={item.NativeName} />
                             </div>
                             <div className="language-name">{item.NativeName}</div>
                         </div>, value: item.Name
@@ -149,7 +149,7 @@ class LanguageSettingsPanelBody extends Component {
                     return {
                         label: <div style={{ float: "left", display: "flex" }}>
                             <div className="language-flag">
-                                <img src={item.Icon} />
+                                <img src={item.Icon} alt={item.EnglishName} />
                             </div>
                             <div className="language-name">{item.EnglishName}</div>
                         </div>, value: item.Name
@@ -211,7 +211,7 @@ class LanguageSettingsPanelBody extends Component {
                 <div className="language-container">
                     <div style={{ float: "left", display: "flex" }}>
                         <div className="language-flag">
-                            <img src={state.languageSettings.SystemDefaultLanguageIcon} />
+                            <img src={state.languageSettings.SystemDefaultLanguageIcon} alt={state.languageSettings.SystemDefaultLanguage} />
                         </div>
                         <div className="language-name">{state.languageSettings.SystemDefaultLanguage}</div>
                     </div>
