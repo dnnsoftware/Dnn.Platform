@@ -1,4 +1,5 @@
 import React, {Component, PropTypes } from "react";
+import ReactDOM, { findDOMNode } from "react-dom";
 import {debounce} from "throttle-debounce";
 import { connect } from "react-redux";
 import Localization from "localization";
@@ -24,6 +25,7 @@ class UserRoles extends Component {
             isOwner: false,
             allowOwner: false
         };
+        this.comboBoxDom =null;
         this.debounceGetSuggestRoles = debounce(500, this.debounceGetSuggestRoles);
     }
     componentWillReceiveProps(newProps) {
@@ -33,6 +35,11 @@ class UserRoles extends Component {
     componentWillMount() {
         this.getRoles();
     }
+
+    componentDidMount(){
+         findDOMNode(this.comboBoxDom).childNodes[1].setAttribute('aria-label', 'Suggestion');
+    }
+ 
 
     getRoles() {
         const {props, state} = this;
@@ -191,6 +198,7 @@ class UserRoles extends Component {
                     <GridCell columnSize={50}>
                         <span>
                             <Combobox suggest={false}
+                                ref={(dom) => {this.comboBoxDom = dom;}}
                                 placeholder={Localization.get("AddRolePlaceHolder") }
                                 open={this.props.matchedRoles && this.props.matchedRoles.length > 0 }
                                 onToggle={this.onRoleSelectorToggle.bind(this) }
