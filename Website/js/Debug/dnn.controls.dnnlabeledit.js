@@ -9,7 +9,7 @@ Type.registerNamespace('dnn.controls');
 dnn.extend(dnn.controls, {
     initLabelEdit: function (ctl) 
     {
-	    if (ctl)
+        if (ctl && dnn.controls.controls[ctl.id] == null)
 	    {
 		    var lbl = new dnn.controls.DNNLabelEdit(ctl);
 		    lbl.initialize();
