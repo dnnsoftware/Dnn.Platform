@@ -46,11 +46,6 @@ if (typeof dnn === "undefined" || dnn === null) { dnn = {}; };
             this.options = $.extend({}, $.fn.dnnModuleManager.defaultOptions, this.options);
             var $this = this.$pane = this.container;
 
-            if ($this.parent().attr('id') && $this.parent().attr('id').indexOf('_SyncPanel') > -1) {
-                $this.parent().parent().addClass($this.parent().attr('class'));
-                $this.parent().attr('class', '');
-            }
-
             $this.addClass('dnnModuleManager');
             $this.append(this._generateLayout());
 

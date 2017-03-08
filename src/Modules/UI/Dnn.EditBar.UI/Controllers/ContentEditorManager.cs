@@ -148,11 +148,11 @@ namespace Dnn.EditBar.UI.Controllers
                     continue;
                 }
 
-                var ajaxPanel = new DnnAjaxPanel
+                //create update panel
+                var updatePanel = new UpdatePanel
                 {
-                    ID = pane.ID + "_SyncPanel",
-                    RestoreOriginalRenderDelegate = false,
-
+                    UpdateMode = UpdatePanelUpdateMode.Conditional,
+                    ID = pane.ID + "_SyncPanel"
                 };
 
                 try
@@ -160,10 +160,13 @@ namespace Dnn.EditBar.UI.Controllers
                     //find update panels in pane and fire the unload event for a known issue: CONTENT-4039
                     var updatePanels = GetUpdatePanelsInPane(pane);
                     updatePanels.ForEach(p => p.Unload += UpdatePanelUnloadEvent);
+                    updatePanel.Unload += UpdatePanelUnloadEvent;
 
                     var paneIndex = pane.Parent.Controls.IndexOf(pane);
-                    pane.Parent.Controls.AddAt(paneIndex, ajaxPanel);
-                    ajaxPanel.Controls.Add(pane);
+                    pane.Parent.Controls.AddAt(paneIndex, updatePanel);
+
+                    var templateContainer = updatePanel.ContentTemplateContainer;
+                    templateContainer.Controls.Add(pane);
                 }
                 catch (Exception ex)
                 {
@@ -171,12 +174,12 @@ namespace Dnn.EditBar.UI.Controllers
                     return;
                 }
 
-                ajaxPanel.CssClass = pane.Attributes["class"];
+                updatePanel.Attributes.Add("class", $"DnnAjaxPanel {pane.Attributes["class"]}");
                 pane.Attributes["class"] = string.Empty;
 
                 var scriptManager = ScriptManager.GetCurrent(Page);
                 if (scriptManager != null && scriptManager.IsInAsyncPostBack
-                        && ajaxPanel.UniqueID == Request.Form["__EVENTTARGET"]
+                        && updatePanel.ClientID == Request.Form["__EVENTTARGET"]
                         && !string.IsNullOrEmpty(Request.Form["__EVENTARGUMENT"])
                         && Request.Form["__EVENTARGUMENT"].ToLowerInvariant() != "undefined"
                         && Request.Form["__EVENTARGUMENT"].ToLowerInvariant().StartsWith("module-"))
