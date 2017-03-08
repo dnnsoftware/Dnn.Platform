@@ -230,7 +230,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 WriteEndDocumentOnClose = true
             };
 
-            var filename = (Globals.HostMapPath + request.FileName.Replace("/", @"\")).Replace(@"\\", @"\");
+            var filename = Globals.HostMapPath + request.FileName.Replace("/", @"\");
             if (!filename.EndsWith(".template", StringComparison.InvariantCultureIgnoreCase))
             {
                 filename += ".template";
