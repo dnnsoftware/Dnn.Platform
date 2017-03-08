@@ -89,10 +89,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.4.188, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\DotNetNuke.WebUtility.dll</HintPath>
@@ -128,9 +124,6 @@
     </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Telerik.Web.UI">
-      <HintPath>..\..\..\bin\Telerik.Web.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />

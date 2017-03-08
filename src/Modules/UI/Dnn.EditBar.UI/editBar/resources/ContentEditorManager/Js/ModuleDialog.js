@@ -157,8 +157,8 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
             }
             //set module manager to current refresh pane.
             this._moduleManager = pane.data('dnnModuleManager');
-            var ajaxPanel = $find(paneId + "_SyncPanel");
-            if (ajaxPanel) {
+            var ajaxPanel = $('#' + paneId + "_SyncPanel");
+            if (ajaxPanel.length) {
                 //remove action menus from DOM bbefore fresh pane.
                 var handler = this;
                 pane.find('div.DnnModule').each(function () {
@@ -169,7 +169,7 @@ if (typeof dnn.ContentEditorManager === "undefined" || dnn.ContentEditorManager 
                 Sys.WebForms.PageRequestManager.getInstance().add_endRequest(this._refreshCompleteHandler);
                 this._refreshPaneId = paneId;
                 this._refreshCallback = callback;
-                ajaxPanel.ajaxRequest(args);
+                __doPostBack(ajaxPanel.attr('id'), args);
             } else {
                 //save the args into cookie, after page reload then catch the cookie
                 //and float the module for drag

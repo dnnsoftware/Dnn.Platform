@@ -5,7 +5,10 @@
     min-height: 115px !important;
 }
 .dnnModuleManager.dnnSortable {
-    min-height: 115px !important;
+    min-height: 135px !important;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .dnnModuleManager .LabelEditTextClass {
@@ -868,7 +871,7 @@ div.module-motion {
     z-index: 1110;
 }
 .EditBarEmptyPane { display: block !important;}
-.RadAjaxPanel > div > .EditBarEmptyPane{width: auto !important;}
+.DnnAjaxPanel > .EditBarEmptyPane{width: auto !important;}
 .module-drag-tip {
     position: fixed;
     background-color: #000;
