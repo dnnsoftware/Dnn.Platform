@@ -441,7 +441,7 @@ class BasicSearchSettingsPanelBody extends Component {
                                         />
                                     <Label
                                         labelType="inline"
-                                        label={state.basicSearchSettings.SearchIndexLastModifiedOn}
+                                        label={state.basicSearchSettings.SearchIndexLastModifiedOn || "-"}
                                         />
                                 </InputGroup>
                                 <div className="searchIndexWarning">{resx.get("MessageIndexWarning")}</div>

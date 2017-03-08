@@ -186,7 +186,7 @@ class IgnoreWordsPanel extends Component {
                 return {
                     label: <div style={{ float: "left", display: "flex" }}>
                         <div className="language-flag">
-                            <img src={item.Icon} />
+                            <img src={item.Icon} alt={item.Name} />
                         </div>
                         <div className="language-name">{item.Name}</div>
                     </div>, value: item.Code

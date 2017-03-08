@@ -32,7 +32,7 @@ class LanguageRow extends Component {
         if (this.props.id !== "add") {
             return <div>
                 <div className="language-flag">
-                    <img src={icon} />
+                    <img src={icon} alt={isDefault ? name + " **" : name} />
                 </div>
                 <div className="language-name">{isDefault ? name + " **" : name}</div>
             </div>;
