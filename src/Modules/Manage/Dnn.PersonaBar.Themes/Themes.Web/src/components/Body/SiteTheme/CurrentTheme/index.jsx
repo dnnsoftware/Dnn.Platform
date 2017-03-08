@@ -19,7 +19,7 @@ class CurrentTheme extends Component {
                 {
                     (function () {
                         if (props.currentTheme && props.currentTheme.SiteLayout.thumbnail) {
-                            return <img src={props.currentTheme.SiteLayout.thumbnail} />;
+                            return <img src={props.currentTheme.SiteLayout.thumbnail} alt={props.currentTheme.SiteLayout.themeName}/>;
                         }
                         else {
                             return <SvgIcon name="EmptyThumbnail" />;

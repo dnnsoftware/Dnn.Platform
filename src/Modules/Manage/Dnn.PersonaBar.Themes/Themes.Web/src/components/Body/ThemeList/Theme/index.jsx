@@ -90,7 +90,7 @@ class Theme extends Component {
         let className = "thumbnail" + (theme.thumbnail ? "" : " empty");
 
         return <span className={className}>
-            {theme.thumbnail ? <img src={theme.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
+            {theme.thumbnail ? <img src={theme.thumbnail} alt={theme.packageName} /> : <SvgIcon name="EmptyThumbnail" />}
             {this.renderActions()}
         </span>;
     }

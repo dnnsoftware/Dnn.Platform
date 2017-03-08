@@ -107,7 +107,7 @@ class ThemeFile extends Component {
         let className = "thumbnail" + (themeFile.thumbnail ? "" : " empty");
 
         return <span className={className}>
-            {themeFile.thumbnail ? <img src={themeFile.thumbnail} /> : <SvgIcon name="EmptyThumbnail" />}
+            {themeFile.thumbnail ? <img src={themeFile.thumbnail} alt={themeFile.name} /> : <SvgIcon name="EmptyThumbnail" />}
             <span className="status">
                 <span className="status-site"><SvgIcon name="Site" /></span>
                 <span className="status-edit"><SvgIcon name="Edit" /></span>
