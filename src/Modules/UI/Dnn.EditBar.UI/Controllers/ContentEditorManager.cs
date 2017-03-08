@@ -152,7 +152,8 @@ namespace Dnn.EditBar.UI.Controllers
                 var updatePanel = new UpdatePanel
                 {
                     UpdateMode = UpdatePanelUpdateMode.Conditional,
-                    ID = pane.ID + "_SyncPanel"
+                    ID = pane.ID + "_SyncPanel",
+                    ChildrenAsTriggers = true
                 };
 
                 try
