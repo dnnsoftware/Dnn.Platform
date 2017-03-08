@@ -29,7 +29,7 @@
              id="pageList">
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
-                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllPages" /></td>
+                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllPages" aria-label="Check" /></td>
                     <td class="thumbnail pagename" data-bind="html: $root.resx.recyclebin_Page"></td>
                     <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
                     <td class="actions" data-bind="html: $root.resx.recyclebin_Actions"></td>
@@ -51,7 +51,7 @@
                                 jScrollPaneOptions: { autoReinitialise: true } }" id="moduleList">
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
-                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllModules"/></td>
+                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllModules" aria-label="Check"/></td>
                     <td class="mtitle" data-bind="html: $root.resx.recyclebin_ModuleTitle"></td>
                     <td class="mpage" data-bind="html: $root.resx.recyclebin_Page"></td>
                     <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
@@ -74,7 +74,7 @@
                                 jScrollPaneOptions: { autoReinitialise: true } }" id="userList">
             <table class="dnnRBGrid">
                 <tr class="dnnRBGridHeader">
-                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllUsers" /></td>
+                    <td class="first"><input type="checkbox" class="page-item" data-bind="checked: selectAllUsers" aria-label="Check" /></td>
                     <td class="username" data-bind="html: $root.resx.recyclebin_Username"></td>
                     <td class="displayname" data-bind="html: $root.resx.recyclebin_UserDisplayName"></td>
                     <td class="deleteddate" data-bind="html: $root.resx.recyclebin_DeletedDate"></td>
@@ -93,7 +93,7 @@
 <script type="text/html" id="pages-list-recyclebin">
     <tr class="dnnRBGridBody" data-bind="attr: { 'data-page-id': id }, css: { 'root' : !parent, 'withChildren': children().length > 0, 'child': parent, 'even': isItsRootElementEven }">
         <td class="checkbox" data-bind="setWhenHover: mouseOver, css: {'hover': mouseOver() || selected() } ">
-            <input type="checkbox" class="page-item" data-bind="checked: selected"/>
+            <input type="checkbox" class="page-item" data-bind="checked: selected" aria-label="Check"/>
         </td>
         <!-- ko if: !parent -->
         <td class="thumbnail pagename" data-bind="
@@ -150,10 +150,10 @@
     <tr class="dnnRBGridBody" data-bind="setWhenHover: mouseOver,
                         attr: { 'data-module-id': Id, 'data-tab-id': TabID }, css: { 'deletedtab': TabDeleted }, css: {'hover': mouseOver() || selected() }">
         <td class="checkbox">
-            <input type="checkbox" class="module-item" data-bind="enable: !TabDeleted, checked: selected"/>
+            <input type="checkbox" class="module-item" data-bind="enable: !TabDeleted, checked: selected" aria-label="Check"/>
             <div class="qaTooltip" style="position: relative;">
                 <div class="tag-menu">
-                    <a class="help" href="#"></a>
+                    <a class="help" href="#" aria-label="Help"></a>
                     <p data-bind="text: $root.resx.recyclebin_UnableToSelectAllModules"></p>
                 </div>
             </div>
@@ -172,7 +172,7 @@
     <tr class="dnnRBGridBody" data-bind="setWhenHover: mouseOver,
                         attr: { 'data-user-id': Id }, css: null, css: {'hover': mouseOver() || selected() }">
         <td class="checkbox">
-            <input type="checkbox" class="user-item" data-bind="checked: selected" />            
+            <input type="checkbox" class="user-item" data-bind="checked: selected" aria-label="Check" />            
         </td>
         <td class="username" data-bind="html: Username, click: $root.changeElementSelectedStatus"></td>
         <td class="displayname" data-bind="html: DisplayName, click: $root.changeElementSelectedStatus"></td>
