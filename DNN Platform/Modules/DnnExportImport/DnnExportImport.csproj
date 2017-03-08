@@ -63,7 +63,8 @@
       <DependentUpon>ExportImport.resx</DependentUpon>
     </Compile>
     <Compile Include="Components\Common\Util.cs" />
-    <Compile Include="Components\Constants.cs" />
+    <Compile Include="Components\Common\Constants.cs" />
+    <Compile Include="Components\Controllers\BaseController.cs" />
     <Compile Include="Components\Controllers\BusinessController.cs" />
     <Compile Include="Components\Controllers\EntitiesController.cs" />
     <Compile Include="Components\Controllers\ExportController.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Interfaces\IPortable2.cs" />
-    <Compile Include="Components\Enums.cs" />
+    <Compile Include="Components\Common\Enums.cs" />
     <Compile Include="Components\Models\ExportImportResult.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetMembership.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetUser.cs" />

@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.UI;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
@@ -81,8 +81,14 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             var dbName = Path.Combine(_dbFolder, exportJob.ExportFile + Constants.ExportDbExt);
+            var finfo = new FileInfo(dbName);
+
+            //Delete so we start a new database
+            if (finfo.Exists) finfo.Delete();
+
             using (var ctx = new ExportImportRepository(dbName))
             {
+                result.AddSummary("Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
                 var implementors = GetPortableImplementors().ToList();
                 if (implementors.Any())
@@ -106,7 +112,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                             if (exportDto.ItemsToExport.Any(x => x.Equals(service.Category, IgnoreCaseComp)))
                             {
-                                service.ExportData(exportJob, ctx);
+                                service.ExportData(exportJob, ctx, result);
                                 scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                                 result.Status = JobStatus.InProgress;
                                 result.ProcessedCount += 1;
@@ -194,7 +200,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                             if (exporedtDto.ItemsToExport.Any(x => x.Equals(service.Category, IgnoreCaseComp)))
                             {
-                                service.ImportData(importJob, exporedtDto, ctx);
+                                service.ImportData(importJob, exporedtDto, ctx, result);
                                 scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                                 result.Status = JobStatus.InProgress;
                                 result.ProcessedCount += 1;

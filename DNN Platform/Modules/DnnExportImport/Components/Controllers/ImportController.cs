@@ -19,19 +19,22 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
-    public class ImportController
+    public class ImportController : BaseController
     {
         public int QueueOperation(int userId, ImportDto importDto)
         {
             var dataObject = JsonConvert.SerializeObject(importDto);
-            return DataProvider.Instance().AddNewJob(importDto.PortalId,
-                userId, JobType.Import, importDto.FileName, dataObject);
+            var id = DataProvider.Instance().AddNewJob(
+                importDto.PortalId, userId, JobType.Import, importDto.FileName, dataObject);
+            AddEventLog(importDto.PortalId, userId, Constants.LogTypeSiteImport);
+            return id;
         }
     }
 }

@@ -21,6 +21,7 @@
 
 using System;
 using System.Data;
+using Dnn.ExportImport.Components.Common;
 using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Providers
@@ -58,7 +59,11 @@ namespace Dnn.ExportImport.Components.Providers
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus);
+            DateTime? completeDate = null;
+            if (jobStatus == JobStatus.DoneFailure || jobStatus == JobStatus.DoneSuccess)
+                completeDate = DateTime.UtcNow;
+
+            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
         }
 
         public IDataReader GetFirstActiveJob()

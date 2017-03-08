@@ -19,13 +19,26 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
+using Dnn.ExportImport.Components.Common;
+
 namespace Dnn.ExportImport.Components.Models
 {
     public class ExportImportResult
     {
+        private IList<KeyValuePair<string, string>> _summary;
+
         public int JobId { get; set; }
-        public ProgressToken Token { get; set; }
         public JobStatus Status { get; set; }
         public int ProcessedCount { get; set; }
+        public IList<KeyValuePair<string, string>> Summary => _summary;
+
+        public void AddSummary(string name, string value)
+        {
+            // no worries about conncurrency; all jobs are executed serially
+            if (_summary == null) _summary = new List<KeyValuePair<string, string>>();
+
+            _summary.Add(new KeyValuePair<string,string>(name, value));
+        }
     }
 }

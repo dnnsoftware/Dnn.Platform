@@ -25,6 +25,7 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.ProfileProperties;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
+using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Data;
 using DotNetNuke.Common.Utilities;
 
@@ -50,7 +51,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
             var profileProperties =
@@ -58,13 +59,15 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance().GetPropertyDefinitionsByPortal(exportJob.PortalId)).ToList();
             ProgressPercentage = 50;
             repository.CreateItems(profileProperties, null);
+            result.AddSummary("Profile Properties", profileProperties.Count.ToString());
             ProgressPercentage = 100;
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
             var profileProperties = repository.GetAllItems<ExportProfileProperty>().ToList();
+            result.AddSummary("Profile Properties", profileProperties.Count.ToString());
 
             foreach (var profileProperty in profileProperties)
             {

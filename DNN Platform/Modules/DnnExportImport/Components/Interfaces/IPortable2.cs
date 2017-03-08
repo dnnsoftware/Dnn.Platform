@@ -21,6 +21,7 @@
 
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Repository;
 using DotNetNuke.UI.UserControls;
 
@@ -58,11 +59,11 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
-        void ExportData(ExportImportJob exportJob, IExportImportRepository repository);
+        void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result);
 
         /// <summary>
         ///  Performs import operation of the object.
         /// </summary>
-        void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository);
+        void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result);
     }
 }

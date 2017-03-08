@@ -19,22 +19,21 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
-namespace Dnn.ExportImport.Components
+namespace Dnn.ExportImport.Components.Common
 {
-    public enum JobType
+    internal class Constants
     {
-        Export = 0, // never change these numbers
-        Import = 1
-    }
+        public const string ExportFolder = @"\Install\ExportImport\";
+        public const string ExportDateFormat = "yyyyMMdd-HHmmss";
+        public const string ExportDbExt = ".dnndb"; // exportDB file extension
+        public const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
 
-    public enum JobStatus
-    {
-        Submitted = 0, // never change these numbers
-        InProgress = 1,
-        DoneSuccess,
-        DoneFailure,
-        Cancelled
+        public const string LogTypeSiteExport = "SITE_EXPORT";
+        public const string LogTypeSiteImport = "SITE_IMPORT";
+
+        public const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        public const string LastJobSuccessDate = "EXPORT_LastSuccessOn";
+
+        public const string SharedResources = "/DesktopModules/DnnExportImport/App_LocalResources/ExportImport.resx";
     }
 }

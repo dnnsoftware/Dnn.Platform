@@ -26,6 +26,7 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Taxonomy;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
+using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
@@ -58,28 +59,32 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
 
             var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
             repository.CreateItems(scopeTypes, null);
+            //result.AddSummary("Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
             var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
             repository.CreateItems(vocabularyTypes, null);
+            //result.AddSummary("Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
             var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
             repository.CreateItems(taxonomyTerms, null);
+            result.AddSummary("Terms", taxonomyTerms.Count.ToString());
             ProgressPercentage += 25;
 
-            var taxonomyVocabulary = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
-            repository.CreateItems(taxonomyVocabulary, null);
+            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
+            repository.CreateItems(taxonomyVocabularies, null);
+            result.AddSummary("Vocabularies", taxonomyVocabularies.Count.ToString());
             ProgressPercentage += 25;
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
 
@@ -93,10 +98,12 @@ namespace Dnn.ExportImport.Components.Services
 
             var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
             ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
+            result.AddSummary("Terms", otherVocabularies.Count.ToString());
             ProgressPercentage += 40;
 
             var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
             ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
+            result.AddSummary("Vocabularies", otherTaxonomyTerms.Count.ToString());
             ProgressPercentage += 40;
         }
 

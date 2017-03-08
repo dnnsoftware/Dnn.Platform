@@ -20,7 +20,10 @@
 #endregion
 
 using System;
+using Dnn.ExportImport.Components.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -41,7 +44,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 switch (version)
                 {
                     case "09.01.00":
-                        //add any loginc as needed here
+                        AddNewLogTypes();
                         break;
                 }
                 return "Success";
@@ -50,6 +53,40 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 return "Failed";
             }
+        }
+
+        private static void AddNewLogTypes()
+        {
+            var logTypeInfo = new LogTypeInfo
+            {
+                LogTypeKey = Constants.LogTypeSiteExport,
+                LogTypeFriendlyName = "Site Export Request",
+                LogTypeDescription = "",
+                LogTypeCSSClass = "GeneralAdminOperation",
+                LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+            };
+            LogController.Instance.AddLogType(logTypeInfo);
+
+            logTypeInfo.LogTypeKey = Constants.LogTypeSiteImport;
+            logTypeInfo.LogTypeFriendlyName = "Site Import Request";
+            LogController.Instance.AddLogType(logTypeInfo);
+
+            var logTypeConf = new LogTypeConfigInfo
+            {
+                LoggingIsActive = true,
+                LogTypeKey = Constants.LogTypeSiteExport,
+                KeepMostRecent = "50",
+                NotificationThreshold = 1,
+                NotificationThresholdTime = 1,
+                NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Minutes,
+                MailFromAddress = Null.NullString,
+                MailToAddress = Null.NullString,
+                LogTypePortalID = "*"
+            };
+            LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
+
+            logTypeConf.LogTypeKey = Constants.LogTypeSiteImport;
+            LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
         }
     }
 }

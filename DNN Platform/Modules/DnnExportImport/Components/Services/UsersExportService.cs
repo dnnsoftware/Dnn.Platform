@@ -28,6 +28,7 @@ using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Data;
@@ -61,7 +62,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
         {
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
@@ -113,7 +114,7 @@ namespace Dnn.ExportImport.Components.Services
             } while (totalProcessed < totalUsers);
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
             var portalId = importJob.PortalId;

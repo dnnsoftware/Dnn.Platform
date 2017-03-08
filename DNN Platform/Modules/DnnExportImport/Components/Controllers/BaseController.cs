@@ -19,25 +19,33 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Providers;
-using Newtonsoft.Json;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
-    public class ExportController : BaseController
+    public abstract class BaseController
     {
-        public int QueueOperation(int userId, ExportDto exportDto)
+        protected void AddEventLog(int portalId, int userId, string logTypeKey)
         {
-            var exportFileName = string.Join("_", "EXPORT",
-                DateTime.UtcNow.ToString(Constants.ExportDateFormat), exportDto.PortalId.ToString("D"));
-            var dataObject = JsonConvert.SerializeObject(exportDto);
-            var id = DataProvider.Instance().AddNewJob(
-                exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);
-            AddEventLog(exportDto.PortalId, userId, Constants.LogTypeSiteExport);
-            return id;
+            var objSecurity = new PortalSecurity();
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            var userInfo = UserController.Instance.GetUser(portalId, userId);
+            var username = objSecurity.InputFilter(userInfo.Username,
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+
+            var log = new LogInfo
+            {
+                LogTypeKey = logTypeKey,
+                LogPortalID = portalId,
+                LogPortalName = portalInfo.PortalName,
+                LogUserName = username,
+                LogUserID = userId,
+            };
+
+            LogController.Instance.AddLog(log);
         }
     }
 }

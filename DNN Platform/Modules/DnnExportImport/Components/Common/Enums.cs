@@ -19,15 +19,20 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace Dnn.ExportImport.Components
+namespace Dnn.ExportImport.Components.Common
 {
-    public class Constants
+    public enum JobType
     {
-        public const string ExportFolder = @"\Install\ExportImport\";
-        public const string ExportDateFormat = "yyyyMMdd-HHmmss";
-        public const string ExportDbExt = ".dnndb"; // exportDB file extension
-        public const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
+        Export = 0, // never change these numbers
+        Import = 1
+    }
 
-        public const string SharedResources = "/DesktopModules/DnnExportImport/App_LocalResources/ExportImport.resx";
+    public enum JobStatus
+    {
+        Submitted = 0, // never change these numbers
+        InProgress = 1,
+        DoneSuccess,
+        DoneFailure,
+        Cancelled
     }
 }
