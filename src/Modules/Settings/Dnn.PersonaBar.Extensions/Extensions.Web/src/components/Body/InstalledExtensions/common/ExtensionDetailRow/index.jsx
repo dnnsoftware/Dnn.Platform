@@ -40,7 +40,7 @@ class ExtensionDetailRow extends Component {
             <div>
                 <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px 0 20px 20px" }}>
                     <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
-                        <img src={props._package.packageIcon && props._package.packageIcon.replace("~", "")} />
+                        <img src={props._package.packageIcon && props._package.packageIcon.replace("~", "")} alt={props._package.friendlyName} />
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
                         <span className="package-name">{props._package.friendlyName}</span>
@@ -53,8 +53,8 @@ class ExtensionDetailRow extends Component {
                         {this.getInUseDisplay(props._package.friendlyName, props._package.packageId)}
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[4]}>
-                        <a href={props._package.upgradeUrl} target="_blank">
-                            <img src={props._package.upgradeIndicator} />
+                        <a href={props._package.upgradeUrl} target="_blank" aria-label="Update">
+                            <img src={props._package.upgradeIndicator} alt="Update"/>
                         </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>
