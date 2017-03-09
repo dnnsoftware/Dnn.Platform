@@ -58,7 +58,8 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
-        void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate);
+        void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository,
+            ExportImportResult result);
 
         /// <summary>
         ///  Performs import operation of the object.

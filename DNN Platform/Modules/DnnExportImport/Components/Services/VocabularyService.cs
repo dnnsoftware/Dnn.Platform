@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
+        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
 
@@ -73,12 +73,12 @@ namespace Dnn.ExportImport.Components.Services
             //result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
-            var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(utcSinceDate));
+            var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(taxonomyTerms, null);
             result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
             ProgressPercentage += 25;
 
-            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(utcSinceDate));
+            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(taxonomyVocabularies, null);
             result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
             ProgressPercentage += 25;

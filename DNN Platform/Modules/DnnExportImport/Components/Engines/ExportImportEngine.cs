@@ -113,7 +113,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                             if (exportDto.ItemsToExport.Any(x => x.Equals(service.Category, IgnoreCaseComp)))
                             {
-                                service.ExportData(exportJob, ctx, result, exportDto.ExportTime.UtcDateTime);
+                                service.ExportData(exportJob, exportDto, ctx, result);
                                 scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                                 result.Status = JobStatus.InProgress;
                                 result.ProcessedCount += 1;

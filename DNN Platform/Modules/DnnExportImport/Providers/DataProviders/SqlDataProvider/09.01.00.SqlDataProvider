@@ -444,11 +444,13 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
 	@PortalID	int,
+	@IncludeDeleted bit = 0,
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*
 	FROM	{databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND PPD.Deleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 	AND 
 			(CASE 
 			WHEN @SinceDate IS NULL THEN 0

@@ -111,11 +111,12 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId, sinceDate);
         }
 
-        public IDataReader GetPropertyDefinitionsByPortal(int portalId, DateTime? sinceDate)
+        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime? sinceDate)
         {
             return PlatformDataProvider.Instance()
-                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, sinceDate);
+                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, sinceDate);
         }
+
         public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
         {
             PlatformDataProvider.Instance().ExecuteNonQuery(

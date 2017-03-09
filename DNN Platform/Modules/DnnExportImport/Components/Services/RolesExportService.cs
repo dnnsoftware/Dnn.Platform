@@ -58,21 +58,21 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
+        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
 
-            var roleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, utcSinceDate));
+            var roleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(roleGroups, null);
             result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
             ProgressPercentage += 30;
 
-            var roles = CBO.FillCollection<ExportRole>(DataProvider.Instance().GetAllRoles(exportJob.PortalId, utcSinceDate));
+            var roles = CBO.FillCollection<ExportRole>(DataProvider.Instance().GetAllRoles(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(roles, null);
             result.AddSummary("Exported Roles", roles.Count.ToString());
             ProgressPercentage += 50;
 
-            var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, utcSinceDate));
+            var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(roleSettings, null);
             result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
             ProgressPercentage += 20;

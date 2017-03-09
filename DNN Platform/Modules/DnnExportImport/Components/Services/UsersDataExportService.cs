@@ -62,7 +62,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
+        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 100;
             //No implementation required in export users child as everything is exported in parent service.

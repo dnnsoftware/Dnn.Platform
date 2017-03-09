@@ -52,13 +52,15 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
+        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
         {
             //TODO: Verify that profile properties stores createdon and modified on info in UTC or local
             ProgressPercentage = 0;
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
-                    DataProvider.Instance().GetPropertyDefinitionsByPortal(exportJob.PortalId, utcSinceDate)).ToList();
+                    DataProvider.Instance()
+                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions,
+                            exportDto.ExportTime?.UtcDateTime)).ToList();
             ProgressPercentage = 50;
             repository.CreateItems(profileProperties, null);
             result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
