@@ -162,6 +162,12 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserProfile", userId);
         }
+
+        public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
+        {
+            PlatformDataProvider.Instance().ExecuteNonQuery(
+                "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
+        }
         #region Users
 
         #endregion  

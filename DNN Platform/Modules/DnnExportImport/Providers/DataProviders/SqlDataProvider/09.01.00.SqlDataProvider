@@ -209,7 +209,7 @@ GO
 
 CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
 (
-	@username Int
+	@username nvarchar(100)
 )
 RETURNS 
 	int
@@ -218,7 +218,11 @@ BEGIN
 	DECLARE @UserId AS int
 
 	SELECT  @UserId = UserID FROM {databaseOwner}[{objectQualifier}Users] WHERE Username = @username
-	RETURN  @UserId
+	IF(@UserId IS NULL)
+	BEGIN
+		RETURN -1;
+	END
+	RETURN @UserId;
 END
 GO
 
@@ -349,6 +353,24 @@ AS
 		,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
 	WHERE UserID = @UserId AND PortalID = @PortalId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+	@UserID int,
+	@CreatedByUserName nvarchar(100),
+	@ModifiedByUserName nvarchar(100)
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}Users
+	SET
+		CreatedByUserID = {databaseOwner}[{objectQualifier}UserIdByUsername](@CreatedByUserName),
+		LastModifiedByUserID = {databaseOwner}[{objectQualifier}UserIdByUsername](@ModifiedByUserName)
+	WHERE
+		UserID = @UserID
 GO
 
 -- Taxonomy Import/Export

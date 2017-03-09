@@ -44,6 +44,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P'
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
 -- Taxonomy Import/Export
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
@@ -74,3 +78,14 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoleSettings]', 'P') IS NO
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoleSettings]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+GO

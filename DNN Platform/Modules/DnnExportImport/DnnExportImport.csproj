@@ -101,6 +101,7 @@
     <Compile Include="Components\Entities\ExportImportJob.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />
     <Compile Include="Components\Services\RolesExportService.cs" />
+    <Compile Include="Components\Services\UsersDataExportService.cs" />
     <Compile Include="Components\Services\UsersExportService.cs" />
     <Compile Include="Components\Services\VocabularyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

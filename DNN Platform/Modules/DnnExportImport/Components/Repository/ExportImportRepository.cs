@@ -53,7 +53,8 @@ namespace Dnn.ExportImport.Components.Repository
 
         public T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
+            if (item == null) return item;
+            var collectionName = typeof (T).Name.ToLowerInvariant();
             item.ReferenceId = referenceId;
             var collection = _lightDb.GetCollection<T>(collectionName);
             item.Id = collection.Insert(item);
@@ -149,7 +150,8 @@ namespace Dnn.ExportImport.Components.Repository
 
         public void UpdateItem<T>(T item) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
+            if (item == null) return;
+            var collectionName = typeof (T).Name.ToLowerInvariant();
             var collection = _lightDb.GetCollection<T>(collectionName);
 
             if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();

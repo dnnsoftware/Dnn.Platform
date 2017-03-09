@@ -32,6 +32,7 @@ using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Membership;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -67,7 +68,13 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
             var pageSize = 1000;
-            var totalProcessed = 0;
+            var totalUsersExported = 0;
+            var totalUserRolesExported = 0;
+            var totalPortalsExported = 0;
+            var totalProfilesExported = 0;
+            var totalAuthenticationExported = 0;
+            var totalAspnetUserExported = 0;
+            var totalAspnetMembershipExported = 0;
             ProgressPercentage = 0;
             var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
             var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
@@ -91,102 +98,94 @@ namespace Dnn.ExportImport.Components.Services
                             .GetUserRoles(portalId, user.UserId));
                     var userPortal =
                         CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(portalId, user.UserId));
-                    var userAuthentications =
-                        CBO.FillCollection<ExportUserAuthentication>(
+                    var userAuthentication =
+                        CBO.FillObject<ExportUserAuthentication>(
                             DataProvider.Instance().GetUserAuthentication(user.UserId));
                     var userProfiles =
                         CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(user.UserId));
 
                     repository.CreateItem(user, null);
                     repository.CreateItem(aspnetUser, user.Id);
+                    totalAspnetUserExported += 1;
+
                     repository.CreateItem(aspnetMembership, user.Id);
+                    totalAspnetMembershipExported += aspnetMembership != null ? 1 : 0;
+
                     repository.CreateItem(userPortal, user.Id);
+                    totalPortalsExported += userPortal != null ? 1 : 0;
+
                     repository.CreateItems(userProfiles, user.Id);
+                    totalProfilesExported += userProfiles.Count;
+
                     repository.CreateItems(userRoles, user.Id);
-                    repository.CreateItems(userAuthentications, user.Id);
+                    totalUserRolesExported += userRoles.Count;
+
+                    repository.CreateItem(userAuthentication, user.Id);
+                    totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                 }
-                totalProcessed += allUser.Count;
+                totalUsersExported += allUser.Count;
                 pageIndex++;
                 ProgressPercentage += progressStep;
                 dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
                 allUser =
                     CBO.FillCollection<ExportUser>(dataReader).ToList();
-            } while (totalProcessed < totalUsers);
+            } while (totalUsersExported < totalUsers);
+            result.AddSummary("Total Users Exported", totalUsersExported.ToString());
+            result.AddSummary("Total User Portals Exported", totalPortalsExported.ToString());
+            result.AddSummary("Total User Roles Exported", totalUserRolesExported.ToString());
+            result.AddSummary("Total User Profiles Exported", totalProfilesExported.ToString());
+            result.AddSummary("Total User Authentication Exported", totalAuthenticationExported.ToString());
+            result.AddSummary("Total Aspnet User Exported", totalAspnetUserExported.ToString());
+            result.AddSummary("Total Aspnet Membership Exported", totalAspnetMembershipExported.ToString());
         }
 
         public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
-            var portalId = importJob.PortalId;
             var pageIndex = 0;
             var pageSize = 1000;
-            var totalProcessed = 0;
+            var totalUsersImported = 0;
+            var totalPortalsImported = 0;
+            var totalAspnetUserImported = 0;
+            var totalAspnetMembershipImported = 0;
+
             var totalUsers = repository.GetCount<ExportUser>();
             var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
-            while (totalProcessed < totalUsers)
+            while (totalUsersImported < totalUsers)
             {
                 var users = repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
                 foreach (var user in users)
                 {
-                    var userRoles = repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
-                    var userAuthentications = repository.GetRelatedItems<ExportUserAuthentication>(user.Id).ToList();
-                    var aspNetUser = repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
-                    if (aspNetUser == null) continue;
-
-                    var aspnetMembership = repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
-                    if (aspnetMembership == null) continue;
-
-                    var userPortal = repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                    var userProfiles = repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
-                    var existingUser = UserController.GetUserByName(portalId, user.Username);
-
-                    if (existingUser != null)
+                    using (var db = DataContext.Instance())
                     {
-                        switch (exporteDto.CollisionResolution)
-                        {
-                            case CollisionResolution.Overwrite:
-                                ProcessUserUpdate(existingUser, user, userPortal);
-                                break;
-                            case CollisionResolution.Ignore: //Just ignore the record
-                                //TODO: Log that user was ignored.
-                                break;
-                            case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                                //TODO: Log that users was ignored as duplicate not possible for users.
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
-                        }
-                    }
-                    else
-                    {
-                        var createdById = Common.Util.GetUserIdOrName(importJob, user.CreatedByUserId,
-                            user.CreatedByUserName);
-                        var modifiedById = Common.Util.GetUserIdOrName(importJob, user.LastModifiedByUserId,
-                            user.LastModifiedByUserName);
-                        ProcessUserMembership(aspNetUser, aspnetMembership);
+                        var aspNetUser = repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                        if (aspNetUser == null) continue;
 
-                        using (var db = DataContext.Instance())
-                        {
-                            ProcessUser(db, user, createdById, modifiedById);
-                            //TODO: All the steps listed below should be done as Pass 2?
-                            ProcessUserPortal(importJob, db, userPortal, user.UserId);
-                            ProcessUserRoles(importJob, db, userRoles, user.UserId, createdById, modifiedById);
-                            ProcessUserProfiles(importJob, db, userProfiles, user.UserId);
-                            ProcessUserAuthentications(db, userAuthentications, user.UserId, createdById,
-                                modifiedById);
+                        var aspnetMembership =
+                            repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                        if (aspnetMembership == null) continue;
 
-                            //Update the source repository local ids.
-                            repository.UpdateItem(user);
-                            repository.UpdateItem(userPortal);
-                            repository.UpdateItems(userRoles);
-                            repository.UpdateItems(userProfiles);
-                            repository.UpdateItems(userAuthentications);
-                        }
+                        var userPortal = repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
+                        ProcessUser(importJob, exporteDto, db, user, userPortal, aspNetUser, aspnetMembership);
+                        totalAspnetUserImported += 1;
+                        totalAspnetMembershipImported += 1;
+                        ProcessUserPortal(importJob, exporteDto, db, userPortal, user.UserId);
+                        totalPortalsImported += userPortal != null ? 1 : 0;
+
+                        //Update the source repository local ids.
+                        repository.UpdateItem(user);
+                        repository.UpdateItem(userPortal);
                     }
                 }
-                totalProcessed += pageSize > users.Count ? users.Count : pageSize;
+                totalUsersImported += pageSize > users.Count ? users.Count : pageSize;
                 ProgressPercentage += progressStep;
+                pageIndex++;
             }
+            result.AddSummary("Total Users Imported", totalUsersImported.ToString());
+            result.AddSummary("Total User Portals Exported", totalPortalsImported.ToString());
+            result.AddSummary("Total Aspnet User Imported", totalAspnetUserImported.ToString());
+            result.AddSummary("Total Aspnet Membership Imported", totalAspnetMembershipImported.ToString());
+
         }
 
         private static void ProcessUserUpdate(UserInfo existingUser, ExportUser user, ExportUserPortal userPortal)
@@ -202,90 +201,84 @@ namespace Dnn.ExportImport.Components.Services
             DataCache.ClearCache(DataCache.UserCacheKey);
         }
 
-        private static void ProcessUser(IDataContext db,
-            ExportUser user, int createdById, int modifiedById)
+        private static void ProcessUser(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+            ExportUser user, ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {
-            user.UserId = 0;
-            user.CreatedByUserId = createdById;
-            user.LastModifiedByUserId = modifiedById;
-            user.CreatedOnDate = user.LastModifiedOnDate = DateTime.UtcNow;
-            var repUser = db.GetRepository<ExportUser>();
-            repUser.Insert(user);
-            user.LocalId = user.UserId;
+            if (user == null) return;
 
+            var existingUser = UserController.GetUserByName(importJob.PortalId, user.Username);
+            var isUpdate = false;
+            var repUser = db.GetRepository<ExportUser>();
+
+            if (existingUser != null)
+            {
+                switch (exporteDto.CollisionResolution)
+                {
+                    case CollisionResolution.Overwrite:
+                        isUpdate = true;
+                        break;
+                    case CollisionResolution.Ignore: //Just ignore the record
+                    //TODO: Log that user was ignored.
+                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
+                        //TODO: Log that users was ignored as duplicate not possible for users.
+                        return;
+                    default:
+                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                }
+            }
+            if (isUpdate)
+            {
+                ProcessUserUpdate(existingUser, user, userPortal);
+                user.UserId = existingUser.UserID;
+            }
+            else
+            {
+                ProcessUserMembership(aspnetUser, aspnetMembership);
+                user.UserId = 0;
+                user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
+                user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
+                user.CreatedOnDate = user.LastModifiedOnDate = DateTime.UtcNow;
+                repUser.Insert(user);
+            }
+            user.LocalId = user.UserId;
         }
 
-        private static void ProcessUserPortal(ExportImportJob importJob, IDataContext db,
+        private static void ProcessUserPortal(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
             ExportUserPortal userPortal, int userId)
         {
             if (userPortal == null) return;
-
-            var portalId = importJob.PortalId;
             var repUserPortal = db.GetRepository<ExportUserPortal>();
+            var existingPortal =
+                CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(importJob.PortalId, userId));
+            var isUpdate = false;
+            if (existingPortal != null)
+            {
+                switch (exporteDto.CollisionResolution)
+                {
+                    case CollisionResolution.Overwrite:
+                        isUpdate = true;
+                        break;
+                    case CollisionResolution.Ignore: //Just ignore the record
+                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
+                        return;
+                    default:
+                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                }
+            }
             userPortal.UserId = userId;
-            userPortal.PortalId = portalId;
-            userPortal.CreatedDate = DateTime.UtcNow;
-            repUserPortal.Insert(userPortal);
+            userPortal.PortalId = importJob.PortalId;
+            if (isUpdate)
+            {
+                userPortal.UserPortalId = existingPortal.UserPortalId;
+                repUserPortal.Update(userPortal);
+            }
+            else
+            {
+                userPortal.UserPortalId = 0;
+                userPortal.CreatedDate = DateTime.UtcNow;
+                repUserPortal.Insert(userPortal);
+            }
             userPortal.LocalId = userPortal.UserPortalId;
-        }
-
-        private static void ProcessUserRoles(ExportImportJob importJob, IDataContext db,
-            IEnumerable<ExportUserRole> userRoles, int userId, int createdById, int modifiedById)
-        {
-            var repUserRoles = db.GetRepository<ExportUserRole>();
-
-            foreach (var userRole in userRoles)
-            {
-                var roleId = Common.Util.GetRoleId(importJob.PortalId, userRole.RoleName);
-                if (roleId == null) continue;
-
-                userRole.UserId = userId;
-                userRole.RoleId = roleId.Value;
-                userRole.CreatedOnDate = DateTime.UtcNow;
-                userRole.LastModifiedOnDate = DateTime.UtcNow;
-                userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?) DateTime.UtcNow
-                    : null;
-                userRole.CreatedByUserId = createdById;
-                userRole.LastModifiedByUserId = modifiedById;
-                repUserRoles.Insert(userRole);
-                userRole.LocalId = userRole.UserRoleId;
-            }
-        }
-
-        private static void ProcessUserProfiles(ExportImportJob importJob, IDataContext db,
-            IEnumerable<ExportUserProfile> userProfiles, int userId)
-        {
-            var repUserProfile = db.GetRepository<ExportUserProfile>();
-
-            foreach (var userProfile in userProfiles)
-            {
-                var profileDefinitionId = Common.Util.GetProfilePropertyId(importJob.PortalId, userProfile.PropertyDefinitionId,
-                    userProfile.PropertyName);
-                if (profileDefinitionId == null) continue;
-
-                userProfile.UserId = userId;
-                userProfile.PropertyDefinitionId = profileDefinitionId.Value;
-                userProfile.LastUpdatedDate = DateTime.UtcNow;
-                repUserProfile.Insert(userProfile);
-                userProfile.LocalId = userProfile.ProfileId;
-            }
-        }
-
-        private static void ProcessUserAuthentications(IDataContext db,
-            IEnumerable<ExportUserAuthentication> userAuthentications, int userId, int createdById, int modifiedById)
-        {
-            var repUserAuthentication = db.GetRepository<ExportUserAuthentication>();
-            foreach (var userAuthentication in userAuthentications)
-            {
-                userAuthentication.UserId = userId;
-                userAuthentication.CreatedOnDate = DateTime.UtcNow;
-                userAuthentication.LastModifiedOnDate = DateTime.UtcNow;
-                userAuthentication.CreatedByUserId = createdById;
-                userAuthentication.LastModifiedByUserId = modifiedById;
-                repUserAuthentication.Insert(userAuthentication);
-                userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
-            }
         }
 
         private static void ProcessUserMembership(ExportAspnetUser aspNetUser, ExportAspnetMembership aspnetMembership)
