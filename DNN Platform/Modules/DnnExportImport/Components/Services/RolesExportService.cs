@@ -58,21 +58,21 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
         {
             ProgressPercentage = 0;
 
-            var roleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId));
+            var roleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roleGroups, null);
             result.AddSummary("Role Groups", roleGroups.Count.ToString());
             ProgressPercentage += 30;
 
-            var roles = CBO.FillCollection<ExportRole>(DataProvider.Instance().GetAllRoles(exportJob.PortalId));
+            var roles = CBO.FillCollection<ExportRole>(DataProvider.Instance().GetAllRoles(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roles, null);
             result.AddSummary("Roles", roles.Count.ToString());
             ProgressPercentage += 50;
 
-            var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId));
+            var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roleSettings, null);
             result.AddSummary("Role Settings", roleSettings.Count.ToString());
             ProgressPercentage += 20;
@@ -103,7 +103,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changedGroups = new List<RoleGroupItem>();
             var portalId = importJob.PortalId;
-            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId));
+            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, null));
             foreach (var other in otherRoleGroups)
             {
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);

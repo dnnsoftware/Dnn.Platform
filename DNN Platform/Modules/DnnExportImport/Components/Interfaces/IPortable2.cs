@@ -19,11 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
-using Dnn.ExportImport.Components.Repository;
-using DotNetNuke.UI.UserControls;
 
 namespace Dnn.ExportImport.Components.Interfaces
 {
@@ -59,7 +58,7 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
-        void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result);
+        void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate);
 
         /// <summary>
         ///  Performs import operation of the object.

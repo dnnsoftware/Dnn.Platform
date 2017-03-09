@@ -234,7 +234,8 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@PortalID        int,
 	@PageIndex       int,
 	@PageSize        int,
-	@IncludeDeleted  bit
+	@IncludeDeleted  bit,
+	@SinceDate		 datetime=NULL
 AS
 BEGIN
 	DECLARE 
@@ -248,7 +249,12 @@ BEGIN
 		SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
 		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
 			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
-			WHERE VU.PortalID = @PortalID AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+			WHERE VU.PortalID = @PortalID 
+			AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+			AND (CASE 
+			WHEN @SinceDate IS NULL THEN 0
+			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate 
+			ELSE U.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 	)
 	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
 		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
@@ -373,6 +379,27 @@ AS
 		UserID = @UserID
 GO
 
+--Profile Properties 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
+	@PortalID	int,
+	@SinceDate	datetime=NULL
+AS
+	SELECT	*
+	FROM	{databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
+	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND 
+			(CASE 
+			WHEN @SinceDate IS NULL THEN 0
+			WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate 
+			ELSE PPD.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	ORDER BY ViewOrder
+GO
+
+
 -- Taxonomy Import/Export
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
@@ -403,6 +430,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+	@SinceDate	datetime=NULL
 AS
 	SELECT
 		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
@@ -410,6 +438,10 @@ AS
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
+	WHERE (CASE 
+			WHEN @SinceDate IS NULL THEN 0
+			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate 
+			ELSE t.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
@@ -417,6 +449,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+	@SinceDate	datetime=NULL
 AS
 	SELECT
 		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
@@ -424,6 +457,10 @@ AS
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on v.LastModifiedByUserID = u2.UserID
+	WHERE (CASE 
+			WHEN @SinceDate IS NULL THEN 0
+			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate 
+			ELSE v.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
 -- Roles Import/Export
@@ -432,7 +469,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
-	@PortalID int
+	@PortalID int,
+	@SinceDate datetime=NULL
 AS
 	SELECT
 		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
@@ -442,6 +480,10 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rg.LastModifiedByUserID = u2.UserID
 	WHERE
 		rg.PortalID = @PortalID
+	AND (CASE 
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate 
+		ELSE rg.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
@@ -449,7 +491,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
-	@PortalID int
+	@PortalID int,
+	@SinceDate datetime=NULL
 AS
 	SELECT
 		r.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
@@ -460,6 +503,10 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on r.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
+	AND (CASE 
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate 
+		ELSE r.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
@@ -467,7 +514,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS N
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
-	@PortalID int
+	@PortalID int,
+	@SinceDate datetime=NULL
 AS
 	SELECT
 		rs.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
@@ -478,6 +526,10 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rs.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
+	AND (CASE 
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate 
+		ELSE rs.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL

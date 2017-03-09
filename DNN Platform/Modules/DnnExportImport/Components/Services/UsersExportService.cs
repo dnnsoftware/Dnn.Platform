@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
         {
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
@@ -74,7 +74,7 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
             ProgressPercentage = 0;
-            var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
+            var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false, utcSinceDate);
             var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
             var firstOrDefault = allUser.FirstOrDefault();
             if (firstOrDefault == null) return;
@@ -124,7 +124,7 @@ namespace Dnn.ExportImport.Components.Services
                 totalUsersExported += allUser.Count;
                 pageIndex++;
                 ProgressPercentage += progressStep;
-                dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false);
+                dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false, utcSinceDate);
                 allUser =
                     CBO.FillCollection<ExportUser>(dataReader).ToList();
             } while (totalUsersExported < totalUsers);

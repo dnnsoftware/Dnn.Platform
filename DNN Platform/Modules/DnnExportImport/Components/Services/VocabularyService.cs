@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
         {
             ProgressPercentage = 0;
 
@@ -73,12 +73,12 @@ namespace Dnn.ExportImport.Components.Services
             //result.AddSummary("Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
-            var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
+            var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(utcSinceDate));
             repository.CreateItems(taxonomyTerms, null);
             result.AddSummary("Terms", taxonomyTerms.Count.ToString());
             ProgressPercentage += 25;
 
-            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
+            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(utcSinceDate));
             repository.CreateItems(taxonomyVocabularies, null);
             result.AddSummary("Vocabularies", taxonomyVocabularies.Count.ToString());
             ProgressPercentage += 25;
@@ -112,7 +112,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changed = false;
             var dataService = Util.GetDataService();
-            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies());
+            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(null));
             foreach (var other in otherVocabularies)
             {
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -167,7 +167,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms());
+            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(null));
             foreach (var other in otherTaxonomyTerms)
             {
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);

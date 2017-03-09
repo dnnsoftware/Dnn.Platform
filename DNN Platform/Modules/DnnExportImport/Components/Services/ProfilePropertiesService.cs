@@ -26,8 +26,9 @@ using Dnn.ExportImport.Components.Dto.ProfileProperties;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Models;
-using DotNetNuke.Data;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -51,12 +52,13 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result)
+        public void ExportData(ExportImportJob exportJob, IExportImportRepository repository, ExportImportResult result, DateTime? utcSinceDate)
         {
+            //TODO: Verify that profile properties stores createdon and modified on info in UTC or local
             ProgressPercentage = 0;
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
-                    DataProvider.Instance().GetPropertyDefinitionsByPortal(exportJob.PortalId)).ToList();
+                    DataProvider.Instance().GetPropertyDefinitionsByPortal(exportJob.PortalId, utcSinceDate)).ToList();
             ProgressPercentage = 50;
             repository.CreateItems(profileProperties, null);
             result.AddSummary("Profile Properties", profileProperties.Count.ToString());
@@ -73,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 using (var db = DataContext.Instance())
                 {
-                    var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DataProvider.Instance()
+                    var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                         .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
                     var modifiedById = Common.Util.GetUserIdOrName(importJob, profileProperty.LastModifiedByUserId,
                         profileProperty.LastModifiedByUserName);

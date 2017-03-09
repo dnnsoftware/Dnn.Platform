@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
         [IgnoreColumn]
         public string LastModifiedByUserName { get; set; }//This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
-        public Guid PasswordResetToken { get; set; }
+        public Guid? PasswordResetToken { get; set; }
         public DateTime? PasswordResetExpiration { get; set; }
         [IgnoreColumn]
         public string LowerEmail { get; set; }

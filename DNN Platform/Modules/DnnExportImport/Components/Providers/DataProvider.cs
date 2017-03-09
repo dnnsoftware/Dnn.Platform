@@ -86,31 +86,36 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_VocabularyTypes");
         }
 
-        public IDataReader GetAllTerms()
+        public IDataReader GetAllTerms(DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms", sinceDate);
         }
 
-        public IDataReader GetAllVocabularies()
+        public IDataReader GetAllVocabularies(DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies");
+            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies", sinceDate);
         }
 
-        public IDataReader GetAllRoleGroups(int portalId)
+        public IDataReader GetAllRoleGroups(int portalId, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleGroups", portalId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleGroups", portalId, sinceDate);
         }
 
-        public IDataReader GetAllRoles(int portalId)
+        public IDataReader GetAllRoles(int portalId, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_Roles", portalId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_Roles", portalId, sinceDate);
         }
 
-        public IDataReader GetAllRoleSettings(int portalId)
+        public IDataReader GetAllRoleSettings(int portalId, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId, sinceDate);
         }
 
+        public IDataReader GetPropertyDefinitionsByPortal(int portalId, DateTime? sinceDate)
+        {
+            return PlatformDataProvider.Instance()
+                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, sinceDate);
+        }
         public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
         {
             PlatformDataProvider.Instance().ExecuteNonQuery(
@@ -129,9 +134,9 @@ namespace Dnn.ExportImport.Components.Providers
                 "Export_UpdateRoleSettingChangers", roleId, settingName, createdBy, modifiedBy);
         }
 
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted)
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, sinceDate);
         }
 
         public IDataReader GetAspNetUser(string username)
