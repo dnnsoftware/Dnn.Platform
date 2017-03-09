@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance().GetPropertyDefinitionsByPortal(exportJob.PortalId, utcSinceDate)).ToList();
             ProgressPercentage = 50;
             repository.CreateItems(profileProperties, null);
-            result.AddSummary("Profile Properties", profileProperties.Count.ToString());
+            result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             ProgressPercentage = 100;
         }
 
@@ -69,7 +69,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             ProgressPercentage = 0;
             var profileProperties = repository.GetAllItems<ExportProfileProperty>().ToList();
-            result.AddSummary("Profile Properties", profileProperties.Count.ToString());
+            result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
 
             foreach (var profileProperty in profileProperties)
             {

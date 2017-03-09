@@ -65,22 +65,22 @@ namespace Dnn.ExportImport.Components.Services
 
             var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
             repository.CreateItems(scopeTypes, null);
-            //result.AddSummary("Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+            //result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
             var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
             repository.CreateItems(vocabularyTypes, null);
-            //result.AddSummary("Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+            //result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
             var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(utcSinceDate));
             repository.CreateItems(taxonomyTerms, null);
-            result.AddSummary("Terms", taxonomyTerms.Count.ToString());
+            result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
             ProgressPercentage += 25;
 
             var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(utcSinceDate));
             repository.CreateItems(taxonomyVocabularies, null);
-            result.AddSummary("Vocabularies", taxonomyVocabularies.Count.ToString());
+            result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
             ProgressPercentage += 25;
         }
 
@@ -98,12 +98,12 @@ namespace Dnn.ExportImport.Components.Services
 
             var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
             ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
-            result.AddSummary("Terms", otherVocabularies.Count.ToString());
+            result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
             ProgressPercentage += 40;
 
             var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
             ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
-            result.AddSummary("Vocabularies", otherTaxonomyTerms.Count.ToString());
+            result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
             ProgressPercentage += 40;
         }
 

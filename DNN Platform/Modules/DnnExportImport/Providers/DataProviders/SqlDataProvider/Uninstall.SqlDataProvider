@@ -14,6 +14,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') 
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
 GO
 
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs]
+GO
+
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT NULL
 	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobs]
 GO

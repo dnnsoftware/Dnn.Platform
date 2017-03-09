@@ -64,17 +64,17 @@ namespace Dnn.ExportImport.Components.Services
 
             var roleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roleGroups, null);
-            result.AddSummary("Role Groups", roleGroups.Count.ToString());
+            result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
             ProgressPercentage += 30;
 
             var roles = CBO.FillCollection<ExportRole>(DataProvider.Instance().GetAllRoles(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roles, null);
-            result.AddSummary("Roles", roles.Count.ToString());
+            result.AddSummary("Exported Roles", roles.Count.ToString());
             ProgressPercentage += 50;
 
             var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, utcSinceDate));
             repository.CreateItems(roleSettings, null);
-            result.AddSummary("Role Settings", roleSettings.Count.ToString());
+            result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
             ProgressPercentage += 20;
         }
 
@@ -84,16 +84,16 @@ namespace Dnn.ExportImport.Components.Services
 
             var otherRoleGroups = repository.GetAllItems<ExportRoleGroup>().ToList();
             ProcessRoleGroups(importJob, exporteDto, otherRoleGroups);
-            result.AddSummary("Role Groups", otherRoleGroups.Count.ToString());
+            result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
             ProgressPercentage += 40;
 
             var otherRoles = repository.GetAllItems<ExportRole>().ToList();
-            result.AddSummary("Roles", otherRoles.Count.ToString());
+            result.AddSummary("Imported Roles", otherRoles.Count.ToString());
             ProcessRoles(importJob, exporteDto, otherRoleGroups, otherRoles);
 
             var otherRoleSettings = repository.GetAllItems<ExportRoleSetting>().ToList();
             ProcessRoleSettings(importJob, exporteDto, otherRoles, otherRoleSettings);
-            result.AddSummary("Role Settings", otherRoleSettings.Count.ToString());
+            result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
             ProgressPercentage += 60;
 
             RoleController.Instance.ClearRoleCache(importJob.PortalId);

@@ -23,9 +23,9 @@ BEGIN
 	) VALUES
     (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
 	  , 5
-	  , N'm'
+	  , N'h'
 	  , 1
-	  , N'm'
+	  , N'h'
 	  , 100
 	  , N''
 	  , 0
@@ -77,6 +77,64 @@ IF NOT EXISTS ( SELECT 1 FROM sys.indexes
 				AND name = N'IX_{objectQualifier}ExportImportJobs_CreatedOn')
 	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_CreatedOn]
 		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOn])
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
+		[JobLogId]    int IDENTITY(1,1) NOT NULL,
+		[JobId]       int NOT NULL,
+		[Name]        nvarchar(100),
+		[Value]       nvarchar(100),
+
+		CONSTRAINT [PK_{objectQualifier}ExportImportJobLogs] PRIMARY KEY ([JobLogId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
+				WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]')
+				AND name = N'FK_{objectQualifier}ExportImportJobLogs_JobId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs] ADD 
+		CONSTRAINT [FK_{objectQualifier}ExportImportJobLogs_JobId] FOREIGN KEY ( [JobId] )
+		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
+		ON DELETE CASCADE
+GO
+
+-- Collect and insert Export/Import logs in one batch
+-- see post: Send (Pass) DataTable as parameter to Stored Procedure in C# and VB.Net
+-- http://www.aspsnippets.com/Articles/Send-Pass-DataTable-as-parameter-to-Stored-Procedure-in-C-and-VBNet.aspx
+
+-- We must drop the procedure that uses the 'ExportImportJobLogsType' custom type before dropping the custom type itself
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportJobLogsType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType]
+GO
+
+CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType] AS TABLE
+(
+	[JobId] int,
+	[Name]  nvarchar(100),
+	[Value] nvarchar(100)
+);
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]
+	@DataTable {databaseOwner}[{objectQualifier}ExportImportJobLogsType] READONLY
+AS
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}ExportImportJobLogs (
+			[JobId],
+			[Name],
+			[Value] )
+		SELECT
+			dt.[JobId],
+			dt.[Name],
+			dt.[Value]
+		FROM
+			@DataTable dt
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL

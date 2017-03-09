@@ -20,16 +20,21 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
+using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
+using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Scheduler
 {
@@ -53,7 +58,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                 if (job != null)
                 {
                     var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
-                    Logger.Trace("Site Export/Import: Starting. Start time " + lastSuccessFulDateTime.ToString("g"));
+                    Logger.Trace("Site Export/Import: Job Started: " + lastSuccessFulDateTime.ToString("g"));
                     ExportImportResult result;
                     var engine = new ExportImportEngine();
                     switch (job.JobType)
@@ -76,8 +81,8 @@ namespace Dnn.ExportImport.Components.Scheduler
                         EntitiesController.Instance.UpdateJobStatus(job);
                         var sb = new StringBuilder();
                         sb.Append(job.JobType == JobType.Export
-                            ? "<br/><b>EXPORT COMPLETE</b>"
-                            : "<br/><b>IMPORT COMPLETE</b>");
+                            ? "<br/><b>EXPORT Completed</b>"
+                            : "<br/><b>IMPORT Completed</b>");
                         sb.Append($"<br/>Status: <b>{job.JobStatus}</b>");
                         if (result.Summary.Count > 0)
                         {
@@ -90,14 +95,15 @@ namespace Dnn.ExportImport.Components.Scheduler
                         }
 
                         ScheduleHistoryItem.AddLogNote(sb.ToString());
+                        AddLogsToDatabase(job.JobId, result.CompleteLog);
                     }
 
-                    Logger.Trace("Export/Import: Job Finished");
+                    Logger.Trace("Site Export/Import: Job Finished");
                 }
                 else
                 {
                     ScheduleHistoryItem.Succeeded = true;
-                    ScheduleHistoryItem.AddLogNote("<br/>No Export/Import jobs queued for processing.");
+                    ScheduleHistoryItem.AddLogNote("<br/>No Site Export/Import jobs queued for processing.");
                 }
                 SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
@@ -112,6 +118,37 @@ namespace Dnn.ExportImport.Components.Scheduler
                 }
             }
         }
+
+        private static void AddLogsToDatabase(int jobId, ICollection<KeyValuePair<string, string>> completeLog)
+        {
+            if (completeLog.Count == 0) return;
+
+            using (var table = new DataTable("ExportImportJobLogs"))
+            {
+                // must create the columns from scratch with each iteration
+                table.Columns.AddRange(DatasetColumns.Select(
+                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
+
+                foreach (var entry in completeLog)
+                {
+                    var row = table.NewRow();
+                    row["JobId"] =jobId;
+                    row["Name"] = entry.Key;
+                    row["Value"] = entry.Value;
+                    table.Rows.Add(row);
+                }
+
+                var timeout = completeLog.Count < 3000 ? 30 : 60; // in seconds
+                PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table, timeout);
+            }
+        }
+
+        private static readonly Tuple<string, Type>[] DatasetColumns =
+        {
+            new Tuple<string,Type>("JobId", typeof(int)),
+            new Tuple<string,Type>("Name" , typeof(string)),
+            new Tuple<string,Type>("Value", typeof(string)),
+        };
 
         private static DateTime FixSqlDateTime(DateTime datim)
         {

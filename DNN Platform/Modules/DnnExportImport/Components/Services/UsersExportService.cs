@@ -128,13 +128,13 @@ namespace Dnn.ExportImport.Components.Services
                 allUser =
                     CBO.FillCollection<ExportUser>(dataReader).ToList();
             } while (totalUsersExported < totalUsers);
-            result.AddSummary("Total Users Exported", totalUsersExported.ToString());
-            result.AddSummary("Total User Portals Exported", totalPortalsExported.ToString());
-            result.AddSummary("Total User Roles Exported", totalUserRolesExported.ToString());
-            result.AddSummary("Total User Profiles Exported", totalProfilesExported.ToString());
-            result.AddSummary("Total User Authentication Exported", totalAuthenticationExported.ToString());
-            result.AddSummary("Total Aspnet User Exported", totalAspnetUserExported.ToString());
-            result.AddSummary("Total Aspnet Membership Exported", totalAspnetMembershipExported.ToString());
+            result.AddSummary("Exported Users", totalUsersExported.ToString());
+            result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
+            result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
+            result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+            result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
+            result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
+            result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
         }
 
         public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)

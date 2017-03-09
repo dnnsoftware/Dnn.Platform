@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
@@ -145,7 +146,9 @@ namespace Dnn.ExportImport.Components.Engines
                 //result.Status = JobStatus.DoneSuccess; // TODO:
             }
 
-            result.AddSummary("Total Export Size", Util.FormatSize(finfo.Length));
+            // wait for the file to be flushed as finfo.Length will through exception
+            while (!finfo.Exists) { Thread.Sleep(1); }
+            result.AddSummary("Total Export File Size", Util.FormatSize(finfo.Length));
             exportJob.JobStatus = result.Status;
 
             return result;
@@ -168,7 +171,8 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             var dbName = Path.Combine(_dbFolder, importDto.FileName);
-            if (!File.Exists(dbName))
+            var finfo = new FileInfo(dbName);
+            if (!finfo.Exists)
             {
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
                 importJob.CompletedOn = DateTime.UtcNow;
@@ -176,6 +180,8 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
+            result.AddSummary("Repository", finfo.Name);
+            result.AddSummary("Total Import File Size", Util.FormatSize(finfo.Length));
             using (var ctx = new ExportImportRepository(dbName))
             {
                 var exporedtDto = ctx.GetSingleItem<ExportDto>();
