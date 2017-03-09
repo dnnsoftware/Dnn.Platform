@@ -1,6 +1,7 @@
 /* eslint-disable quotes */
 const ActivityIcon = require(`!raw!./svg/activity.svg`);
 const AddIcon = require(`!raw!./svg/add.svg`);
+const AddCircleIcon = require(`!raw!./svg/add_circle.svg`);
 const EditIcon = require(`!raw!./svg/edit.svg`);
 const CardViewIcon = require(`!raw!./svg/card_view.svg`);
 const ListViewIcon = require(`!raw!./svg/list_view.svg`);
@@ -47,6 +48,9 @@ const SearchFileSystemIcon = require(`!raw!./svg/search_filesystem.svg`);
 const SearchIcon = require(`!raw!./svg/search.svg`);
 const ShieldIcon = require(`!raw!./svg/shield.svg`);
 const SiteGroupIcon = require(`!raw!./svg/site_group.svg`);
+const Steps1Icon = require(`!raw!./svg/steps1.svg`);
+const Steps2Icon = require(`!raw!./svg/steps2.svg`);
+const Steps3Icon = require(`!raw!./svg/steps3.svg`);
 const ToolTipIcon = require(`!raw!./svg/tool_tip.svg`);
 const UploadIcon = require(`!raw!./svg/upload.svg`);
 const UploadCircleIcon = require(`!raw!./svg/upload_circle.svg`);
@@ -63,6 +67,7 @@ const ImageIcon = require(`!raw!./svg/image.svg`);
 export {
     ActivityIcon, 
     AddIcon,
+    AddCircleIcon,
     EditIcon,
     CardViewIcon,
     ListViewIcon,
@@ -109,6 +114,9 @@ export {
     SearchIcon,
     ShieldIcon,
     SiteGroupIcon,
+    Steps1Icon,
+    Steps2Icon,
+    Steps3Icon,
     ToolTipIcon,
     UploadIcon,
     UploadCircleIcon,
