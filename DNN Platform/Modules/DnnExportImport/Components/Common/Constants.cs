@@ -21,19 +21,25 @@
 
 namespace Dnn.ExportImport.Components.Common
 {
-    internal class Constants
+    public class Constants
     {
-        public const string ExportFolder = @"\Install\ExportImport\";
-        public const string ExportDateFormat = "yyyyMMdd-HHmmss";
-        public const string ExportDbExt = ".dnndb"; // exportDB file extension
-        public const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
+        /// <summary>
+        /// This is the currently supported schema version support as of this release.
+        /// In future releases thi must be updated to be compatible wiht th e
+        /// </summary>
+        public const string CurrentSchemaVersion = "1.0.0";
 
-        public const string LogTypeSiteExport = "SITE_EXPORT";
-        public const string LogTypeSiteImport = "SITE_IMPORT";
+        internal const string ExportFolder = @"\Install\ExportImport\";
+        internal const string ExportDateFormat = "yyyyMMdd-HHmmss";
+        internal const string ExportDbExt = ".dnndb"; // exportDB file extension
+        internal const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
 
-        public const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-        public const string LastJobSuccessDate = "EXPORT_LastSuccessOn";
+        internal const string LogTypeSiteExport = "SITE_EXPORT";
+        internal const string LogTypeSiteImport = "SITE_IMPORT";
 
-        public const string SharedResources = "/DesktopModules/DnnExportImport/App_LocalResources/ExportImport.resx";
+        internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        internal const string LastJobSuccessDate = "EXPORT_LastSuccessOn";
+
+        internal const string SharedResources = "/DesktopModules/DnnExportImport/App_LocalResources/ExportImport.resx";
     }
 }

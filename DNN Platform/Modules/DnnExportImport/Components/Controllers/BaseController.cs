@@ -28,7 +28,7 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     public abstract class BaseController
     {
-        protected void AddEventLog(int portalId, int userId, string logTypeKey)
+        protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
             var objSecurity = new PortalSecurity();
             var portalInfo = PortalController.Instance.GetPortal(portalId);
@@ -45,6 +45,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 LogUserID = userId,
             };
 
+            log.AddProperty("JobID", jobId.ToString());
             LogController.Instance.AddLog(log);
         }
     }

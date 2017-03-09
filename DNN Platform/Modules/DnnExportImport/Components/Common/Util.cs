@@ -1,6 +1,4 @@
-﻿using System.Web.Profile;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Entities.Portals;
+﻿using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
@@ -9,6 +7,18 @@ namespace Dnn.ExportImport.Components.Common
 {
     public static class Util
     {
+        private const long Kb = 1024;
+        private const long Mb = Kb * Kb;
+        private const long Gb = Mb * Kb;
+
+        public static string FormatSize(long bytes)
+        {
+            if (bytes < Kb) return bytes + " B";
+            if (bytes < Mb) return (1.0 * bytes / Kb).ToString("F1") + " KB";
+            if (bytes < Gb) return (1.0 * bytes / Mb).ToString("F1") + " MB";
+            return (1.0 * bytes / Gb).ToString("F1") + " GB";
+        }
+
         public static int GetUserIdOrName(ExportImportJob importJob, int? exportedUserId, string exportUsername)
         {
             if (!exportedUserId.HasValue || exportedUserId <= 0)

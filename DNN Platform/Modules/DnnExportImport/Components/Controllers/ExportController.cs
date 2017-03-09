@@ -31,13 +31,14 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
+            exportDto.ExportTime = exportDto.ExportTime.ToUniversalTime();
             var exportFileName = string.Join("_", "EXPORT",
                 DateTime.UtcNow.ToString(Constants.ExportDateFormat), exportDto.PortalId.ToString("D"));
             var dataObject = JsonConvert.SerializeObject(exportDto);
-            var id = DataProvider.Instance().AddNewJob(
+            var jobId = DataProvider.Instance().AddNewJob(
                 exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);
-            AddEventLog(exportDto.PortalId, userId, Constants.LogTypeSiteExport);
-            return id;
+            AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
+            return jobId;
         }
     }
 }

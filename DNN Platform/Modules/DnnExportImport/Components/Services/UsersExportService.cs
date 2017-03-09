@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dnn.ExportImport.Components.Dto;
@@ -32,7 +31,6 @@ using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Membership;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -181,10 +179,10 @@ namespace Dnn.ExportImport.Components.Services
                 ProgressPercentage += progressStep;
                 pageIndex++;
             }
-            result.AddSummary("Total Users Imported", totalUsersImported.ToString());
-            result.AddSummary("Total User Portals Exported", totalPortalsImported.ToString());
-            result.AddSummary("Total Aspnet User Imported", totalAspnetUserImported.ToString());
-            result.AddSummary("Total Aspnet Membership Imported", totalAspnetMembershipImported.ToString());
+            result.AddSummary("Imported Users", totalUsersImported.ToString());
+            result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
+            result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
+            result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
 
         }
 
@@ -288,7 +286,7 @@ namespace Dnn.ExportImport.Components.Services
                     "aspnet_"))
             {
                 var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
-                    $"SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+                    "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
 
                 //AspnetUser
 

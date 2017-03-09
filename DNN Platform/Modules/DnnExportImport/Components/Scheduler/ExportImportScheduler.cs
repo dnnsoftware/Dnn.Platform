@@ -53,16 +53,17 @@ namespace Dnn.ExportImport.Components.Scheduler
                 if (job != null)
                 {
                     var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
-                    Logger.Trace("Export/Import: Starting. Start time " + lastSuccessFulDateTime.ToString("g"));
-                    ScheduleHistoryItem.AddLogNote($"Starting. Start time <b>{lastSuccessFulDateTime:g}</b>");
+                    Logger.Trace("Site Export/Import: Starting. Start time " + lastSuccessFulDateTime.ToString("g"));
                     ExportImportResult result;
                     var engine = new ExportImportEngine();
                     switch (job.JobType)
                     {
                         case JobType.Export:
+                            ScheduleHistoryItem.AddLogNote("<br/><b>SITE EXPORT</b>");
                             result = engine.Export(job, ScheduleHistoryItem);
                             break;
                         case JobType.Import:
+                            ScheduleHistoryItem.AddLogNote("<br/><b>SITE IMPORT</b>");
                             result = engine.Import(job, ScheduleHistoryItem);
                             break;
                         default:
@@ -75,12 +76,12 @@ namespace Dnn.ExportImport.Components.Scheduler
                         EntitiesController.Instance.UpdateJobStatus(job);
                         var sb = new StringBuilder();
                         sb.Append(job.JobType == JobType.Export
-                            ? "<br/><b>EXPORT Successful</b>"
-                            : "<br/><b>IMPORT Successful</b>");
-                        sb.Append("<br/>Status: " + job.JobStatus);
+                            ? "<br/><b>EXPORT COMPLETE</b>"
+                            : "<br/><b>IMPORT COMPLETE</b>");
+                        sb.Append($"<br/>Status: <b>{job.JobStatus}</b>");
                         if (result.Summary.Count > 0)
                         {
-                            sb.Append("<br/><b>Summary:</b><br/><ul>");
+                            sb.Append("<br/><b>Summary:</b><ul>");
                             foreach (var entry in result.Summary)
                             {
                                 sb.Append($"<li>{entry.Key}: {entry.Value}</li>");
@@ -91,7 +92,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         ScheduleHistoryItem.AddLogNote(sb.ToString());
                     }
 
-                    Logger.Trace("Export/Import: Job Completed");
+                    Logger.Trace("Export/Import: Job Finished");
                 }
                 else
                 {

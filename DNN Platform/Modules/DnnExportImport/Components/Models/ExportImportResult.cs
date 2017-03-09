@@ -26,19 +26,27 @@ namespace Dnn.ExportImport.Components.Models
 {
     public class ExportImportResult
     {
-        private IList<KeyValuePair<string, string>> _summary;
-
         public int JobId { get; set; }
         public JobStatus Status { get; set; }
         public int ProcessedCount { get; set; }
-        public IList<KeyValuePair<string, string>> Summary => _summary;
+        public IList<KeyValuePair<string, string>> Summary { get; private set; }
+        public IList<KeyValuePair<string, string>> CompleteLog { get; private set; }
 
         public void AddSummary(string name, string value)
         {
             // no worries about conncurrency; all jobs are executed serially
-            if (_summary == null) _summary = new List<KeyValuePair<string, string>>();
+            if (Summary == null) Summary = new List<KeyValuePair<string, string>>();
 
-            _summary.Add(new KeyValuePair<string,string>(name, value));
+            Summary.Add(new KeyValuePair<string,string>(name, value));
+            AddLogEntry(name, value);
+        }
+
+        public void AddLogEntry(string name, string value)
+        {
+            // no worries about conncurrency; all jobs are executed serially
+            if (CompleteLog == null) CompleteLog = new List<KeyValuePair<string, string>>();
+
+            CompleteLog.Add(new KeyValuePair<string,string>(name, value));
         }
     }
 }

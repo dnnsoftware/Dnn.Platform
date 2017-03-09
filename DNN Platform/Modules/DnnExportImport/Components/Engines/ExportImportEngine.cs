@@ -83,7 +83,7 @@ namespace Dnn.ExportImport.Components.Engines
             var dbName = Path.Combine(_dbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             var finfo = new FileInfo(dbName);
 
-            //Delete so we start a new database
+            //Delete so we start a fresh database
             if (finfo.Exists) finfo.Delete();
 
             using (var ctx = new ExportImportRepository(dbName))
@@ -141,9 +141,11 @@ namespace Dnn.ExportImport.Components.Engines
                     }
                     result.Status = JobStatus.InProgress;
                 }
+
+                //result.Status = JobStatus.DoneSuccess; // TODO:
             }
 
-            //result.Status = JobStatus.DoneSuccess; // TODO:
+            result.AddSummary("Total Export Size", Util.FormatSize(finfo.Length));
             exportJob.JobStatus = result.Status;
 
             return result;
@@ -229,9 +231,10 @@ namespace Dnn.ExportImport.Components.Engines
                     }
                     result.Status = JobStatus.InProgress;
                 }
+
+                //result.Status = JobStatus.DoneSuccess; // TODO:
             }
 
-            //result.Status = JobStatus.DoneSuccess; // TODO:
             importJob.JobStatus = result.Status;
             return result;
         }

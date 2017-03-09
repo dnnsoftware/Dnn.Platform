@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
@@ -31,10 +32,10 @@ namespace Dnn.ExportImport.Components.Controllers
         public int QueueOperation(int userId, ImportDto importDto)
         {
             var dataObject = JsonConvert.SerializeObject(importDto);
-            var id = DataProvider.Instance().AddNewJob(
+            var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, importDto.FileName, dataObject);
-            AddEventLog(importDto.PortalId, userId, Constants.LogTypeSiteImport);
-            return id;
+            AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
+            return jobId;
         }
     }
 }
