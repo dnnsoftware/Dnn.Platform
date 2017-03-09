@@ -189,10 +189,10 @@
   <data name="Organization.Text" xml:space="preserve">
     <value>Organization:</value>
   </data>
-  <data name="URL.Help" xml:space="preserve">
+  <data name="Url.Help" xml:space="preserve">
     <value>The Author's URL</value>
   </data>
-  <data name="URL.Text" xml:space="preserve">
+  <data name="Url.Text" xml:space="preserve">
     <value>URL:</value>
   </data>
   <data name="FriendlyName.Required" xml:space="preserve">
