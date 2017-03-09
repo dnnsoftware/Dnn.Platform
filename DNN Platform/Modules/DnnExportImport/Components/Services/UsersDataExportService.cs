@@ -111,9 +111,9 @@ namespace Dnn.ExportImport.Components.Services
                 ProgressPercentage += progressStep;
                 pageIndex++;
             }
-            result.AddSummary("Total User Roles Imported", totalUserRolesImported.ToString());
-            result.AddSummary("Total User Profiles Imported", totalProfilesImported.ToString());
-            result.AddSummary("Total User Authentication Imported", totalAuthenticationImported.ToString());
+            result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
+            result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+            result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
         }
 
         private static void ProcessUserRoles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
