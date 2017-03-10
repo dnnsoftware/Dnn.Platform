@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;

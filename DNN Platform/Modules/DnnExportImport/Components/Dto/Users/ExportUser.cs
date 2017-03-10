@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 

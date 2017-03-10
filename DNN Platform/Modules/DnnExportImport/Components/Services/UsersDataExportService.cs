@@ -29,14 +29,15 @@ using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
+    /// <summary>
+    /// Supplementary service to import users additional data.
+    /// </summary>
     public class UsersDataExportService : IPortable2
     {
         private int _progressPercentage;

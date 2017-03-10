@@ -30,7 +30,6 @@ using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
-using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;

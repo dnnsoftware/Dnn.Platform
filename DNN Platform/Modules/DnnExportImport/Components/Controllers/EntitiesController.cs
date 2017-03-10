@@ -5,7 +5,6 @@ using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.ExportImport.Components.Controllers
 {

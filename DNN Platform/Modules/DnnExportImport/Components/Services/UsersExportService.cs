@@ -36,6 +36,9 @@ using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
+    /// <summary>
+    /// Service to export/import users.
+    /// </summary>
     public class UsersExportService : IPortable2
     {
         private int _progressPercentage;

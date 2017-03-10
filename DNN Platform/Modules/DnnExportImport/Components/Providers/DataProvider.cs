@@ -174,6 +174,22 @@ namespace Dnn.ExportImport.Components.Providers
             PlatformDataProvider.Instance().ExecuteNonQuery(
                 "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
         }
+        public IDataReader GetPortalSettings(int portalId, DateTime? sinceDate)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalSettings", portalId, sinceDate);
+        }
+
+        public IDataReader GetPortalLanguages(int portalId, DateTime? sinceDate)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalLanguages", portalId, sinceDate);
+        }
+
+        public IDataReader GetPortalLocalizations(int portalId, DateTime? sinceDate)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalLocalizations", portalId, sinceDate);
+        }
+
+
         #region Users
 
         #endregion  

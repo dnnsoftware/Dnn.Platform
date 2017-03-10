@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using Dnn.ExportImport.Components.Entities;
 
 namespace Dnn.ExportImport.Components.Interfaces

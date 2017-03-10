@@ -648,3 +648,62 @@ AS
       AND
         SettingName = @SettingName
 GO
+
+--Portals Export/Import
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+	@PortalID	int,
+	@SinceDate	datetime=NULL
+AS
+	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM	
+		{databaseOwner}[{objectQualifier}PortalSettings]
+	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND 
+		(CASE 
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+	@PortalID	int,
+	@SinceDate	datetime=NULL
+AS
+	SELECT	PL.*,{databaseOwner}[{objectQualifier}UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
+	FROM	
+		{databaseOwner}[{objectQualifier}PortalLanguages] PL
+	INNER JOIN {databaseOwner}[{objectQualifier}Languages] L ON PL.[LanguageID]=L.[LanguageID]
+	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND 
+			(CASE 
+			WHEN @SinceDate IS NULL THEN 0
+			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate 
+			ELSE PL.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+	@PortalID	int,
+	@SinceDate	datetime=NULL
+AS
+	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM	
+		{databaseOwner}[{objectQualifier}PortalLocalization]
+	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND 
+		(CASE 
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+GO
