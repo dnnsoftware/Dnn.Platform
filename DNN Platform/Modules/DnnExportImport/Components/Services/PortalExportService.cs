@@ -9,6 +9,7 @@ using DotNetNuke.Common.Utilities;
 using System;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Services.Localization;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -41,30 +42,53 @@ namespace Dnn.ExportImport.Components.Services
             ExportImportResult result)
         {
             ProgressPercentage = 0;
-            var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+            var portalSettings =
+                CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
+                    .GetPortalSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(portalSettings, null);
             result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
-            ProgressPercentage += 40;
+            ProgressPercentage += 50;
 
-            var portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+            var portalLanguages =
+                CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
+                    .GetPortalLanguages(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(portalLanguages, null);
             result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
-            ProgressPercentage += 30;
+            ProgressPercentage += 50;
 
-            var portalLocalization = CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+            /*
+             * var portalLocalization =
+                CBO.FillCollection<ExportPortalLocalization>(
+                    DataProvider.Instance()
+                        .GetPortalLocalizations(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(portalLocalization, null);
             result.AddSummary("Exported Portal Localizations", portalLocalization.Count.ToString());
             ProgressPercentage += 40;
+            */
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto,  IExportImportRepository repository,
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository,
             ExportImportResult result)
         {
             ProgressPercentage = 0;
             var portalSettings = repository.GetAllItems<ExportPortalSetting>().ToList();
             ProcessPortalSettings(importJob, exporteDto, portalSettings);
             result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
+            ProgressPercentage += 50;
+
+            ProgressPercentage = 0;
+            var portalLanguages = repository.GetAllItems<ExportPortalLanguage>().ToList();
+            ProcessPortalLanguages(importJob, exporteDto, portalLanguages);
+            result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
+            ProgressPercentage += 50;
+
+            /*
+            ProgressPercentage = 0;
+            var portalLocalizations = repository.GetAllItems<ExportPortalLocalization>().ToList();
+            ProcessPortalLocalizations(importJob, exporteDto, portalLocalizations);
+            result.AddSummary("Imported Portal Localizations", portalLocalizations.Count.ToString());
             ProgressPercentage += 40;
+            */
         }
 
         private static void ProcessPortalSettings(ExportImportJob importJob, ExportDto exporteDto,
@@ -87,16 +111,18 @@ namespace Dnn.ExportImport.Components.Services
                         localPortalSettings.FirstOrDefault(
                             t =>
                                 t.SettingName == exportPortalSetting.SettingName &&
-                                t.CultureCode == exportPortalSetting.CultureCode);
+                                (t.CultureCode == exportPortalSetting.CultureCode ||
+                                 (string.IsNullOrEmpty(t.CultureCode) &&
+                                  string.IsNullOrEmpty(exportPortalSetting.CultureCode))));
                     var isUpdate = false;
                     if (existingPortalSetting != null)
                     {
                         switch (exporteDto.CollisionResolution)
                         {
-                            case CollisionResolution.Ignore:
+                            case CollisionResolution.Overwrite:
                                 isUpdate = true;
                                 break;
-                            case CollisionResolution.Overwrite:
+                            case CollisionResolution.Ignore:
                             case CollisionResolution.Duplicate:
                                 continue;
                             default:
@@ -122,5 +148,120 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
         }
+
+        private static void ProcessPortalLanguages(ExportImportJob importJob, ExportDto exporteDto,
+            IEnumerable<ExportPortalLanguage> portalLanguages)
+        {
+            using (var db = DataContext.Instance())
+            {
+                var repPortalLanguage = db.GetRepository<ExportPortalLanguage>();
+
+                var portalId = importJob.PortalId;
+                var localPortalLanguages =
+                    CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, null));
+                var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
+                foreach (var exportPortalLanguage in portalLanguages)
+                {
+                    var createdBy = Common.Util.GetUserIdOrName(importJob, exportPortalLanguage.CreatedByUserId,
+                        exportPortalLanguage.CreatedByUserName);
+                    var modifiedBy = Common.Util.GetUserIdOrName(importJob, exportPortalLanguage.LastModifiedByUserId,
+                        exportPortalLanguage.LastModifiedByUserName);
+                    var localLanguageId =
+                        localLanguages.FirstOrDefault(x => x.Code == exportPortalLanguage.CultureCode)?.LanguageId;
+                    var existingPortalLanguage =
+                        localPortalLanguages.FirstOrDefault(
+                            t =>
+                                t.LanguageId == localLanguageId);
+                    var isUpdate = false;
+                    if (existingPortalLanguage != null)
+                    {
+                        switch (exporteDto.CollisionResolution)
+                        {
+                            case CollisionResolution.Overwrite:
+                                isUpdate = true;
+                                break;
+                            case CollisionResolution.Ignore:
+                            case CollisionResolution.Duplicate:
+                                continue;
+                            default:
+                                throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        }
+                    }
+                    exportPortalLanguage.PortalId = portalId;
+                    exportPortalLanguage.LastModifiedByUserId = modifiedBy;
+                    exportPortalLanguage.LastModifiedOnDate = DateTime.UtcNow;
+                    if (isUpdate)
+                    {
+                        exportPortalLanguage.PortalLanguageId = existingPortalLanguage.PortalLanguageId;
+                        repPortalLanguage.Update(exportPortalLanguage);
+                    }
+                    else
+                    {
+                        exportPortalLanguage.PortalLanguageId = 0;
+                        exportPortalLanguage.CreatedByUserId = createdBy;
+                        exportPortalLanguage.CreatedOnDate = DateTime.UtcNow;
+                        repPortalLanguage.Insert(exportPortalLanguage);
+                    }
+                    exportPortalLanguage.LocalId = exportPortalLanguage.PortalLanguageId;
+                }
+            }
+        }
+
+#if false
+        private static void ProcessPortalLocalizations(ExportImportJob importJob, ExportDto exporteDto,
+           IEnumerable<ExportPortalLocalization> portalLocalizations)
+        {
+            using (var db = DataContext.Instance())
+            {
+                var repPortalLocalization = db.GetRepository<ExportPortalLocalization>();
+
+                var portalId = importJob.PortalId;
+                var localPortalLocalizations =
+                    CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(portalId, null));
+                foreach (var exportPortalLocalization in portalLocalizations)
+                {
+                    var createdBy = Common.Util.GetUserIdOrName(importJob, exportPortalLocalization.CreatedByUserId,
+                        exportPortalLocalization.CreatedByUserName);
+                    var modifiedBy = Common.Util.GetUserIdOrName(importJob, exportPortalLocalization.LastModifiedByUserId,
+                        exportPortalLocalization.LastModifiedByUserName);
+                    var existingPortalLocalization =
+                        localPortalLocalizations.FirstOrDefault(
+                            t =>
+                                t.CultureCode == exportPortalLocalization.CultureCode);
+                    var isUpdate = false;
+                    if (existingPortalLocalization != null)
+                    {
+                        switch (exporteDto.CollisionResolution)
+                        {
+                            case CollisionResolution.Ignore:
+                                isUpdate = true;
+                                break;
+                            case CollisionResolution.Overwrite:
+                            case CollisionResolution.Duplicate:
+                                continue;
+                            default:
+                                throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        }
+                    }
+                    exportPortalLocalization.PortalId = portalId;
+                    exportPortalLocalization.LastModifiedByUserId = modifiedBy;
+                    exportPortalLocalization.LastModifiedOnDate = DateTime.UtcNow;
+                    if (isUpdate)
+                    {
+                        exportPortalLocalization.PortalLocalizationId = existingPortalLocalization.PortalLocalizationId;
+                        repPortalLocalization.Update(exportPortalLocalization);
+                    }
+                    else
+                    {
+                        exportPortalLocalization.PortalLocalizationId = 0;
+                        exportPortalLocalization.CreatedByUserId = createdBy;
+                        exportPortalLocalization.CreatedOnDate = DateTime.UtcNow;
+                        repPortalLocalization.Insert(exportPortalLocalization);
+                    }
+                    exportPortalLocalization.LocalId = exportPortalLocalization.PortalLocalizationId;
+                }
+            }
+        }
+#endif
     }
 }
