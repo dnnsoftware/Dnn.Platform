@@ -122,7 +122,7 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
                 } else { //add actions buttons if not default data(admin/registered users/all users)
                     var actionCol = $('<td class="permissionGridActions"></td>').appendTo(row);
                     if (!data.default) {
-                        actionCol.append('<a href="#" class="btn-delete"></a>');
+                        actionCol.append('<a href="#" class="btn-delete" aria-label="Delete"></a>');
                     }
                     actionCol.prev().addClass('last');
                 }
@@ -182,7 +182,7 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
             userContainer.html(
                 '<label for="permissionGrid_txtUser">' + this._localizedString('Add User') + '</label>' +
                 '<input name="permissionGrid_txtUser" type="text" id="permissionGrid_txtUser">' +
-                '<input type="hidden" name="permissionGrid_hiddenUserIds" id="permissionGrid_hiddenUserIds">' +
+                '<input type="hidden" name="permissionGrid_hiddenUserIds" id="permissionGrid_hiddenUserIds" aria-label="Users">' +
                 '<a class="simple-button btn-adduser" href="#">' + this._localizedString('Add') + '</a>');
             userContainer.appendTo(this._gridContainer);
 

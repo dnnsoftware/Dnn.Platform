@@ -14,7 +14,7 @@
             inputBox.tokenInput(serviceUrl, {
 				theme: "facebook",
 				resultsFormatter: function (item) {
-				    return "<li class='user'><img src='" + item.iconfile + "' title='" + item.name + "' style='width:25px;height:25px;' /><span>" + item.name + "</span></li>";
+				    return "<li class='user'><img src='" + item.iconfile + "' title='" + item.name + "' alt='" + item.name + "' style='width:25px;height:25px;' /><span>" + item.name + "</span></li>";
 				},
 				minChars: 2,
 				preventDuplicates: true,
@@ -41,7 +41,10 @@
 				},
 				onError: function (xhr, status) {
 					//displayMessage(composeMessageDialog, opts.autoSuggestErrorText + status);
-				}
+				},
+                onReady: function() {
+                    $('#token-input-' + inputBox.attr('id')).attr('aria-label', 'Token Input');
+                }
             });
 
             var roleId = $('#' + scopeId + '_roleField');
