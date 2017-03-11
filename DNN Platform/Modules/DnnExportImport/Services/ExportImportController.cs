@@ -46,8 +46,8 @@ namespace Dnn.ExportImport.Services
             }
 
             var controller = new ExportController();
-            var operationId = controller.QueueOperation(PortalSettings.UserId, exportDto);
-            return Request.CreateResponse(HttpStatusCode.OK, new {refId = operationId});
+            var jobId = controller.QueueOperation(PortalSettings.UserId, exportDto);
+            return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
 
         [HttpPost]
@@ -62,16 +62,45 @@ namespace Dnn.ExportImport.Services
             }
 
             var controller = new ImportController();
-            var operationId = controller.QueueOperation(PortalSettings.UserId, importDto);
-            return Request.CreateResponse(HttpStatusCode.OK, new {refId = operationId});
+            var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
+            return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage ProgressStatus(int operationId)
+        public HttpResponseMessage ProgressStatus(int jobId)
         {
             //TODO: implement
             return Request.CreateResponse(HttpStatusCode.OK, "10%");
+        }
+
+        [HttpGet]
+        public HttpResponseMessage AllJobs(int pageSize, int pageIndex)
+        {
+            var controller = new BaseController();
+            var jobs = controller.GetAllJobs(PortalSettings.PortalId, pageSize, pageIndex);
+            return Request.CreateResponse(HttpStatusCode.OK, jobs);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage JobSummary(int jobId)
+        {
+            var controller = new BaseController();
+            var job = controller.GetJobSummary(PortalSettings.PortalId, jobId);
+            return job != null
+                ? Request.CreateResponse(HttpStatusCode.OK, job)
+                : Request.CreateResponse(HttpStatusCode.BadRequest,
+                    new { message = Localization.GetString("JobNotExist", Constants.SharedResources) });
+        }
+
+        [HttpGet]
+        public HttpResponseMessage JobDetails(int jobId)
+        {
+            var controller = new BaseController();
+            var job = controller.GetJobDetails(PortalSettings.PortalId, jobId);
+            return job != null
+                ? Request.CreateResponse(HttpStatusCode.OK, job)
+                : Request.CreateResponse(HttpStatusCode.BadRequest,
+                    new { message = Localization.GetString("JobNotExist", Constants.SharedResources) });
         }
     }
 }

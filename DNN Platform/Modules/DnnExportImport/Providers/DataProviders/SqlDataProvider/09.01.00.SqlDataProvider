@@ -22,8 +22,8 @@ BEGIN
 	  , [FriendlyName]
 	) VALUES
     (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
-	  , 5
-	  , N'h'
+	  , 1
+	  , N'd'
 	  , 1
 	  , N'h'
 	  , 100
@@ -43,16 +43,16 @@ GO
 
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobs](
-		[JobId]       int IDENTITY(1,1) NOT NULL,
-		[PortalId]    int NOT NULL,
-		[JobType]     int NOT NULL,
-		[JobStatus]   int NOT NULL DEFAULT 0,
-		[CreatedBy]   int NOT NULL,
-		[CreatedOn]   DateTime NOT NULL DEFAULT GetUtcDate(),
-		[UpdatedOn]   DateTime NOT NULL DEFAULT GetUtcDate(),
-		[CompletedOn] DateTime,  -- UTC date
-		[ExportFile]  nvarchar(100),
-		[JobObject]   nvarchar(max),
+		[JobId]              int IDENTITY(1,1) NOT NULL,
+		[PortalId]           int NOT NULL,
+		[JobType]            int NOT NULL,
+		[JobStatus]          int NOT NULL DEFAULT 0,
+		[CreatedByUserID]    int NOT NULL,
+		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
+		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
+		[CompletedOnDate]    DateTime,  -- UTC date
+		[ExportFile]         nvarchar(100),
+		[JobObject]          nvarchar(max),
 
 		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId])
 	)
@@ -76,15 +76,17 @@ IF NOT EXISTS ( SELECT 1 FROM sys.indexes
 				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
 				AND name = N'IX_{objectQualifier}ExportImportJobs_CreatedOn')
 	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_CreatedOn]
-		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOn])
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOnDate])
 GO
 
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
-		[JobLogId]    int IDENTITY(1,1) NOT NULL,
-		[JobId]       int NOT NULL,
-		[Name]        nvarchar(100),
-		[Value]       nvarchar(100),
+		[JobLogId]       int IDENTITY(1,1) NOT NULL,
+		[JobId]          int NOT NULL,
+		[Name]           nvarchar(100),
+		[Value]          nvarchar(100),
+		[IsSummary]      bit NOT NULL DEFAULT 0,
+		[CreatedOnDate]  DateTime NOT NULL DEFAULT GetUtcDate(),
 
 		CONSTRAINT [PK_{objectQualifier}ExportImportJobLogs] PRIMARY KEY ([JobLogId])
 	)
@@ -93,7 +95,7 @@ GO
 IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
 				WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]')
 				AND name = N'FK_{objectQualifier}ExportImportJobLogs_JobId')
-	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs] ADD 
+	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs] ADD
 		CONSTRAINT [FK_{objectQualifier}ExportImportJobLogs_JobId] FOREIGN KEY ( [JobId] )
 		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
 		ON DELETE CASCADE
@@ -114,9 +116,11 @@ GO
 
 CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType] AS TABLE
 (
-	[JobId] int,
-	[Name]  nvarchar(100),
-	[Value] nvarchar(100)
+	[JobId]         int,
+	[Name]          nvarchar(100),
+	[Value]         nvarchar(100),
+	[IsSummary]     bit,
+	[CreatedOnDate] datetime
 );
 GO
 
@@ -127,11 +131,15 @@ BEGIN
 	INSERT INTO {databaseOwner}{objectQualifier}ExportImportJobLogs (
 			[JobId],
 			[Name],
-			[Value] )
+			[Value],
+			[IsSummary],
+			[CreatedOnDate] )
 		SELECT
 			dt.[JobId],
 			dt.[Name],
-			dt.[Value]
+			dt.[Value],
+			dt.[IsSummary],
+			dt.[CreatedOnDate]
 		FROM
 			@DataTable dt
 END
@@ -154,7 +162,7 @@ BEGIN
 		(
 			PortalId,
 			JobType,
-			CreatedBy,
+			CreatedByUserID,
 			ExportFile,
 			JobObject
 		)
@@ -185,8 +193,8 @@ BEGIN
 		{databaseOwner}[{objectQualifier}ExportImportJobs]
 	SET
 		JobStatus = @JobStatus,
-		UpdatedOn = GetUtcDate(),
-		CompletedOn = @CompletedOn
+		LastModifiedOnDate = GetUtcDate(),
+		CompletedOnDate = @CompletedOn
 	WHERE
 		JobId = @JobId
 END
@@ -221,7 +229,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
 AS
 BEGIN
 	SET @PortalId = IsNull(@PortalId, -1)
-	SET @PageSize = IsNull(@PortalId, 10)
+	SET @PageSize = IsNull(@PageSize, 10)
 	SET @PageIndex = IsNull(@PageIndex, 0)
 
 	; WITH AllJobs AS (
@@ -241,6 +249,59 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetById]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetById]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobLogs]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobLogs]
+	WHERE
+		JobId = @JobId
+	  AND
+		IsSummary = 1
+END
+GO
+
 -- Users Import/Export
 IF object_id(N'{databaseOwner}[{objectQualifier}UserName]', 'FN') IS NOT NULL
     DROP FUNCTION {databaseOwner}[{objectQualifier}UserName]
@@ -250,7 +311,7 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}UserName]
 (
 	@userId Int
 )
-RETURNS 
+RETURNS
 	nVarChar(255)
 AS
 BEGIN
@@ -269,7 +330,7 @@ CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
 (
 	@username nvarchar(100)
 )
-RETURNS 
+RETURNS
 	int
 AS
 BEGIN
@@ -296,22 +357,22 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@SinceDate		 datetime=NULL
 AS
 BEGIN
-	DECLARE 
-		@PageLowerBound int, 
-		@PageUpperBound int, 
+	DECLARE
+		@PageLowerBound int,
+		@PageUpperBound int,
 		@RowsToReturn int
 
 	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
-		 
+
 	; WITH [tmpUsers] AS (
 		SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
 		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
 			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
-			WHERE VU.PortalID = @PortalID 
+			WHERE VU.PortalID = @PortalID
 			AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
-			AND (CASE 
+			AND (CASE
 			WHEN @SinceDate IS NULL THEN 0
-			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate 
+			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
 			ELSE U.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 	)
 	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
@@ -330,7 +391,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
 	@PortalId  int,
 	@UserId    int
 AS
-	SELECT 
+	SELECT
 		 [UserId]
 		,[PortalId]
 		,[UserPortalId]
@@ -359,8 +420,8 @@ AS
 		UP.ExtendedVisibility,
 		UP.LastUpdatedDate,
 		PPD.PropertyName
- 	FROM {databaseOwner}[{objectQualifier}UserProfile] UP 
-	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD 
+ 	FROM {databaseOwner}[{objectQualifier}UserProfile] UP
+	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
 	WHERE UserId = @UserId
 GO
@@ -372,7 +433,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
 	@Username nvarchar(256)
 AS
-	SELECT * 
+	SELECT *
  	FROM {databaseOwner}[aspnet_Users]
 	WHERE  UserName=@Username
 GO
@@ -385,7 +446,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
 	@UserId uniqueidentifier,
 	@ApplicationId uniqueidentifier
 AS
-	SELECT * 
+	SELECT *
  	FROM {databaseOwner}[aspnet_Membership]
 	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
 GO
@@ -437,7 +498,7 @@ AS
 		UserID = @UserID
 GO
 
---Profile Properties 
+--Profile Properties
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
 GO
@@ -451,10 +512,10 @@ AS
 	FROM	{databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
 	AND PPD.Deleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
-	AND 
-			(CASE 
+	AND
+			(CASE
 			WHEN @SinceDate IS NULL THEN 0
-			WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate 
+			WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
 			ELSE PPD.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 	ORDER BY ViewOrder
 GO
@@ -498,9 +559,9 @@ AS
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
-	WHERE (CASE 
+	WHERE (CASE
 			WHEN @SinceDate IS NULL THEN 0
-			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate 
+			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
 			ELSE t.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -517,9 +578,9 @@ AS
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on v.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on v.LastModifiedByUserID = u2.UserID
-	WHERE (CASE 
+	WHERE (CASE
 			WHEN @SinceDate IS NULL THEN 0
-			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate 
+			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
 			ELSE v.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -540,9 +601,9 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rg.LastModifiedByUserID = u2.UserID
 	WHERE
 		rg.PortalID = @PortalID
-	AND (CASE 
+	AND (CASE
 		WHEN @SinceDate IS NULL THEN 0
-		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate 
+		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
 		ELSE rg.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -563,9 +624,9 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on r.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
-	AND (CASE 
+	AND (CASE
 		WHEN @SinceDate IS NULL THEN 0
-		WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate 
+		WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate
 		ELSE r.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -586,9 +647,9 @@ AS
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rs.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
-	AND (CASE 
+	AND (CASE
 		WHEN @SinceDate IS NULL THEN 0
-		WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate 
+		WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate
 		ELSE rs.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -659,13 +720,13 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
-	FROM	
+	FROM
 		{databaseOwner}[{objectQualifier}PortalSettings]
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
-	AND 
-		(CASE 
+	AND
+		(CASE
 		WHEN @SinceDate IS NULL THEN 0
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
 		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -678,14 +739,14 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
 	@SinceDate	datetime=NULL
 AS
 	SELECT	PL.*,{databaseOwner}[{objectQualifier}UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
-	FROM	
+	FROM
 		{databaseOwner}[{objectQualifier}PortalLanguages] PL
 	INNER JOIN {databaseOwner}[{objectQualifier}Languages] L ON PL.[LanguageID]=L.[LanguageID]
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
-	AND 
-			(CASE 
+	AND
+			(CASE
 			WHEN @SinceDate IS NULL THEN 0
-			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate 
+			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate
 			ELSE PL.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO
 
@@ -698,12 +759,12 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
-	FROM	
+	FROM
 		{databaseOwner}[{objectQualifier}PortalLocalization]
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
-	AND 
-		(CASE 
+	AND
+		(CASE
 		WHEN @SinceDate IS NULL THEN 0
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
 		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
 GO

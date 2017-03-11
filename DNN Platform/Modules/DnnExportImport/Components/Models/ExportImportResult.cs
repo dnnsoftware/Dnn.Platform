@@ -19,8 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Dto.Jobs;
 
 namespace Dnn.ExportImport.Components.Models
 {
@@ -28,25 +30,34 @@ namespace Dnn.ExportImport.Components.Models
     {
         public int JobId { get; set; }
         public JobStatus Status { get; set; }
-        public int ProcessedCount { get; set; }
-        public IList<KeyValuePair<string, string>> Summary { get; private set; }
-        public IList<KeyValuePair<string, string>> CompleteLog { get; private set; }
+        public IList<LogItem> Summary { get; private set; }
+        public IList<LogItem> CompleteLog { get; private set; }
 
-        public void AddSummary(string name, string value)
+        public LogItem AddSummary(string name, string value)
         {
             // no worries about conncurrency; all jobs are executed serially
-            if (Summary == null) Summary = new List<KeyValuePair<string, string>>();
+            if (Summary == null) Summary = new List<LogItem>();
 
-            Summary.Add(new KeyValuePair<string,string>(name, value));
-            AddLogEntry(name, value);
+            var item = AddLogEntry(name, value, true);
+            Summary.Add(item);
+            return item;
         }
 
-        public void AddLogEntry(string name, string value)
+        public LogItem AddLogEntry(string name, string value, bool isSummary = false)
         {
             // no worries about conncurrency; all jobs are executed serially
-            if (CompleteLog == null) CompleteLog = new List<KeyValuePair<string, string>>();
+            if (CompleteLog == null) CompleteLog = new List<LogItem>();
 
-            CompleteLog.Add(new KeyValuePair<string,string>(name, value));
+            var item = new LogItem
+            {
+                Name = name,
+                Value = value,
+                IsSummary = isSummary,
+                CreatedOnDate = DateTime.UtcNow,
+            };
+
+            CompleteLog.Add(item);
+            return item;
         }
     }
 }

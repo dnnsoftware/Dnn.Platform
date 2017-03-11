@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
@@ -24,7 +25,22 @@ namespace Dnn.ExportImport.Components.Controllers
             return CBO.Instance.FillObject<ExportImportJob>(DataProvider.Instance().GetFirstActiveJob());
         }
 
-        public IEnumerable<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
+        public ExportImportJob GetJobById(int jobId)
+        {
+            return CBO.Instance.FillObject<ExportImportJob>(DataProvider.Instance().GetJobById(jobId));
+        }
+
+        public IList<ExportImportJobLog> GetJobSummaryLog(int jobId)
+        {
+            return CBO.Instance.FillCollection<ExportImportJobLog>(DataProvider.Instance().GetJobSummaryLog(jobId));
+        }
+
+        public IList<ExportImportJobLog> GetJobFullLog(int jobId)
+        {
+            return CBO.Instance.FillCollection<ExportImportJobLog>(DataProvider.Instance().GetJobFullLog(jobId));
+        }
+
+        public IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
             return CBO.Instance.FillCollection<ExportImportJob>(
                 DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex));

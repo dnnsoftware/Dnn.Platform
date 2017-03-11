@@ -71,6 +71,21 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
         }
 
+        public IDataReader GetJobById(int jobId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_GetById", jobId);
+        }
+
+        public IDataReader GetJobSummaryLog(int jobId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobLogs_Summary", jobId);
+        }
+
+        public IDataReader GetJobFullLog(int jobId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobLogs_Full", jobId);
+        }
+
         public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
@@ -189,10 +204,6 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalLocalizations", portalId, sinceDate);
         }
 
-
-        #region Users
-
-        #endregion  
         #endregion
     }
 }

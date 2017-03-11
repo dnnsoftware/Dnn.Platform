@@ -6,7 +6,10 @@ namespace Dnn.ExportImport.Components.Interfaces
     public interface IEntitiesController
     {
         ExportImportJob GetFirstActiveJob();
-        IEnumerable<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex);
+        ExportImportJob GetJobById(int jobId);
+        IList<ExportImportJobLog> GetJobSummaryLog(int jobId);
+        IList<ExportImportJobLog> GetJobFullLog(int jobId);
+        IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex);
         void UpdateJobStatus(ExportImportJob job);
     }
 }

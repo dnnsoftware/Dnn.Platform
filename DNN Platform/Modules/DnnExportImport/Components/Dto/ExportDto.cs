@@ -61,17 +61,6 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
-        /// Include item properties in the export. This is used for some items 
-        /// as including files metadata.
-        /// </summary>
-        public bool IncludeProperties { get; set; }
-
-        /// <summary>
-        /// Whether to include items permissions in the exported file.
-        /// </summary>
-        public bool IncludePermissions { get; set; }
-
-        /// <summary>
         ///  Whether to include the content items in the exported file.
         /// This applies to items such as pages/tabs and the content of their modules.
         /// </summary>

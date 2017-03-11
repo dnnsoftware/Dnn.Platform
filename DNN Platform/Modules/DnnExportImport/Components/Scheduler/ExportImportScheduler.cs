@@ -28,8 +28,10 @@ using System.Linq;
 using System.Text;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
+using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
@@ -57,17 +59,18 @@ namespace Dnn.ExportImport.Components.Scheduler
                 if (job != null)
                 {
                     var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
-                    Logger.Trace("Site Export/Import: Job Started: " + lastSuccessFulDateTime.ToString("g"));
                     ExportImportResult result;
                     var engine = new ExportImportEngine();
                     switch (job.JobType)
                     {
                         case JobType.Export:
-                            ScheduleHistoryItem.AddLogNote("<br/><b>SITE EXPORT</b>");
+                            ScheduleHistoryItem.AddLogNote(
+                                "<br/><b>SITE EXPORT Started</b> " + lastSuccessFulDateTime.ToString("g"));
                             result = engine.Export(job, ScheduleHistoryItem);
                             break;
                         case JobType.Import:
-                            ScheduleHistoryItem.AddLogNote("<br/><b>SITE IMPORT</b>");
+                            ScheduleHistoryItem.AddLogNote(
+                                "<br/><b>SITE IMPORT Started</b> " + lastSuccessFulDateTime.ToString("g"));
                             result = engine.Import(job, ScheduleHistoryItem);
                             break;
                         default:
@@ -88,7 +91,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                             sb.Append("<br/><b>Summary:</b><ul>");
                             foreach (var entry in result.Summary)
                             {
-                                sb.Append($"<li>{entry.Key}: {entry.Value}</li>");
+                                sb.Append($"<li>{entry.Name}: {entry.Value}</li>");
                             }
                             sb.Append("</ul>");
                         }
@@ -118,7 +121,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             }
         }
 
-        private static void AddLogsToDatabase(int jobId, ICollection<KeyValuePair<string, string>> completeLog)
+        private static void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
             if (completeLog.Count == 0) return;
 
@@ -128,12 +131,14 @@ namespace Dnn.ExportImport.Components.Scheduler
                 table.Columns.AddRange(DatasetColumns.Select(
                     column => new DataColumn(column.Item1, column.Item2)).ToArray());
 
-                foreach (var entry in completeLog)
+                foreach (var item in completeLog)
                 {
                     var row = table.NewRow();
                     row["JobId"] =jobId;
-                    row["Name"] = entry.Key;
-                    row["Value"] = entry.Value;
+                    row["Name"] = item.Name.TrimToLength(100);
+                    row["Value"] = item.Value.TrimToLength(100);
+                    row["IsSummary"] = item.IsSummary;
+                    row["CreatedOnDate"] = item.CreatedOnDate;
                     table.Rows.Add(row);
                 }
 
@@ -147,6 +152,8 @@ namespace Dnn.ExportImport.Components.Scheduler
             new Tuple<string,Type>("JobId", typeof(int)),
             new Tuple<string,Type>("Name" , typeof(string)),
             new Tuple<string,Type>("Value", typeof(string)),
+            new Tuple<string,Type>("IsSummary", typeof(bool)),
+            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
 
         private static DateTime FixSqlDateTime(DateTime datim)
@@ -161,7 +168,7 @@ namespace Dnn.ExportImport.Components.Scheduler
         private static DateTimeOffset GetLastSuccessfulExportDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
-            var lastValue = settings[Constants.LastJobSuccessDate] as string;
+            var lastValue = settings[Constants.LastJobSuccessDateKey] as string;
 
             DateTime lastTime;
             if (!string.IsNullOrEmpty(lastValue) &&
@@ -181,7 +188,9 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
-            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, Constants.LastJobSuccessDate, startDateLocal.ToUniversalTime().ToString(Constants.JobRunDateTimeFormat));
+            SchedulingProvider.Instance().AddScheduleItemSetting(
+                scheduleId, Constants.LastJobSuccessDateKey,
+                startDateLocal.ToUniversalTime().ToString(Constants.JobRunDateTimeFormat));
         }
     }
 }

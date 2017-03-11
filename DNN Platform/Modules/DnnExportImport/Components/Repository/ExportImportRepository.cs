@@ -38,25 +38,23 @@ namespace Dnn.ExportImport.Components.Repository
 
         public T AddSingleItem<T>(T item) where T : class
         {
-            var collection = _lightDb.GetCollection<T>(item.GetType().Name.ToLowerInvariant());
+            var collection = DbCollection<T>();
             collection.Insert(item);
             return item;
         }
 
         public T GetSingleItem<T>() where T : class
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             var first = collection.Min();
             return collection.FindById(first);
         }
 
         public T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto
         {
-            if (item == null) return item;
-            var collectionName = typeof (T).Name.ToLowerInvariant();
+            if (item == null) return null;
+            var collection = DbCollection<T>();
             item.ReferenceId = referenceId;
-            var collection = _lightDb.GetCollection<T>(collectionName);
             item.Id = collection.Insert(item);
             if (referenceId.HasValue)
             {
@@ -67,9 +65,8 @@ namespace Dnn.ExportImport.Components.Repository
 
         public IEnumerable<T> CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
             var allItems = items.ToList();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             foreach (var item in allItems)
             {
                 item.ReferenceId = referenceId;
@@ -93,8 +90,7 @@ namespace Dnn.ExportImport.Components.Repository
 
         public int GetCount<T>() where T : BasicExportImportDto
         {
-            var collectionName = typeof (T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             return collection?.Count() ?? 0;
         }
 
@@ -109,8 +105,7 @@ namespace Dnn.ExportImport.Components.Repository
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             var result = predicate != null ? collection.Find(predicate) : collection.FindAll();
 
             if (orderKeySelector != null)
@@ -129,8 +124,7 @@ namespace Dnn.ExportImport.Components.Repository
 
         public T GetItem<T>(int id) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             return collection.FindById(id);
         }
 
@@ -151,8 +145,7 @@ namespace Dnn.ExportImport.Components.Repository
         public void UpdateItem<T>(T item) where T : BasicExportImportDto
         {
             if (item == null) return;
-            var collectionName = typeof (T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
 
             if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
             collection.Update(item);
@@ -164,8 +157,7 @@ namespace Dnn.ExportImport.Components.Repository
 
         public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             foreach (var item in items)
             {
                 if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
@@ -179,11 +171,15 @@ namespace Dnn.ExportImport.Components.Repository
 
         public bool DeleteItem<T>(int id) where T : BasicExportImportDto
         {
-            var collectionName = typeof(T).Name.ToLowerInvariant();
-            var collection = _lightDb.GetCollection<T>(collectionName);
+            var collection = DbCollection<T>();
             var item = collection.FindById(id);
             if (item == null) throw new KeyNotFoundException();
             return collection.Delete(id);
+        }
+
+        private LiteCollection<T> DbCollection<T>()
+        {
+            return _lightDb.GetCollection<T>(typeof(T).Name/*.ToLowerInvariant()*/);
         }
     }
 }

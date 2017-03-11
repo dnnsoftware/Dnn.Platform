@@ -19,14 +19,20 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Dto.Jobs;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
+using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
-    public abstract class BaseController
+    public class BaseController
     {
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
@@ -47,6 +53,75 @@ namespace Dnn.ExportImport.Components.Controllers
 
             log.AddProperty("JobID", jobId.ToString());
             LogController.Instance.AddLog(log);
+        }
+
+        /// <summary>
+        /// Retrieves one page of paginated proceessed jobs
+        /// </summary>
+        public IEnumerable<JobItem> GetAllJobs(int portalId, int pageSize, int pageIndex)
+        {
+            if (pageIndex < 0) pageIndex = 0;
+            if (pageSize < 1) pageSize = 1;
+            else if (pageSize > 100) pageSize = 100;
+
+            var jobs = EntitiesController.Instance.GetAllJobs(portalId, pageSize, pageIndex);
+            return jobs.Select(ToJobItem);
+        }
+
+        public JobItem GetJobSummary(int portalId, int jobId)
+        {
+            var controller = EntitiesController.Instance;
+            var job = controller.GetJobById(jobId);
+            if (job == null || job.PortalId != portalId)
+                return null;
+
+            var jobItem = ToJobItem(job);
+            var summaryItems = controller.GetJobSummaryLog(jobId);
+            jobItem.Summary = summaryItems.Select(
+                s => new LogItem
+                {
+                    CreatedOnDate = s.CreatedOnDate,
+                    Name = s.Name,
+                    Value = s.Value,
+                    IsSummary = s.IsSummary,
+                });
+            return jobItem;
+        }
+
+        public JobItem GetJobDetails(int portalId, int jobId)
+        {
+            var controller = EntitiesController.Instance;
+            var job = controller.GetJobById(jobId);
+            if (job == null || job.PortalId != portalId)
+                return null;
+
+            var jobItem = ToJobItem(job);
+            var summaryItems = controller.GetJobFullLog(jobId);
+            jobItem.Summary = summaryItems.Select(
+                s => new LogItem
+                {
+                    CreatedOnDate = s.CreatedOnDate,
+                    Name = s.Name,
+                    Value = s.Value,
+                    IsSummary = s.IsSummary,
+                });
+            return jobItem;
+        }
+
+        private static JobItem ToJobItem(ExportImportJob job)
+        {
+            var user  = UserController.Instance.GetUserById(job.PortalId, job.CreatedByUserId);
+            return new JobItem
+            {
+                JobId = job.JobId,
+                PortalId = job.PortalId,
+                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
+                JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
+                JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
+                CreatedOn = job.CreatedOnDate,
+                CompletedOn = job.CompletedOnDate,
+                ExportFile = job.CompletedOnDate.HasValue ? job.ExportFile : null
+            };
         }
     }
 }

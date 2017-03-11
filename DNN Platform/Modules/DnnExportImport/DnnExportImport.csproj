@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="App_LocalResources\ExportImport.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -72,6 +75,8 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\Jobs\JobItem.cs" />
+    <Compile Include="Components\Dto\Jobs\LogItem.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
@@ -87,6 +92,7 @@
     <Compile Include="Components\Dto\Users\ExportUserProfile.cs" />
     <Compile Include="Components\Dto\Users\ExportUserRelationship.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
+    <Compile Include="Components\Entities\ExportImportJobLog.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Interfaces\IPortable2.cs" />
     <Compile Include="Components\Common\Enums.cs" />
@@ -137,7 +143,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />

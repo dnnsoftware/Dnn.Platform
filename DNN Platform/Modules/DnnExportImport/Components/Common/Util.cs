@@ -31,7 +31,7 @@ namespace Dnn.ExportImport.Components.Common
                 return -1;
 
             var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
-            return user.UserID < 0 ? importJob.CreatedBy : user.UserID;
+            return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
         public static int? GetRoleId(int portalId, string exportRolename)
