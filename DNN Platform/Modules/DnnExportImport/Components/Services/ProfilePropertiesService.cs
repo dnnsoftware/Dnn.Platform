@@ -52,9 +52,10 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
+        public void ExportData(ExportImportJob exportJob, ExportDto exportDto,
+            IExportImportRepository repository, ExportImportResult result)
         {
-            //TODO: Verify that profile properties stores createdon and modified on info in UTC or local
+            //TODO: Verify that profile properties stores created on and modified on info in UTC or local
             ProgressPercentage = 0;
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
@@ -67,11 +68,11 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 100;
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
+        public void ImportData(ExportImportJob importJob, ExportDto exporteDto,
+            IExportImportRepository repository, ExportImportResult result)
         {
             ProgressPercentage = 0;
             var profileProperties = repository.GetAllItems<ExportProfileProperty>().ToList();
-            result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
 
             foreach (var profileProperty in profileProperties)
             {
@@ -88,12 +89,13 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             case CollisionResolution.Overwrite:
                                 ProcessUpdateProfileProperty(db, profileProperty, existingProfileProperty,
-                                    existingProfileProperty.CreatedByUserId, modifiedById);
+                                    existingProfileProperty.CreatedByUserId, modifiedById, result);
                                 break;
                             case CollisionResolution.Ignore: //Just ignore the record
-                            //TODO: Log that profile property was ignored.
+                                result.AddLogEntry("Ignored profile property", profileProperty.PropertyName);
+                                break;
                             case CollisionResolution.Duplicate: //Just ignore the record
-                                //TODO: Log that profile property was ignored as duplicate not possible for profile properties.
+                                result.AddLogEntry("Ignored duplicate profile property", profileProperty.PropertyName);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -104,28 +106,30 @@ namespace Dnn.ExportImport.Components.Services
                         var createdById = Common.Util.GetUserIdOrName(importJob, profileProperty.CreatedByUserId,
                             profileProperty.CreatedByUserName);
 
-                        ProcessCreateProfileProperty(importJob, db, profileProperty, createdById, modifiedById);
+                        ProcessCreateProfileProperty(importJob, db, profileProperty, createdById, modifiedById, result);
                     }
                 }
             }
+            result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
         }
 
         private static void ProcessCreateProfileProperty(ExportImportJob importJob, IDataContext db,
-            ExportProfileProperty profileProperty, int createdById, int modifiedById)
+            ExportProfileProperty profileProperty, int createdById, int modifiedById, ExportImportResult result)
         {
             profileProperty.PropertyDefinitionId = 0;
             profileProperty.PortalId = importJob.PortalId;
-            profileProperty.CreatedOnDate = DateTime.UtcNow;
+            profileProperty.CreatedOnDate =
+                profileProperty.LastModifiedOnDate = DateTime.UtcNow;
             profileProperty.CreatedByUserId = createdById;
-            profileProperty.LastModifiedOnDate = DateTime.UtcNow;
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
             repProfileProperty.Insert(profileProperty);
+            result.AddLogEntry("Added profile property", profileProperty.PropertyName);
         }
 
         private static void ProcessUpdateProfileProperty(IDataContext db,
             ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty,
-            int? createdById, int modifiedById)
+            int? createdById, int modifiedById, ExportImportResult result)
         {
             profileProperty.PortalId = existingProfileProperty.PortalId;
             profileProperty.CreatedOnDate = existingProfileProperty.CreatedOnDate;
@@ -134,6 +138,7 @@ namespace Dnn.ExportImport.Components.Services
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
             repProfileProperty.Update(profileProperty);
+            result.AddLogEntry("Updated profile property", profileProperty.PropertyName);
         }
     }
 }

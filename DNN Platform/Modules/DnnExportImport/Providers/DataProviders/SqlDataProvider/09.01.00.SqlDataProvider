@@ -83,8 +83,8 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS 
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
 		[JobLogId]       int IDENTITY(1,1) NOT NULL,
 		[JobId]          int NOT NULL,
-		[Name]           nvarchar(100),
-		[Value]          nvarchar(100),
+		[Name]           nvarchar(255),
+		[Value]          nvarchar(255),
 		[IsSummary]      bit NOT NULL DEFAULT 0,
 		[CreatedOnDate]  DateTime NOT NULL DEFAULT GetUtcDate(),
 

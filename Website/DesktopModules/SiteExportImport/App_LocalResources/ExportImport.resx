@@ -117,31 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="JobNotExist" xml:space="preserve">
+  <data name="JobNotExist.Text" xml:space="preserve">
     <value>No such job!</value>
   </data>
-  <data name="JobStatus_Cancelled" xml:space="preserve">
+  <data name="JobStatus_Cancelled.Text" xml:space="preserve">
     <value>Cancelled</value>
   </data>
-  <data name="JobStatus_DoneFailure" xml:space="preserve">
+  <data name="JobStatus_DoneFailure.Text" xml:space="preserve">
     <value>Failed</value>
   </data>
-  <data name="JobStatus_DoneSuccess" xml:space="preserve">
+  <data name="JobStatus_DoneSuccess.Text" xml:space="preserve">
     <value>Successful</value>
   </data>
-  <data name="JobStatus_InProgress" xml:space="preserve">
+  <data name="JobStatus_InProgress.Text" xml:space="preserve">
     <value>In Progress</value>
   </data>
-  <data name="JobStatus_Submitted" xml:space="preserve">
+  <data name="JobStatus_Submitted.Text" xml:space="preserve">
     <value>Submitted</value>
   </data>
-  <data name="JobType_Export" xml:space="preserve">
+  <data name="JobType_Export.Text" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="JobType_Import" xml:space="preserve">
+  <data name="JobType_Import.Text" xml:space="preserve">
     <value>Import</value>
   </data>
-  <data name="NotPortalAdmin" xml:space="preserve">
+  <data name="NotPortalAdmin.Text" xml:space="preserve">
     <value>User is not a portal administrator</value>
   </data>
 </root>

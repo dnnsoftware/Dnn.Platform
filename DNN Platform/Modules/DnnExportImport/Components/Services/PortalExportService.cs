@@ -72,27 +72,27 @@ namespace Dnn.ExportImport.Components.Services
         {
             ProgressPercentage = 0;
             var portalSettings = repository.GetAllItems<ExportPortalSetting>().ToList();
-            ProcessPortalSettings(importJob, exporteDto, portalSettings);
+            ProcessPortalSettings(importJob, exporteDto, portalSettings, result);
             result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
             ProgressPercentage += 50;
 
             ProgressPercentage = 0;
             var portalLanguages = repository.GetAllItems<ExportPortalLanguage>().ToList();
-            ProcessPortalLanguages(importJob, exporteDto, portalLanguages);
+            ProcessPortalLanguages(importJob, exporteDto, portalLanguages, result);
             result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
             ProgressPercentage += 50;
 
             /*
             ProgressPercentage = 0;
             var portalLocalizations = repository.GetAllItems<ExportPortalLocalization>().ToList();
-            ProcessPortalLocalizations(importJob, exporteDto, portalLocalizations);
+            ProcessPortalLocalizations(importJob, exporteDto, portalLocalizations, result);
             result.AddSummary("Imported Portal Localizations", portalLocalizations.Count.ToString());
             ProgressPercentage += 40;
             */
         }
 
         private static void ProcessPortalSettings(ExportImportJob importJob, ExportDto exporteDto,
-            IEnumerable<ExportPortalSetting> portalSettings)
+            IEnumerable<ExportPortalSetting> portalSettings, ExportImportResult result)
         {
             using (var db = DataContext.Instance())
             {
@@ -123,7 +123,10 @@ namespace Dnn.ExportImport.Components.Services
                                 isUpdate = true;
                                 break;
                             case CollisionResolution.Ignore:
+                                result.AddLogEntry("Ignored portal settings", exportPortalSetting.SettingName);
+                                continue;
                             case CollisionResolution.Duplicate:
+                                result.AddLogEntry("Ignored duplicate portal settings", exportPortalSetting.SettingName);
                                 continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -136,6 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalSetting.PortalSettingId = existingPortalSetting.PortalSettingId;
                         repPortalSetting.Update(exportPortalSetting);
+                        result.AddLogEntry("Updated portal settings", exportPortalSetting.SettingName);
                     }
                     else
                     {
@@ -143,6 +147,7 @@ namespace Dnn.ExportImport.Components.Services
                         exportPortalSetting.CreatedByUserId = createdBy;
                         exportPortalSetting.CreatedOnDate = DateTime.UtcNow;
                         repPortalSetting.Insert(exportPortalSetting);
+                        result.AddLogEntry("Added portal settings", exportPortalSetting.SettingName);
                     }
                     exportPortalSetting.LocalId = exportPortalSetting.PortalSettingId;
                 }
@@ -150,7 +155,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private static void ProcessPortalLanguages(ExportImportJob importJob, ExportDto exporteDto,
-            IEnumerable<ExportPortalLanguage> portalLanguages)
+            IEnumerable<ExportPortalLanguage> portalLanguages, ExportImportResult result)
         {
             using (var db = DataContext.Instance())
             {
@@ -181,7 +186,10 @@ namespace Dnn.ExportImport.Components.Services
                                 isUpdate = true;
                                 break;
                             case CollisionResolution.Ignore:
+                                result.AddLogEntry("Ignored portal language", exportPortalLanguage.CultureCode);
+                                continue;
                             case CollisionResolution.Duplicate:
+                                result.AddLogEntry("Ignored duplicate portal language", exportPortalLanguage.CultureCode);
                                 continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -194,6 +202,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalLanguage.PortalLanguageId = existingPortalLanguage.PortalLanguageId;
                         repPortalLanguage.Update(exportPortalLanguage);
+                        result.AddLogEntry("Updated portal language", exportPortalLanguage.CultureCode);
                     }
                     else
                     {
@@ -201,6 +210,8 @@ namespace Dnn.ExportImport.Components.Services
                         exportPortalLanguage.CreatedByUserId = createdBy;
                         exportPortalLanguage.CreatedOnDate = DateTime.UtcNow;
                         repPortalLanguage.Insert(exportPortalLanguage);
+                        result.AddLogEntry("Added portal language", exportPortalLanguage.CultureCode);
+
                     }
                     exportPortalLanguage.LocalId = exportPortalLanguage.PortalLanguageId;
                 }
@@ -209,7 +220,7 @@ namespace Dnn.ExportImport.Components.Services
 
 #if false
         private static void ProcessPortalLocalizations(ExportImportJob importJob, ExportDto exporteDto,
-           IEnumerable<ExportPortalLocalization> portalLocalizations)
+           IEnumerable<ExportPortalLocalization> portalLocalizations, ExportImportResult result)
         {
             using (var db = DataContext.Instance())
             {
@@ -233,11 +244,14 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         switch (exporteDto.CollisionResolution)
                         {
-                            case CollisionResolution.Ignore:
+                            case CollisionResolution.Overwrite:
                                 isUpdate = true;
                                 break;
-                            case CollisionResolution.Overwrite:
+                            case CollisionResolution.Ignore:
+                                result.AddLogEntry("Ignored portal localization", exportPortalLocalization.CultureCode);
+                                continue;
                             case CollisionResolution.Duplicate:
+                                result.AddLogEntry("Ignored duplicate portal localization", exportPortalLocalization.CultureCode);
                                 continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -250,6 +264,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalLocalization.PortalLocalizationId = existingPortalLocalization.PortalLocalizationId;
                         repPortalLocalization.Update(exportPortalLocalization);
+                        result.AddLogEntry("Updated portal localization", exportPortalLocalization.CultureCode);
                     }
                     else
                     {
@@ -257,6 +272,7 @@ namespace Dnn.ExportImport.Components.Services
                         exportPortalLocalization.CreatedByUserId = createdBy;
                         exportPortalLocalization.CreatedOnDate = DateTime.UtcNow;
                         repPortalLocalization.Insert(exportPortalLocalization);
+                        result.AddLogEntry("Added portal localization", exportPortalLocalization.CultureCode);
                     }
                     exportPortalLocalization.LocalId = exportPortalLocalization.PortalLocalizationId;
                 }

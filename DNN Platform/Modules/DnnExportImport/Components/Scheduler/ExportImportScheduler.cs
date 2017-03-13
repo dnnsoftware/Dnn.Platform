@@ -55,12 +55,17 @@ namespace Dnn.ExportImport.Components.Scheduler
         {
             try
             {
+                //UNDONE: clean-up for very old import/export logs
+
                 var job = EntitiesController.Instance.GetFirstActiveJob();
                 if (job != null)
                 {
-                    var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
+                    job.JobStatus = JobStatus.InProgress;
+                    EntitiesController.Instance.UpdateJobStatus(job);
                     ExportImportResult result;
+                    var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
                     var engine = new ExportImportEngine();
+
                     switch (job.JobType)
                     {
                         case JobType.Export:
@@ -135,8 +140,8 @@ namespace Dnn.ExportImport.Components.Scheduler
                 {
                     var row = table.NewRow();
                     row["JobId"] =jobId;
-                    row["Name"] = item.Name.TrimToLength(100);
-                    row["Value"] = item.Value.TrimToLength(100);
+                    row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
+                    row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
                     row["IsSummary"] = item.IsSummary;
                     row["CreatedOnDate"] = item.CreatedOnDate;
                     table.Rows.Add(row);

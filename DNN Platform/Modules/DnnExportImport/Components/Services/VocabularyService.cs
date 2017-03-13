@@ -97,18 +97,18 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage += 10;
 
             var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
-            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
+            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies, result);
             result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
             ProgressPercentage += 40;
 
             var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
-            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
+            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms, result);
             result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
             ProgressPercentage += 40;
         }
 
         private static void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
-            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
+            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies, ExportImportResult result)
         {
             var changed = false;
             var dataService = Util.GetDataService();
@@ -126,6 +126,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
+                            result.AddLogEntry("Ignored vocabulary", other.Name);
                             break;
                         case CollisionResolution.Overwrite:
                             var vocabulary = new Vocabulary(other.Name, other.Description)
@@ -136,6 +137,7 @@ namespace Dnn.ExportImport.Components.Services
                                 ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                             };
                             dataService.UpdateVocabulary(vocabulary, modifiedBy);
+                            result.AddLogEntry("Updated vocabulary", other.Name);
                             changed = true;
                             break;
                         case CollisionResolution.Duplicate:
@@ -156,6 +158,7 @@ namespace Dnn.ExportImport.Components.Services
                         ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                     };
                     other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
+                    result.AddLogEntry("Added vocabulary", other.Name);
                     changed = true;
                 }
             }
@@ -164,7 +167,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private static void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
-            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
+            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms, ExportImportResult result)
         {
             var dataService = Util.GetDataService();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(null));
@@ -182,6 +185,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
+                            result.AddLogEntry("Ignored taxonomy", other.Name);
                             break;
                         case CollisionResolution.Overwrite:
                             var parent = other.ParentTermID.HasValue
@@ -199,6 +203,7 @@ namespace Dnn.ExportImport.Components.Services
                             else
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
+                            result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can write new one below
@@ -224,6 +229,7 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = term.ParentTermId.HasValue
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);
+                    result.AddLogEntry("Added taxonomy", other.Name);
                 }
             }
         }

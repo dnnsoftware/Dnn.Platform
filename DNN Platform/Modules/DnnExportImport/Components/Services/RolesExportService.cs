@@ -72,7 +72,8 @@ namespace Dnn.ExportImport.Components.Services
             result.AddSummary("Exported Roles", roles.Count.ToString());
             ProgressPercentage += 50;
 
-            var roleSettings = CBO.FillCollection<ExportRoleSetting>(DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+            var roleSettings = CBO.FillCollection<ExportRoleSetting>(
+                DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
             repository.CreateItems(roleSettings, null);
             result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
             ProgressPercentage += 20;
@@ -83,23 +84,24 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 0;
 
             var otherRoleGroups = repository.GetAllItems<ExportRoleGroup>().ToList();
-            ProcessRoleGroups(importJob, exporteDto, otherRoleGroups);
+            ProcessRoleGroups(importJob, exporteDto, otherRoleGroups, result);
             result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
             ProgressPercentage += 40;
 
             var otherRoles = repository.GetAllItems<ExportRole>().ToList();
             result.AddSummary("Imported Roles", otherRoles.Count.ToString());
-            ProcessRoles(importJob, exporteDto, otherRoleGroups, otherRoles);
+            ProcessRoles(importJob, exporteDto, otherRoleGroups, otherRoles, result);
 
             var otherRoleSettings = repository.GetAllItems<ExportRoleSetting>().ToList();
-            ProcessRoleSettings(importJob, exporteDto, otherRoles, otherRoleSettings);
+            ProcessRoleSettings(importJob, exporteDto, otherRoles, otherRoleSettings, result);
             result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
             ProgressPercentage += 60;
 
             RoleController.Instance.ClearRoleCache(importJob.PortalId);
         }
 
-        private static void ProcessRoleGroups(ExportImportJob importJob, ExportDto exporteDto, IEnumerable<ExportRoleGroup> otherRoleGroups)
+        private static void ProcessRoleGroups(ExportImportJob importJob, ExportDto exporteDto,
+            IEnumerable<ExportRoleGroup> otherRoleGroups, ExportImportResult result)
         {
             var changedGroups = new List<RoleGroupItem>();
             var portalId = importJob.PortalId;
@@ -116,6 +118,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
+                            result.AddLogEntry("Ignored role group", other.RoleGroupName);
                             break;
                         case CollisionResolution.Overwrite:
                             var roleGroup = new RoleGroupInfo(local.RoleGroupID, portalId, false)
@@ -126,6 +129,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleController.UpdateRoleGroup(roleGroup, false);
                             changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
                             DataCache.ClearCache(string.Format(DataCache.RoleGroupsCacheKey, local.RoleGroupID));
+                            result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can add new one below
@@ -145,6 +149,7 @@ namespace Dnn.ExportImport.Components.Services
                     };
                     other.LocalId = RoleController.AddRoleGroup(roleGroup);
                     changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
+                    result.AddLogEntry("Added role group", other.RoleGroupName);
                 }
             }
             if (changedGroups.Count > 0)
@@ -152,7 +157,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private static void ProcessRoles(ExportImportJob importJob, ExportDto exporteDto,
-            List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles)
+            List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles, ExportImportResult result)
         {
             var roleItems = new List<RoleItem>();
             var portalId = importJob.PortalId;
@@ -167,6 +172,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
+                            result.AddLogEntry("Ignored role", other.RoleName);
                             break;
                         case CollisionResolution.Overwrite:
                             var group = other.RoleGroupID.HasValue
@@ -194,6 +200,7 @@ namespace Dnn.ExportImport.Components.Services
                             roleItems.Add(new RoleItem(localRoleInfo.RoleID, createdBy, modifiedBy));
                             //TODO: add Jira for social use of RoleSettings where some data is stored as "groupid:10"
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
+                            result.AddLogEntry("Updated role", other.RoleName);
                             break;
                         case CollisionResolution.Duplicate:
                             localRoleInfo = null; // so we can add new one below
@@ -233,6 +240,7 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = RoleController.Instance.AddRole(roleInfo, other.AutoAssignment);
                     roleItems.Add(new RoleItem(roleInfo.RoleID, createdBy, modifiedBy));
                     RoleController.Instance.ClearRoleCache(roleInfo.RoleID);
+                    result.AddLogEntry("Added role", other.RoleName);
                 }
             }
 
@@ -242,7 +250,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private static void ProcessRoleSettings(ExportImportJob importJob, ExportDto exporteDto,
-            IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings)
+            IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings, ExportImportResult result)
         {
             var changedSettings = new List<SettingItem>();
             var portalId = importJob.PortalId;
@@ -258,6 +266,7 @@ namespace Dnn.ExportImport.Components.Services
                 switch (exporteDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
+                        result.AddLogEntry("Ignored role setting", other.SettingName);
                         break;
                     case CollisionResolution.Overwrite:
                         string settingValue;
@@ -267,12 +276,17 @@ namespace Dnn.ExportImport.Components.Services
                             changedSettings.Add(new SettingItem(localRoleInfo.RoleID, other.SettingName, createdBy, modifiedBy));
                             localRoleInfo.Settings[other.SettingName] = other.SettingValue;
                             RoleController.Instance.UpdateRoleSettings(localRoleInfo, false);
+                            result.AddLogEntry("Updated role setting", other.SettingName);
                             //No need to clear cache as the caller will do it one time at end
-                            //TODO: add Jira for social use of RoleSettings where some data is stored as "groupid:10"
+                        }
+                        else
+                        {
+                            result.AddLogEntry("Ignored role setting", other.SettingName);
                         }
                         break;
                     case CollisionResolution.Duplicate:
                         // there is no meaning for duplicates in a dictionary key
+                        result.AddLogEntry("Ignored duplicate role setting", other.SettingName);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());

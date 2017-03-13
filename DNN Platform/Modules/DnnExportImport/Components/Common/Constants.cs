@@ -40,6 +40,8 @@ namespace Dnn.ExportImport.Components.Common
         internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         internal const string LastJobSuccessDateKey = "EXPORT_LastSuccessOn";
 
+        internal const int LogColumnLength = 255;
+
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
     }
 }
