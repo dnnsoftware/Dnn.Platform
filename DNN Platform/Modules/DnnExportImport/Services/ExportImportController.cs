@@ -66,6 +66,17 @@ namespace Dnn.ExportImport.Services
             return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
 
+        // this is POST so users can't cancel using a simple browser link
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage CancelProcess([FromUri] int jobId)
+        {
+            var controller = new BaseController();
+            var cancelStatus = controller.CancelJob(PortalSettings.PortalId, jobId);
+            return Request.CreateResponse(
+                cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
+        }
+
         [HttpGet]
         public HttpResponseMessage ProgressStatus(int jobId)
         {

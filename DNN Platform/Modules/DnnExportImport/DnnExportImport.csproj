@@ -109,6 +109,7 @@
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
+    <Compile Include="Components\Services\Potable2Base.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />
     <Compile Include="Components\Services\RolesExportService.cs" />
     <Compile Include="Components\Services\UsersDataExportService.cs" />

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.Caching;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
@@ -33,6 +34,7 @@ using Dnn.ExportImport.Components.Repository;
 using DotNetNuke.Common;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
 
@@ -88,65 +90,89 @@ namespace Dnn.ExportImport.Components.Engines
             if (finfo.Exists) finfo.Delete();
 
             using (var ctx = new ExportImportRepository(dbName))
+            using (var cts = new CancellationTokenSource())
             {
+                AddTokenToCache(exportJob, cts);
                 result.AddSummary("Exporting Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
+                // there must be one parent implementor at least for this to work
                 var implementors = GetPortableImplementors().ToList();
-                if (implementors.Any())
+                var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                implementors = implementors.Except(parentServices).ToList();
+                var nextLevelServices = new List<IPortable2>();
+                var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
+                var firstLoop = true;
+
+                do
                 {
-                    // there must be one parent implementor at least for this to work
-                    var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
-                    implementors = implementors.Except(parentServices).ToList();
-                    var nextLevelServices = new List<IPortable2>();
-                    var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
-                    var firstLoop = true;
-
-                    do
+                    if (cts.IsCancellationRequested)
                     {
-                        foreach (var service in parentServices.OrderBy(x => x.Priority))
-                        {
-                            if (implementors.Count > 0)
-                            {
-                                // collect children for next iteration
-                                var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
-                                nextLevelServices.AddRange(children);
-                                implementors = implementors.Except(nextLevelServices).ToList();
-                            }
+                        result.Status = JobStatus.Cancelled;
+                        break;
+                    }
 
-                            if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                                (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
-                            {
-                                service.ExportData(exportJob, exportDto, ctx, result);
-                                scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
-                                result.Status = JobStatus.InProgress;
-                            }
+                    foreach (var service in parentServices.OrderBy(x => x.Priority))
+                    {
+                        if (cts.IsCancellationRequested)
+                        {
+                            result.Status = JobStatus.Cancelled;
+                            break;
                         }
 
-                        firstLoop = false;
-                        parentServices = new List<IPortable2>(nextLevelServices);
-                        nextLevelServices.Clear();
-                        if (implementors.Count > 0 && parentServices.Count == 0)
+                        if (implementors.Count > 0)
                         {
-                            //WARN: this is a case where there is a broken parnets-children hierarchy
-                            //      and/or there are IPortable2 implementations without a known parent.
-                            parentServices = implementors;
-                            implementors.Clear();
-                            scheduleHistoryItem.AddLogNote(
-                                "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                            // collect children for next iteration
+                            var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                            nextLevelServices.AddRange(children);
+                            implementors = implementors.Except(nextLevelServices).ToList();
                         }
-                    } while (parentServices.Count > 0);
-                }
+
+                        if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                            (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                        {
+                            service.Result = result;
+                            service.Repository = ctx;
+                            service.CancellationToken = cts.Token;
+                            service.ExportData(exportJob, exportDto);
+                            scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
+                        }
+                    }
+
+                    firstLoop = false;
+                    parentServices = new List<IPortable2>(nextLevelServices);
+                    nextLevelServices.Clear();
+                    if (implementors.Count > 0 && parentServices.Count == 0)
+                    {
+                        //WARN: this is a case where there is a broken parnets-children hierarchy
+                        //      and/or there are IPortable2 implementations without a known parent.
+                        parentServices = implementors;
+                        implementors.Clear();
+                        scheduleHistoryItem.AddLogNote(
+                            "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                    }
+                } while (parentServices.Count > 0);
 
                 foreach (var page in exportDto.Pages)
                 {
+                    if (cts.IsCancellationRequested)
+                    {
+                        result.Status = JobStatus.Cancelled;
+                        break;
+                    }
+
                     //TODO: export pages
                     if (page != null)
                     {
                     }
                 }
 
-                result.Status = JobStatus.DoneSuccess;
+                //TODO: zip files when any
+
+                RemoveTokenFromCache(exportJob);
             }
+
+            if (result.Status == JobStatus.InProgress)
+                result.Status = JobStatus.DoneSuccess;
 
             // wait for the file to be flushed as finfo.Length will throw exception
             while (!finfo.Exists) { Thread.Sleep(1); }
@@ -185,10 +211,11 @@ namespace Dnn.ExportImport.Components.Engines
 
             result.AddSummary("Importing Repository", finfo.Name);
             result.AddSummary("Imported File Size", Util.FormatSize(finfo.Length));
+
             using (var ctx = new ExportImportRepository(dbName))
+            using (var cts = new CancellationTokenSource())
             {
                 var exportedDto = ctx.GetSingleItem<ExportDto>();
-
                 var exportVersion = new Version(exportedDto.SchemaVersion);
                 var importVersion = new Version(importDto.SchemaVersion);
                 if (importVersion < exportVersion)
@@ -201,66 +228,116 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 else
                 {
+                    AddTokenToCache(importJob, cts);
+                    // there must be one parent implementor at least for this to work
                     var implementors = GetPortableImplementors().ToList();
-                    if (implementors.Any())
+                    var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                    implementors = implementors.Except(parentServices).ToList();
+                    var nextLevelServices = new List<IPortable2>();
+                    var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
+                    var firstLoop = true;
+
+                    do
                     {
-                        // there must be one parent implementor at least for this to work
-                        var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
-                        implementors = implementors.Except(parentServices).ToList();
-                        var nextLevelServices = new List<IPortable2>();
-                        var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
-                        var firstLoop = true;
-
-                        do
+                        if (cts.IsCancellationRequested)
                         {
-                            foreach (var service in parentServices.OrderBy(x => x.Priority))
-                            {
-                                if (implementors.Count > 0)
-                                {
-                                    // collect children for next iteration
-                                    var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
-                                    nextLevelServices.AddRange(children);
-                                    implementors = implementors.Except(nextLevelServices).ToList();
-                                }
+                            result.Status = JobStatus.Cancelled;
+                            break;
+                        }
 
-                                if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                                    (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
-                                {
-                                    service.ImportData(importJob, exportedDto, ctx, result);
-                                    scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
-                                    result.Status = JobStatus.InProgress;
-                                }
+                        foreach (var service in parentServices.OrderBy(x => x.Priority))
+                        {
+                            if (cts.IsCancellationRequested)
+                            {
+                                result.Status = JobStatus.Cancelled;
+                                break;
                             }
 
-                            firstLoop = false;
-                            parentServices = new List<IPortable2>(nextLevelServices);
-                            nextLevelServices.Clear();
-                            if (implementors.Count > 0 && parentServices.Count == 0)
+                            if (implementors.Count > 0)
                             {
-                                //WARN: this is a case where there is a broken parnets-children hierarchy
-                                //      and/or there are IPortable2 implementations without a known parent.
-                                parentServices = implementors;
-                                implementors.Clear();
-                                scheduleHistoryItem.AddLogNote(
-                                    "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                                // collect children for next iteration
+                                var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                                nextLevelServices.AddRange(children);
+                                implementors = implementors.Except(nextLevelServices).ToList();
                             }
-                        } while (parentServices.Count > 0);
-                    }
+
+                            if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                                (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                            {
+                                service.Result = result;
+                                service.Repository = ctx;
+                                service.CancellationToken = cts.Token;
+                                service.ImportData(importJob, exportedDto);
+                                scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
+                                result.Status = JobStatus.InProgress;
+                            }
+                        }
+
+                        firstLoop = false;
+                        parentServices = new List<IPortable2>(nextLevelServices);
+                        nextLevelServices.Clear();
+                        if (implementors.Count > 0 && parentServices.Count == 0)
+                        {
+                            //WARN: this is a case where there is a broken parnets-children hierarchy
+                            //      and/or there are IPortable2 implementations without a known parent.
+                            parentServices = implementors;
+                            implementors.Clear();
+                            scheduleHistoryItem.AddLogNote(
+                                "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                        }
+                    } while (parentServices.Count > 0);
 
                     foreach (var page in exportedDto.Pages)
                     {
+                        if (cts.IsCancellationRequested)
+                        {
+                            result.Status = JobStatus.Cancelled;
+                            break;
+                        }
+
                         //TODO: import pages
                         if (page != null)
                         {
                         }
                     }
-
-                    result.Status = JobStatus.DoneSuccess;
                 }
+
+                RemoveTokenFromCache(importJob);
             }
+
+            if (result.Status == JobStatus.InProgress)
+                result.Status = JobStatus.DoneSuccess;
 
             importJob.JobStatus = result.Status;
             return result;
+        }
+
+        private static void AddTokenToCache(ExportImportJob job, CancellationTokenSource cts)
+        {
+            // We add only a simple item to the cache; the hash code and not the whole
+            // object as this will not work with out-of-process cache. The captured cts
+            // will be operated upon when the item is removed from the cache.
+            var cacheKey = Util.GetJobExpImpCacheKey(job);
+            CachingProvider.Instance().Insert(cacheKey, cts.GetHashCode(), (DNNCacheDependency)null, 
+                DateTime.Now.AddDays(7), Cache.NoSlidingExpiration, CacheItemPriority.High,
+                (key, value, reason) =>
+                {
+                    try
+                    {
+                        if (!cts.IsCancellationRequested)
+                            cts.Cancel();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error("Export/Import cache token cancel error. " + ex.Message);
+                    }
+                });
+        }
+
+        private static void RemoveTokenFromCache(ExportImportJob job)
+        {
+            var key = Util.GetJobExpImpCacheKey(job);
+            CachingProvider.Instance().Remove(key);
         }
 
         private static IEnumerable<IPortable2> GetPortableImplementors()

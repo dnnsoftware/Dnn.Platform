@@ -33,7 +33,9 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
@@ -55,7 +57,7 @@ namespace Dnn.ExportImport.Components.Scheduler
         {
             try
             {
-                //UNDONE: clean-up for very old import/export logs
+                //TODO: do some clean-up for very old import/export jobs/logs
 
                 var job = EntitiesController.Instance.GetFirstActiveJob();
                 if (job != null)
@@ -77,6 +79,11 @@ namespace Dnn.ExportImport.Components.Scheduler
                             ScheduleHistoryItem.AddLogNote(
                                 "<br/><b>SITE IMPORT Started</b> " + lastSuccessFulDateTime.ToString("g"));
                             result = engine.Import(job, ScheduleHistoryItem);
+                            if (result.Status == JobStatus.DoneSuccess || result.Status == JobStatus.Cancelled)
+                            {
+                                // clear everything to be sure imported items take effect
+                                DataCache.ClearCache();
+                            }
                             break;
                         default:
                             throw new Exception("Unknown job type: " + job.JobType);
@@ -84,13 +91,14 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                     if (result != null)
                     {
-                        ScheduleHistoryItem.Succeeded = true;
                         EntitiesController.Instance.UpdateJobStatus(job);
+                        ScheduleHistoryItem.Succeeded = true;
                         var sb = new StringBuilder();
+                        var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
                         sb.Append(job.JobType == JobType.Export
                             ? "<br/><b>EXPORT Completed</b>"
                             : "<br/><b>IMPORT Completed</b>");
-                        sb.Append($"<br/>Status: <b>{job.JobStatus}</b>");
+                        sb.Append($"<br/>Status: <b>{jobStatus}</b>");
                         if (result.Summary.Count > 0)
                         {
                             sb.Append("<br/><b>Summary:</b><ul>");

@@ -19,31 +19,27 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.Caching;
+using System.Threading;
+using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Interfaces;
+using Dnn.ExportImport.Components.Models;
 
-namespace Dnn.ExportImport.Components.Common
+namespace Dnn.ExportImport.Components.Services
 {
-    public class Constants
+    public abstract class Potable2Base : IPortable2
     {
-        /// <summary>
-        /// This is the currently supported schema version support as of this release.
-        /// In future releases thi must be updated to be compatible wiht th e
-        /// </summary>
-        public const string CurrentSchemaVersion = "1.0.0";
+        public ExportImportResult Result { get; set; }
+        public IExportImportRepository Repository { get; set; }
+        public CancellationToken CancellationToken { get; set; }
 
-        internal const string ExportFolder = @"\Install\ExportImport\";
-        internal const string ExportDateFormat = "yyyyMMdd-HHmmss";
-        internal const string ExportDbExt = ".dnndb"; // exportDB file extension
-        internal const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
+        // The following properties and methods must be overriden in descendant classes
 
-        internal const string LogTypeSiteExport = "SITE_EXPORT";
-        internal const string LogTypeSiteImport = "SITE_IMPORT";
+        public abstract string Category { get; }
+        public abstract string ParentCategory { get; }
+        public abstract uint Priority { get; }
 
-        internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
-        internal const string LastJobSuccessDateKey = "EXPORT_LastSuccessOn";
-
-        internal const int LogColumnLength = 255;
-
-        internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
+        public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
+        public abstract void ImportData(ExportImportJob importJob, ExportDto exporteDto);
     }
 }

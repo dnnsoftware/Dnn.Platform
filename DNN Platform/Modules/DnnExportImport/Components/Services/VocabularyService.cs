@@ -25,8 +25,6 @@ using System.Linq;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Taxonomy;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
-using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
@@ -34,19 +32,15 @@ using DotNetNuke.Entities.Content.Taxonomy;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class VocabularyService : IPortable2
+    public class VocabularyService : Potable2Base
     {
         private int _progressPercentage;
 
-        public string Category => "VOCABULARIES";
+        public override string Category => "VOCABULARIES";
 
-        public string ParentCategory => "USERS";
+        public override string ParentCategory => "USERS";
 
-        public uint Priority => 1;
-
-        public bool CanCancel => true;
-
-        public bool CanRollback => false;
+        public override uint Priority => 1;
 
         public int ProgressPercentage
         {
@@ -59,62 +53,70 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
+        public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
 
+            if (CancellationToken.IsCancellationRequested) return;
             var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-            repository.CreateItems(scopeTypes, null);
-            //result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+            Repository.CreateItems(scopeTypes, null);
+            //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
+            if (CancellationToken.IsCancellationRequested) return;
             var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-            repository.CreateItems(vocabularyTypes, null);
-            //result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+            Repository.CreateItems(vocabularyTypes, null);
+            //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
             ProgressPercentage += 25;
 
+            if (CancellationToken.IsCancellationRequested) return;
             var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
-            repository.CreateItems(taxonomyTerms, null);
-            result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
+            Repository.CreateItems(taxonomyTerms, null);
+            Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
             ProgressPercentage += 25;
 
+            if (CancellationToken.IsCancellationRequested) return;
             var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
-            repository.CreateItems(taxonomyVocabularies, null);
-            result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
+            Repository.CreateItems(taxonomyVocabularies, null);
+            Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
             ProgressPercentage += 25;
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
+        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
         {
             ProgressPercentage = 0;
 
-            var otherScopeTypes = repository.GetAllItems<TaxonomyScopeType>().ToList();
+            if (CancellationToken.IsCancellationRequested) return;
+            var otherScopeTypes = Repository.GetAllItems<TaxonomyScopeType>().ToList();
             //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
             ProgressPercentage += 10;
 
-            //var otherVocabularyTypes = repository.GetAllItems<TaxonomyVocabularyType>().ToList();
+            //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
             //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
             ProgressPercentage += 10;
 
-            var otherVocabularies = repository.GetAllItems<TaxonomyVocabulary>().ToList();
-            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies, result);
-            result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
+            if (CancellationToken.IsCancellationRequested) return;
+            var otherVocabularies = Repository.GetAllItems<TaxonomyVocabulary>().ToList();
+            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
+            Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
             ProgressPercentage += 40;
 
-            var otherTaxonomyTerms = repository.GetAllItems<TaxonomyTerm>().ToList();
-            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms, result);
-            result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
+            if (CancellationToken.IsCancellationRequested) return;
+            var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
+            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
+            Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
             ProgressPercentage += 40;
         }
 
-        private static void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
-            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies, ExportImportResult result)
+        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
+            IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var changed = false;
             var dataService = Util.GetDataService();
             var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(null));
             foreach (var other in otherVocabularies)
             {
+                if (CancellationToken.IsCancellationRequested) return;
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
@@ -126,7 +128,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
-                            result.AddLogEntry("Ignored vocabulary", other.Name);
+                            Result.AddLogEntry("Ignored vocabulary", other.Name);
                             break;
                         case CollisionResolution.Overwrite:
                             var vocabulary = new Vocabulary(other.Name, other.Description)
@@ -137,7 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                                 ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                             };
                             dataService.UpdateVocabulary(vocabulary, modifiedBy);
-                            result.AddLogEntry("Updated vocabulary", other.Name);
+                            Result.AddLogEntry("Updated vocabulary", other.Name);
                             changed = true;
                             break;
                         case CollisionResolution.Duplicate:
@@ -158,7 +160,7 @@ namespace Dnn.ExportImport.Components.Services
                         ScopeTypeId = scope?.LocalId ?? other.ScopeTypeID,
                     };
                     other.LocalId = dataService.AddVocabulary(vocabulary, createdBy);
-                    result.AddLogEntry("Added vocabulary", other.Name);
+                    Result.AddLogEntry("Added vocabulary", other.Name);
                     changed = true;
                 }
             }
@@ -166,13 +168,14 @@ namespace Dnn.ExportImport.Components.Services
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
         }
 
-        private static void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
-            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms, ExportImportResult result)
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
+            IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(null));
             foreach (var other in otherTaxonomyTerms)
             {
+                if (CancellationToken.IsCancellationRequested) return;
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);
@@ -185,7 +188,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (exporteDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
-                            result.AddLogEntry("Ignored taxonomy", other.Name);
+                            Result.AddLogEntry("Ignored taxonomy", other.Name);
                             break;
                         case CollisionResolution.Overwrite:
                             var parent = other.ParentTermID.HasValue
@@ -203,7 +206,7 @@ namespace Dnn.ExportImport.Components.Services
                             else
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
-                            result.AddLogEntry("Updated taxonomy", other.Name);
+                            Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
                         case CollisionResolution.Duplicate:
                             local = null; // so we can write new one below
@@ -229,7 +232,7 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = term.ParentTermId.HasValue
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);
-                    result.AddLogEntry("Added taxonomy", other.Name);
+                    Result.AddLogEntry("Added taxonomy", other.Name);
                 }
             }
         }

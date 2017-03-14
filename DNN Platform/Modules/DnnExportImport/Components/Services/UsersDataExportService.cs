@@ -24,9 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
-using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Security.Roles;
@@ -38,19 +36,15 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Supplementary service to import users additional data.
     /// </summary>
-    public class UsersDataExportService : IPortable2
+    public class UsersDataExportService : Potable2Base
     {
         private int _progressPercentage;
 
-        public string Category => "USERS_DATA";
+        public override string Category => "USERS_DATA";
 
-        public string ParentCategory => "USERS";
+        public override string ParentCategory => "USERS";
 
-        public uint Priority => 4;
-
-        public bool CanCancel => true;
-
-        public bool CanRollback => false;
+        public override uint Priority => 4;
 
         public int ProgressPercentage
         {
@@ -63,47 +57,49 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public void ExportData(ExportImportJob exportJob, ExportDto exportDto, IExportImportRepository repository, ExportImportResult result)
+        public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             ProgressPercentage = 100;
             //No implementation required in export users child as everything is exported in parent service.
         }
 
-        public void ImportData(ExportImportJob importJob, ExportDto exporteDto, IExportImportRepository repository, ExportImportResult result)
+        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
         {
             ProgressPercentage = 0;
             var pageIndex = 0;
-            var pageSize = 1000;
+            const int pageSize = 1000;
             var totalUserRolesImported = 0;
             var totalProfilesImported = 0;
             var totalAuthenticationImported = 0;
             var totalProcessed = 0;
-            var totalUsers = repository.GetCount<ExportUser>();
+            var totalUsers = Repository.GetCount<ExportUser>();
             var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
             while (totalProcessed < totalUsers)
             {
-                var users = repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
+                if (CancellationToken.IsCancellationRequested) return;
+                var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
                 foreach (var user in users)
                 {
-                    var userRoles = repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                    if (CancellationToken.IsCancellationRequested) return;
+                    var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                     var userAuthentication =
-                        repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                    var userProfiles = repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
+                        Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                    var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
 
                     using (var db = DataContext.Instance())
                     {
-                        ProcessUserRoles(importJob, exporteDto, db, userRoles, user.UserId, user.Username, result);
+                        ProcessUserRoles(importJob, exporteDto, db, userRoles, user.UserId, user.Username);
                         totalUserRolesImported += userRoles.Count;
 
-                        ProcessUserProfiles(importJob, exporteDto, db, userProfiles, user.UserId, user.Username, result);
+                        ProcessUserProfiles(importJob, exporteDto, db, userProfiles, user.UserId, user.Username);
                         totalProfilesImported += userProfiles.Count;
 
-                        ProcessUserAuthentications(importJob, exporteDto, db, userAuthentication, user.UserId, user.Username, result);
+                        ProcessUserAuthentications(importJob, exporteDto, db, userAuthentication, user.UserId, user.Username);
                         if (userAuthentication != null) totalAuthenticationImported++;
                         //Update the source repository local ids.
-                        repository.UpdateItems(userRoles);
-                        repository.UpdateItems(userProfiles);
-                        repository.UpdateItem(userAuthentication);
+                        Repository.UpdateItems(userRoles);
+                        Repository.UpdateItems(userProfiles);
+                        Repository.UpdateItem(userAuthentication);
                         DataProvider.Instance()
                             .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
                     }
@@ -112,18 +108,19 @@ namespace Dnn.ExportImport.Components.Services
                 ProgressPercentage += progressStep;
                 pageIndex++;
             }
-            result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
-            result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
-            result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
+            Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
+            Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+            Result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
         }
 
-        private static void ProcessUserRoles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
-            IEnumerable<ExportUserRole> userRoles, int userId, string username, ExportImportResult result)
+        private void ProcessUserRoles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+            IEnumerable<ExportUserRole> userRoles, int userId, string username)
         {
             var repUserRoles = db.GetRepository<ExportUserRole>();
 
             foreach (var userRole in userRoles)
             {
+                if (CancellationToken.IsCancellationRequested) return;
                 var roleId = Common.Util.GetRoleId(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
@@ -137,10 +134,10 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore: //Just ignore the record
-                            result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
+                            Result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
                             continue;
                         case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            result.AddLogEntry("Ignored duplicate user role", $"{username}/{userRole.RoleName}");
+                            Result.AddLogEntry("Ignored duplicate user role", $"{username}/{userRole.RoleName}");
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -163,7 +160,7 @@ namespace Dnn.ExportImport.Components.Services
                     userRole.CreatedOnDate = existingUserRole.CreatedOnDate;
                     userRole.UserRoleId = existingUserRole.UserRoleID;
                     repUserRoles.Update(userRole);
-                    result.AddLogEntry("Updated user role", $"{username}/{userRole.RoleName}");
+                    Result.AddLogEntry("Updated user role", $"{username}/{userRole.RoleName}");
                 }
                 else
                 {
@@ -173,18 +170,19 @@ namespace Dnn.ExportImport.Components.Services
                     userRole.CreatedByUserId = createdById;
                     userRole.CreatedOnDate = DateTime.UtcNow;
                     repUserRoles.Insert(userRole);
-                    result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
+                    Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
                 }
                 userRole.LocalId = userRole.UserRoleId;
             }
         }
 
-        private static void ProcessUserProfiles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
-            IEnumerable<ExportUserProfile> userProfiles, int userId, string username, ExportImportResult result)
+        private void ProcessUserProfiles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+            IEnumerable<ExportUserProfile> userProfiles, int userId, string username)
         {
             var repUserProfile = db.GetRepository<ExportUserProfile>();
             foreach (var userProfile in userProfiles)
             {
+                if (CancellationToken.IsCancellationRequested) return;
                 var existingUserProfile =
                     CBO.FillCollection<ExportUserProfile>(
                         DataProvider.Instance().GetUserProfile(userId)).FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
@@ -197,10 +195,10 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore: //Just ignore the record
-                            result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
+                            Result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
                             continue;
                         case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            result.AddLogEntry("Ignored duplicate user profile", userProfile.PropertyName);
+                            Result.AddLogEntry("Ignored duplicate user profile", userProfile.PropertyName);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -213,7 +211,7 @@ namespace Dnn.ExportImport.Components.Services
                     userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
                     userProfile.ProfileId = existingUserProfile.ProfileId;
                     repUserProfile.Update(userProfile);
-                    result.AddLogEntry("Updated user profile", $"{username}/{userProfile.PropertyName}");
+                    Result.AddLogEntry("Updated user profile", $"{username}/{userProfile.PropertyName}");
                 }
                 else
                 {
@@ -225,14 +223,14 @@ namespace Dnn.ExportImport.Components.Services
 
                     userProfile.PropertyDefinitionId = profileDefinitionId.Value;
                     repUserProfile.Insert(userProfile);
-                    result.AddLogEntry("Added user profile", userProfile.PropertyName);
+                    Result.AddLogEntry("Added user profile", userProfile.PropertyName);
                 }
                 userProfile.LocalId = userProfile.ProfileId;
             }
         }
 
-        private static void ProcessUserAuthentications(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
-            ExportUserAuthentication userAuthentication, int userId, string username, ExportImportResult result)
+        private void ProcessUserAuthentications(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+            ExportUserAuthentication userAuthentication, int userId, string username)
         {
             if (userAuthentication == null) return;
 
@@ -247,10 +245,10 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore: //Just ignore the record
-                        result.AddLogEntry("Ignored user authentication", username);
+                        Result.AddLogEntry("Ignored user authentication", username);
                         return;
                     case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        result.AddLogEntry("Ignored duplicate user authentication", username);
+                        Result.AddLogEntry("Ignored duplicate user authentication", username);
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -265,7 +263,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 userAuthentication.UserAuthenticationId = existingUserAuthenticaiton.UserAuthenticationID;
                 repUserAuthentication.Update(userAuthentication);
-                result.AddLogEntry("Updated user authentication", username);
+                Result.AddLogEntry("Updated user authentication", username);
             }
             else
             {
@@ -275,7 +273,7 @@ namespace Dnn.ExportImport.Components.Services
                 userAuthentication.CreatedOnDate = DateTime.UtcNow;
                 userAuthentication.CreatedByUserId = createdById;
                 repUserAuthentication.Insert(userAuthentication);
-                result.AddLogEntry("Added user authentication", username);
+                Result.AddLogEntry("Added user authentication", username);
             }
             userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
         }

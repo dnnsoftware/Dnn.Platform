@@ -28,6 +28,8 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Entities.Urls;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 
 namespace Dnn.ExportImport.Components.Controllers
@@ -53,6 +55,18 @@ namespace Dnn.ExportImport.Components.Controllers
 
             log.AddProperty("JobID", jobId.ToString());
             LogController.Instance.AddLog(log);
+        }
+
+        public bool CancelJob(int portalId, int jobId)
+        {
+            var controller = EntitiesController.Instance;
+            var job = controller.GetJobById(jobId);
+            if (job == null || job.PortalId != portalId)
+                return false;
+
+            var key = Util.GetJobExpImpCacheKey(job);
+            CachingProvider.Instance().Remove(key);
+            return true;
         }
 
         /// <summary>
