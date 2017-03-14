@@ -307,8 +307,8 @@ export default class FileUpload extends Component {
                 onClick={this.onButtonClick.bind(this, button.name) }
                 key={button.name}>
                 <div dangerouslySetInnerHTML={{ __html: svg }} />
-                {isUpload && accept && <input type="file" accept={accept} onChange={this.onFileUpload.bind(this) } />}
-                {isUpload && !accept && <input type="file" onChange={this.onFileUpload.bind(this) } />}
+                {isUpload && accept && <input type="file" accept={accept} onChange={this.onFileUpload.bind(this) } aria-label="File" />}
+                {isUpload && !accept && <input type="file" onChange={this.onFileUpload.bind(this) } aria-label="File" />}
             </div>;
         });
 
