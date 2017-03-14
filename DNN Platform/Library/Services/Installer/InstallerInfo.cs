@@ -336,6 +336,11 @@ namespace DotNetNuke.Services.Installer
         private void ReadZipStream(Stream inputStream, bool isEmbeddedZip)
         {
             Log.StartJob(Util.FILES_Reading);
+            if (inputStream.CanSeek)
+            {
+                inputStream.Seek(0, SeekOrigin.Begin);
+            }
+
             var unzip = new ZipInputStream(inputStream);
             ZipEntry entry = unzip.GetNextEntry();
             while (entry != null)
