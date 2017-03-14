@@ -144,19 +144,25 @@ namespace Dnn.ExportImport.Components.Scheduler
                 table.Columns.AddRange(DatasetColumns.Select(
                     column => new DataColumn(column.Item1, column.Item2)).ToArray());
 
-                foreach (var item in completeLog)
+                // batch specific amount of record each time
+                const int batchSize = 500;
+                var toSkip = 0;
+                while (toSkip < completeLog.Count)
                 {
-                    var row = table.NewRow();
-                    row["JobId"] =jobId;
-                    row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
-                    row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
-                    row["IsSummary"] = item.IsSummary;
-                    row["CreatedOnDate"] = item.CreatedOnDate;
-                    table.Rows.Add(row);
-                }
+                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
+                    {
+                        var row = table.NewRow();
+                        row["JobId"] =jobId;
+                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
+                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
+                        row["IsSummary"] = item.IsSummary;
+                        row["CreatedOnDate"] = item.CreatedOnDate;
+                        table.Rows.Add(row);
+                    }
 
-                var timeout = completeLog.Count < 3000 ? 30 : 60; // in seconds
-                PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table, timeout);
+                    toSkip += batchSize;
+                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
+                }
             }
         }
 
