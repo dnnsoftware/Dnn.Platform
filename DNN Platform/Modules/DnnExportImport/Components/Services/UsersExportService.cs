@@ -22,6 +22,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
 using DotNetNuke.Common.Utilities;
@@ -41,7 +42,7 @@ namespace Dnn.ExportImport.Components.Services
     {
         private int _progressPercentage;
 
-        public override string Category => "USERS";
+        public override string Category => Constants.Category_Users;
 
         public override string ParentCategory => null;
 
@@ -137,7 +138,7 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
+        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             if (CancellationToken.IsCancellationRequested) return;
 
@@ -167,10 +168,10 @@ namespace Dnn.ExportImport.Components.Services
                         if (aspnetMembership == null) continue;
 
                         var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                        ProcessUser(importJob, exporteDto, db, user, userPortal, aspNetUser, aspnetMembership);
+                        ProcessUser(importJob, exportDto, db, user, userPortal, aspNetUser, aspnetMembership);
                         totalAspnetUserImported += 1;
                         totalAspnetMembershipImported += 1;
-                        ProcessUserPortal(importJob, exporteDto, db, userPortal, user.UserId, user.Username);
+                        ProcessUserPortal(importJob, exportDto, db, userPortal, user.UserId, user.Username);
                         totalPortalsImported += userPortal != null ? 1 : 0;
 
                         //Update the source repository local ids.
@@ -189,7 +190,7 @@ namespace Dnn.ExportImport.Components.Services
 
         }
 
-        private void ProcessUser(ExportImportJob importJob, ExportDto exporteDto, IDataContext db, ExportUser user,
+        private void ProcessUser(ExportImportJob importJob, ExportDto exportDto, IDataContext db, ExportUser user,
             ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {
             if (user == null) return;
@@ -200,7 +201,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (existingUser != null)
             {
-                switch (exporteDto.CollisionResolution)
+                switch (exportDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -212,7 +213,7 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Ignored duplicate user", user.Username);
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                 }
             }
             if (isUpdate)
@@ -242,7 +243,7 @@ namespace Dnn.ExportImport.Components.Services
             user.LocalId = user.UserId;
         }
 
-        private void ProcessUserPortal(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+        private void ProcessUserPortal(ExportImportJob importJob, ExportDto exportDto, IDataContext db,
             ExportUserPortal userPortal, int userId, string username)
         {
             if (userPortal == null) return;
@@ -252,7 +253,7 @@ namespace Dnn.ExportImport.Components.Services
             var isUpdate = false;
             if (existingPortal != null)
             {
-                switch (exporteDto.CollisionResolution)
+                switch (exportDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -264,7 +265,7 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Ignored duplicate user portal", $"{username}/{userPortal.PortalId}");
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                 }
             }
             userPortal.UserId = userId;

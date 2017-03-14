@@ -40,6 +40,6 @@ namespace Dnn.ExportImport.Components.Services
         public abstract uint Priority { get; }
 
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
-        public abstract void ImportData(ExportImportJob importJob, ExportDto exporteDto);
+        public abstract void ImportData(ExportImportJob importJob, ExportDto exportDto);
     }
 }

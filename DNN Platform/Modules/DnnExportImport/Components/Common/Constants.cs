@@ -20,6 +20,7 @@
 #endregion
 
 using System.Web.Caching;
+// ReSharper disable InconsistentNaming
 
 namespace Dnn.ExportImport.Components.Common
 {
@@ -45,5 +46,13 @@ namespace Dnn.ExportImport.Components.Common
         internal const int LogColumnLength = 255;
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
+
+        internal const string Category_Users = "USERS";
+        internal const string Category_UsersData = "USERS_DATA";
+        internal const string Category_Vocabularies = "VOCABULARIES";
+        internal const string Category_Roles = "ROLES";
+        internal const string Category_Pages = "PAGES";
+        internal const string Category_Portal = "PORTAL";
+        internal const string Category_ProfileProps = "PROFILE_PROPERTIES";
     }
 }

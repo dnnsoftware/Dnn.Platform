@@ -21,6 +21,7 @@
 
 using System;
 using System.Linq;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.ProfileProperties;
 using Dnn.ExportImport.Components.Entities;
@@ -33,8 +34,8 @@ namespace Dnn.ExportImport.Components.Services
     public class ProfilePropertiesService : Potable2Base
     {
         private int _progressPercentage;
-        public override string Category => "PROFILE_PROPERTIES";
-        public override string ParentCategory => "USERS";
+        public override string Category => Constants.Category_ProfileProps;
+        public override string ParentCategory => Constants.Category_Users;
         public override uint Priority => 3;
 
         public int ProgressPercentage
@@ -66,7 +67,7 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 100;
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
+        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
@@ -83,7 +84,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (existingProfileProperty != null)
                     {
-                        switch (exporteDto.CollisionResolution)
+                        switch (exportDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
                                 ProcessUpdateProfileProperty(db, profileProperty, existingProfileProperty,
@@ -96,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Ignored duplicate profile property", profileProperty.PropertyName);
                                 break;
                             default:
-                                throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                                throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                         }
                     }
                     else

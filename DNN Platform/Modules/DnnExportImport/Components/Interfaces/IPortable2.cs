@@ -75,6 +75,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// <summary>
         ///  Performs import operation of the object.
         /// </summary>
-        void ImportData(ExportImportJob importJob, ExportDto exporteDto);
+        void ImportData(ExportImportJob importJob, ExportDto exportDto);
     }
 }

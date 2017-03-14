@@ -22,13 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Taxonomy;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -36,9 +37,9 @@ namespace Dnn.ExportImport.Components.Services
     {
         private int _progressPercentage;
 
-        public override string Category => "VOCABULARIES";
+        public override string Category => Constants.Category_Vocabularies;
 
-        public override string ParentCategory => "USERS";
+        public override string ParentCategory => Constants.Category_Users;
 
         public override uint Priority => 1;
 
@@ -82,7 +83,7 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage += 25;
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
+        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
 
@@ -97,18 +98,18 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherVocabularies = Repository.GetAllItems<TaxonomyVocabulary>().ToList();
-            ProcessVocabularies(importJob, exporteDto, otherScopeTypes, otherVocabularies);
+            ProcessVocabularies(importJob, exportDto, otherScopeTypes, otherVocabularies);
             Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
             ProgressPercentage += 40;
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
-            ProcessTaxonomyTerms(importJob, exporteDto, otherVocabularies, otherTaxonomyTerms);
+            ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
             Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
             ProgressPercentage += 40;
         }
 
-        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exporteDto,
+        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exportDto,
             IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var changed = false;
@@ -125,7 +126,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.VocabularyID;
-                    switch (exporteDto.CollisionResolution)
+                    switch (exportDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored vocabulary", other.Name);
@@ -146,7 +147,7 @@ namespace Dnn.ExportImport.Components.Services
                             local = null; // so we can add new one below
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
 
@@ -168,7 +169,7 @@ namespace Dnn.ExportImport.Components.Services
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
         }
 
-        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exporteDto,
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exportDto,
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
@@ -185,7 +186,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.TermID;
-                    switch (exporteDto.CollisionResolution)
+                    switch (exportDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored taxonomy", other.Name);
@@ -212,7 +213,7 @@ namespace Dnn.ExportImport.Components.Services
                             local = null; // so we can write new one below
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
 

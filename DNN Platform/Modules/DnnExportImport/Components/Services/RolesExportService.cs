@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Roles;
 using Dnn.ExportImport.Components.Entities;
@@ -35,9 +36,9 @@ namespace Dnn.ExportImport.Components.Services
     {
         private int _progressPercentage;
 
-        public override string Category => "ROLES";
+        public override string Category => Constants.Category_Roles;
 
-        public override string ParentCategory => "USERS";
+        public override string ParentCategory => Constants.Category_Users;
 
         public override uint Priority => 2;
 
@@ -76,31 +77,31 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage += 20;
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
+        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherRoleGroups = Repository.GetAllItems<ExportRoleGroup>().ToList();
-            ProcessRoleGroups(importJob, exporteDto, otherRoleGroups);
+            ProcessRoleGroups(importJob, exportDto, otherRoleGroups);
             Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
             ProgressPercentage += 40;
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherRoles = Repository.GetAllItems<ExportRole>().ToList();
             Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
-            ProcessRoles(importJob, exporteDto, otherRoleGroups, otherRoles);
+            ProcessRoles(importJob, exportDto, otherRoleGroups, otherRoles);
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherRoleSettings = Repository.GetAllItems<ExportRoleSetting>().ToList();
-            ProcessRoleSettings(importJob, exporteDto, otherRoles, otherRoleSettings);
+            ProcessRoleSettings(importJob, exportDto, otherRoles, otherRoleSettings);
             Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
             ProgressPercentage += 60;
 
             RoleController.Instance.ClearRoleCache(importJob.PortalId);
         }
 
-        private void ProcessRoleGroups(ExportImportJob importJob, ExportDto exporteDto,
+        private void ProcessRoleGroups(ExportImportJob importJob, ExportDto exportDto,
             IEnumerable<ExportRoleGroup> otherRoleGroups)
         {
             var changedGroups = new List<RoleGroupItem>();
@@ -116,7 +117,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.RoleGroupID;
-                    switch (exporteDto.CollisionResolution)
+                    switch (exportDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored role group", other.RoleGroupName);
@@ -136,7 +137,7 @@ namespace Dnn.ExportImport.Components.Services
                             local = null; // so we can add new one below
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
 
@@ -157,7 +158,7 @@ namespace Dnn.ExportImport.Components.Services
                 RefreshRecordsUserIds(changedGroups);
         }
 
-        private void ProcessRoles(ExportImportJob importJob, ExportDto exporteDto,
+        private void ProcessRoles(ExportImportJob importJob, ExportDto exportDto,
             List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles)
         {
             var roleItems = new List<RoleItem>();
@@ -171,7 +172,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (localRoleInfo != null)
                 {
                     other.LocalId = localRoleInfo.RoleID;
-                    switch (exporteDto.CollisionResolution)
+                    switch (exportDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored role", other.RoleName);
@@ -208,7 +209,7 @@ namespace Dnn.ExportImport.Components.Services
                             localRoleInfo = null; // so we can add new one below
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
 
@@ -251,7 +252,7 @@ namespace Dnn.ExportImport.Components.Services
                 RefreshRecordsUserIds(roleItems);
         }
 
-        private void ProcessRoleSettings(ExportImportJob importJob, ExportDto exporteDto,
+        private void ProcessRoleSettings(ExportImportJob importJob, ExportDto exportDto,
             IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings)
         {
             var changedSettings = new List<SettingItem>();
@@ -266,7 +267,7 @@ namespace Dnn.ExportImport.Components.Services
                 var localRoleInfo = RoleController.Instance.GetRoleById(portalId, otherRole.LocalId.Value);
                 if (localRoleInfo == null) continue;
 
-                switch (exporteDto.CollisionResolution)
+                switch (exportDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
                         Result.AddLogEntry("Ignored role setting", other.SettingName);
@@ -292,7 +293,7 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Ignored duplicate role setting", other.SettingName);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                 }
 
             }

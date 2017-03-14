@@ -152,20 +152,6 @@ namespace Dnn.ExportImport.Components.Engines
                     }
                 } while (parentServices.Count > 0);
 
-                foreach (var page in exportDto.Pages)
-                {
-                    if (cts.IsCancellationRequested)
-                    {
-                        result.Status = JobStatus.Cancelled;
-                        break;
-                    }
-
-                    //TODO: export pages
-                    if (page != null)
-                    {
-                    }
-                }
-
                 //TODO: zip files when any
 
                 RemoveTokenFromCache(exportJob);
@@ -286,20 +272,6 @@ namespace Dnn.ExportImport.Components.Engines
                                 "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                         }
                     } while (parentServices.Count > 0);
-
-                    foreach (var page in exportedDto.Pages)
-                    {
-                        if (cts.IsCancellationRequested)
-                        {
-                            result.Status = JobStatus.Cancelled;
-                            break;
-                        }
-
-                        //TODO: import pages
-                        if (page != null)
-                        {
-                        }
-                    }
                 }
 
                 RemoveTokenFromCache(importJob);
@@ -382,7 +354,10 @@ namespace Dnn.ExportImport.Components.Engines
                 }
             }
 
-            includedItems.Add("PORTAL"); // this needs to be included always
+            if (exportDto.Pages.Length > 0)
+                includedItems.Add(Constants.Category_Pages);
+
+            includedItems.Add(Constants.Category_Portal); // must be included always
 
             return includedItems;
         }
