@@ -28,11 +28,11 @@ class Card extends Component {
     }
 
     getImageComponent() {
-        const {image, selected, hoverText } = this.props;
+        const {image, selected, hoverText, label } = this.props;
         const className = "card-image" + (image ? "" : " no-image");
 
         return <span className={className} onClick={this.onClick.bind(this)} >
-                {image ? <img src={image} /> : this.getNoImageIcon()}
+                {image ? <img src={image} alt={label} /> : this.getNoImageIcon()}
                 {selected && <span className="checkmark">{this.getCheckMarkIcon()}</span>}
                 <span className="hoverLayer">{hoverText}</span>
             </span>;
