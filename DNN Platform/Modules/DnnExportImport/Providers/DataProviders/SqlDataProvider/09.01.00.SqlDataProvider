@@ -722,12 +722,12 @@ AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM
 		{databaseOwner}[{objectQualifier}PortalSettings]
-	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	WHERE  PortalId = @PortalID
 	AND
 		(CASE
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
@@ -742,7 +742,7 @@ AS
 	FROM
 		{databaseOwner}[{objectQualifier}PortalLanguages] PL
 	INNER JOIN {databaseOwner}[{objectQualifier}Languages] L ON PL.[LanguageID]=L.[LanguageID]
-	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	WHERE  PortalId = @PortalID
 	AND
 			(CASE
 			WHEN @SinceDate IS NULL THEN 0
@@ -761,10 +761,92 @@ AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM
 		{databaseOwner}[{objectQualifier}PortalLocalization]
-	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	WHERE  PortalId = @PortalID
 	AND
 		(CASE
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+GO
+
+--Assets
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+    @PortalID    int,
+    @SinceDate    datetime=NULL
+AS
+    SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](F.LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}Folders]  F INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
+    WHERE  F.PortalID = @PortalID
+    AND 
+        (CASE 
+        WHEN @SinceDate IS NULL THEN 0
+        WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
+        ELSE ISNULL(F.LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+    ORDER BY F.PortalID, F.FolderPath
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+    @PortalID    int,
+    @SinceDate    datetime=NULL
+AS
+    SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}FolderMappings]
+    WHERE  PortalID = @PortalID
+    AND 
+        (CASE 
+        WHEN @SinceDate IS NULL THEN 0
+        WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+        ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+    ORDER BY [Priority]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+    @PortalID    int,
+	@FolderPath nvarchar(300),
+    @SinceDate    datetime=NULL
+AS
+    SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE  PortalID = @PortalID AND (FolderPath =ISNULL(@FolderPath,''))
+    AND 
+        (CASE 
+        WHEN @SinceDate IS NULL THEN 0
+        WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+        ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissions]
+    @PortalID    int,
+    @FolderID Int,
+	@SinceDate    datetime=NULL
+AS
+    SELECT F.*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
+    WHERE F.FolderID = @FolderID AND F.PortalID = @PortalID
+	AND 
+        (CASE 
+        WHEN @SinceDate IS NULL THEN 0
+        WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
+        ELSE F.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+    ORDER BY [FolderID], [FileName]
 GO

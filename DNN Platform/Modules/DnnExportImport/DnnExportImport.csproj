@@ -40,6 +40,9 @@
       <HintPath>..\..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharpZipLib">
+      <HintPath>..\..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -72,6 +75,10 @@
     <Compile Include="Components\Controllers\EntitiesController.cs" />
     <Compile Include="Components\Controllers\ExportController.cs" />
     <Compile Include="Components\Controllers\ImportController.cs" />
+    <Compile Include="Components\Dto\Assets\ExportFile.cs" />
+    <Compile Include="Components\Dto\Assets\ExportFolder.cs" />
+    <Compile Include="Components\Dto\Assets\ExportFolderMapping.cs" />
+    <Compile Include="Components\Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
@@ -108,6 +115,7 @@
     <Compile Include="Components\Providers\DataProvider.cs" />
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
+    <Compile Include="Components\Services\AssetsExportService.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
     <Compile Include="Components\Services\Potable2Base.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />
@@ -144,6 +152,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
