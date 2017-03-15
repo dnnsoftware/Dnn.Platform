@@ -213,7 +213,7 @@ namespace DotNetNuke.Entities.Profile
             ProfilePropertyDefinition profileItem = null;
             foreach (ProfilePropertyDefinition profileProperty in InnerList)
             {
-                if (profileProperty.PropertyName == name)
+                if (profileProperty?.PropertyName == name)
                 {
 					//Found Profile property
                     profileItem = profileProperty;

@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -236,12 +237,12 @@ namespace DotNetNuke.Entities.Users
             return portalUserCount;
         }
 
-        private static Dictionary<int, string> GetUserLookupDictionary(int portalId)
+        private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
-            return CBO.GetCachedObject<Dictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
-                                                            DataCache.UserLookupCachePriority), (c) => new Dictionary<int, string>(),true);
+            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
+                                                            DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(),true);
         }
 
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
@@ -1088,7 +1089,10 @@ namespace DotNetNuke.Entities.Users
             if (user!= null)
             {
                 var lookUp = GetUserLookupDictionary(portalId);
-                lookUp[user.UserID] = user.Username;
+                using (lookUp.GetWriteLock())
+                {
+                    lookUp[user.UserID] = user.Username;
+                }
             }
 
             return user;
@@ -1175,7 +1179,12 @@ namespace DotNetNuke.Entities.Users
 
             UserInfo user;
             string userName;
-            if (lookUp.TryGetValue(userId, out userName))
+            bool userFound;
+            using (lookUp.GetReadLock())
+            {
+                userFound = lookUp.TryGetValue(userId, out userName);
+            }
+            if (userFound)
             {
                 user = GetCachedUser(portalId, userName);
             }
@@ -1185,9 +1194,10 @@ namespace DotNetNuke.Entities.Users
                 FixMemberPortalId(user, portalId);
                 if (user != null)
                 {
-
-                    lookUp[userId] = user.Username;
-
+                    using (lookUp.GetWriteLock())
+                    {
+                        lookUp[userId] = user.Username;
+                    }
                 }
             }
             return user;

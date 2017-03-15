@@ -541,7 +541,7 @@ namespace DotNetNuke.Entities.Users
             _IsDirty = false;
             foreach (ProfilePropertyDefinition profProperty in ProfileProperties)
             {
-                profProperty.ClearIsDirty();
+                profProperty?.ClearIsDirty();
             }
         }
 
