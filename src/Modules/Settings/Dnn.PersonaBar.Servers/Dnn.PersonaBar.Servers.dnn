@@ -34,6 +34,21 @@
                         </assembly>
                     </assemblies>
                 </component>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\admin\Dnn.PersonaBar\Modules\Dnn.Servers</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>01.03.00.SqlDataProvider</name>
+                            <version>01.03.00</version>
+                        </script>
+                        <script type="UnInstall">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>Uninstall.SqlDataProvider</name>
+                            <version>01.00.00</version>
+                        </script>
+                    </scripts>
+                </component>
                 <component type="PersonaBarMenu">
                     <menu>
                         <identifier>Dnn.Servers</identifier>
