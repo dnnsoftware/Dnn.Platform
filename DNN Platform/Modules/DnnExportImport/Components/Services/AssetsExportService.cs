@@ -60,7 +60,6 @@ namespace Dnn.ExportImport.Components.Services
             //Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
             folderManager.Synchronize(portalId);
-            ProgressPercentage = 5;
             //Create Zip File to hold files
             var portalAssetsStream =
                 new ZipOutputStream(File.Create(string.Format(_assetsFolder, exportJob.ExportFile, "Portal")));
@@ -68,13 +67,14 @@ namespace Dnn.ExportImport.Components.Services
                 new ZipOutputStream(File.Create(string.Format(_assetsFolder, exportJob.ExportFile, "Users")));
             portalAssetsStream.SetLevel(6);
             usersAssetsStream.SetLevel(6);
+            ProgressPercentage = 20;
             try
             {
                 var folders =
                     CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                         .GetFolders(portalId, sinceDate)).ToList();
                 var totalFolders = folders.Any() ? folders.Count : 0;
-                var progressStep = totalFolders/95;
+                var progressStep = totalFolders/80;
 
                 foreach (var folder in folders)
                 {
@@ -129,10 +129,11 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString());
                 Result.AddSummary("Exported Files", totalFilesExported.ToString());
 
-                var folderMappings =
-                    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
-                        .GetFolderMappings(portalId, sinceDate)).ToList();
-                Repository.CreateItems(folderMappings, null);
+                //TODO: Check if we need this step or not.
+                //var folderMappings =
+                //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
+                //        .GetFolderMappings(portalId, sinceDate)).ToList();
+                //Repository.CreateItems(folderMappings, null);
 
                 //Finish and Close Zip file
                 portalAssetsStream.Finish();
@@ -158,6 +159,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
         {
+            var totalFolderImported = 0;
+            var totalFolderPermissionsImported = 0;
+            var totalFilesImported = 0;
+            ProgressPercentage = 0;
+
             var portalId = importJob.PortalId;
             //Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
@@ -166,72 +172,83 @@ namespace Dnn.ExportImport.Components.Services
             var portalAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Portal");
             var usersAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Users");
             var userFolderPath = string.Format(_usersAssetsTempFolder, portal.HomeDirectoryMapPath);
+
             try
             {
                 if (!Directory.Exists(userFolderPath))
                     Directory.CreateDirectory(userFolderPath);
                 UnzipResources(portal.HomeDirectoryMapPath, portalAssetsFile);
                 UnzipResources(userFolderPath, usersAssetsFile);
+                ProgressPercentage = 20;
 
                 var localFolders =
                     CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, null)).ToList();
-                var exportedFolders = Repository.GetAllItems<ExportFolder>(x => x.FolderPath).ToList();
+                var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.FolderPath).ToList();
+                var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
+                var progressStep = totalFolders / 80;
 
-                foreach (var exportFolder in exportedFolders)
+                foreach (var sourceFolder in sourceFolders)
                 {
                     using (var db = DataContext.Instance())
                     {
                         /** PROCESS FOLDERS **/
                         //Create new or update existing folder
-                        if (ProcessFolder(importJob, exporteDto, db, exportFolder, localFolders))
+                        if (ProcessFolder(importJob, exporteDto, db, sourceFolder, localFolders))
                         {
-                            Repository.UpdateItem(exportFolder);
+                            totalFolderImported++;
+                            Repository.UpdateItem(sourceFolder);
                             //SyncUserFolder(importJob, userFolderPath, exportFolder);
 
-                            var exportFolderPermissions =
-                                Repository.GetRelatedItems<ExportFolderPermission>(exportFolder.Id).ToList();
+                            var sourceFolderPermissions =
+                                Repository.GetRelatedItems<ExportFolderPermission>(sourceFolder.Id).ToList();
                             //Replace folderId for each permission with new one.
-                            exportFolderPermissions.ForEach(x =>
+                            sourceFolderPermissions.ForEach(x =>
                             {
-                                x.FolderId = Convert.ToInt32(exportFolder.LocalId);
-                                x.FolderPath = exportFolder.FolderPath;
+                                x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
+                                x.FolderPath = sourceFolder.FolderPath;
                             });
 
                             /** PROCESS FOLDER PERMISSIONS **/
                             //File local files in the system related to the folder path.
                             var localPermissions =
                                 CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                    .GetFolderPermissionsByPath(portalId, exportFolder.FolderPath, null));
+                                    .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, null));
 
-                            foreach (var folderPermission in exportFolderPermissions)
+                            foreach (var folderPermission in sourceFolderPermissions)
                             {
                                 ProcessFolderPermission(importJob, exporteDto, db, folderPermission, localPermissions);
                                 Repository.UpdateItem(folderPermission);
                             }
+                            totalFolderPermissionsImported += sourceFolderPermissions.Count;
 
                             /** PROCESS FILES **/
-                            var exportFiles =
-                                Repository.GetRelatedItems<ExportFile>(exportFolder.Id).ToList();
+                            var sourceFiles =
+                                Repository.GetRelatedItems<ExportFile>(sourceFolder.Id).ToList();
                             //Replace folderId for each file with new one.
-                            exportFiles.ForEach(x =>
+                            sourceFiles.ForEach(x =>
                             {
-                                x.FolderId = Convert.ToInt32(exportFolder.LocalId);
-                                x.Folder = exportFolder.FolderPath;
+                                x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
+                                x.Folder = sourceFolder.FolderPath;
                             });
 
                             //File local files in the system related to the folder
                             var localFiles =
                                 CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                    .GetFiles(portalId, exportFolder.FolderId, null));
+                                    .GetFiles(portalId, sourceFolder.FolderId, null));
 
-                            foreach (var file in exportFiles)
+                            foreach (var file in sourceFiles)
                             {
                                 ProcessFiles(importJob, exporteDto, db, file, localFiles);
                                 Repository.UpdateItem(file);
                             }
+                            totalFilesImported += sourceFiles.Count;
                         }
                     }
+                    ProgressPercentage += progressStep;
                 }
+                Result.AddSummary("Imported Folders", totalFolderImported.ToString());
+                Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
+                Result.AddSummary("Imported Files", totalFilesImported.ToString());
             }
             finally
             {
