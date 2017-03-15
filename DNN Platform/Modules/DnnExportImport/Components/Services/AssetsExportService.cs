@@ -21,15 +21,15 @@ namespace Dnn.ExportImport.Components.Services
 {
     public class AssetsExportService : Potable2Base
     {
-        private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private const string DefaultUsersFoldersPath = "Users";
 
-        private static readonly string AssetsFolder;
+        private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        static AssetsExportService()
-        {
-            AssetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}{"_Assets.zip"}";
-        }
+        private readonly string _assetsFolder =
+            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_{{1}}.resources";
 
+        private readonly string _usersAssetsTempFolder = $"{{0}}TempUsers\\";
         private int _progressPercentage;
 
         public override string Category => "ASSETS";
@@ -61,10 +61,13 @@ namespace Dnn.ExportImport.Components.Services
             var folderManager = FolderManager.Instance;
             folderManager.Synchronize(portalId);
             ProgressPercentage = 5;
-            var filename = string.Format(AssetsFolder, exportJob.ExportFile);
             //Create Zip File to hold files
-            var assetsStream = new ZipOutputStream(File.Create(filename));
-            assetsStream.SetLevel(6);
+            var portalAssetsStream =
+                new ZipOutputStream(File.Create(string.Format(_assetsFolder, exportJob.ExportFile, "Portal")));
+            var usersAssetsStream =
+                new ZipOutputStream(File.Create(string.Format(_assetsFolder, exportJob.ExportFile, "Users")));
+            portalAssetsStream.SetLevel(6);
+            usersAssetsStream.SetLevel(6);
             try
             {
                 var folders =
@@ -75,6 +78,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 foreach (var folder in folders)
                 {
+                    var isUserFolder = false;
                     var permissions =
                         CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
                             .GetFolderPermissionsByPath(portalId, folder.FolderPath, sinceDate));
@@ -85,6 +89,7 @@ namespace Dnn.ExportImport.Components.Services
                     int? userId;
                     if (IsUserFolder(folder.FolderPath, out userId))
                     {
+                        isUserFolder = true;
                         folder.UserId = userId;
                         folder.Username = UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
                     }
@@ -106,8 +111,16 @@ namespace Dnn.ExportImport.Components.Services
                         var filePath = portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file);
                         if (File.Exists(filePath))
                         {
-                            FileSystemUtils.AddToZip(ref assetsStream, filePath, GetActualFileName(file),
-                                folder.FolderPath);
+                            if (isUserFolder)
+                            {
+                                FileSystemUtils.AddToZip(ref usersAssetsStream, filePath, GetActualFileName(file),
+                                    folder.FolderPath);
+                            }
+                            else
+                            {
+                                FileSystemUtils.AddToZip(ref portalAssetsStream, filePath, GetActualFileName(file),
+                                    folder.FolderPath);
+                            }
                         }
                     }
                 }
@@ -122,16 +135,23 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.CreateItems(folderMappings, null);
 
                 //Finish and Close Zip file
-                assetsStream.Finish();
-                assetsStream.Close();
+                portalAssetsStream.Finish();
+                portalAssetsStream.Close();
             }
             finally
             {
-                if (assetsStream != null && !assetsStream.IsFinished)
+                if (portalAssetsStream != null && !portalAssetsStream.IsFinished)
                 {
-                    assetsStream.Finish();
-                    assetsStream.Close();
-                    assetsStream.Dispose();
+                    portalAssetsStream.Finish();
+                    portalAssetsStream.Close();
+                    portalAssetsStream.Dispose();
+                }
+
+                if (usersAssetsStream != null && !usersAssetsStream.IsFinished)
+                {
+                    usersAssetsStream.Finish();
+                    usersAssetsStream.Close();
+                    usersAssetsStream.Dispose();
                 }
             }
         }
@@ -142,63 +162,91 @@ namespace Dnn.ExportImport.Components.Services
             //Sync db and filesystem before exporting so all required files are found
             var folderManager = FolderManager.Instance;
             folderManager.Synchronize(portalId);
-
-            var localFolders = CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, null)).ToList();
-            var exportedFolders = Repository.GetAllItems<ExportFolder>(x=>x.FolderPath).ToList();
-
-            foreach (var exportFolder in exportedFolders)
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var portalAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Portal");
+            var usersAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Users");
+            var userFolderPath = string.Format(_usersAssetsTempFolder, portal.HomeDirectoryMapPath);
+            try
             {
-                using (var db = DataContext.Instance())
+                if (!Directory.Exists(userFolderPath))
+                    Directory.CreateDirectory(userFolderPath);
+                UnzipResources(portal.HomeDirectoryMapPath, portalAssetsFile);
+                UnzipResources(userFolderPath, usersAssetsFile);
+
+                var localFolders =
+                    CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, null)).ToList();
+                var exportedFolders = Repository.GetAllItems<ExportFolder>(x => x.FolderPath).ToList();
+
+                foreach (var exportFolder in exportedFolders)
                 {
-                    /** PROCESS FOLDERS **/
-                    //Create new or update existing folder
-                    ProcessFolder(importJob, exporteDto, db, exportFolder, localFolders);
-                    Repository.UpdateItem(exportFolder);
-
-                    var exportFolderPermissions =
-                        Repository.GetRelatedItems<ExportFolderPermission>(exportFolder.Id).ToList();
-                    //Replace folderId for each permission with new one.
-                    exportFolderPermissions.ForEach(x => { x.FolderId = Convert.ToInt32(exportFolder.LocalId); });
-
-                    /** PROCESS FOLDER PERMISSIONS **/
-                    //File local files in the system related to the folder path.
-                    var localPermissions =
-                        CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                            .GetFolderPermissionsByPath(portalId, exportFolder.FolderPath, null));
-
-                    foreach (var folderPermission in exportFolderPermissions)
+                    using (var db = DataContext.Instance())
                     {
-                        ProcessFolderPermission(importJob, exporteDto, db, folderPermission, localPermissions);
-                        Repository.UpdateItem(folderPermission);
-                    }
+                        /** PROCESS FOLDERS **/
+                        //Create new or update existing folder
+                        if (ProcessFolder(importJob, exporteDto, db, exportFolder, localFolders))
+                        {
+                            Repository.UpdateItem(exportFolder);
+                            //SyncUserFolder(importJob, userFolderPath, exportFolder);
 
-                    /** PROCESS FILES **/
-                    var exportFiles =
-                        Repository.GetRelatedItems<ExportFile>(exportFolder.Id).ToList();
-                    //Replace folderId for each file with new one.
-                    exportFiles.ForEach(x => { x.FolderId = Convert.ToInt32(exportFolder.LocalId); });
+                            var exportFolderPermissions =
+                                Repository.GetRelatedItems<ExportFolderPermission>(exportFolder.Id).ToList();
+                            //Replace folderId for each permission with new one.
+                            exportFolderPermissions.ForEach(x =>
+                            {
+                                x.FolderId = Convert.ToInt32(exportFolder.LocalId);
+                                x.FolderPath = exportFolder.FolderPath;
+                            });
 
-                    //File local files in the system related to the folder
-                    var localFiles =
-                        CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                .GetFiles(portalId, exportFolder.FolderId, null));
+                            /** PROCESS FOLDER PERMISSIONS **/
+                            //File local files in the system related to the folder path.
+                            var localPermissions =
+                                CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
+                                    .GetFolderPermissionsByPath(portalId, exportFolder.FolderPath, null));
 
-                    foreach (var file in exportFiles)
-                    {
-                        ProcessFiles(importJob, exporteDto, db, file, localFiles);
-                        Repository.UpdateItem(file);
+                            foreach (var folderPermission in exportFolderPermissions)
+                            {
+                                ProcessFolderPermission(importJob, exporteDto, db, folderPermission, localPermissions);
+                                Repository.UpdateItem(folderPermission);
+                            }
+
+                            /** PROCESS FILES **/
+                            var exportFiles =
+                                Repository.GetRelatedItems<ExportFile>(exportFolder.Id).ToList();
+                            //Replace folderId for each file with new one.
+                            exportFiles.ForEach(x =>
+                            {
+                                x.FolderId = Convert.ToInt32(exportFolder.LocalId);
+                                x.Folder = exportFolder.FolderPath;
+                            });
+
+                            //File local files in the system related to the folder
+                            var localFiles =
+                                CBO.FillCollection<ExportFile>(DataProvider.Instance()
+                                    .GetFiles(portalId, exportFolder.FolderId, null));
+
+                            foreach (var file in exportFiles)
+                            {
+                                ProcessFiles(importJob, exporteDto, db, file, localFiles);
+                                Repository.UpdateItem(file);
+                            }
+                        }
                     }
                 }
+            }
+            finally
+            {
+                if (Directory.Exists(userFolderPath))
+                    Directory.Delete(userFolderPath, true);
             }
             folderManager.Synchronize(portalId);
         }
 
-        private void ProcessFolder(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
-            ExportFolder folder,IEnumerable<ExportFolder> localFolders)
+        private bool ProcessFolder(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+            ExportFolder folder, IEnumerable<ExportFolder> localFolders)
         {
             var portalId = importJob.PortalId;
 
-            if (folder == null) return;
+            if (folder == null) return false;
             //TODO: First check if the folder is a user folder. If yes, then replace the user ids with the new one in the system.
 
             var existingFolder =
@@ -220,7 +268,8 @@ namespace Dnn.ExportImport.Components.Services
                     //TODO: Log that user was ignored.
                     case CollisionResolution.Duplicate: //Duplicate option will not work for users.
                         //TODO: Log that users was ignored as duplicate not possible for users.
-                        return;
+                        folder.LocalId = 0;
+                        return false;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
                 }
@@ -237,6 +286,10 @@ namespace Dnn.ExportImport.Components.Services
                 repExportFolder.Update(existingFolder);
 
                 folder.FolderId = existingFolder.FolderId;
+                if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
+                {
+                    SyncUserFolder(importJob.PortalId, folder);
+                }
                 //TODO: Is there any real need to update existing folder?
             }
             else
@@ -256,11 +309,42 @@ namespace Dnn.ExportImport.Components.Services
                 folder.CreatedOnDate = DateTime.UtcNow;
                 folder.LastModifiedByUserId = modifiedBy;
                 folder.LastModifiedOnDate = DateTime.UtcNow;
-                repExportFolder.Insert(folder);
+                //ignore folders which start with Users but are not user folders.
+                if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
+                {
+                    repExportFolder.Insert(folder);
+                }
+                //Case when the folder is a user folder.
+                else if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
+                {
+                    var userInfo = UserController.GetUserByName(portalId, folder.Username);
+                    if (userInfo == null)
+                    {
+                        folder.LocalId = 0;
+                        return false;
+                    }
+                    var previousFolder = folder;
+                    var newFolder = FolderManager.Instance.GetUserFolder(userInfo);
+                    ExportFolder.MapFromFolderInfo(newFolder, folder); //Map ExportFolder from new folder. 
+                    folder.Id = previousFolder.Id;
+                    folder.UserId = previousFolder.UserId; //This is still the old user id.
+                    folder.Username = previousFolder.Username; //This is still the old username.
+                    folder.LastModifiedByUserName = previousFolder.LastModifiedByUserName;
+                    folder.CreatedByUserName = previousFolder.CreatedByUserName;
+                    folder.LocalId = folder.FolderId;
+                    SyncUserFolder(importJob.PortalId, folder);
+                    return true;
+                }
+                else
+                {
+                    folder.LocalId = 0;
+                    return false;
+                }
                 //Keep the parent Id.
                 folder.ParentId = previousParent;
             }
             folder.LocalId = folder.FolderId;
+            return true;
         }
 
         private void ProcessFolderPermission(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
@@ -330,7 +414,7 @@ namespace Dnn.ExportImport.Components.Services
                         folderPermission.UserId =
                             UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
                     }
-                    if (folderPermission.RoleId != null && folderPermission.RoleId>=0)
+                    if (folderPermission.RoleId != null && folderPermission.RoleId >= 0)
                     {
                         folderPermission.RoleId =
                             RoleController.Instance.GetRoleByName(portalId, folderPermission.RoleName)?.RoleID;
@@ -347,7 +431,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private void ProcessFiles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
-           ExportFile file, IEnumerable<ExportFile> localFiles)
+            ExportFile file, IEnumerable<ExportFile> localFiles)
         {
             var portalId = importJob.PortalId;
 
@@ -407,6 +491,41 @@ namespace Dnn.ExportImport.Components.Services
             file.LocalId = file.FileId;
         }
 
+        private void SyncUserFolder(int portalId, ExportFolder folder)
+        {
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var tempUsersFolderPath =
+                $"{string.Format(_usersAssetsTempFolder, portal.HomeDirectoryMapPath)}{folder.FolderPath}";
+            var newUsersFolderPath = $"{portal.HomeDirectoryMapPath}{folder.FolderPath}";
+            if (!Directory.Exists(tempUsersFolderPath))
+                return;
+            if (!Directory.Exists(newUsersFolderPath))
+                Directory.CreateDirectory(newUsersFolderPath);
+            var files = Directory.GetFiles(tempUsersFolderPath, "*.*", SearchOption.AllDirectories);
+            var dirInfo = new DirectoryInfo(newUsersFolderPath);
+            foreach (
+                var mFile in
+                    files.Select(file => new System.IO.FileInfo(file)))
+            {
+                if (File.Exists(dirInfo + "\\" + mFile.Name))
+                    File.Delete(dirInfo + "\\" + mFile.Name);
+                mFile.MoveTo(dirInfo + "\\" + mFile.Name);
+            }
+        }
+
+        private void UnzipResources(string portalPath, string resoureceFile)
+        {
+            try
+            {
+                FileSystemUtils.UnzipResources(
+                    new ZipInputStream(new FileStream(resoureceFile, FileMode.Open, FileAccess.Read)), portalPath);
+            }
+            catch (Exception exc)
+            {
+                //TODO: Log exception or throw exception?
+                //Logger.Error(exc);
+            }
+        }
 
         private static bool IsUserFolder(string folderPath, out int? userId)
         {

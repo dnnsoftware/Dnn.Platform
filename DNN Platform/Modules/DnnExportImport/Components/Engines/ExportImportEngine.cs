@@ -296,8 +296,8 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     try
                     {
-                        if (!cts.IsCancellationRequested)
-                            cts.Cancel();
+                        //if (!cts.IsCancellationRequested)
+                        //    cts.Cancel();
                     }
                     catch (Exception ex)
                     {

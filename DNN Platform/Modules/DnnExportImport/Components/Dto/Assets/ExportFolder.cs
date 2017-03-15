@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.FileSystem;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Assets
@@ -69,5 +71,27 @@ namespace Dnn.ExportImport.Components.Dto.Assets
         [JsonIgnore]
         [IgnoreColumn]
         public string Username { get; set; }
+
+        public static void MapFromFolderInfo(IFolderInfo folderInfo, ExportFolder folder)
+        {
+            folder.PortalId = folderInfo.PortalID;
+            folder.FolderPath = folderInfo.FolderPath;
+            folder.FolderId = folderInfo.FolderID;
+            folder.ParentId = folderInfo.ParentID;
+            folder.CreatedByUserId = folderInfo.CreatedByUserID;
+            folder.CreatedOnDate = folderInfo.CreatedOnDate;
+            folder.FolderMappingId = folderInfo.FolderMappingID;
+            folder.IsCached = folderInfo.IsCached;
+            folder.IsVersioned = folderInfo.IsVersioned;
+            folder.IsProtected = folderInfo.IsProtected;
+            folder.MappedPath = folderInfo.MappedPath;
+            folder.StorageLocation = folderInfo.StorageLocation;
+            folder.LastUpdated = folderInfo.LastUpdated;
+            folder.UniqueId = folderInfo.UniqueId;
+            folder.VersionGuid = folderInfo.VersionGuid;
+            folder.WorkflowId = folderInfo.WorkflowID;
+            folder.LastModifiedByUserId = folderInfo.LastModifiedByUserID;
+            folder.LastModifiedOnDate = folderInfo.LastModifiedOnDate;
+        }
     }
 }
