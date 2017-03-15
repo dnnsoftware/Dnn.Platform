@@ -29,44 +29,11 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
     public class DataService
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
-        private static string moduleQualifier = "Dashboard_";
+        private static string moduleQualifier = "PersonaBar_";
 
         private static string GetFullyQualifiedName(string name)
         {
             return String.Concat(moduleQualifier, name);
-        }
-
-        public static int AddDashboardControl(int packageId, string dashboardControlKey, bool isEnabled, string dashboardControlSrc, string dashboardControlLocalResources, string controllerClass,
-                                              int viewOrder)
-        {
-            return Provider.ExecuteScalar<int>(GetFullyQualifiedName("AddControl"),
-                                               packageId,
-                                               dashboardControlKey,
-                                               isEnabled,
-                                               dashboardControlSrc,
-                                               dashboardControlLocalResources,
-                                               controllerClass,
-                                               viewOrder);
-        }
-
-        public static void DeleteDashboardControl(int dashboardControlId)
-        {
-            Provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteControl"), dashboardControlId);
-        }
-
-        public static IDataReader GetDashboardControlByKey(string dashboardControlKey)
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetDashboardControlByKey"), dashboardControlKey);
-        }
-
-        public static IDataReader GetDashboardControlByPackageId(int packageId)
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetDashboardControlByPackageId"), packageId);
-        }
-
-        public static IDataReader GetDashboardControls(bool isEnabled)
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetControls"), isEnabled);
         }
 
         public static IDataReader GetDbInfo()
@@ -82,30 +49,6 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
         public static IDataReader GetDbBackups()
         {
             return Provider.ExecuteReader(GetFullyQualifiedName("GetDbBackups"));
-        }
-
-        public static IDataReader GetPortals()
-        {
-            string cultureCode = Localization.SystemLocale;
-            return Provider.GetPortals(cultureCode);
-        }
-
-        public static IDataReader GetServerErrors()
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetServerErrors"));
-        }
-
-        public static void UpdateDashboardControl(int dashboardControlId, string dashboardControlKey, bool isEnabled, string dashboardControlSrc, string dashboardControlLocalResources,
-                                                  string controllerClass, int viewOrder)
-        {
-            Provider.ExecuteNonQuery(GetFullyQualifiedName("UpdateControl"),
-                                     dashboardControlId,
-                                     dashboardControlKey,
-                                     isEnabled,
-                                     dashboardControlSrc,
-                                     dashboardControlLocalResources,
-                                     controllerClass,
-                                     viewOrder);
         }
     }
 }
