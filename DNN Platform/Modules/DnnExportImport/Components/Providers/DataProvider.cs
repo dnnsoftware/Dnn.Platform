@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Permissions;
 using PlatformDataProvider = DotNetNuke.Data.DataProvider;
@@ -95,6 +96,18 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return PlatformDataProvider.Instance()
                 .ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
+        }
+
+        public IDataReader GetJobChekpoints(int jobId)
+        {
+            return PlatformDataProvider.Instance().ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
+        }
+
+        public int UpsertJobChekpoint(ExportImportChekpoint checkpoint)
+        {
+            return PlatformDataProvider.Instance().ExecuteScalar<int>(
+                "ExportImportCheckpoints_Upsert", checkpoint.JobId, 
+                checkpoint.Category, checkpoint.Stage, checkpoint.StageData);
         }
 
         public IDataReader GetAllScopeTypes()

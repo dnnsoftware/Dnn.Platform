@@ -21,11 +21,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Caching;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
@@ -45,6 +47,7 @@ namespace Dnn.ExportImport.Components.Engines
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
+        private const double MaxTimeToRunJob = 90; // in seconds
 
         private static readonly string DbFolder;
 
@@ -56,6 +59,8 @@ namespace Dnn.ExportImport.Components.Engines
                 Directory.CreateDirectory(DbFolder);
             }
         }
+
+        private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
 
         public int ProgressPercentage { get; private set; } = 1;
 
@@ -86,14 +91,18 @@ namespace Dnn.ExportImport.Components.Engines
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             var finfo = new FileInfo(dbName);
 
-            //Delete so we start a fresh database
-            if (finfo.Exists) finfo.Delete();
+            var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
+
+            //Delete so we start a fresh export database; only if there is no previous checkpoint exists
+            if (checkpoints.Count == 0 && finfo.Exists) finfo.Delete();
 
             using (var ctx = new ExportImportRepository(dbName))
             using (var cts = new CancellationTokenSource())
             {
                 result.AddSummary("Exporting Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
+                result.Status = JobStatus.InProgress;
+
                 // there must be one parent implementor at least for this to work
                 var implementors = GetPortableImplementors().ToList();
                 var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
@@ -133,6 +142,15 @@ namespace Dnn.ExportImport.Components.Engines
                             service.Result = result;
                             service.Repository = ctx;
                             service.CancellationToken = cts.Token;
+                            service.CheckPointStageCallback = CheckpointCallback;
+                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
+                                     ?? new ExportImportChekpoint
+                                     {
+                                         JobId = exportJob.JobId,
+                                         Category = service.Category
+                                     };
+                            CheckpointCallback(service);
+
                             service.ExportData(exportJob, exportDto);
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
@@ -214,12 +232,15 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 else
                 {
-                    // there must be one parent implementor at least for this to work
                     var implementors = GetPortableImplementors().ToList();
                     var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                    result.Status = JobStatus.InProgress;
+
+                    // there must be one parent implementor at least for this to work
                     implementors = implementors.Except(parentServices).ToList();
                     var nextLevelServices = new List<IPortable2>();
                     var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
+                    var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
                     var firstLoop = true;
                     AddTokenToCache(Util.GetExpImpJobCacheKey(importJob), cts);
 
@@ -253,9 +274,17 @@ namespace Dnn.ExportImport.Components.Engines
                                 service.Result = result;
                                 service.Repository = ctx;
                                 service.CancellationToken = cts.Token;
+                                service.CheckPointStageCallback = CheckpointCallback;
+                                service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
+                                         ?? new ExportImportChekpoint
+                                         {
+                                             JobId = importJob.JobId,
+                                             Category = service.Category
+                                         };
+                                CheckpointCallback(service);
+
                                 service.ImportData(importJob, exportedDto);
                                 scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
-                                result.Status = JobStatus.InProgress;
                             }
                         }
 
@@ -282,6 +311,17 @@ namespace Dnn.ExportImport.Components.Engines
 
             importJob.JobStatus = result.Status;
             return result;
+        }
+
+        /// <summary>
+        /// Callback function to provide a checkpoint mechanism for an <see cref="IPortable2"/> implementation.
+        /// </summary>
+        /// <param name="service">The <see cref="IPortable2"/> implementation</param>
+        /// <returns>Treu to stop further <see cref="IPortable2"/> processing; false otherwise</returns>
+        private bool CheckpointCallback(IPortable2 service)
+        {
+            EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
+            return _stopWatch.Elapsed.TotalSeconds > MaxTimeToRunJob;
         }
 
         private static void AddTokenToCache(string jobCacheKey, CancellationTokenSource cts)

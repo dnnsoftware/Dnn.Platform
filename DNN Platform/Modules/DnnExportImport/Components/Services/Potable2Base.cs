@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Threading;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
@@ -32,13 +33,14 @@ namespace Dnn.ExportImport.Components.Services
         public ExportImportResult Result { get; set; }
         public IExportImportRepository Repository { get; set; }
         public CancellationToken CancellationToken { get; set; }
+        public ExportImportChekpoint CheckPoint { get; set; }
+        public Func<IPortable2, bool> CheckPointStageCallback { get; set; }
 
         // The following properties and methods must be overriden in descendant classes
 
         public abstract string Category { get; }
         public abstract string ParentCategory { get; }
         public abstract uint Priority { get; }
-
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
         public abstract void ImportData(ExportImportJob importJob, ExportDto exportDto);
     }

@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
@@ -66,6 +68,23 @@ namespace Dnn.ExportImport.Components.Interfaces
         /// stop any work they do and return to the caller as soon as possible.</para>
         /// </summary>
         CancellationToken CancellationToken { get; set; }
+
+        /// <summary>
+        /// A data structure representing a checkpoint for the export/import task. This can be used to tell the
+        /// implementor where to resume it's operation if the job was interrupted previously.
+        /// </summary>
+        /// <remarks>It is up to each IPortable2 implementor to track its own stages and status values to
+        /// properly export/import all of its items in/when and interruption occurs.</remarks>
+        ExportImportChekpoint CheckPoint { get; set; }
+
+        /// <summary>
+        /// Callback function to provide a checkpoint mechanism for an <see cref="IPortable2"/> implementation.
+        /// The actual method shoul persist the reported checkpoint in the engine so if the process is interrupted,
+        /// it can be resumed. If the reponse to calling this function was false, then the task should stop
+        /// processing and return control immediately to the caller.
+        /// </summary>
+        /// <returns>True if the implementation to abort progress; false to continue.</returns>
+        Func<IPortable2, bool> CheckPointStageCallback { get; set; }
 
         /// <summary>
         ///  Performs export operation of the object.

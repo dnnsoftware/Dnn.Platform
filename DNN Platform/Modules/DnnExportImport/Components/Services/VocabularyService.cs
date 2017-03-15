@@ -57,56 +57,112 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
+            if (CheckPoint.Stage > 3) return;
 
-            if (CancellationToken.IsCancellationRequested) return;
-            var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-            Repository.CreateItems(scopeTypes, null);
-            //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-            ProgressPercentage += 25;
+            if (CheckPoint.Stage == 0)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
+                Repository.CreateItems(scopeTypes, null);
+                //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                ProgressPercentage = 25;
 
-            if (CancellationToken.IsCancellationRequested) return;
-            var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-            Repository.CreateItems(vocabularyTypes, null);
-            //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-            ProgressPercentage += 25;
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
 
-            if (CancellationToken.IsCancellationRequested) return;
-            var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
-            Repository.CreateItems(taxonomyTerms, null);
-            Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
-            ProgressPercentage += 25;
+            if (CheckPoint.Stage == 1)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                Repository.CreateItems(vocabularyTypes, null);
+                //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                ProgressPercentage = 50;
 
-            if (CancellationToken.IsCancellationRequested) return;
-            var taxonomyVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
-            Repository.CreateItems(taxonomyVocabularies, null);
-            Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
-            ProgressPercentage += 25;
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
+
+            if (CheckPoint.Stage == 2)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
+                Repository.CreateItems(taxonomyTerms, null);
+                Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
+                ProgressPercentage = 75;
+
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
+
+            if (CheckPoint.Stage == 3)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var taxonomyVocabularies =
+                    CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
+                Repository.CreateItems(taxonomyVocabularies, null);
+                Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
+                ProgressPercentage = 100;
+
+                CheckPoint.Stage++;
+                CheckPointStageCallback(this);
+            }
         }
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
 
+            if (CheckPoint.Stage > 3) return;
+
             if (CancellationToken.IsCancellationRequested) return;
             var otherScopeTypes = Repository.GetAllItems<TaxonomyScopeType>().ToList();
-            //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-            ProgressPercentage += 10;
 
-            //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
-            //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
-            ProgressPercentage += 10;
+            if (CheckPoint.Stage == 0)
+            {
+                //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
+                ProgressPercentage = 10;
+
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
+
+            if (CheckPoint.Stage == 1)
+            {
+                //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
+                //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
+                ProgressPercentage = 20;
+
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
 
             if (CancellationToken.IsCancellationRequested) return;
             var otherVocabularies = Repository.GetAllItems<TaxonomyVocabulary>().ToList();
-            ProcessVocabularies(importJob, exportDto, otherScopeTypes, otherVocabularies);
-            Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
-            ProgressPercentage += 40;
 
-            if (CancellationToken.IsCancellationRequested) return;
-            var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
-            ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
-            Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
-            ProgressPercentage += 40;
+            if (CheckPoint.Stage == 2)
+            {
+                ProcessVocabularies(importJob, exportDto, otherScopeTypes, otherVocabularies);
+                Repository.UpdateItems(otherVocabularies);
+                Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
+                ProgressPercentage = 60;
+
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
+
+            if (CheckPoint.Stage == 3)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
+                ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
+                Repository.UpdateItems(otherTaxonomyTerms);
+                Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
+                ProgressPercentage = 100;
+
+                CheckPoint.Stage++;
+                CheckPointStageCallback(this);
+            }
         }
 
         private void ProcessVocabularies(ExportImportJob importJob, ExportDto exportDto,

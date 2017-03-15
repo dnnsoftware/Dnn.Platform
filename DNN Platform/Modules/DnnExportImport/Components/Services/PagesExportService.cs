@@ -74,8 +74,8 @@ namespace Dnn.ExportImport.Components.Services
             var processed = 0;
             var portalId = exportJob.PortalId;
             var tabController = TabController.Instance;
-            var allTabs = tabController.GetTabsByPortal(portalId).AsList().AsEnumerable();
-            allTabs = allTabs.Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem);
+            var allTabs = tabController.GetTabsByPortal(portalId).AsList()
+                .AsEnumerable().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem);
 
             foreach (var page in selectedPages.OrderBy(pg => pg.TabId))
             {

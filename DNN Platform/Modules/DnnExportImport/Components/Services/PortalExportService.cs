@@ -57,33 +57,51 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
             ProgressPercentage = 0;
-            var portalSettings =
-                CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
-                    .GetPortalSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
-            Repository.CreateItems(portalSettings, null);
-            Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
-            ProgressPercentage += 50;
-
+            if (CheckPoint.Stage > 1) return;
             if (CancellationToken.IsCancellationRequested) return;
-            var portalLanguages =
-                CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
+
+            if (CheckPoint.Stage == 0)
+            {
+                var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
+                    .GetPortalSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                Repository.CreateItems(portalSettings, null);
+                Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
+                ProgressPercentage = 50;
+
+                CheckPoint.Stage++;
+                if (CheckPointStageCallback(this)) return;
+            }
+
+            if (CheckPoint.Stage == 1)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                     .GetPortalLanguages(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
-            Repository.CreateItems(portalLanguages, null);
-            Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
-            ProgressPercentage += 50;
+                Repository.CreateItems(portalLanguages, null);
+                Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
+                ProgressPercentage = 100;
+
+                CheckPoint.Stage++;
+                CheckPointStageCallback(this);
+            }
 
             /*
-            if (CancellationToken.IsCancellationRequested) return;
-            var portalLocalization =
-               CBO.FillCollection<ExportPortalLocalization>(
-                   DataProvider.Instance()
-                       .GetPortalLocalizations(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
-            Repository.CreateItems(portalLocalization, null);
-            Result.AddSummary("Exported Portal Localizations", portalLocalization.Count.ToString());
-            ProgressPercentage += 40;
-            */
+            if (CheckPoint.Stage == 2)
+            {
+                if (CancellationToken.IsCancellationRequested) return;
+                var portalLocalization =
+                   CBO.FillCollection<ExportPortalLocalization>(
+                       DataProvider.Instance()
+                           .GetPortalLocalizations(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                Repository.CreateItems(portalLocalization, null);
+                Result.AddSummary("Exported Portal Localizations", portalLocalization.Count.ToString());
+                ProgressPercentage += 40;
+
+                CheckPoint.Stage++;
+                CheckPointStageCallback(this);
+            }
+             */
         }
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
@@ -122,9 +140,9 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var exportPortalSetting in portalSettings)
                 {
                     if (CancellationToken.IsCancellationRequested) return;
-                    var createdBy = Common.Util.GetUserIdOrName(importJob, exportPortalSetting.CreatedByUserId,
+                    var createdBy = Util.GetUserIdOrName(importJob, exportPortalSetting.CreatedByUserId,
                         exportPortalSetting.CreatedByUserName);
-                    var modifiedBy = Common.Util.GetUserIdOrName(importJob, exportPortalSetting.LastModifiedByUserId,
+                    var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalSetting.LastModifiedByUserId,
                         exportPortalSetting.LastModifiedByUserName);
                     var existingPortalSetting =
                         localPortalSettings.FirstOrDefault(
@@ -187,9 +205,9 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var exportPortalLanguage in portalLanguages)
                 {
                     if (CancellationToken.IsCancellationRequested) return;
-                    var createdBy = Common.Util.GetUserIdOrName(importJob, exportPortalLanguage.CreatedByUserId,
+                    var createdBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.CreatedByUserId,
                         exportPortalLanguage.CreatedByUserName);
-                    var modifiedBy = Common.Util.GetUserIdOrName(importJob, exportPortalLanguage.LastModifiedByUserId,
+                    var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.LastModifiedByUserId,
                         exportPortalLanguage.LastModifiedByUserName);
                     var localLanguageId =
                         localLanguages.FirstOrDefault(x => x.Code == exportPortalLanguage.CultureCode)?.LanguageId;

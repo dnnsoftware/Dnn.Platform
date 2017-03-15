@@ -58,6 +58,7 @@ BEGIN
 END
 GO
 
+-- Jobs
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobs](
 		[JobId]              int IDENTITY(1,1) NOT NULL,
@@ -96,6 +97,34 @@ IF NOT EXISTS ( SELECT 1 FROM sys.indexes
 		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOnDate])
 GO
 
+-- Job Checkpoints
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints](
+		[CheckpointId]       int IDENTITY(1,1) NOT NULL,
+		[JobId]              int NOT NULL,
+		[Category]           nvarchar(50) NOT NULL,
+		[Stage]              int NOT NULL,
+		[StageData]          nvarchar(max),
+
+		CONSTRAINT [PK_{objectQualifier}ExportImportCheckpoints] PRIMARY KEY ([CheckpointId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'IX_{objectQualifier}ExportImportCheckpoints_JobId')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportCheckpoints_JobId]
+		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([JobId])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'IX_{objectQualifier}ExportImportCheckpoints_Category')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportCheckpoints_Category]
+		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([Category])
+GO
+
+-- JobLogs
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
 		[JobLogId]       int IDENTITY(1,1) NOT NULL,
@@ -117,6 +146,8 @@ IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
 		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
 		ON DELETE CASCADE
 GO
+
+-- STORED PROCEDURES
 
 -- Collect and insert Export/Import logs in one batch
 -- see post: Send (Pass) DataTable as parameter to Stored Procedure in C# and VB.Net
@@ -316,6 +347,46 @@ BEGIN
 		JobId = @JobId
 	  AND
 		IsSummary = 1
+END
+GO
+
+-- checkpoints procs
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+	@JobId		int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportCheckpoints]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+	@JobId      int,
+	@Category   nvarchar(50),
+	@Stage      int,
+	@StageData  nvarchar(max)
+AS
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
+	 USING (SELECT @JobId, @Category) AS source (JobId, Category)
+		ON (target.JobId = source.JobId AND target.Category = source.Category)
+	 WHEN MATCHED THEN
+		UPDATE SET [Stage] = @Stage, [StageData] = @StageData
+	 WHEN NOT MATCHED THEN 
+		INSERT ([JobId], [Category], [Stage], [StageData])
+		VALUES (@JobId,  @Category,  @Stage,  @StageData );
 END
 GO
 
@@ -847,7 +918,7 @@ AS
         ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissions]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissions]
 GO
 

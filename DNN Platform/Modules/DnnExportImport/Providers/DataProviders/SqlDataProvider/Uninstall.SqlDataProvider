@@ -5,6 +5,12 @@ DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] 
 DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT'
 GO
 
+IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
+			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule
+	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 GO
@@ -33,18 +39,24 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]', '
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+GO
+
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NOT NULL
 	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs]
 GO
 
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT NULL
-	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobs]
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints]
 GO
 
-IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
-			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
-	DELETE FROM {databaseOwner}{objectQualifier}Schedule
-	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT NULL
+	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportJobs]
 GO
 
 -- Users Import/Export

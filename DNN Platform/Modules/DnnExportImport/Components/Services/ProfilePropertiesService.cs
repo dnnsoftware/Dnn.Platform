@@ -52,8 +52,11 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (CancellationToken.IsCancellationRequested) return;
-            //TODO: Verify that profile properties stores created on and modified on info in UTC or local
             ProgressPercentage = 0;
+            if (CheckPoint.Stage > 0) return;
+            if (CancellationToken.IsCancellationRequested) return;
+
+            //TODO: Verify that profile properties stores created on and modified on info in UTC or local
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
@@ -65,12 +68,15 @@ namespace Dnn.ExportImport.Components.Services
             Repository.CreateItems(profileProperties, null);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             ProgressPercentage = 100;
+            CheckPoint.Stage++;
+            CheckPointStageCallback(this);
         }
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
             ProgressPercentage = 0;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
+            if (CheckPoint.Stage > 0) return;
 
             foreach (var profileProperty in profileProperties)
             {
@@ -79,7 +85,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                         .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
-                    var modifiedById = Common.Util.GetUserIdOrName(importJob, profileProperty.LastModifiedByUserId,
+                    var modifiedById = Util.GetUserIdOrName(importJob, profileProperty.LastModifiedByUserId,
                         profileProperty.LastModifiedByUserName);
 
                     if (existingProfileProperty != null)
@@ -102,14 +108,18 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     else
                     {
-                        var createdById = Common.Util.GetUserIdOrName(importJob, profileProperty.CreatedByUserId,
+                        var createdById = Util.GetUserIdOrName(importJob, profileProperty.CreatedByUserId,
                             profileProperty.CreatedByUserName);
 
                         ProcessCreateProfileProperty(importJob, db, profileProperty, createdById, modifiedById);
                     }
                 }
             }
+
             Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
+
+            CheckPoint.Stage++;
+            CheckPointStageCallback(this);
         }
 
         private void ProcessCreateProfileProperty(ExportImportJob importJob, IDataContext db,

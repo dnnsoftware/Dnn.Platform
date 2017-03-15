@@ -24,13 +24,13 @@ namespace Dnn.ExportImport.Components.Common
     public enum JobType
     {
         Export = 0, // never change these numbers
-        Import = 1
+        Import
     }
 
     public enum JobStatus
     {
         Submitted = 0, // never change these numbers
-        InProgress = 1,
+        InProgress,
         DoneSuccess,
         DoneFailure,
         Cancelled
