@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Controllers
             if (job == null || job.PortalId != portalId)
                 return false;
 
-            var key = Util.GetJobExpImpCacheKey(job);
+            var key = Util.GetExpImpJobCacheKey(job);
             CachingProvider.Instance().Remove(key);
             return true;
         }

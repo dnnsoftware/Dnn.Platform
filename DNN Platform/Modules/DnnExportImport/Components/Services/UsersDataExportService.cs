@@ -122,7 +122,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var userRole in userRoles)
             {
                 if (CancellationToken.IsCancellationRequested) return;
-                var roleId = Common.Util.GetRoleId(importJob.PortalId, userRole.RoleName);
+                var roleId = Util.GetRoleId(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
                 var existingUserRole = RoleController.Instance.GetUserRole(importJob.PortalId, userId, roleId.Value);
@@ -145,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
 
-                var modifiedById = Common.Util.GetUserIdOrName(importJob, userRole.LastModifiedByUserId,
+                var modifiedById = Util.GetUserIdOrName(importJob, userRole.LastModifiedByUserId,
                     userRole.LastModifiedByUserName);
 
                 userRole.UserId = userId;
@@ -165,7 +165,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var createdById = Common.Util.GetUserIdOrName(importJob, userRole.CreatedByUserId,
+                    var createdById = Util.GetUserIdOrName(importJob, userRole.CreatedByUserId,
                         userRole.CreatedByUserName);
                     userRole.UserRoleId = 0;
                     userRole.CreatedByUserId = createdById;
@@ -217,7 +217,7 @@ namespace Dnn.ExportImport.Components.Services
                 else
                 {
                     userProfile.ProfileId = 0;
-                    var profileDefinitionId = Common.Util.GetProfilePropertyId(importJob.PortalId,
+                    var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
                         userProfile.PropertyDefinitionId,
                         userProfile.PropertyName);
                     if (profileDefinitionId == null) continue;
@@ -255,7 +255,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                 }
             }
-            var modifiedById = Common.Util.GetUserIdOrName(importJob, userAuthentication.LastModifiedByUserId,
+            var modifiedById = Util.GetUserIdOrName(importJob, userAuthentication.LastModifiedByUserId,
                 userAuthentication.LastModifiedByUserName);
             userAuthentication.LastModifiedOnDate = DateTime.UtcNow;
             userAuthentication.LastModifiedByUserId = modifiedById;
@@ -269,7 +269,7 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 userAuthentication.UserAuthenticationId = 0;
-                   var createdById = Common.Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
+                   var createdById = Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
                     userAuthentication.CreatedByUserName);
                 userAuthentication.CreatedOnDate = DateTime.UtcNow;
                 userAuthentication.CreatedByUserId = createdById;

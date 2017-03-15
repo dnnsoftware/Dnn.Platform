@@ -1,5 +1,22 @@
 ﻿-- DNN-9447: Import/Export feature
 
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'SITE_EXPORT', N'Site Export Request', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'SITE_EXPORT', NULL, 1, 100, 0, 1, 1, 2, N'', N'')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'SITE_IMPORT', N'Site Import Request', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_IMPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'SITE_IMPORT', NULL, 1, 100, 0, 1, 1, 2, N'', N'')
+GO
+
 IF NOT EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
 				WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
 BEGIN

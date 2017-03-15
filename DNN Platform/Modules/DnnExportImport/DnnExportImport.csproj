@@ -82,6 +82,7 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\Pages\ExportPage.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
     <Compile Include="Components\Services\AssetsExportService.cs" />
+    <Compile Include="Components\Services\PagesExportService.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
     <Compile Include="Components\Services\Potable2Base.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />

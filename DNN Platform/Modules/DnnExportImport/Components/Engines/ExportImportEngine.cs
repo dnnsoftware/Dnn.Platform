@@ -92,7 +92,6 @@ namespace Dnn.ExportImport.Components.Engines
             using (var ctx = new ExportImportRepository(dbName))
             using (var cts = new CancellationTokenSource())
             {
-                AddTokenToCache(exportJob, cts);
                 result.AddSummary("Exporting Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
                 // there must be one parent implementor at least for this to work
@@ -102,6 +101,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var nextLevelServices = new List<IPortable2>();
                 var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
                 var firstLoop = true;
+                AddTokenToCache(Util.GetExpImpJobCacheKey(exportJob), cts);
 
                 do
                 {
@@ -214,7 +214,6 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 else
                 {
-                    AddTokenToCache(importJob, cts);
                     // there must be one parent implementor at least for this to work
                     var implementors = GetPortableImplementors().ToList();
                     var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
@@ -222,6 +221,7 @@ namespace Dnn.ExportImport.Components.Engines
                     var nextLevelServices = new List<IPortable2>();
                     var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
                     var firstLoop = true;
+                    AddTokenToCache(Util.GetExpImpJobCacheKey(importJob), cts);
 
                     do
                     {
@@ -284,20 +284,26 @@ namespace Dnn.ExportImport.Components.Engines
             return result;
         }
 
-        private static void AddTokenToCache(ExportImportJob job, CancellationTokenSource cts)
+        private static void AddTokenToCache(string jobCacheKey, CancellationTokenSource cts)
         {
-            // We add only a simple item to the cache; the hash code and not the whole
-            // object as this will not work with out-of-process cache. The captured cts
+            // We add only a simple item to the cache; just a string and not the token
+            // itself as this might not work with out-of-process cache. The captured cts
             // will be operated upon when the item is removed from the cache.
-            var cacheKey = Util.GetJobExpImpCacheKey(job);
-            CachingProvider.Instance().Insert(cacheKey, cts.GetHashCode(), (DNNCacheDependency)null, 
-                DateTime.Now.AddDays(7), Cache.NoSlidingExpiration, CacheItemPriority.High,
+            // Note: if "clear cache" is called, this will be triggered and job cancelled.
+            CachingProvider.Instance().Insert(jobCacheKey, "ExportImportCT", (DNNCacheDependency)null,
+                Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable,
                 (key, value, reason) =>
                 {
                     try
                     {
-                        //if (!cts.IsCancellationRequested)
-                        //    cts.Cancel();
+                        if (!cts.IsCancellationRequested)
+                        {
+                            if (Logger.IsDebugEnabled)
+                                Logger.Debug("Cancellation token removed from the cache; job will be cancelled.");
+                            //TODO: check why this method gets called from HttpRuntime disposing thread?
+                            //cts.Cancel();
+                            //System.Diagnostics.Trace.WriteLine("Removed cache key: " + key);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -308,8 +314,7 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static void RemoveTokenFromCache(ExportImportJob job)
         {
-            var key = Util.GetJobExpImpCacheKey(job);
-            CachingProvider.Instance().Remove(key);
+            CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
         private static IEnumerable<IPortable2> GetPortableImplementors()
@@ -357,10 +362,11 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.Pages.Length > 0)
                 includedItems.Add(Constants.Category_Pages);
 
-            includedItems.Add(Constants.Category_Portal); // must be included always
+            // must be included always when there is at least one other object to process
+            if (includedItems.Count > 0)
+                includedItems.Add(Constants.Category_Portal);
 
             return includedItems;
         }
-
     }
 }

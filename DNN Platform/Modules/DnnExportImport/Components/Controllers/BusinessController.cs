@@ -44,7 +44,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 switch (version)
                 {
                     case "09.01.00":
-                        AddNewLogTypes();
+                        //AddNewLogTypes(); // moved to SQL migration script
                         break;
                 }
                 return "Success";
@@ -55,6 +55,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
         }
 
+        /*
         private static void AddNewLogTypes()
         {
             var logTypeInfo = new LogTypeInfo
@@ -88,5 +89,6 @@ namespace Dnn.ExportImport.Components.Controllers
             logTypeConf.LogTypeKey = Constants.LogTypeSiteImport;
             LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
         }
+         */
     }
 }

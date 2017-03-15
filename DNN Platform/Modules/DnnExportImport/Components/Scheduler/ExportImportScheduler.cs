@@ -95,10 +95,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         ScheduleHistoryItem.Succeeded = true;
                         var sb = new StringBuilder();
                         var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                        sb.Append(job.JobType == JobType.Export
-                            ? "<br/><b>EXPORT Completed</b>"
-                            : "<br/><b>IMPORT Completed</b>");
-                        sb.Append($"<br/>Status: <b>{jobStatus}</b>");
+                        sb.AppendFormat("<br/><b>{0} {1}</b>", job.JobType == JobType.Export ? "EXPORT" : "IMPORT", jobStatus);
                         if (result.Summary.Count > 0)
                         {
                             sb.Append("<br/><b>Summary:</b><ul>");

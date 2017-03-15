@@ -1,4 +1,11 @@
-﻿IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
+﻿DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT'
+
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_IMPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT'
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 GO
 

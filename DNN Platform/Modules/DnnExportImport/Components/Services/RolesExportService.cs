@@ -201,7 +201,6 @@ namespace Dnn.ExportImport.Components.Services
 
                             RoleController.Instance.UpdateRole(localRoleInfo, other.AutoAssignment);
                             roleItems.Add(new RoleItem(localRoleInfo.RoleID, createdBy, modifiedBy));
-                            //TODO: add Jira for social use of RoleSettings where some data is stored as "groupid:10"
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
                             Result.AddLogEntry("Updated role", other.RoleName);
                             break;

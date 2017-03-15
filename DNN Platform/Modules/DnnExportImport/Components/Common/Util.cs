@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Components.Common
             return (1.0 * bytes / Gb).ToString("F1") + " GB";
         }
 
-        public static string GetJobExpImpCacheKey(ExportImportJob job)
+        public static string GetExpImpJobCacheKey(ExportImportJob job)
         {
             return string.Join(":", "ExpImpKey", job.PortalId.ToString(), job.JobId.ToString());
         }

@@ -99,9 +99,16 @@ namespace Dnn.ExportImport.Components.Dto
     public class PageToExport
     {
         public int TabId { get; set; }
-        public PageToExport[] Children { get; set; }
+        public int ParentTabId { get; set; }
+        public TriCheckedState CheckedState { get; set; }
     }
 
+    public enum TriCheckedState
+    {
+        Partial = -1,
+        UnChecked = 0,
+        Checked = 1,
+    }
     /// <summary>
     /// Specifies what to do when there is a collision during the import process.
     /// </summary>
