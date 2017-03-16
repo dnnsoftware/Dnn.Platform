@@ -918,11 +918,11 @@ AS
         ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissions]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissions]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissions]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
     @PortalID    int,
     @FolderID Int,
 	@SinceDate    datetime=NULL

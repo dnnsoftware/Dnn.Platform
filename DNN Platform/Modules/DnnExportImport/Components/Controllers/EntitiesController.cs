@@ -56,9 +56,9 @@ namespace Dnn.ExportImport.Components.Controllers
             return CBO.Instance.FillCollection<ExportImportChekpoint>(DataProvider.Instance().GetJobChekpoints(jobId));
         }
 
-        public int UpdateJobChekpoint(ExportImportChekpoint checkpoint)
+        public void UpdateJobChekpoint(ExportImportChekpoint checkpoint)
         {
-            return DataProvider.Instance().UpsertJobChekpoint(checkpoint);
+            DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
     }

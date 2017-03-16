@@ -12,6 +12,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex);
         void UpdateJobStatus(ExportImportJob job);
         IList<ExportImportChekpoint> GetJobChekpoints(int jobId);
-        int UpdateJobChekpoint(ExportImportChekpoint checkpoint);
+        void UpdateJobChekpoint(ExportImportChekpoint checkpoint);
     }
 }

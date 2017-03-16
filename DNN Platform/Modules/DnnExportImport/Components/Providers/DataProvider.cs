@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Providers
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
             return PlatformDataProvider.Instance().ExecuteScalar<int>(
-                "ExportImportJobs_Add", portalId, (int) jobType, userId, exportFile, serializedObject);
+                "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
         }
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
@@ -103,11 +103,10 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
         }
 
-        public int UpsertJobChekpoint(ExportImportChekpoint checkpoint)
+        public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
-            return PlatformDataProvider.Instance().ExecuteScalar<int>(
-                "ExportImportCheckpoints_Upsert", checkpoint.JobId, 
-                checkpoint.Category, checkpoint.Stage, checkpoint.StageData);
+            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportCheckpoints_Upsert",
+                checkpoint.JobId, checkpoint.Category, checkpoint.Stage, checkpoint.StageData);
         }
 
         public IDataReader GetAllScopeTypes()
