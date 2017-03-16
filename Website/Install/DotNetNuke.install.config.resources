@@ -5,6 +5,8 @@
     <script name="Data">DotNetNuke.Data</script>
   </scripts>
   <version>08.00.04</version>
+  <supportLocalization>true</supportLocalization>
+  <displayBanners>true</displayBanners>
   <installCulture>en-US</installCulture>
   <superuser>
     <firstname>SuperUser</firstname>
