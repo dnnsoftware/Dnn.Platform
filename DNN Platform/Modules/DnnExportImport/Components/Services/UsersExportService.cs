@@ -194,8 +194,7 @@ namespace Dnn.ExportImport.Components.Services
             ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {
             if (user == null) return;
-
-            var existingUser = UserController.GetUserByName(importJob.PortalId, user.Username);
+            var existingUser = UserController.GetUserByName(user.Username);
             var isUpdate = false;
             var repUser = db.GetRepository<ExportUser>();
 

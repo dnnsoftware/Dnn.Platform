@@ -140,6 +140,7 @@ namespace Dnn.ExportImport.Components.Services
             ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty,
             int? createdById, int modifiedById)
         {
+            profileProperty.PropertyDefinitionId = existingProfileProperty.PropertyDefinitionId;
             profileProperty.PortalId = existingProfileProperty.PortalId;
             profileProperty.CreatedOnDate = existingProfileProperty.CreatedOnDate;
             profileProperty.CreatedByUserId = createdById;

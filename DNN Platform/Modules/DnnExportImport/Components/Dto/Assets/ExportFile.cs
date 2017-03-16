@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Assets
     [Serializable]
     [TableName("Files")]
     [PrimaryKey("FileId")]
-    public class ExportFile:BasicExportImportDto
+    public class ExportFile : BasicExportImportDto
     {
         public int FileId { get; set; }
         public int PortalId { get; set; }
@@ -49,6 +49,8 @@ namespace Dnn.ExportImport.Components.Dto.Assets
         public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
 
+        [JsonIgnore]
+        [IgnoreColumn]
         public Guid UniqueId { get; set; }
         public Guid VersionGuid { get; set; }
 
@@ -85,5 +87,24 @@ namespace Dnn.ExportImport.Components.Dto.Assets
         [ColumnName("FolderMappingID")]
         [JsonProperty(PropertyName = "FolderMappingID")]
         public int FolderMappingId { get; set; }
+
+        public static void MapFile(ExportFile source, ExportFile target)
+        {
+            source.EnablePublishPeriod = target.EnablePublishPeriod;
+            source.EndDate = target.EndDate;
+            source.PublishedVersion = target.PublishedVersion;
+            source.HasBeenPublished = target.HasBeenPublished;
+            source.Description = target.Description;
+            source.LastModificationTime = target.LastModificationTime;
+            source.Sha1Hash = target.Sha1Hash;
+            source.VersionGuid = target.VersionGuid;
+            source.UniqueId = target.UniqueId;
+            source.Size = target.Size;
+            source.Extension = target.Extension;
+            source.Width = target.Width;
+            source.Height = target.Height;
+            source.ContentType = target.ContentType;
+            source.Content = target.Content;
+        }
     }
 }

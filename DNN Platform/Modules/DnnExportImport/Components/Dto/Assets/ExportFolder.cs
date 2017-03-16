@@ -72,26 +72,26 @@ namespace Dnn.ExportImport.Components.Dto.Assets
         [IgnoreColumn]
         public string Username { get; set; }
 
-        public static void MapFromFolderInfo(IFolderInfo folderInfo, ExportFolder folder)
+        public static void MapFromFolderInfo(IFolderInfo sourceFolder, ExportFolder targetFolder)
         {
-            folder.PortalId = folderInfo.PortalID;
-            folder.FolderPath = folderInfo.FolderPath;
-            folder.FolderId = folderInfo.FolderID;
-            folder.ParentId = folderInfo.ParentID;
-            folder.CreatedByUserId = folderInfo.CreatedByUserID;
-            folder.CreatedOnDate = folderInfo.CreatedOnDate;
-            folder.FolderMappingId = folderInfo.FolderMappingID;
-            folder.IsCached = folderInfo.IsCached;
-            folder.IsVersioned = folderInfo.IsVersioned;
-            folder.IsProtected = folderInfo.IsProtected;
-            folder.MappedPath = folderInfo.MappedPath;
-            folder.StorageLocation = folderInfo.StorageLocation;
-            folder.LastUpdated = folderInfo.LastUpdated;
-            folder.UniqueId = folderInfo.UniqueId;
-            folder.VersionGuid = folderInfo.VersionGuid;
-            folder.WorkflowId = folderInfo.WorkflowID;
-            folder.LastModifiedByUserId = folderInfo.LastModifiedByUserID;
-            folder.LastModifiedOnDate = folderInfo.LastModifiedOnDate;
+            targetFolder.PortalId = sourceFolder.PortalID;
+            targetFolder.FolderPath = sourceFolder.FolderPath;
+            targetFolder.FolderId = sourceFolder.FolderID;
+            targetFolder.ParentId = sourceFolder.ParentID;
+            targetFolder.CreatedByUserId = sourceFolder.CreatedByUserID;
+            targetFolder.CreatedOnDate = sourceFolder.CreatedOnDate;
+            targetFolder.FolderMappingId = sourceFolder.FolderMappingID;
+            targetFolder.IsCached = sourceFolder.IsCached;
+            targetFolder.IsVersioned = sourceFolder.IsVersioned;
+            targetFolder.IsProtected = sourceFolder.IsProtected;
+            targetFolder.MappedPath = sourceFolder.MappedPath;
+            targetFolder.StorageLocation = sourceFolder.StorageLocation;
+            targetFolder.LastUpdated = sourceFolder.LastUpdated;
+            targetFolder.UniqueId = sourceFolder.UniqueId;
+            targetFolder.VersionGuid = sourceFolder.VersionGuid;
+            targetFolder.WorkflowId = sourceFolder.WorkflowID;
+            targetFolder.LastModifiedByUserId = sourceFolder.LastModifiedByUserID;
+            targetFolder.LastModifiedOnDate = sourceFolder.LastModifiedOnDate;
         }
     }
 }

@@ -185,8 +185,7 @@ namespace Dnn.ExportImport.Components.Services
                     CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, null)).ToList();
                 var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.FolderPath).ToList();
                 var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
-                var progressStep = totalFolders / 80;
-
+                var progressStep = totalFolders/80;
                 foreach (var sourceFolder in sourceFolders)
                 {
                     using (var db = DataContext.Instance())
@@ -476,10 +475,11 @@ namespace Dnn.ExportImport.Components.Services
             file.PortalId = portalId;
             if (isUpdate)
             {
-                file.LastModifiedOnDate = DateTime.UtcNow;
-                file.LastModifiedByUserId = modifiedBy;
+                existingFile.LastModifiedOnDate = DateTime.UtcNow;
+                existingFile.LastModifiedByUserId = modifiedBy;
                 file.FileId = existingFile.FileId;
-                repExportFile.Update(file);
+                ExportFile.MapFile(existingFile, file);
+                repExportFile.Update(existingFile);
                 if ((file.Content != null && existingFile.Content == null) ||
                     (existingFile.Content != null && file.Content == null) ||
                     (file.Content != null && existingFile.Content != null &&
