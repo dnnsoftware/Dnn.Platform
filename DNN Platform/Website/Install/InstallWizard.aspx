@@ -151,6 +151,7 @@
                             </asp:RadioButtonList>
                         </div>
                         <div id="StandardDatabaseMsg" class="dnnFormItem">
+                            <div class="dnnLabel"></div>
                             <asp:Label ID="lblStandardDatabaseMsg" runat="server" CssClass="dnnFormMessage" ResourceKey="StandardDatabaseMsg" />
                         </div>
                         <div id="advancedDatabase" class="dnnFormItem" style="display:none">
@@ -221,6 +222,7 @@
                 <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
                     <div class="dnnFormItem">
+                        <div class="dnnLabel"></div>
                         <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                     </div>
                     <div class="dnnFormItem information-checkbox">
