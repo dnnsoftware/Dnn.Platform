@@ -3,7 +3,7 @@
 
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head runat="server">
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
@@ -125,11 +125,11 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
-                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />
+                            <dnn:Label ID="lblTemplate" runat="server" ControlName="templateList" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
-                        <div id="languagesRow" runat="server" class="dnnFormItem">
-                            <dnn:Label ID="lblLanguage" runat="server" ControlName="ddlLanguage" ResourceKey="Language" />
+                        <div class="dnnFormItem">
+                            <dnn:Label ID="lblLanguage" runat="server" ControlName="languageList" ResourceKey="Language" />
                             <dnn:DnnComboBox ID="languageList" runat="server" DataTextField="Text" DataValueField="Code">
                             </dnn:DnnComboBox>
                             <br/>
@@ -151,7 +151,7 @@
                             </asp:RadioButtonList>
                         </div>
                         <div id="StandardDatabaseMsg" class="dnnFormItem">
-                            <dnn:Label ID="lblStandardDatabase" runat="server"/>
+                            <div class="dnnLabel"></div>
                             <asp:Label ID="lblStandardDatabaseMsg" runat="server" CssClass="dnnFormMessage" ResourceKey="StandardDatabaseMsg" />
                         </div>
                         <div id="advancedDatabase" class="dnnFormItem" style="display:none">
@@ -222,12 +222,12 @@
                 <div id="improvementsProgram" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label id="lblImprovementProgTitle" runat="server" CssClass="tabSubTitle" ResourceKey="ImprovementsProgramTitle" />
                     <div class="dnnFormItem">
-                        <dnn:Label ID="Label2" runat="server"/>
+                        <div class="dnnLabel"></div>
                         <asp:Label ID="lblImprovementProgExplain" runat="server" CssClass="information" ResourceKey="ImprovementProgramExplain" />
                     </div>
                     <div class="dnnFormItem information-checkbox">
                         <asp:CheckBox ID="chkImprovementProgram" runat="server" Checked="True" CssClass="dnnLabel"/>
-                        <asp:Label id="lblImprovementProgram" controlname="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
+                        <asp:Label id="lblImprovementProgram" AssociatedControlID="chkImprovementProgram" runat="server" ResourceKey="ImprovementProgramLabel" />
                     </div>
                 </div>
                 <hr/>
@@ -264,7 +264,7 @@
                         </div>
                         <div id="banners" runat="server" clientidmode="Static">
                             <a id="bannerLink" runat="server" href="" target="">
-                                <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="" onerror="installWizard.bannerError(this);" />
+                                <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="DotNetNuke" onerror="installWizard.bannerError(this);" />
                             </a>
                         </div>
                     </div>
