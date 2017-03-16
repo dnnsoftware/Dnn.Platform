@@ -18,6 +18,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
         void DeletePage(PageItem page);
 
+        void InitializePage(int pageId);
+
         void EditModeForPage(int pageId, int userId);
 
         TabInfo SavePageDetails(PageSettings pageSettings);

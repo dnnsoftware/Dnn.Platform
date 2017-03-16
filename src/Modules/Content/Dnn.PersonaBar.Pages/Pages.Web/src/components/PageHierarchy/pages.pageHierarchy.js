@@ -712,7 +712,7 @@ window.dnn.pages = window.dnn.pages || {};
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target;
+                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target, isDragItem;
                         var params, movePage200Callback, movePageErrorCallback;
 
                         pageDropped = {
@@ -725,6 +725,7 @@ window.dnn.pages = window.dnn.pages || {};
                         sourceFind   = handler._findDataPosition(sourcePageId);
                         source       = viewModel.pagesList()[sourceFind.level].pages()[sourceFind.index];
                         sourceData   = handler._clonePageData(source);
+                        isDragItem = item.find('> div').hasClass('drag-item');
 
                         targetId     = self.data('page-id');
 
@@ -760,7 +761,8 @@ window.dnn.pages = window.dnn.pages || {};
                                 PageId: sourcePageId,
                                 RelatedPageId: -1, // Not necesary for parent
                                 ParentId: targetId,
-                                Action:   'parent'
+                                Action:   'parent',
+                                Initialize: isDragItem
                             };
 
                             movePage200Callback = function(data) {
@@ -984,7 +986,8 @@ window.dnn.pages = window.dnn.pages || {};
                             PageId: pageId,
                             RelatedPageId: relatedPageId,
                             ParentId: parentId,
-                            Action: moveAction
+                            Action: moveAction,
+                            Initialize: isDragItem
                         };
 
                         handler._getService().post('MovePage', params, function(data) {

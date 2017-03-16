@@ -206,6 +206,12 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 var tab = _pagesController.MovePage(request);
+
+                if (request.Initialize)
+                {
+                    _pagesController.InitializePage(tab.TabID);    
+                }
+
                 var tabs = TabController.GetPortalTabs(PortalSettings.PortalId, Null.NullInteger, false, true, false,
                     true);
                 var pageItem = Converters.ConvertToPageItem<PageItem>(tab, tabs);

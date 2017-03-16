@@ -9,5 +9,7 @@
         public int ParentId { get; set; }
 
         public string Action { get; set; }
+
+        public bool Initialize { get; set; }
     }
 }

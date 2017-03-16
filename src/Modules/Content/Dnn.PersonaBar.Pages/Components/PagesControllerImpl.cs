@@ -173,6 +173,15 @@ namespace Dnn.PersonaBar.Pages.Components
             return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);            
         }
 
+        public void InitializePage(int pageId)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            TabController.Instance.GetTabUrls(pageId, portalSettings.PortalId).ForEach(u =>
+            {
+                TabController.Instance.DeleteTabUrl(u, portalSettings.PortalId, true);
+            });
+        }
+
         public void DeletePage(PageItem page)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
