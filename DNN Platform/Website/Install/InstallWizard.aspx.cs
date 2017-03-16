@@ -200,6 +200,16 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        protected bool SupportLocalization
+        {
+            get { return _installConfig.SupportLocalization; }
+        }
+
+        protected bool DisplayBanners
+        {
+            get { return _installConfig.DisplayBanners; }
+        }
+
         #endregion
 
         #region IClientAPICallbackEventHandler Members
@@ -881,6 +891,15 @@ namespace DotNetNuke.Services.Install
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
+            if (!SupportLocalization)
+            {
+                languageFlags.Visible = false;
+                languagesRow.Attributes.Add("style", "display: none");
+            }
+            banners.Visible = DisplayBanners;
+
+
             passwordContainer.CssClass = "password-strength-container";
             txtPassword.CssClass = "password-strength";
                 

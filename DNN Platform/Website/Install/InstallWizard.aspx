@@ -36,7 +36,7 @@
     <br/>
     <img src="../images/Branding/DNN_logo.png" alt="DotNetNuke" />
 
-    <div id="languageFlags" style="float: right;">
+    <div id="languageFlags" runat="server" clientidmode="Static" style="float: right;">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
@@ -128,7 +128,7 @@
                             <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
-                        <div class="dnnFormItem">
+                        <div id="languagesRow" runat="server" class="dnnFormItem">
                             <dnn:Label ID="lblLanguage" runat="server" ControlName="ddlLanguage" ResourceKey="Language" />
                             <dnn:DnnComboBox ID="languageList" runat="server" DataTextField="Text" DataValueField="Code">
                             </dnn:DnnComboBox>
@@ -262,7 +262,7 @@
                             <p class="step-notstarted" id="SuperUserCreation"><span class="states-icons"></span><%= LocalizeString("SuperUserCreation") %></p>
                             <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>
                         </div>
-                        <div id="banners">
+                        <div id="banners" runat="server" clientidmode="Static">
                             <a id="bannerLink" runat="server" href="" target="">
                                 <img id="bannerImage" runat="server" class="banner" src="../images/branding/DNN_logo.png" alt="" onerror="installWizard.bannerError(this);" />
                             </a>
@@ -553,6 +553,7 @@
             $('#<%= lblLegacyLangaugePack.ClientID %>')[0].innerText = '';
         }
 
+        <% if (DisplayBanners) { %>
         // Banner Rotator
         jQuery(document).ready(function ($) {
             if (installWizard.online) {
@@ -580,7 +581,7 @@
                 }, 5000);
             }
         });
-
+        <% }  %>
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
             $(function () {
