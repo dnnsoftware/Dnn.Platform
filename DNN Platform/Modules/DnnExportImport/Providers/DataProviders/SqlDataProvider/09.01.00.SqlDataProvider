@@ -125,6 +125,15 @@ IF NOT EXISTS ( SELECT 1 FROM sys.indexes
 		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([Category])
 GO
 
+IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
+				WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'FK_{objectQualifier}ExportImportCheckpoints_JobId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ADD
+		CONSTRAINT [FK_{objectQualifier}ExportImportCheckpoints_JobId] FOREIGN KEY ( [JobId] )
+		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
+		ON DELETE CASCADE
+GO
+
 -- JobLogs
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
@@ -137,6 +146,13 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS 
 
 		CONSTRAINT [PK_{objectQualifier}ExportImportJobLogs] PRIMARY KEY ([JobLogId])
 	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobLogs_JobId')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobLogs_JobId]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobLogs] ([JobId])
 GO
 
 IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
@@ -262,6 +278,22 @@ BEGIN
 	SET
 		IsCancelled = 1,
 		LastModifiedOnDate = GetUtcDate()
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Remove]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+	@JobId int
+AS
+BEGIN
+	-- deletion of logs will be cascaded
+	DELETE FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
 	WHERE
 		JobId = @JobId
 END

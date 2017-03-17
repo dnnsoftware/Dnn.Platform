@@ -37,7 +37,7 @@ namespace DotNetNuke.Data.PetaPoco
 			ExecuteNonQuery(connectionString, type, Null.NullInteger, sql, args);
         }
 
-        public static void ExecuteNonQuery(string connectionString, CommandType type, int timeout, string sql, params object[] args)
+        public static void ExecuteNonQuery(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
 		{
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
             { 
@@ -46,9 +46,9 @@ namespace DotNetNuke.Data.PetaPoco
                     sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
                 }
 
-                if (timeout > 0)
+                if (timeoutSec > 0)
                 {
-                    database.CommandTimeout = timeout;
+                    database.CommandTimeout = timeoutSec;
                 }
 
                 database.Execute(sql, args);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Data.PetaPoco
             BulkInsert(connectionString, Null.NullInteger, procedureName, tableParameterName, dataTable);
         }
 
-        public static void BulkInsert(string connectionString, int timeout, string procedureName, string tableParameterName, DataTable dataTable)
+        public static void BulkInsert(string connectionString, int timeoutSec, string procedureName, string tableParameterName, DataTable dataTable)
 		{
             if (dataTable.Rows.Count > 0)
             {
@@ -70,8 +70,8 @@ namespace DotNetNuke.Data.PetaPoco
                     if (!tableParameterName.StartsWith("@"))
                         tableParameterName = "@" + tableParameterName;
 
-                    if (timeout > 0)
-                        cmd.CommandTimeout = timeout;
+                    if (timeoutSec > 0)
+                        cmd.CommandTimeout = timeoutSec;
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);
@@ -87,7 +87,7 @@ namespace DotNetNuke.Data.PetaPoco
 			return ExecuteReader(connectionString, type, Null.NullInteger, sql, args);
 		}
 
-        public static IDataReader ExecuteReader(string connectionString, CommandType type, int timeout, string sql, params object[] args)
+        public static IDataReader ExecuteReader(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
             var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false };
 
@@ -96,9 +96,9 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-			if (timeout > 0)
+			if (timeoutSec > 0)
 			{
-				database.CommandTimeout = timeout;
+				database.CommandTimeout = timeoutSec;
 			}
             return database.ExecuteReader(sql, args);
         }
@@ -108,7 +108,7 @@ namespace DotNetNuke.Data.PetaPoco
 			return ExecuteScalar<T>(connectionString, type, Null.NullInteger, sql, args);
         }
 
-		public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeout, string sql, params object[] args)
+		public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
 		{
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
             {
@@ -117,9 +117,9 @@ namespace DotNetNuke.Data.PetaPoco
                     sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
                 }
 
-                if (timeout > 0)
+                if (timeoutSec > 0)
                 {
-                    database.CommandTimeout = timeout;
+                    database.CommandTimeout = timeoutSec;
                 }
 
                 return database.ExecuteScalar<T>(sql, args);
@@ -133,13 +133,13 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         // ReSharper disable once InconsistentNaming
-		public static void ExecuteSQL(string connectionString, string sql, int timeout)
+		public static void ExecuteSQL(string connectionString, string sql, int timeoutSec)
 		{
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
             {
-                if (timeout > 0)
+                if (timeoutSec > 0)
                 {
-                    database.CommandTimeout = timeout;
+                    database.CommandTimeout = timeoutSec;
                 }
 
                 database.Execute(sql);

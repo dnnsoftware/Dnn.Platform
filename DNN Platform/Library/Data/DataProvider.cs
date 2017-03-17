@@ -172,35 +172,35 @@ namespace DotNetNuke.Data
 		#region DAL + Methods
 
 		public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
-		public abstract void ExecuteNonQuery(int timeout, string procedureName, params object[] commandParameters);
+		public abstract void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters);
 
         public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
-        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeout);
+        public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec);
 
         public abstract IDataReader ExecuteReader(string procedureName, params object[] commandParameters);
-        public abstract IDataReader ExecuteReader(int timeout, string procedureName, params object[] commandParameters);
+        public abstract IDataReader ExecuteReader(int timeoutSec, string procedureName, params object[] commandParameters);
 
 		public abstract T ExecuteScalar<T>(string procedureName, params object[] commandParameters);
-		public abstract T ExecuteScalar<T>(int timeout, string procedureName, params object[] commandParameters);
+		public abstract T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters);
 
 		public abstract IDataReader ExecuteSQL(string sql);
-		public abstract IDataReader ExecuteSQL(string sql, int timeout);
+		public abstract IDataReader ExecuteSQL(string sql, int timeoutSec);
 
 		#endregion
 
 		#region ExecuteScript Methods
 
 		public abstract string ExecuteScript(string script);
-		public abstract string ExecuteScript(string script, int timeout);
+		public abstract string ExecuteScript(string script, int timeoutSec);
 
 		public abstract string ExecuteScript(string connectionString, string sql);
-		public abstract string ExecuteScript(string connectionString, string sql, int timeout);
+		public abstract string ExecuteScript(string connectionString, string sql, int timeoutSec);
 
 		public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql);
-        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout);
+        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec);
 
         public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage);
-        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeout, out string errorMessage);
+        public abstract IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage);
 
         #endregion
 

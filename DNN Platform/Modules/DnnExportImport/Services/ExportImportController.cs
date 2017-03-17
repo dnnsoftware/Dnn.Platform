@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -77,11 +78,30 @@ namespace Dnn.ExportImport.Services
                 cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
         }
 
+        // this is POST so users can't remove a job using a browser link
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage RemoveJob([FromUri] int jobId)
+        {
+            var controller = new BaseController();
+            var cancelStatus = controller.RemoveJob(PortalSettings.PortalId, jobId);
+            return Request.CreateResponse(
+                cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
+        }
+
         [HttpGet]
         public HttpResponseMessage ProgressStatus(int jobId)
         {
             //TODO: implement
-            return Request.CreateResponse(HttpStatusCode.OK, "10%");
+            return Request.CreateResponse(HttpStatusCode.OK, new { percentage = "10%" });
+        }
+
+        [HttpGet]
+        public HttpResponseMessage LastExportUtcTime()
+        {
+            var controller = new BaseController();
+            var lastTime = controller.GetLastExportUtcTime();
+            return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
         }
 
         [HttpGet]

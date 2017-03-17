@@ -58,6 +58,11 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().SetJobCancelled(job.JobId);
         }
 
+        public void RemoveJob(ExportImportJob job)
+        {
+            DataProvider.Instance().RemoveJob(job.JobId);
+        }
+
         public IList<ExportImportChekpoint> GetJobChekpoints(int jobId)
         {
             return CBO.Instance.FillCollection<ExportImportChekpoint>(DataProvider.Instance().GetJobChekpoints(jobId));

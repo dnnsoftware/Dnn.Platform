@@ -23,6 +23,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]',
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Remove]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 GO

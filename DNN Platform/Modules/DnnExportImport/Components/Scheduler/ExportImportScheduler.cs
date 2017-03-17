@@ -76,20 +76,15 @@ namespace Dnn.ExportImport.Components.Scheduler
                     job.JobStatus = JobStatus.InProgress;
                     EntitiesController.Instance.UpdateJobStatus(job);
                     ExportImportResult result;
-                    var lastSuccessFulDateTime = GetLastSuccessfulExportDateTime(ScheduleHistoryItem.ScheduleID);
                     var engine = new ExportImportEngine();
 
                     switch (job.JobType)
                     {
                         case JobType.Export:
-                            ScheduleHistoryItem.AddLogNote(
-                                $"<br/><b>SITE EXPORT Started. JOB {job.JobId}</b> {lastSuccessFulDateTime:g)}");
                             result = engine.Export(job, ScheduleHistoryItem);
                             EntitiesController.Instance.UpdateJobStatus(job);
                             break;
                         case JobType.Import:
-                            ScheduleHistoryItem.AddLogNote(
-                                $"<br/><b>SITE IMPORT Started. JOB {job.JobId}</b> {lastSuccessFulDateTime:g}");
                             result = engine.Import(job, ScheduleHistoryItem);
                             EntitiesController.Instance.UpdateJobStatus(job);
                             if (job.JobStatus == JobStatus.DoneSuccess || job.JobStatus == JobStatus.Cancelled)
@@ -127,7 +122,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
-                SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                //SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)
             {
@@ -181,42 +176,5 @@ namespace Dnn.ExportImport.Components.Scheduler
             new Tuple<string,Type>("IsSummary", typeof(bool)),
             new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
-
-        private static DateTime FixSqlDateTime(DateTime datim)
-        {
-            if (datim <= SqlDateTime.MinValue.Value)
-                datim = SqlDateTime.MinValue.Value.AddDays(1);
-            else if (datim >= SqlDateTime.MaxValue.Value)
-                datim = SqlDateTime.MaxValue.Value.AddDays(-1);
-            return datim;
-        }
-
-        private static DateTimeOffset GetLastSuccessfulExportDateTime(int scheduleId)
-        {
-            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
-            var lastValue = settings[Constants.LastJobSuccessDateKey] as string;
-
-            DateTime lastTime;
-            if (!string.IsNullOrEmpty(lastValue) &&
-                DateTime.TryParseExact(lastValue, Constants.JobRunDateTimeFormat, null, DateTimeStyles.None, out lastTime))
-            {
-                // retrieves the date as UTC but returns to caller as local
-                lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
-                if (lastTime > DateTime.Now) lastTime = DateTime.Now;
-            }
-            else
-            {
-                lastTime = SqlDateTime.MinValue.Value.AddDays(1);
-            }
-
-            return lastTime;
-        }
-
-        private static void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
-        {
-            SchedulingProvider.Instance().AddScheduleItemSetting(
-                scheduleId, Constants.LastJobSuccessDateKey,
-                startDateLocal.ToUniversalTime().ToString(Constants.JobRunDateTimeFormat));
-        }
     }
 }

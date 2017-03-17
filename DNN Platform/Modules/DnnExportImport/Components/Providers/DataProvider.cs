@@ -77,6 +77,12 @@ namespace Dnn.ExportImport.Components.Providers
             PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
         }
 
+        public void RemoveJob(int jobId)
+        {
+            // using 60 sec timeout because cascading deletes in logs might take a lot of time
+            PlatformDataProvider.Instance().ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
+        }
+
         public IDataReader GetFirstActiveJob()
         {
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");

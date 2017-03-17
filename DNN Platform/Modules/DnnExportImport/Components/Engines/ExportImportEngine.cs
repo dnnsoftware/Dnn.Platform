@@ -45,7 +45,6 @@ namespace Dnn.ExportImport.Components.Engines
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
-        private const double MaxTimeToRunJob = 90; // in seconds
 
         private static readonly string DbFolder;
 
@@ -59,6 +58,7 @@ namespace Dnn.ExportImport.Components.Engines
         }
 
         private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
+        private int _timeoutSeconds;
 
         public int ProgressPercentage { get; private set; } = 1;
 
@@ -86,13 +86,24 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB {exportJob.JobId}</b> {exportDto.ExportTime:g)}");
+            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
+
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             var finfo = new FileInfo(dbName);
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
             //Delete so we start a fresh export database; only if there is no previous checkpoint exists
-            if (checkpoints.Count == 0 && finfo.Exists) finfo.Delete();
+            if (checkpoints.Count == 0)
+            {
+                if (finfo.Exists) finfo.Delete();
+                result.AddSummary("Starting Exporting Repository", finfo.Name);
+            }
+            else
+            {
+                result.AddSummary("Resuming Exporting Repository", finfo.Name);
+            }
 
             using (var ctx = new ExportImportRepository(dbName))
             {
@@ -111,6 +122,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                 do
                 {
+
                     foreach (var service in parentServices.OrderBy(x => x.Priority))
                     {
                         if (exportJob.IsCancelled)
@@ -168,18 +180,27 @@ namespace Dnn.ExportImport.Components.Engines
 
             if (TimeIsUp)
             {
-                result.AddSummary("Job time slot expired", "will resume next iteration");
+                result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired", "Job will resume in the next scheduler iteration");
             }
-            else if (exportJob.JobStatus == JobStatus.InProgress)
-                exportJob.JobStatus = JobStatus.DoneSuccess;
+            else
+            {
+                if (exportJob.JobStatus == JobStatus.InProgress)
+                {
+                    exportJob.JobStatus = JobStatus.DoneSuccess;
+                    SetLastJobStartTime(scheduleHistoryItem.ScheduleID, DateTimeOffset.UtcNow);
+                }
 
-            finfo = new FileInfo(finfo.FullName); // refresh to get new size
-            result.AddSummary("Exported File Size", Util.FormatSize(finfo.Length));
+                finfo = new FileInfo(finfo.FullName); // refresh to get new size
+                result.AddSummary("Exported File Size", Util.FormatSize(finfo.Length));
+            }
+
             return result;
         }
 
         public ExportImportResult Import(ExportImportJob importJob, ScheduleHistoryItem scheduleHistoryItem)
         {
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB {importJob.JobId}</b>");
+            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
             var result = new ExportImportResult
             {
                 JobId = importJob.JobId,
@@ -205,9 +226,6 @@ namespace Dnn.ExportImport.Components.Engines
 
             //TODO: unzip files first
 
-            result.AddSummary("Importing Repository", finfo.Name);
-            result.AddSummary("Imported File Size", Util.FormatSize(finfo.Length));
-
             using (var ctx = new ExportImportRepository(dbName))
             {
                 var exportedDto = ctx.GetSingleItem<ExportDto>();
@@ -224,6 +242,17 @@ namespace Dnn.ExportImport.Components.Engines
                     return result;
                 }
 
+                var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
+                if (checkpoints.Count == 0)
+                {
+                    result.AddSummary("Starting Importing Repository", finfo.Name);
+                    result.AddSummary("Importing File Size", Util.FormatSize(finfo.Length));
+                }
+                else
+                {
+                    result.AddSummary("Resuming Importing Repository", finfo.Name);
+                }
+
                 var implementors = GetPortableImplementors().ToList();
                 var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
                 importJob.JobStatus = JobStatus.InProgress;
@@ -232,7 +261,6 @@ namespace Dnn.ExportImport.Components.Engines
                 implementors = implementors.Except(parentServices).ToList();
                 var nextLevelServices = new List<IPortable2>();
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
-                var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
                 var firstLoop = true;
                 AddJobToCache(importJob);
 
@@ -291,7 +319,7 @@ namespace Dnn.ExportImport.Components.Engines
                 RemoveTokenFromCache(importJob);
                 if (TimeIsUp)
                 {
-                    result.AddSummary("Job time slot expired", "will resume next iteration");
+                    result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired", "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
                     importJob.JobStatus = JobStatus.DoneSuccess;
@@ -324,7 +352,7 @@ namespace Dnn.ExportImport.Components.Engines
             return TimeIsUp;
         }
 
-        private bool TimeIsUp => _stopWatch.Elapsed.TotalSeconds > MaxTimeToRunJob;
+        private bool TimeIsUp => _stopWatch.Elapsed.TotalSeconds > _timeoutSeconds;
 
         private static void AddJobToCache(ExportImportJob job)
         {
@@ -386,6 +414,43 @@ namespace Dnn.ExportImport.Components.Engines
                 includedItems.Add(Constants.Category_Portal);
 
             return includedItems;
+        }
+
+        private static int GetTimeoutPerSlot(int scheduleId)
+        {
+            const string maxTimeToRunJobKey = "MaxTimeToRunJob";
+
+            var provider = SchedulingProvider.Instance();
+            var nseedsUpdate = false;
+            int value;
+            var settings = provider.GetScheduleItemSettings(scheduleId);
+            if (!int.TryParse(settings[maxTimeToRunJobKey] as string ?? "", out value))
+            {
+                // max time to run a job is 2 hours
+                value = (int)TimeSpan.FromHours(2).TotalSeconds;
+                nseedsUpdate = true;
+            }
+
+            // enforce minimum of 60 seconds per slot
+            if (value < 60)
+            {
+                value = 60;
+                nseedsUpdate = true;
+            }
+
+            if (nseedsUpdate)
+            {
+                provider.AddScheduleItemSetting(scheduleId, maxTimeToRunJobKey, value.ToString());
+            }
+
+            return value;
+        }
+
+        private static void SetLastJobStartTime(int scheduleId, DateTimeOffset time)
+        {
+            SchedulingProvider.Instance().AddScheduleItemSetting(
+                scheduleId, Constants.LastJobStartTimeKey,
+                time.ToUniversalTime().DateTime.ToString(Constants.JobRunDateTimeFormat));
         }
     }
 }

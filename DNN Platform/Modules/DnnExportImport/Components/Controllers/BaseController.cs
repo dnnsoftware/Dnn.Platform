@@ -19,7 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto.Jobs;
@@ -28,9 +31,10 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Entities.Urls;
+using Dnn.ExportImport.Components.Scheduler;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -66,6 +70,19 @@ namespace Dnn.ExportImport.Components.Controllers
 
             controller.SetJobCancelled(job);
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
+            return true;
+        }
+
+        public bool RemoveJob(int portalId, int jobId)
+        {
+            var controller = EntitiesController.Instance;
+            var job = controller.GetJobById(jobId);
+            if (job == null || job.PortalId != portalId)
+                return false;
+
+            CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
+            // if the job is running; then it will create few exceptions in the log file
+            controller.RemoveJob(job);
             return true;
         }
 
@@ -124,7 +141,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static JobItem ToJobItem(ExportImportJob job)
         {
-            var user  = UserController.Instance.GetUserById(job.PortalId, job.CreatedByUserId);
+            var user = UserController.Instance.GetUserById(job.PortalId, job.CreatedByUserId);
             return new JobItem
             {
                 JobId = job.JobId,
@@ -137,5 +154,47 @@ namespace Dnn.ExportImport.Components.Controllers
                 ExportFile = job.CompletedOnDate.HasValue ? job.ExportFile : null
             };
         }
+
+        /// <summary>
+        /// Get the last time a successful export job has started.
+        /// This date/time is in uts and can be used to set the next
+        /// differntial date/time to start the job from.
+        /// </summary>
+        /// <returns></returns>
+        public DateTime GetLastExportUtcTime()
+        {
+            var lastTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            var scheduleProvider = SchedulingProvider.Instance();
+            var exportSchedulerClient = scheduleProvider.GetSchedule(typeof(ExportImportScheduler).FullName, null);
+            if (exportSchedulerClient != null)
+            {
+                var settings = SchedulingProvider.Instance().GetScheduleItemSettings(exportSchedulerClient.ScheduleID);
+                var lastValue = settings[Constants.LastJobStartTimeKey] as string;
+
+                if (!string.IsNullOrEmpty(lastValue) &&
+                    DateTime.TryParseExact(lastValue, Constants.JobRunDateTimeFormat, null, DateTimeStyles.None, out lastTime))
+                {
+                    lastTime = FixSqlDateTime(lastTime);
+                    if (lastTime > DateTime.UtcNow) lastTime = DateTime.UtcNow;
+                }
+                else
+                {
+                    lastTime = FixSqlDateTime(DateTime.MinValue);
+                }
+            }
+
+            return lastTime.ToUniversalTime();
+        }
+
+        private static DateTime FixSqlDateTime(DateTime datim)
+        {
+            if (datim <= SqlDateTime.MinValue.Value)
+                datim = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            else if (datim >= SqlDateTime.MaxValue.Value)
+                datim = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return datim;
+        }
+
     }
 }
