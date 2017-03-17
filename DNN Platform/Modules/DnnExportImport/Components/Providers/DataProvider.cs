@@ -200,9 +200,9 @@ namespace Dnn.ExportImport.Components.Providers
             return PlatformDataProvider.Instance().ExecuteReader("GetUserAuthentication", userId);
         }
 
-        public IDataReader GetUserProfile(int userId)
+        public IDataReader GetUserProfile(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserProfile", userId);
+            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserProfile", portalId, userId);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)

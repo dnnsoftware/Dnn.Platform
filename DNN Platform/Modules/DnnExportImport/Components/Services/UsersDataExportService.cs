@@ -186,7 +186,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CancellationToken.IsCancellationRequested) return;
                 var existingUserProfile =
                     CBO.FillCollection<ExportUserProfile>(
-                        DataProvider.Instance().GetUserProfile(userId)).FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
+                        DataProvider.Instance().GetUserProfile(importJob.PortalId, userId)).FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
                 var isUpdate = false;
                 if (existingUserProfile != null)
                 {

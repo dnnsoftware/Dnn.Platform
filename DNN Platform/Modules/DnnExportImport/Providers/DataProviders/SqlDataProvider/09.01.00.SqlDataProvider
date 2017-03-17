@@ -497,6 +497,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
+	@PortalId int,
 	@UserId    int
 AS
 	SELECT
@@ -511,7 +512,7 @@ AS
  	FROM {databaseOwner}[{objectQualifier}UserProfile] UP
 	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
-	WHERE UserId = @UserId
+	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL

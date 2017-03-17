@@ -22,6 +22,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
@@ -31,6 +32,7 @@ using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Data;
 using DotNetNuke.Security.Membership;
+using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -74,61 +76,102 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
             ProgressPercentage = 0;
-            var dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, exportDto.ExportTime?.UtcDateTime);
+            var dataReader = DataProvider.Instance()
+                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions,
+                    exportDto.ExportTime?.UtcDateTime);
             var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
             var firstOrDefault = allUser.FirstOrDefault();
             if (firstOrDefault == null) return;
 
             var totalUsers = allUser.Any() ? firstOrDefault.Total : 0;
-            var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
-            do
+            var totalPages = CalculateTotalPages(totalUsers, pageSize);
+
+            var skip = GetCurrentSkip();
+            var currentIndex = skip;
+            if (CheckPoint.Stage >= totalPages && skip == 0)
+                return;//Skip the export if all the users has been processed already.
+
+            if (CheckPoint.Stage > 0 || skip > 0)
             {
-                foreach (var user in allUser)
+                pageIndex = CheckPoint.Stage;
+                if (pageIndex > 0)
                 {
-                    if (CancellationToken.IsCancellationRequested) return;
-                    var aspnetUser =
-                        CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
-                    var aspnetMembership =
-                        CBO.FillObject<ExportAspnetMembership>(
-                            DataProvider.Instance()
-                                .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
-                    var userRoles =
-                        CBO.FillCollection<ExportUserRole>(DataProvider.Instance()
-                            .GetUserRoles(portalId, user.UserId));
-                    var userPortal =
-                        CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(portalId, user.UserId));
-                    var userAuthentication =
-                        CBO.FillObject<ExportUserAuthentication>(
-                            DataProvider.Instance().GetUserAuthentication(user.UserId));
-                    var userProfiles =
-                        CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(user.UserId));
-
-                    Repository.CreateItem(user, null);
-                    Repository.CreateItem(aspnetUser, user.Id);
-                    totalAspnetUserExported += 1;
-
-                    Repository.CreateItem(aspnetMembership, user.Id);
-                    totalAspnetMembershipExported += aspnetMembership != null ? 1 : 0;
-
-                    Repository.CreateItem(userPortal, user.Id);
-                    totalPortalsExported += userPortal != null ? 1 : 0;
-
-                    Repository.CreateItems(userProfiles, user.Id);
-                    totalProfilesExported += userProfiles.Count;
-
-                    Repository.CreateItems(userRoles, user.Id);
-                    totalUserRolesExported += userRoles.Count;
-
-                    Repository.CreateItem(userAuthentication, user.Id);
-                    totalAuthenticationExported += userAuthentication != null ? 1 : 0;
+                    dataReader = DataProvider.Instance()
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, exportDto.ExportTime?.UtcDateTime);
+                    allUser =
+                        CBO.FillCollection<ExportUser>(dataReader).ToList();
                 }
-                totalUsersExported += allUser.Count;
-                pageIndex++;
-                ProgressPercentage += progressStep;
-                dataReader = DataProvider.Instance().GetAllUsers(portalId, pageIndex, pageSize, false, exportDto.ExportTime?.UtcDateTime);
-                allUser =
-                    CBO.FillCollection<ExportUser>(dataReader).ToList();
-            } while (totalUsersExported < totalUsers);
+                allUser = allUser.Skip(skip).ToList();
+            }
+
+            var totalUsersToBeProcessed = totalUsers - pageIndex*pageSize - skip;
+            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize/totalUsersToBeProcessed*100;
+            try
+            {
+                do
+                {
+                    foreach (var user in allUser)
+                    {
+                        if (CancellationToken.IsCancellationRequested) return;
+                        var aspnetUser =
+                            CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
+                        var aspnetMembership =
+                            CBO.FillObject<ExportAspnetMembership>(
+                                DataProvider.Instance()
+                                    .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
+                        var userRoles =
+                            CBO.FillCollection<ExportUserRole>(DataProvider.Instance()
+                                .GetUserRoles(portalId, user.UserId));
+                        var userPortal =
+                            CBO.FillObject<ExportUserPortal>(DataProvider.Instance()
+                                .GetUserPortal(portalId, user.UserId));
+                        var userAuthentication =
+                            CBO.FillObject<ExportUserAuthentication>(
+                                DataProvider.Instance().GetUserAuthentication(user.UserId));
+                        var userProfiles =
+                            CBO.FillCollection<ExportUserProfile>(DataProvider.Instance()
+                                .GetUserProfile(portalId, user.UserId));
+
+                        Repository.CreateItem(user, null);
+                        Repository.CreateItem(aspnetUser, user.Id);
+                        totalAspnetUserExported += 1;
+
+                        Repository.CreateItem(aspnetMembership, user.Id);
+                        totalAspnetMembershipExported += aspnetMembership != null ? 1 : 0;
+
+                        Repository.CreateItem(userPortal, user.Id);
+                        totalPortalsExported += userPortal != null ? 1 : 0;
+
+                        Repository.CreateItems(userProfiles, user.Id);
+                        totalProfilesExported += userProfiles.Count;
+
+                        Repository.CreateItems(userRoles, user.Id);
+                        totalUserRolesExported += userRoles.Count;
+
+                        Repository.CreateItem(userAuthentication, user.Id);
+                        totalAuthenticationExported += userAuthentication != null ? 1 : 0;
+                        currentIndex++;
+                    }
+                    currentIndex = 0;
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    if (CheckPointStageCallback(this)) return;
+
+                    totalUsersExported += allUser.Count;
+                    pageIndex++;
+                    ProgressPercentage += progressStep;
+                    dataReader = DataProvider.Instance()
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, exportDto.ExportTime?.UtcDateTime);
+                    allUser =
+                        CBO.FillCollection<ExportUser>(dataReader).ToList();
+                } while (totalUsersExported < totalUsers);
+            }
+            finally
+            {
+                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new {skip = currentIndex}) : null;
+                CheckPointStageCallback(this);
+            }
+
             Result.AddSummary("Exported Users", totalUsersExported.ToString());
             Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
             Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
@@ -151,10 +194,10 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetMembershipImported = 0;
 
             var totalUsers = Repository.GetCount<ExportUser>();
-            var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
+            var progressStep = totalUsers < pageSize ? 100 : pageSize / totalUsers * 100;
             while (totalUsersImported < totalUsers)
             {
-                var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
+                var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                 foreach (var user in users)
                 {
                     if (CancellationToken.IsCancellationRequested) return;
@@ -319,6 +362,21 @@ namespace Dnn.ExportImport.Components.Services
                 repAspnetMembership.Insert(aspnetMembership);
                 //aspnetMembership.LocalId = aspnetMembership.UserId;
             }
+        }
+
+        private int GetCurrentSkip()
+        {
+            if (!string.IsNullOrEmpty(CheckPoint.StageData))
+            {
+                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
+                return Convert.ToInt32(stageData.skip) ?? 0;
+            }
+            return 0;
+        }
+
+        private int CalculateTotalPages(int totalUser, int pageSize)
+        {
+            return totalUser > pageSize ? (totalUser / pageSize + totalUser % pageSize) : 1;
         }
     }
 }

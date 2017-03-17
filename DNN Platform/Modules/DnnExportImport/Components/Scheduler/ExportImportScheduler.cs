@@ -33,7 +33,6 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Models;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;

@@ -54,6 +54,7 @@ namespace Dnn.ExportImport.Components.Repository
         {
             if (item == null) return null;
             var collection = DbCollection<T>();
+            collection.EnsureIndex(x => x.Id, true);
             item.ReferenceId = referenceId;
             item.Id = collection.Insert(item);
             if (referenceId.HasValue)
@@ -67,10 +68,12 @@ namespace Dnn.ExportImport.Components.Repository
         {
             var allItems = items.ToList();
             var collection = DbCollection<T>();
+            collection.EnsureIndex(x => x.Id, true);
             foreach (var item in allItems)
             {
                 item.ReferenceId = referenceId;
                 item.Id = collection.Insert(item);
+                collection.EnsureIndex(x => x.Id, true);
             }
 
             return allItems;
@@ -146,9 +149,10 @@ namespace Dnn.ExportImport.Components.Repository
         {
             if (item == null) return;
             var collection = DbCollection<T>();
-
+            collection.EnsureIndex(x => x.Id, true);
             if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
             collection.Update(item);
+            collection.EnsureIndex(x => x.Id, true);
             if (item.ReferenceId.HasValue)
             {
                 collection.EnsureIndex(x => x.ReferenceId);
@@ -158,10 +162,12 @@ namespace Dnn.ExportImport.Components.Repository
         public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
+            collection.EnsureIndex(x => x.Id, true);
             foreach (var item in items)
             {
                 if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
                 collection.Update(item);
+                collection.EnsureIndex(x => x.Id, true);
                 if (item.ReferenceId.HasValue)
                 {
                     collection.EnsureIndex(x => x.ReferenceId);
@@ -172,6 +178,7 @@ namespace Dnn.ExportImport.Components.Repository
         public bool DeleteItem<T>(int id) where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
+            collection.EnsureIndex(x => x.Id, true);
             var item = collection.FindById(id);
             if (item == null) throw new KeyNotFoundException();
             return collection.Delete(id);

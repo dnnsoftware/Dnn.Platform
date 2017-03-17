@@ -41,6 +41,8 @@ namespace Dnn.ExportImport.Components.Dto.Assets
         [IgnoreColumn]
         public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
+        [JsonIgnore]
+        [IgnoreColumn]
         public Guid UniqueId { get; set; }
         public Guid VersionGuid { get; set; }
 
