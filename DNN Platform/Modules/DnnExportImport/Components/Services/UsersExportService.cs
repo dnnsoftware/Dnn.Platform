@@ -342,10 +342,10 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore: //Just ignore the record
-                        Result.AddLogEntry("Ignored user portal", $"{username}/{userPortal.PortalId}");
+                        //Result.AddLogEntry("Ignored user portal", $"{username}/{userPortal.PortalId}");
                         return;
                     case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        Result.AddLogEntry("Ignored duplicate user portal", $"{username}/{userPortal.PortalId}");
+                        //Result.AddLogEntry("Ignored duplicate user portal", $"{username}/{userPortal.PortalId}");
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -357,14 +357,14 @@ namespace Dnn.ExportImport.Components.Services
             {
                 userPortal.UserPortalId = existingPortal.UserPortalId;
                 repUserPortal.Update(userPortal);
-                Result.AddLogEntry("Updated user portal", $"{username}/{userPortal.PortalId}");
+                //Result.AddLogEntry("Updated user portal", $"{username}/{userPortal.PortalId}");
             }
             else
             {
                 userPortal.UserPortalId = 0;
                 userPortal.CreatedDate = DateTime.UtcNow;
                 repUserPortal.Insert(userPortal);
-                Result.AddLogEntry("Added user portal", $"{username}/{userPortal.PortalId}");
+                //Result.AddLogEntry("Added user portal", $"{username}/{userPortal.PortalId}");
             }
             userPortal.LocalId = userPortal.UserPortalId;
         }

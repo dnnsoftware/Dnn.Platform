@@ -163,10 +163,10 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore: //Just ignore the record
-                            Result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
+                            //Result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
                             continue;
                         case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            Result.AddLogEntry("Ignored duplicate user role", $"{username}/{userRole.RoleName}");
+                            //Result.AddLogEntry("Ignored duplicate user role", $"{username}/{userRole.RoleName}");
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -189,7 +189,7 @@ namespace Dnn.ExportImport.Components.Services
                     userRole.CreatedOnDate = existingUserRole.CreatedOnDate;
                     userRole.UserRoleId = existingUserRole.UserRoleID;
                     repUserRoles.Update(userRole);
-                    Result.AddLogEntry("Updated user role", $"{username}/{userRole.RoleName}");
+                    //Result.AddLogEntry("Updated user role", $"{username}/{userRole.RoleName}");
                 }
                 else
                 {
@@ -199,7 +199,7 @@ namespace Dnn.ExportImport.Components.Services
                     userRole.CreatedByUserId = createdById;
                     userRole.CreatedOnDate = DateTime.UtcNow;
                     repUserRoles.Insert(userRole);
-                    Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
+                    //Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
                 }
                 userRole.LocalId = userRole.UserRoleId;
             }
@@ -224,10 +224,10 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore: //Just ignore the record
-                            Result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
+                            //Result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
                             continue;
                         case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            Result.AddLogEntry("Ignored duplicate user profile", userProfile.PropertyName);
+                            //Result.AddLogEntry("Ignored duplicate user profile", userProfile.PropertyName);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -240,7 +240,7 @@ namespace Dnn.ExportImport.Components.Services
                     userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
                     userProfile.ProfileId = existingUserProfile.ProfileId;
                     repUserProfile.Update(userProfile);
-                    Result.AddLogEntry("Updated user profile", $"{username}/{userProfile.PropertyName}");
+                    //Result.AddLogEntry("Updated user profile", $"{username}/{userProfile.PropertyName}");
                 }
                 else
                 {
@@ -252,7 +252,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     userProfile.PropertyDefinitionId = profileDefinitionId.Value;
                     repUserProfile.Insert(userProfile);
-                    Result.AddLogEntry("Added user profile", userProfile.PropertyName);
+                    //Result.AddLogEntry("Added user profile", userProfile.PropertyName);
                 }
                 userProfile.LocalId = userProfile.ProfileId;
             }
@@ -274,10 +274,10 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore: //Just ignore the record
-                        Result.AddLogEntry("Ignored user authentication", username);
+                        //Result.AddLogEntry("Ignored user authentication", username);
                         return;
                     case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        Result.AddLogEntry("Ignored duplicate user authentication", username);
+                        //Result.AddLogEntry("Ignored duplicate user authentication", username);
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -292,7 +292,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 userAuthentication.UserAuthenticationId = existingUserAuthenticaiton.UserAuthenticationID;
                 repUserAuthentication.Update(userAuthentication);
-                Result.AddLogEntry("Updated user authentication", username);
+                //Result.AddLogEntry("Updated user authentication", username);
             }
             else
             {
@@ -302,7 +302,7 @@ namespace Dnn.ExportImport.Components.Services
                 userAuthentication.CreatedOnDate = DateTime.UtcNow;
                 userAuthentication.CreatedByUserId = createdById;
                 repUserAuthentication.Insert(userAuthentication);
-                Result.AddLogEntry("Added user authentication", username);
+                //Result.AddLogEntry("Added user authentication", username);
             }
             userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
         }
