@@ -109,9 +109,15 @@ GO
 /***** DNN-9145: cleanup database. *****/
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%DotNetNuke.Modules.Taxonomy%'
 DELETE FROM {databaseOwner}[{objectQualifier}EventQueue] WHERE Attributes LIKE '%Dnn.Modules.SkinManagement%'
+GO
 
 UPDATE {databaseOwner}[{objectQualifier}Tabs] SET IsVisible = 0 WHERE TabPath = '//Admin//UserAccounts'
 GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}Files] 
+    WHERE PortalId IS NULL AND FileName IN ('GettingStartedFallback.png', 'GettingStartedFallback.htm', 'GettingStarted.css')                                                                                    
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
