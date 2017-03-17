@@ -128,7 +128,7 @@
                             <dnn:Label ID="lblTemplate" runat="server" ControlName="templateList" ResourceKey="WebsiteTemplate" />
                             <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
-                        <div class="dnnFormItem">
+                        <div id="languagesRow" runat="server" class="dnnFormItem">
                             <dnn:Label ID="lblLanguage" runat="server" ControlName="languageList" ResourceKey="Language" />
                             <dnn:DnnComboBox ID="languageList" runat="server" DataTextField="Text" DataValueField="Code">
                             </dnn:DnnComboBox>
