@@ -88,9 +88,12 @@ namespace Dnn.ExportImport.Components.Services
 
             var skip = GetCurrentSkip();
             var currentIndex = skip;
-            if (CheckPoint.Stage >= totalPages && skip == 0)
-                return;//Skip the export if all the users has been processed already.
 
+            //Skip the export if all the users has been processed already.
+            if (CheckPoint.Stage >= totalPages && skip == 0)
+                return;
+
+            //Check if there is any pending stage or partially processed data.
             if (CheckPoint.Stage > 0 || skip > 0)
             {
                 pageIndex = CheckPoint.Stage;
@@ -104,15 +107,16 @@ namespace Dnn.ExportImport.Components.Services
                 allUser = allUser.Skip(skip).ToList();
             }
 
-            var totalUsersToBeProcessed = totalUsers - pageIndex*pageSize - skip;
-            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize/totalUsersToBeProcessed*100;
+            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
             try
             {
                 do
                 {
+                    if (CheckCancelled(exportJob)) break;
                     foreach (var user in allUser)
                     {
-                    if (CheckCancelled(exportJob)) return;
+                        if (CheckCancelled(exportJob)) break;
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
                         var aspnetMembership =
@@ -152,23 +156,23 @@ namespace Dnn.ExportImport.Components.Services
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
                     }
+                    totalUsersExported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    if (CheckPointStageCallback(this)) return;
+                    if (CheckPointStageCallback(this)) break;
 
-                    totalUsersExported += allUser.Count;
                     pageIndex++;
                     ProgressPercentage += progressStep;
                     dataReader = DataProvider.Instance()
                         .GetAllUsers(portalId, pageIndex, pageSize, false, exportDto.ExportTime?.UtcDateTime);
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
-                } while (totalUsersExported < totalUsers);
+                } while (totalUsersExported < totalUsersToBeProcessed);
             }
             finally
             {
-                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new {skip = currentIndex}) : null;
+                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
             }
 
@@ -194,43 +198,78 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetMembershipImported = 0;
 
             var totalUsers = Repository.GetCount<ExportUser>();
-            var progressStep = totalUsers < pageSize ? 100 : pageSize / totalUsers * 100;
-            while (totalUsersImported < totalUsers)
+            var totalPages = CalculateTotalPages(totalUsers, pageSize);
+
+            var skip = GetCurrentSkip();
+            var currentIndex = skip;
+            //Skip the import if all the users has been processed already.
+            if (CheckPoint.Stage >= totalPages && skip == 0)
+                return;
+
+            pageIndex = CheckPoint.Stage;
+
+            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
+            try
             {
-                var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
-                foreach (var user in users)
+                while (totalUsersImported < totalUsersToBeProcessed)
                 {
-                    if (CheckCancelled(importJob)) return;
-                    using (var db = DataContext.Instance())
+                    if (CheckCancelled(importJob)) break;
+                    var users =
+                        Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
+                    skip = 0;
+                    foreach (var user in users)
                     {
-                        var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
-                        if (aspNetUser == null) continue;
+                        if (CheckCancelled(importJob)) break;
+                        using (var db = DataContext.Instance())
+                        {
+                            var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                            if (aspNetUser == null)
+                            {
+                                currentIndex++;
+                                continue;
+                            }
 
-                        var aspnetMembership =
-                            Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
-                        if (aspnetMembership == null) continue;
+                            var aspnetMembership =
+                                Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                            if (aspnetMembership == null)
+                            {
+                                currentIndex++;
+                                continue;
+                            }
 
-                        var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                        ProcessUser(importJob, exportDto, db, user, userPortal, aspNetUser, aspnetMembership);
-                        totalAspnetUserImported += 1;
-                        totalAspnetMembershipImported += 1;
-                        ProcessUserPortal(importJob, exportDto, db, userPortal, user.UserId, user.Username);
-                        totalPortalsImported += userPortal != null ? 1 : 0;
+                            var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
+                            ProcessUser(importJob, exportDto, db, user, userPortal, aspNetUser, aspnetMembership);
+                            totalAspnetUserImported += 1;
+                            totalAspnetMembershipImported += 1;
+                            ProcessUserPortal(importJob, exportDto, db, userPortal, user.UserId, user.Username);
+                            totalPortalsImported += userPortal != null ? 1 : 0;
 
-                        //Update the source repository local ids.
-                        Repository.UpdateItem(user);
-                        Repository.UpdateItem(userPortal);
+                            //Update the source repository local ids.
+                            Repository.UpdateItem(user);
+                            Repository.UpdateItem(userPortal);
+                        }
+                        currentIndex++;
                     }
+                    totalUsersImported += currentIndex;
+                    currentIndex = 0;
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    if (CheckPointStageCallback(this)) break;
+
+                    ProgressPercentage += progressStep;
+                    pageIndex++;
                 }
-                totalUsersImported += pageSize > users.Count ? users.Count : pageSize;
-                ProgressPercentage += progressStep;
-                pageIndex++;
+            }
+            finally
+            {
+                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                CheckPointStageCallback(this);
             }
             Result.AddSummary("Imported Users", totalUsersImported.ToString());
             Result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
             Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
             Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
-
         }
 
         private void ProcessUser(ExportImportJob importJob, ExportDto exportDto, IDataContext db, ExportUser user,
@@ -376,7 +415,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private int CalculateTotalPages(int totalUser, int pageSize)
         {
-            return totalUser > pageSize ? (totalUser / pageSize + totalUser % pageSize) : 1;
+            return totalUser % pageSize == 0 ? totalUser / pageSize : totalUser / pageSize + 1;
         }
     }
 }
