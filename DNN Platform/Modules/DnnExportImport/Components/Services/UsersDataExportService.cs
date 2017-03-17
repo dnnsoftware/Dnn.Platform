@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
+using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -66,6 +67,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
+            if (CheckCancelled(importJob)) return;
+
             ProgressPercentage = 0;
             var pageIndex = 0;
             const int pageSize = 1000;
@@ -74,40 +77,65 @@ namespace Dnn.ExportImport.Components.Services
             var totalAuthenticationImported = 0;
             var totalProcessed = 0;
             var totalUsers = Repository.GetCount<ExportUser>();
-            var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
-            while (totalProcessed < totalUsers)
+            var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
+            var skip = GetCurrentSkip();
+            var currentIndex = skip;
+            //Skip the import if all the users has been processed already.
+            if (CheckPoint.Stage >= totalPages && skip == 0)
+                return;
+
+            pageIndex = CheckPoint.Stage;
+
+            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
+            try
             {
-                if (CheckCancelled(importJob)) return;
-                var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
-                foreach (var user in users)
+                while (totalProcessed < totalUsersToBeProcessed)
                 {
-                    if (CheckCancelled(importJob)) return;
-                    var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
-                    var userAuthentication =
-                        Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                    var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
-
-                    using (var db = DataContext.Instance())
+                    if (CheckCancelled(importJob)) break;
+                    var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
+                    skip = 0;
+                    foreach (var user in users)
                     {
-                        ProcessUserRoles(importJob, exportDto, db, userRoles, user.UserId, user.Username);
-                        totalUserRolesImported += userRoles.Count;
+                        if (CheckCancelled(importJob)) break;
+                        var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                        var userAuthentication =
+                            Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                        var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
 
-                        ProcessUserProfiles(importJob, exportDto, db, userProfiles, user.UserId, user.Username);
-                        totalProfilesImported += userProfiles.Count;
+                        using (var db = DataContext.Instance())
+                        {
+                            ProcessUserRoles(importJob, exportDto, db, userRoles, user.UserId, user.Username);
+                            totalUserRolesImported += userRoles.Count;
 
-                        ProcessUserAuthentications(importJob, exportDto, db, userAuthentication, user.UserId, user.Username);
-                        if (userAuthentication != null) totalAuthenticationImported++;
-                        //Update the source repository local ids.
-                        Repository.UpdateItems(userRoles);
-                        Repository.UpdateItems(userProfiles);
-                        Repository.UpdateItem(userAuthentication);
-                        DataProvider.Instance()
-                            .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
+                            ProcessUserProfiles(importJob, exportDto, db, userProfiles, user.UserId, user.Username);
+                            totalProfilesImported += userProfiles.Count;
+
+                            ProcessUserAuthentications(importJob, exportDto, db, userAuthentication, user.UserId, user.Username);
+                            if (userAuthentication != null) totalAuthenticationImported++;
+                            //Update the source repository local ids.
+                            Repository.UpdateItems(userRoles);
+                            Repository.UpdateItems(userProfiles);
+                            Repository.UpdateItem(userAuthentication);
+                            DataProvider.Instance()
+                                .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
+                        }
+                        currentIndex++;
                     }
+                    totalProcessed += currentIndex;
+                    currentIndex = 0;
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    if (CheckPointStageCallback(this)) break;
+
+                    ProgressPercentage += progressStep;
+                    pageIndex++;
                 }
-                totalProcessed += pageSize > users.Count ? users.Count : pageSize;
-                ProgressPercentage += progressStep;
-                pageIndex++;
+            }
+            finally
+            {
+                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                CheckPointStageCallback(this);
             }
             Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
             Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
@@ -152,7 +180,7 @@ namespace Dnn.ExportImport.Components.Services
                 userRole.RoleId = roleId.Value;
                 userRole.LastModifiedOnDate = DateTime.UtcNow;
                 userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?) DateTime.UtcNow
+                    ? (DateTime?)DateTime.UtcNow
                     : null;
                 userRole.LastModifiedByUserId = modifiedById;
                 if (isUpdate)
@@ -269,14 +297,24 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 userAuthentication.UserAuthenticationId = 0;
-                   var createdById = Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
-                    userAuthentication.CreatedByUserName);
+                var createdById = Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
+                 userAuthentication.CreatedByUserName);
                 userAuthentication.CreatedOnDate = DateTime.UtcNow;
                 userAuthentication.CreatedByUserId = createdById;
                 repUserAuthentication.Insert(userAuthentication);
                 Result.AddLogEntry("Added user authentication", username);
             }
             userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
+        }
+
+        private int GetCurrentSkip()
+        {
+            if (!string.IsNullOrEmpty(CheckPoint.StageData))
+            {
+                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
+                return Convert.ToInt32(stageData.skip) ?? 0;
+            }
+            return 0;
         }
     }
 }

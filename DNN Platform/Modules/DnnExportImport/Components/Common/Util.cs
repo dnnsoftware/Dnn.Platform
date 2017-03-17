@@ -54,5 +54,10 @@ namespace Dnn.ExportImport.Components.Common
             var property = ProfileController.GetPropertyDefinitionByName(portalId, exportProfilePropertyname);
             return property?.PropertyDefinitionId;
         }
+
+        public static int CalculateTotalPages(int totalRecords, int pageSize)
+        {
+            return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
+        }
     }
 }

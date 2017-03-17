@@ -84,7 +84,7 @@ namespace Dnn.ExportImport.Components.Services
             if (firstOrDefault == null) return;
 
             var totalUsers = allUser.Any() ? firstOrDefault.Total : 0;
-            var totalPages = CalculateTotalPages(totalUsers, pageSize);
+            var totalPages =Util.CalculateTotalPages(totalUsers, pageSize);
 
             var skip = GetCurrentSkip();
             var currentIndex = skip;
@@ -198,7 +198,7 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetMembershipImported = 0;
 
             var totalUsers = Repository.GetCount<ExportUser>();
-            var totalPages = CalculateTotalPages(totalUsers, pageSize);
+            var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
             var skip = GetCurrentSkip();
             var currentIndex = skip;
@@ -411,11 +411,6 @@ namespace Dnn.ExportImport.Components.Services
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
-        }
-
-        private int CalculateTotalPages(int totalUser, int pageSize)
-        {
-            return totalUser % pageSize == 0 ? totalUser / pageSize : totalUser / pageSize + 1;
         }
     }
 }
