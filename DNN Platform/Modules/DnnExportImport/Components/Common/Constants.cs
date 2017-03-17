@@ -50,6 +50,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string Category_Users = "USERS";
         internal const string Category_UsersData = "USERS_DATA";
         internal const string Category_Vocabularies = "VOCABULARIES";
+        internal const string Category_Assets = "ASSETS";
         internal const string Category_Roles = "ROLES";
         internal const string Category_Pages = "PAGES";
         internal const string Category_Portal = "PORTAL";

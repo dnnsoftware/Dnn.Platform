@@ -895,7 +895,7 @@ AS
         WHEN @SinceDate IS NULL THEN 0
         WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
         ELSE ISNULL(F.LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
-    ORDER BY F.PortalID, F.FolderPath
+    ORDER BY F.PortalID, F.CreatedOnDate, F.FolderPath
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
