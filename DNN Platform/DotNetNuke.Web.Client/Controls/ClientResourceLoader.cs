@@ -107,7 +107,7 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
     
     if(window.dnnLoadScriptsInAjaxMode.length > 0){
         window.loadingScriptsInAsyncRequest = true;
-        if(isFirefox){
+        if(isFirefox || window['forceLoadScriptsInSingleMode'] === true){
             loadScriptInSingleMode();
         } else {
             loadScriptInMultipleMode();
@@ -128,7 +128,7 @@ if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
             if(window.dnnLoadScriptsInAjaxMode.length == 0){
                 window.loadingScriptsInAsyncRequest = false;
                 $(window).trigger('dnnScriptLoadComplete');
-            }else if(isFirefox){
+            }else if(isFirefox || window['forceLoadScriptsInSingleMode'] === true){
                 loadScriptInSingleMode();
             }
         }
