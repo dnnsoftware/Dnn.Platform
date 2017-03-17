@@ -187,7 +187,7 @@ namespace Dnn.ExportImport.Components.Engines
                 if (exportJob.JobStatus == JobStatus.InProgress)
                 {
                     exportJob.JobStatus = JobStatus.DoneSuccess;
-                    SetLastJobStartTime(scheduleHistoryItem.ScheduleID, DateTimeOffset.UtcNow);
+                    SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }
 
                 finfo = new FileInfo(finfo.FullName); // refresh to get new size

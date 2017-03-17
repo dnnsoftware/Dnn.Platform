@@ -64,6 +64,14 @@ namespace Dnn.ExportImport.Components.Entities
             CompletedOnDate = Null.SetNullDateTime(dr[nameof(CompletedOnDate)]);
             ExportFile = Null.SetNullString(dr[nameof(ExportFile)]);
             JobObject = Null.SetNullString(dr[nameof(JobObject)]);
+
+            if (CreatedOnDate.Kind != DateTimeKind.Utc)
+            {
+                CreatedOnDate = new DateTime(
+                    CreatedOnDate.Year, CreatedOnDate.Month, CreatedOnDate.Day,
+                    CreatedOnDate.Hour, CreatedOnDate.Minute, CreatedOnDate.Second,
+                    DateTimeKind.Utc);
+            }
         }
     }
 }
