@@ -27,7 +27,6 @@ using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Permissions;
-using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Providers
 {
@@ -36,6 +35,8 @@ namespace Dnn.ExportImport.Components.Providers
         #region Shared/Static Methods
 
         private static readonly DataProvider Provider;
+
+        private readonly DotNetNuke.Data.DataProvider _dataProvider = DotNetNuke.Data.DataProvider.Instance();
 
         static DataProvider()
         {
@@ -58,7 +59,7 @@ namespace Dnn.ExportImport.Components.Providers
 
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
-            return PlatformDataProvider.Instance().ExecuteScalar<int>(
+            return _dataProvider.ExecuteScalar<int>(
                 "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
         }
 
@@ -68,194 +69,194 @@ namespace Dnn.ExportImport.Components.Providers
             if (jobStatus == JobStatus.DoneFailure || jobStatus == JobStatus.DoneSuccess)
                 completeDate = DateTime.UtcNow;
 
-            PlatformDataProvider.Instance()
+            _dataProvider
                 .ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
         }
 
         public void SetJobCancelled(int jobId)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
+            _dataProvider.ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
         }
 
         public void RemoveJob(int jobId)
         {
             // using 60 sec timeout because cascading deletes in logs might take a lot of time
-            PlatformDataProvider.Instance().ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
+            _dataProvider.ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
         }
 
         public IDataReader GetFirstActiveJob()
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");
+            return _dataProvider.ExecuteReader("ExportImportJobs_FirstActive");
         }
 
         public IDataReader GetJobById(int jobId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_GetById", jobId);
+            return _dataProvider.ExecuteReader("ExportImportJobs_GetById", jobId);
         }
 
         public IDataReader GetJobSummaryLog(int jobId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobLogs_Summary", jobId);
+            return _dataProvider.ExecuteReader("ExportImportJobLogs_Summary", jobId);
         }
 
         public IDataReader GetJobFullLog(int jobId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobLogs_Full", jobId);
+            return _dataProvider.ExecuteReader("ExportImportJobLogs_Full", jobId);
         }
 
         public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
-            return PlatformDataProvider.Instance()
+            return _dataProvider
                 .ExecuteReader("ExportImportJobs_GetAll", portalId, pageSize, pageIndex);
         }
 
         public IDataReader GetJobChekpoints(int jobId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
+            return _dataProvider.ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
         }
 
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportCheckpoints_Upsert",
+            _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.Category, checkpoint.Stage, checkpoint.StageData);
         }
 
         public IDataReader GetAllScopeTypes()
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_ScopeTypes");
+            return _dataProvider.ExecuteReader("ExportTaxonomy_ScopeTypes");
         }
 
         public IDataReader GetAllVocabularyTypes()
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_VocabularyTypes");
+            return _dataProvider.ExecuteReader("ExportTaxonomy_VocabularyTypes");
         }
 
-        public IDataReader GetAllTerms(DateTime? sinceDate)
+        public IDataReader GetAllTerms(DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Terms", sinceDate);
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Terms", tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetAllVocabularies(DateTime? sinceDate)
+        public IDataReader GetAllVocabularies(DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("ExportTaxonomy_Vocabularies", sinceDate);
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetAllRoleGroups(int portalId, DateTime? sinceDate)
+        public IDataReader GetAllRoleGroups(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleGroups", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_RoleGroups", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetAllRoles(int portalId, DateTime? sinceDate)
+        public IDataReader GetAllRoles(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_Roles", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_Roles", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetAllRoleSettings(int portalId, DateTime? sinceDate)
+        public IDataReader GetAllRoleSettings(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_RoleSettings", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime? sinceDate)
+        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance()
-                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, sinceDate);
+            return _dataProvider
+                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
         public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery(
+            _dataProvider.ExecuteNonQuery(
                 "Export_UpdateRoleGroupChangers", roleGroupId, createdBy, modifiedBy);
         }
 
         public void UpdateRoleChangers(int roleId, int createdBy, int modifiedBy)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery(
+            _dataProvider.ExecuteNonQuery(
                 "Export_UpdateRoleChangers", roleId, createdBy, modifiedBy);
         }
 
         public void UpdateRoleSettingChangers(int roleId, string settingName, int createdBy, int modifiedBy)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery(
+            _dataProvider.ExecuteNonQuery(
                 "Export_UpdateRoleSettingChangers", roleId, settingName, createdBy, modifiedBy);
         }
 
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted,
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime tillDate,
             DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance()
-                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, sinceDate);
+            return _dataProvider
+                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
         public IDataReader GetAspNetUser(string username)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetAspNetUser", username);
+            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
         }
 
         public IDataReader GetUserMembership(Guid userId, Guid applicationId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserMembership", userId, applicationId);
+            return _dataProvider.ExecuteReader("Export_GetUserMembership", userId, applicationId);
         }
 
         public IDataReader GetUserRoles(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserRoles", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserRoles", portalId, userId);
         }
 
         public IDataReader GetUserPortal(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserPortal", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserPortal", portalId, userId);
         }
 
         public IDataReader GetUserAuthentication(int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("GetUserAuthentication", userId);
+            return _dataProvider.ExecuteReader("GetUserAuthentication", userId);
         }
 
         public IDataReader GetUserProfile(int portalId, int userId)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetUserProfile", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
         {
-            PlatformDataProvider.Instance().ExecuteNonQuery(
+            _dataProvider.ExecuteNonQuery(
                 "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
         }
 
-        public IDataReader GetPortalSettings(int portalId, DateTime? sinceDate)
+        public IDataReader GetPortalSettings(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalSettings", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetPortalLanguages(int portalId, DateTime? sinceDate)
+        public IDataReader GetPortalLanguages(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalLanguages", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetPortalLocalizations(int portalId, DateTime? sinceDate)
+        public IDataReader GetPortalLocalizations(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetPortalLocalizations", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetPortalLocalizations", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetFolders(int portalId, DateTime? sinceDate)
+        public IDataReader GetFolders(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetFolders", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetFolders", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime? sinceDate)
+        public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance()
-                .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, sinceDate);
+            return _dataProvider
+                .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetFolderMappings(int portalId, DateTime? sinceDate)
+        public IDataReader GetFolderMappings(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetFolderMappings", portalId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public IDataReader GetFiles(int portalId, int folderId, DateTime? sinceDate)
+        public IDataReader GetFiles(int portalId, int folderId, DateTime tillDate, DateTime? sinceDate)
         {
-            return PlatformDataProvider.Instance().ExecuteReader("Export_GetFiles", portalId, folderId, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
         public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
@@ -266,7 +267,7 @@ namespace Dnn.ExportImport.Components.Providers
                     DataCache.PermissionsCachePriority),
                     c =>
                         CBO.FillCollection<PermissionInfo>(
-                            PlatformDataProvider.Instance().ExecuteReader("GetPermissions")))
+                            _dataProvider.ExecuteReader("GetPermissions")))
                     .FirstOrDefault(x => x.PermissionCode == permissionCode &&
                                          x.PermissionKey == permissionKey
                                          && x.PermissionName == permissionName)?.PermissionID;

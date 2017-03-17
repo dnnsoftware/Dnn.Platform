@@ -67,6 +67,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalId = exportJob.PortalId;
                 var sinceDate = exportDto.ExportTime?.UtcDateTime;
+                var tillDate = exportJob.CreatedOnDate;
                 ProgressPercentage = 0;
                 var portal = PortalController.Instance.GetPortal(portalId);
 
@@ -76,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var folders =
                     CBO.FillCollection<ExportFolder>(DataProvider.Instance()
-                        .GetFolders(portalId, sinceDate)).ToList();
+                        .GetFolders(portalId, tillDate, sinceDate)).ToList();
                 var totalFolders = folders.Any() ? folders.Count : 0;
 
                 var portalAssetsFile = string.Format(_assetsFolder, exportJob.ExportFile, "Portal");
@@ -100,11 +101,11 @@ namespace Dnn.ExportImport.Components.Services
                     var isUserFolder = false;
                     var permissions =
                         CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                            .GetFolderPermissionsByPath(portalId, folder.FolderPath, sinceDate));
+                            .GetFolderPermissionsByPath(portalId, folder.FolderPath, tillDate, sinceDate));
                     var files =
                         CBO.FillCollection<ExportFile>(
                             DataProvider.Instance()
-                                .GetFiles(portalId, folder.FolderId, sinceDate));
+                                .GetFiles(portalId, folder.FolderId, tillDate, sinceDate));
                     int? userId;
                     if (IsUserFolder(folder.FolderPath, out userId))
                     {
@@ -152,7 +153,7 @@ namespace Dnn.ExportImport.Components.Services
                 //TODO: Check if we need this step or not.
                 //var folderMappings =
                 //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
-                //        .GetFolderMappings(portalId, sinceDate)).ToList();
+                //        .GetFolderMappings(portalId,tillDate, sinceDate)).ToList();
                 //Repository.CreateItems(folderMappings, null);
 
                 //Finish and Close Zip file
@@ -226,7 +227,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     //Stage 2 starts
                     var localFolders =
-                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, null)).ToList();
+                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateTime.UtcNow.AddYears(1), null)).ToList();
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
@@ -256,7 +257,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //File local files in the system related to the folder path.
                                 var localPermissions =
                                     CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, null));
+                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, DateTime.UtcNow.AddYears(1), null));
 
                                 foreach (var folderPermission in sourceFolderPermissions)
                                 {
@@ -279,7 +280,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //File local files in the system related to the folder
                                 var localFiles =
                                     CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                        .GetFiles(portalId, sourceFolder.FolderId, null));
+                                        .GetFiles(portalId, sourceFolder.FolderId, DateTime.UtcNow.AddYears(1), null));
 
                                 foreach (var file in sourceFiles)
                                 {

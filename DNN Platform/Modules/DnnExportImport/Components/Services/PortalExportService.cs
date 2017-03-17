@@ -57,6 +57,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
+            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var tillDate = exportJob.CreatedOnDate;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 1) return;
             if (CheckCancelled(exportJob)) return;
@@ -64,7 +66,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 0)
             {
                 var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
-                    .GetPortalSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                    .GetPortalSettings(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(portalSettings, null);
                 Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
                 ProgressPercentage = 50;
@@ -77,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 var portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
-                    .GetPortalLanguages(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                    .GetPortalLanguages(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(portalLanguages, null);
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
                 ProgressPercentage = 100;
@@ -93,7 +95,7 @@ namespace Dnn.ExportImport.Components.Services
                 var portalLocalization =
                    CBO.FillCollection<ExportPortalLocalization>(
                        DataProvider.Instance()
-                           .GetPortalLocalizations(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                           .GetPortalLocalizations(exportJob.PortalId,tillDate, sinceDate));
                 Repository.CreateItems(portalLocalization, null);
                 Result.AddSummary("Exported Portal Localizations", portalLocalization.Count.ToString());
                 ProgressPercentage += 40;
@@ -136,7 +138,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalSettings =
-                    CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, null));
+                    CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, DateTime.UtcNow.AddYears(1), null));
                 foreach (var exportPortalSetting in portalSettings)
                 {
                     if (CheckCancelled(importJob)) return;
@@ -200,7 +202,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalLanguages =
-                    CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, null));
+                    CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, DateTime.UtcNow.AddYears(1), null));
                 var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
                 foreach (var exportPortalLanguage in portalLanguages)
                 {
@@ -266,7 +268,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalLocalizations =
-                    CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(portalId, null));
+                    CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(portalId,DateTime.UtcNow.AddYears(1), null));
                 foreach (var exportPortalLocalization in portalLocalizations)
                 {
                     if (CancellationToken.IsCancellationRequested) return;

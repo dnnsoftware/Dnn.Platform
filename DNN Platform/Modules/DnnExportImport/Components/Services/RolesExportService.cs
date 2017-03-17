@@ -55,6 +55,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
+            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var tillDate = exportJob.CreatedOnDate;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 2) return;
 
@@ -62,7 +64,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
-                    DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                    DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roleGroups, null);
                 Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
                 ProgressPercentage = 30;
@@ -75,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 var roles = CBO.FillCollection<ExportRole>(
-                    DataProvider.Instance().GetAllRoles(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                    DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roles, null);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
                 ProgressPercentage = 80;
@@ -88,7 +90,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 var roleSettings = CBO.FillCollection<ExportRoleSetting>(
-                    DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
+                    DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roleSettings, null);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 ProgressPercentage = 100;
@@ -147,7 +149,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changedGroups = new List<RoleGroupItem>();
             var portalId = importJob.PortalId;
-            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, null));
+            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, DateTime.UtcNow.AddYears(1), null));
             foreach (var other in otherRoleGroups)
             {
                 if (CheckCancelled(importJob)) return;

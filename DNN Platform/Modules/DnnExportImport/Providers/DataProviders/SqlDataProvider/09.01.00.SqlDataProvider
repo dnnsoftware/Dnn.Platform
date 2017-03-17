@@ -493,6 +493,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@PageIndex       int,
 	@PageSize        int,
 	@IncludeDeleted  bit,
+	@TillDate datetime,
 	@SinceDate		 datetime=NULL
 AS
 BEGIN
@@ -513,6 +514,10 @@ BEGIN
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
 			ELSE U.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+			AND (CASE
+			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
+			ELSE U.LastModifiedOnDate END)<= @TillDate
+			
 	)
 	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
 		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
@@ -646,6 +651,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
 	@PortalID	int,
 	@IncludeDeleted bit = 0,
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*
@@ -653,10 +659,13 @@ AS
 	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
 	AND PPD.Deleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 	AND
-			(CASE
-			WHEN @SinceDate IS NULL THEN 0
-			WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
-			ELSE PPD.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+		(CASE
+		WHEN @SinceDate IS NULL THEN 0
+		WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
+		ELSE PPD.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+		WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
+		ELSE PPD.LastModifiedOnDate END)<= @TillDate
 	ORDER BY ViewOrder
 GO
 
@@ -691,6 +700,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT
@@ -703,6 +713,9 @@ AS
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
 			ELSE t.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
+			ELSE t.LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
@@ -710,6 +723,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT
@@ -722,6 +736,9 @@ AS
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
 			ELSE v.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
+			ELSE v.LastModifiedOnDate END)<= @TillDate
 GO
 
 -- Roles Import/Export
@@ -731,6 +748,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 	@PortalID int,
+	@TillDate datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -745,6 +763,9 @@ AS
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
 		ELSE rg.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
+			ELSE rg.LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
@@ -753,6 +774,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
 	@PortalID int,
+	@TillDate datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -768,6 +790,9 @@ AS
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate
 		ELSE r.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate
+			ELSE r.LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
@@ -776,6 +801,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
 	@PortalID int,
+	@TillDate datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -791,6 +817,9 @@ AS
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate
 		ELSE rs.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate
+			ELSE rs.LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
@@ -857,6 +886,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
 	@PortalID	int,
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
@@ -868,6 +898,9 @@ AS
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
 		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
@@ -876,6 +909,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
 	@PortalID	int,
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT	PL.*,{databaseOwner}[{objectQualifier}UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
@@ -888,6 +922,9 @@ AS
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate
 			ELSE PL.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate
+			ELSE PL.LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]', 'P') IS NOT NULL
@@ -896,6 +933,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
 	@PortalID	int,
+	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
@@ -907,6 +945,9 @@ AS
 		WHEN @SinceDate IS NULL THEN 0
 		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
 		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @TillDate
 GO
 
 --Assets
@@ -916,6 +957,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
     @PortalID    int,
+	@TillDate datetime,
     @SinceDate    datetime=NULL
 AS
     SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](F.LastModifiedByUserId) LastModifiedByUserName
@@ -927,7 +969,10 @@ AS
         WHEN @SinceDate IS NULL THEN 0
         WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
         ELSE ISNULL(F.LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
-    ORDER BY F.PortalID, F.CreatedOnDate, F.FolderPath
+    AND (CASE
+			WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate
+			ELSE F.LastModifiedOnDate END)<= @TillDate
+	ORDER BY F.PortalID, F.CreatedOnDate, F.FolderPath
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
@@ -936,6 +981,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
     @PortalID    int,
+	@TillDate datetime,
     @SinceDate    datetime=NULL
 AS
     SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
@@ -947,7 +993,10 @@ AS
         WHEN @SinceDate IS NULL THEN 0
         WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
         ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
-    ORDER BY [Priority]
+    AND (CASE
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)<= @TillDate
+	ORDER BY [Priority]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]', 'P') IS NOT NULL
@@ -957,7 +1006,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
     @PortalID    int,
 	@FolderPath nvarchar(300),
-    @SinceDate    datetime=NULL
+	@TillDate datetime,
+	@SinceDate    datetime=NULL
 AS
     SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
@@ -968,6 +1018,9 @@ AS
         WHEN @SinceDate IS NULL THEN 0
         WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
         ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @TillDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
@@ -977,6 +1030,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
     @PortalID    int,
     @FolderID Int,
+	@TillDate datetime,
 	@SinceDate    datetime=NULL
 AS
     SELECT F.*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
@@ -988,5 +1042,8 @@ AS
         WHEN @SinceDate IS NULL THEN 0
         WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
         ELSE F.LastModifiedOnDate END)>= ISNULL(@SinceDate,0)
+	AND (CASE
+			WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate
+			ELSE F.LastModifiedOnDate END)<= @TillDate
     ORDER BY [FolderID], [FileName]
 GO

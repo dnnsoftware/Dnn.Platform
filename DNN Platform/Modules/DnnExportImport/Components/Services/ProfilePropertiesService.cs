@@ -51,6 +51,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
+            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var tillDate = exportJob.CreatedOnDate;
             if (CheckCancelled(exportJob)) return;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
@@ -60,8 +62,8 @@ namespace Dnn.ExportImport.Components.Services
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
-                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions,
-                            exportDto.ExportTime?.UtcDateTime)).ToList();
+                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, tillDate,
+                            sinceDate)).ToList();
             ProgressPercentage = 50;
 
             if (CheckCancelled(exportJob)) return;

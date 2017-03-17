@@ -56,6 +56,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
+            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var tillDate = exportJob.CreatedOnDate;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 3) return;
 
@@ -86,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 2)
             {
                 if (CheckCancelled(exportJob)) return;
-                var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
+                var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyTerms, null);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
                 ProgressPercentage = 75;
@@ -99,7 +101,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(exportJob)) return;
                 var taxonomyVocabularies =
-                    CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
+                    CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyVocabularies, null);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
                 ProgressPercentage = 100;
@@ -170,7 +172,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changed = false;
             var dataService = Util.GetDataService();
-            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(null));
+            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(DateTime.UtcNow.AddYears(1), null));
             foreach (var other in otherVocabularies)
             {
                 if (CheckCancelled(importJob)) return;
@@ -229,7 +231,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(null));
+            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(DateTime.UtcNow.AddYears(1), null));
             foreach (var other in otherTaxonomyTerms)
             {
                 if (CheckCancelled(importJob)) return;
