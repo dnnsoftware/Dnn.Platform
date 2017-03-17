@@ -64,27 +64,44 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT
 GO
 
 -- Users Import/Export
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]', 'P') IS NOT NULL
+IF object_id(N'{databaseOwner}[{objectQualifier}UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserName]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
 GO
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]', 'P') IS NOT NULL
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAspNetUser]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserMembership]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserRoles]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
+--Profile Properties
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
 GO
 
 -- Taxonomy Import/Export
@@ -127,4 +144,34 @@ GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+GO
+
+--Portals Export/Import
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+GO
+
+-- Assets
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
 GO
