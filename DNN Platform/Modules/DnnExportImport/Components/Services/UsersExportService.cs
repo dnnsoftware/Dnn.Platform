@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
@@ -112,7 +112,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     foreach (var user in allUser)
                     {
-                        if (CancellationToken.IsCancellationRequested) return;
+                    if (CheckCancelled(exportJob)) return;
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
                         var aspnetMembership =
@@ -183,7 +183,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
 
             ProgressPercentage = 0;
             var pageIndex = 0;
@@ -200,7 +200,7 @@ namespace Dnn.ExportImport.Components.Services
                 var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                 foreach (var user in users)
                 {
-                    if (CancellationToken.IsCancellationRequested) return;
+                    if (CheckCancelled(importJob)) return;
                     using (var db = DataContext.Instance())
                     {
                         var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();

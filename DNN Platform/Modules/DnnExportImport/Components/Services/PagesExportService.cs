@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
             ProgressPercentage = 0;
             var selectedPages = exportDto.Pages.Where(pg => pg.CheckedState == TriCheckedState.Checked).ToList();
             var totalExported = ProcessPages(exportJob, exportDto, selectedPages);
@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
             ProgressPercentage = 0;
             //TODO
         }
@@ -79,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var page in selectedPages.OrderBy(pg => pg.TabId))
             {
-                if (CancellationToken.IsCancellationRequested) break;
+                if (CheckCancelled(exportJob)) break;
 
                 var tab = tabController.GetTab(portalId, page.TabId);
                 if (!tabController.IsTabPublished(tab)) continue;

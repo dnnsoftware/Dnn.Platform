@@ -60,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 0)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(roleGroups, null);
@@ -73,7 +73,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 1)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(roles, null);
@@ -86,7 +86,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 2)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var roleSettings = CBO.FillCollection<ExportRoleSetting>(
                     DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(roleSettings, null);
@@ -103,7 +103,7 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 2) return;
 
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
             var otherRoleGroups = Repository.GetAllItems<ExportRoleGroup>().ToList();
             if (CheckPoint.Stage == 0)
             {
@@ -115,7 +115,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckPointStageCallback(this)) return;
             }
 
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
             var otherRoles = Repository.GetAllItems<ExportRole>().ToList();
             if (CheckPoint.Stage == 1)
             {
@@ -130,7 +130,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 2)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var otherRoleSettings = Repository.GetAllItems<ExportRoleSetting>().ToList();
                 ProcessRoleSettings(importJob, exportDto, otherRoles, otherRoleSettings);
                 Repository.UpdateItems(otherRoleSettings);
@@ -150,7 +150,7 @@ namespace Dnn.ExportImport.Components.Services
             var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, null));
             foreach (var other in otherRoleGroups)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localRoleGroups.FirstOrDefault(t => t.RoleGroupName == other.RoleGroupName);
@@ -206,7 +206,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoles)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var localRoleInfo = RoleController.Instance.GetRoleByName(portalId, other.RoleName);
@@ -299,7 +299,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoleSettings)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var otherRole = otherRoles.FirstOrDefault(r => r.RoleID == other.RoleID);

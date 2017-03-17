@@ -51,10 +51,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
 
             //TODO: Verify that profile properties stores created on and modified on info in UTC or local
             var profileProperties =
@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Services
                             exportDto.ExportTime?.UtcDateTime)).ToList();
             ProgressPercentage = 50;
 
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
             Repository.CreateItems(profileProperties, null);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             ProgressPercentage = 100;
@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var profileProperty in profileProperties)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 using (var db = DataContext.Instance())
                 {
                     var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()

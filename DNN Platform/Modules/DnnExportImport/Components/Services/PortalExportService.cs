@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 1) return;
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(exportJob)) return;
 
             if (CheckPoint.Stage == 0)
             {
@@ -75,7 +75,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 1)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                     .GetPortalLanguages(exportJob.PortalId, exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(portalLanguages, null);
@@ -139,7 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                     CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, null));
                 foreach (var exportPortalSetting in portalSettings)
                 {
-                    if (CancellationToken.IsCancellationRequested) return;
+                    if (CheckCancelled(importJob)) return;
                     var createdBy = Util.GetUserIdOrName(importJob, exportPortalSetting.CreatedByUserId,
                         exportPortalSetting.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalSetting.LastModifiedByUserId,
@@ -204,7 +204,7 @@ namespace Dnn.ExportImport.Components.Services
                 var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
                 foreach (var exportPortalLanguage in portalLanguages)
                 {
-                    if (CancellationToken.IsCancellationRequested) return;
+                    if (CheckCancelled(importJob)) return;
                     var createdBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.CreatedByUserId,
                         exportPortalLanguage.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.LastModifiedByUserId,

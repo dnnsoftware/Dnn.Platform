@@ -115,7 +115,7 @@ namespace Dnn.ExportImport.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export.
+        ///   Looks up a localized string similar to Site Export.
         /// </summary>
         internal static string JobType_Export_Text {
             get {
@@ -124,7 +124,7 @@ namespace Dnn.ExportImport.App_LocalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import.
+        ///   Looks up a localized string similar to Site Import.
         /// </summary>
         internal static string JobType_Import_Text {
             get {

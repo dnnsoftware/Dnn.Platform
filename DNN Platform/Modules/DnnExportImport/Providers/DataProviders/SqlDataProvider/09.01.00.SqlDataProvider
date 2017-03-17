@@ -65,6 +65,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NUL
 		[PortalId]           int NOT NULL,
 		[JobType]            int NOT NULL,
 		[JobStatus]          int NOT NULL DEFAULT 0,
+		[IsCancelled]		 bit NOT NULL DEFAULT 0,
 		[CreatedByUserID]    int NOT NULL,
 		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
 		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
@@ -243,6 +244,24 @@ BEGIN
 		JobStatus = @JobStatus,
 		LastModifiedOnDate = GetUtcDate(),
 		CompletedOnDate = @CompletedOn
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
+	@JobId int
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	SET
+		IsCancelled = 1,
+		LastModifiedOnDate = GetUtcDate()
 	WHERE
 		JobId = @JobId
 END

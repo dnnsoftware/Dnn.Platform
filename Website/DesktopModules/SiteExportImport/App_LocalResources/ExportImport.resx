@@ -136,10 +136,10 @@
     <value>Submitted</value>
   </data>
   <data name="JobType_Export.Text" xml:space="preserve">
-    <value>Export</value>
+    <value>Site Export</value>
   </data>
   <data name="JobType_Import.Text" xml:space="preserve">
-    <value>Import</value>
+    <value>Site Import</value>
   </data>
   <data name="NotPortalAdmin.Text" xml:space="preserve">
     <value>User is not a portal administrator</value>

@@ -37,6 +37,7 @@ namespace Dnn.ExportImport.Components.Entities
         public int PortalId { get; set; }
         public JobType JobType { get; set; }
         public JobStatus JobStatus { get; set; }
+        public bool IsCancelled { get; set; }
         public int CreatedByUserId { get; set; }
         public DateTime CreatedOnDate { get; set; }
         public DateTime LastModifiedOnDate { get; set; }
@@ -52,16 +53,17 @@ namespace Dnn.ExportImport.Components.Entities
 
         public void Fill(IDataReader dr)
         {
-            JobId = Null.SetNullInteger(dr["JobId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-            JobType = (JobType)Null.SetNullInteger(dr["JobType"]);
-            JobStatus = (JobStatus)Null.SetNullInteger(dr["JobStatus"]);
-            CreatedByUserId = Null.SetNullInteger(dr["CreatedByUserID"]);
-            CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
-            LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
-            CompletedOnDate = Null.SetNullDateTime(dr["CompletedOnDate"]);
-            ExportFile = Null.SetNullString(dr["ExportFile"]);
-            JobObject = Null.SetNullString(dr["JobObject"]);
+            JobId = Null.SetNullInteger(dr[nameof(JobId)]);
+            PortalId = Null.SetNullInteger(dr[nameof(PortalId)]);
+            JobType = (JobType)Null.SetNullInteger(dr[nameof(JobType)]);
+            JobStatus = (JobStatus)Null.SetNullInteger(dr[nameof(JobStatus)]);
+            IsCancelled = Null.SetNullBoolean(dr[nameof(IsCancelled)]);
+            CreatedByUserId = Null.SetNullInteger(dr[nameof(CreatedByUserId)]);
+            CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
+            LastModifiedOnDate = Null.SetNullDateTime(dr[nameof(LastModifiedOnDate)]);
+            CompletedOnDate = Null.SetNullDateTime(dr[nameof(CompletedOnDate)]);
+            ExportFile = Null.SetNullString(dr[nameof(ExportFile)]);
+            JobObject = Null.SetNullString(dr[nameof(JobObject)]);
         }
     }
 }

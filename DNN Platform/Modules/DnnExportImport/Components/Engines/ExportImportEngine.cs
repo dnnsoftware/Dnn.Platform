@@ -24,8 +24,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Web.Caching;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
@@ -69,7 +67,6 @@ namespace Dnn.ExportImport.Components.Engines
             var result = new ExportImportResult
             {
                 JobId = exportJob.JobId,
-                Status = JobStatus.DoneFailure,
             };
 
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
@@ -82,9 +79,10 @@ namespace Dnn.ExportImport.Components.Engines
 
             if (!exportDto.ItemsToExport.Any())
             {
+                scheduleHistoryItem.AddLogNote("Export NOT Possible");
+                scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
                 exportJob.CompletedOnDate = DateTime.UtcNow;
                 exportJob.JobStatus = JobStatus.DoneFailure;
-                scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
                 return result;
             }
 
@@ -97,11 +95,10 @@ namespace Dnn.ExportImport.Components.Engines
             if (checkpoints.Count == 0 && finfo.Exists) finfo.Delete();
 
             using (var ctx = new ExportImportRepository(dbName))
-            using (var cts = new CancellationTokenSource())
             {
                 result.AddSummary("Exporting Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
-                result.Status = JobStatus.InProgress;
+                exportJob.JobStatus = JobStatus.InProgress;
 
                 // there must be one parent implementor at least for this to work
                 var implementors = GetPortableImplementors().ToList();
@@ -110,21 +107,15 @@ namespace Dnn.ExportImport.Components.Engines
                 var nextLevelServices = new List<IPortable2>();
                 var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
                 var firstLoop = true;
-                AddTokenToCache(Util.GetExpImpJobCacheKey(exportJob), cts);
+                AddJobToCache(exportJob);
 
                 do
                 {
-                    if (cts.IsCancellationRequested)
-                    {
-                        result.Status = JobStatus.Cancelled;
-                        break;
-                    }
-
                     foreach (var service in parentServices.OrderBy(x => x.Priority))
                     {
-                        if (cts.IsCancellationRequested)
+                        if (exportJob.IsCancelled)
                         {
-                            result.Status = JobStatus.Cancelled;
+                            exportJob.JobStatus = JobStatus.Cancelled;
                             break;
                         }
 
@@ -141,7 +132,7 @@ namespace Dnn.ExportImport.Components.Engines
                         {
                             service.Result = result;
                             service.Repository = ctx;
-                            service.CancellationToken = cts.Token;
+                            service.CheckCancelled = CheckCancelledCallBack;
                             service.CheckPointStageCallback = CheckpointCallback;
                             service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
                                      ?? new ExportImportChekpoint
@@ -149,8 +140,8 @@ namespace Dnn.ExportImport.Components.Engines
                                          JobId = exportJob.JobId,
                                          Category = service.Category
                                      };
-                            CheckpointCallback(service);
 
+                            CheckpointCallback(service); // persist the record in db
                             service.ExportData(exportJob, exportDto);
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
@@ -161,29 +152,29 @@ namespace Dnn.ExportImport.Components.Engines
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
-                        //WARN: this is a case where there is a broken parnets-children hierarchy
+                        //WARN: this is a case where there is a broken parent-children hierarchy
                         //      and/or there are IPortable2 implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0);
+                } while (parentServices.Count > 0 && !TimeIsUp);
 
                 //TODO: zip files when any
 
                 RemoveTokenFromCache(exportJob);
             }
 
-            if (result.Status == JobStatus.InProgress)
-                result.Status = JobStatus.DoneSuccess;
+            if (TimeIsUp)
+            {
+                result.AddSummary("Job time slot expired", "will resume next iteration");
+            }
+            else if (exportJob.JobStatus == JobStatus.InProgress)
+                exportJob.JobStatus = JobStatus.DoneSuccess;
 
-            // wait for the file to be flushed as finfo.Length will throw exception
-            while (!finfo.Exists) { Thread.Sleep(1); }
             finfo = new FileInfo(finfo.FullName); // refresh to get new size
             result.AddSummary("Exported File Size", Util.FormatSize(finfo.Length));
-            exportJob.JobStatus = result.Status;
-
             return result;
         }
 
@@ -192,7 +183,6 @@ namespace Dnn.ExportImport.Components.Engines
             var result = new ExportImportResult
             {
                 JobId = importJob.JobId,
-                Status = JobStatus.DoneFailure,
             };
 
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
@@ -213,104 +203,114 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
+            //TODO: unzip files first
+
             result.AddSummary("Importing Repository", finfo.Name);
             result.AddSummary("Imported File Size", Util.FormatSize(finfo.Length));
 
             using (var ctx = new ExportImportRepository(dbName))
-            using (var cts = new CancellationTokenSource())
             {
                 var exportedDto = ctx.GetSingleItem<ExportDto>();
                 var exportVersion = new Version(exportedDto.SchemaVersion);
                 var importVersion = new Version(importDto.SchemaVersion);
                 if (importVersion < exportVersion)
                 {
-                    result.Status = JobStatus.DoneFailure;
+                    importJob.CompletedOnDate = DateTime.UtcNow;
+                    importJob.JobStatus = JobStatus.DoneFailure;
                     var msg = $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
                     scheduleHistoryItem.AddLogNote("Import NOT Possible");
                     scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
                     result.AddSummary("Import NOT Possible", msg);
+                    return result;
                 }
-                else
+
+                var implementors = GetPortableImplementors().ToList();
+                var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+                importJob.JobStatus = JobStatus.InProgress;
+
+                // there must be one parent implementor at least for this to work
+                implementors = implementors.Except(parentServices).ToList();
+                var nextLevelServices = new List<IPortable2>();
+                var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
+                var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
+                var firstLoop = true;
+                AddJobToCache(importJob);
+
+                do
                 {
-                    var implementors = GetPortableImplementors().ToList();
-                    var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
-                    result.Status = JobStatus.InProgress;
-
-                    // there must be one parent implementor at least for this to work
-                    implementors = implementors.Except(parentServices).ToList();
-                    var nextLevelServices = new List<IPortable2>();
-                    var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
-                    var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
-                    var firstLoop = true;
-                    AddTokenToCache(Util.GetExpImpJobCacheKey(importJob), cts);
-
-                    do
+                    foreach (var service in parentServices.OrderBy(x => x.Priority))
                     {
-                        if (cts.IsCancellationRequested)
+                        if (importJob.IsCancelled)
                         {
-                            result.Status = JobStatus.Cancelled;
+                            importJob.JobStatus = JobStatus.Cancelled;
                             break;
                         }
 
-                        foreach (var service in parentServices.OrderBy(x => x.Priority))
+                        if (implementors.Count > 0)
                         {
-                            if (cts.IsCancellationRequested)
-                            {
-                                result.Status = JobStatus.Cancelled;
-                                break;
-                            }
-
-                            if (implementors.Count > 0)
-                            {
-                                // collect children for next iteration
-                                var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
-                                nextLevelServices.AddRange(children);
-                                implementors = implementors.Except(nextLevelServices).ToList();
-                            }
-
-                            if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                                (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
-                            {
-                                service.Result = result;
-                                service.Repository = ctx;
-                                service.CancellationToken = cts.Token;
-                                service.CheckPointStageCallback = CheckpointCallback;
-                                service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
-                                         ?? new ExportImportChekpoint
-                                         {
-                                             JobId = importJob.JobId,
-                                             Category = service.Category
-                                         };
-                                CheckpointCallback(service);
-
-                                service.ImportData(importJob, exportedDto);
-                                scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
-                            }
+                            // collect children for next iteration
+                            var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                            nextLevelServices.AddRange(children);
+                            implementors = implementors.Except(nextLevelServices).ToList();
                         }
 
-                        firstLoop = false;
-                        parentServices = new List<IPortable2>(nextLevelServices);
-                        nextLevelServices.Clear();
-                        if (implementors.Count > 0 && parentServices.Count == 0)
+                        if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                            (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                         {
-                            //WARN: this is a case where there is a broken parnets-children hierarchy
-                            //      and/or there are IPortable2 implementations without a known parent.
-                            parentServices = implementors;
-                            implementors.Clear();
-                            scheduleHistoryItem.AddLogNote(
-                                "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                            service.Result = result;
+                            service.Repository = ctx;
+                            service.CheckCancelled = CheckCancelledCallBack;
+                            service.CheckPointStageCallback = CheckpointCallback;
+                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
+                                     ?? new ExportImportChekpoint
+                                     {
+                                         JobId = importJob.JobId,
+                                         Category = service.Category
+                                     };
+                            CheckpointCallback(service);
+
+                            service.ImportData(importJob, exportedDto);
+                            scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
-                    } while (parentServices.Count > 0);
-                }
+                    }
+
+                    firstLoop = false;
+                    parentServices = new List<IPortable2>(nextLevelServices);
+                    nextLevelServices.Clear();
+                    if (implementors.Count > 0 && parentServices.Count == 0)
+                    {
+                        //WARN: this is a case where there is a broken parent-children hierarchy
+                        //      and/or there are IPortable2 implementations without a known parent.
+                        parentServices = implementors;
+                        implementors.Clear();
+                        scheduleHistoryItem.AddLogNote(
+                            "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
+                    }
+                } while (parentServices.Count > 0 && !TimeIsUp);
 
                 RemoveTokenFromCache(importJob);
+                if (TimeIsUp)
+                {
+                    result.AddSummary("Job time slot expired", "will resume next iteration");
+                }
+                else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
+                    importJob.JobStatus = JobStatus.DoneSuccess;
             }
 
-            if (result.Status == JobStatus.InProgress)
-                result.Status = JobStatus.DoneSuccess;
-
-            importJob.JobStatus = result.Status;
             return result;
+        }
+
+        private static bool CheckCancelledCallBack(ExportImportJob job)
+        {
+            var job2 = CachingProvider.Instance().GetItem(Util.GetExpImpJobCacheKey(job)) as ExportImportJob;
+            if (job2 == null)
+            {
+                job2 = EntitiesController.Instance.GetJobById(job.JobId);
+                job.IsCancelled = job2.IsCancelled;
+                AddJobToCache(job2);
+            }
+
+            return job2.IsCancelled;
         }
 
         /// <summary>
@@ -321,35 +321,14 @@ namespace Dnn.ExportImport.Components.Engines
         private bool CheckpointCallback(IPortable2 service)
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
-            return _stopWatch.Elapsed.TotalSeconds > MaxTimeToRunJob;
+            return TimeIsUp;
         }
 
-        private static void AddTokenToCache(string jobCacheKey, CancellationTokenSource cts)
+        private bool TimeIsUp => _stopWatch.Elapsed.TotalSeconds > MaxTimeToRunJob;
+
+        private static void AddJobToCache(ExportImportJob job)
         {
-            // We add only a simple item to the cache; just a string and not the token
-            // itself as this might not work with out-of-process cache. The captured cts
-            // will be operated upon when the item is removed from the cache.
-            // Note: if "clear cache" is called, this will be triggered and job cancelled.
-            CachingProvider.Instance().Insert(jobCacheKey, "ExportImportCT", (DNNCacheDependency)null,
-                Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable,
-                (key, value, reason) =>
-                {
-                    try
-                    {
-                        if (!cts.IsCancellationRequested)
-                        {
-                            if (Logger.IsDebugEnabled)
-                                Logger.Debug("Cancellation token removed from the cache; job will be cancelled.");
-                            //TODO: check why this method gets called from HttpRuntime disposing thread?
-                            //cts.Cancel();
-                            //System.Diagnostics.Trace.WriteLine("Removed cache key: " + key);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error("Export/Import cache token cancel error. " + ex.Message);
-                    }
-                });
+            CachingProvider.Instance().Insert(Util.GetExpImpJobCacheKey(job), job);
         }
 
         private static void RemoveTokenFromCache(ExportImportJob job)

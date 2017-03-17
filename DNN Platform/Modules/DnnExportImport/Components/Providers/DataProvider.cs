@@ -72,6 +72,11 @@ namespace Dnn.ExportImport.Components.Providers
                 .ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
         }
 
+        public void SetJobCancelled(int jobId)
+        {
+            PlatformDataProvider.Instance().ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
+        }
+
         public IDataReader GetFirstActiveJob()
         {
             return PlatformDataProvider.Instance().ExecuteReader("ExportImportJobs_FirstActive");

@@ -59,7 +59,19 @@ namespace Dnn.ExportImport.Components.Scheduler
                 //TODO: do some clean-up for very old import/export jobs/logs
 
                 var job = EntitiesController.Instance.GetFirstActiveJob();
-                if (job != null)
+                if (job == null)
+                {
+                    ScheduleHistoryItem.Succeeded = true;
+                    ScheduleHistoryItem.AddLogNote("<br/>No Site Export/Import jobs queued for processing.");
+                }
+                else if (job.IsCancelled)
+                {
+                    job.JobStatus = JobStatus.Cancelled;
+                    EntitiesController.Instance.UpdateJobStatus(job);
+                    ScheduleHistoryItem.Succeeded = true;
+                    ScheduleHistoryItem.AddLogNote("<br/>Site Export/Import jobs was previously cancelled.");
+                }
+                else
                 {
                     job.JobStatus = JobStatus.InProgress;
                     EntitiesController.Instance.UpdateJobStatus(job);
@@ -71,14 +83,16 @@ namespace Dnn.ExportImport.Components.Scheduler
                     {
                         case JobType.Export:
                             ScheduleHistoryItem.AddLogNote(
-                                "<br/><b>SITE EXPORT Started</b> " + lastSuccessFulDateTime.ToString("g"));
+                                $"<br/><b>SITE EXPORT Started. JOB {job.JobId}</b> {lastSuccessFulDateTime:g)}");
                             result = engine.Export(job, ScheduleHistoryItem);
+                            EntitiesController.Instance.UpdateJobStatus(job);
                             break;
                         case JobType.Import:
                             ScheduleHistoryItem.AddLogNote(
-                                "<br/><b>SITE IMPORT Started</b> " + lastSuccessFulDateTime.ToString("g"));
+                                $"<br/><b>SITE IMPORT Started. JOB {job.JobId}</b> {lastSuccessFulDateTime:g}");
                             result = engine.Import(job, ScheduleHistoryItem);
-                            if (result.Status == JobStatus.DoneSuccess || result.Status == JobStatus.Cancelled)
+                            EntitiesController.Instance.UpdateJobStatus(job);
+                            if (job.JobStatus == JobStatus.DoneSuccess || job.JobStatus == JobStatus.Cancelled)
                             {
                                 // clear everything to be sure imported items take effect
                                 DataCache.ClearCache();
@@ -88,17 +102,19 @@ namespace Dnn.ExportImport.Components.Scheduler
                             throw new Exception("Unknown job type: " + job.JobType);
                     }
 
+
                     if (result != null)
                     {
-                        EntitiesController.Instance.UpdateJobStatus(job);
                         ScheduleHistoryItem.Succeeded = true;
                         var sb = new StringBuilder();
+                        var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                         var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                        sb.AppendFormat("<br/><b>{0} {1}</b>", job.JobType == JobType.Export ? "EXPORT" : "IMPORT", jobStatus);
-                        if (result.Summary.Count > 0)
+                        sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
+                        var summary = result.Summary;
+                        if (summary.Count > 0)
                         {
                             sb.Append("<br/><b>Summary:</b><ul>");
-                            foreach (var entry in result.Summary)
+                            foreach (var entry in summary)
                             {
                                 sb.Append($"<li>{entry.Name}: {entry.Value}</li>");
                             }
@@ -110,11 +126,6 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     Logger.Trace("Site Export/Import: Job Finished");
-                }
-                else
-                {
-                    ScheduleHistoryItem.Succeeded = true;
-                    ScheduleHistoryItem.AddLogNote("<br/>No Site Export/Import jobs queued for processing.");
                 }
                 SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
@@ -132,7 +143,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
         private static void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
-            if (completeLog.Count == 0) return;
+            if (completeLog == null || completeLog.Count == 0) return;
 
             using (var table = new DataTable("ExportImportJobLogs"))
             {

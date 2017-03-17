@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 0)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
                 Repository.CreateItems(scopeTypes, null);
                 //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
@@ -73,7 +73,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 1)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                 Repository.CreateItems(vocabularyTypes, null);
                 //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
@@ -85,7 +85,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 2)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(taxonomyTerms, null);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
@@ -97,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 3)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(exportJob)) return;
                 var taxonomyVocabularies =
                     CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(exportDto.ExportTime?.UtcDateTime));
                 Repository.CreateItems(taxonomyVocabularies, null);
@@ -115,7 +115,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage > 3) return;
 
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
             var otherScopeTypes = Repository.GetAllItems<TaxonomyScopeType>().ToList();
 
             if (CheckPoint.Stage == 0)
@@ -137,7 +137,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckPointStageCallback(this)) return;
             }
 
-            if (CancellationToken.IsCancellationRequested) return;
+            if (CheckCancelled(importJob)) return;
             var otherVocabularies = Repository.GetAllItems<TaxonomyVocabulary>().ToList();
 
             if (CheckPoint.Stage == 2)
@@ -153,7 +153,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 3)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
                 ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
                 Repository.UpdateItems(otherTaxonomyTerms);
@@ -173,7 +173,7 @@ namespace Dnn.ExportImport.Components.Services
             var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(null));
             foreach (var other in otherVocabularies)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localVocabularies.FirstOrDefault(t => t.Name == other.Name);
@@ -232,7 +232,7 @@ namespace Dnn.ExportImport.Components.Services
             var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(null));
             foreach (var other in otherTaxonomyTerms)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var createdBy = Common.Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Common.Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localTaxonomyTerms.FirstOrDefault(t => t.Name == other.Name);

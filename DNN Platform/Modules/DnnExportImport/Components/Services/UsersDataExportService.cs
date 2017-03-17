@@ -77,11 +77,11 @@ namespace Dnn.ExportImport.Components.Services
             var progressStep = totalUsers < pageSize ? 100 : pageSize/totalUsers*100;
             while (totalProcessed < totalUsers)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex*pageSize, pageSize).ToList();
                 foreach (var user in users)
                 {
-                    if (CancellationToken.IsCancellationRequested) return;
+                    if (CheckCancelled(importJob)) return;
                     var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                     var userAuthentication =
                         Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
@@ -121,7 +121,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var userRole in userRoles)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var roleId = Util.GetRoleId(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
@@ -183,7 +183,7 @@ namespace Dnn.ExportImport.Components.Services
             var repUserProfile = db.GetRepository<ExportUserProfile>();
             foreach (var userProfile in userProfiles)
             {
-                if (CancellationToken.IsCancellationRequested) return;
+                if (CheckCancelled(importJob)) return;
                 var existingUserProfile =
                     CBO.FillCollection<ExportUserProfile>(
                         DataProvider.Instance().GetUserProfile(importJob.PortalId, userId)).FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);

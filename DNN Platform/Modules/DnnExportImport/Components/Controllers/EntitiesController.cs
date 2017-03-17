@@ -27,7 +27,9 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public ExportImportJob GetJobById(int jobId)
         {
-            return CBO.Instance.FillObject<ExportImportJob>(DataProvider.Instance().GetJobById(jobId));
+            var job = CBO.Instance.FillObject<ExportImportJob>(DataProvider.Instance().GetJobById(jobId));
+            System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job.JobId} IsCancelled={job.IsCancelled} xxxxxxxxx");
+            return job;
         }
 
         public IList<ExportImportJobLog> GetJobSummaryLog(int jobId)
@@ -49,6 +51,11 @@ namespace Dnn.ExportImport.Components.Controllers
         public void UpdateJobStatus(ExportImportJob job)
         {
             DataProvider.Instance().UpdateJobStatus(job.JobId, job.JobStatus);
+        }
+
+        public void SetJobCancelled(ExportImportJob job)
+        {
+            DataProvider.Instance().SetJobCancelled(job.JobId);
         }
 
         public IList<ExportImportChekpoint> GetJobChekpoints(int jobId)

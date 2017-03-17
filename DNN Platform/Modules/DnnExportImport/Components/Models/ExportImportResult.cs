@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using Dnn.ExportImport.Components.Common;
+using System.Linq;
 using Dnn.ExportImport.Components.Dto.Jobs;
 
 namespace Dnn.ExportImport.Components.Models
@@ -29,25 +29,30 @@ namespace Dnn.ExportImport.Components.Models
     public class ExportImportResult
     {
         public int JobId { get; set; }
-        public JobStatus Status { get; set; }
-        public IList<LogItem> Summary { get; private set; }
         public IList<LogItem> CompleteLog { get; private set; }
+
+        public IList<LogItem> Summary
+        {
+            get { return CompleteLog.Where(item => item.IsSummary).ToList(); }
+        }
+
+        public ExportImportResult()
+        {
+            CompleteLog = CompleteLog = new List<LogItem>();
+        }
 
         public LogItem AddSummary(string name, string value)
         {
-            // no worries about conncurrency; all jobs are executed serially
-            if (Summary == null) Summary = new List<LogItem>();
-
-            var item = AddLogEntry(name, value, true);
-            Summary.Add(item);
-            return item;
+            return AddLogEntry(name, value, true);
         }
 
-        public LogItem AddLogEntry(string name, string value, bool isSummary = false)
+        public LogItem AddLogEntry(string name, string value)
         {
-            // no worries about conncurrency; all jobs are executed serially
-            if (CompleteLog == null) CompleteLog = new List<LogItem>();
+            return AddLogEntry(name, value, false);
+        }
 
+        private LogItem AddLogEntry(string name, string value, bool isSummary)
+        {
             var item = new LogItem
             {
                 Name = name,

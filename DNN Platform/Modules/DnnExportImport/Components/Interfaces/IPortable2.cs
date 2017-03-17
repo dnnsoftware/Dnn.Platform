@@ -59,23 +59,20 @@ namespace Dnn.ExportImport.Components.Interfaces
         IExportImportRepository Repository { get; set; }
 
         /// <summary>
-        /// A token to be set by the export/import engine to request the cancellation of the
-        /// undergoing export/import process.
-        /// <para>Each running export/import process should check this token to allow for cancellation.</para>
-        /// <para>The interface concrete classes should keep checking continuously for the cancellation flag
-        /// using "CancellationToken.IsCancellationRequested" to be true.</para>
-        /// <para>If the "CancellationToken.Cancel()" method is called, the IPortable2 implementations should
-        /// stop any work they do and return to the caller as soon as possible.</para>
-        /// </summary>
-        CancellationToken CancellationToken { get; set; }
-
-        /// <summary>
         /// A data structure representing a checkpoint for the export/import task. This can be used to tell the
         /// implementor where to resume it's operation if the job was interrupted previously.
         /// </summary>
         /// <remarks>It is up to each IPortable2 implementor to track its own stages and status values to
         /// properly export/import all of its items in/when and interruption occurs.</remarks>
         ExportImportChekpoint CheckPoint { get; set; }
+
+        /// <summary>
+        /// A callback to the export/import engine to check if the undergoing export/import process was cancelled.
+        /// <para>The interface concrete classes should keep checking continuously for the cancellation flag to be true</para>
+        /// <para>If the callback returns true, the IPortable2 implementations should stop any work they do and
+        /// return control to the caller immediately or as soon as possible.</para>
+        /// </summary>
+        Func<ExportImportJob, bool> CheckCancelled { get; set; }
 
         /// <summary>
         /// Callback function to provide a checkpoint mechanism for an <see cref="IPortable2"/> implementation.
