@@ -76,6 +76,7 @@ namespace Dnn.ExportImport.Components.Dto
 
         /// <summary>
         /// Specifies what to do when there is a collision during the import process.
+        /// See <see cref="CollisionResolution"/>
         /// </summary>
         public CollisionResolution CollisionResolution { get; set; }
 
@@ -101,32 +102,5 @@ namespace Dnn.ExportImport.Components.Dto
         public int TabId { get; set; }
         public int ParentTabId { get; set; }
         public TriCheckedState CheckedState { get; set; }
-    }
-
-    public enum TriCheckedState
-    {
-        Partial = -1,
-        UnChecked = 0,
-        Checked = 1,
-    }
-    /// <summary>
-    /// Specifies what to do when there is a collision during the import process.
-    /// </summary>
-    public enum CollisionResolution
-    {
-        /// <summary>
-        /// Ignore the imported item and continue.
-        /// </summary>
-        Ignore,
-
-        /// <summary>
-        /// Overwrites the existing item upon importing.
-        /// </summary>
-        Overwrite,
-
-        /// <summary>
-        /// Duplicate the items into a new item upon importing.
-        /// </summary>
-        Duplicate
     }
 }

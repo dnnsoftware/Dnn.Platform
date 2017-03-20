@@ -86,6 +86,7 @@
     <Compile Include="Components\Dto\Pages\ExportPage.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
+    <Compile Include="Components\Dto\Pages\ShortTabData.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />

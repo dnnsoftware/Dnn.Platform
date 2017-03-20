@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.Caching;
 // ReSharper disable InconsistentNaming
 
@@ -46,15 +47,23 @@ namespace Dnn.ExportImport.Components.Common
         
         internal const int LogColumnLength = 255;
 
+        internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0 , 0, DateTimeKind.Utc);
+        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0 , 0, DateTimeKind.Utc);
+
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 
-        internal const string Category_Users = "USERS";
-        internal const string Category_UsersData = "USERS_DATA";
-        internal const string Category_Vocabularies = "VOCABULARIES";
-        internal const string Category_Assets = "ASSETS";
-        internal const string Category_Roles = "ROLES";
-        internal const string Category_Pages = "PAGES";
+        // these are set by the API caller
+        public const string Category_Users = "USERS";
+        public const string Category_Vocabularies = "VOCABULARIES";
+        public const string Category_Roles = "ROLES";
+        public const string Category_ProfileProps = "PROFILE_PROPERTIES";
+        public const string Category_Content = "CONTENT";
+        public const string Category_tEMPLATES = "TEMPLATES";
+        public const string Category_Assets = "ASSETS";
+
+        // these are added internally by the engine
         internal const string Category_Portal = "PORTAL";
-        internal const string Category_ProfileProps = "PROFILE_PROPERTIES";
+        internal const string Category_Pages = "PAGES";
+        internal const string Category_UsersData = "USERS_DATA";
     }
 }

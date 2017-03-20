@@ -442,11 +442,11 @@ END
 GO
 
 -- Users Import/Export
-IF object_id(N'{databaseOwner}[{objectQualifier}UserName]', 'FN') IS NOT NULL
-    DROP FUNCTION {databaseOwner}[{objectQualifier}UserName]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
 GO
 
-CREATE FUNCTION {databaseOwner}[{objectQualifier}UserName]
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
 (
 	@userId Int
 )
@@ -461,11 +461,11 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
-    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
 GO
 
-CREATE FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
 (
 	@username nvarchar(100)
 )
@@ -505,7 +505,7 @@ BEGIN
 	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
 
 	; WITH [tmpUsers] AS (
-		SELECT U.*,{databaseOwner}[{objectQualifier}UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
+		SELECT U.*,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
 		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
 			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
 			WHERE VU.PortalID = @PortalID
@@ -619,8 +619,8 @@ AS
 		,[LastModifiedOnDate]
 		,[Status]
 		,[IsOwner]
-		,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName
-		,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+		,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName
+		,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
 	WHERE UserID = @UserId AND PortalID = @PortalId
 GO
@@ -637,8 +637,8 @@ AS
 	UPDATE
 		{databaseOwner}{objectQualifier}Users
 	SET
-		CreatedByUserID = {databaseOwner}[{objectQualifier}UserIdByUsername](@CreatedByUserName),
-		LastModifiedByUserID = {databaseOwner}[{objectQualifier}UserIdByUsername](@ModifiedByUserName)
+		CreatedByUserID = {databaseOwner}[{objectQualifier}Export_UserIdByUsername](@CreatedByUserName),
+		LastModifiedByUserID = {databaseOwner}[{objectQualifier}Export_UserIdByUsername](@ModifiedByUserName)
 	WHERE
 		UserID = @UserID
 GO
@@ -700,7 +700,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
-	@TillDate datetime,
+	@TillDate   datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT
@@ -723,7 +723,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
-	@TillDate datetime,
+	@TillDate   datetime,
 	@SinceDate	datetime=NULL
 AS
 	SELECT
@@ -747,8 +747,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
-	@PortalID int,
-	@TillDate datetime,
+	@PortalID  int,
+	@TillDate  datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -773,8 +773,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
-	@PortalID int,
-	@TillDate datetime,
+	@PortalID  int,
+	@TillDate  datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -800,8 +800,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS N
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
-	@PortalID int,
-	@TillDate datetime,
+	@PortalID  int,
+	@TillDate  datetime,
 	@SinceDate datetime=NULL
 AS
 	SELECT
@@ -843,8 +843,8 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
 	@RoleGroupID int,
-	@CreatedBy int,
-	@ModifiedBy int
+	@CreatedBy   int,
+	@ModifiedBy  int
 AS
 	UPDATE
 		{databaseOwner}{objectQualifier}RoleGroups
@@ -860,8 +860,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]', 'P'
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
-	@RoleID int,
-	@CreatedBy int,
+	@RoleID     int,
+	@CreatedBy  int,
 	@ModifiedBy int
 AS
 	UPDATE
@@ -878,10 +878,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
-	@RoleID int,
+	@RoleID      int,
 	@SettingName nvarchar(50),
-	@CreatedBy int,
-	@ModifiedBy int
+	@CreatedBy   int,
+	@ModifiedBy  int
 AS
 	UPDATE
 		{databaseOwner}{objectQualifier}RoleSettings
@@ -901,10 +901,10 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
 	@PortalID	int,
-	@TillDate datetime,
+	@TillDate   datetime,
 	@SinceDate	datetime=NULL
 AS
-	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	SELECT	*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM
 		{databaseOwner}[{objectQualifier}PortalSettings]
 	WHERE  PortalId = @PortalID
@@ -924,10 +924,10 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
 	@PortalID	int,
-	@TillDate datetime,
+	@TillDate   datetime,
 	@SinceDate	datetime=NULL
 AS
-	SELECT	PL.*,{databaseOwner}[{objectQualifier}UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
+	SELECT	PL.*,{databaseOwner}[{objectQualifier}Export_UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
 	FROM
 		{databaseOwner}[{objectQualifier}PortalLanguages] PL
 	INNER JOIN {databaseOwner}[{objectQualifier}Languages] L ON PL.[LanguageID]=L.[LanguageID]
@@ -951,7 +951,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
 	@TillDate datetime,
 	@SinceDate	datetime=NULL
 AS
-	SELECT	*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+	SELECT	*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM
 		{databaseOwner}[{objectQualifier}PortalLocalization]
 	WHERE  PortalId = @PortalID
@@ -972,10 +972,10 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
     @PortalID    int,
-	@TillDate datetime,
-    @SinceDate    datetime=NULL
+	@TillDate    datetime,
+    @SinceDate   datetime=NULL
 AS
-    SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](F.LastModifiedByUserId) LastModifiedByUserName
+    SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}Export_UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](F.LastModifiedByUserId) LastModifiedByUserName
     FROM    
         {databaseOwner}[{objectQualifier}Folders]  F INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
     WHERE  F.PortalID = @PortalID
@@ -999,7 +999,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
 	@TillDate datetime,
     @SinceDate    datetime=NULL
 AS
-    SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    SELECT    *,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
         {databaseOwner}[{objectQualifier}FolderMappings]
     WHERE  PortalID = @PortalID
@@ -1020,11 +1020,11 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
     @PortalID    int,
-	@FolderPath nvarchar(300),
-	@TillDate datetime,
-	@SinceDate    datetime=NULL
+	@FolderPath  nvarchar(300),
+	@TillDate    datetime,
+	@SinceDate   datetime=NULL
 AS
-    SELECT    *,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    SELECT    *,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
         {databaseOwner}[{objectQualifier}vw_FolderPermissions]
     WHERE  PortalID = @PortalID AND (FolderPath =ISNULL(@FolderPath,''))
@@ -1044,11 +1044,11 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
     @PortalID    int,
-    @FolderID Int,
-	@TillDate datetime,
-	@SinceDate    datetime=NULL
+    @FolderID    int,
+	@TillDate    datetime,
+	@SinceDate   datetime=NULL
 AS
-    SELECT F.*,{databaseOwner}[{objectQualifier}UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}UserName](LastModifiedByUserId) LastModifiedByUserName
+    SELECT F.*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
         {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
     WHERE F.FolderID = @FolderID AND F.PortalID = @PortalID
@@ -1061,4 +1061,24 @@ AS
 			WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate
 			ELSE F.LastModifiedOnDate END)<= @TillDate
     ORDER BY [FolderID], [FileName]
+GO
+
+-- Pages / Tabs
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+    @PortalID   int
+AS
+	SELECT
+		TabID, ParentId, IsDeleted, ISNULL(LastModifiedOnDate, CreatedOnDate) AS LastUpdatedOn
+	FROM
+		{databaseOwner}{objectQualifier}Tabs
+	WHERE 
+		PortalID = @PortalID
+	  AND
+		IsSystem = 0
+	ORDER BY
+		TabID
 GO

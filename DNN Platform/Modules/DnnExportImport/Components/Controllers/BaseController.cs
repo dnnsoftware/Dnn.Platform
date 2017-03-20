@@ -163,7 +163,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <returns></returns>
         public DateTime GetLastExportUtcTime()
         {
-            var lastTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var lastTime = Constants.MinDbTime;
 
             var scheduleProvider = SchedulingProvider.Instance();
             var exportSchedulerClient = scheduleProvider.GetSchedule(typeof(ExportImportScheduler).FullName, null);
@@ -190,9 +190,9 @@ namespace Dnn.ExportImport.Components.Controllers
         private static DateTime FixSqlDateTime(DateTime datim)
         {
             if (datim <= SqlDateTime.MinValue.Value)
-                datim = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                datim = Constants.MinDbTime;
             else if (datim >= SqlDateTime.MaxValue.Value)
-                datim = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                datim = Constants.MaxDbTime;
             return datim;
         }
 

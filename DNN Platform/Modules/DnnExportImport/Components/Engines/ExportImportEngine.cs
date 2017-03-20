@@ -77,17 +77,6 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            if (!exportDto.ItemsToExport.Any())
-            {
-                scheduleHistoryItem.AddLogNote("Export NOT Possible");
-                scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
-                exportJob.CompletedOnDate = DateTime.UtcNow;
-                exportJob.JobStatus = JobStatus.DoneFailure;
-                return result;
-            }
-
-            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB {exportJob.JobId}</b>");
-            scheduleHistoryItem.AddLogNote($"<br/>Between {exportDto.ExportTime} and {exportJob.CreatedOnDate:g}");
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
 
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
@@ -106,21 +95,33 @@ namespace Dnn.ExportImport.Components.Engines
                 result.AddSummary("Resuming Exporting Repository", finfo.Name);
             }
 
+            exportJob.JobStatus = JobStatus.InProgress;
+
+            // there must be one parent implementor at least for this to work
+            var implementors = GetPortableImplementors().ToList();
+            var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+            implementors = implementors.Except(parentServices).ToList();
+            var nextLevelServices = new List<IPortable2>();
+            var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
+
+            if (includedItems.Count == 0)
+            {
+                scheduleHistoryItem.AddLogNote("Export NOT Possible");
+                scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
+                result.AddSummary("Export NOT Possible", "No items selected for exporting");
+                exportJob.CompletedOnDate = DateTime.UtcNow;
+                exportJob.JobStatus = JobStatus.DoneFailure;
+                return result;
+            }
+
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}</b>");
+            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.ExportTime}] and [{exportJob.CreatedOnDate:g}]");
+            var firstLoop = true;
+            AddJobToCache(exportJob);
+
             using (var ctx = new ExportImportRepository(dbName))
             {
-                result.AddSummary("Exporting Repository", finfo.Name);
                 ctx.AddSingleItem(exportDto);
-                exportJob.JobStatus = JobStatus.InProgress;
-
-                // there must be one parent implementor at least for this to work
-                var implementors = GetPortableImplementors().ToList();
-                var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
-                implementors = implementors.Except(parentServices).ToList();
-                var nextLevelServices = new List<IPortable2>();
-                var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
-                var firstLoop = true;
-                AddJobToCache(exportJob);
-
                 do
                 {
                     foreach (var service in parentServices.OrderBy(x => x.Priority))
@@ -160,7 +161,7 @@ namespace Dnn.ExportImport.Components.Engines
                     }
 
                     firstLoop = false;
-                    parentServices = new List<IPortable2>(nextLevelServices);
+                    parentServices = new List<IPortable2>();
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
@@ -199,7 +200,7 @@ namespace Dnn.ExportImport.Components.Engines
 
         public ExportImportResult Import(ExportImportJob importJob, ScheduleHistoryItem scheduleHistoryItem)
         {
-            scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB {importJob.JobId}</b>");
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
             var result = new ExportImportResult
             {
@@ -235,9 +236,8 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     importJob.CompletedOnDate = DateTime.UtcNow;
                     importJob.JobStatus = JobStatus.DoneFailure;
-                    var msg = $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
                     scheduleHistoryItem.AddLogNote("Import NOT Possible");
-                    scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
+                    var msg = $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
                     result.AddSummary("Import NOT Possible", msg);
                     return result;
                 }

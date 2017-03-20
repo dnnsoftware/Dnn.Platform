@@ -55,8 +55,6 @@ namespace Dnn.ExportImport.Components.Providers
 
         #endregion
 
-        #region Public Methods
-
         public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
         {
             return _dataProvider.ExecuteScalar<int>(
@@ -156,7 +154,7 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
-        public void RoleSetAutoAssign(int roleId)
+        public void SetRoleAutoAssign(int roleId)
         {
             _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
         }
@@ -278,6 +276,9 @@ namespace Dnn.ExportImport.Components.Providers
                                          && x.PermissionName == permissionName)?.PermissionID;
         }
 
-        #endregion
+        public IDataReader GetAllPortalTabs(int portalId)
+        {
+            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId);
+        }
     }
 }

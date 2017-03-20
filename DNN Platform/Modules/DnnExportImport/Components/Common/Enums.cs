@@ -35,4 +35,32 @@ namespace Dnn.ExportImport.Components.Common
         DoneFailure,
         Cancelled
     }
+
+    public enum TriCheckedState
+    {
+        Checked,   // =  1,
+        UnChecked, // =  0,
+        Partial,   // = -1,
+    }
+
+    /// <summary>
+    /// Specifies what to do when there is a collision during the import process.
+    /// </summary>
+    public enum CollisionResolution
+    {
+        /// <summary>
+        /// Ignore the imported item and continue.
+        /// </summary>
+        Ignore,
+
+        /// <summary>
+        /// Overwrites the existing item upon importing.
+        /// </summary>
+        Overwrite,
+
+        /// <summary>
+        /// Duplicate the items into a new item upon importing.
+        /// </summary>
+        Duplicate
+    }
 }

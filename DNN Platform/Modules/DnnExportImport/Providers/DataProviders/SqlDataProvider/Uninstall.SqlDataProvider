@@ -68,19 +68,20 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NOT
 GO
 
 -- Users Import/Export
-IF object_id(N'{databaseOwner}[{objectQualifier}UserName]', 'FN') IS NOT NULL
-    DROP FUNCTION {databaseOwner}[{objectQualifier}UserName]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}UserIdByUsername]', 'FN') IS NOT NULL
-    DROP FUNCTION {databaseOwner}[{objectQualifier}UserIdByUsername]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetAllUsers]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetUserPortal]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
@@ -182,4 +183,9 @@ GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+GO
+
+-- Pages / Tabs
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
 GO

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Dnn.ExportImport.Components.Dto.Pages;
 using Dnn.ExportImport.Components.Entities;
 
 namespace Dnn.ExportImport.Components.Interfaces
@@ -15,5 +17,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         void RemoveJob(ExportImportJob job);
         IList<ExportImportChekpoint> GetJobChekpoints(int jobId);
         void UpdateJobChekpoint(ExportImportChekpoint checkpoint);
+        IList<ShortTabData> GetPortalTabs(int portalId);
     }
 }

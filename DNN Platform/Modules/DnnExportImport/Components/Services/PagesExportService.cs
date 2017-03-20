@@ -19,11 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto.Pages;
 using DotNetNuke.Entities.Tabs;
 
@@ -53,12 +56,18 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CheckCancelled(exportJob)) return;
             ProgressPercentage = 0;
+            if (CheckPoint.Stage > 0) return;
+            if (CheckCancelled(exportJob)) return;
+
             var selectedPages = exportDto.Pages.Where(pg => pg.CheckedState == TriCheckedState.Checked).ToList();
-            var totalExported = ProcessPages(exportJob, exportDto, selectedPages);
+            var totalExported = ProcessExportPages(exportJob, exportDto, selectedPages);
             Result.AddSummary("Exported Pages", totalExported.ToString());
             ProgressPercentage = 100;
+
+            CheckPoint.Stage++;
+            CheckPoint.StageData = null;
+            CheckPointStageCallback(this);
         }
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
@@ -68,44 +77,110 @@ namespace Dnn.ExportImport.Components.Services
             //TODO
         }
 
-        private int ProcessPages(ExportImportJob exportJob, ExportDto exportDto,
-            IEnumerable<PageToExport> selectedPages)
+        private int ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto,
+            IList<PageToExport> selectedPages)
         {
-            var processed = 0;
+            var totalExported = 0;
             var portalId = exportJob.PortalId;
-            var tabController = TabController.Instance;
-            var allTabs = tabController.GetTabsByPortal(portalId).AsList()
-                .AsEnumerable().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem);
 
-            foreach (var page in selectedPages.OrderBy(pg => pg.TabId))
+            int lastProcessedTabId;
+            int.TryParse(CheckPoint.StageData, out lastProcessedTabId);
+
+            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var tillDate = exportJob.CreatedOnDate;
+
+            var root = selectedPages.FirstOrDefault(pg => pg.TabId == -1);
+            var isAllIncluded = root != null && root.CheckedState == TriCheckedState.Checked;
+
+            var tabController = TabController.Instance;
+            var allTabs = EntitiesController.Instance.GetPortalTabs(portalId); // ordered by TabID
+
+            foreach (var pg in allTabs)
             {
                 if (CheckCancelled(exportJob)) break;
 
-                var tab = tabController.GetTab(portalId, page.TabId);
-                if (!tabController.IsTabPublished(tab)) continue;
+                if (lastProcessedTabId > pg.TabId) continue;
+                if (pg.IsDeleted && !exportDto.IncludeDeletions) continue;
+                if (pg.LastUpdatedOn < sinceDate || pg.LastUpdatedOn >= tillDate) continue;
 
-                if (tab.IsDeleted && !exportDto.IncludeDeletions) continue;
+                var tab = tabController.GetTab(portalId, pg.TabId);
+                if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
+                {
+                    SaveExportPage(tab);
+                    totalExported++;
 
-                SaveExportPage(tab, tabController, portalId, page, ref processed);
+                    CheckPoint.StageData = tab.TabID.ToString(); // last processed TAB ID
+                    if (CheckPointStageCallback(this)) break;
+                }
             }
 
-            return processed;
+            return totalExported;
         }
 
-        private void SaveExportPage(TabInfo tab, ITabController tabController, int portalId, PageToExport page, ref int processed)
+        private static bool IsTabIncluded(ShortTabData tab,
+            IList<ShortTabData> allTabs, IList<PageToExport> selectedPages)
         {
-            var parent = tab.ParentId <= 0 ? null : tabController.GetTab(portalId, page.ParentTabId);
-            var dbPage = new ExportPage
+            do
+            {
+                if (selectedPages.Any(pg => pg.TabId == tab.TabId))
+                    return true;
+
+                tab = allTabs.FirstOrDefault(t => t.TabId == tab.ParentId);
+            } while (tab?.ParentId != null);
+
+            return false;
+        }
+
+        private void SaveExportPage(TabInfo tab)
+        {
+            var dbPage = GetDbPageFromTab(tab);
+            Repository.CreateItem(dbPage, null);
+
+            //TODO: save page related data
+
+            Result.AddLogEntry("Exported page", tab.TabName);
+        }
+
+        private static ExportPage GetDbPageFromTab(TabInfo tab)
+        {
+            return new ExportPage
             {
                 TabId = tab.TabID,
-                ParentTabId = tab.ParentId,
+                TabOrder = tab.TabOrder,
                 TabName = tab.TabName,
-                ParentTabName = parent?.TabName
+                IsVisible = tab.IsVisible,
+                ParentId = tab.ParentId <= 0 ? null : (int?)tab.ParentId,
+                IconFile = tab.IconFile,
+                DisableLink = tab.DisableLink,
+                Title = tab.Title,
+                Description = tab.Description,
+                KeyWords = tab.KeyWords,
+                IsDeleted = tab.IsDeleted,
+                Url = tab.Url,
+                ContainerSrc = tab.ContainerSrc,
+                StartDate = tab.StartDate == DateTime.MinValue ? null : (DateTime?)tab.StartDate,
+                EndtDate = tab.EndDate == DateTime.MinValue ? null : (DateTime?)tab.EndDate,
+                RefreshInterval = tab.RefreshInterval <= 0 ? null : (int?)tab.RefreshInterval,
+                PageHeadText = tab.PageHeadText,
+                IsSecure = tab.IsSecure,
+                PermanentRedirect = tab.PermanentRedirect,
+                SiteMapPriority = tab.SiteMapPriority,
+                CreatedByUserID = tab.CreatedByUserID <= 0 ? null : (int?)tab.CreatedByUserID,
+                CreatedOnDate = tab.CreatedOnDate == DateTime.MinValue ? null : (DateTime?)tab.CreatedOnDate,
+                LastModifiedByUserID = tab.LastModifiedByUserID <= 0 ? null : (int?)tab.LastModifiedByUserID,
+                LastModifiedOnDate = tab.LastModifiedOnDate == DateTime.MinValue ? null : (DateTime?)tab.LastModifiedOnDate,
+                IconFileLarge = tab.IconFileLarge,
+                CultureCode = tab.CultureCode,
+                ContentItemID = tab.ContentItemId < 0 ? null : (int?)tab.ContentItemId,
+                UniqueId = tab.UniqueId,
+                VersionGuid = tab.VersionGuid,
+                DefaultLanguageGuid = tab.DefaultLanguageGuid == Guid.Empty ? null : (Guid?)tab.DefaultLanguageGuid,
+                LocalizedVersionGuid = tab.LocalizedVersionGuid,
+                Level = tab.Level,
+                TabPath = tab.TabPath,
+                HasBeenPublished = tab.HasBeenPublished,
+                IsSystem = tab.IsSystem,
             };
-
-            Repository.CreateItem(dbPage, null);
-            Result.AddLogEntry("Exported page", tab.TabName);
-            processed++;
         }
     }
 }

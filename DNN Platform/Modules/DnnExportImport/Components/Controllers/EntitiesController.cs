@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
+using Dnn.ExportImport.Components.Dto.Pages;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -14,10 +14,6 @@ namespace Dnn.ExportImport.Components.Controllers
         protected override Func<IEntitiesController> GetFactory()
         {
             return () => new EntitiesController();
-        }
-
-        public EntitiesController()
-        {
         }
 
         public ExportImportJob GetFirstActiveJob()
@@ -73,5 +69,9 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
+        public IList<ShortTabData> GetPortalTabs(int portalId)
+        {
+            return CBO.Instance.FillCollection<ShortTabData>(DataProvider.Instance().GetAllPortalTabs(portalId));
+        }
     }
 }
