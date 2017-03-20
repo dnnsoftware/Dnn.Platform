@@ -30,7 +30,7 @@ namespace Dnn.ExportImport.Components.Services
         private readonly string _assetsFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_{{1}}.resources";
 
-        private readonly string _usersAssetsTempFolder = $"{{0}}TempUsers\\";
+        private const string UsersAssetsTempFolder = "{0}TempUsers\\";
         private int _progressPercentage;
 
         public override string Category => Constants.Category_Assets;
@@ -203,7 +203,7 @@ namespace Dnn.ExportImport.Components.Services
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Portal");
             var usersAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Users");
-            var userFolderPath = string.Format(_usersAssetsTempFolder, portal.HomeDirectoryMapPath);
+            var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath);
             ProgressPercentage = 0;
             if (CheckPoint.Stage < 1)
             {
@@ -575,7 +575,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var tempUsersFolderPath =
-                $"{string.Format(_usersAssetsTempFolder, portal.HomeDirectoryMapPath)}{folder.FolderPath}";
+                $"{string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath)}{folder.FolderPath}";
             var newUsersFolderPath = $"{portal.HomeDirectoryMapPath}{folder.FolderPath}";
             if (!Directory.Exists(tempUsersFolderPath))
                 return;

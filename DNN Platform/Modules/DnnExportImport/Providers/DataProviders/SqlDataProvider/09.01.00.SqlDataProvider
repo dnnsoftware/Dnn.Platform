@@ -822,6 +822,21 @@ AS
 			ELSE rs.LastModifiedOnDate END)<= @TillDate
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
+	@RoleID int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}Roles
+	SET
+		AutoAssignment = 1
+	WHERE
+		RoleID = @RoleID
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
 GO

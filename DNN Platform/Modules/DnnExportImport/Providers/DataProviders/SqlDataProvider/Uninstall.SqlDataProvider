@@ -126,16 +126,20 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', '
 GO
 
 -- Roles Import/Export
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoleGroups]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoleGroups]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoles]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoles]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportRoleSettings]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportRoleSettings]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL

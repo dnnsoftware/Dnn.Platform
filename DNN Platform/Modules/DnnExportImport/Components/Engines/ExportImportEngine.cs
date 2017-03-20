@@ -86,7 +86,8 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB {exportJob.JobId}</b> {exportDto.ExportTime:g)}");
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB {exportJob.JobId}</b>");
+            scheduleHistoryItem.AddLogNote($"<br/>Between {exportDto.ExportTime} and {exportJob.CreatedOnDate:g}");
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
 
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
@@ -122,7 +123,6 @@ namespace Dnn.ExportImport.Components.Engines
 
                 do
                 {
-
                     foreach (var service in parentServices.OrderBy(x => x.Priority))
                     {
                         if (exportJob.IsCancelled)
@@ -418,13 +418,11 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static int GetTimeoutPerSlot(int scheduleId)
         {
-            const string maxTimeToRunJobKey = "MaxTimeToRunJob";
-
             var provider = SchedulingProvider.Instance();
             var nseedsUpdate = false;
             int value;
             var settings = provider.GetScheduleItemSettings(scheduleId);
-            if (!int.TryParse(settings[maxTimeToRunJobKey] as string ?? "", out value))
+            if (!int.TryParse(settings[Constants.MaxTimeToRunJobKey] as string ?? "", out value))
             {
                 // max time to run a job is 2 hours
                 value = (int)TimeSpan.FromHours(2).TotalSeconds;
@@ -440,7 +438,7 @@ namespace Dnn.ExportImport.Components.Engines
 
             if (nseedsUpdate)
             {
-                provider.AddScheduleItemSetting(scheduleId, maxTimeToRunJobKey, value.ToString());
+                provider.AddScheduleItemSetting(scheduleId, Constants.MaxTimeToRunJobKey, value.ToString());
             }
 
             return value;

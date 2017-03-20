@@ -226,7 +226,7 @@ namespace Dnn.ExportImport.Components.Services
                                 : null;
 
                             localRoleInfo.RoleName = other.RoleName;
-                            localRoleInfo.AutoAssignment = other.AutoAssignment;
+                            localRoleInfo.AutoAssignment = false; //other.AutoAssignment; CP: said do not do this
                             localRoleInfo.BillingFrequency = other.BillingFrequency;
                             localRoleInfo.BillingPeriod = other.BillingPeriod ?? 0;
                             localRoleInfo.Description = other.Description;
@@ -244,6 +244,11 @@ namespace Dnn.ExportImport.Components.Services
 
                             RoleController.Instance.UpdateRole(localRoleInfo, other.AutoAssignment);
                             roleItems.Add(new RoleItem(localRoleInfo.RoleID, createdBy, modifiedBy));
+
+                            // do not assign existing users to the roles automatically
+                            if (other.AutoAssignment)
+                                DataProvider.Instance().SetRoleAutoAssign(localRoleInfo.RoleID);
+
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
                             Result.AddLogEntry("Updated role", other.RoleName);
                             break;

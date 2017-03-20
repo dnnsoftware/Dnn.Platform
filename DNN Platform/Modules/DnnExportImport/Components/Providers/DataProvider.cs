@@ -156,6 +156,11 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
         }
 
+        public void RoleSetAutoAssign(int roleId)
+        {
+            _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
+        }
+
         public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime tillDate, DateTime? sinceDate)
         {
             return _dataProvider
