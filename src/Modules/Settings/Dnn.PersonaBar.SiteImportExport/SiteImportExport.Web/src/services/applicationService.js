@@ -27,6 +27,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.get("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
+
+    getJobDetails(jobId, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.get("JobDetails?jobId=" + jobId, {}, callback, errorCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

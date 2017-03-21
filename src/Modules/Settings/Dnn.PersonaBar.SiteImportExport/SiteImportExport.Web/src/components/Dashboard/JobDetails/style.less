@@ -1,0 +1,46 @@
+@import "~dnn-global-styles/index";
+.job-details {
+    margin: 10px 0;
+    float: left;
+    width: 100%;
+    .summary-title {
+        width: 100%;
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        padding-left: 4%;
+    }
+    .container {
+        float: left;
+        padding: 2% 8%;
+        width: 100%;
+        &.left-column {
+            border-right: 1px solid @alto;
+        }
+        &.right-column {
+            text-align: center;
+        }
+        .item-row {
+            float: left;
+            width: 100%;
+            .dnn-label {
+                width: 50%;
+                float: left;
+                label {
+                    font-weight: bolder;
+                    clear: both;
+                    float: left;
+                    text-align: left;
+                    width: 100%;
+                    margin-bottom: 5px;
+                }
+            }
+            .item-value {
+                width: 50%;
+                float: left;
+                text-align: right;
+            }
+        }
+    }
+}

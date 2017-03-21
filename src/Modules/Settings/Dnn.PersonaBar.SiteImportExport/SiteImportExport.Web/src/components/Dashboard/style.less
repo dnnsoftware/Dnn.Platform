@@ -5,45 +5,134 @@
         * {
             box-sizing: border-box;
         }
-        .top-panel {
-            width: 100%;
-            float: left;
-            .site-selection {
-                margin: 20px;
-                .dnn-dropdown {
-                    width: 100%;
-                    .collapsible-label {
-                        text-transform: uppercase;
-                        font-weight: bold;
-                    }
-                }
-            }
-            .last-actions {
-                width: 50%;
+        .persona-bar-page-body {
+            border: 0;
+            background: none;
+            .top-panel {
+                width: 100%;
                 float: left;
-                padding: 0 20px 20px 20px;
-                .action-labels {
-                    float: left;
-                    width: 50%;
-                    .dnn-label {
-                        padding: 0 0 10px 0;
+                border: 1px solid @alto;
+                background: #fff;
+                .site-selection {
+                    margin: 20px;
+                    .dnn-dropdown {
+                        width: 100%;
+                        .collapsible-label {
+                            text-transform: uppercase;
+                            font-weight: bold;
+                        }
                     }
                 }
-                .action-dates {
-                    float: right;
+                .last-actions {
                     width: 50%;
-                    div {
-                        padding: 0 0 10px 0;
+                    float: left;
+                    padding: 0 20px 20px 20px;
+                    .action-labels {
+                        float: left;
+                        width: 50%;
+                        .dnn-label {
+                            padding: 0 0 10px 0;
+                        }
+                    }
+                    .action-dates {
+                        float: right;
+                        width: 50%;
+                        div {
+                            padding: 0 0 10px 0;
+                        }
+                    }
+                }
+                .action-buttons {
+                    width: 50%;
+                    float: right;
+                    padding: 15px 20px 0 20px;
+                    .action-button {
+                        margin-left: 20px;
+                        float: right;
                     }
                 }
             }
-            .action-buttons {
-                width: 50%;
-                float: right;
-                padding: 15px 20px 0 20px;
-                .action-button {
-                    margin-left: 20px;
-                    float: right;
+            .section-title {
+                text-transform: uppercase;
+                font-weight: bold;
+                float: left;
+                width: 100%;
+                padding: 20px 0 10px 0;
+            }
+            .logContainer {
+                float: left;
+                width: 100%;
+                border: 1px solid @alto;
+                background: #fff;
+                .jobHeader-wrapper {
+                    &:not(:last-child) {
+                        border-bottom: 1px solid @alto;
+                    }
+                    width: 100%;
+                    float: left;
+                    padding: 15px 0 15px 0;
+                    text-transform: uppercase;
+                    .jobHeader-Indicator {
+                        width: 5%;
+                        float: left;
+                    }
+                    .jobHeader-JobDate {
+                        width: 25%;
+                        float: left;
+                        font-weight: bolder;
+                    }
+                    .jobHeader-JobType {
+                        width: 20%;
+                        float: left;
+                        font-weight: bolder;
+                    }
+                    .jobHeader-JobUser {
+                        width: 20%;
+                        float: left;
+                        font-weight: bolder;
+                    }
+                    .jobHeader-JobPortal {
+                        width: 25%;
+                        float: left;
+                        font-weight: bolder;
+                    }
+                    .jobHeader-Arrow {
+                        width: 5%;
+                        float: left;
+                    }
+                }
+            }
+            .logPager {
+                padding: 20px 0;
+                float: left;
+                width: 100%;
+            }
+            .logLegend-wrapper {
+                float: left;
+                border-top: solid 1px @alto;
+                width: 100%;
+                padding: 20px 0;
+                .logLegend-item {
+                    float: left;
+                    width: 200px;
+                    .legend-export {
+                        color: #fff;
+                        background-color: #ff8a14;
+                        width: 15px;
+                        height: 15px;
+                        display: block;
+                        float: left;
+                        margin: 0 6px 0 0;
+                    }
+                    .legend-import {
+                        color: #fff;
+                        background-color: #099;
+                        width: 15px;
+                        height: 15px;
+                        display: block;
+                        float: left;
+                        margin: 0 6px 0 0;
+                    }
                 }
             }
         }

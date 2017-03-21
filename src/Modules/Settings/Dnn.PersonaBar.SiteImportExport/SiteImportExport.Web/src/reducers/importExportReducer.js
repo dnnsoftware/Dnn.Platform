@@ -13,6 +13,10 @@ export default function importExport(state = {
             return { ...state,
                 jobs: action.jobs
             };
+        case ActionTypes.RETRIEVED_JOB_DETAILS:
+            return { ...state,
+                job: action.job
+            };
         default:
             return { ...state
             };

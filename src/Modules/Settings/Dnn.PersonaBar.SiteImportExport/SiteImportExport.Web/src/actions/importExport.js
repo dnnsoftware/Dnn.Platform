@@ -28,6 +28,20 @@ const jobsActions = {
                 }
             }, errorCallback);
         };
+    },
+
+    getJobDetails(jobId, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.getJobDetails(jobId, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_JOB_DETAILS,
+                    job: data
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
     }
 };
 

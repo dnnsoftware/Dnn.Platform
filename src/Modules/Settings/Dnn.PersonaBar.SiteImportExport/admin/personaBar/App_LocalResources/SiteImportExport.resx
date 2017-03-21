@@ -123,9 +123,6 @@
   <data name="SiteImportExport.Header" xml:space="preserve">
     <value>Import / Export</value>
   </data>
-  <data name="SiteSelectionPrefix.Text" xml:space="preserve">
-    <value>Site: </value>
-  </data>
   <data name="ImportButton.Text" xml:space="preserve">
     <value>Import Data</value>
   </data>
@@ -140,5 +137,53 @@
   </data>
   <data name="LastUpdate.Text" xml:space="preserve">
     <value>Last Update:</value>
+  </data>
+  <data name="JobDate.Header" xml:space="preserve">
+    <value>Date</value>
   </data>  
+  <data name="JobType.Header" xml:space="preserve">
+    <value>Type</value>
+  </data>  
+  <data name="JobUser.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>  
+  <data name="JobPortal.Header" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="LegendExport.Text" xml:space="preserve">
+    <value>Site Export</value>
+  </data>  
+  <data name="LegendImport.Text" xml:space="preserve">
+    <value>Site Import</value>
+  </data>  
+  <data name="LogSection.Text" xml:space="preserve">
+    <value>Import / Export Log</value>
+  </data>
+  <data name="ShowSiteLabel.Text" xml:space="preserve">
+    <value>Site: </value>
+  </data>
+  <data name="ShowFilterLabel.Text" xml:space="preserve">
+    <value>Filter: </value>
+  </data>
+  <data name="JobTypeAll.Text" xml:space="preserve">
+    <value>All Imports and Exports</value>
+  </data>
+  <data name="JobTypeImport.Text" xml:space="preserve">
+    <value>All Imports</value>
+  </data>
+  <data name="JobTypeExport.Text" xml:space="preserve">
+    <value>All Exports</value>
+  </data>
+  <data name="SearchPlaceHolder.Text" xml:space="preserve">
+    <value>Search by Keyword</value>
+  </data>
+  <data name="DownloadLog.Text" xml:space="preserve">
+    <value>Download Complete Log</value>
+  </data>
+  <data name="ExportSummary.Text" xml:space="preserve">
+    <value>Export Summary</value>
+  </data>
+  <data name="ImportSummary.Text" xml:space="preserve">
+    <value>Import Summary</value>
+  </data>
 </root>
