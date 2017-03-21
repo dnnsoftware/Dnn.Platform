@@ -16,6 +16,7 @@ class FiltersBar extends Component {
             searchText: ""
         };
     }
+
     onSelect(option) {
         let { label } = option;
         let { value } = option;
@@ -25,18 +26,9 @@ class FiltersBar extends Component {
             selectedJobFilter.value = value;
 
             this.setState({
-                selectedJobFilter,
-                searchText: ""
-            }, () => { this.props.onChange(option, this.state.searchText); });
+                selectedJobFilter
+            }, () => { this.props.onFilterChanged(option); });
         }
-    }
-
-    onKeywordChanged(text) {
-        this.setState({
-            searchText: text
-        }, () => {
-            this.props.onChange(this.state.selectedJobFilter, text);
-        });
     }
 
     BuildFiltersOptions() {
@@ -63,8 +55,7 @@ class FiltersBar extends Component {
                             withBorder={false}
                             options={jobFiltersOptions}
                             label={this.state.selectedJobFilter.label}
-                            onSelect={this.onSelect.bind(this)}
-                            ref="jobFiltersDropdown"
+                            onSelect={this.props.onFilterChanged}
                             prependWith={Localization.get("ShowFilterLabel")}
                         />
                         <div className="clear">
@@ -76,7 +67,7 @@ class FiltersBar extends Component {
                 <div>&nbsp; </div></GridCell>
             <GridCell columnSize={35} >
                 <div className="search-filter">
-                    <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.onKeywordChanged.bind(this)} maxLength={50} iconStyle={{ right: 0 }} />
+                    <SearchBox placeholder={Localization.get("SearchPlaceHolder")} onSearch={this.props.onKeywordChanged} maxLength={50} iconStyle={{ right: 0 }} />
                     <div className="clear"></div>
                 </div>
             </GridCell>
@@ -85,6 +76,7 @@ class FiltersBar extends Component {
 }
 FiltersBar.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired
+    onFilterChanged: PropTypes.func.isRequired,
+    onKeywordChanged: PropTypes.func.isRequired
 };
 export default (FiltersBar);

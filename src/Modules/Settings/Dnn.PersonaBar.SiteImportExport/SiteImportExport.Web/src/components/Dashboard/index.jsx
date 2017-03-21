@@ -80,14 +80,16 @@ class DashboardPanelBody extends Component {
         return {
             portalId: state.portalId,
             pageIndex: state.pageIndex || 0,
-            pageSize: state.pageSize
+            pageSize: state.pageSize,
+            jobType: state.filter,
+            keywords: state.keyword
         };
     }
 
     getPortalOptions() {
         const { state, props } = this;
         let options = [];
-        if (props.portals !== undefined) {
+        if (props.portals) {
             options = props.portals.map((item) => {
                 return {
                     label: item.PortalName,
@@ -144,30 +146,33 @@ class DashboardPanelBody extends Component {
     renderedJobList() {
         const { props } = this;
         let i = 0;
-        return props.jobs.map((job, index) => {
-            let id = "row-" + i++;
-            return (
-                <JobRow
-                    jobId={job.JobId}
-                    jobType={job.JobType}
-                    jobDate={job.CreatedOn}
-                    jobUser={job.User}
-                    jobPortal={job.PortalId}
-                    index={index}
-                    key={"jobTerm-" + index}
-                    closeOnClick={true}
-                    openId={this.state.openId}
-                    OpenCollapse={this.toggle.bind(this)}
-                    Collapse={this.collapse.bind(this)}
-                    id={id}>
-                    <JobDetails
+        if (props.jobs) {
+            return props.jobs.map((job, index) => {
+                let id = "row-" + i++;
+                return (
+                    <JobRow
                         jobId={job.JobId}
+                        jobType={job.JobType}
+                        jobDate={job.CreatedOn}
+                        jobUser={job.User}
+                        jobPortal={job.PortalId}
+                        index={index}
+                        key={"jobTerm-" + index}
+                        closeOnClick={true}
+                        openId={this.state.openId}
+                        OpenCollapse={this.toggle.bind(this)}
                         Collapse={this.collapse.bind(this)}
-                        id={id}
-                        openId={this.state.openId} />
-                </JobRow>
-            );
-        });
+                        id={id}>
+                        <JobDetails
+                            jobId={job.JobId}
+                            Collapse={this.collapse.bind(this)}
+                            id={id}
+                            openId={this.state.openId} />
+                    </JobRow>
+                );
+            });
+        }
+        else return <div/>;
     }
 
     onPageChange(currentPage, pageSize) {
@@ -187,19 +192,19 @@ class DashboardPanelBody extends Component {
         const { props, state } = this;
         return (
             <div className="logPager">
-                <Pager
+                {props.jobs && <Pager
                     showStartEndButtons={false}
                     showPageSizeOptions={true}
                     showPageInfo={false}
                     numericCounters={4}
                     pageSize={state.pageSize}
-                    totalRecords={80}
+                    totalRecords={props.totalJobs}
                     onPageChanged={this.onPageChange.bind(this)}
                     pageSizeDropDownWithoutBorder={true}
                     pageSizeOptionText={"{0} results per page"}
                     summaryText={"Showing {0}-{1} of {2} results"}
                     culture={util.utilities.getCulture()}
-                />
+                />}
             </div>
         );
     }
@@ -309,13 +314,17 @@ class DashboardPanelBody extends Component {
 DashboardPanelBody.propTypes = {
     dispatch: PropTypes.func.isRequired,
     jobs: PropTypes.array,
-    portals: PropTypes.array
+    portals: PropTypes.array,
+    totalJobs: PropTypes.number,
+    portalName: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         jobs: state.importExport.jobs,
-        portals: state.importExport.portals
+        portals: state.importExport.portals,
+        totalJobs: state.importExport.totalJobs,
+        portalName: state.importExport.portalName
     };
 }
 

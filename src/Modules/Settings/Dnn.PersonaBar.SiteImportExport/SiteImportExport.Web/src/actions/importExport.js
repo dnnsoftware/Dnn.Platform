@@ -21,7 +21,9 @@ const jobsActions = {
             ApplicationService.getAllJobs(parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_JOBS,
-                    jobs: data
+                    jobs: data.Jobs,
+                    totalJobs: data.TotalJobs,
+                    portalName: data.PortalName
                 });
                 if (callback) {
                     callback();

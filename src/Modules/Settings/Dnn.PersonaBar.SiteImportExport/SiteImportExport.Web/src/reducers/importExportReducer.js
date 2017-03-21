@@ -2,7 +2,9 @@ import { importExport as ActionTypes }  from "../constants/actionTypes";
 
 export default function importExport(state = {
     jobs: [],
-    portals: []
+    portals: [],
+    totalJobs: 0,
+    portalName: null
 }, action) {
     switch (action.type) {  
         case ActionTypes.RETRIEVED_PORTALS:
@@ -11,7 +13,9 @@ export default function importExport(state = {
             };
         case ActionTypes.RETRIEVED_JOBS:
             return { ...state,
-                jobs: action.jobs
+                jobs: action.jobs,
+                totalJobs: action.totalJobs,
+                portalName: action.portalName
             };
         case ActionTypes.RETRIEVED_JOB_DETAILS:
             return { ...state,
