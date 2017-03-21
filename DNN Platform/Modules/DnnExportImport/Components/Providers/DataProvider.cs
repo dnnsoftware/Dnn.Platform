@@ -102,6 +102,11 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("ExportImportJobLogs_Full", jobId);
         }
 
+        public IDataReader GetAllJobsHeader(int? portalId)
+        {
+            return _dataProvider.ExecuteReader("ExportImportJobs_GetHeader", portalId);
+        }
+
         public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
             return _dataProvider

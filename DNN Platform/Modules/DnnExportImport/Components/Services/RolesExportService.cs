@@ -32,7 +32,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class RolesExportService : Potable2Base
+    public class RolesExportService : Portable2Base
     {
         private int _progressPercentage;
 

@@ -58,7 +58,7 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_Roles = "ROLES";
         public const string Category_ProfileProps = "PROFILE_PROPERTIES";
         public const string Category_Content = "CONTENT";
-        public const string Category_tEMPLATES = "TEMPLATES";
+        public const string Category_Templates = "TEMPLATES";
         public const string Category_Assets = "ASSETS";
 
         // these are added internally by the engine

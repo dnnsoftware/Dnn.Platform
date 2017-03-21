@@ -27,7 +27,7 @@ using Dnn.ExportImport.Components.Models;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public abstract class Potable2Base : IPortable2
+    public abstract class Portable2Base : IPortable2
     {
         public ExportImportResult Result { get; set; }
         public IExportImportRepository Repository { get; set; }

@@ -88,19 +88,10 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTimeOffset? SinceTime { get; set; }
 
         /// <summary>
-        ///  The pages to be exported.
+        /// The pages to be exported (list of TabId values). These are the ID's
+        /// of all checked items but not their children when a parent is checked.
+        /// If the value '-1' is included in the list, it means all site pages.
         /// </summary>
-        public PageToExport[] Pages { get; set; }
-    }
-
-    /// <summary>
-    ///  Spercifies page to be exported.
-    /// </summary>
-    [JsonObject]
-    public class PageToExport
-    {
-        public int TabId { get; set; }
-        public int ParentTabId { get; set; }
-        public TriCheckedState CheckedState { get; set; }
+        public int[] Pages { get; set; }
     }
 }

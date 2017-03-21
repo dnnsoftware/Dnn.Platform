@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Service to export/import users.
     /// </summary>
-    public class UsersExportService : Potable2Base
+    public class UsersExportService : Portable2Base
     {
         private int _progressPercentage;
 

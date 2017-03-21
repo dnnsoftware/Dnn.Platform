@@ -73,7 +73,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NUL
 		[ExportFile]         nvarchar(100),
 		[JobObject]          nvarchar(max),
 
-		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId])
+		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId] DESC)
 	)
 GO
 
@@ -317,6 +317,30 @@ BEGIN
 END
 GO
 
+-- ExportImportJobs_GetHeader
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]
+    @PortalID  int,
+	@JobType   int = NULL,
+	@Keywords  nvarchar(100) = NULL
+AS
+	SELECT
+		P.PortalId, P.PortalName
+	FROM
+		{databaseOwner}{objectQualifier}Portals P
+		INNER JOIN {databaseOwner}{objectQualifier}ExportImportJobs J
+			ON P.PortalID = J.PortalID
+	WHERE
+		P.PortalID = @PortalID
+	AND
+		(@JobType IS NULL OR JobType = @JobType)
+	AND
+		(@Keywords IS NULL OR JobObject LIKE ('%' + @Keywords + '%'))
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
 GO
@@ -335,7 +359,7 @@ BEGIN
 		SELECT
 			ROW_NUMBER() OVER (ORDER BY JobId ASC) AS RowNum, *
 		FROM
-			{databaseOwner}[{objectQualifier}ExportImportJobs]
+			{databaseOwner}{objectQualifier}ExportImportJobs
 		WHERE
 			PortalID = @PortalID
 	)
@@ -1072,7 +1096,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
     @PortalID   int
 AS
 	SELECT
-		TabID, ParentId, IsDeleted, ISNULL(LastModifiedOnDate, CreatedOnDate) AS LastUpdatedOn
+		TabID, IsNull(ParentId, -1) AS ParentId, TabName, TabPath, IsDeleted, ISNULL(LastModifiedOnDate, CreatedOnDate) AS LastUpdatedOn
 	FROM
 		{databaseOwner}{objectQualifier}Tabs
 	WHERE 

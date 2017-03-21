@@ -20,14 +20,15 @@
 #endregion
 
 using System;
-using System.Runtime.InteropServices;
-using System.Threading;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
 
 namespace Dnn.ExportImport.Components.Interfaces
 {
+    /// <summary>
+    /// A contract specifying the ability to import and export site different areas
+    /// </summary>
     public interface IPortable2
     {
         /// <summary>

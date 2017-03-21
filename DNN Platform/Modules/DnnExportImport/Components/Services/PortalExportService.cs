@@ -36,13 +36,13 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Service to export/import portal data.
     /// </summary>
-    public class PortalExportService : Potable2Base
+    public class PortalExportService : Portable2Base
     {
         private int _progressPercentage;
 
         public override string Category => Constants.Category_Portal;
         public override string ParentCategory => null;
-        public override uint Priority => 1;
+        public override uint Priority => 2;
 
         public int ProgressPercentage
         {

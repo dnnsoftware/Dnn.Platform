@@ -31,7 +31,7 @@ using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class ProfilePropertiesService : Potable2Base
+    public class ProfilePropertiesService : Portable2Base
     {
         private int _progressPercentage;
         public override string Category => Constants.Category_ProfileProps;

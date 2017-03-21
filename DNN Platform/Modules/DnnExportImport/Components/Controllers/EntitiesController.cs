@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
@@ -38,6 +39,12 @@ namespace Dnn.ExportImport.Components.Controllers
             return CBO.Instance.FillCollection<ExportImportJobLog>(DataProvider.Instance().GetJobFullLog(jobId));
         }
 
+        public AllJobsHeader GetAllJobsHeader(int? portalId)
+        {
+            return CBO.Instance.FillObject<AllJobsHeader>(
+                DataProvider.Instance().GetAllJobsHeader(portalId));
+        }
+
         public IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
         {
             return CBO.Instance.FillCollection<ExportImportJob>(
@@ -69,9 +76,9 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
-        public IList<ShortTabData> GetPortalTabs(int portalId)
+        public IList<ShortTabInfo> GetPortalTabs(int portalId)
         {
-            return CBO.Instance.FillCollection<ShortTabData>(DataProvider.Instance().GetAllPortalTabs(portalId));
+            return CBO.Instance.FillCollection<ShortTabInfo>(DataProvider.Instance().GetAllPortalTabs(portalId));
         }
     }
 }

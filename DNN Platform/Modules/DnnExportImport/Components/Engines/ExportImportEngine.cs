@@ -116,7 +116,7 @@ namespace Dnn.ExportImport.Components.Engines
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}</b>");
             scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.SinceTime}] and [{exportJob.CreatedOnDate:g}]");
-            var firstLoop = true;
+            var firstIteration = true;
             AddJobToCache(exportJob);
 
             using (var ctx = new ExportImportRepository(dbName))
@@ -140,28 +140,34 @@ namespace Dnn.ExportImport.Components.Engines
                             implementors = implementors.Except(nextLevelServices).ToList();
                         }
 
-                        if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                            (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                        if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                            (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                         {
                             service.Result = result;
                             service.Repository = ctx;
                             service.CheckCancelled = CheckCancelledCallBack;
                             service.CheckPointStageCallback = CheckpointCallback;
-                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
-                                     ?? new ExportImportChekpoint
-                                     {
-                                         JobId = exportJob.JobId,
-                                         Category = service.Category
-                                     };
+                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category);
 
-                            CheckpointCallback(service); // persist the record in db
+                            if (service.CheckPoint == null)
+                            {
+                                service.CheckPoint = new ExportImportChekpoint
+                                {
+                                    JobId = exportJob.JobId,
+                                    Category = service.Category
+                                };
+
+                                // persist the record in db
+                                CheckpointCallback(service);
+                            }
+
                             service.ExportData(exportJob, exportDto);
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
                     }
 
-                    firstLoop = false;
-                    parentServices = new List<IPortable2>();
+                    firstIteration = false;
+                    parentServices = new List<IPortable2>(nextLevelServices);
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
@@ -261,7 +267,7 @@ namespace Dnn.ExportImport.Components.Engines
                 implementors = implementors.Except(parentServices).ToList();
                 var nextLevelServices = new List<IPortable2>();
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
-                var firstLoop = true;
+                var firstIteration = true;
                 AddJobToCache(importJob);
 
                 do
@@ -282,8 +288,8 @@ namespace Dnn.ExportImport.Components.Engines
                             implementors = implementors.Except(nextLevelServices).ToList();
                         }
 
-                        if ((firstLoop && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                            (!firstLoop && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                        if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                            (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                         {
                             service.Result = result;
                             service.Repository = ctx;
@@ -302,7 +308,7 @@ namespace Dnn.ExportImport.Components.Engines
                         }
                     }
 
-                    firstLoop = false;
+                    firstIteration = false;
                     parentServices = new List<IPortable2>(nextLevelServices);
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)

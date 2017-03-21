@@ -33,7 +33,7 @@ using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class VocabularyService : Potable2Base
+    public class VocabularyService : Portable2Base
     {
         private int _progressPercentage;
 

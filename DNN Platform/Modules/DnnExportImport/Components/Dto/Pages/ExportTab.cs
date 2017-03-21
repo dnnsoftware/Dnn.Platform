@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Dnn.ExportImport.Components.Dto.Pages
 {
     [JsonObject]
-    public class ExportPage : BasicExportImportDto
+    public class ExportTab : BasicExportImportDto
     {
         public int TabId { get; set; }
         public int TabOrder { get; set; }

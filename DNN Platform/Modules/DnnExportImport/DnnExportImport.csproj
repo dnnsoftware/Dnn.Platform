@@ -83,10 +83,13 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
-    <Compile Include="Components\Dto\Pages\ExportPage.cs" />
+    <Compile Include="Components\Dto\Jobs\AllJobsHeader.cs" />
+    <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
+    <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
-    <Compile Include="Components\Dto\Pages\ShortTabData.cs" />
+    <Compile Include="Components\Dto\Pages\ExportTabSettings.cs" />
+    <Compile Include="Components\Dto\Pages\ShortTabInfo.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
@@ -122,7 +125,7 @@
     <Compile Include="Components\Services\AssetsExportService.cs" />
     <Compile Include="Components\Services\PagesExportService.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
-    <Compile Include="Components\Services\Potable2Base.cs" />
+    <Compile Include="Components\Services\Portable2Base.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />
     <Compile Include="Components\Services\RolesExportService.cs" />
     <Compile Include="Components\Services\UsersDataExportService.cs" />

@@ -36,13 +36,6 @@ namespace Dnn.ExportImport.Components.Common
         Cancelled
     }
 
-    public enum TriCheckedState
-    {
-        Checked,   // =  1,
-        UnChecked, // =  0,
-        Partial,   // = -1,
-    }
-
     /// <summary>
     /// Specifies what to do when there is a collision during the import process.
     /// </summary>
