@@ -1,4 +1,4 @@
-import { jobs as ActionTypes } from "../constants/actionTypes";
+import { importExport as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const jobsActions = {

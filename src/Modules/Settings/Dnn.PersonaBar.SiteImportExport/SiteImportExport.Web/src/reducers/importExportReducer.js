@@ -1,6 +1,6 @@
-import { jobs as ActionTypes }  from "../constants/actionTypes";
+import { importExport as ActionTypes }  from "../constants/actionTypes";
 
-export default function jobs(state = {
+export default function importExport(state = {
     jobs: [],
     portals: []
 }, action) {

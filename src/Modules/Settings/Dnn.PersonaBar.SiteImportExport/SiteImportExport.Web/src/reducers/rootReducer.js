@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import pagination from "./paginationReducer";
 import visiblePanel from "./visiblePanelReducer";
-import jobs from "./jobsReducer";
+import importExport from "./importExportReducer";
 
 const rootReducer = combineReducers({
     pagination,
     visiblePanel,
-    jobs
+    importExport
 });
 
 export default rootReducer;

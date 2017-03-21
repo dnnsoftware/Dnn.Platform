@@ -1,5 +1,5 @@
-const jobsActionTypes =  { 
+const importExportActionTypes =  { 
     RETRIEVED_PORTALS: "RETRIEVED_PORTALS",   
     RETRIEVED_JOBS: "RETRIEVED_JOBS"
 };
-export default jobsActionTypes;
+export default importExportActionTypes;

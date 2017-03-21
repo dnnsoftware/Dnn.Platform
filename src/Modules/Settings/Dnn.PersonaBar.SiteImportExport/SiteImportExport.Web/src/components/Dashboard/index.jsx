@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-    jobs as JobsActions
+    importExport as ImportExportActions
 } from "../../actions";
 import DropDown from "dnn-dropdown";
 import Pager from "dnn-pager";
@@ -36,9 +36,9 @@ class DashboardPanelBody extends Component {
             portalId: props.portalId || currentPortalId
         }, () => {
             if (isHost) {
-                props.dispatch(JobsActions.getPortals(() => {
+                props.dispatch(ImportExportActions.getPortals(() => {
                 }),
-                    props.dispatch(JobsActions.getAllJobs(this.getNextPage()))
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()))
                 );
             }
         });
@@ -74,19 +74,19 @@ class DashboardPanelBody extends Component {
                 portalId: option.value,
                 pageIndex: 0
             }, () => {
-                props.dispatch(JobsActions.getAllJobs(this.getNextPage()));
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
             });
         }
     }
 
     onImportData() {
         const { props } = this;
-        props.dispatch(JobsActions.import());
+        props.dispatch(ImportExportActions.import());
     }
 
     onExportData() {
         const { props } = this;
-        props.dispatch(JobsActions.export());
+        props.dispatch(ImportExportActions.export());
     }
 
     render() {
@@ -145,8 +145,8 @@ DashboardPanelBody.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        jobs: state.jobs.jobs,
-        portals: state.jobs.portals
+        jobs: state.importExport.jobs,
+        portals: state.importExport.portals
     };
 }
 

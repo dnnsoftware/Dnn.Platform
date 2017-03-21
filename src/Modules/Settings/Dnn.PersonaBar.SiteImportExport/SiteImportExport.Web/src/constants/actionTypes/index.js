@@ -1,9 +1,9 @@
 import pagination from "./pagination";
 import visiblePanel from "./visiblePanel";
-import jobs from "./jobs";
+import importExport from "./importExport";
 
 export {
     pagination,
     visiblePanel,
-    jobs
+    importExport
 };
