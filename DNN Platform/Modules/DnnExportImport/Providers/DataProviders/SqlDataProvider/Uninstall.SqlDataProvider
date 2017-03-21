@@ -15,6 +15,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS 
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
 GO

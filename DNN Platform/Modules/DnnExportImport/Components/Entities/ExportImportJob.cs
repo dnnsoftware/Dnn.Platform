@@ -39,7 +39,7 @@ namespace Dnn.ExportImport.Components.Entities
         public JobStatus JobStatus { get; set; }
         public bool IsCancelled { get; set; }
         public string Name { get; set; }
-        public string NamDescription { get; set; }
+        public string Description { get; set; }
         public int CreatedByUserId { get; set; }
         public DateTime CreatedOnDate { get; set; }
         public DateTime LastModifiedOnDate { get; set; }
@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Entities
             JobStatus = (JobStatus)Null.SetNullInteger(dr[nameof(JobStatus)]);
             IsCancelled = Null.SetNullBoolean(dr[nameof(IsCancelled)]);
             Name = Null.SetNullString(dr[nameof(Name)]);
-            NamDescription = Null.SetNullString(dr[nameof(NamDescription)]);
+            Description = Null.SetNullString(dr[nameof(Description)]);
             CreatedByUserId = Null.SetNullInteger(dr[nameof(CreatedByUserId)]);
             CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
             LastModifiedOnDate = Null.SetNullDateTime(dr[nameof(LastModifiedOnDate)]);

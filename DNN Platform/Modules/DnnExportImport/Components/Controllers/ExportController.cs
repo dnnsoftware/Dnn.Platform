@@ -32,11 +32,15 @@ namespace Dnn.ExportImport.Components.Controllers
         public int QueueOperation(int userId, ExportDto exportDto)
         {
             exportDto.SinceTime = (exportDto.SinceTime ?? Constants.MinDbTime).ToUniversalTime();
+
             var exportFileName = string.Join("_", "EXPORT",
                 DateTime.UtcNow.ToString(Constants.ExportDateFormat), exportDto.PortalId.ToString("D"));
+
             var dataObject = JsonConvert.SerializeObject(exportDto);
-            var jobId = DataProvider.Instance().AddNewJob(
-                exportDto.PortalId, userId, JobType.Export, exportFileName, dataObject);
+
+            var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
+                JobType.Export, exportDto.ExportName, exportDto.ExportDescription, exportFileName, dataObject);
+
             AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
         }

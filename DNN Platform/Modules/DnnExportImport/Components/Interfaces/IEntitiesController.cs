@@ -13,6 +13,7 @@ namespace Dnn.ExportImport.Components.Interfaces
         IList<ExportImportJobLog> GetJobFullLog(int jobId);
         int GetAllJobsCount(int? portalId, int? jobType, string keywords);
         IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex, int? jobType, string keywords);
+        void UpdateJobInfo(ExportImportJob job);
         void UpdateJobStatus(ExportImportJob job);
         void SetJobCancelled(ExportImportJob job);
         void RemoveJob(ExportImportJob job);

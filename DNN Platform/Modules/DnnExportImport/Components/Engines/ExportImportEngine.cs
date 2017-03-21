@@ -261,6 +261,9 @@ namespace Dnn.ExportImport.Components.Engines
 
                 var implementors = GetPortableImplementors().ToList();
                 var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
+
+                importJob.Name = exportedDto.ExportName;
+                importJob.Description = exportedDto.ExportDescription;
                 importJob.JobStatus = JobStatus.InProgress;
 
                 // there must be one parent implementor at least for this to work

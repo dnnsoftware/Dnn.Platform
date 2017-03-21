@@ -50,6 +50,11 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords));
         }
 
+        public void UpdateJobInfo(ExportImportJob job)
+        {
+            DataProvider.Instance().UpdateJobInfo(job.JobId, job.Name, job.Description);
+        }
+
         public void UpdateJobStatus(ExportImportJob job)
         {
             DataProvider.Instance().UpdateJobStatus(job.JobId, job.JobStatus);

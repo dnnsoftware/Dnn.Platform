@@ -55,10 +55,16 @@ namespace Dnn.ExportImport.Components.Providers
 
         #endregion
 
-        public int AddNewJob(int portalId, int userId, JobType jobType, string exportFile, string serializedObject)
+        public int AddNewJob(int portalId, int userId, JobType jobType,
+            string jobName, string jobDescription, string exportFile, string serializedObject)
         {
-            return _dataProvider.ExecuteScalar<int>(
-                "ExportImportJobs_Add", portalId, (int)jobType, userId, exportFile, serializedObject);
+            return _dataProvider.ExecuteScalar<int>("ExportImportJobs_Add", portalId,
+                (int)jobType, userId, jobName, jobDescription, exportFile, serializedObject);
+        }
+
+        public void UpdateJobInfo(int jobId, string name, string description)
+        {
+            _dataProvider.ExecuteNonQuery("ExportImportJobs_UpdateInfo", jobId, name, description);
         }
 
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
@@ -67,8 +73,8 @@ namespace Dnn.ExportImport.Components.Providers
             if (jobStatus == JobStatus.DoneFailure || jobStatus == JobStatus.DoneSuccess)
                 completeDate = DateTime.UtcNow;
 
-            _dataProvider
-                .ExecuteNonQuery("ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
+            _dataProvider.ExecuteNonQuery(
+                "ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
         }
 
         public void SetJobCancelled(int jobId)

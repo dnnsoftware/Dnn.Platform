@@ -217,32 +217,58 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
-	@PortalId int,
-	@JobType int,
-	@CreatedBy int,
-	@ExportFile nvarchar(100),
-	@JobObject nvarchar(max)
+	@PortalId    int,
+	@JobType     int,
+	@CreatedBy   int,
+	@JobName     nvarchar(100),
+	@Description nvarchar(250),
+	@ExportFile  nvarchar(100),
+	@JobObject   nvarchar(max)
 AS
 BEGIN
 	INSERT INTO
 		{databaseOwner}[{objectQualifier}ExportImportJobs]
 		(
-			PortalId,
-			JobType,
-			CreatedByUserID,
-			ExportFile,
-			JobObject
+			[PortalId],
+			[JobType],
+			[Name],
+			[Description],
+			[CreatedByUserID],
+			[ExportFile],
+			[JobObject]
 		)
 	VALUES
 		(
 			IsNull(@PortalId, -1),
 			@JobType,
+			@JobName,
+			@Description,
 			IsNull(@CreatedBy, -1),
 			@ExportFile,
 			@JobObject
 		)
 
 	SELECT SCOPE_IDENTITY()
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+	@JobId       int,
+	@JobName     nvarchar(100),
+	@Description nvarchar(250)
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	SET
+		[Name] = @JobName,
+		[Description] = GetUtcDate()
+	WHERE
+		JobId = @JobId
 END
 GO
 
@@ -337,7 +363,9 @@ AS
 	AND
 		(@JobType IS NULL OR JobType = @JobType)
 	AND
-		(@Keywords IS NULL OR JobObject LIKE ('%' + @Keywords + '%'))
+		(   @Keywords IS NULL
+		 OR [Name] LIKE ('%' + @Keywords + '%')
+		 OR [Description] LIKE ('%' + @Keywords + '%') )
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
@@ -366,7 +394,9 @@ BEGIN
 		AND
 			(@JobType IS NULL OR JobType = @JobType)
 		AND
-			(@Keywords IS NULL OR JobObject LIKE ('%' + @Keywords + '%'))
+			(   @Keywords IS NULL
+			 OR [Name] LIKE ('%' + @Keywords + '%')
+			 OR [Description] LIKE ('%' + @Keywords + '%') )
 	)
 	SELECT
 		TOP(@PageSize) *
