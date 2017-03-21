@@ -72,6 +72,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 imgLogo.Visible = logoVisible;
                 imgLogo.AlternateText = PortalSettings.PortalName;
                 hypLogo.ToolTip = PortalSettings.PortalName;
+
+                if (!imgLogo.Visible)
+                {
+                    hypLogo.Attributes.Add("aria-label", PortalSettings.PortalName);
+                }
                 if (PortalSettings.HomeTabId != -1)
                 {
                     hypLogo.NavigateUrl = Globals.NavigateURL(PortalSettings.HomeTabId);
