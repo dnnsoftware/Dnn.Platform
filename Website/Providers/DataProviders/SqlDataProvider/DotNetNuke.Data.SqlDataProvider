@@ -14,8 +14,10 @@ DECLARE @pv binary(16)
 -- minimum date to set for all creted on last modified on columns
 DECLARE @CreateBy int = -1
 DECLARE @UpdateBy int = NULL
+DECLARE @UpdateByNotNull int = -1
 DECLARE @CreateOn datetime = {ts '2000-01-01 00:00:00'}
 DECLARE @UpdateOn datetime = NULL
+DECLARE @UpdateOnNotNull datetime = {ts '2000-01-01 00:00:00'}
 
 PRINT(N'Drop constraints from {databaseOwner}[{objectQualifier}TabModuleSettings]')
 ALTER TABLE {databaseOwner}[{objectQualifier}TabModuleSettings] NOCHECK CONSTRAINT [FK_{objectQualifier}TabModuleSettings_{objectQualifier}TabModules]
@@ -5617,8 +5619,8 @@ SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] 
 
 PRINT(N'Add 2 rows to {databaseOwner}[{objectQualifier}RelationshipTypes]')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}RelationshipTypes] ON
-INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, 2, N'Friends', N'Friends', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
-INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (2, 1, N'Followers', N'Followers', @CreateBy, @CreateOn, @UpdateBy, @UpdateOn)
+INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (1, 2, N'Friends', N'Friends', @CreateBy, @CreateOn, @UpdateByNotNull, @UpdateOnNotNull)
+INSERT INTO {databaseOwner}[{objectQualifier}RelationshipTypes] ([RelationshipTypeID], [Direction], [Name], [Description], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (2, 1, N'Followers', N'Followers', @CreateBy, @CreateOn, @UpdateByNotNull, @UpdateOnNotNull)
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}RelationshipTypes] OFF
 
 PRINT(N'Add 3 rows to {databaseOwner}[{objectQualifier}Roles]')
