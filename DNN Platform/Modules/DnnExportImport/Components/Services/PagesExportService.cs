@@ -86,7 +86,7 @@ namespace Dnn.ExportImport.Components.Services
             int lastProcessedTabId;
             int.TryParse(CheckPoint.StageData, out lastProcessedTabId);
 
-            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var sinceDate = exportDto.SinceTime;
             var tillDate = exportJob.CreatedOnDate;
 
             var root = selectedPages.FirstOrDefault(pg => pg.TabId == -1);

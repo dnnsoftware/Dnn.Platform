@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Components.Services
             try
             {
                 var portalId = exportJob.PortalId;
-                var sinceDate = exportDto.ExportTime?.UtcDateTime;
+                var sinceDate = exportDto.SinceTime?.DateTime;
                 var tillDate = exportJob.CreatedOnDate;
                 ProgressPercentage = 0;
                 var portal = PortalController.Instance.GetPortal(portalId);

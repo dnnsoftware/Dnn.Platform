@@ -85,7 +85,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.
         /// </summary>
-        public DateTimeOffset? ExportTime { get; set; }
+        public DateTimeOffset? SinceTime { get; set; }
 
         /// <summary>
         ///  The pages to be exported.

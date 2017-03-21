@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
             if (CheckCancelled(exportJob)) return;
 

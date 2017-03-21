@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.ExportTime?.UtcDateTime;
+            var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
             ProgressPercentage = 0;
             if (CheckPoint.Stage > 2) return;
