@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
@@ -89,18 +88,24 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <summary>
         /// Retrieves one page of paginated proceessed jobs
         /// </summary>
-        public AllJobsResult GetAllJobs(int portalId, int pageSize, int pageIndex)
+        public AllJobsResult GetAllJobs(int portalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             if (pageIndex < 0) pageIndex = 0;
             if (pageSize < 1) pageSize = 1;
             else if (pageSize > 100) pageSize = 100;
 
-            var jobs = EntitiesController.Instance.GetAllJobs(portalId, pageSize, pageIndex);
+            var count = EntitiesController.Instance.GetAllJobsCount(portalId, jobType, keywords);
+            var jobs = count <= 0
+                ? null
+                : EntitiesController.Instance.GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords);
+
+            var portal = PortalController.Instance.GetPortal(portalId);
             return new AllJobsResult
             {
-                PortalName = "",
-                TotalJobs = 0,
-                Jobs =  jobs.Select(ToJobItem)
+                PortalId = portalId,
+                PortalName = portal.PortalName,
+                TotalJobs = count,
+                Jobs = jobs?.Select(ToJobItem)
             };
         }
 

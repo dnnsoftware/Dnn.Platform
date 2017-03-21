@@ -83,7 +83,6 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
-    <Compile Include="Components\Dto\Jobs\AllJobsHeader.cs" />
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />

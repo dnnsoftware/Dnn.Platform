@@ -39,16 +39,15 @@ namespace Dnn.ExportImport.Components.Controllers
             return CBO.Instance.FillCollection<ExportImportJobLog>(DataProvider.Instance().GetJobFullLog(jobId));
         }
 
-        public AllJobsHeader GetAllJobsHeader(int? portalId)
+        public int GetAllJobsCount(int? portalId, int? jobType, string keywords)
         {
-            return CBO.Instance.FillObject<AllJobsHeader>(
-                DataProvider.Instance().GetAllJobsHeader(portalId));
+            return DataProvider.Instance().GetAllJobsCount(portalId, jobType, keywords);
         }
 
-        public IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex)
+        public IList<ExportImportJob> GetAllJobs(int? portalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             return CBO.Instance.FillCollection<ExportImportJob>(
-                DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex));
+                DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords));
         }
 
         public void UpdateJobStatus(ExportImportJob job)

@@ -105,10 +105,10 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage AllJobs(int pageSize, int pageIndex)
+        public HttpResponseMessage AllJobs(int? pageSize = 10, int? pageIndex = 0, int? jobType = null, string keywords = null)
         {
             var controller = new BaseController();
-            var jobs = controller.GetAllJobs(PortalSettings.PortalId, pageSize, pageIndex);
+            var jobs = controller.GetAllJobs(PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 

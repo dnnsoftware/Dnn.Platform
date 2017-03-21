@@ -66,6 +66,8 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NUL
 		[JobType]            int NOT NULL,
 		[JobStatus]          int NOT NULL DEFAULT 0,
 		[IsCancelled]		 bit NOT NULL DEFAULT 0,
+		[Name]				 nvarchar(100),
+		[Description]		 nvarchar(250),
 		[CreatedByUserID]    int NOT NULL,
 		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
 		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
@@ -317,24 +319,21 @@ BEGIN
 END
 GO
 
--- ExportImportJobs_GetHeader
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetHeader]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]
     @PortalID  int,
 	@JobType   int = NULL,
 	@Keywords  nvarchar(100) = NULL
 AS
 	SELECT
-		P.PortalId, P.PortalName
+		Count(*)
 	FROM
-		{databaseOwner}{objectQualifier}Portals P
-		INNER JOIN {databaseOwner}{objectQualifier}ExportImportJobs J
-			ON P.PortalID = J.PortalID
+		{databaseOwner}{objectQualifier}ExportImportJobs J
 	WHERE
-		P.PortalID = @PortalID
+		PortalID = @PortalID
 	AND
 		(@JobType IS NULL OR JobType = @JobType)
 	AND
@@ -348,7 +347,9 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
     @PortalID  int = -1, -- might be null or -1 for all portals
     @PageSize  int = 10, -- number of items per page
-    @PageIndex int =  0  -- page number starting at 0
+    @PageIndex int =  0, -- page number starting at 0
+	@JobType   int = NULL,
+	@Keywords  nvarchar(100) = NULL
 AS
 BEGIN
 	SET @PortalId = IsNull(@PortalId, -1)
@@ -362,6 +363,10 @@ BEGIN
 			{databaseOwner}{objectQualifier}ExportImportJobs
 		WHERE
 			PortalID = @PortalID
+		AND
+			(@JobType IS NULL OR JobType = @JobType)
+		AND
+			(@Keywords IS NULL OR JobObject LIKE ('%' + @Keywords + '%'))
 	)
 	SELECT
 		TOP(@PageSize) *
