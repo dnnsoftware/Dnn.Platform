@@ -87,7 +87,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         case JobType.Import:
                             result = engine.Import(job, ScheduleHistoryItem);
                             EntitiesController.Instance.UpdateJobStatus(job);
-                            if (job.JobStatus == JobStatus.DoneSuccess || job.JobStatus == JobStatus.Cancelled)
+                            if (job.JobStatus == JobStatus.Successful || job.JobStatus == JobStatus.Cancelled)
                             {
                                 // clear everything to be sure imported items take effect
                                 DataCache.ClearCache();

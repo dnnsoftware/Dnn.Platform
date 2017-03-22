@@ -34,9 +34,12 @@ namespace Dnn.ExportImport.Components.Services
     public class ProfilePropertiesService : Portable2Base
     {
         private int _progressPercentage;
+
         public override string Category => Constants.Category_ProfileProps;
-        public override string ParentCategory => Constants.Category_Portal;
-        public override uint Priority => 3;
+
+        public override string ParentCategory => null;
+
+        public override uint Priority => 5;
 
         public int ProgressPercentage
         {

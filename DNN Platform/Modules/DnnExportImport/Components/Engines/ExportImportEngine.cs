@@ -73,7 +73,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto == null)
             {
                 exportJob.CompletedOnDate = DateTime.UtcNow;
-                exportJob.JobStatus = JobStatus.DoneFailure;
+                exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
 
@@ -111,7 +111,7 @@ namespace Dnn.ExportImport.Components.Engines
                 scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
                 result.AddSummary("Export NOT Possible", "No items selected for exporting");
                 exportJob.CompletedOnDate = DateTime.UtcNow;
-                exportJob.JobStatus = JobStatus.DoneFailure;
+                exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
 
@@ -182,8 +182,6 @@ namespace Dnn.ExportImport.Components.Engines
                     }
                 } while (parentServices.Count > 0 && !TimeIsUp);
 
-                //TODO: zip files when any
-
                 RemoveTokenFromCache(exportJob);
             }
 
@@ -197,7 +195,7 @@ namespace Dnn.ExportImport.Components.Engines
                 if (exportJob.JobStatus == JobStatus.InProgress)
                 {
                     DoPacking(exportJob);
-                    exportJob.JobStatus = JobStatus.DoneSuccess;
+                    exportJob.JobStatus = JobStatus.Successful;
                     SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }
 
@@ -221,7 +219,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (importDto == null)
             {
                 importJob.CompletedOnDate = DateTime.UtcNow;
-                importJob.JobStatus = JobStatus.DoneFailure;
+                importJob.JobStatus = JobStatus.Failed;
                 return result;
             }
 
@@ -232,7 +230,7 @@ namespace Dnn.ExportImport.Components.Engines
             {
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
                 importJob.CompletedOnDate = DateTime.UtcNow;
-                importJob.JobStatus = JobStatus.DoneFailure;
+                importJob.JobStatus = JobStatus.Failed;
                 return result;
             }
             DoUnPacking(importJob);
@@ -247,7 +245,7 @@ namespace Dnn.ExportImport.Components.Engines
                 if (importVersion < exportVersion)
                 {
                     importJob.CompletedOnDate = DateTime.UtcNow;
-                    importJob.JobStatus = JobStatus.DoneFailure;
+                    importJob.JobStatus = JobStatus.Failed;
                     scheduleHistoryItem.AddLogNote("Import NOT Possible");
                     var msg =
                         $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
@@ -340,7 +338,7 @@ namespace Dnn.ExportImport.Components.Engines
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
-                    importJob.JobStatus = JobStatus.DoneSuccess;
+                    importJob.JobStatus = JobStatus.Successful;
             }
 
             return result;

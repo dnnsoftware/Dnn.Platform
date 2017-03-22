@@ -766,8 +766,8 @@ AS
 		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
 	WHERE (CASE
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
@@ -789,8 +789,8 @@ AS
 		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on v.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on v.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON v.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON v.LastModifiedByUserID = u2.UserID
 	WHERE (CASE
 			WHEN @SinceDate IS NULL THEN 0
 			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
@@ -814,8 +814,8 @@ AS
 		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}RoleGroups AS rg
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on rg.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rg.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rg.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rg.LastModifiedByUserID = u2.UserID
 	WHERE
 		rg.PortalID = @PortalID
 	AND (CASE
@@ -841,8 +841,8 @@ AS
 	FROM
 		{databaseOwner}{objectQualifier}Roles AS r
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}RoleGroups AS rg on r.RoleGroupID = rg.RoleGroupID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on r.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on r.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON r.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON r.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
 	AND (CASE
@@ -868,8 +868,8 @@ AS
 	FROM
 		{databaseOwner}{objectQualifier}RoleSettings AS rs
 			INNER JOIN {databaseOwner}{objectQualifier}Roles AS r on r.RoleID = rs.RoleID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on rs.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on rs.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rs.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rs.LastModifiedByUserID = u2.UserID
 	WHERE
 		r.PortalID = @PortalID
 	AND (CASE
@@ -1140,8 +1140,8 @@ BEGIN
 		ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) AS LastUpdatedOn
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
 	WHERE 
 		PortalID = @PortalID
 	AND
@@ -1170,9 +1170,9 @@ BEGIN
 	SELECT
 		ts.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
-		{databaseOwner}{objectQualifier}TabSettings ts
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on ts.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on ts.LastModifiedByUserID = u2.UserID
+		{databaseOwner}{objectQualifier}TabSettings as ts
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON ts.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON ts.LastModifiedByUserID = u2.UserID
 	WHERE
 		TabID = @TabID
 	AND
@@ -1197,10 +1197,10 @@ BEGIN
 	SELECT
 		tp.*, p.PermissionCode, p.PermissionKey, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
-		{databaseOwner}{objectQualifier}TabPermission tp
-			INNER JOIN {databaseOwner}{objectQualifier}Permission p ON tp.PermissionID = p.PermissionID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on tp.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on tp.LastModifiedByUserID = u2.UserID
+		{databaseOwner}{objectQualifier}TabPermission AS tp
+			INNER JOIN {databaseOwner}{objectQualifier}Permission AS p  ON tp.PermissionID = p.PermissionID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tp.LastModifiedByUserID = u2.UserID
 	WHERE
 		TabID = @TabID
 	AND
@@ -1210,3 +1210,61 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tm.*, md.FriendlyName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModules AS tm
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs              AS t  ON tm.TabID = t.TabID
+			INNER JOIN {databaseOwner}{objectQualifier}Modules           AS m  ON tm.ModuleID = m.ModuleID 
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID 
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		t.TabID = @TabID
+	AND
+		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @SinceDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tms.*, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModuleSettings AS tms
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON tm.TabModuleID = tms.TabModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs       AS t  ON tm.TabID = t.TabID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		t.TabID = @TabID
+	AND
+		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @SinceDate)
+END
+GO

@@ -39,8 +39,10 @@ namespace Dnn.ExportImport.Components.Services
         private int _progressPercentage;
 
         public override string Category => Constants.Category_Pages;
-        public override string ParentCategory => Constants.Category_Portal;
-        public override uint Priority => 10;
+
+        public override string ParentCategory => null;
+
+        public override uint Priority => 20;
 
         public int ProgressPercentage
         {
@@ -59,8 +61,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            var totalExported = ProcessExportPages(exportJob, exportDto, exportDto.Pages);
-            Result.AddSummary("Exported Pages", totalExported.ToString());
+            ProcessExportPages(exportJob, exportDto, exportDto.Pages);
             ProgressPercentage = 100;
 
             CheckPoint.Stage++;
@@ -75,9 +76,13 @@ namespace Dnn.ExportImport.Components.Services
             //TODO
         }
 
-        private int ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, int[] selectedPages)
+        private void ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, int[] selectedPages)
         {
-            var totalExported = 0;
+            var totalExportedTabs = 0;
+            var totalExportedSettings = 0;
+            var totalExportedPermissions = 0;
+            var totalExportedModules = 0;
+            var totalExportedModuleSettings = 0;
             var portalId = exportJob.PortalId;
 
             int lastProcessedTabId;
@@ -103,34 +108,62 @@ namespace Dnn.ExportImport.Components.Services
                 if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
                 {
                     var exportPage = SaveExportPage(tab);
-                    SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
-                    SaveTabPermission(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
-                    totalExported++;
+                    totalExportedSettings += 
+                        SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedPermissions +=
+                        SaveTabPermission(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedModules +=
+                        SaveTabModules(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedModuleSettings +=
+                        SaveTabModuleSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedTabs++;
                     CheckPoint.StageData = tab.TabID.ToString(); // last processed TAB ID
                     if (CheckPointStageCallback(this)) break;
                 }
             }
 
-            return totalExported;
+            Result.AddSummary("Exported Tabs", totalExportedTabs.ToString());
+            Result.AddLogEntry("Exported Tab Settings", totalExportedSettings.ToString());
+            Result.AddLogEntry("Exported Tab Permissions", totalExportedPermissions.ToString());
+            Result.AddLogEntry("Exported Tab Modules", totalExportedModules.ToString());
+            Result.AddLogEntry("Exported Tab Module Settings", totalExportedModuleSettings.ToString());
         }
 
-        private void SaveTabSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
         {
             var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, tillDate, sinceDate);
-
-            Repository.CreateItems(tabSettings, exportPage.ReferenceId);
-            Result.AddLogEntry("Exported Tab Settings", $"{exportPage.TabId} / {tabSettings.Count}");
-            ProgressPercentage += 1;
+            if (tabSettings.Count > 0)
+                Repository.CreateItems(tabSettings, exportPage.ReferenceId);
+            return tabSettings.Count;
         }
 
-        private void SaveTabPermission(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabPermission(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
         {
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, tillDate, sinceDate);
+            if (tabPermissions.Count > 0)
+                Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
+            return tabPermissions.Count;
+        }
 
-            Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
-            Result.AddLogEntry("Exported Tab Permissions", $"{exportPage.TabId} / {tabPermissions.Count}");
-            ProgressPercentage += 1;
+        private int SaveTabModules(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        {
+            var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, tillDate, sinceDate);
+            if (tabModules.Count > 0)
+                Repository.CreateItems(tabModules, exportPage.ReferenceId);
+            return tabModules.Count;
+        }
+        
+        private int SaveTabModuleSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        {
+            var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, tillDate, sinceDate);
+            if (tabModuleSettings.Count > 0)
+                Repository.CreateItems(tabModuleSettings, exportPage.ReferenceId);
+            return tabModuleSettings.Count;
         }
 
         private static bool IsTabIncluded(ExportTabInfo tab,

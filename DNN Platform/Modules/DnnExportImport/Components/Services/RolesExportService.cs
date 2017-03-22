@@ -38,9 +38,9 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string Category => Constants.Category_Roles;
 
-        public override string ParentCategory => Constants.Category_Portal;
+        public override string ParentCategory => null;
 
-        public override uint Priority => 2;
+        public override uint Priority => 5;
 
         public int ProgressPercentage
         {

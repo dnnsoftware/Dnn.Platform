@@ -202,6 +202,14 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NO
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermission]', 'P') IS NOT NULL
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermission]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
 GO

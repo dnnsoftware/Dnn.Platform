@@ -48,7 +48,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string ParentCategory => null;
 
-        public override uint Priority => 1;
+        public override uint Priority => 0;
 
         public int ProgressPercentage
         {

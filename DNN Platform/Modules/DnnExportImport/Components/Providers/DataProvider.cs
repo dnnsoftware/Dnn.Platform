@@ -70,7 +70,7 @@ namespace Dnn.ExportImport.Components.Providers
         public void UpdateJobStatus(int jobId, JobStatus jobStatus)
         {
             DateTime? completeDate = null;
-            if (jobStatus == JobStatus.DoneFailure || jobStatus == JobStatus.DoneSuccess)
+            if (jobStatus == JobStatus.Failed || jobStatus == JobStatus.Successful)
                 completeDate = DateTime.UtcNow;
 
             _dataProvider.ExecuteNonQuery(
@@ -305,6 +305,15 @@ namespace Dnn.ExportImport.Components.Providers
         public IDataReader GetAllTabPermissions(int tabId, DateTime tillDate, DateTime? sinceDate)
         {
             return _dataProvider.ExecuteReader("Export_TabPermissions", tabId, tillDate, sinceDate);
+        }
+
+        public IDataReader GetAllTabModules(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabModules", tabId, tillDate, sinceDate);
+        }
+        public IDataReader GetAllTabModuleSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, tillDate, sinceDate);
         }
     }
 }

@@ -38,7 +38,8 @@ namespace Dnn.ExportImport.Components.Interfaces
 
         /// <summary>
         /// Category name for the parent exportable module. For example: "USERS".
-        /// If this is null, then the category is a top parent.
+        /// If this is null, then the category is a top parent. If this is not null,
+        /// then this category will be included automatically when the parent is included.
         /// </summary>
         string ParentCategory { get; }
 

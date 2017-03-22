@@ -31,8 +31,8 @@ namespace Dnn.ExportImport.Components.Common
     {
         Submitted = 0, // never change these numbers
         InProgress,
-        DoneSuccess,
-        DoneFailure,
+        Successful,
+        Failed,
         Cancelled
     }
 
