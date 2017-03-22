@@ -88,7 +88,8 @@ namespace Dnn.ExportImport.Components.Services
             var isAllIncluded = selectedPages.Any(id => id == -1);
 
             var tabController = TabController.Instance;
-            var allTabs = EntitiesController.Instance.GetPortalTabs(portalId); // ordered by TabID
+            var allTabs = EntitiesController.Instance.GetPortalTabs(
+                portalId, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime); // ordered by TabID
 
             foreach (var pg in allTabs)
             {
@@ -102,8 +103,8 @@ namespace Dnn.ExportImport.Components.Services
                 if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
                 {
                     var exportPage = SaveExportPage(tab);
-                    SaveTabSettings(exportPage);
-                    SaveTabPermission(exportPage);
+                    SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                    SaveTabPermission(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
                     totalExported++;
                     CheckPoint.StageData = tab.TabID.ToString(); // last processed TAB ID
@@ -114,18 +115,26 @@ namespace Dnn.ExportImport.Components.Services
             return totalExported;
         }
 
-        private void SaveTabSettings(ExportTab exportPage)
+        private void SaveTabSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
         {
-            throw new NotImplementedException();
+            var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, tillDate, sinceDate);
+
+            Repository.CreateItems(tabSettings, exportPage.ReferenceId);
+            Result.AddLogEntry("Exported Tab Settings", $"{exportPage.TabId} / {tabSettings.Count}");
+            ProgressPercentage += 1;
         }
 
-        private void SaveTabPermission(ExportTab exportPage)
+        private void SaveTabPermission(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
         {
-            throw new NotImplementedException();
+            var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, tillDate, sinceDate);
+
+            Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
+            Result.AddLogEntry("Exported Tab Permissions", $"{exportPage.TabId} / {tabPermissions.Count}");
+            ProgressPercentage += 1;
         }
 
-        private static bool IsTabIncluded(ShortTabInfo tab,
-            IList<ShortTabInfo> allTabs, int[] selectedPages)
+        private static bool IsTabIncluded(ExportTabInfo tab,
+            IList<ExportTabInfo> allTabs, int[] selectedPages)
         {
             do
             {

@@ -87,8 +87,9 @@
     <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
-    <Compile Include="Components\Dto\Pages\ExportTabSettings.cs" />
-    <Compile Include="Components\Dto\Pages\ShortTabInfo.cs" />
+    <Compile Include="Components\Dto\Pages\ExportTabInfo.cs" />
+    <Compile Include="Components\Dto\Pages\ExportTabPermission.cs" />
+    <Compile Include="Components\Dto\Pages\ExportTabSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />

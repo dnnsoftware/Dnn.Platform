@@ -1128,16 +1128,85 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
-    @PortalID   int
+    @PortalID  int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
 AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
 	SELECT
-		TabID, IsNull(ParentId, -1) AS ParentId, TabName, TabPath, IsDeleted, ISNULL(LastModifiedOnDate, CreatedOnDate) AS LastUpdatedOn
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.TabName, t.TabPath, t.IsDeleted,
+		ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) AS LastUpdatedOn
 	FROM
-		{databaseOwner}{objectQualifier}Tabs
+		{databaseOwner}{objectQualifier}Tabs t
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on t.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on t.LastModifiedByUserID = u2.UserID
 	WHERE 
 		PortalID = @PortalID
-	  AND
+	AND
 		IsSystem = 0
+	AND
+		COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @SinceDate)
 	ORDER BY
 		TabID
+END
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ts.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabSettings ts
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on ts.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on ts.LastModifiedByUserID = u2.UserID
+	WHERE
+		TabID = @TabID
+	AND
+		COALESCE(ts.LastModifiedOnDate, ts.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(ts.LastModifiedOnDate, ts.CreatedOnDate) >= @SinceDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tp.*, p.PermissionCode, p.PermissionKey, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabPermission tp
+			INNER JOIN {databaseOwner}{objectQualifier}Permission p ON tp.PermissionID = p.PermissionID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 on tp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 on tp.LastModifiedByUserID = u2.UserID
+	WHERE
+		TabID = @TabID
+	AND
+		COALESCE(tp.LastModifiedOnDate, tp.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(tp.LastModifiedOnDate, tp.CreatedOnDate) >= @SinceDate)
+END
+GO
+

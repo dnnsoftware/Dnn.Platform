@@ -114,7 +114,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}</b>");
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.SinceTime}] and [{exportJob.CreatedOnDate:g}]");
             var firstIteration = true;
             AddJobToCache(exportJob);

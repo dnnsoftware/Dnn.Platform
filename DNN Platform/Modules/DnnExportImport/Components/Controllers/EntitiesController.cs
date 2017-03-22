@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
@@ -80,9 +79,22 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
-        public IList<ShortTabInfo> GetPortalTabs(int portalId)
+        public IList<ExportTabInfo> GetPortalTabs(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return CBO.Instance.FillCollection<ShortTabInfo>(DataProvider.Instance().GetAllPortalTabs(portalId));
+            return CBO.Instance.FillCollection<ExportTabInfo>(
+                DataProvider.Instance().GetAllPortalTabs(portalId, tillDate, sinceDate));
+        }
+
+        public IList<ExportTabSetting> GetTabSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return CBO.Instance.FillCollection<ExportTabSetting>(
+                DataProvider.Instance().GetAllTabSettings(tabId, tillDate, sinceDate));
+        }
+
+        public IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return CBO.Instance.FillCollection<ExportTabPermission>(
+                DataProvider.Instance().GetAllTabPermissions(tabId, tillDate, sinceDate));
         }
     }
 }

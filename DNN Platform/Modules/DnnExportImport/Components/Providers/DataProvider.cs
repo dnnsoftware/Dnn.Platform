@@ -242,6 +242,11 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(sinceDate));
         }
 
+        public IDataReader GetPortalPermissions(int portalId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(sinceDate));
+        }
+
         public IDataReader GetPortalLanguages(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
             return _dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, tillDate, _dataProvider.GetNull(sinceDate));
@@ -287,9 +292,19 @@ namespace Dnn.ExportImport.Components.Providers
                                          && x.PermissionName == permissionName)?.PermissionID;
         }
 
-        public IDataReader GetAllPortalTabs(int portalId)
+        public IDataReader GetAllPortalTabs(int portalId, DateTime tillDate, DateTime? sinceDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId);
+            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, tillDate, sinceDate);
+        }
+
+        public IDataReader GetAllTabSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabSettings", tabId, tillDate, sinceDate);
+        }
+
+        public IDataReader GetAllTabPermissions(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabPermissions", tabId, tillDate, sinceDate);
         }
     }
 }

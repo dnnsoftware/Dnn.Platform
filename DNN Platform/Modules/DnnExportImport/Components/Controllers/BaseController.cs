@@ -159,6 +159,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
+                Name = job.Name,
+                Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,
                 ExportFile = job.CompletedOnDate.HasValue ? job.ExportFile : null
