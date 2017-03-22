@@ -80,7 +80,8 @@ namespace Dnn.ExportImport.Components.Engines
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
 
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
-            var finfo = new FileInfo(dbName);
+            var exportFileName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportZipExt);
+            var finfo = new FileInfo(exportFileName);
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
@@ -135,7 +136,8 @@ namespace Dnn.ExportImport.Components.Engines
                         if (implementors.Count > 0)
                         {
                             // collect children for next iteration
-                            var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                            var children =
+                                implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
                             nextLevelServices.AddRange(children);
                             implementors = implementors.Except(nextLevelServices).ToList();
                         }
@@ -187,12 +189,14 @@ namespace Dnn.ExportImport.Components.Engines
 
             if (TimeIsUp)
             {
-                result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired", "Job will resume in the next scheduler iteration");
+                result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
+                    "Job will resume in the next scheduler iteration");
             }
             else
             {
                 if (exportJob.JobStatus == JobStatus.InProgress)
                 {
+                    DoPacking(exportJob);
                     exportJob.JobStatus = JobStatus.DoneSuccess;
                     SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }
@@ -222,7 +226,8 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             var dbName = Path.Combine(DbFolder, importDto.FileName);
-            var finfo = new FileInfo(dbName);
+            var exportFileName = Path.Combine(DbFolder, importJob.ExportFile + Constants.ExportZipExt);
+            var finfo = new FileInfo(exportFileName);
             if (!finfo.Exists)
             {
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
@@ -230,6 +235,7 @@ namespace Dnn.ExportImport.Components.Engines
                 importJob.JobStatus = JobStatus.DoneFailure;
                 return result;
             }
+            DoUnPacking(importJob);
 
             //TODO: unzip files first
 
@@ -243,7 +249,8 @@ namespace Dnn.ExportImport.Components.Engines
                     importJob.CompletedOnDate = DateTime.UtcNow;
                     importJob.JobStatus = JobStatus.DoneFailure;
                     scheduleHistoryItem.AddLogNote("Import NOT Possible");
-                    var msg = $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
+                    var msg =
+                        $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
                     result.AddSummary("Import NOT Possible", msg);
                     return result;
                 }
@@ -286,7 +293,8 @@ namespace Dnn.ExportImport.Components.Engines
                         if (implementors.Count > 0)
                         {
                             // collect children for next iteration
-                            var children = implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                            var children =
+                                implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
                             nextLevelServices.AddRange(children);
                             implementors = implementors.Except(nextLevelServices).ToList();
                         }
@@ -299,11 +307,11 @@ namespace Dnn.ExportImport.Components.Engines
                             service.CheckCancelled = CheckCancelledCallBack;
                             service.CheckPointStageCallback = CheckpointCallback;
                             service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category)
-                                     ?? new ExportImportChekpoint
-                                     {
-                                         JobId = importJob.JobId,
-                                         Category = service.Category
-                                     };
+                                                 ?? new ExportImportChekpoint
+                                                 {
+                                                     JobId = importJob.JobId,
+                                                     Category = service.Category
+                                                 };
                             CheckpointCallback(service);
 
                             service.ImportData(importJob, exportedDto);
@@ -328,7 +336,8 @@ namespace Dnn.ExportImport.Components.Engines
                 RemoveTokenFromCache(importJob);
                 if (TimeIsUp)
                 {
-                    result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired", "Job will resume in the next scheduler iteration");
+                    result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
+                        "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
                     importJob.JobStatus = JobStatus.DoneSuccess;
@@ -390,7 +399,7 @@ namespace Dnn.ExportImport.Components.Engines
                 catch (Exception e)
                 {
                     Logger.ErrorFormat("Unable to create {0} while calling IPortable2 implementors. {1}",
-                                       type.FullName, e.Message);
+                        type.FullName, e.Message);
                     portable2Type = null;
                 }
 
@@ -458,6 +467,32 @@ namespace Dnn.ExportImport.Components.Engines
             SchedulingProvider.Instance().AddScheduleItemSetting(
                 scheduleId, Constants.LastJobStartTimeKey,
                 time.ToUniversalTime().DateTime.ToString(Constants.JobRunDateTimeFormat));
+        }
+
+        private static void DoPacking(ExportImportJob exportJob)
+        {
+            //TODO: Error handling
+            var exportFolder = Path.Combine(DbFolder);
+            var exportFileArchive = $"{Path.Combine(exportFolder, exportJob.ExportFile)}{Constants.ExportZipExt}";
+            var folderOffset = exportFileArchive.IndexOf(exportJob.ExportFile, StringComparison.Ordinal);
+
+            var files =
+                Directory.GetFiles(exportFolder)
+                    .Where(file => file.Substring(folderOffset).StartsWith(exportJob.ExportFile))
+                    .ToList();
+            CompressionUtil.ZipFiles(files, exportFileArchive, folderOffset);
+            //Delete the unncessary files
+            files.ForEach(File.Delete);
+        }
+
+        private static void DoUnPacking(ExportImportJob importJob)
+        {
+            //TODO: Error handling
+            var extractFolder = Path.Combine(DbFolder);
+            var importFileArchive = $"{Path.Combine(extractFolder, importJob.ExportFile)}{Constants.ExportZipExt}";
+            CompressionUtil.UnZipArchive(importFileArchive, extractFolder);
+            //Delete main import files after extraction.
+            File.Delete(importFileArchive);
         }
     }
 }

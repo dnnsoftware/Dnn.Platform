@@ -27,7 +27,7 @@ namespace Dnn.ExportImport.Components.Services
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private readonly string _assetsFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_Assets.resources";
+        private readonly string _assetsFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_Assets{Constants.ExportZipExt}";
 
         private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 

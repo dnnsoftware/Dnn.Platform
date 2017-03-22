@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using DotNetNuke.Common.Utilities;
 using ICSharpCode.SharpZipLib.Zip;
@@ -23,6 +24,19 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
+        public static void ZipFiles(IEnumerable<string> files, string archivePath, int folderOffset)
+        {
+            using (var zipStream = new ZipOutputStream(File.Create(archivePath)))
+            {
+                zipStream.SetLevel(6);
+                foreach (var file in files)
+                {
+                    AddToZip(zipStream, file, folderOffset);
+                }
+                zipStream.Close();
+            }
+        }
+
         public static void UnZipArchive(string archivePath, string extractFolder)
         {
             FileSystemUtils.UnzipResources(
@@ -40,7 +54,7 @@ namespace Dnn.ExportImport.Components.Common
 
             foreach (var filename in files)
             {
-                AddToZip(ref zipStream, filename, folderOffset);
+                AddToZip(zipStream, filename, folderOffset);
             }
             var folders = Directory.GetDirectories(path);
             foreach (var folder in folders)
@@ -49,7 +63,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        private static void AddToZip(ref ZipOutputStream zipStream, string fileName, int folderOffset)
+        private static void AddToZip(ZipOutputStream zipStream, string fileName, int folderOffset)
         {
             FileStream fs = null;
             try
