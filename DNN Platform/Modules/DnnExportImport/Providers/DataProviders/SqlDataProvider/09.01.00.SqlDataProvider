@@ -1215,13 +1215,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
-	@TabID     int,
-	@TillDate  datetime,
-	@SinceDate datetime=NULL
+	@TabID          int,
+	@IncludeDeleted bit = 0
 AS
 BEGIN
-	DECLARE @Now datetime = GETDATE()
-
 	SELECT
 		tm.*, md.FriendlyName, u2.Username AS LastModifiedByUserName
 	FROM
@@ -1234,9 +1231,7 @@ BEGIN
 	WHERE
 		t.TabID = @TabID
 	AND
-		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @TillDate
-	AND
-		(@SinceDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @SinceDate)
+		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
 END
 GO
 
@@ -1245,13 +1240,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P')
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
-	@TabID     int,
-	@TillDate  datetime,
-	@SinceDate datetime=NULL
+	@TabID          int,
+	@IncludeDeleted bit = 0
 AS
 BEGIN
-	DECLARE @Now datetime = GETDATE()
-
 	SELECT
 		tms.*, u2.Username AS LastModifiedByUserName
 	FROM
@@ -1263,8 +1255,6 @@ BEGIN
 	WHERE
 		t.TabID = @TabID
 	AND
-		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @TillDate
-	AND
-		(@SinceDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @SinceDate)
+		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
 END
 GO

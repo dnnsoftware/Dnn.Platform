@@ -109,17 +109,17 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     var exportPage = SaveExportPage(tab);
 
-                    totalExportedSettings += 
+                    totalExportedSettings +=
                         SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
                     totalExportedPermissions +=
                         SaveTabPermission(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
                     totalExportedModules +=
-                        SaveTabModules(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabModules(exportPage, exportDto.IncludeDeletions);
 
                     totalExportedModuleSettings +=
-                        SaveTabModuleSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabModuleSettings(exportPage, exportDto.IncludeDeletions);
 
                     totalExportedTabs++;
                     CheckPoint.StageData = tab.TabID.ToString(); // last processed TAB ID
@@ -150,17 +150,17 @@ namespace Dnn.ExportImport.Components.Services
             return tabPermissions.Count;
         }
 
-        private int SaveTabModules(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabModules(ExportTab exportPage, bool includeDeleted)
         {
-            var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, tillDate, sinceDate);
+            var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, includeDeleted);
             if (tabModules.Count > 0)
                 Repository.CreateItems(tabModules, exportPage.ReferenceId);
             return tabModules.Count;
         }
-        
-        private int SaveTabModuleSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+
+        private int SaveTabModuleSettings(ExportTab exportPage, bool includeDeleted)
         {
-            var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, tillDate, sinceDate);
+            var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, includeDeleted);
             if (tabModuleSettings.Count > 0)
                 Repository.CreateItems(tabModuleSettings, exportPage.ReferenceId);
             return tabModuleSettings.Count;

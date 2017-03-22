@@ -97,16 +97,16 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllTabPermissions(tabId, tillDate, sinceDate));
         }
 
-        public IList<ExportTabModule> GetTabModules(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted)
         {
             return CBO.Instance.FillCollection<ExportTabModule>(
-                DataProvider.Instance().GetAllTabModules(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabModules(tabId, includeDeleted));
         }
 
-        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, bool includeDeleted)
         {
             return CBO.Instance.FillCollection<ExportTabModuleSetting>(
-                DataProvider.Instance().GetAllTabModuleSettings(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabModuleSettings(tabId, includeDeleted));
         }
     }
 }
