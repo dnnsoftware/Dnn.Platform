@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string Category => Constants.Category_Roles;
 
-        public override string ParentCategory => Constants.Category_Users;
+        public override string ParentCategory => Constants.Category_Portal;
 
         public override uint Priority => 2;
 

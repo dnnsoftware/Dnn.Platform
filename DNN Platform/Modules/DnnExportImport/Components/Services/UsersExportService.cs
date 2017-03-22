@@ -115,10 +115,10 @@ namespace Dnn.ExportImport.Components.Services
             {
                 do
                 {
-                    if (CheckCancelled(exportJob)) break;
+                    if (CheckCancelled(exportJob)) return;
                     foreach (var user in allUser)
                     {
-                        if (CheckCancelled(exportJob)) break;
+                        if (CheckCancelled(exportJob)) return;
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
                         var aspnetMembership =
@@ -157,12 +157,13 @@ namespace Dnn.ExportImport.Components.Services
                         Repository.CreateItem(userAuthentication, user.Id);
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
+                        if (CheckPointStageCallback(this)) return;
                     }
                     totalUsersExported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    if (CheckPointStageCallback(this)) break;
+                    if (CheckPointStageCallback(this)) return;
 
                     pageIndex++;
                     ProgressPercentage += progressStep;
@@ -216,13 +217,13 @@ namespace Dnn.ExportImport.Components.Services
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
                 {
-                    if (CheckCancelled(importJob)) break;
+                    if (CheckCancelled(importJob)) return;
                     var users =
                         Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
                     foreach (var user in users)
                     {
-                        if (CheckCancelled(importJob)) break;
+                        if (CheckCancelled(importJob)) return;
                         using (var db = DataContext.Instance())
                         {
                             var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
@@ -252,12 +253,13 @@ namespace Dnn.ExportImport.Components.Services
                             Repository.UpdateItem(userPortal);
                         }
                         currentIndex++;
+                        if (CheckPointStageCallback(this)) return;
                     }
                     totalUsersImported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    if (CheckPointStageCallback(this)) break;
+                    if (CheckPointStageCallback(this)) return;
 
                     ProgressPercentage += progressStep;
                     pageIndex++;

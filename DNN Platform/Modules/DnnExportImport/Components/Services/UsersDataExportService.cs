@@ -92,12 +92,12 @@ namespace Dnn.ExportImport.Components.Services
             {
                 while (totalProcessed < totalUsersToBeProcessed)
                 {
-                    if (CheckCancelled(importJob)) break;
+                    if (CheckCancelled(importJob)) return;
                     var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
                     foreach (var user in users)
                     {
-                        if (CheckCancelled(importJob)) break;
+                        if (CheckCancelled(importJob)) return;
                         var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
                         var userAuthentication =
                             Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
@@ -121,12 +121,13 @@ namespace Dnn.ExportImport.Components.Services
                                 .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
                         currentIndex++;
+                        if (CheckPointStageCallback(this)) return;
                     }
                     totalProcessed += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    if (CheckPointStageCallback(this)) break;
+                    if (CheckPointStageCallback(this)) return;
 
                     ProgressPercentage += progressStep;
                     pageIndex++;

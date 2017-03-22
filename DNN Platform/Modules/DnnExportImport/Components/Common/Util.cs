@@ -1,4 +1,6 @@
-﻿using Dnn.ExportImport.Components.Entities;
+﻿using System;
+using System.Reflection;
+using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
@@ -58,6 +60,26 @@ namespace Dnn.ExportImport.Components.Common
         public static int CalculateTotalPages(int totalRecords, int pageSize)
         {
             return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
+        }
+
+        //TODO: We should implement some base serializer to fix dates for all the entities.
+        public static void FixDateTime<T>(T item)
+        {
+            var properties = item.GetType().GetRuntimeProperties();
+            foreach (var property in properties)
+            {
+                if ((property.PropertyType == typeof (DateTime) || property.PropertyType == typeof(DateTime?)) &&
+                    (property.GetValue(item) as DateTime?) == DateTime.MinValue)
+                {
+                    property.SetValue(item, FromEpoch());
+                }
+            }
+        }
+
+        private static DateTime FromEpoch()
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch;
         }
     }
 }

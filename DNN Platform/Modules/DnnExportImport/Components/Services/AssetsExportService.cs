@@ -5,7 +5,6 @@ using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using System.Linq;
 using DotNetNuke.Services.FileSystem;
-using ICSharpCode.SharpZipLib.Zip;
 using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
@@ -16,6 +15,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
+using System.IO.Compression;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -27,14 +27,15 @@ namespace Dnn.ExportImport.Components.Services
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private readonly string _assetsFolder =
-            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_{{1}}.resources";
+        private readonly string _assetsFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_Assets.resources";
+
+        private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
         private const string UsersAssetsTempFolder = "{0}TempUsers\\";
         private int _progressPercentage;
 
         public override string Category => Constants.Category_Assets;
-        public override string ParentCategory => Constants.Category_Users;
+        public override string ParentCategory => Constants.Category_Portal;
         public override uint Priority => 5;
 
         public int ProgressPercentage
@@ -52,12 +53,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (CheckPoint.Stage >= 2)
                 return;
 
             //Create Zip File to hold files
-            ZipOutputStream portalAssetsStream = null;
-            ZipOutputStream usersAssetsStream = null;
             var skip = GetCurrentSkip();
             var currentIndex = skip;
             var totalFolderExported = 0;
@@ -65,119 +64,110 @@ namespace Dnn.ExportImport.Components.Services
             var totalFilesExported = 0;
             try
             {
-                var portalId = exportJob.PortalId;
-                var sinceDate = exportDto.SinceTime?.DateTime;
-                var tillDate = exportJob.CreatedOnDate;
-                ProgressPercentage = 0;
-                var portal = PortalController.Instance.GetPortal(portalId);
+                var assetsFile = string.Format(_assetsFile, exportJob.ExportFile);
+                var assetsFolder = string.Format(_assetsFolder, exportJob.ExportFile);
 
-                //Sync db and filesystem before exporting so all required files are found
-                var folderManager = FolderManager.Instance;
-                folderManager.Synchronize(portalId);
-
-                var folders =
-                    CBO.FillCollection<ExportFolder>(DataProvider.Instance()
-                        .GetFolders(portalId, tillDate, sinceDate)).ToList();
-                var totalFolders = folders.Any() ? folders.Count : 0;
-
-                var portalAssetsFile = string.Format(_assetsFolder, exportJob.ExportFile, "Portal");
-                var userAssetsFile = string.Format(_assetsFolder, exportJob.ExportFile, "Users");
-                //Delete assets files, if exists.
-                if (File.Exists(portalAssetsFile)) File.Delete(portalAssetsFile);
-                if (File.Exists(userAssetsFile)) File.Delete(userAssetsFile);
-
-                //Create new asset files.
-                portalAssetsStream = new ZipOutputStream(File.Create(portalAssetsFile));
-                usersAssetsStream = new ZipOutputStream(File.Create(userAssetsFile));
-                portalAssetsStream.SetLevel(6);
-                usersAssetsStream.SetLevel(6);
-                ProgressPercentage = 5;
-
-                var progressStep = (totalFolders - skip) / 95;
-                folders = folders.Skip(skip).ToList();
-
-                foreach (var folder in folders)
+                if (CheckPoint.Stage == 0)
                 {
-                    var isUserFolder = false;
-                    var permissions =
-                        CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                            .GetFolderPermissionsByPath(portalId, folder.FolderPath, tillDate, sinceDate));
-                    var files =
-                        CBO.FillCollection<ExportFile>(
-                            DataProvider.Instance()
-                                .GetFiles(portalId, folder.FolderId, tillDate, sinceDate));
-                    int? userId;
-                    if (IsUserFolder(folder.FolderPath, out userId))
-                    {
-                        isUserFolder = true;
-                        folder.UserId = userId;
-                        folder.Username = UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
-                    }
-                    if (folder.ParentId != null && folder.ParentId > 0)
-                    {
-                        //If parent id exists then change the parent folder id to parent id.
-                        folder.ParentId =
-                            Repository.GetItem<ExportFolder>(x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
-                    }
+                    var portalId = exportJob.PortalId;
+                    var sinceDate = exportDto.SinceTime?.DateTime;
+                    var tillDate = exportJob.CreatedOnDate;
+                    ProgressPercentage = 0;
+                    var portal = PortalController.Instance.GetPortal(portalId);
 
-                    Repository.CreateItem(folder, null);
-                    totalFolderExported++;
-                    Repository.CreateItems(permissions, folder.Id);
-                    totalFolderPermissionsExported += permissions.Count;
-                    Repository.CreateItems(files, folder.Id);
-                    totalFilesExported += files.Count;
-                    foreach (var file in files)
+                    //Sync db and filesystem before exporting so all required files are found
+                    var folderManager = FolderManager.Instance;
+                    folderManager.Synchronize(portalId);
+
+                    var folders =
+                        CBO.FillCollection<ExportFolder>(DataProvider.Instance()
+                            .GetFolders(portalId, tillDate, sinceDate)).ToList();
+                    var totalFolders = folders.Any() ? folders.Count : 0;
+
+                    if (!Directory.Exists(assetsFolder))
+                        Directory.CreateDirectory(assetsFolder);
+                    if (!Directory.Exists(Path.Combine(assetsFolder, "TempUsers")))
+                        Directory.CreateDirectory(Path.Combine(assetsFolder, "TempUsers"));
+
+                    ProgressPercentage = 5;
+
+                    var progressStep = (totalFolders - skip) / 95;
+                    folders = folders.Skip(skip).ToList();
+
+                    foreach (var folder in folders)
                     {
-                        var filePath = portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file);
-                        if (File.Exists(filePath))
+                        var isUserFolder = false;
+                        var permissions =
+                            CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
+                                .GetFolderPermissionsByPath(portalId, folder.FolderPath, tillDate, sinceDate));
+                        var files =
+                            CBO.FillCollection<ExportFile>(
+                                DataProvider.Instance()
+                                    .GetFiles(portalId, folder.FolderId, tillDate, sinceDate));
+                        int? userId;
+                        if (IsUserFolder(folder.FolderPath, out userId))
                         {
-                            if (isUserFolder)
+                            isUserFolder = true;
+                            folder.UserId = userId;
+                            folder.Username =
+                                UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
+                        }
+                        if (folder.ParentId != null && folder.ParentId > 0)
+                        {
+                            //If parent id exists then change the parent folder id to parent id.
+                            folder.ParentId =
+                                Repository.GetItem<ExportFolder>(
+                                    x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
+                        }
+
+                        Repository.CreateItem(folder, null);
+                        totalFolderExported++;
+                        Repository.CreateItems(permissions, folder.Id);
+                        totalFolderPermissionsExported += permissions.Count;
+                        Repository.CreateItems(files, folder.Id);
+                        totalFilesExported += files.Count;
+                        foreach (var file in files)
+                        {
+                            var filePath = portal.HomeDirectoryMapPath + folder.FolderPath +
+                                           GetActualFileName(file);
+                            if (File.Exists(filePath))
                             {
-                                FileSystemUtils.AddToZip(ref usersAssetsStream, filePath, GetActualFileName(file),
-                                    folder.FolderPath);
-                            }
-                            else
-                            {
-                                FileSystemUtils.AddToZip(ref portalAssetsStream, filePath, GetActualFileName(file),
-                                    folder.FolderPath);
+                                CopyFile(GetActualFileName(file), filePath,
+                                    isUserFolder
+                                        ? Path.Combine(assetsFolder, "TempUsers", folder.FolderPath)
+                                        : Path.Combine(assetsFolder, folder.FolderPath));
                             }
                         }
+                        ProgressPercentage += progressStep;
+                        currentIndex++;
+                        if (CheckPointStageCallback(this)) return;
                     }
-                    ProgressPercentage += progressStep;
-                    currentIndex++;
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    currentIndex = 0;
+                    if (CheckPointStageCallback(this)) return;
+                    //TODO: Check if we need this step or not.
+                    //var folderMappings =
+                    //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
+                    //        .GetFolderMappings(portalId,tillDate, sinceDate)).ToList();
+                    //Repository.CreateItems(folderMappings, null);
                 }
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                if (CheckPointStageCallback(this)) return;
-                currentIndex = 0;
-                //TODO: Check if we need this step or not.
-                //var folderMappings =
-                //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
-                //        .GetFolderMappings(portalId,tillDate, sinceDate)).ToList();
-                //Repository.CreateItems(folderMappings, null);
-
-                //Finish and Close Zip file
-                portalAssetsStream.Finish();
-                portalAssetsStream.Close();
+                if (CheckPoint.Stage == 1)
+                {
+                    if (File.Exists(assetsFile))
+                        File.Delete(assetsFile);
+                    ZipFolder(assetsFolder, assetsFile);
+                    if (Directory.Exists(assetsFolder))
+                        Directory.Delete(assetsFolder, true);
+                    CheckPoint.Stage++;
+                    CheckPoint.StageData = null;
+                    CheckPointStageCallback(this);
+                }
             }
             finally
             {
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
-
-                if (portalAssetsStream != null && !portalAssetsStream.IsFinished)
-                {
-                    portalAssetsStream.Finish();
-                    portalAssetsStream.Close();
-                    portalAssetsStream.Dispose();
-                }
-
-                if (usersAssetsStream != null && !usersAssetsStream.IsFinished)
-                {
-                    usersAssetsStream.Finish();
-                    usersAssetsStream.Close();
-                    usersAssetsStream.Dispose();
-                }
             }
             Result.AddSummary("Exported Folders", totalFolderExported.ToString());
             Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString());
@@ -201,28 +191,22 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var portalAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Portal");
-            var usersAssetsFile = string.Format(_assetsFolder, importJob.ExportFile, "Users");
+            var assetsFile = string.Format(_assetsFile, importJob.ExportFile);
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath);
             ProgressPercentage = 0;
-            if (CheckPoint.Stage < 1)
+            if (CheckPoint.Stage == 0)
             {
-                UnzipResources(portal.HomeDirectoryMapPath, portalAssetsFile);
+                UnzipResources(portal.HomeDirectoryMapPath, assetsFile);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
                 if (CheckPointStageCallback(this)) return;
                 ProgressPercentage = 5;
             }
-            if (CheckPoint.Stage < 2)
+            if (CheckPoint.Stage == 1)
             {
                 try
                 {
-                    if (!Directory.Exists(userFolderPath))
-                        Directory.CreateDirectory(userFolderPath);
-
-                    //Unzip users files to temporary folder.
-                    UnzipResources(userFolderPath, usersAssetsFile);
                     ProgressPercentage += 5;
 
                     //Stage 2 starts
@@ -292,7 +276,9 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         currentIndex++;
                         ProgressPercentage += progressStep;
+                        if (CheckPointStageCallback(this)) return;
                     }
+                    currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
@@ -304,20 +290,22 @@ namespace Dnn.ExportImport.Components.Services
                         : null;
                     CheckPointStageCallback(this);
 
-                    if (Directory.Exists(userFolderPath))
+                    if (Directory.Exists(userFolderPath) && currentIndex == 0)
                         Directory.Delete(userFolderPath, true);
                 }
                 Result.AddSummary("Imported Folders", totalFolderImported.ToString());
                 Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
                 Result.AddSummary("Imported Files", totalFilesImported.ToString());
             }
-            if (CheckPoint.Stage >= 3) return;
-            var folderManager = FolderManager.Instance;
-            folderManager.Synchronize(portalId);
-            CheckPoint.Stage++;
-            CheckPoint.StageData = null;
-            CheckPointStageCallback(this);
-            ProgressPercentage = 100;
+            if (CheckPoint.Stage == 2)
+            {
+                var folderManager = FolderManager.Instance;
+                folderManager.Synchronize(portalId);
+                CheckPoint.Stage++;
+                CheckPoint.StageData = null;
+                CheckPointStageCallback(this);
+                ProgressPercentage = 100;
+            }
         }
 
         private bool ProcessFolder(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
@@ -362,6 +350,7 @@ namespace Dnn.ExportImport.Components.Services
                 existingFolder.IsProtected = folder.IsProtected;
                 existingFolder.IsCached = folder.IsCached;
                 existingFolder.IsVersioned = folder.IsVersioned;
+                Util.FixDateTime(existingFolder);
                 repExportFolder.Update(existingFolder);
 
                 folder.FolderId = existingFolder.FolderId;
@@ -597,8 +586,43 @@ namespace Dnn.ExportImport.Components.Services
         {
             try
             {
-                FileSystemUtils.UnzipResources(
-                    new ZipInputStream(new FileStream(resoureceFile, FileMode.Open, FileAccess.Read)), portalPath);
+                //ZipFile.ExtractToDirectory(resoureceFile, portalPath);
+                using (var archive = ZipFile.OpenRead(resoureceFile))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        if (!string.IsNullOrEmpty(Path.GetDirectoryName(entry.FullName)) &&
+                            !Directory.Exists(Path.Combine(portalPath, Path.GetDirectoryName(entry.FullName))))
+                            Directory.CreateDirectory(Path.Combine(portalPath, Path.GetDirectoryName(entry.FullName)));
+                        if (!entry.FullName.EndsWith("\\") && entry.Length > 0)
+                            entry.ExtractToFile(Path.Combine(portalPath, entry.FullName), true);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                //TODO: Log exception or throw exception?
+                //Logger.Error(exc);
+            }
+        }
+
+        private void ZipFolder(string folderPath, string archivePath)
+        {
+            //Create Zip Entry
+            ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Optimal, false);
+        }
+
+        private void CopyFile(string fileName, string filePath, string targetFolder)
+        {
+            try
+            {
+                var targetPath = Path.Combine(targetFolder, fileName);
+                if (File.Exists(targetPath))
+                    File.Delete(targetPath);
+                if (!Directory.Exists(targetFolder))
+                    Directory.CreateDirectory(targetFolder);
+
+                File.Copy(filePath, targetPath);
             }
             catch (Exception exc)
             {

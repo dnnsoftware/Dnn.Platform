@@ -35,7 +35,7 @@ namespace Dnn.ExportImport.Components.Services
     {
         private int _progressPercentage;
         public override string Category => Constants.Category_ProfileProps;
-        public override string ParentCategory => Constants.Category_Users;
+        public override string ParentCategory => Constants.Category_Portal;
         public override uint Priority => 3;
 
         public int ProgressPercentage
