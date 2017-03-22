@@ -16,6 +16,20 @@ const jobsActions = {
         };
     },
 
+    getPortalLogo(portalId, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.getPortalLogo(portalId, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PORTAL_LOGO,
+                    logoUrl: data.LogoUrl
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
+
     getAllJobs(parameters, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getAllJobs(parameters, (data) => {

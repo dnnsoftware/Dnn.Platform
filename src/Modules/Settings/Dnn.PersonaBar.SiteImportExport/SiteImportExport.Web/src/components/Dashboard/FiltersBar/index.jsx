@@ -11,19 +11,17 @@ class FiltersBar extends Component {
         this.state = {
             selectedJobFilter: {
                 label: Localization.get("JobTypeAll"),
-                value: null
+                value: -1
             },
             searchText: ""
         };
     }
 
     onSelect(option) {
-        let { label } = option;
-        let { value } = option;
         let { selectedJobFilter } = this.state;
-        if (value !== selectedJobFilter.value) {
-            selectedJobFilter.label = label;
-            selectedJobFilter.value = value;
+        if (option.value !== selectedJobFilter.value) {
+            selectedJobFilter.label = option.label;
+            selectedJobFilter.value = option.value;
 
             this.setState({
                 selectedJobFilter
@@ -33,7 +31,7 @@ class FiltersBar extends Component {
 
     BuildFiltersOptions() {
         const jobFilters = [
-            { "Key": Localization.get("JobTypeAll"), "Value": null },
+            { "Key": Localization.get("JobTypeAll"), "Value": -1 },
             { "Key": Localization.get("JobTypeImport"), "Value": 1 },
             { "Key": Localization.get("JobTypeExport"), "Value": 0 }
         ];
@@ -54,8 +52,8 @@ class FiltersBar extends Component {
                         <DropDown style={{ width: "100%" }}
                             withBorder={false}
                             options={jobFiltersOptions}
-                            label={this.state.selectedJobFilter.label}
-                            onSelect={this.props.onFilterChanged}
+                            onSelect={this.onSelect.bind(this)}
+                            value={this.state.selectedJobFilter.value}
                             prependWith={Localization.get("ShowFilterLabel")}
                         />
                         <div className="clear">

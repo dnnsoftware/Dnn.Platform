@@ -69,6 +69,11 @@ class JobRow extends Component {
                                 <span>{this.props.jobPortal}&nbsp; </span>
                             </div>
                         </div>
+                        <div className="term-label-jobstatus" onClick={this.toggle.bind(this)}>
+                            <div className="term-label-wrapper">
+                                <span>{this.props.jobStatus}&nbsp; </span>
+                            </div>
+                        </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} />
@@ -88,6 +93,7 @@ JobRow.propTypes = {
     jobDate: PropTypes.string,
     jobUser: PropTypes.string,
     jobPortal: PropTypes.string,
+    jobStatus: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     OpenCollapse: PropTypes.func,

@@ -20,7 +20,7 @@ let isHost = false;
 let currentPortalId = -1;
 let currentPortalName = "";
 
-/*eslint-disable eqeqeq*/
+/*eslint-disable*/
 class DashboardPanelBody extends Component {
     constructor() {
         super();
@@ -40,7 +40,7 @@ class DashboardPanelBody extends Component {
     }
 
     componentWillMount() {
-        const { props } = this;
+        const { props, state } = this;
         this.setState({
             portalId: props.portalId || currentPortalId
         }, () => {
@@ -57,10 +57,11 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
                 });
             }
+            props.dispatch(ImportExportActions.getPortalLogo(props.portalId || currentPortalId));
         });
     }
 
-    componentWillReceiveProps(props) {      
+    componentWillReceiveProps(props) {
         this.setState({
             portals: props.portals
         });
@@ -97,7 +98,7 @@ class DashboardPanelBody extends Component {
             portalId: state.portalId,
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
-            jobType: state.filter,
+            jobType: state.filter === -1 ? null : state.filter,
             keywords: state.keyword
         };
     }
@@ -124,6 +125,7 @@ class DashboardPanelBody extends Component {
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+                props.dispatch(ImportExportActions.getPortalLogo(option.value));
             });
         }
     }
@@ -138,14 +140,67 @@ class DashboardPanelBody extends Component {
         props.dispatch(ImportExportActions.export());
     }
 
+    renderTopPane() {
+        const { state, props } = this;
+        return <div className="top-panel">
+            <div className="top-panel-left">
+                <div className="logoWrapper">
+                    <img src={props.portalLogo} alt="logo" />
+                </div>
+            </div>
+            <div className="top-panel-right">
+                <div className="site-selection">
+                    <DropDown
+                        options={this.getPortalOptions()}
+                        value={state.portalId}
+                        onSelect={this.onPortalChange.bind(this)}
+                        prependWith={Localization.get("ShowSiteLabel")}
+                    />
+                </div>
+                <div className="last-actions">
+                    <div className="action-labels">
+                        <Label
+                            labelType="block"
+                            label={Localization.get("LastImport")} />
+                        <Label
+                            labelType="block"
+                            label={Localization.get("LastExport")} />
+                        <Label
+                            labelType="block"
+                            label={Localization.get("LastUpdate")} />
+                    </div>
+                    <div className="action-dates">
+                        <div>1/31/2017 12:45 PM</div>
+                        <div>1/31/2017 12:45 PM</div>
+                        <div>1/31/2017 12:45 PM</div>
+                    </div>
+                </div>
+                <div className="action-buttons">
+                    <Button
+                        className="action-button"
+                        type="secondary"
+                        onClick={this.onExportData.bind(this)}>
+                        {Localization.get("ExportButton")}
+                    </Button>
+                    <Button
+                        className="action-button"
+                        type="secondary"
+                        onClick={this.onImportData.bind(this)}>
+                        {Localization.get("ImportButton")}
+                    </Button>
+                </div>
+            </div>
+        </div>;
+    }
+
     renderJobListHeader() {
-        const { props } = this;
         const tableFields = [
             { "name": "", "id": "Indicator" },
             { "name": Localization.get("JobDate.Header"), "id": "JobDate" },
             { "name": Localization.get("JobType.Header"), "id": "JobType" },
             { "name": Localization.get("JobUser.Header"), "id": "JobUser" },
             { "name": Localization.get("JobPortal.Header"), "id": "JobPortal" },
+            { "name": Localization.get("JobStatus.Header"), "id": "JobStatus" },
             { "name": "", "id": "Arrow" }
         ];
 
@@ -158,9 +213,8 @@ class DashboardPanelBody extends Component {
         return <div className="jobHeader-wrapper">{tableHeaders}</div>;
     }
 
-    /* eslint-disable react/no-danger */
     renderedJobList() {
-        const { props } = this;
+        const { props, state } = this;
         let i = 0;
         if (props.jobs) {
             return props.jobs.map((job, index) => {
@@ -171,7 +225,8 @@ class DashboardPanelBody extends Component {
                         jobType={job.JobType}
                         jobDate={job.CreatedOn}
                         jobUser={job.User}
-                        jobPortal={job.PortalId}
+                        jobPortal={state.portals.find(p => p.PortalID === job.PortalId).PortalName}
+                        jobStatus={job.JobStatus}
                         index={index}
                         key={"jobTerm-" + index}
                         closeOnClick={true}
@@ -265,65 +320,24 @@ class DashboardPanelBody extends Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { state } = this;
         return (
             <div>
                 {state.portals && state.portals.length > 0 && <div>
-                        <div className="top-panel">
-                            <div className="site-selection">
-                                <DropDown
-                                    options={this.getPortalOptions()}
-                                    value={state.portalId}
-                                    onSelect={this.onPortalChange.bind(this)}
-                                    prependWith={Localization.get("ShowSiteLabel")}
-                                />
-                            </div>
-                            <div className="last-actions">
-                                <div className="action-labels">
-                                    <Label
-                                        labelType="block"
-                                        label={Localization.get("LastImport")} />
-                                    <Label
-                                        labelType="block"
-                                        label={Localization.get("LastExport")} />
-                                    <Label
-                                        labelType="block"
-                                        label={Localization.get("LastUpdate")} />
-                                </div>
-                                <div className="action-dates">
-                                    <div>1/31/2017 12:45 PM</div>
-                                    <div>1/31/2017 12:45 PM</div>
-                                    <div>1/31/2017 12:45 PM</div>
-                                </div>
-                            </div>
-                            <div className="action-buttons">
-                                <Button
-                                    className="action-button"
-                                    type="secondary"
-                                    onClick={this.onExportData.bind(this)}>
-                                    {Localization.get("ExportButton")}
-                                </Button>
-                                <Button
-                                    className="action-button"
-                                    type="secondary"
-                                    onClick={this.onImportData.bind(this)}>
-                                    {Localization.get("ImportButton")}
-                                </Button>
-                            </div>
+                    {this.renderTopPane()}
+                    <div className="section-title">{Localization.get("LogSection")}</div>
+                    <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
+                        onKeywordChanged={this.onKeywordChanged.bind(this)}
+                    />
+                    <div className="logContainer">
+                        <div className="logContainerBox">
+                            {this.renderJobListHeader()}
+                            {this.renderedJobList()}
                         </div>
-                        <div className="section-title">{Localization.get("LogSection")}</div>
-                        <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
-                            onKeywordChanged={this.onKeywordChanged.bind(this)}
-                        />
-                        <div className="logContainer">
-                            <div className="logContainerBox">
-                                {this.renderJobListHeader()}
-                                {this.renderedJobList()}
-                            </div>
-                        </div>
-                        {this.renderPager()}
-                        {this.renderedLegend()}
                     </div>
+                    {this.renderPager()}
+                    {this.renderedLegend()}
+                </div>
                 }
             </div>
         );
@@ -335,7 +349,8 @@ DashboardPanelBody.propTypes = {
     jobs: PropTypes.array,
     portals: PropTypes.array,
     totalJobs: PropTypes.number,
-    portalName: PropTypes.string
+    portalName: PropTypes.string,
+    portalLogo: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -343,7 +358,8 @@ function mapStateToProps(state) {
         jobs: state.importExport.jobs,
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
-        portalName: state.importExport.portalName
+        portalName: state.importExport.portalName,
+        portalLogo: state.importExport.logoUrl
     };
 }
 

@@ -150,6 +150,9 @@
   <data name="JobPortal.Header" xml:space="preserve">
     <value>Website</value>
   </data>
+  <data name="JobStatus.Header" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="LegendExport.Text" xml:space="preserve">
     <value>Site Export</value>
   </data>  
