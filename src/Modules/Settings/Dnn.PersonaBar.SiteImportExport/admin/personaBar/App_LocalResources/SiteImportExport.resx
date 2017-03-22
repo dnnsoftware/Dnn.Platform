@@ -192,4 +192,13 @@
   <data name="NoJobs.Text" xml:space="preserve">
     <value>No jobs found</value>
   </data>
+  <data name="BackToImportExport.Text" xml:space="preserve">
+    <value>Back to Import / Export</value>
+  </data>
+  <data name="Export.Text" xml:space="preserve">
+    <value>Export Data</value>
+  </data>
+  <data name="Import.Text" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
 </root>

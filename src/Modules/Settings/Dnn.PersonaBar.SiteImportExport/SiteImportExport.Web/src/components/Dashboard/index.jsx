@@ -26,7 +26,7 @@ class DashboardPanelBody extends Component {
         super();
         this.state = {
             jobs: [],
-            portals: null,
+            portals: [],
             portalId: -1,
             pageIndex: 0,
             pageSize: 10,
@@ -62,9 +62,11 @@ class DashboardPanelBody extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            portals: props.portals
-        });
+        if (isHost) {
+            this.setState({
+                portals: props.portals
+            });
+        }
     }
 
     uncollapse(id) {
@@ -132,25 +134,59 @@ class DashboardPanelBody extends Component {
 
     onImportData() {
         const { props } = this;
-        props.dispatch(ImportExportActions.import());
+        props.selectPanel(2);
     }
 
     onExportData() {
         const { props } = this;
-        props.dispatch(ImportExportActions.export());
+        props.selectPanel(1);
+    }
+
+    onPageChange(currentPage, pageSize) {
+        let { state, props } = this;
+        if (pageSize !== undefined && state.pageSize !== pageSize) {
+            state.pageSize = pageSize;
+        }
+        state.pageIndex = currentPage;
+        this.setState({
+            state
+        }, () => {
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+        });
+    }
+
+    onFilterChanged(filter) {
+        const { props } = this;
+        this.setState({
+            pageIndex: 0,
+            filter: filter.value
+        }, () => {
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+        });
+    }
+
+    onKeywordChanged(keyword) {
+        const { props } = this;
+        this.setState({
+            pageIndex: 0,
+            keyword: keyword
+        }, () => {
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+        });
     }
 
     renderTopPane() {
         const { state, props } = this;
         return <div className="top-panel">
-            <div className="top-panel-left">
+            <GridCell columnSize={20} >
                 <div className="logoWrapper">
                     <img src={props.portalLogo} alt="logo" />
                 </div>
-            </div>
-            <div className="top-panel-right">
+            </GridCell>
+            <GridCell columnSize={80} >
                 <div className="site-selection">
                     <DropDown
+                        enabled={isHost ? true : false}
                         options={this.getPortalOptions()}
                         value={state.portalId}
                         onSelect={this.onPortalChange.bind(this)}
@@ -189,7 +225,7 @@ class DashboardPanelBody extends Component {
                         {Localization.get("ImportButton")}
                     </Button>
                 </div>
-            </div>
+            </GridCell>
         </div>;
     }
 
@@ -246,19 +282,6 @@ class DashboardPanelBody extends Component {
         else return <GridCell className="no-jobs">{Localization.get("NoJobs")}</GridCell>;
     }
 
-    onPageChange(currentPage, pageSize) {
-        let { state, props } = this;
-        if (pageSize !== undefined && state.pageSize !== pageSize) {
-            state.pageSize = pageSize;
-        }
-        state.pageIndex = currentPage;
-        this.setState({
-            state
-        }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
-        });
-    }
-
     renderPager() {
         const { props, state } = this;
         return (
@@ -299,31 +322,11 @@ class DashboardPanelBody extends Component {
         return <div className="logLegend-wrapper">{legend}</div>;
     }
 
-    onFilterChanged(filter) {
-        const { props } = this;
-        this.setState({
-            pageIndex: 0,
-            filter: filter.value
-        }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
-        });
-    }
-
-    onKeywordChanged(keyword) {
-        const { props } = this;
-        this.setState({
-            pageIndex: 0,
-            keyword: keyword
-        }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
-        });
-    }
-
     render() {
         const { state } = this;
         return (
             <div>
-                {state.portals && state.portals.length > 0 && <div>
+                {state.portals.length > 0 && <div>
                     {this.renderTopPane()}
                     <div className="section-title">{Localization.get("LogSection")}</div>
                     <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
@@ -350,7 +353,8 @@ DashboardPanelBody.propTypes = {
     portals: PropTypes.array,
     totalJobs: PropTypes.number,
     portalName: PropTypes.string,
-    portalLogo: PropTypes.string
+    portalLogo: PropTypes.string,
+    selectPanel: PropTypes.func
 };
 
 function mapStateToProps(state) {

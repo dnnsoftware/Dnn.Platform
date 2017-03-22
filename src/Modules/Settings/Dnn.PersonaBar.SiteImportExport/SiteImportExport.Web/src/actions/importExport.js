@@ -2,6 +2,22 @@ import { importExport as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const jobsActions = {
+    navigateWizard(wizardStep, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.GO_TO_WIZARD_STEP,
+                payload: {
+                    wizardStep
+                }
+            });
+            if (callback) {
+                setTimeout(() => {
+                    callback();
+                }, 0);
+            }
+        };
+    },
+    
     getPortals(callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getPortals((data) => {

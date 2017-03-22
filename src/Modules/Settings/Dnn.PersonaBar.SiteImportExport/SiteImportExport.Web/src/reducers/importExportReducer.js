@@ -5,9 +5,14 @@ export default function importExport(state = {
     portals: [],
     totalJobs: 0,
     portalName: null,
-    logoUrl: null
+    logoUrl: null,
+    exportWizardStep: 0
 }, action) {
     switch (action.type) {
+        case ActionTypes.GO_TO_WIZARD_STEP:
+            return { ...state,
+                exportWizardStep: action.payload.wizardStep
+            };
         case ActionTypes.RETRIEVED_PORTALS:
             return {
                 ...state,

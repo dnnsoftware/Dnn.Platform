@@ -7,8 +7,11 @@ import {
     visiblePanel as VisiblePanelActions,
     pagination as PaginationActions
 } from "../actions";
+import PersonaBarPage from "dnn-persona-bar-page";
 import Localization from "localization";
 import Dashboard from "./Dashboard";
+import ExportModal from "./ExportModal";
+import ImportModal from "./ImportModal";
 import util from "../utils";
 
 let isHost = false;
@@ -22,16 +25,46 @@ class App extends Component {
         };
     }
 
+    selectPanel(panel, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        props.dispatch(VisiblePanelActions.selectPanel(panel));
+    }
+
     render() {
-        const {state} = this;
+        const { state, props } = this;
         return (
-            <GridCell>
-                <PersonaBarPageHeader title={Localization.get("SiteImportExport.Header")}>
-                </PersonaBarPageHeader>
-                <PersonaBarPageBody>
-                    <Dashboard portalId={state.portalId} />
-                </PersonaBarPageBody>
-            </GridCell>
+            <div>
+                <PersonaBarPage isOpen={props.selectedPage === 0} className={(props.selectedPage !== 0 ? "hidden" : "")}>
+                    <PersonaBarPageHeader title={Localization.get("SiteImportExport.Header")}>
+                    </PersonaBarPageHeader>
+                    <PersonaBarPageBody>
+                        <Dashboard portalId={state.portalId} selectPanel={this.selectPanel.bind(this)} />
+                    </PersonaBarPageBody>
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 1}>
+                    <PersonaBarPageHeader title={Localization.get("Export")}>
+                    </PersonaBarPageHeader>
+                    <PersonaBarPageBody backToLinkProps={{
+                        text: Localization.get("BackToImportExport"),
+                        onClick: this.selectPanel.bind(this, 0)
+                    }}>
+                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} />
+                    </PersonaBarPageBody>
+                </PersonaBarPage>
+                <PersonaBarPage isOpen={props.selectedPage === 2}>
+                    <PersonaBarPageHeader title={Localization.get("Import")}>
+                    </PersonaBarPageHeader>
+                    <PersonaBarPageBody backToLinkProps={{
+                        text: Localization.get("BackToImportExport"),
+                        onClick: this.selectPanel.bind(this, 0)
+                    }}>
+                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} />
+                    </PersonaBarPageBody>
+                </PersonaBarPage>
+            </div>
         );
     }
 }

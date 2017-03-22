@@ -31,7 +31,6 @@ namespace Dnn.PersonaBar.SiteImportExport.Services
         /// <param name="portalId"></param>
         /// <returns>List of portals</returns>
         [HttpGet]
-        [RequireHost]
         public HttpResponseMessage GetPortalLogo(int portalId)
         {
             try

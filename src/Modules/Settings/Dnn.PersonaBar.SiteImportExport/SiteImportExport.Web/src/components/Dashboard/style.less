@@ -13,67 +13,58 @@
                 float: left;
                 border: 1px solid @alto;
                 background: #fff;
-                .top-panel-left {
-                    float: left;
-                    width: 20%;
-                    padding: 15px 0 15px 15px;
-                    .logoWrapper {
-                        width: 145px;
-                        height: 145px;
-                        position: relative;
-                        border: 1px solid @alto;
-                        img {
-                            max-width: 100%;
-                            max-height: 100%;
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            margin: auto;
-                            padding: 5px;
+                .logoWrapper {
+                    width: 145px;
+                    height: 145px;
+                    position: relative;
+                    border: 1px solid @alto;
+                    margin: 15px;
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                        padding: 5px;
+                    }
+                }
+                .site-selection {
+                    padding: 20px 20px 20px 30px;
+                    .dnn-dropdown {
+                        width: 100%;
+                        .collapsible-label {
+                            text-transform: uppercase;
+                            font-weight: bold;
                         }
                     }
                 }
-                .top-panel-right {
+                .last-actions {
+                    width: 50%;
                     float: left;
-                    width: 80%;
-                    padding-left: 5px;
-                    .site-selection {
-                        margin: 20px;
-                        .dnn-dropdown {
-                            width: 100%;
-                            .collapsible-label {
-                                text-transform: uppercase;
-                                font-weight: bold;
-                            }
-                        }
-                    }
-                    .last-actions {
-                        width: 50%;
+                    padding: 0 20px 20px 30px;
+                    .action-labels {
                         float: left;
-                        padding: 0 20px 10px 20px;
-                        .action-labels {
-                            float: left;
-                            width: 50%;
-                            .dnn-label {
-                                padding: 0 0 10px 0;
-                            }
-                        }
-                        .action-dates {
-                            float: right;
-                            width: 50%;
-                            div {
-                                padding: 0 0 10px 0;
-                            }
+                        width: 50%;
+                        .dnn-label {
+                            padding: 0 0 10px 0;
                         }
                     }
-                    .action-buttons {
-                        width: 50%;
+                    .action-dates {
                         float: right;
-                        padding: 15px 20px 0 20px;
-                        .action-button {
-                            margin-left: 20px;
-                            float: right;
+                        width: 50%;
+                        div {
+                            padding: 0 0 10px 0;
                         }
+                    }
+                }
+                .action-buttons {
+                    width: 50%;
+                    float: right;
+                    padding: 15px 20px 0 20px;
+                    .action-button {
+                        margin-left: 20px;
+                        float: right;
                     }
                 }
             }
