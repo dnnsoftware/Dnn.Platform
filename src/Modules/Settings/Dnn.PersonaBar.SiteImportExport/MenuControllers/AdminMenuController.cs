@@ -24,7 +24,8 @@ namespace Dnn.PersonaBar.SiteImportExport.MenuControllers
             var settings = new Dictionary<string, object>
             {
                 {"isHost", UserController.Instance.GetCurrentUserInfo().IsSuperUser},
-                {"portalId", PortalSettings.Current.PortalId }
+                {"portalId", PortalSettings.Current.PortalId },
+                {"portalName", PortalSettings.Current.PortalName }
             };
             return settings;
         }

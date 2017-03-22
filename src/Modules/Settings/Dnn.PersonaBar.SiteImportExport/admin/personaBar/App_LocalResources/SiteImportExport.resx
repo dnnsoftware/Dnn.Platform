@@ -186,4 +186,7 @@
   <data name="ImportSummary.Text" xml:space="preserve">
     <value>Import Summary</value>
   </data>
+  <data name="NoJobs.Text" xml:space="preserve">
+    <value>No jobs found</value>
+  </data>
 </root>

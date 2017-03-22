@@ -7,6 +7,7 @@ import DropDown from "dnn-dropdown";
 import Pager from "dnn-pager";
 import Button from "dnn-button";
 import Label from "dnn-label";
+import GridCell from "dnn-grid-cell";
 import "./style.less";
 import util from "../../utils";
 import Localization from "localization";
@@ -17,6 +18,7 @@ import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 let isHost = false;
 let currentPortalId = -1;
+let currentPortalName = "";
 
 /*eslint-disable eqeqeq*/
 class DashboardPanelBody extends Component {
@@ -24,7 +26,7 @@ class DashboardPanelBody extends Component {
         super();
         this.state = {
             jobs: [],
-            portals: [],
+            portals: null,
             portalId: -1,
             pageIndex: 0,
             pageSize: 10,
@@ -34,10 +36,11 @@ class DashboardPanelBody extends Component {
         };
         isHost = util.settings.isHost;
         currentPortalId = util.settings.portalId;
+        currentPortalName = util.settings.portalName;
     }
 
     componentWillMount() {
-        const { state, props } = this;
+        const { props } = this;
         this.setState({
             portalId: props.portalId || currentPortalId
         }, () => {
@@ -47,6 +50,19 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()))
                 );
             }
+            else {
+                this.setState({
+                    portals: [{ "PortalName": currentPortalName, "PortalID": currentPortalId }]
+                }, () => {
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+                });
+            }
+        });
+    }
+
+    componentWillReceiveProps(props) {      
+        this.setState({
+            portals: props.portals
         });
     }
 
@@ -87,10 +103,10 @@ class DashboardPanelBody extends Component {
     }
 
     getPortalOptions() {
-        const { state, props } = this;
+        const { state } = this;
         let options = [];
-        if (props.portals) {
-            options = props.portals.map((item) => {
+        if (state.portals) {
+            options = state.portals.map((item) => {
                 return {
                     label: item.PortalName,
                     value: item.PortalID
@@ -172,7 +188,7 @@ class DashboardPanelBody extends Component {
                 );
             });
         }
-        else return <div/>;
+        else return <GridCell className="no-jobs">{Localization.get("NoJobs")}</GridCell>;
     }
 
     onPageChange(currentPage, pageSize) {
@@ -252,60 +268,63 @@ class DashboardPanelBody extends Component {
         const { props, state } = this;
         return (
             <div>
-                <div className="top-panel">
-                    <div className="site-selection">
-                        <DropDown
-                            options={this.getPortalOptions()}
-                            value={state.portalId}
-                            onSelect={this.onPortalChange.bind(this)}
-                            prependWith={Localization.get("ShowSiteLabel")}
+                {state.portals && state.portals.length > 0 && <div>
+                        <div className="top-panel">
+                            <div className="site-selection">
+                                <DropDown
+                                    options={this.getPortalOptions()}
+                                    value={state.portalId}
+                                    onSelect={this.onPortalChange.bind(this)}
+                                    prependWith={Localization.get("ShowSiteLabel")}
+                                />
+                            </div>
+                            <div className="last-actions">
+                                <div className="action-labels">
+                                    <Label
+                                        labelType="block"
+                                        label={Localization.get("LastImport")} />
+                                    <Label
+                                        labelType="block"
+                                        label={Localization.get("LastExport")} />
+                                    <Label
+                                        labelType="block"
+                                        label={Localization.get("LastUpdate")} />
+                                </div>
+                                <div className="action-dates">
+                                    <div>1/31/2017 12:45 PM</div>
+                                    <div>1/31/2017 12:45 PM</div>
+                                    <div>1/31/2017 12:45 PM</div>
+                                </div>
+                            </div>
+                            <div className="action-buttons">
+                                <Button
+                                    className="action-button"
+                                    type="secondary"
+                                    onClick={this.onExportData.bind(this)}>
+                                    {Localization.get("ExportButton")}
+                                </Button>
+                                <Button
+                                    className="action-button"
+                                    type="secondary"
+                                    onClick={this.onImportData.bind(this)}>
+                                    {Localization.get("ImportButton")}
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="section-title">{Localization.get("LogSection")}</div>
+                        <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
+                            onKeywordChanged={this.onKeywordChanged.bind(this)}
                         />
-                    </div>
-                    <div className="last-actions">
-                        <div className="action-labels">
-                            <Label
-                                labelType="block"
-                                label={Localization.get("LastImport")} />
-                            <Label
-                                labelType="block"
-                                label={Localization.get("LastExport")} />
-                            <Label
-                                labelType="block"
-                                label={Localization.get("LastUpdate")} />
+                        <div className="logContainer">
+                            <div className="logContainerBox">
+                                {this.renderJobListHeader()}
+                                {this.renderedJobList()}
+                            </div>
                         </div>
-                        <div className="action-dates">
-                            <div>1/31/2017 12:45 PM</div>
-                            <div>1/31/2017 12:45 PM</div>
-                            <div>1/31/2017 12:45 PM</div>
-                        </div>
+                        {this.renderPager()}
+                        {this.renderedLegend()}
                     </div>
-                    <div className="action-buttons">
-                        <Button
-                            className="action-button"
-                            type="secondary"
-                            onClick={this.onExportData.bind(this)}>
-                            {Localization.get("ExportButton")}
-                        </Button>
-                        <Button
-                            className="action-button"
-                            type="secondary"
-                            onClick={this.onImportData.bind(this)}>
-                            {Localization.get("ImportButton")}
-                        </Button>
-                    </div>
-                </div>
-                <div className="section-title">{Localization.get("LogSection")}</div>
-                <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
-                    onKeywordChanged={this.onKeywordChanged.bind(this)}
-                />
-                <div className="logContainer">
-                    <div className="logContainerBox">
-                        {this.renderJobListHeader()}
-                        {this.renderedJobList()}
-                    </div>
-                </div>
-                {this.renderPager()}
-                {this.renderedLegend()}
+                }
             </div>
         );
     }
