@@ -156,7 +156,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     if (File.Exists(assetsFile))
                         File.Delete(assetsFile);
-                    ZipFolder(assetsFolder, assetsFile);
+                    CompressionUtil.ZipFolder(assetsFolder, assetsFile, exportJob.ExportFile);
                     if (Directory.Exists(assetsFolder))
                         Directory.Delete(assetsFolder, true);
                     CheckPoint.Stage++;
@@ -196,7 +196,7 @@ namespace Dnn.ExportImport.Components.Services
             ProgressPercentage = 0;
             if (CheckPoint.Stage == 0)
             {
-                UnzipResources(portal.HomeDirectoryMapPath, assetsFile);
+                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
@@ -580,36 +580,6 @@ namespace Dnn.ExportImport.Components.Services
                     File.Delete(dirInfo + "\\" + mFile.Name);
                 mFile.MoveTo(dirInfo + "\\" + mFile.Name);
             }
-        }
-
-        private void UnzipResources(string portalPath, string resoureceFile)
-        {
-            try
-            {
-                //ZipFile.ExtractToDirectory(resoureceFile, portalPath);
-                using (var archive = ZipFile.OpenRead(resoureceFile))
-                {
-                    foreach (var entry in archive.Entries)
-                    {
-                        if (!string.IsNullOrEmpty(Path.GetDirectoryName(entry.FullName)) &&
-                            !Directory.Exists(Path.Combine(portalPath, Path.GetDirectoryName(entry.FullName))))
-                            Directory.CreateDirectory(Path.Combine(portalPath, Path.GetDirectoryName(entry.FullName)));
-                        if (!entry.FullName.EndsWith("\\") && entry.Length > 0)
-                            entry.ExtractToFile(Path.Combine(portalPath, entry.FullName), true);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                //TODO: Log exception or throw exception?
-                //Logger.Error(exc);
-            }
-        }
-
-        private void ZipFolder(string folderPath, string archivePath)
-        {
-            //Create Zip Entry
-            ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Optimal, false);
         }
 
         private void CopyFile(string fileName, string filePath, string targetFolder)
