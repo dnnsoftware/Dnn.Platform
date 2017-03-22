@@ -31,7 +31,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
-        private const string UsersAssetsTempFolder = "{0}TempUsers\\";
+        private const string UsersAssetsTempFolder = "{0}\\TempUsers\\";
         private int _progressPercentage;
 
         public override string Category => Constants.Category_Assets;
@@ -86,8 +86,8 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (!Directory.Exists(assetsFolder))
                         Directory.CreateDirectory(assetsFolder);
-                    if (!Directory.Exists(Path.Combine(assetsFolder, "TempUsers")))
-                        Directory.CreateDirectory(Path.Combine(assetsFolder, "TempUsers"));
+                    if (!Directory.Exists(string.Format(UsersAssetsTempFolder, assetsFolder)))
+                        Directory.CreateDirectory(string.Format(UsersAssetsTempFolder, assetsFolder));
 
                     ProgressPercentage = 5;
 
@@ -134,7 +134,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 CopyFile(GetActualFileName(file), filePath,
                                     isUserFolder
-                                        ? Path.Combine(assetsFolder, "TempUsers", folder.FolderPath)
+                                        ? Path.Combine(string.Format(UsersAssetsTempFolder, assetsFolder), folder.FolderPath)
                                         : Path.Combine(assetsFolder, folder.FolderPath));
                             }
                         }
@@ -192,7 +192,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
             var assetsFile = string.Format(_assetsFile, importJob.ExportFile);
-            var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath);
+            var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             ProgressPercentage = 0;
             if (CheckPoint.Stage == 0)
             {
@@ -564,7 +564,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var tempUsersFolderPath =
-                $"{string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath)}{folder.FolderPath}";
+                $"{string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'))}{folder.FolderPath}";
             var newUsersFolderPath = $"{portal.HomeDirectoryMapPath}{folder.FolderPath}";
             if (!Directory.Exists(tempUsersFolderPath))
                 return;
