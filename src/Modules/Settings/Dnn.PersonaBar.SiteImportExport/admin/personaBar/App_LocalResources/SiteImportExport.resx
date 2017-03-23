@@ -201,4 +201,64 @@
   <data name="Import.Text" xml:space="preserve">
     <value>Import Data</value>
   </data>
+  <data name="ExportSettings.Text" xml:space="preserve">
+    <value>Export Settings</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Template Description</value>
+  </data>
+  <data name="TemplateFile.Text" xml:space="preserve">
+    <value>Template File Name</value>
+  </data>
+  <data name="IncludeInExport.Text" xml:space="preserve">
+    <value>Include in Export</value>
+  </data>
+  <data name="PagesInExport.Text" xml:space="preserve">
+    <value>Pages in Export</value>
+  </data>
+  <data name="BeginExport.Text" xml:space="preserve">
+    <value>Begin Export</value>
+  </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Content.Text" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="Assets.Text" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="Vocabularies.Text" xml:space="preserve">
+    <value>Vocabularies</value>
+  </data>
+  <data name="ProfileProperties.Text" xml:space="preserve">
+    <value>Profile Properties</value>
+  </data>
+  <data name="Permissions.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="DeletionsInExport.Text" xml:space="preserve">
+    <value>Deletions Transferred in Export</value>
+  </data>
+  <data name="ExportName.ErrorMessage" xml:space="preserve">
+    <value>Template file name is required.</value>
+  </data>
+  <data name="ExportDescription.ErrorMessage" xml:space="preserve">
+    <value>Template description is required.</value>
+  </data>
+  <data name="ExportRequestSubmitted" xml:space="preserve">
+	<value>Export site request submitted successfully with Job Id </value>
+  </data>
+  <data name="ExportRequestSubmit.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the export site request. Please try again.</value>
+  </data>
 </root>

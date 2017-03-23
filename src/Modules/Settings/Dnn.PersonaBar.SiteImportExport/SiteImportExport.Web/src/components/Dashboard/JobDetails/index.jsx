@@ -29,7 +29,6 @@ class JobDetails extends Component {
 
     onDownloadLog() {
         const { props } = this;
-        alert(0);
     }
 
     renderedLogItemList() {
@@ -44,13 +43,14 @@ class JobDetails extends Component {
                 );
             });
         }
-        else return <div/>;
+        else return <div />;
     }
 
     /* eslint-disable react/no-danger */
     render() {
-        const { props } = this;
+        const { props } = this;        
         if (props.jobDetail !== undefined) {
+            const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(props.jobDetail));
             const columnOne = <div className="container left-column">
                 {this.renderedLogItemList()}
             </div>;
@@ -58,11 +58,13 @@ class JobDetails extends Component {
                 <div className="item-row divider">
                     <Label label="test" style={{ margin: "0 0 5px 0" }} />
                 </div>
-                <Button
-                    type="secondary"
-                    onClick={this.onDownloadLog.bind(this)}>
-                    {Localization.get("DownloadLog")}
-                </Button>
+                <a href={"data:'" + data + "'"} download="data.log">
+                    <Button
+                        type="secondary"
+                        onClick={this.onDownloadLog.bind(this)}>
+                        {Localization.get("DownloadLog")}
+                    </Button>
+                </a>
             </div>;
 
             return (

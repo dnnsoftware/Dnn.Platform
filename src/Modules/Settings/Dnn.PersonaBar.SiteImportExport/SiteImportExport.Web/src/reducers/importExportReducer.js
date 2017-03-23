@@ -8,15 +8,18 @@ export default function importExport(state = {
     totalJobs: 0,
     portalName: null,
     logoUrl: null,
-    exportWizardStep: 0
+    exportWizardStep: 0,
+    exportJobId: -1
 }, action) {
     switch (action.type) {
         case ActionTypes.SELECTED_SITE:
-            return { ...state,
+            return {
+                ...state,
                 portalId: action.portalId
             };
         case ActionTypes.GO_TO_WIZARD_STEP:
-            return { ...state,
+            return {
+                ...state,
                 exportWizardStep: action.payload.wizardStep
             };
         case ActionTypes.RETRIEVED_PORTALS:
@@ -40,6 +43,11 @@ export default function importExport(state = {
             return {
                 ...state,
                 logoUrl: action.logoUrl
+            };
+        case ActionTypes.SUBMITTED_EXPORT_REQUEST:
+            return {
+                ...state,
+                exportJobId: action.jobId
             };
         default:
             return {

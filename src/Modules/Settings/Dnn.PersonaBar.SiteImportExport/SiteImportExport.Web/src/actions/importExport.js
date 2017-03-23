@@ -86,6 +86,24 @@ const jobsActions = {
                 }
             }, errorCallback);
         };
+    },
+
+    exportSite(payload, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.exportSite(payload, data => {
+                dispatch({
+                    type: ActionTypes.SUBMITTED_EXPORT_REQUEST,
+                    jobId: data.jobId
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (errorCallback) {
+                    errorCallback(data);
+                }
+            });
+        };
     }
 };
 

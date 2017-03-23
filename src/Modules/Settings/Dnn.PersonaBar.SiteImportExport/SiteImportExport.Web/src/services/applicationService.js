@@ -37,6 +37,11 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.get("JobDetails?jobId=" + jobId, {}, callback, errorCallback);
     }
+
+    exportSite(payload, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.post("Export", payload, callback, errorCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

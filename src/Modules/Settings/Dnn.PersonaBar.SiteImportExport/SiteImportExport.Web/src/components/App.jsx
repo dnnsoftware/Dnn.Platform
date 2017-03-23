@@ -63,7 +63,7 @@ class App extends Component {
                         text: Localization.get("BackToImportExport"),
                         onClick: this.selectPanel.bind(this, 0)
                     }}>
-                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} />
+                        {props.selectedPage === 1 && <ExportModal onCancel={this.selectPanel.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
@@ -73,7 +73,7 @@ class App extends Component {
                         text: Localization.get("BackToImportExport"),
                         onClick: this.selectPanel.bind(this, 0)
                     }}>
-                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} />
+                        {props.selectedPage === 2 && <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
             </div>

@@ -24,6 +24,8 @@ const scrollAreaStyle = {
     border: "1px solid #c8c8c8"
 };
 
+const keysToValidate = ["ExportName", "ExportDescription"];
+
 class ExportModal extends Component {
     constructor() {
         super();
@@ -33,8 +35,17 @@ class ExportModal extends Component {
                 PortalId: -1,
                 ExportName: "",
                 ExportDescription: "",
-                ItemsToExport: [],
-                Pages: []
+                ItemsToExport: ["Assets", "Users", "Roles", "Vocabularies", "Profile_Properties", "Permissions"],
+                IncludeDeletions: false,
+                IncludeContent: true,
+                IncludeFiles: true
+            },
+            localData: {
+                locales: [],
+                errors: {
+                    ExportName: false,
+                    ExportDescription: false
+                }
             }
         };
     }
@@ -64,7 +75,43 @@ class ExportModal extends Component {
     }
 
     onExportPortal() {
+        const { props, state } = this;
+        if (this.Validate()) {
+            props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
+                utilities.utilities.notify(Localization.get("ExportRequestSubmitted") + data.jobId);
+            }, () => {
+                utilities.utilities.notifyError(Localization.get("ExportRequestSubmit.ErrorMessage"));
+            }));
+        }
+    }
 
+    Validate() {
+        let success = true;
+        const { exportRequest } = this.state;
+        success = this.ValidateTexts();
+        if (success && exportRequest.pages.length <= 0) {
+            success = false;
+            utilities.notify(Localization.get("ErrorPages"));
+        }
+        return success;
+    }
+
+    ValidateTexts(key) {
+        let success = true;
+        const { exportRequest } = this.state;
+        const { localData } = this.state;
+        keysToValidate.map(vkey => {
+            if (key === undefined || key == vkey) {
+                if (exportRequest[vkey] === "") {
+                    success = false;
+                    localData.errors[vkey] = true;
+                } else {
+                    localData.errors[vkey] = false;
+                }
+            }
+            this.setState({});
+        });
+        return success;
     }
 
     getPortalOptions() {
@@ -82,22 +129,27 @@ class ExportModal extends Component {
     }
 
     onChange(key, event) {
-        let { state, props } = this;
-        let exportRequest = Object.assign({}, state.exportRequest);
+        const value = typeof event === "object" ? event.target.value : event;
+        let { exportRequest } = this.state;
 
-        if (key === "PortalId") {
-            exportRequest[key] = event.value;
-        }
-        else if (key === "ExportName" || key === "ExportDescription") {
-            exportRequest[key] = event;
+        if (key === "Assets" || key === "Users" || key === "Roles" || key === "Vocabularies" || key === "Profile_Properties" || key === "Permissions") {
+            if (value) {
+                if (!(exportRequest.ItemsToExport.includes(key))) {
+                    exportRequest.ItemsToExport.push(key);
+                }
+            }
+            else {
+                exportRequest.ItemsToExport.splice(exportRequest.ItemsToExport.indexOf(key), 1);
+            }
         }
         else {
-            exportRequest[key] = typeof (event) === "object" ? event.target.value : event;
+            exportRequest[key] = value;
         }
-
         this.setState({
-            exportRequest: exportRequest
+            exportRequest
         });
+        if (keysToValidate.some(vkey => vkey === key))
+            this.ValidateTexts(key);
     }
 
     updatePagesToExport(selectedPages) {
@@ -135,10 +187,11 @@ class ExportModal extends Component {
                         </GridCell>
                         <GridCell>
                             <SingleLineInputWithError
-                                label={Localization.get("TemplateFile")}
+                                label={Localization.get("TemplateFile") + "*"}
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
-                                error={false}
+                                error={state.localData.errors.ExportName}
+                                errorMessage={Localization.get("ExportName.ErrorMessage")}
                                 value={state.exportRequest.ExportName}
                                 onChange={this.onChange.bind(this, "ExportName")}
                                 style={{ width: "100%" }}
@@ -150,8 +203,10 @@ class ExportModal extends Component {
                             <MultiLineInputWithError
                                 inputStyle={{ "minHeight": 110 }}
                                 style={{ "width": "100%" }}
-                                label={Localization.get("Description")}
+                                label={Localization.get("Description") + "*"}
                                 value={state.exportRequest.ExportDescription}
+                                error={state.localData.errors.ExportDescription}
+                                errorMessage={Localization.get("ExportDescription.ErrorMessage")}
                                 onChange={this.onChange.bind(this, "ExportDescription")}
                             />
                         </GridCell>
@@ -168,8 +223,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Content")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Content}
-                                    onChange={this.onChange.bind(this, "Content")}
+                                    value={state.exportRequest.IncludeContent}
+                                    onChange={this.onChange.bind(this, "IncludeContent")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -178,7 +233,7 @@ class ExportModal extends Component {
                                     label={Localization.get("Assets")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Assets}
+                                    value={state.exportRequest.ItemsToExport.includes("Assets")}
                                     onChange={this.onChange.bind(this, "Assets")}
                                 />
                             </InputGroup>
@@ -188,7 +243,7 @@ class ExportModal extends Component {
                                     label={Localization.get("Users")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Users}
+                                    value={state.exportRequest.ItemsToExport.includes("Users")}
                                     onChange={this.onChange.bind(this, "Users")}
                                 />
                             </InputGroup>
@@ -198,7 +253,7 @@ class ExportModal extends Component {
                                     label={Localization.get("Roles")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Roles}
+                                    value={state.exportRequest.ItemsToExport.includes("Roles")}
                                     onChange={this.onChange.bind(this, "Roles")}
                                 />
                             </InputGroup>
@@ -208,7 +263,7 @@ class ExportModal extends Component {
                                     label={Localization.get("Vocabularies")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Vocabularies}
+                                    value={state.exportRequest.ItemsToExport.includes("Vocabularies")}
                                     onChange={this.onChange.bind(this, "Vocabularies")}
                                 />
                             </InputGroup>
@@ -218,8 +273,8 @@ class ExportModal extends Component {
                                     label={Localization.get("ProfileProperties")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.ProfileProperties}
-                                    onChange={this.onChange.bind(this, "ProfileProperties")}
+                                    value={state.exportRequest.ItemsToExport.includes("Profile_Properties")}
+                                    onChange={this.onChange.bind(this, "Profile_Properties")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -228,7 +283,7 @@ class ExportModal extends Component {
                                     label={Localization.get("Permissions")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.Permissions}
+                                    value={state.exportRequest.ItemsToExport.includes("Permissions")}
                                     onChange={this.onChange.bind(this, "Permissions")}
                                 />
                             </InputGroup>
@@ -278,7 +333,8 @@ ExportModal.propTypes = {
     exportLogs: PropTypes.array,
     viewingLog: PropTypes.bool,
     portalId: PropTypes.number,
-    portals: PropTypes.array
+    portals: PropTypes.array,
+    exportJobId: PropTypes.number
 };
 
 function mapStateToProps(state) {
@@ -287,7 +343,8 @@ function mapStateToProps(state) {
         exportLogs: state.importExport.exportLogs,
         viewingLog: state.importExport.viewingLog,
         portals: state.importExport.portals,
-        portalId: state.importExport.portalId
+        portalId: state.importExport.portalId,
+        exportJobId: state.importExport.exportJobId
     };
 }
 
