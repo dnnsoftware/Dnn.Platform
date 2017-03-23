@@ -11,6 +11,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public int PortalId { get; set; }
         public string User { get; set; }
         public string JobType { get; set; }
+        public int Status { get; set; }
         public string JobStatus { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
