@@ -1,7 +1,9 @@
 import { importExport as ActionTypes } from "../constants/actionTypes";
+import util from "../utils";
 
 export default function importExport(state = {
     jobs: [],
+    portalId: -1,
     portals: [],
     totalJobs: 0,
     portalName: null,
@@ -9,6 +11,10 @@ export default function importExport(state = {
     exportWizardStep: 0
 }, action) {
     switch (action.type) {
+        case ActionTypes.SELECTED_SITE:
+            return { ...state,
+                portalId: action.portalId
+            };
         case ActionTypes.GO_TO_WIZARD_STEP:
             return { ...state,
                 exportWizardStep: action.payload.wizardStep

@@ -1,7 +1,74 @@
 @import "~dnn-global-styles/index";
 :local(.exportModal) {
-    border-bottom: 0;
+    border: 1px solid @alto;
+    background: #fff;
+    float: left;
     * {
         box-sizing: border-box;
+    }
+    .sectionTitle {
+        font-weight: bold;
+        margin: 20px 0;
+    }
+    .export-site-container {
+        .left-column {
+            width: 50%;
+            float: left;
+            border-right: 1px solid @alto;
+            padding: 10px 30px 10px 30px;
+            .dnn-dropdown-with-error {
+                width: 100%;
+            }
+            .dnn-single-line-input-with-error {
+                padding-top: 15px;
+            }
+        }
+        .right-column {
+            width: 50%;
+            float: left;
+            padding: 10px 30px 10px 30px;
+        }
+        .export-switches {
+            border-right: 1px solid @alto;
+            padding: 0 30px 0 30px;
+            .dnn-ui-common-input-group {
+                padding: 5px 0;
+                label {
+                    font-weight: bolder;
+                    float: left;
+                }
+                .dnn-switch-container {
+                    float: right;
+                }
+            }
+        }
+        .export-pages {
+            padding: 0 30px 0 30px;
+            .export-page-picker {
+                width: 100% !important;
+                .page-picker-content > div {
+                    height: 390px !important;
+                }
+            }
+        }
+    }
+    .seperator{
+        padding: 0 20px;
+    }
+    .pageTitle{
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 20px 0 10px 30px;
+    }
+    .sectionTitle {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .action-buttons {
+        text-align: center;
+        padding: 30px 0;
+        button {
+            margin: 5px;
+        }
     }
 }

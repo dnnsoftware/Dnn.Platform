@@ -2,6 +2,18 @@ import { importExport as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const jobsActions = {
+    siteSelected(portalId, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SELECTED_SITE,
+                portalId: portalId
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+
     navigateWizard(wizardStep, callback) {
         return (dispatch) => {
             dispatch({
@@ -17,7 +29,7 @@ const jobsActions = {
             }
         };
     },
-    
+
     getPortals(callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getPortals((data) => {

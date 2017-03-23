@@ -17,7 +17,6 @@ import JobDetails from "./JobDetails";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 let isHost = false;
-let currentPortalId = -1;
 let currentPortalName = "";
 
 /*eslint-disable*/
@@ -35,37 +34,47 @@ class DashboardPanelBody extends Component {
             openId: ""
         };
         isHost = util.settings.isHost;
-        currentPortalId = util.settings.portalId;
         currentPortalName = util.settings.portalName;
     }
 
     componentWillMount() {
         const { props, state } = this;
         this.setState({
-            portalId: props.portalId || currentPortalId
+            portalId: props.portalId
         }, () => {
-            if (isHost) {
-                props.dispatch(ImportExportActions.getPortals(() => {
-                }),
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()))
-                );
-            }
-            else {
-                this.setState({
-                    portals: [{ "PortalName": currentPortalName, "PortalID": currentPortalId }]
-                }, () => {
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
-                });
-            }
-            props.dispatch(ImportExportActions.getPortalLogo(props.portalId || currentPortalId));
+           
+            
         });
     }
 
     componentWillReceiveProps(props) {
-        if (isHost) {
-            this.setState({
-                portals: props.portals
-            });
+        const { state } = this;        
+        if (state.portalId !== props.portalId && props.portalId > -1) {
+            if (isHost) {
+                this.setState({
+                    portals: props.portals,
+                    portalId: props.portalId
+                });
+            }
+            else {
+                this.setState({
+                    portalId: props.portalId
+                });
+            }
+             if (isHost) {
+                props.dispatch(ImportExportActions.getPortals(() => {
+                }),
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)))
+                );
+            }
+            else {
+                this.setState({
+                    portals: [{ "PortalName": currentPortalName, "PortalID": props.portalId }]
+                }, () => {
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                });
+            }
+            props.dispatch(ImportExportActions.getPortalLogo(props.portalId));
         }
     }
 
@@ -94,10 +103,10 @@ class DashboardPanelBody extends Component {
         }
     }
 
-    getNextPage() {
-        const { state } = this;
+    getNextPage(portalId) {
+        const { state, props } = this;
         return {
-            portalId: state.portalId,
+            portalId: portalId,
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
             jobType: state.filter === -1 ? null : state.filter,
@@ -106,10 +115,10 @@ class DashboardPanelBody extends Component {
     }
 
     getPortalOptions() {
-        const { state } = this;
+        const { props } = this;
         let options = [];
-        if (state.portals) {
-            options = state.portals.map((item) => {
+        if (props.portals) {
+            options = props.portals.map((item) => {
                 return {
                     label: item.PortalName,
                     value: item.PortalID
@@ -126,8 +135,9 @@ class DashboardPanelBody extends Component {
                 portalId: option.value,
                 pageIndex: 0
             }, () => {
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
                 props.dispatch(ImportExportActions.getPortalLogo(option.value));
+                props.dispatch(ImportExportActions.siteSelected(option.value));
             });
         }
     }
@@ -151,7 +161,7 @@ class DashboardPanelBody extends Component {
         this.setState({
             state
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
         });
     }
 
@@ -161,7 +171,7 @@ class DashboardPanelBody extends Component {
             pageIndex: 0,
             filter: filter.value
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
         });
     }
 
@@ -171,7 +181,7 @@ class DashboardPanelBody extends Component {
             pageIndex: 0,
             keyword: keyword
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
         });
     }
 
@@ -252,7 +262,7 @@ class DashboardPanelBody extends Component {
     renderedJobList() {
         const { props, state } = this;
         let i = 0;
-        if (props.jobs) {
+        if (props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
                 let id = "row-" + i++;
                 return (
@@ -261,7 +271,7 @@ class DashboardPanelBody extends Component {
                         jobType={job.JobType}
                         jobDate={job.CreatedOn}
                         jobUser={job.User}
-                        jobPortal={state.portals.find(p => p.PortalID === job.PortalId).PortalName}
+                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
                         jobStatus={job.JobStatus}
                         index={index}
                         key={"jobTerm-" + index}
@@ -323,10 +333,10 @@ class DashboardPanelBody extends Component {
     }
 
     render() {
-        const { state } = this;
+        const { props, state } = this;
         return (
             <div>
-                {state.portals.length > 0 && <div>
+                {props.portals.length > 0 && <div>
                     {this.renderTopPane()}
                     <div className="section-title">{Localization.get("LogSection")}</div>
                     <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
@@ -354,12 +364,14 @@ DashboardPanelBody.propTypes = {
     totalJobs: PropTypes.number,
     portalName: PropTypes.string,
     portalLogo: PropTypes.string,
-    selectPanel: PropTypes.func
+    selectPanel: PropTypes.func,
+    portalId: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
         jobs: state.importExport.jobs,
+        portalId: state.importExport.portalId,
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
         portalName: state.importExport.portalName,

@@ -5,7 +5,8 @@ import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import {
     visiblePanel as VisiblePanelActions,
-    pagination as PaginationActions
+    pagination as PaginationActions,
+    importExport as ImportExportActions
 } from "../actions";
 import PersonaBarPage from "dnn-persona-bar-page";
 import Localization from "localization";
@@ -21,8 +22,19 @@ class App extends Component {
         super();
         isHost = util.settings.isHost;
         this.state = {
-            portalId: util.settings.portalId
+            portalId: -1
         };
+    }
+
+    componentWillMount() {
+        const { props } = this;
+
+        let pid = props.portalId && props.portalId > -1 ? props.portalId : util.settings.portalId;
+        this.setState({
+            portalId: pid
+        }, () => {
+            props.dispatch(ImportExportActions.siteSelected(pid));
+        });
     }
 
     selectPanel(panel, event) {
@@ -41,7 +53,7 @@ class App extends Component {
                     <PersonaBarPageHeader title={Localization.get("SiteImportExport.Header")}>
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody>
-                        <Dashboard portalId={state.portalId} selectPanel={this.selectPanel.bind(this)} />
+                        <Dashboard selectPanel={this.selectPanel.bind(this)} />
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
@@ -68,6 +80,7 @@ class App extends Component {
         );
     }
 }
+
 App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
