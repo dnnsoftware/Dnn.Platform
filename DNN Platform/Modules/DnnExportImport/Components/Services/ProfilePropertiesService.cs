@@ -65,7 +65,6 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
 

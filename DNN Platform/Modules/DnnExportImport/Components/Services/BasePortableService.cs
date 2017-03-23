@@ -32,8 +32,6 @@ namespace Dnn.ExportImport.Components.Services
     /// </summary>
     public abstract class BasePortableService
     {
-        private int _progressPercentage;
-
         /// <summary>
         /// An object to record the export/import progress information.
         /// This is set by the export/import engine.
@@ -69,20 +67,6 @@ namespace Dnn.ExportImport.Components.Services
         /// </summary>
         /// <returns>True if the implementation to abort progress; false to continue.</returns>
         public Func<BasePortableService, bool> CheckPointStageCallback { get; set; }
-
-        /// <summary>
-        /// Percentage (approximate or exact) of the progress so far with the Export/Import process.
-        /// </summary>
-        public virtual int ProgressPercentage
-        {
-            get { return _progressPercentage; }
-            protected set
-            {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
-                _progressPercentage = value;
-            }
-        }
 
         // The following properties and methods must be overriden in descendant classes
 
