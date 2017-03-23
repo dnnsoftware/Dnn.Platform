@@ -307,6 +307,16 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabPermissions", tabId, tillDate, sinceDate);
         }
 
+        public IDataReader GetAllTabUrls(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabUrls", tabId, tillDate, sinceDate);
+        }
+
+        public IDataReader GetAllTabAliasSkins(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabAliasSkins", tabId, tillDate, sinceDate);
+        }
+
         public IDataReader GetAllTabModules(int tabId, bool includeDeleted)
         {
             return _dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted);

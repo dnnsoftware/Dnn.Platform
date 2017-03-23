@@ -97,6 +97,18 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllTabPermissions(tabId, tillDate, sinceDate));
         }
 
+        public IList<ExportTabUrl> GetTabUrls(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return CBO.Instance.FillCollection<ExportTabUrl>(
+                DataProvider.Instance().GetAllTabUrls(tabId, tillDate, sinceDate));
+        }
+
+        public IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime tillDate, DateTime? sinceDate)
+        {
+            return CBO.Instance.FillCollection<ExportTabAliasSkin>(
+                DataProvider.Instance().GetAllTabAliasSkins(tabId, tillDate, sinceDate));
+        }
+
         public IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted)
         {
             return CBO.Instance.FillCollection<ExportTabModule>(

@@ -5,21 +5,23 @@ using Newtonsoft.Json;
 namespace Dnn.ExportImport.Components.Dto.Pages
 {
     [JsonObject]
-    public class ExportTabPermission : BasicExportImportDto
+    public class ExportTabUrl : BasicExportImportDto
     {
-        public int TabPermissionId { get; set; }
         public int TabId { get; set; }
-        public int PermissionID { get; set; }
-        public string PermissionCode { get; set; }
-        public string PermissionKey { get; set; }
-        public bool AllowAccess { get; set; }
-        public int? RoleId { get; set; }
-        public int? UserID { get; set; }
+        public int SeqNum { get; set; }
+        public string Url { get; set; }
+        public string QueryString { get; set; }
+        public string HttpStatus { get; set; }
+        public string CultureCode { get; set; }
+        public bool IsSystem { get; set; }
+        public int? PortalAliasId { get; set; }
+        public int? PortalAliasUsage { get; set; } // PortalAliasUsageType
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedOnDate { get; set; }
         public int? LastModifiedByUserID { get; set; }
         public DateTime? LastModifiedOnDate { get; set; }
 
+        public string HTTPAlias { get; set; }
         public string CreatedByUserName { get; set; }
         public string LastModifiedByUserName { get; set; }
     }

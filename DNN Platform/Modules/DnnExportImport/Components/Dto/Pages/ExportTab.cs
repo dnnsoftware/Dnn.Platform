@@ -42,5 +42,8 @@ namespace Dnn.ExportImport.Components.Dto.Pages
         public string TabPath { get; set; }
         public bool HasBeenPublished { get; set; }
         public bool IsSystem { get; set; }
+
+        public string CreatedByUserName { get; set; }
+        public string LastModifiedByUserName { get; set; }
     }
 }

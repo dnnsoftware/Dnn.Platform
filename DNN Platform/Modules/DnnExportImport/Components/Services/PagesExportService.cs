@@ -58,8 +58,20 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            if (CheckCancelled(importJob)) return;
             ProgressPercentage = 0;
+            if (CheckPoint.Stage > 0) return;
+            if (CheckCancelled(importJob)) return;
+
+            ProcessImportPages(importJob, exportDto, exportDto.Pages);
+            ProgressPercentage = 100;
+
+            CheckPoint.Stage++;
+            CheckPoint.StageData = null;
+            CheckPointStageCallback(this);
+        }
+
+        private void ProcessImportPages(ExportImportJob importJob, ExportDto exportDto, int[] exportDtoPages)
+        {
             //TODO
         }
 
@@ -68,6 +80,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalExportedTabs = 0;
             var totalExportedSettings = 0;
             var totalExportedPermissions = 0;
+            var totalExportedUrls = 0;
+            var totalExportedAliasSkins = 0;
             var totalExportedModules = 0;
             var totalExportedModuleSettings = 0;
             var portalId = exportJob.PortalId;
@@ -100,7 +114,13 @@ namespace Dnn.ExportImport.Components.Services
                         SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
                     totalExportedPermissions +=
-                        SaveTabPermission(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabPermissions(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedUrls +=
+                        SaveTabUrls(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+
+                    totalExportedAliasSkins +=
+                        SaveTabAliasSkins(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
 
                     totalExportedModules +=
                         SaveTabModules(exportPage, exportDto.IncludeDeletions);
@@ -117,6 +137,8 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Exported Tabs", totalExportedTabs.ToString());
             Result.AddLogEntry("Exported Tab Settings", totalExportedSettings.ToString());
             Result.AddLogEntry("Exported Tab Permissions", totalExportedPermissions.ToString());
+            Result.AddLogEntry("Exported Tab Urls", totalExportedUrls.ToString());
+            Result.AddLogEntry("Exported Tab Alias Skins", totalExportedAliasSkins.ToString());
             Result.AddLogEntry("Exported Tab Modules", totalExportedModules.ToString());
             Result.AddLogEntry("Exported Tab Module Settings", totalExportedModuleSettings.ToString());
         }
@@ -129,12 +151,28 @@ namespace Dnn.ExportImport.Components.Services
             return tabSettings.Count;
         }
 
-        private int SaveTabPermission(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabPermissions(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
         {
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, tillDate, sinceDate);
             if (tabPermissions.Count > 0)
                 Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
             return tabPermissions.Count;
+        }
+
+        private int SaveTabUrls(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        {
+            var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, tillDate, sinceDate);
+            if (tabUrls.Count > 0)
+                Repository.CreateItems(tabUrls, exportPage.ReferenceId);
+            return tabUrls.Count;
+        }
+
+        private int SaveTabAliasSkins(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        {
+            var tabSkins = EntitiesController.Instance.GetTabAliasSkins(exportPage.TabId, tillDate, sinceDate);
+            if (tabSkins.Count > 0)
+                Repository.CreateItems(tabSkins, exportPage.ReferenceId);
+            return tabSkins.Count;
         }
 
         private int SaveTabModules(ExportTab exportPage, bool includeDeleted)

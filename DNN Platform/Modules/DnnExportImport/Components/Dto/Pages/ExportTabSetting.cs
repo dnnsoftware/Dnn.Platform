@@ -14,5 +14,8 @@ namespace Dnn.ExportImport.Components.Dto.Pages
         public DateTime? CreatedOnDate { get; set; }
         public int? LastModifiedByUserID { get; set; }
         public DateTime? LastModifiedOnDate { get; set; }
+
+        public string CreatedByUserName { get; set; }
+        public string LastModifiedByUserName { get; set; }
     }
 }

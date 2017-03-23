@@ -1210,13 +1210,69 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tu.*, pa.HTTPAlias, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabUrls as tu
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}PortalAlias AS pa ON tu.PortalAliasId = pa.PortalAliasID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users       AS u1 ON tu.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users       AS u2 ON tu.LastModifiedByUserID = u2.UserID
+	WHERE
+		tu.TabID = @TabID
+	AND
+		COALESCE(tu.LastModifiedOnDate, tu.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(tu.LastModifiedOnDate, tu.CreatedOnDate) >= @SinceDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
+	@TabID     int,
+	@TillDate  datetime,
+	@SinceDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ta.*, pa.HTTPAlias, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabAliasSkins as ta
+			INNER JOIN {databaseOwner}{objectQualifier}PortalAlias AS pa ON ta.PortalAliasId = pa.PortalAliasID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u1 ON ta.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u2 ON ta.LastModifiedByUserID = u2.UserID
+	WHERE
+		ta.TabID = @TabID
+	AND
+		COALESCE(ta.LastModifiedOnDate, ta.CreatedOnDate, @Now) <= @TillDate
+	AND
+		(@SinceDate IS NULL OR ISNULL(ta.LastModifiedOnDate, ta.CreatedOnDate) >= @SinceDate)
+END
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
 	@TabID          int,
-	@IncludeDeleted bit = 0
+	@IncludeDeleted bit
 AS
 BEGIN
 	SELECT
@@ -1241,7 +1297,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
 	@TabID          int,
-	@IncludeDeleted bit = 0
+	@IncludeDeleted bit
 AS
 BEGIN
 	SELECT

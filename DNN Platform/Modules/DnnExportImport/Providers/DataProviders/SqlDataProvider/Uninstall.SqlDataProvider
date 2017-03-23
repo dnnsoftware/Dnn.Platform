@@ -206,6 +206,14 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermission]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
 GO
