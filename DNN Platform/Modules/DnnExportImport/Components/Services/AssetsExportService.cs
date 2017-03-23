@@ -302,11 +302,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
-                    //TODO: Log that user was ignored.
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        //TODO: Log that users was ignored as duplicate not possible for users.
-                        folder.LocalId = 0;
+                    case CollisionResolution.Ignore:
+                        //TODO: Log that user was ignored.
                         return false;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -417,10 +414,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
-                    //TODO: Log that user was ignored.
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        //TODO: Log that users was ignored as duplicate not possible for users.
+                    case CollisionResolution.Ignore:
+                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
@@ -486,10 +481,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
-                    //TODO: Log that user was ignored.
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        //TODO: Log that users was ignored as duplicate not possible for users.
+                    case CollisionResolution.Ignore:
+                        //TODO: Log that user was ignored.
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());

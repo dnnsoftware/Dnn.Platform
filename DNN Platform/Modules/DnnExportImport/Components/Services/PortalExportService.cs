@@ -148,9 +148,6 @@ namespace Dnn.ExportImport.Components.Services
                             case CollisionResolution.Ignore:
                                 Result.AddLogEntry("Ignored portal settings", exportPortalSetting.SettingName);
                                 continue;
-                            case CollisionResolution.Duplicate:
-                                Result.AddLogEntry("Ignored duplicate portal settings", exportPortalSetting.SettingName);
-                                continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                         }
@@ -212,9 +209,6 @@ namespace Dnn.ExportImport.Components.Services
                             case CollisionResolution.Ignore:
                                 Result.AddLogEntry("Ignored portal language", exportPortalLanguage.CultureCode);
                                 continue;
-                            case CollisionResolution.Duplicate:
-                                Result.AddLogEntry("Ignored duplicate portal language", exportPortalLanguage.CultureCode);
-                                continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                         }
@@ -274,9 +268,6 @@ namespace Dnn.ExportImport.Components.Services
                                 break;
                             case CollisionResolution.Ignore:
                                 Result.AddLogEntry("Ignored portal localization", exportPortalLocalization.CultureCode);
-                                continue;
-                            case CollisionResolution.Duplicate:
-                                Result.AddLogEntry("Ignored duplicate portal localization", exportPortalLocalization.CultureCode);
                                 continue;
                             default:
                                 throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());

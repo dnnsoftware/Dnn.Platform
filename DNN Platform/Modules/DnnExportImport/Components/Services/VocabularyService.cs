@@ -186,15 +186,11 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Updated vocabulary", other.Name);
                             changed = true;
                             break;
-                        case CollisionResolution.Duplicate:
-                            local = null; // so we can add new one below
-                            break;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
-
-                if (local == null)
+                else
                 {
                     var vocabulary = new Vocabulary(other.Name, other.Description, (VocabularyType)other.VocabularyTypeID)
                     {
@@ -252,15 +248,11 @@ namespace Dnn.ExportImport.Components.Services
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
                             Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
-                        case CollisionResolution.Duplicate:
-                            local = null; // so we can write new one below
-                            break;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
-
-                if (local == null)
+                else
                 {
                     var parent = other.ParentTermID.HasValue
                         ? otherTaxonomyTerms.FirstOrDefault(v => v.TermID == other.ParentTermID.Value)

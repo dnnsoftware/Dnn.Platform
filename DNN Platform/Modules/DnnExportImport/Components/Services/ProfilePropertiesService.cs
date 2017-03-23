@@ -65,8 +65,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
             if (CheckPoint.Stage > 0) return;
+            var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
 
             foreach (var profileProperty in profileProperties)
             {
@@ -86,11 +86,8 @@ namespace Dnn.ExportImport.Components.Services
                                 ProcessUpdateProfileProperty(db, profileProperty, existingProfileProperty,
                                     existingProfileProperty.CreatedByUserId, modifiedById);
                                 break;
-                            case CollisionResolution.Ignore: //Just ignore the record
+                            case CollisionResolution.Ignore:
                                 Result.AddLogEntry("Ignored profile property", profileProperty.PropertyName);
-                                break;
-                            case CollisionResolution.Duplicate: //Just ignore the record
-                                Result.AddLogEntry("Ignored duplicate profile property", profileProperty.PropertyName);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());

@@ -66,10 +66,17 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
         }
 
+        #region import methods
+
         private void ProcessImportPages(ExportImportJob importJob, ExportDto exportDto, int[] exportDtoPages)
         {
             //TODO
         }
+
+
+        #endregion
+
+        #region export methods
 
         private void ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, int[] selectedPages)
         {
@@ -187,20 +194,6 @@ namespace Dnn.ExportImport.Components.Services
             return tabModuleSettings.Count;
         }
 
-        private static bool IsTabIncluded(ExportTabInfo tab,
-            IList<ExportTabInfo> allTabs, int[] selectedPages)
-        {
-            do
-            {
-                if (selectedPages.Any(id => id == tab.TabId))
-                    return true;
-
-                tab = allTabs.FirstOrDefault(t => t.TabId == tab.ParentId);
-            } while (tab != null);
-
-            return false;
-        }
-
         private ExportTab SaveExportPage(TabInfo tab)
         {
             var exportPage = new ExportTab
@@ -219,7 +212,7 @@ namespace Dnn.ExportImport.Components.Services
                 Url = tab.Url,
                 ContainerSrc = tab.ContainerSrc,
                 StartDate = tab.StartDate == DateTime.MinValue ? null : (DateTime?)tab.StartDate,
-                EndtDate = tab.EndDate == DateTime.MinValue ? null : (DateTime?)tab.EndDate,
+                EndDate = tab.EndDate == DateTime.MinValue ? null : (DateTime?)tab.EndDate,
                 RefreshInterval = tab.RefreshInterval <= 0 ? null : (int?)tab.RefreshInterval,
                 PageHeadText = tab.PageHeadText,
                 IsSecure = tab.IsSecure,
@@ -245,5 +238,22 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry("Exported page", tab.TabName + "(" + tab.TabPath + ")");
             return exportPage;
         }
+
+        #endregion
+
+        private static bool IsTabIncluded(ExportTabInfo tab,
+            IList<ExportTabInfo> allTabs, int[] selectedPages)
+        {
+            do
+            {
+                if (selectedPages.Any(id => id == tab.TabId))
+                    return true;
+
+                tab = allTabs.FirstOrDefault(t => t.TabId == tab.ParentId);
+            } while (tab != null);
+
+            return false;
+        }
+
     }
 }

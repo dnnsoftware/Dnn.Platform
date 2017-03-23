@@ -160,15 +160,11 @@ namespace Dnn.ExportImport.Components.Services
                             DataCache.ClearCache(string.Format(DataCache.RoleGroupsCacheKey, local.RoleGroupID));
                             Result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
-                        case CollisionResolution.Duplicate:
-                            local = null; // so we can add new one below
-                            break;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
                     }
                 }
-
-                if (local == null)
+                else
                 {
                     var roleGroup = new RoleGroupInfo()
                     {
@@ -235,9 +231,6 @@ namespace Dnn.ExportImport.Components.Services
 
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
                             Result.AddLogEntry("Updated role", other.RoleName);
-                            break;
-                        case CollisionResolution.Duplicate:
-                            localRoleInfo = null; // so we can add new one below
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -318,10 +311,6 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             Result.AddLogEntry("Ignored role setting", other.SettingName);
                         }
-                        break;
-                    case CollisionResolution.Duplicate:
-                        // there is no meaning for duplicates in a dictionary key
-                        Result.AddLogEntry("Ignored duplicate role setting", other.SettingName);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());

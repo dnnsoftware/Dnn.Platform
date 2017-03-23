@@ -282,11 +282,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
+                    case CollisionResolution.Ignore:
                         Result.AddLogEntry("Ignored user", user.Username);
-                        return;
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        Result.AddLogEntry("Ignored duplicate user", user.Username);
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -334,11 +331,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
+                    case CollisionResolution.Ignore:
                         //Result.AddLogEntry("Ignored user portal", $"{username}/{userPortal.PortalId}");
-                        return;
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        //Result.AddLogEntry("Ignored duplicate user portal", $"{username}/{userPortal.PortalId}");
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());

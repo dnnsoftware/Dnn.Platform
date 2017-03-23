@@ -153,11 +153,8 @@ namespace Dnn.ExportImport.Components.Services
                         case CollisionResolution.Overwrite:
                             isUpdate = true;
                             break;
-                        case CollisionResolution.Ignore: //Just ignore the record
+                        case CollisionResolution.Ignore:
                             //Result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
-                            continue;
-                        case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            //Result.AddLogEntry("Ignored duplicate user role", $"{username}/{userRole.RoleName}");
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -214,11 +211,8 @@ namespace Dnn.ExportImport.Components.Services
                         case CollisionResolution.Overwrite:
                             isUpdate = true;
                             break;
-                        case CollisionResolution.Ignore: //Just ignore the record
+                        case CollisionResolution.Ignore:
                             //Result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
-                            continue;
-                        case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                            //Result.AddLogEntry("Ignored duplicate user profile", userProfile.PropertyName);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
@@ -264,11 +258,8 @@ namespace Dnn.ExportImport.Components.Services
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
                         break;
-                    case CollisionResolution.Ignore: //Just ignore the record
+                    case CollisionResolution.Ignore:
                         //Result.AddLogEntry("Ignored user authentication", username);
-                        return;
-                    case CollisionResolution.Duplicate: //Duplicate option will not work for users.
-                        //Result.AddLogEntry("Ignored duplicate user authentication", username);
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());

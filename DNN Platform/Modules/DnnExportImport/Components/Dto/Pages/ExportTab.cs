@@ -19,9 +19,10 @@ namespace Dnn.ExportImport.Components.Dto.Pages
         public string KeyWords { get; set; }
         public bool IsDeleted { get; set; }
         public string Url { get; set; }
+        public string SkinSrc { get; set; }
         public string ContainerSrc { get; set; }
         public DateTime? StartDate { get; set; }
-        public DateTime? EndtDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public int? RefreshInterval { get; set; }
         public string PageHeadText { get; set; }
         public bool IsSecure { get; set; }
