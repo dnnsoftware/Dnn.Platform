@@ -31,7 +31,7 @@ using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class ProfilePropertiesService : Portable2Base
+    public class ProfilePropertiesService : BasePortableService
     {
         public override string Category => Constants.Category_ProfileProps;
 
@@ -65,6 +65,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
+            ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
 

@@ -28,9 +28,9 @@ using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Repository;
+using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Common;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
@@ -76,6 +76,7 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
+
             //Clear all files before export starts.
             Clear(exportJob);
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
@@ -102,7 +103,7 @@ namespace Dnn.ExportImport.Components.Engines
             var implementors = GetPortableImplementors().ToList();
             var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
             implementors = implementors.Except(parentServices).ToList();
-            var nextLevelServices = new List<IPortable2>();
+            var nextLevelServices = new List<BasePortableService>();
             var includedItems = GetAllCategoriesToInclude(exportDto, implementors);
 
             if (includedItems.Count == 0)
@@ -171,12 +172,12 @@ namespace Dnn.ExportImport.Components.Engines
                     }
 
                     firstIteration = false;
-                    parentServices = new List<IPortable2>(nextLevelServices);
+                    parentServices = new List<BasePortableService>(nextLevelServices);
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
                         //WARN: this is a case where there is a broken parent-children hierarchy
-                        //      and/or there are IPortable2 implementations without a known parent.
+                        //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
                         scheduleHistoryItem.AddLogNote(
@@ -275,7 +276,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                 // there must be one parent implementor at least for this to work
                 implementors = implementors.Except(parentServices).ToList();
-                var nextLevelServices = new List<IPortable2>();
+                var nextLevelServices = new List<BasePortableService>();
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
 
                 scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Preparing Check Points. JOB #{importJob.JobId}: {importJob.Name}</b>");
@@ -325,12 +326,12 @@ namespace Dnn.ExportImport.Components.Engines
                     }
 
                     firstIteration = false;
-                    parentServices = new List<IPortable2>(nextLevelServices);
+                    parentServices = new List<BasePortableService>(nextLevelServices);
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
                         //WARN: this is a case where there is a broken parent-children hierarchy
-                        //      and/or there are IPortable2 implementations without a known parent.
+                        //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
                         scheduleHistoryItem.AddLogNote(
@@ -354,11 +355,11 @@ namespace Dnn.ExportImport.Components.Engines
             return result;
         }
 
-        private void PrepareCheckPoints(int jobId, List<IPortable2> parentServices, List<IPortable2> implementors,
+        private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,
             HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
         {
             // there must be one parent implementor at least for this to work
-            var nextLevelServices = new List<IPortable2>();
+            var nextLevelServices = new List<BasePortableService>();
             var firstIteration = true;
             if (checkpoints.Any()) return;
             do
@@ -394,7 +395,7 @@ namespace Dnn.ExportImport.Components.Engines
                 }
 
                 firstIteration = false;
-                parentServices = new List<IPortable2>(nextLevelServices);
+                parentServices = new List<BasePortableService>(nextLevelServices);
                 nextLevelServices.Clear();
             } while (parentServices.Count > 0);
         }
@@ -428,11 +429,11 @@ namespace Dnn.ExportImport.Components.Engines
         }
 
         /// <summary>
-        /// Callback function to provide a checkpoint mechanism for an <see cref="IPortable2"/> implementation.
+        /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
         /// </summary>
-        /// <param name="service">The <see cref="IPortable2"/> implementation</param>
-        /// <returns>Treu to stop further <see cref="IPortable2"/> processing; false otherwise</returns>
-        private bool CheckpointCallback(IPortable2 service)
+        /// <param name="service">The <see cref="BasePortableService"/> implementation</param>
+        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise</returns>
+        private bool CheckpointCallback(BasePortableService service)
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
             return TimeIsUp;
@@ -450,23 +451,23 @@ namespace Dnn.ExportImport.Components.Engines
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
-        private static IEnumerable<IPortable2> GetPortableImplementors()
+        private static IEnumerable<BasePortableService> GetPortableImplementors()
         {
             var typeLocator = new TypeLocator();
             var types = typeLocator.GetAllMatchingTypes(
                 t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                     typeof(IPortable2).IsAssignableFrom(t));
+                     typeof(BasePortableService).IsAssignableFrom(t));
 
             foreach (var type in types)
             {
-                IPortable2 portable2Type;
+                BasePortableService portable2Type;
                 try
                 {
-                    portable2Type = Activator.CreateInstance(type) as IPortable2;
+                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while calling IPortable2 implementors. {1}",
+                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
                         type.FullName, e.Message);
                     portable2Type = null;
                 }
@@ -478,7 +479,7 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
-        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto, List<IPortable2> implementors)
+        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto, List<BasePortableService> implementors)
         {
             // add all child items
             var includedItems = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);

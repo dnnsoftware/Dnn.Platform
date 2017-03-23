@@ -19,7 +19,7 @@ using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class AssetsExportService : Portable2Base
+    public class AssetsExportService : BasePortableService
     {
         private const string DefaultUsersFoldersPath = "Users";
 

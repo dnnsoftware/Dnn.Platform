@@ -36,7 +36,7 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Service to export/import portal data.
     /// </summary>
-    public class PortalExportService : Portable2Base
+    public class PortalExportService : BasePortableService
     {
         public override string Category => Constants.Category_Portal;
 

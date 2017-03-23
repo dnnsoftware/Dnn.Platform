@@ -33,7 +33,7 @@ using Util = DotNetNuke.Entities.Content.Common.Util;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class VocabularyService : Portable2Base
+    public class VocabularyService : BasePortableService
     {
         public override string Category => Constants.Category_Vocabularies;
 

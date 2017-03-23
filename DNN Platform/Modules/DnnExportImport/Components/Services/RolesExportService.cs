@@ -32,7 +32,7 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.ExportImport.Components.Services
 {
-    public class RolesExportService : Portable2Base
+    public class RolesExportService : BasePortableService
     {
         public override string Category => Constants.Category_Roles;
 

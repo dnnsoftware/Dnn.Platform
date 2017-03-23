@@ -34,7 +34,7 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Service to export/import pages/tabs.
     /// </summary>
-    public class PagesExportService : Portable2Base
+    public class PagesExportService : BasePortableService
     {
         public override string Category => Constants.Category_Pages;
 

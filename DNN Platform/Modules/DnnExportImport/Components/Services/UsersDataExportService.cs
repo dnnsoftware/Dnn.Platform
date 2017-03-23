@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Supplementary service to import users additional data.
     /// </summary>
-    public class UsersDataExportService : Portable2Base
+    public class UsersDataExportService : BasePortableService
     {
         public override string Category => Constants.Category_UsersData;
 

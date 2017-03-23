@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>
     /// Service to export/import users.
     /// </summary>
-    public class UsersExportService : Portable2Base
+    public class UsersExportService : BasePortableService
     {
         public override string Category => Constants.Category_Users;
 

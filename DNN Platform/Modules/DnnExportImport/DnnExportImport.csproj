@@ -112,7 +112,6 @@
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
-    <Compile Include="Components\Interfaces\IPortable2.cs" />
     <Compile Include="Components\Common\Enums.cs" />
     <Compile Include="Components\Models\ExportImportResult.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetMembership.cs" />
@@ -127,9 +126,9 @@
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
     <Compile Include="Components\Entities\ExportImportJob.cs" />
     <Compile Include="Components\Services\AssetsExportService.cs" />
+    <Compile Include="Components\Services\BasePortableService.cs" />
     <Compile Include="Components\Services\PagesExportService.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
-    <Compile Include="Components\Services\Portable2Base.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />
     <Compile Include="Components\Services\RolesExportService.cs" />
     <Compile Include="Components\Services\UsersDataExportService.cs" />
