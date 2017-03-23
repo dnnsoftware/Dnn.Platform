@@ -31,6 +31,39 @@ class JobDetails extends Component {
         const { props } = this;
     }
 
+    renderedSummary() {
+        const { props } = this;
+        if (props.jobDetail) {
+            return (
+                <div>
+                    <div className="item-row divider">
+                        <Label label={Localization.get("TemplateFile")} style={{ margin: "0 0 5px 0" }} />
+                        <div className="item-value">{props.jobDetail.Name}</div>
+                    </div>
+                    <div className="item-row divider">
+                        <Label label={Localization.get("Description")} style={{ margin: "0 0 5px 0" }} />
+                        <div className="item-value">{props.jobDetail.Description}</div>
+                    </div>
+                    <div className="item-row divider">
+                        <Label label={Localization.get("CreatedOn")} style={{ margin: "0 0 5px 0" }} />
+                        <div className="item-value">{props.jobDetail.CreatedOn}</div>
+                    </div>
+                    <div className="item-row divider">
+                        <Label label={Localization.get("CompletedOn")} style={{ margin: "0 0 5px 0" }} />
+                        <div className="item-value">{props.jobDetail.CompletedOn}</div>
+                    </div>
+                    { props.jobDetail.ExportFile &&
+                        <div className="item-row divider">
+                            <Label label={Localization.get("ExportFile")} style={{ margin: "0 0 5px 0" }} />
+                            <div className="item-value">{props.jobDetail.ExportFile}</div>
+                        </div>
+                    }
+                </div>
+            );
+        }
+        else return <div />;
+    }
+
     renderedLogItemList() {
         const { props } = this;
         if (props.jobDetail.Summary.length > 0) {
@@ -48,10 +81,11 @@ class JobDetails extends Component {
 
     /* eslint-disable react/no-danger */
     render() {
-        const { props } = this;        
+        const { props } = this;
         if (props.jobDetail !== undefined) {
             const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(props.jobDetail));
             const columnOne = <div className="container left-column">
+                {this.renderedSummary()}
                 {this.renderedLogItemList()}
             </div>;
             const columnTwo = <div className="container right-column">

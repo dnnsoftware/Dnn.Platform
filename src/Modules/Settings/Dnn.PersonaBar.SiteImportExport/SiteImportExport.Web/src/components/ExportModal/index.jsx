@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import {
-    importExport as ImportExportActions
+    importExport as ImportExportActions,
+    visiblePanel as VisiblePanelActions
 } from "../../actions";
 import Localization from "localization";
 import InputGroup from "dnn-input-group";
@@ -79,6 +80,12 @@ class ExportModal extends Component {
         if (this.Validate()) {
             props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
                 utilities.utilities.notify(Localization.get("ExportRequestSubmitted") + data.jobId);
+                props.dispatch(ImportExportActions.getAllJobs({
+                    portalId: props.portalId,
+                    pageIndex: 0,
+                    pageSize: 10
+                }));
+                props.dispatch(VisiblePanelActions.selectPanel(0));
             }, () => {
                 utilities.utilities.notifyError(Localization.get("ExportRequestSubmit.ErrorMessage"));
             }));

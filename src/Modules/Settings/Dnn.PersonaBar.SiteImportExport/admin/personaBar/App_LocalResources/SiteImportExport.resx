@@ -276,4 +276,13 @@
   <data name="JobStatus4.Text" xml:space="preserve">
     <value>Cancelled</value>
   </data>
+  <data name="CreatedOn.Text" xml:space="preserve">
+    <value>Created On</value>
+  </data>
+  <data name="CompletedOn.Text" xml:space="preserve">
+    <value>Completed On</value>
+  </data>
+  <data name="ExportFile.Text" xml:space="preserve">
+    <value>Export File</value>
+  </data>
 </root>
