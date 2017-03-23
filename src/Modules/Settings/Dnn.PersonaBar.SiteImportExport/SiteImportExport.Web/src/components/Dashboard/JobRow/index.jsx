@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import Collapse from "dnn-collapsible";
 import { ArrowDownIcon } from "dnn-svg-icons";
+import Localization from "localization";
 import "./style.less";
 
 /*eslint-disable eqeqeq*/
@@ -39,7 +40,7 @@ class JobRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+        let opened = (props.openId !== "" && this.props.id === props.openId);
         return (
             <div className={"collapsible-jobdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-jobdetail-header " + state.collapsed}>
@@ -51,27 +52,27 @@ class JobRow extends Component {
                         </div>
                         <div className="term-label-createdate" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span>{this.props.jobDate}</span>
+                                <span>{props.jobDate}</span>
                             </div>
                         </div>
                         <div className="term-label-jobtype" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span>{this.props.jobType}</span>
+                                <span>{props.jobType}</span>
                             </div>
                         </div>
                         <div className="term-label-username" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span>{this.props.jobUser}&nbsp; </span>
+                                <span>{props.jobUser}&nbsp; </span>
                             </div>
                         </div>
                         <div className="term-label-portalname" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span>{this.props.jobPortal}&nbsp; </span>
+                                <span>{props.jobPortal}&nbsp; </span>
                             </div>
                         </div>
                         <div className="term-label-jobstatus" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span>{this.props.jobStatus}&nbsp; </span>
+                                <span className={"job-status" + props.jobStatus}>{Localization.get("JobStatus" + props.jobStatus)}&nbsp; </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
