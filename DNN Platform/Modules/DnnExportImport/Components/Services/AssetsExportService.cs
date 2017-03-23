@@ -27,7 +27,8 @@ namespace Dnn.ExportImport.Components.Services
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private readonly string _assetsFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}_Assets{Constants.ExportZipExt}";
+        private readonly string exportArchivePath =
+            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}{Constants.ExportZipExt}";
 
         private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
@@ -43,7 +44,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 1)
                 return;
 
             //Create Zip File to hold files
@@ -54,8 +55,7 @@ namespace Dnn.ExportImport.Components.Services
             var totalFilesExported = 0;
             try
             {
-                var assetsFile = string.Format(_assetsFile, exportJob.ExportFile);
-                var assetsFolder = string.Format(_assetsFolder, exportJob.ExportFile);
+                var assetsFile = string.Format(exportArchivePath, exportJob.ExportFile);
 
                 if (CheckPoint.Stage == 0)
                 {
@@ -73,11 +73,6 @@ namespace Dnn.ExportImport.Components.Services
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                             .GetFolders(portalId, tillDate, sinceDate)).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
-
-                    if (!Directory.Exists(assetsFolder))
-                        Directory.CreateDirectory(assetsFolder);
-                    if (!Directory.Exists(string.Format(UsersAssetsTempFolder, assetsFolder)))
-                        Directory.CreateDirectory(string.Format(UsersAssetsTempFolder, assetsFolder));
 
                     ProgressPercentage = 5;
 
@@ -116,18 +111,14 @@ namespace Dnn.ExportImport.Components.Services
                         totalFolderPermissionsExported += permissions.Count;
                         Repository.CreateItems(files, folder.Id);
                         totalFilesExported += files.Count;
-                        foreach (var file in files)
-                        {
-                            var filePath = portal.HomeDirectoryMapPath + folder.FolderPath +
-                                           GetActualFileName(file);
-                            if (File.Exists(filePath))
-                            {
-                                CopyFile(GetActualFileName(file), filePath,
-                                    isUserFolder
-                                        ? Path.Combine(string.Format(UsersAssetsTempFolder, assetsFolder), folder.FolderPath)
-                                        : Path.Combine(assetsFolder, folder.FolderPath));
-                            }
-                        }
+                        var folderOffset = portal.HomeDirectoryMapPath.Length +
+                                           (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+
+                        CompressionUtil.AddFilesToArchive(
+                            files.Select(
+                                file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
+                            assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
+
                         ProgressPercentage += progressStep;
                         currentIndex++;
                         if (CheckPointStageCallback(this)) return;
@@ -141,17 +132,6 @@ namespace Dnn.ExportImport.Components.Services
                     //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
                     //        .GetFolderMappings(portalId,tillDate, sinceDate)).ToList();
                     //Repository.CreateItems(folderMappings, null);
-                }
-                if (CheckPoint.Stage == 1)
-                {
-                    if (File.Exists(assetsFile))
-                        File.Delete(assetsFile);
-                    CompressionUtil.ZipFolder(assetsFolder, assetsFile, exportJob.ExportFile);
-                    if (Directory.Exists(assetsFolder))
-                        Directory.Delete(assetsFolder, true);
-                    CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
-                    CheckPointStageCallback(this);
                 }
             }
             finally
@@ -181,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var assetsFile = string.Format(_assetsFile, importJob.ExportFile);
+            var assetsFile = string.Format(exportArchivePath, importJob.ExportFile);
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             ProgressPercentage = 0;
             if (CheckPoint.Stage == 0)
@@ -569,25 +549,6 @@ namespace Dnn.ExportImport.Components.Services
                 if (File.Exists(dirInfo + "\\" + mFile.Name))
                     File.Delete(dirInfo + "\\" + mFile.Name);
                 mFile.MoveTo(dirInfo + "\\" + mFile.Name);
-            }
-        }
-
-        private void CopyFile(string fileName, string filePath, string targetFolder)
-        {
-            try
-            {
-                var targetPath = Path.Combine(targetFolder, fileName);
-                if (File.Exists(targetPath))
-                    File.Delete(targetPath);
-                if (!Directory.Exists(targetFolder))
-                    Directory.CreateDirectory(targetFolder);
-
-                File.Copy(filePath, targetPath);
-            }
-            catch (Exception exc)
-            {
-                //TODO: Log exception or throw exception?
-                //Logger.Error(exc);
             }
         }
 

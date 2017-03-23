@@ -1,109 +1,114 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using DotNetNuke.Common.Utilities;
-using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Checksums;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
 
 namespace Dnn.ExportImport.Components.Common
 {
     public static class CompressionUtil
     {
-        public static void ZipFolder(string folderPath, string archivePath, string folderName)
+        public static void ZipFolder(string folderPath, string archivePath)
         {
-            using (var zipStream = new ZipOutputStream(File.Create(archivePath)))
+            if (File.Exists(archivePath))
+                File.Delete(archivePath);
+            ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Optimal, false);
+        }
+
+        public static void UnZipArchive(string archivePath, string extractFolder, bool overwrite = true)
+        {
+            UnZipArchiveExcept(archivePath, extractFolder, overwrite);
+        }
+
+        public static void UnZipArchiveExcept(string archivePath, string extractFolder, bool overwrite = true, IEnumerable<string> exceptionList = null)
+        {
+            using (var archive = OpenCreate(archivePath))
             {
-                // This setting will strip the leading part of the folder path in the entries, to
-                // make the entries relative to the starting folder.
-                // To include the full path for each entry up to the drive root, assign folderOffset = 0.
-                var folderOffset = folderPath.IndexOf(folderName, StringComparison.Ordinal) + folderName.Length +
-                                   (folderName.EndsWith("\\") ? 0 : 1);
-                zipStream.SetLevel(6);
-                CompressFolder(folderPath, zipStream, folderOffset);
-                zipStream.Close();
+                foreach (
+                    var entry in
+                        archive.Entries.Where(
+                            entry =>
+                                ((exceptionList != null && !exceptionList.Contains(entry.FullName)) || exceptionList == null) &&
+                                !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0))
+                {
+                    var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
+                    if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    entry.ExtractToFile(Path.Combine(extractFolder, entry.FullName), overwrite);
+                }
             }
         }
 
-        public static void ZipFiles(IEnumerable<string> files, string archivePath, int folderOffset)
+        public static void UnZipFileFromArchive(string fileName, string archivePath, string extractFolder,
+            bool overwrite = true, bool deleteFromSoure = true)
         {
-            using (var zipStream = new ZipOutputStream(File.Create(archivePath)))
+            using (var archive = OpenCreate(archivePath))
             {
-                zipStream.SetLevel(6);
+                var fileUnzipFullName = Path.Combine(extractFolder, fileName);
+                if (File.Exists(fileUnzipFullName) && !overwrite)
+                    return;
+
+                var fileEntry = archive.GetEntry(fileName);
+                fileEntry?.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
+                if (deleteFromSoure)
+                    fileEntry?.Delete();
+            }
+        }
+
+        public static void AddFilesToArchive(IEnumerable<string> files, string archivePath, int folderOffset, string folder = null)
+        {
+            using (var archive = OpenCreate(archivePath))
+            {
                 foreach (var file in files)
                 {
-                    AddToZip(zipStream, file, folderOffset);
+                    AddFileToArchive(archive, file, folderOffset, folder);
                 }
-                zipStream.Close();
             }
         }
 
-        public static void UnZipArchive(string archivePath, string extractFolder)
+        public static void AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
         {
-            FileSystemUtils.UnzipResources(
-                new ZipInputStream(new FileStream(archivePath, FileMode.Open, FileAccess.Read)), extractFolder);
+            using (var archive = OpenCreate(archivePath))
+            {
+                AddFileToArchive(archive, file, folderOffset, folder);
+            }
         }
 
         #region Private Methods
 
-        // Recurses down the folder structure
-        //
-        private static void CompressFolder(string path, ZipOutputStream zipStream, int folderOffset)
+        private static void AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
         {
-
-            var files = Directory.GetFiles(path);
-
-            foreach (var filename in files)
+            var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
+            ZipArchiveEntry existingEntry = null;
+            if ((existingEntry = archive.GetEntry(entryName)) != null)
             {
-                AddToZip(zipStream, filename, folderOffset);
+                existingEntry.Delete();
             }
-            var folders = Directory.GetDirectories(path);
-            foreach (var folder in folders)
+            if (string.IsNullOrEmpty(folder))
             {
-                CompressFolder(folder, zipStream, folderOffset);
+                archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
+            }
+            else
+            {
+                using (var fs = File.OpenRead(file))
+                {
+                    // this is custom code that copies a file location's data to a Stream (msFileBody); this is the Stream needing compression that prompted my initial question 
+                    var zipArchiveEntry = archive.CreateEntry(Path.Combine(folder, entryName), CompressionLevel.Optimal);
+                    using (var zipEntryStream = zipArchiveEntry.Open())
+                    {
+                        //Copy the attachment stream to the zip entry stream
+                        fs.CopyTo(zipEntryStream);
+                    }
+                }
             }
         }
 
-        private static void AddToZip(ZipOutputStream zipStream, string fileName, int folderOffset)
+        private static ZipArchive OpenCreate(string archiveFileName)
         {
-            FileStream fs = null;
-            try
-            {
-                var entryName = fileName.Substring(folderOffset); // Makes the name in zip based on the folder
-                entryName = ZipEntry.CleanName(entryName); // Removes drive from name and fixes slash direction
-
-                //Open File Stream
-                var crc = new Crc32();
-                fs = File.OpenRead(fileName.Replace("/", "\\"));
-
-                //Read file into byte array buffer
-                var buffer = new byte[fs.Length];
-
-                fs.Read(buffer, 0, buffer.Length);
-
-                //Create Zip Entry
-                var entry = new ZipEntry(entryName)
-                {
-                    DateTime = DateTime.Now,
-                    Size = fs.Length
-                };
-                fs.Close();
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
-
-                //Compress file and add to Zip file
-                zipStream.PutNextEntry(entry);
-                zipStream.Write(buffer, 0, buffer.Length);
-                zipStream.CloseEntry();
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                    fs.Dispose();
-                }
-            }
+            return File.Exists(archiveFileName)
+                ? ZipFile.Open(archiveFileName, ZipArchiveMode.Update, Encoding.UTF8)
+                : new ZipArchive(new FileStream(archiveFileName, FileMode.Create), ZipArchiveMode.Update);
         }
 
         #endregion

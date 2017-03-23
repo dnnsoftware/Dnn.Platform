@@ -78,7 +78,6 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
-
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             var exportFileName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportZipExt);
             var finfo = new FileInfo(exportFileName);
@@ -338,7 +337,9 @@ namespace Dnn.ExportImport.Components.Engines
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
+                {
                     importJob.JobStatus = JobStatus.Successful;
+                }
             }
 
             return result;
@@ -476,9 +477,9 @@ namespace Dnn.ExportImport.Components.Engines
 
             var files =
                 Directory.GetFiles(exportFolder)
-                    .Where(file => file.Substring(folderOffset).StartsWith(exportJob.ExportFile))
+                    .Where(file => file.Substring(folderOffset).StartsWith($"{exportJob.ExportFile}{Constants.ExportDbExt}"))
                     .ToList();
-            CompressionUtil.ZipFiles(files, exportFileArchive, folderOffset);
+            CompressionUtil.AddFilesToArchive(files, exportFileArchive, folderOffset);
             //Delete the unncessary files
             files.ForEach(File.Delete);
         }
@@ -488,9 +489,8 @@ namespace Dnn.ExportImport.Components.Engines
             //TODO: Error handling
             var extractFolder = Path.Combine(DbFolder);
             var importFileArchive = $"{Path.Combine(extractFolder, importJob.ExportFile)}{Constants.ExportZipExt}";
-            CompressionUtil.UnZipArchive(importFileArchive, extractFolder);
-            //Delete main import files after extraction.
-            File.Delete(importFileArchive);
+            var extractFile = $"{importJob.ExportFile}{Constants.ExportDbExt}";
+            CompressionUtil.UnZipFileFromArchive(extractFile, importFileArchive, extractFolder, false);
         }
     }
 }
