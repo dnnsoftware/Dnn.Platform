@@ -96,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = 100.0 / totalPages;
+            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
                 do
@@ -143,12 +143,13 @@ namespace Dnn.ExportImport.Components.Services
                         Repository.CreateItem(userAuthentication, user.Id);
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
+                        if (currentIndex % progressStep == 0)
+                            CheckPoint.Progress += 1;
                         if (CheckPointStageCallback(this)) return;
                     }
                     totalUsersExported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
-                    CheckPoint.Progress += progressStep;
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
 
@@ -158,6 +159,8 @@ namespace Dnn.ExportImport.Components.Services
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 } while (totalUsersExported < totalUsersToBeProcessed);
+                CheckPoint.Progress = 100;
+                CheckPointStageCallback(this);
             }
             finally
             {
@@ -197,7 +200,7 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = 100.0 / totalPages;
+            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed/100 : 1;
             try
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
@@ -238,6 +241,9 @@ namespace Dnn.ExportImport.Components.Services
                             Repository.UpdateItem(userPortal);
                         }
                         currentIndex++;
+                        if (currentIndex % progressStep == 0)
+                            CheckPoint.Progress += 1;
+
                         if (CheckPointStageCallback(this)) return;
                     }
                     totalUsersImported += currentIndex;
@@ -245,9 +251,10 @@ namespace Dnn.ExportImport.Components.Services
                     pageIndex++;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    CheckPoint.Progress += progressStep;
                     if (CheckPointStageCallback(this)) return;
                 }
+                CheckPoint.Progress = 100;
+                CheckPointStageCallback(this);
             }
             finally
             {

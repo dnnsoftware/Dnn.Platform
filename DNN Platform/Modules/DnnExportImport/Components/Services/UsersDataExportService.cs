@@ -49,6 +49,7 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             CheckPoint.Progress += 100;
+            CheckPointStageCallback(this);
             //No implementation required in export users child as everything is exported in parent service.
         }
 
@@ -73,7 +74,7 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = 100.0 / totalPages;
+            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
                 while (totalProcessed < totalUsersToBeProcessed)
@@ -107,6 +108,8 @@ namespace Dnn.ExportImport.Components.Services
                                 .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
                         currentIndex++;
+                        if (currentIndex % progressStep == 0)
+                            CheckPoint.Progress += 1;
                         if (CheckPointStageCallback(this)) return;
                     }
                     totalProcessed += currentIndex;
@@ -115,9 +118,10 @@ namespace Dnn.ExportImport.Components.Services
 
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
-                    CheckPoint.Progress += progressStep;
                     if (CheckPointStageCallback(this)) return;
                 }
+                CheckPoint.Progress = 100;
+                CheckPointStageCallback(this);
             }
             finally
             {
