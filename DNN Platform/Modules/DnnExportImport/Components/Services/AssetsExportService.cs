@@ -32,24 +32,12 @@ namespace Dnn.ExportImport.Components.Services
         private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
         private const string UsersAssetsTempFolder = "{0}\\TempUsers\\";
-        private int _progressPercentage;
 
         public override string Category => Constants.Category_Assets;
 
         public override string ParentCategory => null;
 
         public override uint Priority => 5;
-
-        public int ProgressPercentage
-        {
-            get { return _progressPercentage; }
-            private set
-            {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
-                _progressPercentage = value;
-            }
-        }
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {

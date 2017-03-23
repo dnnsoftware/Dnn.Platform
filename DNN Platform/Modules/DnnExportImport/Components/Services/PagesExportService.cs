@@ -36,24 +36,11 @@ namespace Dnn.ExportImport.Components.Services
     /// </summary>
     public class PagesExportService : Portable2Base
     {
-        private int _progressPercentage;
-
         public override string Category => Constants.Category_Pages;
 
         public override string ParentCategory => null;
 
         public override uint Priority => 20;
-
-        public int ProgressPercentage
-        {
-            get { return _progressPercentage; }
-            private set
-            {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
-                _progressPercentage = value;
-            }
-        }
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {

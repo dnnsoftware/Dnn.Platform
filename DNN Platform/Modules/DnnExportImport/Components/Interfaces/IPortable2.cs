@@ -86,6 +86,11 @@ namespace Dnn.ExportImport.Components.Interfaces
         Func<IPortable2, bool> CheckPointStageCallback { get; set; }
 
         /// <summary>
+        /// The progress of export/import task.
+        /// </summary>
+        int ProgressPercentage { get; }
+
+        /// <summary>
         ///  Performs export operation of the object.
         /// </summary>
         void ExportData(ExportImportJob exportJob, ExportDto exportDto);

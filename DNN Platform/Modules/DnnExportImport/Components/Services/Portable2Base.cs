@@ -29,11 +29,24 @@ namespace Dnn.ExportImport.Components.Services
 {
     public abstract class Portable2Base : IPortable2
     {
+        private int _progressPercentage;
+
         public ExportImportResult Result { get; set; }
         public IExportImportRepository Repository { get; set; }
         public ExportImportChekpoint CheckPoint { get; set; }
         public Func<ExportImportJob, bool> CheckCancelled { get; set; }
         public Func<IPortable2, bool> CheckPointStageCallback { get; set; }
+
+        public virtual int ProgressPercentage
+        {
+            get { return _progressPercentage; }
+            protected set
+            {
+                if (value < 0) value = 0;
+                else if (value > 100) value = 100;
+                _progressPercentage = value;
+            }
+        }
 
         // The following properties and methods must be overriden in descendant classes
 
