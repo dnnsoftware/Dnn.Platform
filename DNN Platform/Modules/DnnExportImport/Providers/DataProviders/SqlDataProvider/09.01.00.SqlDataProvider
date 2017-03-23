@@ -108,7 +108,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U')
 		[Category]           nvarchar(50) NOT NULL,
 		[Stage]              int NOT NULL,
 		[StageData]          nvarchar(max),
-
+		[Progress]			 int NOT NULL
 		CONSTRAINT [PK_{objectQualifier}ExportImportCheckpoints] PRIMARY KEY ([CheckpointId])
 	)
 GO
@@ -486,17 +486,18 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert
 	@JobId      int,
 	@Category   nvarchar(50),
 	@Stage      int,
-	@StageData  nvarchar(max)
+	@StageData  nvarchar(max),
+	@Progress	int
 AS
 BEGIN
 	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
-	 USING (SELECT @JobId, @Category) AS source (JobId, Category)
+	 USING (SELECT @JobId, @Category, @Progress) AS source (JobId, Category, Progress)
 		ON (target.JobId = source.JobId AND target.Category = source.Category)
 	 WHEN MATCHED THEN
-		UPDATE SET [Stage] = @Stage, [StageData] = @StageData
+		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress
 	 WHEN NOT MATCHED THEN 
-		INSERT ([JobId], [Category], [Stage], [StageData])
-		VALUES (@JobId,  @Category,  @Stage,  @StageData );
+		INSERT ([JobId], [Category], [Stage], [StageData], [Progress])
+		VALUES (@JobId,  @Category,  @Stage,  @StageData, @Progress );
 END
 GO
 

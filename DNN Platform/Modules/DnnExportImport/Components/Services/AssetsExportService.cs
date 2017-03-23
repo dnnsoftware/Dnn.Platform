@@ -15,7 +15,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
-using System.IO.Compression;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -44,7 +43,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (CheckPoint.Stage >= 2)
                 return;
 
             //Create Zip File to hold files
@@ -53,31 +52,32 @@ namespace Dnn.ExportImport.Components.Services
             var totalFolderExported = 0;
             var totalFolderPermissionsExported = 0;
             var totalFilesExported = 0;
+            var portalId = exportJob.PortalId;
             try
             {
                 var assetsFile = string.Format(exportArchivePath, exportJob.ExportFile);
-
                 if (CheckPoint.Stage == 0)
                 {
-                    var portalId = exportJob.PortalId;
-                    var sinceDate = exportDto.SinceTime?.DateTime;
-                    var tillDate = exportJob.CreatedOnDate;
-                    ProgressPercentage = 0;
-                    var portal = PortalController.Instance.GetPortal(portalId);
-
                     //Sync db and filesystem before exporting so all required files are found
                     var folderManager = FolderManager.Instance;
                     folderManager.Synchronize(portalId);
+                    CheckPoint.Stage++;
+                    CheckPoint.Progress = 5;
+                    CheckPointStageCallback(this);
+                }
+                if (CheckPoint.Stage == 1)
+                {
+                    var sinceDate = exportDto.SinceTime?.DateTime;
+                    var tillDate = exportJob.CreatedOnDate;
+                    var portal = PortalController.Instance.GetPortal(portalId);
 
                     var folders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                             .GetFolders(portalId, tillDate, sinceDate)).ToList();
+                    folders = folders.Skip(skip).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
 
-                    ProgressPercentage = 5;
-
-                    var progressStep = (totalFolders - skip) / 95;
-                    folders = folders.Skip(skip).ToList();
+                    var progressStep = 95.0 / totalFolders;
 
                     foreach (var folder in folders)
                     {
@@ -119,7 +119,7 @@ namespace Dnn.ExportImport.Components.Services
                                 file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
                             assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
 
-                        ProgressPercentage += progressStep;
+                        CheckPoint.Progress += progressStep;
                         currentIndex++;
                         if (CheckPointStageCallback(this)) return;
                     }
@@ -163,29 +163,28 @@ namespace Dnn.ExportImport.Components.Services
             var portal = PortalController.Instance.GetPortal(portalId);
             var assetsFile = string.Format(exportArchivePath, importJob.ExportFile);
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
-            ProgressPercentage = 0;
             if (CheckPoint.Stage == 0)
             {
                 CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
+                CheckPoint.Progress = 10;
                 if (CheckPointStageCallback(this)) return;
-                ProgressPercentage = 5;
             }
+
             if (CheckPoint.Stage == 1)
             {
                 try
                 {
-                    ProgressPercentage += 5;
-
                     //Stage 2 starts
                     var localFolders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateTime.UtcNow.AddYears(1), null)).ToList();
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
-                    var progressStep = totalFolders / (95 - ProgressPercentage);
+                    var progressStep = 95.0 / totalFolders;
+
                     foreach (var sourceFolder in sourceFolders)
                     {
                         using (var db = DataContext.Instance())
@@ -245,12 +244,13 @@ namespace Dnn.ExportImport.Components.Services
                             }
                         }
                         currentIndex++;
-                        ProgressPercentage += progressStep;
+                        CheckPoint.Progress += progressStep;
                         if (CheckPointStageCallback(this)) return;
                     }
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
+                    CheckPoint.Progress = 95;
                     if (CheckPointStageCallback(this)) return;
                 }
                 finally
@@ -267,14 +267,15 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
                 Result.AddSummary("Imported Files", totalFilesImported.ToString());
             }
+
             if (CheckPoint.Stage == 2)
             {
                 var folderManager = FolderManager.Instance;
                 folderManager.Synchronize(portalId);
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
+                CheckPoint.Progress = 100;
                 CheckPointStageCallback(this);
-                ProgressPercentage = 100;
             }
         }
 

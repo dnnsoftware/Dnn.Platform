@@ -114,6 +114,8 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
+            scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Preparing Check Points. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
+            PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.SinceTime}] and [{exportJob.CreatedOnDate:g}]");
@@ -275,6 +277,10 @@ namespace Dnn.ExportImport.Components.Engines
                 implementors = implementors.Except(parentServices).ToList();
                 var nextLevelServices = new List<IPortable2>();
                 var includedItems = GetAllCategoriesToInclude(exportedDto, implementors);
+
+                scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Preparing Check Points. JOB #{importJob.JobId}: {importJob.Name}</b>");
+                PrepareCheckPoints(importJob.JobId, parentServices, implementors, includedItems, checkpoints);
+
                 var firstIteration = true;
                 AddJobToCache(importJob);
 
@@ -308,7 +314,8 @@ namespace Dnn.ExportImport.Components.Engines
                                                  ?? new ExportImportChekpoint
                                                  {
                                                      JobId = importJob.JobId,
-                                                     Category = service.Category
+                                                     Category = service.Category,
+                                                     Progress = 0
                                                  };
                             CheckpointCallback(service);
 
@@ -345,6 +352,51 @@ namespace Dnn.ExportImport.Components.Engines
             //Clear all files after import is done.
             Clear(importJob);
             return result;
+        }
+
+        private void PrepareCheckPoints(int jobId, List<IPortable2> parentServices, List<IPortable2> implementors,
+            HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
+        {
+            // there must be one parent implementor at least for this to work
+            var nextLevelServices = new List<IPortable2>();
+            var firstIteration = true;
+            if (checkpoints.Any()) return;
+            do
+            {
+                foreach (var service in parentServices.OrderBy(x => x.Priority))
+                {
+                    if (implementors.Count > 0)
+                    {
+                        // collect children for next iteration
+                        var children =
+                            implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                        nextLevelServices.AddRange(children);
+                        implementors = implementors.Except(nextLevelServices).ToList();
+                    }
+
+                    if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                        (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                    {
+                        service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category);
+
+                        if (service.CheckPoint != null) continue;
+
+                        service.CheckPoint = new ExportImportChekpoint
+                        {
+                            JobId = jobId,
+                            Category = service.Category,
+                            Progress = 0
+                        };
+
+                        // persist the record in db
+                        CheckpointCallback(service);
+                    }
+                }
+
+                firstIteration = false;
+                parentServices = new List<IPortable2>(nextLevelServices);
+                nextLevelServices.Clear();
+            } while (parentServices.Count > 0);
         }
 
         private static void Clear(ExportImportJob job)

@@ -45,7 +45,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 3) return;
 
             if (CheckPoint.Stage == 0)
@@ -54,7 +53,7 @@ namespace Dnn.ExportImport.Components.Services
                 var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
                 Repository.CreateItems(scopeTypes, null);
                 //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                ProgressPercentage = 25;
+                CheckPoint.Progress = 25;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -66,7 +65,7 @@ namespace Dnn.ExportImport.Components.Services
                 var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                 Repository.CreateItems(vocabularyTypes, null);
                 //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                ProgressPercentage = 50;
+                CheckPoint.Progress = 50;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -78,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
                 var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyTerms, null);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
-                ProgressPercentage = 75;
+                CheckPoint.Progress = 75;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -91,7 +90,7 @@ namespace Dnn.ExportImport.Components.Services
                     CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyVocabularies, null);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
-                ProgressPercentage = 100;
+                CheckPoint.Progress = 100;
 
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
@@ -100,7 +99,6 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
 
             if (CheckPoint.Stage > 3) return;
 
@@ -110,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 0)
             {
                 //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-                ProgressPercentage = 10;
+                CheckPoint.Progress = 10;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -120,7 +118,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
                 //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
-                ProgressPercentage = 20;
+                CheckPoint.Progress = 20;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -134,7 +132,7 @@ namespace Dnn.ExportImport.Components.Services
                 ProcessVocabularies(importJob, exportDto, otherScopeTypes, otherVocabularies);
                 Repository.UpdateItems(otherVocabularies);
                 Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
-                ProgressPercentage = 60;
+                CheckPoint.Progress = 60;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -147,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
                 ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
                 Repository.UpdateItems(otherTaxonomyTerms);
                 Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
-                ProgressPercentage = 100;
+                CheckPoint.Progress = 100;
 
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);

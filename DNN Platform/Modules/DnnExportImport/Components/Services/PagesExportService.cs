@@ -44,13 +44,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
             ProcessExportPages(exportJob, exportDto, exportDto.Pages);
-            ProgressPercentage = 100;
-
+            CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
             CheckPointStageCallback(this);
@@ -58,13 +56,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(importJob)) return;
 
             ProcessImportPages(importJob, exportDto, exportDto.Pages);
-            ProgressPercentage = 100;
-
+            CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
             CheckPointStageCallback(this);

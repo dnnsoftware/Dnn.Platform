@@ -48,7 +48,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            ProgressPercentage = 100;
+            CheckPoint.Progress += 100;
             //No implementation required in export users child as everything is exported in parent service.
         }
 
@@ -56,7 +56,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
 
-            ProgressPercentage = 0;
             var pageIndex = 0;
             const int pageSize = 1000;
             var totalUserRolesImported = 0;
@@ -74,7 +73,7 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
+            var progressStep = 100.0 / totalPages;
             try
             {
                 while (totalProcessed < totalUsersToBeProcessed)
@@ -112,12 +111,12 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     totalProcessed += currentIndex;
                     currentIndex = 0;
+                    pageIndex++;
+
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
+                    CheckPoint.Progress += progressStep;
                     if (CheckPointStageCallback(this)) return;
-
-                    ProgressPercentage += progressStep;
-                    pageIndex++;
                 }
             }
             finally

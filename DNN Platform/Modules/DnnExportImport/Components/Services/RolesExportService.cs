@@ -44,7 +44,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 2) return;
 
             if (CheckPoint.Stage == 0)
@@ -54,8 +53,7 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roleGroups, null);
                 Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
-                ProgressPercentage = 30;
-
+                CheckPoint.Progress = 30;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -67,7 +65,7 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roles, null);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
-                ProgressPercentage = 80;
+                CheckPoint.Progress = 80;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -80,7 +78,7 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roleSettings, null);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
-                ProgressPercentage = 100;
+                CheckPoint.Progress = 100;
 
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
@@ -89,7 +87,6 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 2) return;
 
             if (CheckCancelled(importJob)) return;
@@ -98,7 +95,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 ProcessRoleGroups(importJob, exportDto, otherRoleGroups);
                 Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
-                ProgressPercentage = 40;
+                CheckPoint.Progress = 40;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -111,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
                 ProcessRoles(importJob, exportDto, otherRoleGroups, otherRoles);
                 Repository.UpdateItems(otherRoles);
-                ProgressPercentage = 50;
+                CheckPoint.Progress = 50;
 
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -124,7 +121,7 @@ namespace Dnn.ExportImport.Components.Services
                 ProcessRoleSettings(importJob, exportDto, otherRoles, otherRoleSettings);
                 Repository.UpdateItems(otherRoleSettings);
                 Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
-                ProgressPercentage = 100;
+                CheckPoint.Progress = 100;
 
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);

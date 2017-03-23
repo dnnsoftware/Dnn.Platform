@@ -44,7 +44,6 @@ namespace Dnn.ExportImport.Components.Services
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
             if (CheckCancelled(exportJob)) return;
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
@@ -54,19 +53,18 @@ namespace Dnn.ExportImport.Components.Services
                     DataProvider.Instance()
                         .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, tillDate,
                             sinceDate)).ToList();
-            ProgressPercentage = 50;
+            CheckPoint.Progress = 50;
 
             if (CheckCancelled(exportJob)) return;
             Repository.CreateItems(profileProperties, null);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
-            ProgressPercentage = 100;
+            CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
         }
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
             if (CheckPoint.Stage > 0) return;
 
@@ -109,7 +107,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
-
+            CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
         }

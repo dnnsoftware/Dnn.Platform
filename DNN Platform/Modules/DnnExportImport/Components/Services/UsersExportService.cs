@@ -64,9 +64,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalAuthenticationExported = 0;
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
-            ProgressPercentage = 0;
             var dataReader = DataProvider.Instance()
-                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions,tillDate,
+                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, tillDate,
                     sinceDate);
             var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
             var firstOrDefault = allUser.FirstOrDefault();
@@ -89,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (pageIndex > 0)
                 {
                     dataReader = DataProvider.Instance()
-                        .GetAllUsers(portalId, pageIndex, pageSize, false,tillDate, sinceDate);
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, tillDate, sinceDate);
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 }
@@ -97,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
+            var progressStep = 100.0 / totalPages;
             try
             {
                 do
@@ -149,13 +148,13 @@ namespace Dnn.ExportImport.Components.Services
                     totalUsersExported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
+                    CheckPoint.Progress += progressStep;
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
 
                     pageIndex++;
-                    ProgressPercentage += progressStep;
                     dataReader = DataProvider.Instance()
-                        .GetAllUsers(portalId, pageIndex, pageSize, false,tillDate, sinceDate);
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, tillDate, sinceDate);
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 } while (totalUsersExported < totalUsersToBeProcessed);
@@ -179,7 +178,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
 
-            ProgressPercentage = 0;
             var pageIndex = 0;
             const int pageSize = 1000;
             var totalUsersImported = 0;
@@ -199,7 +197,7 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = totalUsersToBeProcessed < pageSize ? 100 : pageSize / totalUsersToBeProcessed * 100;
+            var progressStep = 100.0 / totalPages;
             try
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
@@ -244,12 +242,11 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     totalUsersImported += currentIndex;
                     currentIndex = 0;
+                    pageIndex++;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
+                    CheckPoint.Progress += progressStep;
                     if (CheckPointStageCallback(this)) return;
-
-                    ProgressPercentage += progressStep;
-                    pageIndex++;
                 }
             }
             finally

@@ -48,7 +48,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
-            ProgressPercentage = 0;
             if (CheckPoint.Stage > 1) return;
             if (CheckCancelled(exportJob)) return;
 
@@ -58,8 +57,7 @@ namespace Dnn.ExportImport.Components.Services
                     .GetPortalSettings(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(portalSettings, null);
                 Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
-                ProgressPercentage = 50;
-
+                CheckPoint.Progress = 50;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -71,8 +69,7 @@ namespace Dnn.ExportImport.Components.Services
                     .GetPortalLanguages(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(portalLanguages, null);
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
-                ProgressPercentage = 100;
-
+                CheckPoint.Progress = 100;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -97,17 +94,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
         {
-            ProgressPercentage = 0;
             var portalSettings = Repository.GetAllItems<ExportPortalSetting>().ToList();
             ProcessPortalSettings(importJob, exportDto, portalSettings);
             Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
-            ProgressPercentage += 50;
+            CheckPoint.Progress += 50;
 
-            ProgressPercentage = 0;
             var portalLanguages = Repository.GetAllItems<ExportPortalLanguage>().ToList();
             ProcessPortalLanguages(importJob, exportDto, portalLanguages);
             Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
-            ProgressPercentage += 50;
+            CheckPoint.Progress += 50;
 
             /*
             ProgressPercentage = 0;
