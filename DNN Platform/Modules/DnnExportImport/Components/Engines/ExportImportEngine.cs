@@ -76,7 +76,8 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
-
+            //Clear all files before export starts.
+            Clear(exportJob);
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
             var dbName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportDbExt);
             var exportFileName = Path.Combine(DbFolder, exportJob.ExportFile + Constants.ExportZipExt);
@@ -341,8 +342,24 @@ namespace Dnn.ExportImport.Components.Engines
                     importJob.JobStatus = JobStatus.Successful;
                 }
             }
-
+            //Clear all files after import is done.
+            Clear(importJob);
             return result;
+        }
+
+        private static void Clear(ExportImportJob job)
+        {
+            if (job.JobStatus != JobStatus.Submitted && job.JobStatus != JobStatus.Successful) return;
+            //TODO: Error handling
+            var exportFolder = Path.Combine(DbFolder);
+            var exportFileArchive = $"{Path.Combine(exportFolder, job.ExportFile)}{Constants.ExportZipExt}";
+            var folderOffset = exportFileArchive.IndexOf(job.ExportFile, StringComparison.Ordinal);
+            var files =
+                Directory.GetFiles(exportFolder)
+                    .Where(file => file.Substring(folderOffset).StartsWith(job.ExportFile))
+                    .ToList();
+            //Delete the unncessary files
+            files.ForEach(File.Delete);
         }
 
         private static bool CheckCancelledCallBack(ExportImportJob job)
