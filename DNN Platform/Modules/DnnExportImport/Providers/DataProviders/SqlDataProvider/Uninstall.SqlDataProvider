@@ -1,6 +1,8 @@
-﻿DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT'
+﻿DELETE FROM {databaseOwner}[{objectQualifier}EventLog] WHERE [LogTypeKey] = N'SITE_EXPORT'
+DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT'
 DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT'
 
+DELETE FROM {databaseOwner}[{objectQualifier}EventLog] WHERE [LogTypeKey] = N'SITE_IMPORT'
 DELETE FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_IMPORT'
 DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT'
 GO
@@ -203,7 +205,7 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NO
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermission]
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NULL

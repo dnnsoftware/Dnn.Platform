@@ -72,7 +72,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NUL
 		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
 		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
 		[CompletedOnDate]    DateTime,  -- UTC date
-		[ExportFile]         nvarchar(100),
+		[ExportDir]          nvarchar(100),
 		[JobObject]          nvarchar(max),
 
 		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId] DESC)
@@ -222,7 +222,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 	@CreatedBy   int,
 	@JobName     nvarchar(100),
 	@Description nvarchar(250),
-	@ExportFile  nvarchar(100),
+	@ExportDir   nvarchar(100),
 	@JobObject   nvarchar(max)
 AS
 BEGIN
@@ -234,7 +234,7 @@ BEGIN
 			[Name],
 			[Description],
 			[CreatedByUserID],
-			[ExportFile],
+			[ExportDir],
 			[JobObject]
 		)
 	VALUES
@@ -244,7 +244,7 @@ BEGIN
 			@JobName,
 			@Description,
 			IsNull(@CreatedBy, -1),
-			@ExportFile,
+			@ExportDir,
 			@JobObject
 		)
 

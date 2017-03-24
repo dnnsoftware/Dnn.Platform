@@ -164,7 +164,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,
-                ExportFile = job.CompletedOnDate.HasValue ? job.ExportFile : null
+                ExportFile = job.CompletedOnDate.HasValue ? job.ExportDir : null
             };
         }
 

@@ -23,6 +23,7 @@ using System;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
+using DotNetNuke.Common;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
@@ -33,8 +34,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             exportDto.SinceTime = (exportDto.SinceTime ?? Constants.MinDbTime).ToUniversalTime();
 
-            var exportFileName = string.Join("_", "EXPORT",
-                DateTime.UtcNow.ToString(Constants.ExportDateFormat), exportDto.PortalId.ToString("D"));
+            var exportFileName = Globals.CleanFileName(exportDto.ExportName);
 
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

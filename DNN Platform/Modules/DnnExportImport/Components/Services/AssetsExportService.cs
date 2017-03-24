@@ -27,7 +27,7 @@ namespace Dnn.ExportImport.Components.Services
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly string exportArchivePath =
-            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}{Constants.ExportZipExt}";
+            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
         private readonly string _assetsFolder = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}";
 
@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var assetsFile = string.Format(exportArchivePath, exportJob.ExportFile);
+                var assetsFile = string.Format(exportArchivePath, exportJob.ExportDir);
                 if (CheckPoint.Stage == 0)
                 {
                     //Sync db and filesystem before exporting so all required files are found
@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var assetsFile = string.Format(exportArchivePath, importJob.ExportFile);
+            var assetsFile = string.Format(exportArchivePath, importJob.ExportDir);
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {

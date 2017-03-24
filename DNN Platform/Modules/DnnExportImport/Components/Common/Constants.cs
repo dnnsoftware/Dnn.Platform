@@ -33,10 +33,10 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         public const string CurrentSchemaVersion = "1.0.0";
 
-        internal const string ExportFolder = @"\Install\ExportImport\";
-        internal const string ExportDateFormat = "yyyyMMdd-HHmmss";
-        internal const string ExportDbExt = ".dnndb"; // exportDB file extension
-        internal const string ExportZipExt = ".resources"; // zipped file extension to prevent downloading
+        internal const string ExportFolder = @"\App_Data\ExportImport\";
+        internal const string ExportDbName = "export.dnndb"; // export database file name
+        internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
+        internal const string ExportZipFiles = "export_files.zip";//Compressed assets file name
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
@@ -44,11 +44,11 @@ namespace Dnn.ExportImport.Components.Common
         internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         internal const string LastJobStartTimeKey = "EXPORT_LastJobStartTime";
         internal const string MaxTimeToRunJobKey = "EXPORT_MaxTimeToRunJob";
-        
+
         internal const int LogColumnLength = 255;
 
-        internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0 , 0, DateTimeKind.Utc);
-        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0 , 0, DateTimeKind.Utc);
+        internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 
