@@ -108,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
                                 .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
                         currentIndex++;
-                        if (currentIndex % progressStep == 0)
+                        if (totalProcessed % progressStep == 0)
                             CheckPoint.Progress += 1;
                         if (CheckPointStageCallback(this)) return;
                     }

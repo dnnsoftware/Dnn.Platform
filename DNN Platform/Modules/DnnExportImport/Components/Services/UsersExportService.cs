@@ -143,7 +143,7 @@ namespace Dnn.ExportImport.Components.Services
                         Repository.CreateItem(userAuthentication, user.Id);
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
-                        if (currentIndex % progressStep == 0)
+                        if (totalUsersExported % progressStep  == 0)
                             CheckPoint.Progress += 1;
                         if (CheckPointStageCallback(this)) return;
                     }
@@ -200,7 +200,7 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
-            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed/100 : 1;
+            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
