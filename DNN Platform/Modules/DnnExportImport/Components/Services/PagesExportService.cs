@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(importJob)) return;
 
-            ProcessImportPages(importJob, exportDto, exportDto.Pages);
+            ProcessImportPages(importJob, exportDto);
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
@@ -68,11 +68,129 @@ namespace Dnn.ExportImport.Components.Services
 
         #region import methods
 
-        private void ProcessImportPages(ExportImportJob importJob, ExportDto exportDto, int[] exportDtoPages)
+        private void ProcessImportPages(ExportImportJob importJob, ExportDto exportDto)
         {
-            //TODO
+            var totalImportedTabs = 0;
+            var totalImportedSettings = 0;
+            var totalImportedPermissions = 0;
+            var totalImportedUrls = 0;
+            var totalImportedAliasSkins = 0;
+            var totalImportedModules = 0;
+            var totalImportedModuleSettings = 0;
+            var portalId = importJob.PortalId;
+
+            int lastProcessedId; // this is the exported DB row ID; not the TabID
+            int.TryParse(CheckPoint.StageData, out lastProcessedId);
+
+            var tabController = TabController.Instance;
+            var localTabs = tabController.GetTabsByPortal(portalId).Values;
+
+            var exportedTabs = Repository.GetAllItems<ExportTab>().ToList(); // ordered by ID
+            foreach (var otherTab in exportedTabs)
+            {
+                if (CheckCancelled(importJob)) break;
+                if (lastProcessedId > otherTab.Id) continue;
+
+                var createdBy = Util.GetUserIdOrName(importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdOrName(importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
+                var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
+
+                if (localTab != null)
+                {
+                    switch (exportDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Ignore:
+                            Result.AddLogEntry("Ignored Tab", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                            break;
+                        case CollisionResolution.Overwrite:
+                            SetTabData(localTab, otherTab);
+                            tabController.UpdateTab(localTab);
+                            //TODO: add related items
+                            Result.AddLogEntry("Updated page", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                            totalImportedTabs++;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                    }
+                }
+                else
+                {
+                    localTab = new TabInfo { PortalID = portalId };
+                    SetTabData(localTab, otherTab);
+                    localTab.ParentId = GetParentLocalTabId(tabController, portalId, otherTab.TabId, exportedTabs, localTabs);
+                    if (localTab.ParentId == -1 && otherTab.ParentId > 0)
+                    {
+                        Result.AddLogEntry("WARN: Imported Tab Parent not found", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                    }
+
+                    otherTab.LocalId = tabController.AddTab(localTab);
+                    //TODO: add related items
+                    Result.AddLogEntry("Added new page", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                    totalImportedTabs++;
+                }
+            }
+
+            Result.AddSummary("Imported Tabs", totalImportedTabs.ToString());
+            Result.AddLogEntry("Imported Tab Settings", totalImportedSettings.ToString());
+            Result.AddLogEntry("Imported Tab Permissions", totalImportedPermissions.ToString());
+            Result.AddLogEntry("Imported Tab Urls", totalImportedUrls.ToString());
+            Result.AddLogEntry("Imported Tab Alias Skins", totalImportedAliasSkins.ToString());
+            Result.AddLogEntry("Imported Tab Modules", totalImportedModules.ToString());
+            Result.AddLogEntry("Imported Tab Module Settings", totalImportedModuleSettings.ToString());
         }
 
+        private static int GetParentLocalTabId(ITabController tabController, int portalId,
+            int otherTabId, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
+        {
+            var otherTab = exportedTabs.FirstOrDefault(t => t.TabId == otherTabId);
+            if (otherTab != null)
+            {
+                var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
+                if (localTab != null)
+                    return localTab.TabID;
+            }
+
+            return -1;
+        }
+
+        private static void SetTabData(TabInfo localTab, ExportTab otherTab)
+        {
+            localTab.TabOrder = otherTab.TabOrder;
+            localTab.TabName = otherTab.TabName;
+            localTab.IsVisible = otherTab.IsVisible;
+            localTab.ParentId = otherTab.ParentId ?? -1; // TODO: get actual parent from local tabs
+            localTab.IconFile = otherTab.IconFile;
+            localTab.DisableLink = otherTab.DisableLink;
+            localTab.Title = otherTab.Title;
+            localTab.Description = otherTab.Description;
+            localTab.KeyWords = otherTab.KeyWords;
+            localTab.IsDeleted = otherTab.IsDeleted;
+            localTab.Url = otherTab.Url;
+            localTab.SkinSrc = otherTab.SkinSrc;
+            localTab.ContainerSrc = otherTab.ContainerSrc;
+            localTab.StartDate = otherTab.StartDate ?? DateTime.MinValue;
+            localTab.EndDate = otherTab.EndDate ?? DateTime.MinValue;
+            localTab.RefreshInterval = otherTab.RefreshInterval ?? -1;
+            localTab.PageHeadText = otherTab.PageHeadText;
+            localTab.IsSecure = otherTab.IsSecure;
+            localTab.PermanentRedirect = otherTab.PermanentRedirect;
+            localTab.SiteMapPriority = otherTab.SiteMapPriority;
+            //localTab.CreatedByUserID = otherTab.CreatedByUserID ?? -1;    //TODO: set these
+            //localTab.CreatedOnDate = otherTab.CreatedOnDate ?? DateTime.MinValue;
+            //localTab.LastModifiedByUserID = otherTab.LastModifiedByUserID ?? -1;
+            //localTab.LastModifiedOnDate = otherTab.LastModifiedOnDate ?? DateTime.MinValue;
+            localTab.IconFileLarge = otherTab.IconFileLarge;
+            localTab.CultureCode = otherTab.CultureCode;
+            //localTab.ContentItemID = otherTab.ContentItemID ?? -1;
+            localTab.UniqueId = otherTab.UniqueId;
+            localTab.VersionGuid = otherTab.VersionGuid;
+            localTab.DefaultLanguageGuid = otherTab.DefaultLanguageGuid ?? Guid.Empty;
+            localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
+            localTab.Level = otherTab.Level;
+            localTab.TabPath = otherTab.TabPath;
+            localTab.HasBeenPublished = otherTab.HasBeenPublished;
+            localTab.IsSystem = otherTab.IsSystem;
+        }
 
         #endregion
 

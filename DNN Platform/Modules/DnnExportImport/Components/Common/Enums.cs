@@ -50,10 +50,5 @@ namespace Dnn.ExportImport.Components.Common
         /// Overwrites the existing item upon importing.
         /// </summary>
         Overwrite,
-
-        /// <summary>
-        /// Duplicate the items into a new item upon importing.
-        /// </summary>
-        Duplicate
     }
 }

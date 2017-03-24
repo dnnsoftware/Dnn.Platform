@@ -386,7 +386,7 @@ BEGIN
 
 	; WITH AllJobs AS (
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY JobId ASC) AS RowNum, *
+			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, *
 		FROM
 			{databaseOwner}{objectQualifier}ExportImportJobs
 		WHERE
