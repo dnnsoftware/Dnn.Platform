@@ -22,7 +22,6 @@
         position: absolute;
         width: 256px;
         left: 0px;
-        top: calc(100% + 12px);
         border: 1px solid @alto;
         box-shadow: 0px 0px 17px 2px rgba(0, 0, 0, .2);
         opacity: 0;
@@ -33,6 +32,16 @@
         z-index: 1;
         background: white;
         text-align: center;
+
+        &.show-above-input {
+            bottom: calc(100%);
+            top: auto; // needed for old version compatibility
+        }
+
+        &.show-below-input {
+            top: calc(100% + 12px);
+        }
+
         &.invisible {
             * {
                 pointer-events: none !important;

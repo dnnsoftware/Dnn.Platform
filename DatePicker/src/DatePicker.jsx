@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
@@ -73,7 +72,7 @@ export default class DatePicker extends Component {
         const isController = hasClass(e.target, DefaultControllerClassName) || this.props.controllerClassName && hasClass(e.target, this.props.controllerClassName);
 
         if (!this._isMounted) { return; }
-        const node = ReactDOM.findDOMNode(this);
+        const node = this.refs.dayPicker;
         if (node && node.contains(e.target)) {
             return;
         }
@@ -291,6 +290,16 @@ export default class DatePicker extends Component {
             this.setState({ Date }, () => this.callUpdateDate());
         }
     }
+
+    getPositionCss() {
+        switch(this.props.calendarPosition) {            
+            case "top":
+                return "show-above-input";
+            case "bottom":
+            default:
+                return "show-below-input";
+        }
+    }
    
     render() {
         this.date = this.state.Date.FirstDate;
@@ -311,7 +320,7 @@ export default class DatePicker extends Component {
             displayDate += " - " + displaySecondDate;
         }
         const showButton = !!this.props.isDateRange || !!this.props.hasTimePicker;
-        const calendarClassName = "calendar-container" + (this.state.isCalendarVisible ? " visible" : " invisible");
+        const calendarClassName = "calendar-container " + this.getPositionCss() + (this.state.isCalendarVisible ? " visible" : " invisible");
 
         firstDate = firstDate ? new Date(firstDate) : null;
         secondDate = secondDate ? new Date(secondDate) : null;
@@ -333,7 +342,7 @@ export default class DatePicker extends Component {
         const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
         /* eslint-disable react/no-danger */
-        return <div className="dnn-day-picker">
+        return <div className="dnn-day-picker" ref="dayPicker">
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
                 {this.props.prependWith && <span>{this.props.prependWith}</span>}
                 {this.props.showClearDateButton && <div className="clear-button" onClick={this.clearDates.bind(this)}>×</div>}
@@ -351,7 +360,7 @@ export default class DatePicker extends Component {
                 className={"calendar-icon" + (this.state.isCalendarVisible ? " active" : "") }
                 onClick={this.toggleCalendar.bind(this) }>
             </div>}
-            <div className={calendarClassName} style={this.getStyle() }>
+            <div className={calendarClassName} style={this.getStyle() } ref={element => this.calendarContainer = element}>
                 <div>
                     <DayPicker
                         weekdayElement={ <Weekday/> }
@@ -404,7 +413,7 @@ DatePicker.propTypes = {
     hasTimePicker: PropTypes.bool,
 
 
-    //if set to true it shows static text insted of input fields
+    //if set to true it shows static text instead of input fields
     isInputReadOnly: PropTypes.bool,
 
     //show/hide an icon
@@ -431,9 +440,12 @@ DatePicker.propTypes = {
 
     showClearDates: PropTypes.bool.isRequired,
 
-    prependWith: PropTypes.string
+    prependWith: PropTypes.string,
+
+    calendarPosition: PropTypes.oneOf(["bottom", "top"]).isRequired
 };
 
 DatePicker.defaultProps = {
-    showClearDates: false
+    showClearDates: false,
+    calendarPosition: "bottom"
 };
