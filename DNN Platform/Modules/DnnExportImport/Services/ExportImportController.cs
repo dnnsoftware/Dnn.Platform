@@ -23,6 +23,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
@@ -105,10 +106,16 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage AllJobs(int? pageSize = 10, int? pageIndex = 0, int? jobType = null, string keywords = null)
+        public HttpResponseMessage AllJobs(int portalId, int? pageSize = 10, int? pageIndex = 0, int? jobType = null,
+            string keywords = null)
         {
+            if (!UserInfo.IsSuperUser && portalId != PortalSettings.PortalId)
+            {
+                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+            }
             var controller = new BaseController();
-            var jobs = controller.GetAllJobs(PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
+            var jobs = controller.GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords);
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 
