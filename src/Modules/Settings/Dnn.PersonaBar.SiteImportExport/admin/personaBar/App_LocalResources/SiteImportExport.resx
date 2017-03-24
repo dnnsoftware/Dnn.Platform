@@ -285,4 +285,16 @@
   <data name="ExportFile.Text" xml:space="preserve">
     <value>Export File</value>
   </data>
+  <data name="lblLanguages.Help" xml:space="preserve">
+    <value>Select each of the secondary languages to be included in a multi-language template, or select the language of a single language site.</value>
+  </data>
+  <data name="lblLanguages.Text" xml:space="preserve">
+    <value>Export Languages</value>
+  </data>
+  <data name="lblSelectLanguages.Text" xml:space="preserve">
+    <value>-- Select Languages --</value>
+  </data>
+  <data name="lblNote.Text" xml:space="preserve">
+    <value>The default language ({0}) will always be exported.</value>
+  </data>
 </root>

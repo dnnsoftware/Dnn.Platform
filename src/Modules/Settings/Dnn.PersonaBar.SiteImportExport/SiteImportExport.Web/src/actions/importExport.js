@@ -58,6 +58,19 @@ const jobsActions = {
         };
     },
 
+    getPortalLocales(portalId, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.getPortalLocales(portalId, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PORTAL_LOCALES
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, errorCallback);
+        };
+    },
+
     getAllJobs(parameters, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getAllJobs(parameters, (data) => {

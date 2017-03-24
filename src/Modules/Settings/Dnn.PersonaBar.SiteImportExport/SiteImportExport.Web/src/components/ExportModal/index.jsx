@@ -14,9 +14,12 @@ import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
 import PagePicker from "dnn-page-picker";
+import CheckBox from "dnn-checkbox";
 import Button from "dnn-button";
+import ToolTip from "dnn-tooltip";
 import styles from "./style.less";
 import utilities from "utils";
+import stringUtils from "utils/string";
 
 const scrollAreaStyle = {
     width: "100%",
@@ -42,7 +45,10 @@ class ExportModal extends Component {
                 IncludeFiles: true
             },
             localData: {
+                defaultLanguage: "",
+                contentLocalizationEnabled: false,
                 locales: [],
+                selectedLocales: [],
                 errors: {
                     ExportName: false,
                     ExportDescription: false
@@ -61,6 +67,17 @@ class ExportModal extends Component {
             if (!props.portals || props.portals.length === 0) {
                 props.dispatch(ImportExportActions.getPortals());
             }
+
+            props.dispatch(ImportExportActions.getPortalLocales(props.portalId, (data) => {
+                const { localData } = this.state;
+                localData.locales = data.Results;
+                localData.defaultLanguage = data.DefaultLanguage;
+                localData.contentLocalizationEnabled = data.ContentLocalizationEnabled;
+                localData.selectedLocales = data.Results.map(locale => { return locale.Code; });
+                this.setState({
+                    localData
+                });
+            }));
         });
     }
 
@@ -165,18 +182,59 @@ class ExportModal extends Component {
         this.setState({ exportRequest });
     }
 
+    createLocaleOptions(native) {
+        let localeOptions = [];
+        localeOptions = this.state.localData.locales.map(locale => {
+            if (native)
+                return { label: locale.EnglishName, value: locale.Code };
+            else
+                return { label: locale.EnglishName, value: locale.Code };
+        });
+        return localeOptions;
+    }
+
+    onLanguageCheckBoxChange(Code, event) {
+        let { localData } = this.state;
+        if (event && !localData.selectedLocales.some(sl => sl === Code)) {
+            localData.selectedLocales = localData.selectedLocales.concat([Code]);
+        } else if (!event && localData.selectedLocales.some(sl => sl === Code)) {
+            localData.selectedLocales = localData.selectedLocales.filter(sl => sl !== Code);
+        }
+        this.setState({ localData });
+    }
+
+    createLanguageDropDownOptions() {
+        let { state } = this;
+        return state.localData.locales.map(locale => {
+            return {
+                label: <div>
+                    <CheckBox
+                        label={locale.EnglishName}
+                        value={state.localData.selectedLocales.some(sl => sl === locale.Code)}
+                        onChange={this.onLanguageCheckBoxChange.bind(this, locale.Code)}
+                        enabled={state.localData.defaultLanguage !== locale.Code}
+                    />
+                    {locale.Code === state.localData.localizationCulture &&
+                        <ToolTip messages={[stringUtils.format(Localization.get("lblNote"), locale.EnglishName)]} />
+                    }
+                </div>,
+                value: locale.Code
+            };
+        });
+    }
+
     render() {
         const { state, props } = this;
-        const { wizardStep } = props;
         const PortalTabsParameters = {
             portalId: props.portalId,
-            cultureCode: "en-us",
-            isMultiLanguage: false,
+            cultureCode: state.localData.defaultLanguage,
+            isMultiLanguage: true,
             excludeAdminTabs: true,
             disabledNotSelectable: false,
             roles: "",
             sortOrder: 0
         };
+        const dropdownOptions = this.createLanguageDropDownOptions();
 
         return (
             <div className={styles.exportModal}>
@@ -308,6 +366,18 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
+                            {state.localData.contentLocalizationEnabled && 1 > 1 &&
+                                <div className="language-box">
+                                    <Label
+                                        label={Localization.get("lblLanguages")}
+                                        tooltipMessage={Localization.get("lblLanguages.Help")}
+                                    />
+                                    <Dropdown
+                                        options={dropdownOptions}
+                                        closeOnClick={false}
+                                    />
+                                </div>
+                            }
                             <PagePicker
                                 className="export-page-picker"
                                 serviceFramework={utilities.utilities && utilities.utilities.sf}
