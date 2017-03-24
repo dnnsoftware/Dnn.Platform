@@ -1,6 +1,6 @@
 {
   "name": "dnn-date-picker",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "DNN Date Picker",
   "main": "index.js",
   "scripts": {
@@ -30,14 +30,11 @@
     "less": "2.7.1",
     "less-loader": "2.2.3",
     "raw-loader": "0.5.1",
-
     "style-loader": "0.13.1",
-
     "url-loader": "0.5.7",
     "react-day-picker": "2.3.3",
     "react-tooltip": "2.0.2",
     "moment": "2.13.0",
-
     "webpack": "1.13.0"
   }
 }

@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
 
 let timeArray = [];
 for (let i = 0; i < 24; i++) {
@@ -42,13 +41,12 @@ export default class TimePicker extends Component {
 
     handleClick(e) {
         if (!this._isMounted) { return; }
-        const node = ReactDOM.findDOMNode(this);
+        const node = this.refs.timePicker;
         if (node && node.contains(e.target)) {
             return;
         }
         this.hideTimeSelector();
     }
-
 
     updateTime(time) {
         this.hideTimeSelector();
@@ -82,7 +80,7 @@ export default class TimePicker extends Component {
         const TimeOptions = timeArray.map((time) => {
             return <div className="time-option" key={time} onClick={this.updateTime.bind(this, time) }>{time}</div>;
         });
-        return <div className="dnn-time-picker">
+        return <div className="dnn-time-picker" ref="timePicker">
             <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
                 {this.props.time}
                 {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>
@@ -94,7 +92,6 @@ export default class TimePicker extends Component {
         </div >;
     }
 }
-
 
 TimePicker.propTypes = {
     updateTime: PropTypes.func.isRequired,
