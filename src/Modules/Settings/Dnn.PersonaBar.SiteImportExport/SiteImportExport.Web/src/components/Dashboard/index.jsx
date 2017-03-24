@@ -74,7 +74,6 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 });
             }
-            props.dispatch(ImportExportActions.getPortalLogo(props.portalId));
         }
     }
 
@@ -136,7 +135,6 @@ class DashboardPanelBody extends Component {
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
-                props.dispatch(ImportExportActions.getPortalLogo(option.value));
                 props.dispatch(ImportExportActions.siteSelected(option.value));
             });
         }
@@ -188,12 +186,7 @@ class DashboardPanelBody extends Component {
     renderTopPane() {
         const { state, props } = this;
         return <div className="top-panel">
-            <GridCell columnSize={20} >
-                <div className="logoWrapper">
-                    <img src={props.portalLogo} alt="logo" />
-                </div>
-            </GridCell>
-            <GridCell columnSize={80} >
+            <GridCell columnSize={100} >
                 <div className="site-selection">
                     <DropDown
                         enabled={isHost ? true : false}
@@ -363,7 +356,6 @@ DashboardPanelBody.propTypes = {
     portals: PropTypes.array,
     totalJobs: PropTypes.number,
     portalName: PropTypes.string,
-    portalLogo: PropTypes.string,
     selectPanel: PropTypes.func,
     portalId: PropTypes.number
 };
@@ -374,8 +366,7 @@ function mapStateToProps(state) {
         portalId: state.importExport.portalId,
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
-        portalName: state.importExport.portalName,
-        portalLogo: state.importExport.logoUrl
+        portalName: state.importExport.portalName
     };
 }
 

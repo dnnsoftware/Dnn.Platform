@@ -26,40 +26,6 @@ namespace Dnn.PersonaBar.SiteImportExport.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteImportExportController));
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
-        /// GET: api/SiteImportExport/GetPortals
-        /// <summary>
-        /// Gets portals
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns>List of portals</returns>
-        [HttpGet]
-        public HttpResponseMessage GetPortalLogo(int portalId)
-        {
-            try
-            {
-                if (!UserInfo.IsSuperUser && PortalId != portalId)
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
-                }
-
-                var portal = PortalController.Instance.GetPortal(portalId, PortalSettings.CultureCode) ??
-                             PortalController.Instance.GetPortal(portalId);
-                var fileInfo = FileManager.Instance.GetFile(portalId, portal.LogoFile);
-                var response = new
-                {
-                    Success = true,
-                    LogoUrl = FileManager.Instance.GetUrl(fileInfo)
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
         /// GET: api/SiteImportExport/GetPortalLocales
         /// <summary>
         /// Gets list of portal locales

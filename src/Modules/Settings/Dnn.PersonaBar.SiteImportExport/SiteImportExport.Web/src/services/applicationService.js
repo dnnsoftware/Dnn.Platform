@@ -18,11 +18,6 @@ class ApplicationService {
         return sf;
     }
 
-    getPortalLogo(portalId, callback, errorCallback) {
-        const sf = this.getServiceFramework("PersonaBar", "SiteImportExport");
-        sf.get("GetPortalLogo?portalId=" + portalId, {}, callback, errorCallback);
-    }
-
     getPortalLocales(portalId, callback, errorCallback) {
         const sf = this.getServiceFramework("PersonaBar", "SiteImportExport");
         sf.get("GetPortalLocales?portalId=" + portalId, {}, callback, errorCallback);

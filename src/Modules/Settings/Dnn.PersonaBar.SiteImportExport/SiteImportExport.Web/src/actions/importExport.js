@@ -44,20 +44,6 @@ const jobsActions = {
         };
     },
 
-    getPortalLogo(portalId, callback, errorCallback) {
-        return (dispatch) => {
-            ApplicationService.getPortalLogo(portalId, (data) => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTAL_LOGO,
-                    logoUrl: data.LogoUrl
-                });
-                if (callback) {
-                    callback();
-                }
-            }, errorCallback);
-        };
-    },
-
     getPortalLocales(portalId, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getPortalLocales(portalId, (data) => {

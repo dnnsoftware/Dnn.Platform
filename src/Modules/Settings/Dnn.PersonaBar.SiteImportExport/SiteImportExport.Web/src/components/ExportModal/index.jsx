@@ -227,8 +227,8 @@ class ExportModal extends Component {
         const { state, props } = this;
         const PortalTabsParameters = {
             portalId: props.portalId,
-            cultureCode: state.localData.defaultLanguage,
-            isMultiLanguage: true,
+            cultureCode: "",
+            isMultiLanguage: false,
             excludeAdminTabs: true,
             disabledNotSelectable: false,
             roles: "",

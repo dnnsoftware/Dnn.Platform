@@ -39,11 +39,6 @@ export default function importExport(state = {
                 ...state,
                 job: action.job
             };
-        case ActionTypes.RETRIEVED_PORTAL_LOGO:
-            return {
-                ...state,
-                logoUrl: action.logoUrl
-            };
         case ActionTypes.SUBMITTED_EXPORT_REQUEST:
             return {
                 ...state,
