@@ -6,7 +6,7 @@ const jobsActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SELECTED_SITE,
-                portalId: portalId
+                portalId: portalId === undefined ? -1 : portalId
             });
             if (callback) {
                 callback();

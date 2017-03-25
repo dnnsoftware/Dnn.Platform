@@ -15,25 +15,19 @@ import ExportModal from "./ExportModal";
 import ImportModal from "./ImportModal";
 import util from "../utils";
 
-let isHost = false;
-
 class App extends Component {
     constructor() {
         super();
-        isHost = util.settings.isHost;
-        this.state = {
-            portalId: -1
-        };
     }
 
     componentWillMount() {
         const { props } = this;
-
-        let pid = props.portalId && props.portalId > -1 ? props.portalId : util.settings.portalId;
         this.setState({
-            portalId: pid
+            portalId: props.portalId
         }, () => {
-            props.dispatch(ImportExportActions.siteSelected(pid));
+            props.dispatch(ImportExportActions.siteSelected(props.portalId, () => {
+                //this.selectPanel(1);
+            }));
         });
     }
 
@@ -46,7 +40,7 @@ class App extends Component {
     }
 
     render() {
-        const { state, props } = this;
+        const { props } = this;
         return (
             <div>
                 <PersonaBarPage isOpen={props.selectedPage === 0} className={(props.selectedPage !== 0 ? "hidden" : "")}>

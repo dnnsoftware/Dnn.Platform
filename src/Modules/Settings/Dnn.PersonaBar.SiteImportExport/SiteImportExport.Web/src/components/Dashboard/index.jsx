@@ -16,9 +16,6 @@ import FiltersBar from "./FiltersBar";
 import JobDetails from "./JobDetails";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
-let isHost = false;
-let currentPortalName = "";
-
 /*eslint-disable*/
 class DashboardPanelBody extends Component {
     constructor() {
@@ -26,50 +23,41 @@ class DashboardPanelBody extends Component {
         this.state = {
             jobs: [],
             portals: [],
-            portalId: -1,
+            portalId: undefined,
             pageIndex: 0,
             pageSize: 10,
             filter: null,
             keyword: "",
             openId: ""
         };
-        isHost = util.settings.isHost;
-        currentPortalName = util.settings.portalName;
     }
 
     componentWillMount() {
         const { props, state } = this;
-        this.setState({
-            portalId: props.portalId
-        }, () => {
-           
-            
-        });
+        props.dispatch(ImportExportActions.getPortals());
     }
 
     componentWillReceiveProps(props) {
-        const { state } = this;        
-        if (state.portalId !== props.portalId && props.portalId > -1) {
-            if (isHost) {
+        const { state } = this;
+
+        if (state.portals !== props.portals) {
+            this.setState({
+                portals: props.portals
+            }, () => {
+                if (props.portals.length === 1) {
+                    props.dispatch(ImportExportActions.siteSelected(props.portals[0].PortalID, () => {
+                        props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portals[0].PortalID)));
+                    }));
+                }
+                else {
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                }
+            });
+        }
+        else {
+            if (state.portalId !== props.portalId) {
                 this.setState({
-                    portals: props.portals,
                     portalId: props.portalId
-                });
-            }
-            else {
-                this.setState({
-                    portalId: props.portalId
-                });
-            }
-             if (isHost) {
-                props.dispatch(ImportExportActions.getPortals(() => {
-                }),
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)))
-                );
-            }
-            else {
-                this.setState({
-                    portals: [{ "PortalName": currentPortalName, "PortalID": props.portalId }]
                 }, () => {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 });
@@ -123,6 +111,9 @@ class DashboardPanelBody extends Component {
                     value: item.PortalID
                 };
             });
+            if (options.length > 1) {
+                options.unshift({ "label": Localization.get("AllSites"), "value": -1 });
+            }
         }
         return options;
     }
@@ -134,8 +125,8 @@ class DashboardPanelBody extends Component {
                 portalId: option.value,
                 pageIndex: 0
             }, () => {
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
                 props.dispatch(ImportExportActions.siteSelected(option.value));
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
             });
         }
     }
@@ -189,9 +180,9 @@ class DashboardPanelBody extends Component {
             <GridCell columnSize={100} >
                 <div className="site-selection">
                     <DropDown
-                        enabled={isHost ? true : false}
+                        enabled={props.portals.length > 1 ? true : false}
                         options={this.getPortalOptions()}
-                        value={state.portalId}
+                        value={props.portalId}
                         onSelect={this.onPortalChange.bind(this)}
                         prependWith={Localization.get("ShowSiteLabel")}
                     />

@@ -297,4 +297,7 @@
   <data name="lblNote.Text" xml:space="preserve">
     <value>The default language ({0}) will always be exported.</value>
   </data>
+  <data name="AllSites.Text" xml:space="preserve">
+    <value>--ALL SITES--</value>
+  </data>
 </root>
