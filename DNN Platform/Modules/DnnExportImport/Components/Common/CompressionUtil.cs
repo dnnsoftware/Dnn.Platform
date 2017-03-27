@@ -21,7 +21,8 @@ namespace Dnn.ExportImport.Components.Common
             UnZipArchiveExcept(archivePath, extractFolder, overwrite);
         }
 
-        public static void UnZipArchiveExcept(string archivePath, string extractFolder, bool overwrite = true, IEnumerable<string> exceptionList = null)
+        public static void UnZipArchiveExcept(string archivePath, string extractFolder, bool overwrite = true,
+            IEnumerable<string> exceptionList = null, bool deleteFromSoure = false)
         {
             using (var archive = OpenCreate(archivePath))
             {
@@ -29,19 +30,23 @@ namespace Dnn.ExportImport.Components.Common
                     var entry in
                         archive.Entries.Where(
                             entry =>
-                                ((exceptionList != null && !exceptionList.Contains(entry.FullName)) || exceptionList == null) &&
+                                ((exceptionList != null && !exceptionList.Contains(entry.FullName)) ||
+                                 exceptionList == null) &&
                                 !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0))
                 {
                     var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
                     if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
                         Directory.CreateDirectory(path);
-                    entry.ExtractToFile(Path.Combine(extractFolder, entry.FullName), overwrite);
+                    if (!File.Exists(Path.Combine(extractFolder, entry.FullName)) || overwrite)
+                        entry.ExtractToFile(Path.Combine(extractFolder, entry.FullName), overwrite);
+                    if (deleteFromSoure)
+                        entry.Delete();
                 }
             }
         }
 
         public static void UnZipFileFromArchive(string fileName, string archivePath, string extractFolder,
-            bool overwrite = true, bool deleteFromSoure = true)
+            bool overwrite = true, bool deleteFromSoure = false)
         {
             using (var archive = OpenCreate(archivePath))
             {
@@ -50,13 +55,15 @@ namespace Dnn.ExportImport.Components.Common
                     return;
 
                 var fileEntry = archive.GetEntry(fileName);
-                fileEntry?.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
+                if (!File.Exists(Path.Combine(extractFolder, fileEntry.FullName)) || overwrite)
+                    fileEntry?.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
                 if (deleteFromSoure)
                     fileEntry?.Delete();
             }
         }
 
-        public static void AddFilesToArchive(IEnumerable<string> files, string archivePath, int folderOffset, string folder = null)
+        public static void AddFilesToArchive(IEnumerable<string> files, string archivePath, int folderOffset,
+            string folder = null)
         {
             using (var archive = OpenCreate(archivePath))
             {

@@ -165,7 +165,7 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath);
+                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath, exporteDto.CollisionResolution== CollisionResolution.Overwrite);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;

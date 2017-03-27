@@ -46,14 +46,14 @@ namespace Dnn.ExportImport.Components.Engines
 
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
-        private static readonly string DbFolder;
+        private static readonly string ExportFolder;
 
         static ExportImportEngine()
         {
-            DbFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
-            if (!Directory.Exists(DbFolder))
+            ExportFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
+            if (!Directory.Exists(ExportFolder))
             {
-                Directory.CreateDirectory(DbFolder);
+                Directory.CreateDirectory(ExportFolder);
             }
         }
 
@@ -78,33 +78,36 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
-            var dbName = Path.Combine(DbFolder, exportJob.ExportDir, Constants.ExportDbName);
+            var dbName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
 
-            //Clear all the files in finfo.Directory. Create if doesn't exists.
-            if (finfo.Directory != null)
-            {
-                if (finfo.Directory.Exists)
-                {
-                    finfo.Directory.Delete(true);
-                }
-                else
-                {
-                    finfo.Directory.Create();
-                }
-            }
+
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
             //Delete so we start a fresh export database; only if there is no previous checkpoint exists
             if (checkpoints.Count == 0)
             {
-                if (finfo.Exists) finfo.Delete();
+                if (finfo.Directory != null && finfo.Directory.Exists)
+                {
+                    finfo.Directory.Delete(true);
+                }
+                //Clear all the files in finfo.Directory. Create if doesn't exists.
+                finfo.Directory?.Create();
                 result.AddSummary("Starting Exporting Repository", finfo.Name);
             }
             else
             {
-                result.AddSummary("Resuming Exporting Repository", finfo.Name);
+                if (finfo.Directory != null && finfo.Directory.Exists)
+                {
+                    result.AddSummary("Resuming Exporting Repository", finfo.Name);
+                }
+                else
+                {
+                    scheduleHistoryItem.AddLogNote("Resuming data not found.");
+                    result.AddSummary("Resuming data not found.", finfo.Name);
+                    return result;
+                }
             }
 
             exportJob.JobStatus = JobStatus.InProgress;
@@ -211,9 +214,15 @@ namespace Dnn.ExportImport.Components.Engines
                     exportJob.JobStatus = JobStatus.Successful;
                     SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }
-
-                finfo = new FileInfo(finfo.FullName); // refresh to get new size
-                result.AddSummary("Exported File Size", Util.FormatSize(finfo.Length));
+                var zipDbName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipDbName);
+                var zipAssetsName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipFiles);
+                var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
+                result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
+                if (File.Exists(zipAssetsName))
+                {
+                    var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
+                    result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
+                }
             }
 
             return result;
@@ -236,7 +245,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            var dbName = Path.Combine(DbFolder, importJob.ExportDir, Constants.ExportDbName);
+            var dbName = Path.Combine(ExportFolder, importJob.ExportDir, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
 
             if (!finfo.Exists)
@@ -410,22 +419,6 @@ namespace Dnn.ExportImport.Components.Engines
             } while (parentServices.Count > 0);
         }
 
-
-        //private static void Clear(ExportImportJob job)
-        //{
-        //    if (job.JobStatus != JobStatus.Submitted && job.JobStatus != JobStatus.Successful) return;
-        //    //TODO: Error handling
-        //    var exportFolder = Path.Combine(DbFolder);
-        //    var exportFileArchive = $"{Path.Combine(exportFolder, job.ExportDir)}{Constants.ExportZipExt}";
-        //    var folderOffset = exportFileArchive.IndexOf(job.ExportDir, StringComparison.Ordinal);
-        //    var files =
-        //        Directory.GetFiles(exportFolder)
-        //            .Where(file => file.Substring(folderOffset).StartsWith(job.ExportDir))
-        //            .ToList();
-        //    //Delete the unncessary files
-        //    files.ForEach(File.Delete);
-        //}
-
         private static bool CheckCancelledCallBack(ExportImportJob job)
         {
             var job2 = CachingProvider.Instance().GetItem(Util.GetExpImpJobCacheKey(job)) as ExportImportJob;
@@ -552,8 +545,8 @@ namespace Dnn.ExportImport.Components.Engines
         private static void DoPacking(ExportImportJob exportJob, string dbName)
         {
             //TODO: Error handling
-            var exportFileArchive = Path.Combine(DbFolder, exportJob.ExportDir, Constants.ExportZipDbName);
-            var folderOffset = exportFileArchive.IndexOf(exportJob.ExportDir, StringComparison.Ordinal);
+            var exportFileArchive = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipDbName);
+            var folderOffset = exportFileArchive.IndexOf(Constants.ExportZipDbName, StringComparison.Ordinal);
 
             CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset);
             //Delete the Database file.
@@ -563,7 +556,10 @@ namespace Dnn.ExportImport.Components.Engines
         private static void DoUnPacking(ExportImportJob importJob)
         {
             //TODO: Error handling
-            var extractFolder = Path.Combine(DbFolder, importJob.ExportDir);
+            var extractFolder = Path.Combine(ExportFolder, importJob.ExportDir);
+            var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
+            if (File.Exists(dbName))
+                return;
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
         }
