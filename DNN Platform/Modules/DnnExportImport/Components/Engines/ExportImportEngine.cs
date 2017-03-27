@@ -249,7 +249,10 @@ namespace Dnn.ExportImport.Components.Engines
             var finfo = new FileInfo(dbName);
 
             if (!finfo.Exists)
+            {
                 DoUnPacking(importJob);
+                finfo = new FileInfo(dbName);
+            }
 
             if (!finfo.Exists)
             {
