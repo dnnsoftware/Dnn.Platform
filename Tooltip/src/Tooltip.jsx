@@ -1,11 +1,35 @@
-import React, { PropTypes } from "react";
-import ReactTooltip from "react-tooltip";
+import React, { Component, PropTypes } from "react";
+import ReactPortalTooltip from "react-portal-tooltip";
 import uniqueId from "lodash/uniqueId";
 import InfoIcon from "./InfoIcon";
 import ErrorIcon from "./ErrorIcon";
 import GlobalIcon from "./GlobalIcon";
 import CustomIcon from "./CustomIcon";
 import "./style.less";
+
+const colors = {
+    error: "#EA2134",
+    info: "#C8C8C8",
+    global: "#21A3DA"
+};
+
+function getStyle(type) {
+    const color = colors[type];
+    return {
+        style: {
+            background: color,
+            color: "white",
+            padding: "10px 20px",
+            transition: "opacity 0.2s ease-in-out, visibility 0.2s ease-in-out",
+            boxShadow: "none",
+            fontFamily: "'proxima_nova', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+        },
+        arrowStyle: {
+            color,
+            borderColor: false
+        }
+    };
+}
 
 const getTooltipText = function (messages) {
     if (!messages || !messages.length) {
@@ -27,40 +51,57 @@ function getIconComponent(type) {
     }
 }
 
-const Tooltip = ({messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick}) => {
-    const id = uniqueId("tooltip-");
-    const containerClass = "dnn-ui-common-tooltip " + type + " " + (className ? className : "");
-    const message = getTooltipText(messages);
-    const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
+class Tooltip extends Component {
 
-    if (!message || rendered === false) {
-        return <noscript />;
+    componentWillMount() {
+        const id = uniqueId("tooltip-");
+        this.setState({id: id, active: false});
     }
 
-    return (
-        <div className={containerClass} style={style}>
-            <div className="icon" data-tip data-for={id} onClick={onClick}>
-                <TooltipIcon icon={customIcon ? customIcon : null} />
+    showTooltip() {
+        this.setState({isTooltipActive: true});
+    }
+
+    hideTooltip() {
+        this.setState({isTooltipActive: false});
+    }
+    
+    render() {
+        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick} = this.props;
+        const containerClass = "dnn-ui-common-tooltip " + type + " " + (className ? className : "");
+        const message = getTooltipText(messages);
+        const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
+
+        if (!message || rendered === false) {
+            return <noscript />;
+        }
+
+        return (
+            <div className={containerClass} style={style}>
+                <div id={this.state.id} className="icon" onClick={onClick}
+                    onMouseEnter={this.showTooltip.bind(this)}
+                    onMouseLeave={this.hideTooltip.bind(this)}>
+                    <TooltipIcon icon={customIcon ? customIcon : null} />
+                </div>
+                <ReactPortalTooltip
+                    style={getStyle(type)}
+                    active={this.state.isTooltipActive}
+                    position={tooltipPlace}
+                    tooltipTimeout={delayHide}
+                    arrow="center"
+                    parent={"#" + this.state.id}>
+                    <div dangerouslySetInnerHTML={{ __html: message }} />
+                </ReactPortalTooltip>
             </div>
-            <ReactTooltip
-                id={id}
-                effect="solid"
-                place={tooltipPlace}
-                type={type}
-                class={"tooltip-text" + (tooltipClass ? (" " + tooltipClass) : "")}
-                delayHide={delayHide}
-                multiline={true}>
-                <div dangerouslySetInnerHTML={{ __html: message }}></div>
-            </ReactTooltip>
-        </div>
-    );
-};
+        );
+    }
+}
 
 Tooltip.propTypes = {
     messages: PropTypes.array.isRequired,
     type: PropTypes.oneOf(["error", "info", "global"]).isRequired,
     rendered: PropTypes.bool,
-    tooltipPlace: PropTypes.string,
+    tooltipPlace: PropTypes.oneOf(["top", "bottom"]).isRequired,
     style: PropTypes.object,
     className: PropTypes.string,
     delayHide: PropTypes.number,
