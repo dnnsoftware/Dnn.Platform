@@ -65,8 +65,13 @@ namespace Dnn.ExportImport.Services
             }
 
             var controller = new ImportController();
-            var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
-            return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
+            string message;
+            if (controller.VerifyImportPackage(importDto.PackageId, out message))
+            {
+                var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
+                return Request.CreateResponse(HttpStatusCode.OK, new {jobId});
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
         [HttpGet]

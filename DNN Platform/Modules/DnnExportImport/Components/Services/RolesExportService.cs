@@ -85,7 +85,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (CheckPoint.Stage > 2) return;
 
@@ -93,7 +93,7 @@ namespace Dnn.ExportImport.Components.Services
             var otherRoleGroups = Repository.GetAllItems<ExportRoleGroup>().ToList();
             if (CheckPoint.Stage == 0)
             {
-                ProcessRoleGroups(importJob, exportDto, otherRoleGroups);
+                ProcessRoleGroups(importJob, importDto, otherRoleGroups);
                 Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
                 CheckPoint.Progress = 40;
 
@@ -106,7 +106,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 1)
             {
                 Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
-                ProcessRoles(importJob, exportDto, otherRoleGroups, otherRoles);
+                ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
                 Repository.UpdateItems(otherRoles);
                 CheckPoint.Progress = 50;
 
@@ -118,7 +118,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(importJob)) return;
                 var otherRoleSettings = Repository.GetAllItems<ExportRoleSetting>().ToList();
-                ProcessRoleSettings(importJob, exportDto, otherRoles, otherRoleSettings);
+                ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
                 Repository.UpdateItems(otherRoleSettings);
                 Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
@@ -128,7 +128,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessRoleGroups(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportRoleGroup> otherRoleGroups)
         {
             var changedGroups = new List<RoleGroupItem>();
@@ -144,7 +144,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.RoleGroupID;
-                    switch (exportDto.CollisionResolution)
+                    switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored role group", other.RoleGroupName);
@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
                 else
@@ -181,7 +181,7 @@ namespace Dnn.ExportImport.Components.Services
                 RefreshRecordsUserIds(changedGroups);
         }
 
-        private void ProcessRoles(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessRoles(ExportImportJob importJob, ImportDto importDto,
             List<ExportRoleGroup> otherRoleGroups, IEnumerable<ExportRole> otherRoles)
         {
             var roleItems = new List<RoleItem>();
@@ -195,7 +195,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (localRoleInfo != null)
                 {
                     other.LocalId = localRoleInfo.RoleID;
-                    switch (exportDto.CollisionResolution)
+                    switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored role", other.RoleName);
@@ -233,7 +233,7 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Updated role", other.RoleName);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
 
@@ -276,7 +276,7 @@ namespace Dnn.ExportImport.Components.Services
                 RefreshRecordsUserIds(roleItems);
         }
 
-        private void ProcessRoleSettings(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessRoleSettings(ExportImportJob importJob, ImportDto importDto,
             IList<ExportRole> otherRoles, IEnumerable<ExportRoleSetting> otherRoleSettings)
         {
             var changedSettings = new List<SettingItem>();
@@ -291,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                 var localRoleInfo = RoleController.Instance.GetRoleById(portalId, otherRole.LocalId.Value);
                 if (localRoleInfo == null) continue;
 
-                switch (exportDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
                         Result.AddLogEntry("Ignored role setting", other.SettingName);
@@ -313,7 +313,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
 
             }
@@ -344,13 +344,13 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> SettingItem)
+        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItem)
         {
             var provider = DataProvider.Instance();
-            foreach (var settingItem in SettingItem)
+            foreach (var item in settingItem)
             {
                 provider.UpdateRoleSettingChangers(
-                    settingItem.RoleId, settingItem.Name, settingItem.CreatedBy, settingItem.ModifiedBy);
+                    item.RoleId, item.Name, item.CreatedBy, item.ModifiedBy);
             }
         }
 

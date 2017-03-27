@@ -54,12 +54,12 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(importJob)) return;
 
-            ProcessImportPages(importJob, exportDto);
+            ProcessImportPages(importJob, importDto);
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
@@ -68,7 +68,7 @@ namespace Dnn.ExportImport.Components.Services
 
         #region import methods
 
-        private void ProcessImportPages(ExportImportJob importJob, ExportDto exportDto)
+        private void ProcessImportPages(ExportImportJob importJob, ImportDto importDto)
         {
             var totalImportedTabs = 0;
             var totalImportedSettings = 0;
@@ -97,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (localTab != null)
                 {
-                    switch (exportDto.CollisionResolution)
+                    switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored Tab", otherTab.TabName + "(" + otherTab.TabPath + ")");
@@ -110,7 +110,7 @@ namespace Dnn.ExportImport.Components.Services
                             totalImportedTabs++;
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
                 else

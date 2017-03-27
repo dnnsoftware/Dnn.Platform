@@ -46,5 +46,11 @@ namespace Dnn.ExportImport.Components.Dto
         /// in the portal (<see cref="Constants.ExportFolder"/>)
         /// </remarks>
         public string PackageId { get; set; }
+
+        /// <summary>
+        /// Specifies what to do when there is a collision during the import process.
+        /// See <see cref="CollisionResolution"/>
+        /// </summary>
+        public CollisionResolution CollisionResolution { get; set; } = CollisionResolution.Ignore;
     }
 }

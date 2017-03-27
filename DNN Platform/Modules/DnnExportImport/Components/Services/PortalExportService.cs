@@ -92,28 +92,28 @@ namespace Dnn.ExportImport.Components.Services
              */
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             var portalSettings = Repository.GetAllItems<ExportPortalSetting>().ToList();
-            ProcessPortalSettings(importJob, exportDto, portalSettings);
+            ProcessPortalSettings(importJob, importDto, portalSettings);
             Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
             CheckPoint.Progress += 50;
 
             var portalLanguages = Repository.GetAllItems<ExportPortalLanguage>().ToList();
-            ProcessPortalLanguages(importJob, exportDto, portalLanguages);
+            ProcessPortalLanguages(importJob, importDto, portalLanguages);
             Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
             CheckPoint.Progress += 50;
 
             /*
             ProgressPercentage = 0;
             var portalLocalizations = Repository.GetAllItems<ExportPortalLocalization>().ToList();
-            ProcessPortalLocalizations(importJob, exportDto, portalLocalizations);
+            ProcessPortalLocalizations(importJob, importDto, portalLocalizations);
             Result.AddSummary("Imported Portal Localizations", portalLocalizations.Count.ToString());
             ProgressPercentage += 40;
             */
         }
 
-        private void ProcessPortalSettings(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessPortalSettings(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportPortalSetting> portalSettings)
         {
             using (var db = DataContext.Instance())
@@ -140,7 +140,7 @@ namespace Dnn.ExportImport.Components.Services
                     var isUpdate = false;
                     if (existingPortalSetting != null)
                     {
-                        switch (exportDto.CollisionResolution)
+                        switch (importDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
                                 isUpdate = true;
@@ -149,7 +149,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Ignored portal settings", exportPortalSetting.SettingName);
                                 continue;
                             default:
-                                throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                                throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                         }
                     }
                     exportPortalSetting.PortalId = portalId;
@@ -174,7 +174,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessPortalLanguages(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessPortalLanguages(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportPortalLanguage> portalLanguages)
         {
             using (var db = DataContext.Instance())
@@ -201,7 +201,7 @@ namespace Dnn.ExportImport.Components.Services
                     var isUpdate = false;
                     if (existingPortalLanguage != null)
                     {
-                        switch (exportDto.CollisionResolution)
+                        switch (importDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
                                 isUpdate = true;
@@ -210,7 +210,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Ignored portal language", exportPortalLanguage.CultureCode);
                                 continue;
                             default:
-                                throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                                throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                         }
                     }
                     exportPortalLanguage.PortalId = portalId;
@@ -237,7 +237,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
 #if false
-        private static void ProcessPortalLocalizations(ExportImportJob importJob, ExportDto exportDto,
+        private static void ProcessPortalLocalizations(ExportImportJob importJob, ImportDto importDto,
            IEnumerable<ExportPortalLocalization> portalLocalizations, ExportImportResult result)
         {
             using (var db = DataContext.Instance())
@@ -261,7 +261,7 @@ namespace Dnn.ExportImport.Components.Services
                     var isUpdate = false;
                     if (existingPortalLocalization != null)
                     {
-                        switch (exportDto.CollisionResolution)
+                        switch (importDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
                                 isUpdate = true;
@@ -270,7 +270,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Ignored portal localization", exportPortalLocalization.CultureCode);
                                 continue;
                             default:
-                                throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                                throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                         }
                     }
                     exportPortalLocalization.PortalId = portalId;

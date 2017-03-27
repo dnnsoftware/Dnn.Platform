@@ -75,12 +75,6 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeFiles { get; set; }
 
         /// <summary>
-        /// Specifies what to do when there is a collision during the import process.
-        /// See <see cref="CollisionResolution"/>
-        /// </summary>
-        public CollisionResolution CollisionResolution { get; set; }
-
-        /// <summary>
         /// Items' last modified on or created on for the items which need to be exported.
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.

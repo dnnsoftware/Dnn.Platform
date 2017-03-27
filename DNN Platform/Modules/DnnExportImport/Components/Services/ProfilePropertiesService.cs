@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (CheckPoint.Stage > 0) return;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (existingProfileProperty != null)
                     {
-                        switch (exportDto.CollisionResolution)
+                        switch (importDto.CollisionResolution)
                         {
                             case CollisionResolution.Overwrite:
                                 ProcessUpdateProfileProperty(db, profileProperty, existingProfileProperty,
@@ -90,7 +90,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Result.AddLogEntry("Ignored profile property", profileProperty.PropertyName);
                                 break;
                             default:
-                                throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                                throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                         }
                     }
                     else

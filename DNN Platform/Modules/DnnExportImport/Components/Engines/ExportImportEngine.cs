@@ -347,7 +347,7 @@ namespace Dnn.ExportImport.Components.Engines
                                                  };
                             CheckpointCallback(service);
 
-                            service.ImportData(importJob, exportedDto);
+                            service.ImportData(importJob, importDto);
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
                     }

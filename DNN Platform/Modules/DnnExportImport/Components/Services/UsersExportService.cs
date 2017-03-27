@@ -177,7 +177,7 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (CheckCancelled(importJob)) return;
 
@@ -230,10 +230,10 @@ namespace Dnn.ExportImport.Components.Services
                             }
 
                             var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                            ProcessUser(importJob, exportDto, db, user, userPortal, aspNetUser, aspnetMembership);
+                            ProcessUser(importJob, importDto, db, user, userPortal, aspNetUser, aspnetMembership);
                             totalAspnetUserImported += 1;
                             totalAspnetMembershipImported += 1;
-                            ProcessUserPortal(importJob, exportDto, db, userPortal, user.UserId, user.Username);
+                            ProcessUserPortal(importJob, importDto, db, userPortal, user.UserId, user.Username);
                             totalPortalsImported += userPortal != null ? 1 : 0;
 
                             //Update the source repository local ids.
@@ -267,7 +267,7 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
         }
 
-        private void ProcessUser(ExportImportJob importJob, ExportDto exportDto, IDataContext db, ExportUser user,
+        private void ProcessUser(ExportImportJob importJob, ImportDto importDto, IDataContext db, ExportUser user,
             ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {
             if (user == null) return;
@@ -277,7 +277,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (existingUser != null)
             {
-                switch (exportDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -286,7 +286,7 @@ namespace Dnn.ExportImport.Components.Services
                         Result.AddLogEntry("Ignored user", user.Username);
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             if (isUpdate)
@@ -316,7 +316,7 @@ namespace Dnn.ExportImport.Components.Services
             user.LocalId = user.UserId;
         }
 
-        private void ProcessUserPortal(ExportImportJob importJob, ExportDto exportDto, IDataContext db,
+        private void ProcessUserPortal(ExportImportJob importJob, ImportDto importDto, IDataContext db,
             ExportUserPortal userPortal, int userId, string username)
         {
             if (userPortal == null) return;
@@ -326,7 +326,7 @@ namespace Dnn.ExportImport.Components.Services
             var isUpdate = false;
             if (existingPortal != null)
             {
-                switch (exportDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -335,7 +335,7 @@ namespace Dnn.ExportImport.Components.Services
                         //Result.AddLogEntry("Ignored user portal", $"{username}/{userPortal.PortalId}");
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             userPortal.UserId = userId;

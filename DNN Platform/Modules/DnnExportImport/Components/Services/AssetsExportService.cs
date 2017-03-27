@@ -144,7 +144,7 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Exported Files", totalFilesExported.ToString());
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exporteDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (CheckCancelled(importJob)) return;
             //Stage 1: Portals files unzipped. 
@@ -165,7 +165,7 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath, exporteDto.CollisionResolution== CollisionResolution.Overwrite);
+                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath, importDto.CollisionResolution== CollisionResolution.Overwrite);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
@@ -191,7 +191,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             /** PROCESS FOLDERS **/
                             //Create new or update existing folder
-                            if (ProcessFolder(importJob, exporteDto, db, sourceFolder, localFolders))
+                            if (ProcessFolder(importJob, importDto, db, sourceFolder, localFolders))
                             {
                                 totalFolderImported++;
                                 Repository.UpdateItem(sourceFolder);
@@ -214,7 +214,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 foreach (var folderPermission in sourceFolderPermissions)
                                 {
-                                    ProcessFolderPermission(importJob, exporteDto, db, folderPermission,
+                                    ProcessFolderPermission(importJob, importDto, db, folderPermission,
                                         localPermissions);
                                     Repository.UpdateItem(folderPermission);
                                 }
@@ -237,7 +237,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 foreach (var file in sourceFiles)
                                 {
-                                    ProcessFiles(importJob, exporteDto, db, file, localFiles);
+                                    ProcessFiles(importJob, importDto, db, file, localFiles);
                                     Repository.UpdateItem(file);
                                 }
                                 totalFilesImported += sourceFiles.Count;
@@ -279,7 +279,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private bool ProcessFolder(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+        private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, IDataContext db,
             ExportFolder folder, IEnumerable<ExportFolder> localFolders)
         {
             var portalId = importJob.PortalId;
@@ -297,7 +297,7 @@ namespace Dnn.ExportImport.Components.Services
             var modifiedBy = Util.GetUserIdOrName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
             if (existingFolder != null)
             {
-                switch (exporteDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -306,7 +306,7 @@ namespace Dnn.ExportImport.Components.Services
                         //TODO: Log that user was ignored.
                         return false;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             folder.PortalId = portalId;
@@ -383,7 +383,7 @@ namespace Dnn.ExportImport.Components.Services
             return true;
         }
 
-        private void ProcessFolderPermission(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+        private void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto, IDataContext db,
             ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
         {
             var portalId = importJob.PortalId;
@@ -409,7 +409,7 @@ namespace Dnn.ExportImport.Components.Services
                 folderPermission.LastModifiedByUserName);
             if (existingFolderPermission != null)
             {
-                switch (exporteDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -418,7 +418,7 @@ namespace Dnn.ExportImport.Components.Services
                         //TODO: Log that user was ignored.
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             if (isUpdate)
@@ -464,7 +464,7 @@ namespace Dnn.ExportImport.Components.Services
             folderPermission.LocalId = folderPermission.FolderPermissionId;
         }
 
-        private void ProcessFiles(ExportImportJob importJob, ExportDto exporteDto, IDataContext db,
+        private void ProcessFiles(ExportImportJob importJob, ImportDto importDto, IDataContext db,
             ExportFile file, IEnumerable<ExportFile> localFiles)
         {
             var portalId = importJob.PortalId;
@@ -476,7 +476,7 @@ namespace Dnn.ExportImport.Components.Services
             var modifiedBy = Util.GetUserIdOrName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
             if (existingFile != null)
             {
-                switch (exporteDto.CollisionResolution)
+                switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Overwrite:
                         isUpdate = true;
@@ -485,7 +485,7 @@ namespace Dnn.ExportImport.Components.Services
                         //TODO: Log that user was ignored.
                         return;
                     default:
-                        throw new ArgumentOutOfRangeException(exporteDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
             file.PortalId = portalId;

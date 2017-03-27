@@ -97,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        public override void ImportData(ExportImportJob importJob, ExportDto exportDto)
+        public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
 
             if (CheckPoint.Stage > 3) return;
@@ -129,7 +129,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 2)
             {
-                ProcessVocabularies(importJob, exportDto, otherScopeTypes, otherVocabularies);
+                ProcessVocabularies(importJob, importDto, otherScopeTypes, otherVocabularies);
                 Repository.UpdateItems(otherVocabularies);
                 Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
                 CheckPoint.Progress = 60;
@@ -142,7 +142,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 if (CheckCancelled(importJob)) return;
                 var otherTaxonomyTerms = Repository.GetAllItems<TaxonomyTerm>().ToList();
-                ProcessTaxonomyTerms(importJob, exportDto, otherVocabularies, otherTaxonomyTerms);
+                ProcessTaxonomyTerms(importJob, importDto, otherVocabularies, otherTaxonomyTerms);
                 Repository.UpdateItems(otherTaxonomyTerms);
                 Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 100;
@@ -152,7 +152,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessVocabularies(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto,
             IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {
             var changed = false;
@@ -169,7 +169,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.VocabularyID;
-                    switch (exportDto.CollisionResolution)
+                    switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored vocabulary", other.Name);
@@ -187,7 +187,7 @@ namespace Dnn.ExportImport.Components.Services
                             changed = true;
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
                 else
@@ -208,7 +208,7 @@ namespace Dnn.ExportImport.Components.Services
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
         }
 
-        private void ProcessTaxonomyTerms(ExportImportJob importJob, ExportDto exportDto,
+        private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto,
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
@@ -225,7 +225,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (local != null)
                 {
                     other.LocalId = local.TermID;
-                    switch (exportDto.CollisionResolution)
+                    switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored taxonomy", other.Name);
@@ -249,7 +249,7 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(exportDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
                 else
