@@ -122,7 +122,11 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 	-moz-box-shadow: 		0px 2px 0px 0px rgba(0, 0, 0, .5);
 	box-shadow: 			0px 2px 0px 0px rgba(0, 0, 0, .5); 
 }
-.dnnMemberDirectory .mdAdvancedSearchForm label{ width:100px;display: inline-block; }
+    .dnnMemberDirectory .mdAdvancedSearchForm label {
+        width: 100px;
+        display: inline-block;
+        color: #666;
+    }
 .dnnMemberDirectory .mdAdvancedSearchForm input[type="text"]{ width:130px; margin-right:0;display: inline-block;}
 .dnnMemberDirectory .mdAdvancedSearchForm .dnnPrimaryAction{margin:0 0 5px 105px;}
 
