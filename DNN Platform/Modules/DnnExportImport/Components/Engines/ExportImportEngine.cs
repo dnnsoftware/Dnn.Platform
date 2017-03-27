@@ -211,6 +211,9 @@ namespace Dnn.ExportImport.Components.Engines
                 if (exportJob.JobStatus == JobStatus.InProgress)
                 {
                     DoPacking(exportJob, dbName);
+                    //TODO: Thumb generation at root with name exportJob.Directory.jpg
+                    var exportController = new ExportController();
+                    exportController.CreatePackageManifest(exportJob);
                     exportJob.JobStatus = JobStatus.Successful;
                     SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }

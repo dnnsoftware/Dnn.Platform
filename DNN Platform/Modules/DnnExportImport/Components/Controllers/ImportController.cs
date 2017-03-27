@@ -19,10 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
+using DotNetNuke.Entities.Portals.Internal;
+using Dnn.ExportImport.Components.Repository;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -35,6 +42,74 @@ namespace Dnn.ExportImport.Components.Controllers
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
             AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
+        }
+
+        public IEnumerable<ImportPackageInfo> GetImportPackages()
+        {
+            var directories = Directory.GetDirectories(ExportFolder);
+            return (from directory in directories.Where(IsValidImportFolder)
+                    let dirInfo = new DirectoryInfo(directory)
+                    select ParseImportManifest(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
+        }
+
+        public bool VerifyImportPackage(string packageId, out string errorMessage)
+        {
+            bool isValid;
+            errorMessage = string.Empty;
+            var importFolder = Path.Combine(ExportFolder, packageId);
+            if (!IsValidImportFolder(importFolder)) return false;
+            var dbPath = UnPackDatabase(importFolder);
+            try
+            {
+                using (var ctx = new ExportImportRepository(dbPath))
+                {
+                    //TODO: Build the import info from database.
+                    isValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+                errorMessage = "Package is not valid. Technical Details:" + ex.Message;
+            }
+            return isValid;
+        }
+
+        private static string UnPackDatabase(string folderPath)
+        {
+            //TODO: Error handling
+            var dbName = Path.Combine(folderPath, Constants.ExportDbName);
+            if (File.Exists(dbName))
+                return dbName;
+            var zipDbName = Path.Combine(folderPath, Constants.ExportZipDbName);
+            CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, folderPath, false);
+            return dbName;
+        }
+
+        private static bool IsValidImportFolder(string folderPath)
+        {
+            return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) &&
+                   File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
+        }
+
+        private static ImportPackageInfo ParseImportManifest(string manifestPath, DirectoryInfo importDirectoryInfo)
+        {
+            using (var reader = PortalTemplateIO.Instance.OpenTextReader(manifestPath))
+            {
+                var xmlDoc = XDocument.Load(reader);
+                return new ImportPackageInfo
+                {
+                    PackageId = importDirectoryInfo.Name,
+                    Name = GetTagValue(xmlDoc, "PackageName") ?? importDirectoryInfo.Name,
+                    Description = GetTagValue(xmlDoc, "PackageDescription") ?? importDirectoryInfo.Name
+                };
+            }
+        }
+
+        private static string GetTagValue(XDocument xmlDoc, string name)
+        {
+            return (from f in xmlDoc.Descendants("package")
+                    select f.Element(name)?.Value).SingleOrDefault();
         }
     }
 }

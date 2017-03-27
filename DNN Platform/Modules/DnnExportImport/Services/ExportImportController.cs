@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -66,6 +67,25 @@ namespace Dnn.ExportImport.Services
             var controller = new ImportController();
             var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
             return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
+        }
+
+        [HttpGet]
+        public HttpResponseMessage VerifyImportPackage(string packageId)
+        {
+            var controller = new ImportController();
+            string message;
+            var isValid = controller.VerifyImportPackage(packageId, out message);
+            return isValid
+                ? Request.CreateResponse(HttpStatusCode.OK)
+                : Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetImportPackages()
+        {
+            var controller = new ImportController();
+            var packages = controller.GetImportPackages().OrderBy(package => package.Name);
+            return Request.CreateResponse(HttpStatusCode.OK, packages);
         }
 
         // this is POST so users can't cancel using a simple browser link

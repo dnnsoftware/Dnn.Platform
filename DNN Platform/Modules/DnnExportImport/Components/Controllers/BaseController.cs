@@ -20,10 +20,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Jobs;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -31,6 +34,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Scheduler;
+using DotNetNuke.Common;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
@@ -39,6 +43,17 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     public class BaseController
     {
+        public static readonly string ExportFolder;
+
+        static BaseController()
+        {
+            ExportFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
+            if (!Directory.Exists(ExportFolder))
+            {
+                Directory.CreateDirectory(ExportFolder);
+            }
+        }
+
         protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
         {
             var objSecurity = new PortalSecurity();
@@ -164,7 +179,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,
-                ExportFile = job.CompletedOnDate.HasValue ? job.ExportDir : null
+                ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null
             };
         }
 

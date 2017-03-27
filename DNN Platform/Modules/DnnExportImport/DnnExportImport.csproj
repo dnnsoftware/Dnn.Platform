@@ -58,6 +58,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SolutionInfo.cs">
@@ -83,6 +84,7 @@
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\ImportPackageInfo.cs" />
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />

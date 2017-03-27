@@ -154,7 +154,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
                     {
                         var row = table.NewRow();
-                        row["JobId"] =jobId;
+                        row["JobId"] = jobId;
                         row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
                         row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
                         row["IsSummary"] = item.IsSummary;

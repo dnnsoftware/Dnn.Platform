@@ -20,10 +20,14 @@
 #endregion
 
 using System;
+using System.Text;
+using System.Xml;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
+using System.IO;
+using Dnn.ExportImport.Components.Entities;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -42,6 +46,29 @@ namespace Dnn.ExportImport.Components.Controllers
 
             AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
+        }
+
+        public void CreatePackageManifest(ExportImportJob exportJob)
+        {
+            var xmlSettings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true,
+                Indent = true,
+                IndentChars = "  ",
+                Encoding = Encoding.UTF8,
+                WriteEndDocumentOnClose = true
+            };
+            var filename = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
+            if (File.Exists(filename)) File.Delete(filename);
+            using (var writer = XmlWriter.Create(filename, xmlSettings))
+            {
+                writer.WriteStartElement("package");
+                writer.WriteElementString("PackageName", exportJob.Name);
+                writer.WriteElementString("PackageDescription", !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name);
+                writer.WriteEndElement();
+                writer.Close();
+            }
         }
     }
 }
