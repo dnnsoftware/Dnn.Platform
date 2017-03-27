@@ -78,7 +78,7 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
-            var dbName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportDbName);
+            var dbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
 
@@ -214,8 +214,8 @@ namespace Dnn.ExportImport.Components.Engines
                     exportJob.JobStatus = JobStatus.Successful;
                     SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
                 }
-                var zipDbName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipDbName);
-                var zipAssetsName = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipFiles);
+                var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
+                var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
                 var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
                 result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
                 if (File.Exists(zipAssetsName))
@@ -245,7 +245,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return result;
             }
 
-            var dbName = Path.Combine(ExportFolder, importJob.ExportDir, Constants.ExportDbName);
+            var dbName = Path.Combine(ExportFolder, importJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
 
             if (!finfo.Exists)
@@ -548,7 +548,7 @@ namespace Dnn.ExportImport.Components.Engines
         private static void DoPacking(ExportImportJob exportJob, string dbName)
         {
             //TODO: Error handling
-            var exportFileArchive = Path.Combine(ExportFolder, exportJob.ExportDir, Constants.ExportZipDbName);
+            var exportFileArchive = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
             var folderOffset = exportFileArchive.IndexOf(Constants.ExportZipDbName, StringComparison.Ordinal);
 
             CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset);
@@ -559,7 +559,7 @@ namespace Dnn.ExportImport.Components.Engines
         private static void DoUnPacking(ExportImportJob importJob)
         {
             //TODO: Error handling
-            var extractFolder = Path.Combine(ExportFolder, importJob.ExportDir);
+            var extractFolder = Path.Combine(ExportFolder, importJob.Directory);
             var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
             if (File.Exists(dbName))
                 return;

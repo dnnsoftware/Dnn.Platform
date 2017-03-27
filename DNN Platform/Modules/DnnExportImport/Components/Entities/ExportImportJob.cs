@@ -44,7 +44,7 @@ namespace Dnn.ExportImport.Components.Entities
         public DateTime CreatedOnDate { get; set; }
         public DateTime LastModifiedOnDate { get; set; }
         public DateTime? CompletedOnDate { get; set; }
-        public string ExportDir { get; set; }
+        public string Directory { get; set; }
         public string JobObject { get; set; }
 
         public int KeyID
@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Components.Entities
             CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
             LastModifiedOnDate = Null.SetNullDateTime(dr[nameof(LastModifiedOnDate)]);
             CompletedOnDate = Null.SetNullDateTime(dr[nameof(CompletedOnDate)]);
-            ExportDir = Null.SetNullString(dr[nameof(ExportDir)]);
+            Directory = Null.SetNullString(dr[nameof(Directory)]);
             JobObject = Null.SetNullString(dr[nameof(JobObject)]);
 
             if (CreatedOnDate.Kind != DateTimeKind.Utc)

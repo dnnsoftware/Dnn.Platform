@@ -38,13 +38,13 @@ namespace Dnn.ExportImport.Components.Dto
         public int PortalId { get; set; }
 
         /// <summary>
-        /// Name of exported file to be imported
+        /// Id of exported package to be imported
         /// </summary>
         /// <remarks>
         /// For security reasons, this name does not have a folder or extension name.
         /// These will be used by convention and picked from a very specific location
         /// in the portal (<see cref="Constants.ExportFolder"/>)
         /// </remarks>
-        public string FileName { get; set; }
+        public string PackageId { get; set; }
     }
 }

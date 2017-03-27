@@ -54,7 +54,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var assetsFile = string.Format(_assetsFolder, exportJob.ExportDir.TrimEnd('\\').TrimEnd('/'));
+                var assetsFile = string.Format(_assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (CheckPoint.Stage == 0)
                 {
@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var assetsFile = string.Format(_assetsFolder, importJob.ExportDir.TrimEnd('\\').TrimEnd('/'));
+            var assetsFile = string.Format(_assetsFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {

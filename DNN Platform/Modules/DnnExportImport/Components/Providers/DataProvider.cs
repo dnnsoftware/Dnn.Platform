@@ -56,10 +56,10 @@ namespace Dnn.ExportImport.Components.Providers
         #endregion
 
         public int AddNewJob(int portalId, int userId, JobType jobType,
-            string jobName, string jobDescription, string exportDir, string serializedObject)
+            string jobName, string jobDescription, string directory, string serializedObject)
         {
             return _dataProvider.ExecuteScalar<int>("ExportImportJobs_Add", portalId,
-                (int)jobType, userId, jobName, jobDescription, exportDir, serializedObject);
+                (int)jobType, userId, jobName, jobDescription, directory, serializedObject);
         }
 
         public void UpdateJobInfo(int jobId, string name, string description)

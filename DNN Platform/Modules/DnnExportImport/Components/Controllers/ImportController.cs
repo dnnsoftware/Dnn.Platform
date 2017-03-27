@@ -32,7 +32,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
-                importDto.PortalId, userId, JobType.Import, null, null, importDto.FileName, dataObject);
+                importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
             AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
         }

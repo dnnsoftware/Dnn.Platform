@@ -23,7 +23,6 @@ using System;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
-using DotNetNuke.Common;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
@@ -34,12 +33,12 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             exportDto.SinceTime = (exportDto.SinceTime ?? Constants.MinDbTime).ToUniversalTime();
 
-            var exportFileName = Globals.CleanFileName(exportDto.ExportName);
+            var directory = DateTime.UtcNow.ToString("yyyyMMddhhmmssfff");
 
             var dataObject = JsonConvert.SerializeObject(exportDto);
 
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
-                JobType.Export, exportDto.ExportName, exportDto.ExportDescription, exportFileName, dataObject);
+                JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
 
             AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
