@@ -76,7 +76,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     //TODO: Build the import info from database.
                     if (summary != null)
-                        BuildImportSummary(ctx, summary);
+                        BuildJobSummary(ctx, summary);
                     isValid = true;
                 }
             }
@@ -111,38 +111,6 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) &&
                    File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
-        }
-
-        private static void BuildImportSummary(IExportImportRepository repository, ImportExportSummary summary)
-        {
-            var summaryItems = new List<SummaryItem>();
-            var implementors = Util.GetPortableImplementors();
-            var exportDto = repository.GetSingleItem<ExportDto>();
-
-            foreach (var implementor in implementors)
-            {
-                implementor.Repository = repository;
-                summaryItems.Add(new SummaryItem
-                {
-                    TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category,
-                    Order = implementor.Priority
-                });
-            }
-            //TODO: Get export file info.
-            summary.ExportFileInfo = new ExportFileInfo();
-            summary.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime;
-            summary.ToDate = exportDto.ToDate;
-            summary.SummaryItems = summaryItems;
-            summary.IncludeDeletions = exportDto.IncludeDeletions;
-            summary.ExportMode = exportDto.FromDate == Constants.MinDbTime
-                ? ExportMode.Complete
-                : ExportMode.Differential;
-
-            //summary.IncludeExtensions = exportDto.IncludeExtensions;
-            //summary.IncludePermissions = exportDto.IncludePermissions;
-            summary.IncludeProfileProperties =
-                exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
         }
     }
 }

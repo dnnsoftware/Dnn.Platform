@@ -124,11 +124,21 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage LastExportUtcTime()
+        public HttpResponseMessage LastExportUtcTime(int portalId)
         {
+            if (!UserInfo.IsSuperUser && portalId != PortalSettings.PortalId)
+            {
+                var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
+            }
+
+            if (portalId < 0)
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    Localization.GetString("InvalidPortal", Constants.SharedResources));
+
             var controller = new BaseController();
-            var lastTime = controller.GetLastExportUtcTime();
-            return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
+            var lastTime = controller.GetLastExportTime(portalId);
+            return Request.CreateResponse(HttpStatusCode.OK, new {lastTime});
         }
 
         [HttpGet]

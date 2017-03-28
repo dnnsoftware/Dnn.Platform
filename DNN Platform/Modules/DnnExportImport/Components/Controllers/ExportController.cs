@@ -38,7 +38,10 @@ namespace Dnn.ExportImport.Components.Controllers
             exportDto.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime();
             exportDto.ToDate = DateTime.Now;
             var directory = DateTime.Now.ToString("yyyyMMddhhmmssfff");
-
+            if (exportDto.ExportMode == ExportMode.Differential)
+            {
+                exportDto.FromDate = GetLastExportTime(exportDto.PortalId);
+            }
             var dataObject = JsonConvert.SerializeObject(exportDto);
 
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,

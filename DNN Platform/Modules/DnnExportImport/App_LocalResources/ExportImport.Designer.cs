@@ -70,6 +70,15 @@ namespace Dnn.ExportImport.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid portal..
+        /// </summary>
+        internal static string InvalidPortal_Text {
+            get {
+                return ResourceManager.GetString("InvalidPortal.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No such job!.
         /// </summary>
         internal static string JobNotExist_Text {

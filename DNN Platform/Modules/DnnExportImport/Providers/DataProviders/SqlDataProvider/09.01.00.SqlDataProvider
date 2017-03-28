@@ -462,6 +462,24 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]
+    @PortalId  int
+AS
+BEGIN
+	SELECT
+		TOP 1 CreatedOnDate AS LastExportTime
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE 
+		PortalId=@PortalId AND JobType = 0 AND JobStatus=2
+	ORDER BY CreatedOnDate DESC
+END
+GO
+
 -- checkpoints procs
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]

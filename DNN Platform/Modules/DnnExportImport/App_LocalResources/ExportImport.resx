@@ -120,6 +120,9 @@
   <data name="ASSETS.InfoText" xml:space="preserve">
     <value>Assets:</value>
   </data>
+  <data name="InvalidPortal.Text" xml:space="preserve">
+    <value>Invalid portal.</value>
+  </data>
   <data name="JobNotExist.Text" xml:space="preserve">
     <value>No such job!</value>
   </data>

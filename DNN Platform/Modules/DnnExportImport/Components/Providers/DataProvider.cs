@@ -124,6 +124,11 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
         }
 
+        public DateTime? GetLastExportTime(int portalId)
+        {
+            return _dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastExportTime", portalId);
+        }
+
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
             _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",

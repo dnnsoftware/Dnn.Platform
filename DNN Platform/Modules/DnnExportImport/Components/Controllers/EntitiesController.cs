@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
@@ -47,6 +48,11 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return CBO.Instance.FillCollection<ExportImportJob>(
                 DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords));
+        }
+
+        public DateTime GetLastExportTime(int portalId)
+        {
+            return DataProvider.Instance().GetLastExportTime(portalId) ?? Constants.MinDbTime;
         }
 
         public void UpdateJobInfo(ExportImportJob job)

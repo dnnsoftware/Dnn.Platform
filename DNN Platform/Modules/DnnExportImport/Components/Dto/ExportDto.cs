@@ -74,12 +74,19 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeFiles { get; set; }
 
+
+        /// <summary>
+        /// Export mode. Differential or complete.
+        /// </summary>
+        public ExportMode ExportMode { get; set; }
+
         /// <summary>
         /// Items' last modified on or created on for the items which need to be exported.
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.
         /// </summary>
-        public DateTimeOffset? FromDate { get; set; }
+        [JsonIgnore]
+        internal DateTimeOffset? FromDate { get; set; }
 
         /// <summary>
         /// Date when job was created. 

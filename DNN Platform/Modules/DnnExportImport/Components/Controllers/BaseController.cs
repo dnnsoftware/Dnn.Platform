@@ -33,11 +33,10 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Scheduler;
+using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
 using DotNetNuke.Collections;
 
@@ -134,7 +133,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 return null;
 
             var jobItem = ToJobItem(job);
-            jobItem.Summary = BuildProgressSummary(jobId);
+            jobItem.Summary = BuildJobSummary(jobId);
             return jobItem;
         }
 
@@ -163,30 +162,10 @@ namespace Dnn.ExportImport.Components.Controllers
         /// differntial date/time to start the job from.
         /// </summary>
         /// <returns></returns>
-        public DateTime GetLastExportUtcTime()
+        public DateTime GetLastExportTime(int portalId)
         {
-            var lastTime = Constants.MinDbTime;
-
-            var scheduleProvider = SchedulingProvider.Instance();
-            var exportSchedulerClient = scheduleProvider.GetSchedule(typeof(ExportImportScheduler).FullName, null);
-            if (exportSchedulerClient != null)
-            {
-                var settings = SchedulingProvider.Instance().GetScheduleItemSettings(exportSchedulerClient.ScheduleID);
-                var lastValue = settings[Constants.LastJobStartTimeKey] as string;
-
-                if (!string.IsNullOrEmpty(lastValue) &&
-                    DateTime.TryParseExact(lastValue, Constants.JobRunDateTimeFormat, null, DateTimeStyles.None, out lastTime))
-                {
-                    lastTime = FixSqlDateTime(lastTime);
-                    if (lastTime > DateTime.UtcNow) lastTime = DateTime.UtcNow;
-                }
-                else
-                {
-                    lastTime = FixSqlDateTime(DateTime.MinValue);
-                }
-            }
-
-            return lastTime.ToUniversalTime();
+            var controller = EntitiesController.Instance;
+            return controller.GetLastExportTime(portalId);
         }
 
         private static DateTime FixSqlDateTime(DateTime datim)
@@ -198,7 +177,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return datim;
         }
 
-        private static ImportExportSummary BuildProgressSummary(int jobId)
+        internal static ImportExportSummary BuildJobSummary(int jobId)
         {
             var summaryItems = new List<SummaryItem>();
             var controller = EntitiesController.Instance;
@@ -216,7 +195,7 @@ namespace Dnn.ExportImport.Components.Controllers
                     exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
                 FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime,
                 ToDate = exportDto.ToDate,
-                ExportMode = exportDto.FromDate == Constants.MinDbTime ? ExportMode.Complete : ExportMode.Differential
+                ExportMode = exportDto.ExportMode
             };
             if (job.JobType == JobType.Export)
             {
@@ -240,6 +219,36 @@ namespace Dnn.ExportImport.Components.Controllers
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
+        }
+
+        internal static void BuildJobSummary(IExportImportRepository repository, ImportExportSummary summary)
+        {
+            var summaryItems = new List<SummaryItem>();
+            var implementors = Util.GetPortableImplementors();
+            var exportDto = repository.GetSingleItem<ExportDto>();
+
+            foreach (var implementor in implementors)
+            {
+                implementor.Repository = repository;
+                summaryItems.Add(new SummaryItem
+                {
+                    TotalItems = implementor.GetImportTotal(),
+                    Category = implementor.Category,
+                    Order = implementor.Priority
+                });
+            }
+            //TODO: Get export file info.
+            summary.ExportFileInfo = new ExportFileInfo();
+            summary.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime;
+            summary.ToDate = exportDto.ToDate;
+            summary.SummaryItems = summaryItems;
+            summary.IncludeDeletions = exportDto.IncludeDeletions;
+            summary.ExportMode = exportDto.ExportMode;
+
+            //summary.IncludeExtensions = exportDto.IncludeExtensions;
+            //summary.IncludePermissions = exportDto.IncludePermissions;
+            summary.IncludeProfileProperties =
+                exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
         }
 
         internal static ExportFileInfo GetExportFileInfo(string manifestPath)

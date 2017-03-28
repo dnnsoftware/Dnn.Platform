@@ -33,7 +33,7 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
-        /// Export mode. Differential or complete. Allowed values 0: Complete, 1: Differential
+        /// Export mode. Differential or complete.
         /// </summary>
         public ExportMode ExportMode { get; set; }
 
