@@ -8,6 +8,12 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using System.Linq;
+using System.Xml.Linq;
+using DotNetNuke.Entities.Portals.Internal;
+using System.Xml;
+using System.Text;
+using System.IO;
 
 namespace Dnn.ExportImport.Components.Common
 {
@@ -96,13 +102,55 @@ namespace Dnn.ExportImport.Components.Common
             return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
         }
 
+        public static void WriteXml(string filePath, Dictionary<string, string> itemsToWrite,
+            string rootTag)
+        {
+            var xmlSettings = new XmlWriterSettings
+            {
+                ConformanceLevel = ConformanceLevel.Fragment,
+                OmitXmlDeclaration = true,
+                Indent = true,
+                IndentChars = "  ",
+                Encoding = Encoding.UTF8,
+                WriteEndDocumentOnClose = true
+            };
+            if (File.Exists(filePath)) File.Delete(filePath);
+            using (var writer = XmlWriter.Create(filePath, xmlSettings))
+            {
+                writer.WriteStartElement(rootTag);
+                foreach (var item in itemsToWrite)
+                {
+                    writer.WriteElementString(item.Key, item.Value);
+                }
+                writer.WriteEndElement();
+                writer.Close();
+            }
+        }
+
+        public static Dictionary<string, string> ReadXml(string path, string rootTag, params string[] tagsToLook)
+        {
+            var items = new Dictionary<string, string>();
+            if (File.Exists(path))
+            {
+                using (var reader = PortalTemplateIO.Instance.OpenTextReader(path))
+                {
+                    var xmlDoc = XDocument.Load(reader);
+                    foreach (var tag in tagsToLook)
+                    {
+                        items.Add(tag, GetTagValue(xmlDoc, tag, rootTag));
+                    }
+                }
+            }
+            return items;
+        }
+
         //TODO: We should implement some base serializer to fix dates for all the entities.
         public static void FixDateTime<T>(T item)
         {
             var properties = item.GetType().GetRuntimeProperties();
             foreach (var property in properties)
             {
-                if ((property.PropertyType == typeof (DateTime) || property.PropertyType == typeof(DateTime?)) &&
+                if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) &&
                     (property.GetValue(item) as DateTime?) == DateTime.MinValue)
                 {
                     property.SetValue(item, FromEpoch());
@@ -114,6 +162,12 @@ namespace Dnn.ExportImport.Components.Common
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch;
+        }
+
+        private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)
+        {
+            return (from f in xmlDoc.Descendants(rootTag)
+                    select f.Element(name)?.Value).SingleOrDefault();
         }
     }
 }

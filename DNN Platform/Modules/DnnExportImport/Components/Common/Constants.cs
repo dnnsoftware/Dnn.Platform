@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportManifestName = "export.manifest"; // export database file name
         internal const string ExportDbName = "export.dnndb"; // export database file name
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
-        internal const string ExportZipFiles = "export_files.zip";//Compressed assets file name
+        internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
@@ -66,5 +66,13 @@ namespace Dnn.ExportImport.Components.Common
         internal const string Category_Portal = "PORTAL";
         internal const string Category_Pages = "PAGES";
         internal const string Category_UsersData = "USERS_DATA";
+
+        //Manifest file tags
+        internal const string Manifest_PackageId = "PackageId";
+        internal const string Manifest_PackageName = "PackageName";
+        internal const string Manifest_PackageDescription = "PackageDescription";
+        internal const string Manifest_ExportPath = "ExportPath";
+        internal const string Manifest_ExportSize = "ExportSize";
+        internal const string Manifest_RootTag = "Package";
     }
 }

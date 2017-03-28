@@ -31,6 +31,7 @@ using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 using DotNetNuke.Entities.Portals.Internal;
 using Dnn.ExportImport.Components.Repository;
+using DotNetNuke.Collections;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -45,7 +46,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 importDto.ExportDto = exportDto;
             }
 
-            importDto.ExportFileInfo = new ExportFileInfo();
+            importDto.ExportFileInfo =
+                GetExportFileInfo(Path.Combine(ExportFolder, importDto.PackageId, Constants.ExportManifestName));
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
@@ -58,7 +60,7 @@ namespace Dnn.ExportImport.Components.Controllers
             var directories = Directory.GetDirectories(ExportFolder);
             return (from directory in directories.Where(IsValidImportFolder)
                 let dirInfo = new DirectoryInfo(directory)
-                select ParseImportManifest(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
+                select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
         }
 
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
@@ -111,26 +113,6 @@ namespace Dnn.ExportImport.Components.Controllers
                    File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
         }
 
-        private static ImportPackageInfo ParseImportManifest(string manifestPath, DirectoryInfo importDirectoryInfo)
-        {
-            using (var reader = PortalTemplateIO.Instance.OpenTextReader(manifestPath))
-            {
-                var xmlDoc = XDocument.Load(reader);
-                return new ImportPackageInfo
-                {
-                    PackageId = GetTagValue(xmlDoc, "PackageId") ?? importDirectoryInfo.Name,
-                    Name = GetTagValue(xmlDoc, "PackageName") ?? importDirectoryInfo.Name,
-                    Description = GetTagValue(xmlDoc, "PackageDescription") ?? importDirectoryInfo.Name
-                };
-            }
-        }
-
-        private static string GetTagValue(XDocument xmlDoc, string name)
-        {
-            return (from f in xmlDoc.Descendants("package")
-                select f.Element(name)?.Value).SingleOrDefault();
-        }
-
         private static void BuildImportSummary(IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new List<SummaryItem>();
@@ -153,7 +135,9 @@ namespace Dnn.ExportImport.Components.Controllers
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
-            summary.ExportMode = exportDto.FromDate == Constants.MinDbTime ? ExportMode.Complete : ExportMode.Differential;
+            summary.ExportMode = exportDto.FromDate == Constants.MinDbTime
+                ? ExportMode.Complete
+                : ExportMode.Differential;
 
             //summary.IncludeExtensions = exportDto.IncludeExtensions;
             //summary.IncludePermissions = exportDto.IncludePermissions;

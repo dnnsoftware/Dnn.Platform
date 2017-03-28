@@ -9,6 +9,7 @@ using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Data;
@@ -100,14 +101,14 @@ namespace Dnn.ExportImport.Components.Services
                             isUserFolder = true;
                             folder.UserId = userId;
                             folder.Username =
-                                UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
+                                UserController.GetUserById(portalId, Convert.ToInt32(userId, CultureInfo.InvariantCulture))?.Username;
                         }
                         if (folder.ParentId != null && folder.ParentId > 0)
                         {
                             //If parent id exists then change the parent folder id to parent id.
                             folder.ParentId =
                                 Repository.GetItem<ExportFolder>(
-                                    x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
+                                    x => x.FolderId == Convert.ToInt32(folder.ParentId, CultureInfo.InvariantCulture))?.Id;
                         }
 
                         Repository.CreateItem(folder, null);
@@ -211,7 +212,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //Replace folderId for each permission with new one.
                                 sourceFolderPermissions.ForEach(x =>
                                 {
-                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
+                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
                                     x.FolderPath = sourceFolder.FolderPath;
                                 });
 
@@ -235,7 +236,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //Replace folderId for each file with new one.
                                 sourceFiles.ForEach(x =>
                                 {
-                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
+                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
                                     x.Folder = sourceFolder.FolderPath;
                                 });
 
@@ -354,7 +355,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (folder.ParentId != null && folder.ParentId > 0)
                 {
                     //Find the previously created parent folder id.
-                    folder.ParentId = Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId))?.LocalId;
+                    folder.ParentId = Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId, CultureInfo.InvariantCulture))?.LocalId;
                 }
                 folder.CreatedByUserId = createdBy;
                 folder.CreatedOnDate = DateTime.UtcNow;
@@ -457,7 +458,7 @@ namespace Dnn.ExportImport.Components.Services
                     folderPermission.FolderPermissionId = 0;
                     folderPermission.LastModifiedByUserId = modifiedBy;
                     folderPermission.LastModifiedOnDate = DateTime.UtcNow;
-                    folderPermission.PermissionId = Convert.ToInt32(permissionId);
+                    folderPermission.PermissionId = Convert.ToInt32(permissionId, CultureInfo.InvariantCulture);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0)
                     {
                         folderPermission.UserId =
@@ -582,7 +583,7 @@ namespace Dnn.ExportImport.Components.Services
             if (!string.IsNullOrEmpty(CheckPoint.StageData))
             {
                 dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip) ?? 0;
+                return Convert.ToInt32(stageData.skip, CultureInfo.InvariantCulture) ?? 0;
             }
             return 0;
         }

@@ -6,12 +6,12 @@ namespace Dnn.ExportImport.Components.Dto
     public class ExportFileInfo
     {
         /// <summary>
-        /// Exported file name.
+        /// Path for exported files.
         /// </summary>
-        public string FileName { get; set; }
+        public string ExportPath { get; set; }
         /// <summary>
-        /// Exported file size in KB.
+        /// Total size of exported files in KB.
         /// </summary>
-        public int FileSizeKb { get; set; }
+        public double ExportSizeKb { get; set; }
     }
 }

@@ -39,6 +39,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
+using DotNetNuke.Collections;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -221,7 +222,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 //TODO: Get file info.
                 importExportSummary.ExportFileInfo = job.JobType == JobType.Export
-                    ? new ExportFileInfo()
+                    ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
                     : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
             }
 
@@ -233,12 +234,36 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 TotalItems = checkpoint.TotalItems,
                 ProcessedItems = checkpoint.ProcessedItems,
-                ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
+                ProgressPercentage = Convert.ToInt32(checkpoint.Progress, CultureInfo.InvariantCulture),
                 Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
+        }
+
+        internal static ExportFileInfo GetExportFileInfo(string manifestPath)
+        {
+            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_ExportPath,
+                Constants.Manifest_ExportSize);
+            return new ExportFileInfo
+            {
+                ExportPath = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportPath),
+                ExportSizeKb = Convert.ToDouble(manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportSize))
+            };
+        }
+
+        internal static ImportPackageInfo GetPackageInfo(string manifestPath, DirectoryInfo importDirectoryInfo)
+        {
+            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_PackageId,
+                Constants.Manifest_PackageName, Constants.Manifest_PackageDescription);
+            return new ImportPackageInfo
+            {
+                PackageId = manifestItems.GetValue<string>(Constants.Manifest_PackageId) ?? importDirectoryInfo.Name,
+                Name = manifestItems.GetValue<string>(Constants.Manifest_PackageName) ?? importDirectoryInfo.Name,
+                Description =
+                    manifestItems.GetValue<string>(Constants.Manifest_PackageDescription) ?? importDirectoryInfo.Name
+            };
         }
     }
 }

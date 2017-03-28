@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
@@ -306,7 +307,7 @@ namespace Dnn.ExportImport.Components.Services
             if (!string.IsNullOrEmpty(CheckPoint.StageData))
             {
                 dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip) ?? 0;
+                return Convert.ToInt32(stageData.skip, CultureInfo.InvariantCulture) ?? 0;
             }
             return 0;
         }

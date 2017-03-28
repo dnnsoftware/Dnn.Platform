@@ -206,26 +206,30 @@ namespace Dnn.ExportImport.Components.Engines
                 result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
                     "Job will resume in the next scheduler iteration");
             }
-            else
+            else if (exportJob.JobStatus == JobStatus.InProgress)
             {
-                if (exportJob.JobStatus == JobStatus.InProgress)
-                {
-                    DoPacking(exportJob, dbName);
-                    //TODO: Thumb generation at root with name exportJob.Directory.jpg
-                    var exportController = new ExportController();
-                    exportController.CreatePackageManifest(exportJob);
-                    exportJob.JobStatus = JobStatus.Successful;
-                    SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
-                }
+                DoPacking(exportJob, dbName);
+                //TODO: Thumb generation at root with name exportJob.Directory.jpg
+                var exportController = new ExportController();
+                exportJob.JobStatus = JobStatus.Successful;
+                SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
+
                 var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
                 var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
                 var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
                 result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
+                var exportFileInfo = new ExportFileInfo
+                {
+                    ExportPath = exportJob.Directory,
+                    ExportSizeKb = zipDbFinfo.Length / 1000.0
+                };
                 if (File.Exists(zipAssetsName))
                 {
                     var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
+                    exportFileInfo.ExportSizeKb += zipAssetsFInfo.Length / 1000.0;
                     result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
                 }
+                exportController.CreatePackageManifest(exportJob, exportFileInfo);
             }
 
             return result;

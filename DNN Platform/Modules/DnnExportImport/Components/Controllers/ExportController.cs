@@ -20,8 +20,8 @@
 #endregion
 
 using System;
-using System.Text;
-using System.Xml;
+using System.Collections.Generic;
+using System.Globalization;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
@@ -48,28 +48,24 @@ namespace Dnn.ExportImport.Components.Controllers
             return jobId;
         }
 
-        public void CreatePackageManifest(ExportImportJob exportJob)
+        public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo)
         {
-            var xmlSettings = new XmlWriterSettings
+            var filePath = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
+            var tagsToWrite = new Dictionary<string, string>
             {
-                ConformanceLevel = ConformanceLevel.Fragment,
-                OmitXmlDeclaration = true,
-                Indent = true,
-                IndentChars = "  ",
-                Encoding = Encoding.UTF8,
-                WriteEndDocumentOnClose = true
+                {Constants.Manifest_PackageId, exportJob.Directory},
+                {Constants.Manifest_PackageName, exportJob.Name},
+                {
+                    Constants.Manifest_PackageDescription,
+                    !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name
+                },
+                {Constants.Manifest_ExportPath, exportFileInfo.ExportPath},
+                {
+                    Constants.Manifest_ExportSize,
+                    Convert.ToString(exportFileInfo.ExportSizeKb, CultureInfo.InvariantCulture)
+                }
             };
-            var filename = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
-            if (File.Exists(filename)) File.Delete(filename);
-            using (var writer = XmlWriter.Create(filename, xmlSettings))
-            {
-                writer.WriteStartElement("package");
-                writer.WriteElementString("PackageId", exportJob.Directory);
-                writer.WriteElementString("PackageName", exportJob.Name);
-                writer.WriteElementString("PackageDescription", !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name);
-                writer.WriteEndElement();
-                writer.Close();
-            }
+            Util.WriteXml(filePath, tagsToWrite, Constants.Manifest_RootTag);
         }
     }
 }
