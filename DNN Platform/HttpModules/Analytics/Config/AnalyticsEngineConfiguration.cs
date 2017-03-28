@@ -22,8 +22,8 @@
 
 using System;
 using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
+using System.Xml.XPath;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
@@ -49,7 +49,7 @@ namespace DotNetNuke.HttpModules.Config
     [Serializable, XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AnalyticsEngineConfiguration));
         private AnalyticsEngineCollection _analyticsEngines;
 
         public AnalyticsEngineCollection AnalyticsEngines
@@ -66,32 +66,30 @@ namespace DotNetNuke.HttpModules.Config
 
         public static AnalyticsEngineConfiguration GetConfig()
         {
-            var config = new AnalyticsEngineConfiguration { AnalyticsEngines = new AnalyticsEngineCollection() };
+            var config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
             FileStream fileReader = null;
             string filePath = null;
             try
             {
-                config = (AnalyticsEngineConfiguration)DataCache.GetCache("AnalyticsEngineConfig");
+                config = (AnalyticsEngineConfiguration) DataCache.GetCache("AnalyticsEngineConfig");
                 if ((config == null))
                 {
                     filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics);
 
                     //Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var doc = new XmlDocument();
-                    doc.Load(fileReader);
-                    config = new AnalyticsEngineConfiguration { AnalyticsEngines = new AnalyticsEngineCollection() };
-                    foreach (XmlNode nav in
-                        doc.SelectNodes("AnalyticsEngineConfig/Engines/AnalyticsEngine"))
+                    var doc = new XPathDocument(fileReader);
+                    config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
+                    foreach (XPathNavigator nav in
+                        doc.CreateNavigator().Select("AnalyticsEngineConfig/Engines/AnalyticsEngine"))
                     {
                         var analyticsEngine = new AnalyticsEngine
-                        {
-                            EngineType = nav.SelectSingleNode("EngineType").InnerText,
-                            ElementId = nav.SelectSingleNode("ElementId").InnerText,
-                            InjectTop = Convert.ToBoolean(nav.SelectSingleNode("InjectTop").InnerText),
-                            ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").InnerXml.Contains("<![CDATA[") ?
-                                                                            nav.SelectSingleNode("ScriptTemplate").InnerText : nav.SelectSingleNode("ScriptTemplate").InnerXml
-                        };
+                                                  {
+                                                      EngineType = nav.SelectSingleNode("EngineType").Value,
+                                                      ElementId = nav.SelectSingleNode("ElementId").Value,
+                                                      InjectTop = Convert.ToBoolean(nav.SelectSingleNode("InjectTop").Value),
+                                                      ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").Value
+                                                  };
                         config.AnalyticsEngines.Add(analyticsEngine);
                     }
                     if (File.Exists(filePath))
@@ -104,7 +102,7 @@ namespace DotNetNuke.HttpModules.Config
             catch (Exception ex)
             {
                 //log it
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
                 log.AddProperty("Analytics.AnalyticsEngineConfiguration", "GetConfig Failed");
                 if (!string.IsNullOrEmpty(filePath))
                     log.AddProperty("FilePath", filePath);
