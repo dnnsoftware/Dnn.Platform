@@ -52,5 +52,15 @@ namespace Dnn.ExportImport.Components.Dto
         /// See <see cref="CollisionResolution"/>
         /// </summary>
         public CollisionResolution CollisionResolution { get; set; } = CollisionResolution.Ignore;
+
+        /// <summary>
+        /// Snapshot of the export dto from the import package
+        /// </summary>
+        public ExportDto ExportDto { get; set; }
+
+        /// <summary>
+        /// Snapshot of the import file into.
+        /// </summary>
+        public ExportFileInfo ExportFileInfo { get; set; }
     }
 }

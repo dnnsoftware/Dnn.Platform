@@ -202,22 +202,27 @@ namespace Dnn.ExportImport.Components.Controllers
             var summaryItems = new List<SummaryItem>();
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
-            var exportDto = JsonConvert.DeserializeObject<ExportDto>(job.JobObject);
+            var exportDto = job.JobType == JobType.Export
+                ? JsonConvert.DeserializeObject<ExportDto>(job.JobObject)
+                : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportDto;
 
             var importExportSummary = new ImportExportSummary
             {
                 IncludeDeletions = exportDto.IncludeDeletions,
                 //IncludeExtensions = exportDto.IncludeExtensions,
-                //IncludePermission = exportDto.IncludePermission,
+                //IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties =
                     exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
                 FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime,
-                ToDate = exportDto.ToDate
+                ToDate = exportDto.ToDate,
+                ExportMode = exportDto.FromDate == Constants.MinDbTime ? ExportMode.Complete : ExportMode.Differential
             };
             if (job.JobType == JobType.Export)
             {
                 //TODO: Get file info.
-                importExportSummary.ExportFileInfo = new ExportFileInfo();
+                importExportSummary.ExportFileInfo = job.JobType == JobType.Export
+                    ? new ExportFileInfo()
+                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
             }
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);

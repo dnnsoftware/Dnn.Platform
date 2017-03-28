@@ -36,6 +36,12 @@ namespace Dnn.ExportImport.Components.Common
         Cancelled
     }
 
+    public enum ExportMode
+    {
+        Complete = 0,
+        Differential = 1
+    }
+
     /// <summary>
     /// Specifies what to do when there is a collision during the import process.
     /// </summary>

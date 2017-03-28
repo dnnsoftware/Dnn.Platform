@@ -13,9 +13,5 @@ namespace Dnn.ExportImport.Components.Dto
         /// Exported file size in KB.
         /// </summary>
         public int FileSizeKb { get; set; }
-        /// <summary>
-        /// Link to download the log file.
-        /// </summary>
-        public string LogDownloadLink { get; set; }
     }
 }

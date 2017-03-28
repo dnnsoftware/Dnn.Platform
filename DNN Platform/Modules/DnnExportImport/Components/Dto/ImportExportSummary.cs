@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dnn.ExportImport.Components.Common;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
@@ -21,7 +22,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Does this import/export includes the permission or not.
         /// </summary>
-        public bool IncludePermission { get; set; }
+        public bool IncludePermissions { get; set; }
         /// <summary>
         /// Does this import/export includes the modules or not.
         /// </summary>
@@ -34,7 +35,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Export mode. Differential or complete. Allowed values 0: Complete, 1: Differential
         /// </summary>
-        public int ExportMode { get; set; }
+        public ExportMode ExportMode { get; set; }
 
         /// <summary>
         /// Date from which data was taken to perform export.

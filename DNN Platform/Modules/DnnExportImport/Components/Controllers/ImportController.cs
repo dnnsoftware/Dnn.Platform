@@ -39,6 +39,13 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public int QueueOperation(int userId, ImportDto importDto)
         {
+            using (var repository = new ExportImportRepository(GetPackageDbPath(importDto.PackageId)))
+            {
+                var exportDto = repository.GetSingleItem<ExportDto>();
+                importDto.ExportDto = exportDto;
+            }
+
+            importDto.ExportFileInfo = new ExportFileInfo();
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
@@ -50,8 +57,8 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var directories = Directory.GetDirectories(ExportFolder);
             return (from directory in directories.Where(IsValidImportFolder)
-                    let dirInfo = new DirectoryInfo(directory)
-                    select ParseImportManifest(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
+                let dirInfo = new DirectoryInfo(directory)
+                select ParseImportManifest(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
         }
 
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
@@ -77,6 +84,14 @@ namespace Dnn.ExportImport.Components.Controllers
                 errorMessage = "Package is not valid. Technical Details:" + ex.Message;
             }
             return isValid;
+        }
+
+        private static string GetPackageDbPath(string packageId)
+        {
+            var importFolder = Path.Combine(ExportFolder, packageId);
+            if (!IsValidImportFolder(importFolder)) return null;
+            var dbPath = UnPackDatabase(importFolder);
+            return dbPath;
         }
 
         private static string UnPackDatabase(string folderPath)
@@ -113,7 +128,7 @@ namespace Dnn.ExportImport.Components.Controllers
         private static string GetTagValue(XDocument xmlDoc, string name)
         {
             return (from f in xmlDoc.Descendants("package")
-                    select f.Element(name)?.Value).SingleOrDefault();
+                select f.Element(name)?.Value).SingleOrDefault();
         }
 
         private static void BuildImportSummary(IExportImportRepository repository, ImportExportSummary summary)
@@ -132,12 +147,16 @@ namespace Dnn.ExportImport.Components.Controllers
                     Order = implementor.Priority
                 });
             }
+            //TODO: Get export file info.
+            summary.ExportFileInfo = new ExportFileInfo();
             summary.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime;
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
+            summary.ExportMode = exportDto.FromDate == Constants.MinDbTime ? ExportMode.Complete : ExportMode.Differential;
+
             //summary.IncludeExtensions = exportDto.IncludeExtensions;
-            //summary.IncludePermission = exportDto.IncludePermission;
+            //summary.IncludePermissions = exportDto.IncludePermissions;
             summary.IncludeProfileProperties =
                 exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
         }
