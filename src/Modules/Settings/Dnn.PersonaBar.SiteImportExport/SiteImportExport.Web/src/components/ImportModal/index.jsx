@@ -117,7 +117,7 @@ class ImportModal extends Component {
                 autoHeight
                 autoHeightMin={0}
                 autoHeightMax={210}>
-                <ul style={{ width: 200 }}>
+                <ul style={{ width: 200, height: props.importPackages.length > 3 ? 210 : "auto" }}>
                     {props.importPackages.map((pkg, index) => {
                         return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
                             <div id={"package-card-" + index}>
