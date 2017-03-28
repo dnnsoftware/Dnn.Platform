@@ -42,8 +42,9 @@ class ImportModal extends Component {
     goToStep(wizardStep) {
         const { props } = this;
         props.dispatch(ImportExportActions.navigateWizard(wizardStep));
-        props.dispatch(ImportExportActions.selectPackage());
-        props.dispatch(ImportExportActions.importWizardGoToSetp(0));
+        props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
+            props.dispatch(ImportExportActions.selectPackage());
+        }));
     }
 
     selectPackage(pkg) {
@@ -59,8 +60,15 @@ class ImportModal extends Component {
 
     cancelImport() {
         const { props } = this;
-        this.goToStep(0);
-        props.onCancel();
+        if (props.wizardStep === 0) {
+            this.goToStep(0);
+            props.onCancel();
+        }
+        else {
+            props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
+                props.dispatch(ImportExportActions.selectPackage());
+            }));
+        }
     }
 
     onAnalyze() {
@@ -218,7 +226,7 @@ class ImportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("IncludePermissions")}
                                 />
-                                <div className="import-summary-item">{props.importSummary.IncludePermission.toString()}</div>
+                                <div className="import-summary-item">{props.importSummary.IncludePermissions.toString()}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
