@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Jobs
@@ -18,6 +17,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public DateTime CreatedOn { get; set; }
         public DateTime? CompletedOn { get; set; }
         public string ExportFile { get; set; }
-        public IEnumerable<LogItem> Summary { get; set; }
+        //public IEnumerable<LogItem> Summary { get; set; }
+        public ImportExportSummary Summary { get; set; }
     }
 }

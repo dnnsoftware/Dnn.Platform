@@ -55,6 +55,8 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
                     .GetPortalSettings(exportJob.PortalId, tillDate, sinceDate));
+                
+                //Update the total items count in the check points. This should be updated only once.
                 CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? portalSettings.Count : CheckPoint.TotalItems;
                 if (CheckPoint.TotalItems == portalSettings.Count)
                 {
@@ -68,7 +70,7 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.CreateItems(portalSettings, null);
                 Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
                 CheckPoint.Progress = 50;
-                CheckPoint.ProcessedItems += portalSettings.Count;
+                CheckPoint.ProcessedItems = portalSettings.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -84,7 +86,7 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.Stage++;
-                CheckPoint.ProcessedItems = portalLanguages.Count;
+                CheckPoint.ProcessedItems += portalLanguages.Count;
                 CheckPointStageCallback(this);
             }
 
@@ -108,6 +110,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
+            //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
             if (CheckPoint.Stage == 0)

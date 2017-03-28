@@ -96,6 +96,11 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            if (CheckPointStageCallback(this)) return;
+
             var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
@@ -143,9 +148,12 @@ namespace Dnn.ExportImport.Components.Services
                         Repository.CreateItem(userAuthentication, user.Id);
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
-                        if (totalUsersExported % progressStep  == 0)
+                        CheckPoint.ProcessedItems++;
+                        if (totalUsersExported % progressStep == 0)
                             CheckPoint.Progress += 1;
-                        if (CheckPointStageCallback(this)) return;
+
+                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalUsersExported += currentIndex;
                     currentIndex = 0;
@@ -160,21 +168,19 @@ namespace Dnn.ExportImport.Components.Services
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 } while (totalUsersExported < totalUsersToBeProcessed);
                 CheckPoint.Progress = 100;
-                CheckPointStageCallback(this);
             }
             finally
             {
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
+                Result.AddSummary("Exported Users", totalUsersExported.ToString());
+                Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
+                Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
+                Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+                Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
+                Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
+                Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
             }
-
-            Result.AddSummary("Exported Users", totalUsersExported.ToString());
-            Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
-            Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
-            Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
-            Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
-            Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
-            Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
@@ -200,6 +206,10 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            if (CheckPointStageCallback(this)) return;
+
             var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
@@ -241,30 +251,31 @@ namespace Dnn.ExportImport.Components.Services
                             Repository.UpdateItem(userPortal);
                         }
                         currentIndex++;
+                        CheckPoint.ProcessedItems++;
                         if (currentIndex % progressStep == 0)
                             CheckPoint.Progress += 1;
 
-                        if (CheckPointStageCallback(this)) return;
+                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalUsersImported += currentIndex;
-                    currentIndex = 0;
+                    currentIndex = 0;//Reset current index to 0
                     pageIndex++;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
                 }
                 CheckPoint.Progress = 100;
-                CheckPointStageCallback(this);
             }
             finally
             {
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
+                Result.AddSummary("Imported Users", totalUsersImported.ToString());
+                Result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
+                Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
+                Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
             }
-            Result.AddSummary("Imported Users", totalUsersImported.ToString());
-            Result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
-            Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
-            Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
         }
 
         public override int GetImportTotal()

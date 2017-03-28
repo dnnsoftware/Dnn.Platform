@@ -91,8 +91,10 @@ namespace Dnn.ExportImport.Components.Services
             var localTabs = tabController.GetTabsByPortal(portalId).Values;
 
             var exportedTabs = Repository.GetAllItems<ExportTab>().ToList(); // ordered by ID
+            //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportedTabs.Count : CheckPoint.TotalItems;
-            var progressStep = 100.0 / exportedTabs.Count;
+            if (CheckPointStageCallback(this)) return;
+            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < lastProcessedId);
 
             foreach (var otherTab in exportedTabs)
             {
@@ -138,7 +140,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 CheckPoint.ProcessedItems++;
                 CheckPoint.Progress += progressStep;
-                if (CheckPointStageCallback(this)) return;
+                if (CheckPointStageCallback(this)) break;
             }
 
             Result.AddSummary("Imported Tabs", totalImportedTabs.ToString());
@@ -229,6 +231,11 @@ namespace Dnn.ExportImport.Components.Services
             var allTabs = EntitiesController.Instance.GetPortalTabs(
                 portalId, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime); // ordered by TabID
 
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? allTabs.Count : CheckPoint.TotalItems;
+            if (CheckPointStageCallback(this)) return;
+            var progressStep = 100.0 / allTabs.OrderByDescending(x => x.TabId).Count(x => x.TabId < lastProcessedTabId);
+
             foreach (var pg in allTabs)
             {
                 if (CheckCancelled(exportJob)) break;
@@ -262,8 +269,10 @@ namespace Dnn.ExportImport.Components.Services
 
                     totalExportedTabs++;
                     CheckPoint.StageData = tab.TabID.ToString(); // last processed TAB ID
-                    if (CheckPointStageCallback(this)) break;
                 }
+                CheckPoint.Progress += progressStep;
+                CheckPoint.ProcessedItems++;
+                if (CheckPointStageCallback(this)) break;
             }
 
             Result.AddSummary("Exported Tabs", totalExportedTabs.ToString());

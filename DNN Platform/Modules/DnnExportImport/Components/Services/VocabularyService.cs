@@ -46,15 +46,32 @@ namespace Dnn.ExportImport.Components.Services
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
             if (CheckPoint.Stage > 3) return;
-
+            List<TaxonomyVocabularyType> vocabularyTypes = null;
+            List<TaxonomyTerm> taxonomyTerms = null;
+            List<TaxonomyVocabulary> taxonomyVocabularies = null;
             if (CheckPoint.Stage == 0)
             {
                 if (CheckCancelled(exportJob)) return;
                 var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
+                //Update the total items count in the check points. This should be updated only once.
+                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? scopeTypes.Count : CheckPoint.TotalItems;
+                if (CheckPoint.TotalItems == scopeTypes.Count)
+                {
+                    vocabularyTypes =
+                        CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                    taxonomyTerms =
+                        CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(tillDate, sinceDate));
+                    taxonomyVocabularies =
+                        CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
+                            .GetAllVocabularies(tillDate, sinceDate));
+                    CheckPoint.TotalItems += vocabularyTypes.Count + taxonomyTerms.Count + taxonomyVocabularies.Count;
+                }
+                CheckPointStageCallback(this);
+
                 Repository.CreateItems(scopeTypes, null);
                 //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
                 CheckPoint.Progress = 25;
-
+                CheckPoint.ProcessedItems = scopeTypes.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -62,11 +79,13 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 1)
             {
                 if (CheckCancelled(exportJob)) return;
-                var vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                if (vocabularyTypes == null)
+                    vocabularyTypes =
+                        CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                 Repository.CreateItems(vocabularyTypes, null);
                 //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
                 CheckPoint.Progress = 50;
-
+                CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -74,11 +93,13 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 2)
             {
                 if (CheckCancelled(exportJob)) return;
-                var taxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(tillDate, sinceDate));
+                if (taxonomyTerms == null)
+                    taxonomyTerms =
+                        CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyTerms, null);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 75;
-
+                CheckPoint.ProcessedItems += taxonomyTerms.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -86,12 +107,14 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 3)
             {
                 if (CheckCancelled(exportJob)) return;
-                var taxonomyVocabularies =
-                    CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(tillDate, sinceDate));
+                if (taxonomyVocabularies == null)
+                    taxonomyVocabularies =
+                        CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
+                            .GetAllVocabularies(tillDate, sinceDate));
                 Repository.CreateItems(taxonomyVocabularies, null);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
                 CheckPoint.Progress = 100;
-
+                CheckPoint.ProcessedItems += taxonomyVocabularies.Count;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -99,8 +122,9 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-
             if (CheckPoint.Stage > 3) return;
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
 
             if (CheckCancelled(importJob)) return;
             var otherScopeTypes = Repository.GetAllItems<TaxonomyScopeType>().ToList();
@@ -133,7 +157,7 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.UpdateItems(otherVocabularies);
                 Result.AddSummary("Imported Terms", otherVocabularies.Count.ToString());
                 CheckPoint.Progress = 60;
-
+                CheckPoint.ProcessedItems += otherVocabularies.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -146,7 +170,7 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.UpdateItems(otherTaxonomyTerms);
                 Result.AddSummary("Imported Vocabularies", otherTaxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 100;
-
+                CheckPoint.ProcessedItems += otherTaxonomyTerms.Count;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -154,8 +178,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<TaxonomyScopeType>() + Repository.GetCount<TaxonomyVocabulary>() +
-                   Repository.GetCount<TaxonomyTerm>();
+            return Repository.GetCount<TaxonomyVocabulary>() + Repository.GetCount<TaxonomyTerm>();
         }
 
         private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto,

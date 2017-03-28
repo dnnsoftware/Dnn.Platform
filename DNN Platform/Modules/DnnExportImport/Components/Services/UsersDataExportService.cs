@@ -49,6 +49,8 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             CheckPoint.Progress += 100;
+            CheckPoint.TotalItems = 0;
+            CheckPoint.ProcessedItems = 0;
             CheckPointStageCallback(this);
             //No implementation required in export users child as everything is exported in parent service.
         }
@@ -74,6 +76,11 @@ namespace Dnn.ExportImport.Components.Services
             pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            if (CheckPointStageCallback(this)) return;
+
             var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
             try
             {
@@ -108,29 +115,29 @@ namespace Dnn.ExportImport.Components.Services
                                 .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
                         currentIndex++;
+                        CheckPoint.ProcessedItems++;
                         if (totalProcessed % progressStep == 0)
                             CheckPoint.Progress += 1;
-                        if (CheckPointStageCallback(this)) return;
+                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalProcessed += currentIndex;
-                    currentIndex = 0;
+                    currentIndex = 0;//Reset current index to 0
                     pageIndex++;
-
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
                 }
                 CheckPoint.Progress = 100;
-                CheckPointStageCallback(this);
             }
             finally
             {
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
+                Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
+                Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+                Result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
             }
-            Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
-            Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
-            Result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
         }
 
         public override int GetImportTotal()

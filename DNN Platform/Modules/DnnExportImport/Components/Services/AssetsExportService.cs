@@ -77,6 +77,8 @@ namespace Dnn.ExportImport.Components.Services
                             .GetFolders(portalId, tillDate, sinceDate)).ToList();
                     folders = folders.Skip(skip).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
+
+                    //Update the total items count in the check points. This should be updated only once.
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
@@ -125,12 +127,11 @@ namespace Dnn.ExportImport.Components.Services
                         CheckPoint.Progress += progressStep;
                         CheckPoint.ProcessedItems++;
                         currentIndex++;
-                        if (CheckPointStageCallback(this)) return;
+                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
                     currentIndex = 0;
-                    if (CheckPointStageCallback(this)) return;
                     //TODO: Check if we need this step or not.
                     //var folderMappings =
                     //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
@@ -142,10 +143,10 @@ namespace Dnn.ExportImport.Components.Services
             {
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
+                Result.AddSummary("Exported Folders", totalFolderExported.ToString());
+                Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString());
+                Result.AddSummary("Exported Files", totalFilesExported.ToString());
             }
-            Result.AddSummary("Exported Folders", totalFolderExported.ToString());
-            Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString());
-            Result.AddSummary("Exported Files", totalFilesExported.ToString());
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
@@ -155,7 +156,7 @@ namespace Dnn.ExportImport.Components.Services
             //Stage 2: All folders and files imported.
             //Stage 3: Synchronization completed.
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 3)
+            if (CheckPoint.Stage >= 2)
                 return;
 
             var totalFolderImported = 0;
@@ -169,7 +170,7 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath, importDto.CollisionResolution== CollisionResolution.Overwrite);
+                CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath, importDto.CollisionResolution == CollisionResolution.Overwrite);
                 //Stage 1: Once unzipping of portal files is completed.
                 CheckPoint.Stage++;
                 CheckPoint.StageData = null;
@@ -187,6 +188,7 @@ namespace Dnn.ExportImport.Components.Services
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
+                    //Update the total items count in the check points. This should be updated only once.
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
@@ -253,13 +255,12 @@ namespace Dnn.ExportImport.Components.Services
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
                         CheckPoint.Progress += progressStep;
-                        if (CheckPointStageCallback(this)) return;
+                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     currentIndex = 0;
                     CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
                     CheckPoint.Progress = 95;
-                    if (CheckPointStageCallback(this)) return;
                 }
                 finally
                 {
@@ -268,23 +269,24 @@ namespace Dnn.ExportImport.Components.Services
                         : null;
                     CheckPointStageCallback(this);
 
+                    Result.AddSummary("Imported Folders", totalFolderImported.ToString());
+                    Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
+                    Result.AddSummary("Imported Files", totalFilesImported.ToString());
+
                     if (Directory.Exists(userFolderPath) && currentIndex == 0)
                         Directory.Delete(userFolderPath, true);
                 }
-                Result.AddSummary("Imported Folders", totalFolderImported.ToString());
-                Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
-                Result.AddSummary("Imported Files", totalFilesImported.ToString());
             }
-
-            if (CheckPoint.Stage == 2)
-            {
-                var folderManager = FolderManager.Instance;
-                folderManager.Synchronize(portalId);
-                CheckPoint.Stage++;
-                CheckPoint.StageData = null;
-                CheckPoint.Progress = 100;
-                CheckPointStageCallback(this);
-            }
+            //TODO: Do we need to call synch?
+            //            if (CheckPoint.Stage == 2)
+            //            {
+            //                var folderManager = FolderManager.Instance;
+            //                folderManager.Synchronize(portalId);
+            //                CheckPoint.Stage++;
+            //                CheckPoint.StageData = null;
+            //                CheckPoint.Progress = 100;
+            //                CheckPointStageCallback(this);
+            //            }
         }
 
         public override int GetImportTotal()

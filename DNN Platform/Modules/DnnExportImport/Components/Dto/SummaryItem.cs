@@ -39,12 +39,6 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Order to show on UI.
         /// </summary>
-        public int Order { get; set; }
-
-        /// <summary>
-        /// Whether to show this item on UI or not.
-        /// </summary>
-        //TODO: Note: This property is not used as such and might be removed.
-        public bool ShowItem { get; set; }
+        public uint Order { get; set; }
     }
 }

@@ -53,6 +53,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, tillDate, sinceDate));
+
+                //Update the total items count in the check points. This should be updated only once.
                 CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? roleGroups.Count : CheckPoint.TotalItems;
                 if (CheckPoint.TotalItems == roleGroups.Count)
                 {
@@ -106,6 +108,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 2) return;
 
             if (CheckCancelled(importJob)) return;
+            //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
             CheckPointStageCallback(this);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
@@ -29,6 +30,17 @@ namespace Dnn.ExportImport.Components.Dto
         /// Does this import/export includes the deleted items or not.
         /// </summary>
         public bool IncludeDeletions { get; set; }
+
+        /// <summary>
+        /// Export mode. Differential or complete. Allowed values 0: Complete, 1: Differential
+        /// </summary>
+        public int ExportMode { get; set; }
+
+        /// <summary>
+        /// Date when last export was performed.
+        /// </summary>
+        public DateTime ExportTime { get; set; }
+
         /// <summary>
         /// Summary of each item export.
         /// </summary>

@@ -128,8 +128,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 summaryItems.Add(new SummaryItem
                 {
                     TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category,
-                    ShowItem = exportDto.ItemsToExport.ToList().Any(x => x == implementor.Category)
+                    Category = implementor.Category
                 });
             }
             summary.SummaryItems = summaryItems;

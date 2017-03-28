@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -88,6 +87,7 @@ namespace Dnn.ExportImport.Components.Common
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
             ZipArchiveEntry existingEntry = null;
+            //Deletes if the entry already exists in archive.
             if ((existingEntry = archive.GetEntry(entryName)) != null)
             {
                 existingEntry.Delete();
@@ -111,6 +111,12 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
+        /// <summary>
+        /// Open the archive file for read and write.
+        /// </summary>
+        /// <param name="archiveFileName"></param>
+        /// <returns></returns>
+        //TODO: This will need review. We might need to seperate methods for opening in read and write mode seperately since the for read mode, whole archive is loaded in memory and is persisted.
         private static ZipArchive OpenCreate(string archiveFileName)
         {
             return File.Exists(archiveFileName)

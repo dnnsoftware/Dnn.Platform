@@ -38,6 +38,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -124,25 +125,26 @@ namespace Dnn.ExportImport.Components.Controllers
             };
         }
 
-        public JobItem GetJobSummary(int portalId, int jobId)
-        {
-            var controller = EntitiesController.Instance;
-            var job = controller.GetJobById(jobId);
-            if (job == null || job.PortalId != portalId)
-                return null;
-
-            var jobItem = ToJobItem(job);
-            var summaryItems = controller.GetJobSummaryLog(jobId);
-            jobItem.Summary = summaryItems.Select(
-                s => new LogItem
-                {
-                    CreatedOnDate = s.CreatedOnDate,
-                    Name = s.Name,
-                    Value = s.Value,
-                    IsSummary = s.IsSummary,
-                });
-            return jobItem;
-        }
+//        public JobItem GetJobSummary(int portalId, int jobId)
+//        {
+//            var controller = EntitiesController.Instance;
+//            var job = controller.GetJobById(jobId);
+//            if (job == null || job.PortalId != portalId)
+//                return null;
+//
+//            var jobItem = ToJobItem(job);
+//            jobItem.Summary = BuildProgressSummary(jobId);
+//            //var summaryItems = controller.GetJobSummaryLog(jobId);
+//            //jobItem.Summary = summaryItems.Select(
+//            //    s => new LogItem
+//            //    {
+//            //        CreatedOnDate = s.CreatedOnDate,
+//            //        Name = s.Name,
+//            //        Value = s.Value,
+//            //        IsSummary = s.IsSummary,
+//            //    });
+//            return jobItem;
+//        }
 
         public JobItem GetJobDetails(int portalId, int jobId)
         {
@@ -152,15 +154,16 @@ namespace Dnn.ExportImport.Components.Controllers
                 return null;
 
             var jobItem = ToJobItem(job);
-            var summaryItems = controller.GetJobFullLog(jobId);
-            jobItem.Summary = summaryItems.Select(
-                s => new LogItem
-                {
-                    CreatedOnDate = s.CreatedOnDate,
-                    Name = s.Name,
-                    Value = s.Value,
-                    IsSummary = s.IsSummary,
-                });
+            jobItem.Summary = BuildProgressSummary(jobId);
+            //var summaryItems = controller.GetJobSummaryLog(jobId);
+            //jobItem.Summary = summaryItems.Select(
+            //    s => new LogItem
+            //    {
+            //        CreatedOnDate = s.CreatedOnDate,
+            //        Name = s.Name,
+            //        Value = s.Value,
+            //        IsSummary = s.IsSummary,
+            //    });
             return jobItem;
         }
 
@@ -224,5 +227,42 @@ namespace Dnn.ExportImport.Components.Controllers
             return datim;
         }
 
+        private static ImportExportSummary BuildProgressSummary(int jobId)
+        {
+            var summaryItems = new List<SummaryItem>();
+            var controller = EntitiesController.Instance;
+            var job = controller.GetJobById(jobId);
+            var exportDto = JsonConvert.DeserializeObject<ExportDto>(job.JobObject);
+
+            var importExportSummary = new ImportExportSummary
+            {
+                IncludeDeletions = exportDto.IncludeDeletions,
+                //IncludeExtensions = exportDto.IncludeExtensions,
+                //IncludePermission = exportDto.IncludePermission,
+                IncludeProfileProperties =
+                    exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
+                ExportTime = job.CreatedOnDate
+            };
+            if (job.JobType == JobType.Export)
+            {
+                //TODO: Get file info.
+                importExportSummary.ExportFileInfo = new ExportFileInfo();
+            }
+
+            var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
+            if (!checkpoints.Any()) return importExportSummary;
+            var implementors = Util.GetPortableImplementors();
+
+            summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
+            {
+                TotalItems = checkpoint.TotalItems,
+                ProcessedItems = checkpoint.ProcessedItems,
+                ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
+                Category = checkpoint.Category,
+                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
+            }));
+            importExportSummary.SummaryItems = summaryItems;
+            return importExportSummary;
+        }
     }
 }
