@@ -113,7 +113,7 @@ namespace Dnn.ExportImport.Components.Engines
             exportJob.JobStatus = JobStatus.InProgress;
 
             // there must be one parent implementor at least for this to work
-            var implementors = GetPortableImplementors().ToList();
+            var implementors = Util.GetPortableImplementors().ToList();
             var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
             implementors = implementors.Except(parentServices).ToList();
             var nextLevelServices = new List<BasePortableService>();
@@ -294,7 +294,7 @@ namespace Dnn.ExportImport.Components.Engines
                     result.AddSummary("Resuming Importing Repository", finfo.Name);
                 }
 
-                var implementors = GetPortableImplementors().ToList();
+                var implementors = Util.GetPortableImplementors().ToList();
                 var parentServices = implementors.Where(imp => string.IsNullOrEmpty(imp.ParentCategory)).ToList();
 
                 importJob.Name = exportedDto.ExportName;
@@ -459,34 +459,6 @@ namespace Dnn.ExportImport.Components.Engines
         private static void RemoveTokenFromCache(ExportImportJob job)
         {
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
-        }
-
-        private static IEnumerable<BasePortableService> GetPortableImplementors()
-        {
-            var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(
-                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                     typeof(BasePortableService).IsAssignableFrom(t));
-
-            foreach (var type in types)
-            {
-                BasePortableService portable2Type;
-                try
-                {
-                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
-                        type.FullName, e.Message);
-                    portable2Type = null;
-                }
-
-                if (portable2Type != null)
-                {
-                    yield return portable2Type;
-                }
-            }
         }
 
         private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto, List<BasePortableService> implementors)

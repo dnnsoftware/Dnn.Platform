@@ -31,15 +31,11 @@ using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 using DotNetNuke.Entities.Portals.Internal;
 using Dnn.ExportImport.Components.Repository;
-using Dnn.ExportImport.Components.Services;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
     public class ImportController : BaseController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ImportController));
 
         public int QueueOperation(int userId, ImportDto importDto)
         {
@@ -123,7 +119,7 @@ namespace Dnn.ExportImport.Components.Controllers
         private static void BuildImportSummary(IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new List<SummaryItem>();
-            var implementors = GetPortableImplementors();
+            var implementors = Util.GetPortableImplementors();
             var exportDto = repository.GetSingleItem<ExportDto>();
 
             foreach (var implementor in implementors)
@@ -142,36 +138,6 @@ namespace Dnn.ExportImport.Components.Controllers
             //summary.IncludePermission = exportDto.IncludePermission;
             summary.IncludeProfileProperties =
                 exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
-        }
-
-
-        //TODO: This method will need to be moved to a common place. It is used in engine as well.
-        private static IEnumerable<BasePortableService> GetPortableImplementors()
-        {
-            var typeLocator = new TypeLocator();
-            var types = typeLocator.GetAllMatchingTypes(
-                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
-                     typeof(BasePortableService).IsAssignableFrom(t));
-
-            foreach (var type in types)
-            {
-                BasePortableService portable2Type;
-                try
-                {
-                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
-                }
-                catch (Exception e)
-                {
-                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
-                        type.FullName, e.Message);
-                    portable2Type = null;
-                }
-
-                if (portable2Type != null)
-                {
-                    yield return portable2Type;
-                }
-            }
         }
     }
 }

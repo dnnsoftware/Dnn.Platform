@@ -1,17 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.Reflections;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 
 namespace Dnn.ExportImport.Components.Common
 {
     public static class Util
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
+
         private const long Kb = 1024;
         private const long Mb = Kb * Kb;
         private const long Gb = Mb * Kb;
+
+        public static IEnumerable<BasePortableService> GetPortableImplementors()
+        {
+            var typeLocator = new TypeLocator();
+            var types = typeLocator.GetAllMatchingTypes(
+                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
+                     typeof(BasePortableService).IsAssignableFrom(t));
+
+            foreach (var type in types)
+            {
+                BasePortableService portable2Type;
+                try
+                {
+                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
+                }
+                catch (Exception e)
+                {
+                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
+                        type.FullName, e.Message);
+                    portable2Type = null;
+                }
+
+                if (portable2Type != null)
+                {
+                    yield return portable2Type;
+                }
+            }
+        }
 
         public static string FormatSize(long bytes)
         {
