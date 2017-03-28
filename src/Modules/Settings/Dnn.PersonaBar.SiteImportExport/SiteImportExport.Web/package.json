@@ -45,6 +45,7 @@
     "url-loader": "0.5.7",
     "webpack": "1.13.0",
     "webpack-bundle-size-analyzer": "2.0.1",
-    "webpack-dev-server": "1.14.1"
+    "webpack-dev-server": "1.14.1",
+    "react-portal-tooltip": "^1.1.4"
   }
 }

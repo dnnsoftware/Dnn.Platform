@@ -1,7 +1,155 @@
-@import "~dnn-global-styles/index";
-:local(.importModal) {
-    border-bottom: 0;
-    * {
-        box-sizing: border-box;
+    @import "~dnn-global-styles/index";
+    :local(.importModal) {
+        border: 1px solid @alto;
+        background: #fff;
+        float: left;
+        width: 100%;
+        * {
+            box-sizing: border-box;
+        }
+        .pageTitle {
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 40px 0 30px 40px;
+        }
+        .pageDescription {
+            font-weight: 700;
+            color: @thunder;
+            padding: 0 40px 15px 40px;
+        }
+        .packages-wrapper {
+            width: 100%;
+            padding: 0 40px 100px 40px;
+            .packages {
+                border: 1px solid @alto;
+                list-style: none;
+                display: block;
+                white-space: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 15px;
+                .package-card {
+                    &:hover {
+                        .package-card-overlay {
+                            opacity: 0.75;
+                        }
+                    }
+                    border: 1px solid @alto;
+                    width: 180px;
+                    display: inline-block;
+                    position: relative;
+                    .package-name {
+                        white-space: pre-wrap;
+                        /* CSS3 */
+                        white-space: -moz-pre-wrap;
+                        /* Firefox */
+                        white-space: -pre-wrap;
+                        /* Opera <7 */
+                        white-space: -o-pre-wrap;
+                        /* Opera 7 */
+                        word-wrap: break-word;
+                        font-weight: 700;
+                        color: @thunder;
+                        padding: 5px 10px;
+                    }
+                    .package-file {
+                        white-space: pre-wrap;
+                        /* CSS3 */
+                        white-space: -moz-pre-wrap;
+                        /* Firefox */
+                        white-space: -pre-wrap;
+                        /* Opera <7 */
+                        white-space: -o-pre-wrap;
+                        /* Opera 7 */
+                        word-wrap: break-word;
+                        font-weight: 700;
+                        color: @curiousBlue;
+                        padding: 5px 10px;
+                    }
+                    .package-image {
+                        width: 100%;
+                    }
+                    &:not(:last-child) {
+                        margin-right: 15px;
+                    }
+                    .template-icon {
+                        background-color: @gallery;
+                        height: 120px;
+                        text-align: center;
+                        svg {
+                            width: 60px;
+                            height: 60px;
+                            margin-top: 30px;
+                        }
+                    }
+                }
+                .package-card-overlay {
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #1785ac;
+                    transition: .3s;
+                    opacity: 0;
+                    cursor: pointer;
+                    .icon-container {
+                        color: #fff;
+                        text-align: center;
+                        width: 100%;
+                        position: absolute;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                        >div {
+                            display: inline;
+                            margin-right: 10px;
+                            svg {
+                                width: 40px;
+                                fill: white;
+                            }
+                            font-size: small;
+                        }
+                    }
+                    .dnn-text-overflow-wrapper {
+                        position: absolute;
+                        bottom: 92px;
+                        font-size: 15px;
+                        margin-left: 16px;
+                        opacity: 0;
+                    }
+                    .dnn-ui-common-tooltip {
+                        width: 100%;
+                        height: 100%;
+                        .icon {
+                            width: 100%;
+                            height: 100%;
+                            margin-top: 0;
+                            svg {
+                                display: none;
+                            }
+                        }
+                        .tooltip-text {
+                            border: 1px solid @alto;
+                            background-color: #fff !important;
+                            color: @thunder !important;
+                            max-width: 500px !important;
+                            text-align: left;
+                            >div {
+                                white-space: pre-wrap;
+                                font-weight: 700;
+                                color: @thunder;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .action-buttons {
+            text-align: center;
+            padding: 30px 0 80px 0;
+            button {
+                margin: 5px;
+            }
+        }
     }
-}

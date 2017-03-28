@@ -300,4 +300,22 @@
   <data name="AllSites.Text" xml:space="preserve">
     <value>--ALL SITES--</value>
   </data>
+  <data name="SelectImportPackage.Header" xml:space="preserve">
+    <value>Select Package to Import</value>
+  </data>
+  <data name="SelectImportPackage.Text" xml:space="preserve">
+    <value>To begin importing site data, select a package from the gallery below.</value>
+  </data>
+  <data name="ClicktoSelect.Text" xml:space="preserve">
+    <value>click to select package</value>
+  </data>
+  <data name="PackageDescription.Text" xml:space="preserve">
+    <value>Package Description</value>
+  </data>
+  <data name="Continue.Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="NoPackages.Text" xml:space="preserve">
+    <value>No import packages found</value>
+  </data>
 </root>

@@ -42,6 +42,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.post("Export", payload, callback, errorCallback);
     }
+
+    getImportPackages(callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.get("GetImportPackages", {}, callback, errorCallback);
+    }
+
+    verifyImportPackage(packageId, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.get("VerifyImportPackage?packageId=" + packageId, {}, callback, errorCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

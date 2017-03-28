@@ -207,6 +207,7 @@ class DashboardPanelBody extends Component {
                 </div>
                 <div className="action-buttons">
                     <Button
+                        disabled={props.portalId < 0}
                         className="action-button"
                         type="secondary"
                         onClick={this.onExportData.bind(this)}>

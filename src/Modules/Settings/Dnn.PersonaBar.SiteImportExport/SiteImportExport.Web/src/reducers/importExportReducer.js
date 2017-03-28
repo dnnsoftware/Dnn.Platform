@@ -9,7 +9,9 @@ export default function importExport(state = {
     portalName: null,
     logoUrl: null,
     exportWizardStep: 0,
-    exportJobId: -1
+    importWizardStep: 0,
+    exportJobId: -1,
+    importPackages: []
 }, action) {
     switch (action.type) {
         case ActionTypes.SELECTED_SITE:
@@ -43,6 +45,26 @@ export default function importExport(state = {
             return {
                 ...state,
                 exportJobId: action.jobId
+            };
+        case ActionTypes.RETRIEVED_IMPORT_PACKAGES:
+            return {
+                ...state,
+                importPackages: action.importPackages
+            };
+        case ActionTypes.GO_TO_IMPORT_WIZARD_STEP:
+            return {
+                ...state,
+                importWizardStep: action.importWizardStep
+            };
+        case ActionTypes.VERIFIED_IMPORT_PACKAGE:
+            return {
+                ...state,
+                isValid: action.isValid
+            };
+        case ActionTypes.SELECTED_PACKAGE:
+            return {
+                ...state,
+                selectedPackageId: action.selectedPackageId
             };
         default:
             return {
