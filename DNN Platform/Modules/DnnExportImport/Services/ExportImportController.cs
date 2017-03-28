@@ -145,17 +145,6 @@ namespace Dnn.ExportImport.Services
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 
-//        [HttpGet]
-//        public HttpResponseMessage JobSummary(int jobId)
-//        {
-//            var controller = new BaseController();
-//            var job = controller.GetJobSummary(PortalSettings.PortalId, jobId);
-//            return job != null
-//                ? Request.CreateResponse(HttpStatusCode.OK, job)
-//                : Request.CreateResponse(HttpStatusCode.BadRequest,
-//                    new { message = Localization.GetString("JobNotExist", Constants.SharedResources) });
-//        }
-
         [HttpGet]
         public HttpResponseMessage JobDetails(int jobId)
         {

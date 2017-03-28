@@ -125,27 +125,6 @@ namespace Dnn.ExportImport.Components.Controllers
             };
         }
 
-//        public JobItem GetJobSummary(int portalId, int jobId)
-//        {
-//            var controller = EntitiesController.Instance;
-//            var job = controller.GetJobById(jobId);
-//            if (job == null || job.PortalId != portalId)
-//                return null;
-//
-//            var jobItem = ToJobItem(job);
-//            jobItem.Summary = BuildProgressSummary(jobId);
-//            //var summaryItems = controller.GetJobSummaryLog(jobId);
-//            //jobItem.Summary = summaryItems.Select(
-//            //    s => new LogItem
-//            //    {
-//            //        CreatedOnDate = s.CreatedOnDate,
-//            //        Name = s.Name,
-//            //        Value = s.Value,
-//            //        IsSummary = s.IsSummary,
-//            //    });
-//            return jobItem;
-//        }
-
         public JobItem GetJobDetails(int portalId, int jobId)
         {
             var controller = EntitiesController.Instance;
@@ -155,15 +134,6 @@ namespace Dnn.ExportImport.Components.Controllers
 
             var jobItem = ToJobItem(job);
             jobItem.Summary = BuildProgressSummary(jobId);
-            //var summaryItems = controller.GetJobSummaryLog(jobId);
-            //jobItem.Summary = summaryItems.Select(
-            //    s => new LogItem
-            //    {
-            //        CreatedOnDate = s.CreatedOnDate,
-            //        Name = s.Name,
-            //        Value = s.Value,
-            //        IsSummary = s.IsSummary,
-            //    });
             return jobItem;
         }
 
