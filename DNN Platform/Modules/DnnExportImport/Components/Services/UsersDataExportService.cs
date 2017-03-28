@@ -133,6 +133,11 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
         }
 
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportUser>();
+        }
+
         private void ProcessUserRoles(ExportImportJob importJob, ImportDto importDto, IDataContext db,
             IEnumerable<ExportUserRole> userRoles, int userId, string username)
         {

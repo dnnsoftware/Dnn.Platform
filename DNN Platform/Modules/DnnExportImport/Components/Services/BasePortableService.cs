@@ -24,6 +24,7 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Models;
+using Dnn.ExportImport.Components.Repository;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -90,5 +91,6 @@ namespace Dnn.ExportImport.Components.Services
 
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
         public abstract void ImportData(ExportImportJob importJob, ImportDto importDto);
+        public abstract int GetImportTotal();
     }
 }

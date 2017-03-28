@@ -26,15 +26,21 @@ using System.Linq;
 using System.Xml.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 using DotNetNuke.Entities.Portals.Internal;
 using Dnn.ExportImport.Components.Repository;
+using Dnn.ExportImport.Components.Services;
+using DotNetNuke.Framework.Reflections;
+using DotNetNuke.Instrumentation;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
     public class ImportController : BaseController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ImportController));
+
         public int QueueOperation(int userId, ImportDto importDto)
         {
             var dataObject = JsonConvert.SerializeObject(importDto);
@@ -52,7 +58,7 @@ namespace Dnn.ExportImport.Components.Controllers
                     select ParseImportManifest(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
         }
 
-        public bool VerifyImportPackage(string packageId, out string errorMessage)
+        public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
         {
             bool isValid;
             errorMessage = string.Empty;
@@ -64,6 +70,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 using (var ctx = new ExportImportRepository(dbPath))
                 {
                     //TODO: Build the import info from database.
+                    if (summary != null)
+                        BuildImportSummary(ctx, summary);
                     isValid = true;
                 }
             }
@@ -99,7 +107,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 var xmlDoc = XDocument.Load(reader);
                 return new ImportPackageInfo
                 {
-                    PackageId = importDirectoryInfo.Name,
+                    PackageId = GetTagValue(xmlDoc, "PackageId") ?? importDirectoryInfo.Name,
                     Name = GetTagValue(xmlDoc, "PackageName") ?? importDirectoryInfo.Name,
                     Description = GetTagValue(xmlDoc, "PackageDescription") ?? importDirectoryInfo.Name
                 };
@@ -110,6 +118,60 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return (from f in xmlDoc.Descendants("package")
                     select f.Element(name)?.Value).SingleOrDefault();
+        }
+
+        private static void BuildImportSummary(IExportImportRepository repository, ImportExportSummary summary)
+        {
+            var summaryItems = new List<SummaryItem>();
+            var implementors = GetPortableImplementors();
+            var exportDto = repository.GetSingleItem<ExportDto>();
+
+            foreach (var implementor in implementors)
+            {
+                implementor.Repository = repository;
+                summaryItems.Add(new SummaryItem
+                {
+                    TotalItems = implementor.GetImportTotal(),
+                    Category = implementor.Category,
+                    ShowItem = exportDto.ItemsToExport.ToList().Any(x => x == implementor.Category)
+                });
+            }
+            summary.SummaryItems = summaryItems;
+            summary.IncludeDeletions = exportDto.IncludeDeletions;
+            //summary.IncludeExtensions = exportDto.IncludeExtensions;
+            //summary.IncludePermission = exportDto.IncludePermission;
+            summary.IncludeProfileProperties =
+                exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
+        }
+
+
+        //TODO: This method will need to be moved to a common place. It is used in engine as well.
+        private static IEnumerable<BasePortableService> GetPortableImplementors()
+        {
+            var typeLocator = new TypeLocator();
+            var types = typeLocator.GetAllMatchingTypes(
+                t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
+                     typeof(BasePortableService).IsAssignableFrom(t));
+
+            foreach (var type in types)
+            {
+                BasePortableService portable2Type;
+                try
+                {
+                    portable2Type = Activator.CreateInstance(type) as BasePortableService;
+                }
+                catch (Exception e)
+                {
+                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
+                        type.FullName, e.Message);
+                    portable2Type = null;
+                }
+
+                if (portable2Type != null)
+                {
+                    yield return portable2Type;
+                }
+            }
         }
     }
 }

@@ -128,7 +128,7 @@ namespace Dnn.ExportImport.Components.Providers
         {
             _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
-                Null.SetNullInteger(Math.Ceiling(checkpoint.Progress)));
+                Null.SetNullInteger(Math.Ceiling(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems);
         }
 
         public IDataReader GetAllScopeTypes()

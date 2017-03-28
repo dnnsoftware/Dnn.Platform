@@ -10,6 +10,7 @@ using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -76,6 +77,8 @@ namespace Dnn.ExportImport.Components.Services
                             .GetFolders(portalId, tillDate, sinceDate)).ToList();
                     folders = folders.Skip(skip).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
+                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
+                    if (CheckPointStageCallback(this)) return;
 
                     var progressStep = 95.0 / totalFolders;
 
@@ -120,6 +123,7 @@ namespace Dnn.ExportImport.Components.Services
                             assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
 
                         CheckPoint.Progress += progressStep;
+                        CheckPoint.ProcessedItems++;
                         currentIndex++;
                         if (CheckPointStageCallback(this)) return;
                     }
@@ -183,6 +187,9 @@ namespace Dnn.ExportImport.Components.Services
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
+                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
+                    if (CheckPointStageCallback(this)) return;
+
                     var progressStep = 95.0 / totalFolders;
 
                     foreach (var sourceFolder in sourceFolders)
@@ -244,6 +251,7 @@ namespace Dnn.ExportImport.Components.Services
                             }
                         }
                         currentIndex++;
+                        CheckPoint.ProcessedItems++;
                         CheckPoint.Progress += progressStep;
                         if (CheckPointStageCallback(this)) return;
                     }
@@ -277,6 +285,11 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.Progress = 100;
                 CheckPointStageCallback(this);
             }
+        }
+
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportFolder>();
         }
 
         private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, IDataContext db,

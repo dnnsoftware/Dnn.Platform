@@ -64,6 +64,7 @@ namespace Dnn.ExportImport.Components.Controllers
             using (var writer = XmlWriter.Create(filename, xmlSettings))
             {
                 writer.WriteStartElement("package");
+                writer.WriteElementString("PackageId", exportJob.Directory);
                 writer.WriteElementString("PackageName", exportJob.Name);
                 writer.WriteElementString("PackageDescription", !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name);
                 writer.WriteEndElement();

@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Services
 
             var controller = new ImportController();
             string message;
-            if (controller.VerifyImportPackage(importDto.PackageId, out message))
+            if (controller.VerifyImportPackage(importDto.PackageId, null, out message))
             {
                 var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
                 return Request.CreateResponse(HttpStatusCode.OK, new {jobId});
@@ -79,9 +79,10 @@ namespace Dnn.ExportImport.Services
         {
             var controller = new ImportController();
             string message;
-            var isValid = controller.VerifyImportPackage(packageId, out message);
+            var summary = new ImportExportSummary();
+            var isValid = controller.VerifyImportPackage(packageId, summary, out message);
             return isValid
-                ? Request.CreateResponse(HttpStatusCode.OK)
+                ? Request.CreateResponse(HttpStatusCode.OK, summary)
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
@@ -89,7 +90,7 @@ namespace Dnn.ExportImport.Services
         public HttpResponseMessage GetImportPackages()
         {
             var controller = new ImportController();
-            var packages = controller.GetImportPackages().OrderBy(package => package.Name);
+            var packages = controller.GetImportPackages().OrderBy(package => package.Name).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, packages);
         }
 

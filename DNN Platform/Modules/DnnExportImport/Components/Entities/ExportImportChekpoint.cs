@@ -30,6 +30,9 @@ namespace Dnn.ExportImport.Components.Entities
             }
         }
 
+        public int TotalItems { get; set; }
+        public int ProcessedItems { get; set; }
+
         public int KeyID
         {
             get { return CheckpointId; }
@@ -44,6 +47,8 @@ namespace Dnn.ExportImport.Components.Entities
             Stage = Null.SetNullInteger(dr[nameof(Stage)]);
             StageData = Null.SetNullString(dr[nameof(StageData)]);
             Progress = Null.SetNullInteger(dr[nameof(Progress)]);
+            TotalItems = Null.SetNullInteger(dr[nameof(TotalItems)]);
+            ProcessedItems = Null.SetNullInteger(dr[nameof(ProcessedItems)]);
         }
     }
 }

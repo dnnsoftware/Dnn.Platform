@@ -267,6 +267,11 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
         }
 
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportUser>();
+        }
+
         private void ProcessUser(ExportImportJob importJob, ImportDto importDto, IDataContext db, ExportUser user,
             ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {

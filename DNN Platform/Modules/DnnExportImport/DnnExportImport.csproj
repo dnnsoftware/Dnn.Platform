@@ -83,7 +83,9 @@
     <Compile Include="Components\Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
+    <Compile Include="Components\Dto\ExportFileInfo.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
+    <Compile Include="Components\Dto\ImportExportSummary.cs" />
     <Compile Include="Components\Dto\ImportPackageInfo.cs" />
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Pages\ExportTab.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Components\Dto\Roles\ExportRole.cs" />
     <Compile Include="Components\Dto\Roles\ExportRoleGroup.cs" />
     <Compile Include="Components\Dto\Roles\ExportRoleSetting.cs" />
+    <Compile Include="Components\Dto\SummaryItem.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyScopeType.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyTerm.cs" />
     <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabulary.cs" />

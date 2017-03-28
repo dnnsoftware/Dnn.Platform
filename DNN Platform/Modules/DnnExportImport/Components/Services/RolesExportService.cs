@@ -45,14 +45,28 @@ namespace Dnn.ExportImport.Components.Services
             var sinceDate = exportDto.SinceTime?.DateTime;
             var tillDate = exportJob.CreatedOnDate;
             if (CheckPoint.Stage > 2) return;
-
+            List<ExportRole> roles = null;
+            List<ExportRoleSetting> roleSettings = null;
             if (CheckPoint.Stage == 0)
             {
                 if (CheckCancelled(exportJob)) return;
+
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, tillDate, sinceDate));
+                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? roleGroups.Count : CheckPoint.TotalItems;
+                if (CheckPoint.TotalItems == roleGroups.Count)
+                {
+                    roles = CBO.FillCollection<ExportRole>(
+                        DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
+                    roleSettings = CBO.FillCollection<ExportRoleSetting>(
+                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
+                    CheckPoint.TotalItems += roles.Count + roleSettings.Count;
+                }
+                CheckPointStageCallback(this);
+
                 Repository.CreateItems(roleGroups, null);
                 Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
+                CheckPoint.ProcessedItems = roleGroups.Count;
                 CheckPoint.Progress = 30;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
@@ -61,12 +75,13 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 1)
             {
                 if (CheckCancelled(exportJob)) return;
-                var roles = CBO.FillCollection<ExportRole>(
+                if (roles == null)
+                    roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roles, null);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
                 CheckPoint.Progress = 80;
-
+                CheckPoint.ProcessedItems += roles.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -74,12 +89,13 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 2)
             {
                 if (CheckCancelled(exportJob)) return;
-                var roleSettings = CBO.FillCollection<ExportRoleSetting>(
-                    DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
+                if (roleSettings == null)
+                    roleSettings = CBO.FillCollection<ExportRoleSetting>(
+                       DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
                 Repository.CreateItems(roleSettings, null);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
-
+                CheckPoint.ProcessedItems += roleSettings.Count;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -90,13 +106,16 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 2) return;
 
             if (CheckCancelled(importJob)) return;
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
+            CheckPointStageCallback(this);
+
             var otherRoleGroups = Repository.GetAllItems<ExportRoleGroup>().ToList();
             if (CheckPoint.Stage == 0)
             {
                 ProcessRoleGroups(importJob, importDto, otherRoleGroups);
                 Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
                 CheckPoint.Progress = 40;
-
+                CheckPoint.ProcessedItems = otherRoleGroups.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -109,7 +128,7 @@ namespace Dnn.ExportImport.Components.Services
                 ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
                 Repository.UpdateItems(otherRoles);
                 CheckPoint.Progress = 50;
-
+                CheckPoint.ProcessedItems += otherRoles.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -122,10 +141,16 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.UpdateItems(otherRoleSettings);
                 Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
-
+                CheckPoint.ProcessedItems += otherRoleSettings.Count;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
+        }
+
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportRoleGroup>() + Repository.GetCount<ExportRole>() +
+                   Repository.GetCount<ExportRoleSetting>();
         }
 
         private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,

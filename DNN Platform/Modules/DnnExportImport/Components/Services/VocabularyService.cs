@@ -152,6 +152,12 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<TaxonomyScopeType>() + Repository.GetCount<TaxonomyVocabulary>() +
+                   Repository.GetCount<TaxonomyTerm>();
+        }
+
         private void ProcessVocabularies(ExportImportJob importJob, ImportDto importDto,
             IList<TaxonomyScopeType> otherScopeTypes, IEnumerable<TaxonomyVocabulary> otherVocabularies)
         {

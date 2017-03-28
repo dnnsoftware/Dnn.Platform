@@ -54,11 +54,14 @@ namespace Dnn.ExportImport.Components.Services
                         .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, tillDate,
                             sinceDate)).ToList();
             CheckPoint.Progress = 50;
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
+            CheckPointStageCallback(this);
 
             if (CheckCancelled(exportJob)) return;
             Repository.CreateItems(profileProperties, null);
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.Progress = 100;
+            CheckPoint.ProcessedItems = profileProperties.Count;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
         }
@@ -67,6 +70,8 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckPoint.Stage > 0) return;
             var profileProperties = Repository.GetAllItems<ExportProfileProperty>().ToList();
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
+            CheckPointStageCallback(this);
 
             foreach (var profileProperty in profileProperties)
             {
@@ -104,9 +109,15 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
+            CheckPoint.ProcessedItems = profileProperties.Count;
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
+        }
+
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportProfileProperty>();
         }
 
         private void ProcessCreateProfileProperty(ExportImportJob importJob, IDataContext db,

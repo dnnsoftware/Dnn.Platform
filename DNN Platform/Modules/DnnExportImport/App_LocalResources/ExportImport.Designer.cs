@@ -61,6 +61,15 @@ namespace Dnn.ExportImport.App_LocalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assets:.
+        /// </summary>
+        internal static string ASSETS_InfoText {
+            get {
+                return ResourceManager.GetString("ASSETS.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No such job!.
         /// </summary>
         internal static string JobNotExist_Text {
@@ -138,6 +147,69 @@ namespace Dnn.ExportImport.App_LocalResources {
         internal static string NotPortalAdmin_Text {
             get {
                 return ResourceManager.GetString("NotPortalAdmin.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pages:.
+        /// </summary>
+        internal static string PAGES_InfoText {
+            get {
+                return ResourceManager.GetString("PAGES.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Portal Configurations:.
+        /// </summary>
+        internal static string PORTAL_InfoText {
+            get {
+                return ResourceManager.GetString("PORTAL.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Definitions:.
+        /// </summary>
+        internal static string PROFILE_PROPERTIES_InfoText {
+            get {
+                return ResourceManager.GetString("PROFILE_PROPERTIES.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Roles:.
+        /// </summary>
+        internal static string ROLES_InfoText {
+            get {
+                return ResourceManager.GetString("ROLES.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users additional Data:.
+        /// </summary>
+        internal static string USERS_DATA_InfoText {
+            get {
+                return ResourceManager.GetString("USERS_DATA.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users:.
+        /// </summary>
+        internal static string USERS_InfoText {
+            get {
+                return ResourceManager.GetString("USERS.InfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vocabularies:.
+        /// </summary>
+        internal static string VOCABULARIES_InfoText {
+            get {
+                return ResourceManager.GetString("VOCABULARIES.InfoText", resourceCulture);
             }
         }
     }

@@ -66,6 +66,11 @@ namespace Dnn.ExportImport.Components.Services
             CheckPointStageCallback(this);
         }
 
+        public override int GetImportTotal()
+        {
+            return Repository.GetCount<ExportTab>();
+        }
+
         #region import methods
 
         private void ProcessImportPages(ExportImportJob importJob, ImportDto importDto)
@@ -86,6 +91,9 @@ namespace Dnn.ExportImport.Components.Services
             var localTabs = tabController.GetTabsByPortal(portalId).Values;
 
             var exportedTabs = Repository.GetAllItems<ExportTab>().ToList(); // ordered by ID
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportedTabs.Count : CheckPoint.TotalItems;
+            var progressStep = 100.0 / exportedTabs.Count;
+
             foreach (var otherTab in exportedTabs)
             {
                 if (CheckCancelled(importJob)) break;
@@ -128,6 +136,9 @@ namespace Dnn.ExportImport.Components.Services
                     Result.AddLogEntry("Added new page", otherTab.TabName + "(" + otherTab.TabPath + ")");
                     totalImportedTabs++;
                 }
+                CheckPoint.ProcessedItems++;
+                CheckPoint.Progress += progressStep;
+                if (CheckPointStageCallback(this)) return;
             }
 
             Result.AddSummary("Imported Tabs", totalImportedTabs.ToString());
