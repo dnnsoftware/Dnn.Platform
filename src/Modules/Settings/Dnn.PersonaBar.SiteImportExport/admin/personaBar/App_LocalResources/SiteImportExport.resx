@@ -130,13 +130,13 @@
     <value>Export Data</value>
   </data>
   <data name="LastImport.Text" xml:space="preserve">
-    <value>Last Import:</value>
+    <value>Last Import</value>
   </data>
   <data name="LastExport.Text" xml:space="preserve">
-    <value>Last Export:</value>
+    <value>Last Export</value>
   </data>
   <data name="LastUpdate.Text" xml:space="preserve">
-    <value>Last Update:</value>
+    <value>Last Update</value>
   </data>
   <data name="JobDate.Header" xml:space="preserve">
     <value>Date</value>
@@ -261,6 +261,12 @@
   <data name="ExportRequestSubmit.ErrorMessage" xml:space="preserve">
     <value>Failed to submit the export site request. Please try again.</value>
   </data>
+  <data name="ImportRequestSubmitted" xml:space="preserve">
+	<value>Import site request submitted successfully with Job Id </value>
+  </data>
+  <data name="ImportRequestSubmit.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the import site request. Please try again.</value>
+  </data>
   <data name="JobStatus0.Text" xml:space="preserve">
     <value>Submitted</value>
   </data>
@@ -317,5 +323,65 @@
   </data>
   <data name="NoPackages.Text" xml:space="preserve">
     <value>No import packages found</value>
+  </data>
+  <data name="SelectException.Text" xml:space="preserve">
+    <value>Please select an import package and try again.</value>
+  </data>
+  <data name="AnalyzingPackage.Text" xml:space="preserve">
+    <value>Analyzing Package for Site Import ...</value>
+  </data>
+  <data name="AnalyzedPackage.Text" xml:space="preserve">
+    <value>Files Verified</value>
+  </data>
+  <data name="ImportSummary.Text" xml:space="preserve">
+    <value>Import Summary</value>
+  </data>
+  <data name="Pages.Text" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Users.Text" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Roles.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="Vocabularies.Text" xml:space="preserve">
+    <value>Vocabularies</value>
+  </data>
+  <data name="PageTemplates.Text" xml:space="preserve">
+    <value>Page Templates</value>
+  </data>
+  <data name="IncludeProfileProperties.Text" xml:space="preserve">
+    <value>Include Profile Properties</value>
+  </data>
+  <data name="IncludePermissions.Text" xml:space="preserve">
+    <value>Include Permissions</value>
+  </data>
+  <data name="IncludeExtensions.Text" xml:space="preserve">
+    <value>Include Extensions</value>
+  </data>
+  <data name="FileName.Text" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="Timestamp.Text" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="ModulePackages.Text" xml:space="preserve">
+    <value>Module Packages</value>
+  </data>
+  <data name="Assets.Text" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="TotalExportSize.Text" xml:space="preserve">
+    <value>Total Export Size</value>
+  </data>
+  <data name="ExportMode.Text" xml:space="preserve">
+    <value>Export Mode</value>
+  </data>
+  <data name="OverwriteCollisions.Text" xml:space="preserve">
+    <value>Overwrite Collisions</value>
+  </data>
+  <data name="FinishImporting.Text" xml:space="preserve">
+    <value>To finish importing data to your site, click continue below, or click cancel to abort import.</value>
   </data>
 </root>

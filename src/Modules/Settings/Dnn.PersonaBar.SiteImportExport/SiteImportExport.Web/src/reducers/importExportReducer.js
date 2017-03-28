@@ -11,7 +11,9 @@ export default function importExport(state = {
     exportWizardStep: 0,
     importWizardStep: 0,
     exportJobId: -1,
-    importPackages: []
+    importPackages: [],
+    selectedPackage: undefined,
+    verificationSummary: undefined
 }, action) {
     switch (action.type) {
         case ActionTypes.SELECTED_SITE:
@@ -46,6 +48,11 @@ export default function importExport(state = {
                 ...state,
                 exportJobId: action.jobId
             };
+        case ActionTypes.SUBMITTED_IMPORT_REQUEST:
+            return {
+                ...state,
+                importJobId: action.jobId
+            };
         case ActionTypes.RETRIEVED_IMPORT_PACKAGES:
             return {
                 ...state,
@@ -59,12 +66,13 @@ export default function importExport(state = {
         case ActionTypes.VERIFIED_IMPORT_PACKAGE:
             return {
                 ...state,
-                isValid: action.isValid
+                importSummary: action.importSummary
             };
         case ActionTypes.SELECTED_PACKAGE:
             return {
                 ...state,
-                selectedPackageId: action.selectedPackageId
+                selectedPackage: action.selectedPackage,
+                importSummary: action.importSummary
             };
         default:
             return {

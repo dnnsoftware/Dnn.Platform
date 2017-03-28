@@ -43,6 +43,11 @@ class ApplicationService {
         sf.post("Export", payload, callback, errorCallback);
     }
 
+    importSite(payload, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.post("Import", payload, callback, errorCallback);
+    }
+
     getImportPackages(callback, errorCallback) {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.get("GetImportPackages", {}, callback, errorCallback);

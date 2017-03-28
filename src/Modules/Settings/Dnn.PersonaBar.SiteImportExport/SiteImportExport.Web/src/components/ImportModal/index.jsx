@@ -1,14 +1,16 @@
 import React, { PropTypes, Component } from "react";
 import { connect } from "react-redux";
 import {
-    importExport as ImportExportActions
+    importExport as ImportExportActions,
+    visiblePanel as VisiblePanelActions
 } from "../../actions";
-import {
-    TemplateIcon
-} from "dnn-svg-icons";
+import { TemplateIcon, CycleIcon, CheckMarkIcon } from "dnn-svg-icons";
+import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import PackageCardOverlay from "./PackageCardOverlay";
 import Button from "dnn-button";
+import Label from "dnn-label";
+import Switch from "dnn-switch";
 import GridCell from "dnn-grid-cell";
 import styles from "./style.less";
 import util from "utils";
@@ -17,7 +19,12 @@ class ImportModal extends Component {
     constructor() {
         super();
         this.state = {
-            wizardStep: 0
+            wizardStep: 0,
+            importRequest: {
+                PortalId: util.settings.portalId,
+                PackageId: -1,
+                CollisionResolution: 1
+            }
         };
     }
 
@@ -39,27 +46,49 @@ class ImportModal extends Component {
         props.dispatch(ImportExportActions.importWizardGoToSetp(0));
     }
 
-    selectPackage(packageId) {
+    selectPackage(pkg) {
         const { props } = this;
-        props.dispatch(ImportExportActions.selectPackage(packageId));
+        props.dispatch(ImportExportActions.selectPackage(pkg, () => {
+            let { importRequest } = this.state;
+            importRequest.PackageId = pkg.PackageId;
+            this.setState({
+                importRequest
+            });
+        }));
     }
 
     cancelImport() {
         const { props } = this;
-        this.goToStep(0);        
+        this.goToStep(0);
         props.onCancel();
     }
 
     onAnalyze() {
         const { props } = this;
-        if (props.selectedPackageId) {
+        if (props.selectedPackage) {
             props.dispatch(ImportExportActions.importWizardGoToSetp(1, () => {
-                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackageId));
+                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackage.PackageId));
             }));
         }
         else {
             util.utilities.notifyError(Localization.get("SelectException"));
         }
+    }
+
+    onImport() {
+        const { props, state } = this;
+        props.dispatch(ImportExportActions.importSite(state.importRequest, (data) => {
+            util.utilities.notify(Localization.get("ImportRequestSubmitted") + data.jobId);
+            this.goToStep(0);
+            props.dispatch(ImportExportActions.getAllJobs({
+                portalId: state.importRequest.PortalId,
+                pageIndex: 0,
+                pageSize: 10
+            }));
+            props.dispatch(VisiblePanelActions.selectPanel(0));
+        }, () => {
+            util.utilities.notifyError(Localization.get("ImportRequestSubmit.ErrorMessage"));
+        }));
     }
 
     /* eslint-disable react/no-danger */
@@ -75,24 +104,197 @@ class ImportModal extends Component {
     renderPackagesList() {
         const { props } = this;
         if (props.importPackages && props.importPackages.length > 0) {
-            return props.importPackages.map((pkg, index) => {
-                return (
-                    <div className="package-card">
-                        <div id={"package-card-" + index}>
-                            {this.renderTemplateThumbnail()}
-                            <div className="package-name">{pkg.Name}</div>
-                            <div className="package-file">{pkg.FileName}</div>
-                        </div>
-                        <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg.PackageId)} packageName={pkg.Name} packageDescription={pkg.Description} />
-                    </div>
-                );
-            });
+            return <Scrollbars
+                className="package-card-scroller"
+                autoHeight
+                autoHeightMin={0}
+                autoHeightMax={210}>
+                <ul style={{ width: 200 }}>
+                    {props.importPackages.map((pkg, index) => {
+                        return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
+                            <div id={"package-card-" + index}>
+                                {this.renderTemplateThumbnail()}
+                                <div className="package-name">{pkg.Name}</div>
+                                <div className="package-file">{pkg.FileName}</div>
+                            </div>
+                            <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
+                        </div>;
+                    })}
+                </ul>
+            </Scrollbars>;
         }
         else return <div className="noPackages">{Localization.get("NoPackages")}</div>;
     }
 
     renderPackageVerification() {
         const { props } = this;
+        return <div>
+            {props.selectedPackage && <div className="package-analyzing">
+                <div className="package-file">{props.selectedPackage.FileName}</div>
+                <div className="analyzing-wrapper">
+                    <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
+                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : CycleIcon }}>
+                    </div>
+                    <div className="analyzing-message">{props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}</div>
+                </div>
+            </div>}
+        </div>;
+    }
+
+    getSummaryItem(category) {
+        const { props } = this;
+        let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
+        return detail ? detail.TotalItems : "-";
+    }
+
+    onSwitchChange(event) {
+        const value = typeof event === "object" ? event.target.value : event;
+        let { importRequest } = this.state;
+        importRequest.CollisionResolution = value ? 1 : 0;
+        this.setState({
+            importRequest
+        });
+    }
+
+    renderImportSummary() {
+        const { props, state } = this;
+        return <div style={{ float: "left", width: "100%" }}>
+            {props.importSummary && props.selectedPackage &&
+                <div className="import-summary">
+                    <div className="sectionTitle">{Localization.get("ImportSummary")}</div>
+                    <GridCell className="import-site-container">
+                        <div className="left-column">
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Pages")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Users")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Roles")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Roles")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Vocabularies")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("PageTemplates")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("PageTemplates")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Vocabularies")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeProfileProperties")}
+                                />
+                                <div className="import-summary-item">{props.importSummary.IncludeProfileProperties.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludePermissions")}
+                                />
+                                <div className="import-summary-item">{props.importSummary.IncludePermission.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeExtensions")}
+                                />
+                                <div className="import-summary-item">{props.importSummary.IncludeExtensions.toString()}</div>
+                            </GridCell>
+                        </div>
+                        <div className="right-column">
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("FileName")}
+                                />
+                                <div className="import-summary-item">{props.selectedPackage.FileName}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Timestamp")}
+                                />
+                                <div className="import-summary-item">{props.importSummary.Timestamp}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("ModulePackages")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Extensions")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Assets")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("TotalExportSize")}
+                                />
+                                <div className="import-summary-item">{props.selectedPackage.TotalExportSize}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("ExportMode")}
+                                />
+                                <div className="import-summary-item">{props.selectedPackage.ExportMode}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("LastExport")}
+                                />
+                                <div className="import-summary-item">{props.selectedPackage.LastExport}</div>
+                            </GridCell>
+                            <div className="seperator">
+                                <hr />
+                            </div>
+                            <Label
+                                labelType="inline"
+                                label={Localization.get("OverwriteCollisions")}
+                            />
+                            <Switch
+                                value={state.importRequest.CollisionResolution === 0 ? false : true}
+                                onChange={this.onSwitchChange.bind(this)}
+                            />
+                        </div>
+                    </GridCell>
+                    <div className="finish-importing">{Localization.get("FinishImporting")}</div>
+                </div>
+            }
+        </div>;
     }
 
     render() {
@@ -102,20 +304,26 @@ class ImportModal extends Component {
                 <div className="pageTitle">{Localization.get("SelectImportPackage.Header")}</div>
                 <div className="pageDescription">{Localization.get("SelectImportPackage")}</div>
                 <div className="packages-wrapper">
-                    {state.wizardStep === 0 &&
-                        <div className="packages">
-                            {this.renderPackagesList()}
-                        </div>
-                    }
+                    <div className="packages">
+                        {state.wizardStep === 0 &&
+                            this.renderPackagesList()
+                        }
+                        {state.wizardStep === 1 &&
+                            this.renderPackageVerification()
+                        }
+                    </div>
                     {state.wizardStep === 1 &&
-                        <div className="packages">
-                            {this.renderPackageVerification()}
-                        </div>
+                        this.renderImportSummary()
                     }
                 </div>
                 <GridCell className="action-buttons">
                     <Button type="secondary" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
-                    <Button type="primary" onClick={this.onAnalyze.bind(this)}>{Localization.get("Continue")}</Button>
+                    {props.wizardStep === 0 &&
+                        <Button type="primary" disabled={props.selectedPackage ? false : true} onClick={this.onAnalyze.bind(this)}>{Localization.get("Continue")}</Button>
+                    }
+                    {props.wizardStep === 1 &&
+                        <Button type="primary" disabled={!props.importSummary} onClick={this.onImport.bind(this)}>{Localization.get("Continue")}</Button>
+                    }
                 </GridCell>
             </div>
         );
@@ -124,18 +332,20 @@ class ImportModal extends Component {
 
 ImportModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    portalId: PropTypes.number,
     onCancel: PropTypes.func,
     wizardStep: PropTypes.number,
     importPackages: PropTypes.array,
-    selectedPackageId: PropTypes.string
+    selectedPackage: PropTypes.object,
+    importSummary: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         wizardStep: state.importExport.importWizardStep,
-        viewingLog: state.importExport.viewingLog,
         importPackages: state.importExport.importPackages,
-        selectedPackageId: state.importExport.selectedPackageId
+        selectedPackage: state.importExport.selectedPackage,
+        importSummary: state.importExport.importSummary
     };
 }
 
