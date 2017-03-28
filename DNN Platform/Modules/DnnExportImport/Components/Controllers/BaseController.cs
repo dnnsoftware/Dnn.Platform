@@ -211,7 +211,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 //IncludePermission = exportDto.IncludePermission,
                 IncludeProfileProperties =
                     exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
-                ExportTime = job.CreatedOnDate
+                FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime,
+                ToDate = exportDto.ToDate
             };
             if (job.JobType == JobType.Export)
             {

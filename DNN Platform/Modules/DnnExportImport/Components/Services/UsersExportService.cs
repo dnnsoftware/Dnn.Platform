@@ -50,8 +50,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.SinceTime?.DateTime;
-            var tillDate = exportJob.CreatedOnDate;
+            var fromDate = exportDto.FromDate?.DateTime;
+            var toDate = exportDto.ToDate;
             if (CheckCancelled(exportJob)) return;
 
             var portalId = exportJob.PortalId;
@@ -65,8 +65,8 @@ namespace Dnn.ExportImport.Components.Services
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
             var dataReader = DataProvider.Instance()
-                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, tillDate,
-                    sinceDate);
+                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate,
+                    fromDate);
             var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
             var firstOrDefault = allUser.FirstOrDefault();
             if (firstOrDefault == null) return;
@@ -88,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (pageIndex > 0)
                 {
                     dataReader = DataProvider.Instance()
-                        .GetAllUsers(portalId, pageIndex, pageSize, false, tillDate, sinceDate);
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, toDate, fromDate);
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 }
@@ -163,7 +163,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     pageIndex++;
                     dataReader = DataProvider.Instance()
-                        .GetAllUsers(portalId, pageIndex, pageSize, false, tillDate, sinceDate);
+                        .GetAllUsers(portalId, pageIndex, pageSize, false, toDate, fromDate);
                     allUser =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 } while (totalUsersExported < totalUsersToBeProcessed);

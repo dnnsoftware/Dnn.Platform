@@ -141,29 +141,29 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("ExportTaxonomy_VocabularyTypes");
         }
 
-        public IDataReader GetAllTerms(DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllTerms(DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("ExportTaxonomy_Terms", tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Terms", toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllVocabularies(DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllVocabularies(DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllRoleGroups(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllRoleGroups(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_RoleGroups", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_RoleGroups", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllRoles(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllRoles(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_Roles", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_Roles", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllRoleSettings(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllRoleSettings(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public void SetRoleAutoAssign(int roleId)
@@ -171,10 +171,10 @@ namespace Dnn.ExportImport.Components.Providers
             _dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
         }
 
-        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, tillDate, _dataProvider.GetNull(sinceDate));
+                .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
@@ -195,11 +195,11 @@ namespace Dnn.ExportImport.Components.Providers
                 "Export_UpdateRoleSettingChangers", roleId, settingName, createdBy, modifiedBy);
         }
 
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime tillDate,
-            DateTime? sinceDate)
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDate,
+            DateTime? fromDate)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, tillDate, _dataProvider.GetNull(sinceDate));
+                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public IDataReader GetAspNetUser(string username)
@@ -238,45 +238,45 @@ namespace Dnn.ExportImport.Components.Providers
                 "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
         }
 
-        public IDataReader GetPortalSettings(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetPortalSettings(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetPortalPermissions(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetPortalPermissions(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetPortalLanguages(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetPortalLanguages(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetPortalLocalizations(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetPortalLocalizations(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalLocalizations", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalLocalizations", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetFolders(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetFolders(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetFolders", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetFolders", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, tillDate, _dataProvider.GetNull(sinceDate));
+                .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetFolderMappings(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetFolderMappings(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetFiles(int portalId, int folderId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetFiles(int portalId, int folderId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, tillDate, _dataProvider.GetNull(sinceDate));
+            return _dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
@@ -293,29 +293,29 @@ namespace Dnn.ExportImport.Components.Providers
                                          && x.PermissionName == permissionName)?.PermissionID;
         }
 
-        public IDataReader GetAllPortalTabs(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllPortalTabs(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, tillDate, sinceDate);
+            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabSettings", tabId, tillDate, sinceDate);
+            return _dataProvider.ExecuteReader("Export_TabSettings", tabId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabPermissions(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllTabPermissions(int tabId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabPermissions", tabId, tillDate, sinceDate);
+            return _dataProvider.ExecuteReader("Export_TabPermissions", tabId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabUrls(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllTabUrls(int tabId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabUrls", tabId, tillDate, sinceDate);
+            return _dataProvider.ExecuteReader("Export_TabUrls", tabId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabAliasSkins(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IDataReader GetAllTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabAliasSkins", tabId, tillDate, sinceDate);
+            return _dataProvider.ExecuteReader("Export_TabAliasSkins", tabId, toDate, fromDate);
         }
 
         public IDataReader GetAllTabModules(int tabId, bool includeDeleted)

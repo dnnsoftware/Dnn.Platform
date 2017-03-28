@@ -46,15 +46,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.SinceTime?.DateTime;
-            var tillDate = exportJob.CreatedOnDate;
+            var fromDate = exportDto.FromDate?.DateTime;
+            var toDate = exportDto.ToDate;
             if (CheckPoint.Stage > 1) return;
             if (CheckCancelled(exportJob)) return;
             List<ExportPortalLanguage> portalLanguages = null;
             if (CheckPoint.Stage == 0)
             {
                 var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
-                    .GetPortalSettings(exportJob.PortalId, tillDate, sinceDate));
+                    .GetPortalSettings(exportJob.PortalId, toDate, fromDate));
                 
                 //Update the total items count in the check points. This should be updated only once.
                 CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? portalSettings.Count : CheckPoint.TotalItems;
@@ -62,7 +62,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     portalLanguages =
                         CBO.FillCollection<ExportPortalLanguage>(
-                            DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, tillDate, sinceDate));
+                            DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
                     CheckPoint.TotalItems += portalLanguages.Count;
                 }
                 CheckPointStageCallback(this);
@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckCancelled(exportJob)) return;
                 if (portalLanguages == null)
                     portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
-                        .GetPortalLanguages(exportJob.PortalId, tillDate, sinceDate));
+                        .GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
 
                 Repository.CreateItems(portalLanguages, null);
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
@@ -97,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
                 var portalLocalization =
                    CBO.FillCollection<ExportPortalLocalization>(
                        DataProvider.Instance()
-                           .GetPortalLocalizations(exportJob.PortalId,tillDate, sinceDate));
+                           .GetPortalLocalizations(exportJob.PortalId,toDate, fromDate));
                 Repository.CreateItems(portalLocalization, null);
                 Result.AddSummary("Exported Portal Localizations", portalLocalization.Count.ToString());
                 ProgressPercentage += 40;

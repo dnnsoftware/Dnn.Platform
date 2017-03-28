@@ -68,13 +68,13 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 if (CheckPoint.Stage == 1)
                 {
-                    var sinceDate = exportDto.SinceTime?.DateTime;
-                    var tillDate = exportJob.CreatedOnDate;
+                    var fromDate = exportDto.FromDate?.DateTime;
+                    var toDate = exportDto.ToDate;
                     var portal = PortalController.Instance.GetPortal(portalId);
 
                     var folders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
-                            .GetFolders(portalId, tillDate, sinceDate)).ToList();
+                            .GetFolders(portalId, toDate, fromDate)).ToList();
                     folders = folders.Skip(skip).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
 
@@ -89,11 +89,11 @@ namespace Dnn.ExportImport.Components.Services
                         var isUserFolder = false;
                         var permissions =
                             CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                .GetFolderPermissionsByPath(portalId, folder.FolderPath, tillDate, sinceDate));
+                                .GetFolderPermissionsByPath(portalId, folder.FolderPath, toDate, fromDate));
                         var files =
                             CBO.FillCollection<ExportFile>(
                                 DataProvider.Instance()
-                                    .GetFiles(portalId, folder.FolderId, tillDate, sinceDate));
+                                    .GetFiles(portalId, folder.FolderId, toDate, fromDate));
                         int? userId;
                         if (IsUserFolder(folder.FolderPath, out userId))
                         {
@@ -135,7 +135,7 @@ namespace Dnn.ExportImport.Components.Services
                     //TODO: Check if we need this step or not.
                     //var folderMappings =
                     //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
-                    //        .GetFolderMappings(portalId,tillDate, sinceDate)).ToList();
+                    //        .GetFolderMappings(portalId,toDate, fromDate)).ToList();
                     //Repository.CreateItems(folderMappings, null);
                 }
             }

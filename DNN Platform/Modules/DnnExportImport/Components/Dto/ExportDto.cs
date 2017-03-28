@@ -79,7 +79,13 @@ namespace Dnn.ExportImport.Components.Dto
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.
         /// </summary>
-        public DateTimeOffset? SinceTime { get; set; }
+        public DateTimeOffset? FromDate { get; set; }
+
+        /// <summary>
+        /// Date when job was created. 
+        /// NOTE: This will be set internally only by the engine and not by the UI
+        /// </summary>
+        public DateTime ToDate { get; set; }
 
         /// <summary>
         /// The pages to be exported (list of TabId values). These are the ID's

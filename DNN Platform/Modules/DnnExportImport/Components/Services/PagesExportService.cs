@@ -223,13 +223,13 @@ namespace Dnn.ExportImport.Components.Services
             int lastProcessedTabId;
             int.TryParse(CheckPoint.StageData, out lastProcessedTabId);
 
-            var sinceDate = exportDto.SinceTime;
-            var tillDate = exportJob.CreatedOnDate;
+            var fromDate = exportDto.FromDate;
+            var toDate = exportDto.ToDate;
             var isAllIncluded = selectedPages.Any(id => id == -1);
 
             var tabController = TabController.Instance;
             var allTabs = EntitiesController.Instance.GetPortalTabs(
-                portalId, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime); // ordered by TabID
+                portalId, exportDto.ToDate, exportDto.FromDate?.DateTime); // ordered by TabID
 
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? allTabs.Count : CheckPoint.TotalItems;
@@ -242,7 +242,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (lastProcessedTabId > pg.TabId) continue;
                 if (pg.IsDeleted && !exportDto.IncludeDeletions) continue;
-                if (pg.LastUpdatedOn < sinceDate || pg.LastUpdatedOn >= tillDate) continue;
+                if (pg.LastUpdatedOn < fromDate || pg.LastUpdatedOn >= toDate) continue;
 
                 var tab = tabController.GetTab(pg.TabId, portalId);
                 if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
@@ -250,16 +250,16 @@ namespace Dnn.ExportImport.Components.Services
                     var exportPage = SaveExportPage(tab);
 
                     totalExportedSettings +=
-                        SaveTabSettings(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabSettings(exportPage, exportDto.ToDate, exportDto.FromDate?.DateTime);
 
                     totalExportedPermissions +=
-                        SaveTabPermissions(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabPermissions(exportPage, exportDto.ToDate, exportDto.FromDate?.DateTime);
 
                     totalExportedUrls +=
-                        SaveTabUrls(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabUrls(exportPage, exportDto.ToDate, exportDto.FromDate?.DateTime);
 
                     totalExportedAliasSkins +=
-                        SaveTabAliasSkins(exportPage, exportJob.CreatedOnDate, exportDto.SinceTime?.DateTime);
+                        SaveTabAliasSkins(exportPage, exportDto.ToDate, exportDto.FromDate?.DateTime);
 
                     totalExportedModules +=
                         SaveTabModules(exportPage, exportDto.IncludeDeletions);
@@ -284,33 +284,33 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry("Exported Tab Module Settings", totalExportedModuleSettings.ToString());
         }
 
-        private int SaveTabSettings(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabSettings(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, tillDate, sinceDate);
+            var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, toDate, fromDate);
             if (tabSettings.Count > 0)
                 Repository.CreateItems(tabSettings, exportPage.ReferenceId);
             return tabSettings.Count;
         }
 
-        private int SaveTabPermissions(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabPermissions(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, tillDate, sinceDate);
+            var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, toDate, fromDate);
             if (tabPermissions.Count > 0)
                 Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
             return tabPermissions.Count;
         }
 
-        private int SaveTabUrls(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabUrls(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, tillDate, sinceDate);
+            var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, toDate, fromDate);
             if (tabUrls.Count > 0)
                 Repository.CreateItems(tabUrls, exportPage.ReferenceId);
             return tabUrls.Count;
         }
 
-        private int SaveTabAliasSkins(ExportTab exportPage, DateTime tillDate, DateTime? sinceDate)
+        private int SaveTabAliasSkins(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            var tabSkins = EntitiesController.Instance.GetTabAliasSkins(exportPage.TabId, tillDate, sinceDate);
+            var tabSkins = EntitiesController.Instance.GetTabAliasSkins(exportPage.TabId, toDate, fromDate);
             if (tabSkins.Count > 0)
                 Repository.CreateItems(tabSkins, exportPage.ReferenceId);
             return tabSkins.Count;

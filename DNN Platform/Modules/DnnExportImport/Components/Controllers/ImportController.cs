@@ -132,6 +132,8 @@ namespace Dnn.ExportImport.Components.Controllers
                     Order = implementor.Priority
                 });
             }
+            summary.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime;
+            summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
             //summary.IncludeExtensions = exportDto.IncludeExtensions;

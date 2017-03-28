@@ -132,7 +132,7 @@ namespace Dnn.ExportImport.Components.Engines
             PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
-            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.SinceTime}] and [{exportJob.CreatedOnDate:g}]");
+            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDate}] and [{exportDto.ToDate:g}]");
             var firstIteration = true;
             AddJobToCache(exportJob);
 

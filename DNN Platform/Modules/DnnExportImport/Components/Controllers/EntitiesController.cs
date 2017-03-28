@@ -79,34 +79,34 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
-        public IList<ExportTabInfo> GetPortalTabs(int portalId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabInfo> GetPortalTabs(int portalId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabInfo>(
-                DataProvider.Instance().GetAllPortalTabs(portalId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllPortalTabs(portalId, toDate, fromDate));
         }
 
-        public IList<ExportTabSetting> GetTabSettings(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabSetting>(
-                DataProvider.Instance().GetAllTabSettings(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabSettings(tabId, toDate, fromDate));
         }
 
-        public IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabPermission>(
-                DataProvider.Instance().GetAllTabPermissions(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabPermissions(tabId, toDate, fromDate));
         }
 
-        public IList<ExportTabUrl> GetTabUrls(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabUrl> GetTabUrls(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabUrl>(
-                DataProvider.Instance().GetAllTabUrls(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabUrls(tabId, toDate, fromDate));
         }
 
-        public IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime tillDate, DateTime? sinceDate)
+        public IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabAliasSkin>(
-                DataProvider.Instance().GetAllTabAliasSkins(tabId, tillDate, sinceDate));
+                DataProvider.Instance().GetAllTabAliasSkins(tabId, toDate, fromDate));
         }
 
         public IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted)

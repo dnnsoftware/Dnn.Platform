@@ -42,8 +42,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.SinceTime?.DateTime;
-            var tillDate = exportJob.CreatedOnDate;
+            var fromDate = exportDto.FromDate?.DateTime;
+            var toDate = exportDto.ToDate;
             if (CheckPoint.Stage > 2) return;
             List<ExportRole> roles = null;
             List<ExportRoleSetting> roleSettings = null;
@@ -52,16 +52,16 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckCancelled(exportJob)) return;
 
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
-                    DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, tillDate, sinceDate));
+                    DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, toDate, fromDate));
 
                 //Update the total items count in the check points. This should be updated only once.
                 CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? roleGroups.Count : CheckPoint.TotalItems;
                 if (CheckPoint.TotalItems == roleGroups.Count)
                 {
                     roles = CBO.FillCollection<ExportRole>(
-                        DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
+                        DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
-                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
+                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
                     CheckPoint.TotalItems += roles.Count + roleSettings.Count;
                 }
                 CheckPointStageCallback(this);
@@ -79,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckCancelled(exportJob)) return;
                 if (roles == null)
                     roles = CBO.FillCollection<ExportRole>(
-                    DataProvider.Instance().GetAllRoles(exportJob.PortalId, tillDate, sinceDate));
+                    DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
                 Repository.CreateItems(roles, null);
                 Result.AddSummary("Exported Roles", roles.Count.ToString());
                 CheckPoint.Progress = 80;
@@ -93,7 +93,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckCancelled(exportJob)) return;
                 if (roleSettings == null)
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
-                       DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, tillDate, sinceDate));
+                       DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
                 Repository.CreateItems(roleSettings, null);
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 CheckPoint.Progress = 100;

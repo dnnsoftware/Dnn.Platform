@@ -35,9 +35,9 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
-            exportDto.SinceTime = (exportDto.SinceTime ?? Constants.MinDbTime).ToUniversalTime();
-
-            var directory = DateTime.UtcNow.ToString("yyyyMMddhhmmssfff");
+            exportDto.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime();
+            exportDto.ToDate = DateTime.Now;
+            var directory = DateTime.Now.ToString("yyyyMMddhhmmssfff");
 
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

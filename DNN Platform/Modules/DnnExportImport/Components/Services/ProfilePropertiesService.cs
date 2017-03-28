@@ -41,8 +41,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var sinceDate = exportDto.SinceTime?.DateTime;
-            var tillDate = exportJob.CreatedOnDate;
+            var fromDate = exportDto.FromDate?.DateTime;
+            var toDate = exportDto.ToDate;
             if (CheckCancelled(exportJob)) return;
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
@@ -51,8 +51,8 @@ namespace Dnn.ExportImport.Components.Services
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
-                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, tillDate,
-                            sinceDate)).ToList();
+                        .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, toDate,
+                            fromDate)).ToList();
             CheckPoint.Progress = 50;
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;

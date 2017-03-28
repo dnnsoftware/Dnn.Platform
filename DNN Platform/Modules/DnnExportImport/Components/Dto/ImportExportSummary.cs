@@ -37,9 +37,14 @@ namespace Dnn.ExportImport.Components.Dto
         public int ExportMode { get; set; }
 
         /// <summary>
-        /// Date when last export was performed.
+        /// Date from which data was taken to perform export.
         /// </summary>
-        public DateTime ExportTime { get; set; }
+        public DateTime FromDate { get; set; }
+
+        /// <summary>
+        /// Date till which data was taken to perform export.
+        /// </summary>
+        public DateTime ToDate { get; set; }
 
         /// <summary>
         /// Summary of each item export.
