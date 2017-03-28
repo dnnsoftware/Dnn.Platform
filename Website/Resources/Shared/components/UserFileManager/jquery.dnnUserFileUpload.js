@@ -58,6 +58,7 @@
                 url: url,
                 maxFileSize: opts.maxFileSize,
                 beforeSend: opts.beforeSend,
+                pasteZone: null,
                 add: function (e, data) {
                     data.context = $(opts.progressContextSelector);
                     data.context.find($(opts.progressFileNameSelector)).html(data.files[0].name);

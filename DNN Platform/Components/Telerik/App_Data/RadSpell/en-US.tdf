@@ -49,7 +49,7 @@ da:T:T
 db:TP:TP
 dc:TK:TK
 de:T:T
-dj:TJ:T 
+dj:TJ:T
 dl:TL:TL
 do:T:T
 dr:TR:TR
@@ -151,7 +151,7 @@ ne:N:N
 nf:NF:NF
 nh:N:N
 ni:N:N
-nj:NJ:N 
+nj:NJ:N
 nm:NM:NM
 no:N:N
 np:NP:NP
@@ -179,7 +179,7 @@ pe:P:P
 pg:PK:PK
 ph:F:F
 pi:P:P
-pj:PJ:P 
+pj:PJ:P
 pl:PL:PL
 pm:PM:PM
 po:P:P
@@ -642,7 +642,7 @@ lye:L:L
 mad:MT:MT
 mae:M:M
 mag:MK:MK
-maj:MJ:M 
+maj:MJ:M
 mal:ML:ML
 man:MN:MN
 mao:M:M
@@ -881,7 +881,7 @@ sup:SP:SP
 tab:TP:TP
 tad:TT:TT
 tag:TK:TK
-taj:TJ:T 
+taj:TJ:T
 tan:TN:TN
 tao:T:T
 tap:TP:TP
@@ -1591,7 +1591,7 @@ cone:KN:KN
 conf:KNF:KNF
 cong:KNK:KNK
 coni:KN:KN
-conj:KNJ:KN 
+conj:KNJ:KN
 conk:KNK:KNK
 conn:KN:KN
 cons:KNS:KNS
@@ -2347,7 +2347,7 @@ haar:HR:HR
 habu:HP:HP
 hack:HK:HK
 hade:HT:HT
-hadj:HTJ:HT 
+hadj:HTJ:HT
 haec:HK:HK
 haem:HM:HM
 haft:HFT:HFT
@@ -11731,7 +11731,7 @@ viewy:F:F
 vigil:FJL:FKL
 vigor:FKR:FKR
 viler:FLR:FLR
-villa:FL:FL 
+villa:FL:FL
 villi:FL:FL
 vimen:FMN:FMN
 vinca:FNK:FNK
@@ -21704,7 +21704,7 @@ schuss:XS:XS
 schwas:XS:XFS
 sciage:SJ:SK
 scient:SNT:SNT
-scilla:SL:SL 
+scilla:SL:SL
 scilly:SL:SL
 scions:SNS:SNS
 sclaff:SKF:SKF
@@ -25896,7 +25896,7 @@ barfing:PRFN:PRFN
 bargain:PRKN:PRKN
 bargees:PRJS:PRKS
 barging:PRJN:PRKN
-barilla:PRL:PRL 
+barilla:PRL:PRL
 barkeep:PRKP:PRKP
 barkers:PRKR:PRKR
 barking:PRKN:PRKN
@@ -27341,7 +27341,7 @@ ceasing:SSNK:SSNK
 cecilia:SSL:SSL
 cecitis:SSTS:SSTS
 cedents:STNT:STNT
-cedilla:STL:STL 
+cedilla:STL:STL
 ceilidh:SLT:SLT
 ceiling:SLNK:SLNK
 celadon:SLTN:SLTN
@@ -31723,7 +31723,7 @@ gorgers:KRKR:KRJR
 gorgets:KRKT:KRKT
 gorging:KRJN:KRKN
 goriest:KRST:KRST
-gorilla:KRL:KRL 
+gorilla:KRL:KRL
 gormand:KRMN:KRMN
 gorsedd:KRST:KRST
 goshawk:KXK:KXK
@@ -34356,7 +34356,7 @@ malting:MLTN:MLTN
 maltose:MLTS:MLTS
 malunit:MLNT:MLNT
 mamelon:MMLN:MMLN
-mamilla:MML:MML 
+mamilla:MML:MML
 mammals:MMLS:MMLS
 mammary:MMR:MMR
 mammies:MMS:MMS
@@ -34392,7 +34392,7 @@ manhunt:MNNT:MNNT
 maniacs:MNKS:MNKS
 manical:MNKL:MNKL
 manikin:MNKN:MNKN
-manilla:MNL:MNL 
+manilla:MNL:MNL
 manille:MNL:MNL
 maniple:MNPL:MNPL
 manitou:MNT:MNT
@@ -36054,7 +36054,7 @@ papayan:PPN:PPN
 papayas:PPS:PPS
 papered:PPRT:PPRT
 paperer:PPRR:PPRR
-papilla:PPL:PPL 
+papilla:PPL:PPL
 papists:PPST:PPST
 papoose:PPS:PPS
 pappier:PP:PPR
@@ -37292,7 +37292,7 @@ punting:PNTN:PNTN
 puparia:PPR:PPR
 pupated:PPTT:PPTT
 pupates:PPTS:PPTS
-pupilla:PPL:PPL 
+pupilla:PPL:PPL
 puppets:PPTS:PPTS
 puppies:PPS:PPS
 pupping:PPNK:PPNK
@@ -40064,7 +40064,7 @@ squeeze:SKS:SKS
 squelch:SKLX:SKLK
 squidgy:SKJ:SKJ
 squiffy:SKF:SKF
-squilla:SKL:SKL 
+squilla:SKL:SKL
 squinch:SKNX:SKNK
 squints:SKNT:SKNT
 squinty:SKNT:SKNT
@@ -42237,7 +42237,7 @@ vampish:FMPX:FMPX
 vanadic:FNTK:FNTK
 vandals:FNTL:FNTL
 vandyke:FNTK:FNTK
-vanilla:FNL:FNL 
+vanilla:FNL:FNL
 vantage:FNTJ:FNTK
 vanward:FNRT:FNRT
 vapidly:FPTL:FPTL
@@ -43129,7 +43129,7 @@ zooming:SMNK:SMNK
 zoonomy:SNM:SNM
 zoopsia:SPS:SPX
 zootomy:STM:STM
-zorilla:SRL:SRL 
+zorilla:SRL:SRL
 zouaves:SFS:SFS
 zoysias:SSS:SXS
 zunians:SNNS:SNNS
@@ -46063,7 +46063,7 @@ caudally:KTL:KTL
 caudated:KTTT:KTTT
 caudexes:KTKS:KTKS
 caudices:KTSS:KTSS
-caudillo:KTL:KTL 
+caudillo:KTL:KTL
 cauldron:KLTR:KLTR
 caulicle:KLKL:KLKL
 caulkers:KLKR:KLKR
@@ -51754,7 +51754,7 @@ guddling:KTLN:KTLN
 gudgeons:KJNS:KJNS
 guerdons:KRTN:KRTN
 guerezas:KRSS:KRSS
-guerilla:KRL:KRL 
+guerilla:KRL:KRL
 guernsey:KRNS:KRNS
 guessers:KSRS:KSRS
 guessing:KSNK:KSNK
@@ -54394,7 +54394,7 @@ malvoise:MLFS:MLFS
 mameluke:MMLK:MMLK
 mamillae:MML:MML
 mammalia:MML:MML
-mammilla:MML:MML 
+mammilla:MML:MML
 mammitis:MMTS:MMTS
 mammogen:MMJN:MMKN
 mammoths:MM0S:MMTS
@@ -67448,7 +67448,7 @@ bystreets:PSTR:PSTR
 byzantine:PSNT:PSNT
 byzantium:PSNT:PSNT
 cabalists:KPLS:KPLS
-caballero:KPLR:KPL 
+caballero:KPLR:KPL
 caballing:KPLN:KPLN
 cabbalism:KPLS:KPLS
 cabbalist:KPLS:KPLS
@@ -73639,7 +73639,7 @@ guatemala:KTML:KTML
 guerdoner:KRTN:KRTN
 guerillas:KRLS:KRLS
 guernseys:KRNS:KRNS
-guerrilla:KRL:KRL 
+guerrilla:KRL:KRL
 guessable:KSPL:KSPL
 guesswork:KSRK:KSRK
 guffawing:KFNK:KFNK
@@ -89657,7 +89657,7 @@ choriomata:KRMT:KRMT
 chorioptes:KRPT:KRPT
 chorioptic:KRPT:KRPT
 choristers:KRST:KRST
-chowchilla:XXL:XKL 
+chowchilla:XXL:XKL
 christened:KRST:KRST
 christener:KRST:KRST
 christhood:KRS0:KRST

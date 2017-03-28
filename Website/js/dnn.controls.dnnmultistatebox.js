@@ -1,6 +1,6 @@
 ﻿
 Type.registerNamespace('dnn.controls');dnn.extend(dnn.controls,{initMultiStateBox:function(ctl)
-{if(ctl)
+{if(ctl&&dnn.controls.controls[ctl.id]==null)
 {var ts=new dnn.controls.DNNMultiStateBox(ctl);ts.initialize();return ts;}}});dnn.controls.DNNMultiStateBox=function(o)
 {dnn.controls.DNNMultiStateBox.initializeBase(this,[o]);this.css=this.getProp('css','');this.enabled=(this.getProp('enabled','1')=='1');this.imgPath=this.getProp('imgpath','images/');this.states=this.getProp('states','[]');this.states=Sys.Serialization.JavaScriptSerializer.deserialize(this.states);this.stateIndex=[]
 for(var i=0;i<this.states.length;i++)

@@ -372,6 +372,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Selectize", "Selectize", "{
 		DNN Platform\JavaScript Libraries\Selectize\selectize.min.js = DNN Platform\JavaScript Libraries\Selectize\selectize.min.js
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Console", "DNN Platform\Admin Modules\Dnn.Modules.Console\Dnn.Modules.Console.csproj", "{946F0EA1-6187-4878-A32F-B7BF70E13CE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website.Deprecated", "DNN Platform\DotNetNuke.Website.Deprecated\DotNetNuke.Website.Deprecated.csproj", "{19EAE090-9D06-43BE-A62E-D6217E813AD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -646,6 +650,22 @@ Global
 		{104C9117-430C-4389-B67D-B1EFCF8146CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{104C9117-430C-4389-B67D-B1EFCF8146CB}.Release|x86.ActiveCfg = Release|Any CPU
 		{104C9117-430C-4389-B67D-B1EFCF8146CB}.Release|x86.Build.0 = Release|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Debug|x86.Build.0 = Debug|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Release|x86.ActiveCfg = Release|Any CPU
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5}.Release|x86.Build.0 = Release|Any CPU
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Debug|x86.ActiveCfg = Debug|x86
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Debug|x86.Build.0 = Debug|x86
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Release|x86.ActiveCfg = Release|x86
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -721,5 +741,7 @@ Global
 		{5FA7FCDD-A13E-4F1D-91B6-827FD09BBECF} = {C885195F-A9B0-4397-926C-E62CEB9FC5E3}
 		{104C9117-430C-4389-B67D-B1EFCF8146CB} = {5FA7FCDD-A13E-4F1D-91B6-827FD09BBECF}
 		{FC9953A0-E403-4129-AF4F-3398E58F8ACF} = {886DB964-63D4-4841-81D1-5A7360C98230}
+		{946F0EA1-6187-4878-A32F-B7BF70E13CE5} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
+		{19EAE090-9D06-43BE-A62E-D6217E813AD1} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 	EndGlobalSection
 EndGlobal

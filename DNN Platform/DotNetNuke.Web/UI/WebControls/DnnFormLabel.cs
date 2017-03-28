@@ -71,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		    outerLabel.Controls.Add(label);			
 
             var link = new LinkButton { ID = "Link", CssClass = "dnnFormHelp", TabIndex = -1 };
+            link.Attributes.Add("aria-label", "Help");
             Controls.Add(link);
 			
 			if (!String.IsNullOrEmpty(toolTipText))
@@ -86,9 +87,10 @@ namespace DotNetNuke.Web.UI.WebControls
 				var helpLabel = new Label { ID = "Text", CssClass="dnnHelpText", Text = LocalizeString(ToolTipKey) };
 				panel.Controls.Add(helpLabel);
 
-				var pinLink = new HyperLink {CssClass = "pinHelp"};
-			    pinLink.Attributes.Add("href", "#");
-				panel.Controls.Add(pinLink);
+				var pinLink = new HyperLink { CssClass = "pinHelp"};
+                pinLink.Attributes.Add("href", "#");
+                pinLink.Attributes.Add("aria-label", "Pin");
+                panel.Controls.Add(pinLink);
 
                 JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);

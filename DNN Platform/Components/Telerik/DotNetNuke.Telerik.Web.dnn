@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Telerik.Web" type="Library" version="08.00.01" isSystem="true">
+    <package name="DotNetNuke.Telerik.Web" type="Library" version="09.01.00" isSystem="true">
       <friendlyName>DotNetNuke Telerik Web Components</friendlyName>
       <description>Provides Telerik Components for DotNetNuke.</description>
       <dependencies/>
@@ -32,8 +32,12 @@
         <component type="File">
           <files>
             <file>
-		          <path>Documentation</path>
+              <path>Documentation</path>
               <name>Telerik_EULA.pdf</name>
+            </file>
+            <file>
+              <path>App_Data/RadSpell</path>
+              <name>en-US.tdf</name>
             </file>
           </files>
         </component>

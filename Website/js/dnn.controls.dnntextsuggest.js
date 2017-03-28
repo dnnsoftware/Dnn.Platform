@@ -1,6 +1,6 @@
 ﻿
 Type.registerNamespace('dnn.controls');dnn.extend(dnn.controls,{initTextSuggest:function(ctl)
-{if(ctl)
+{if(ctl&&dnn.controls.controls[ctl.id]==null)
 {var ts=new dnn.controls.DNNTextSuggest(ctl);ts.initialize();return ts;}}});dnn.controls.DNNTextSuggest=function(o)
 {dnn.controls.DNNTextSuggest.initializeBase(this,[o]);this.resultCtr=null;this.tscss=this.getProp('tscss','');this.css=this.getProp('css','');this.cssChild=this.getProp('csschild','');this.cssHover=this.getProp('csshover','');this.cssSel=this.getProp('csssel','');this.sysImgPath=this.getProp('sysimgpath','');this.workImg='dnnanim.gif';this.target=this.getProp('target','');this.defaultJS=this.getProp('js','');this.postBack=this.getProp('postback','');this.callBack=this.getProp('callback','');this.callBackStatFunc=this.getProp('callbackSF','');if(this.callBackStatFunc.length>0)
 this.add_handler('callBackStatus',eval(this.callBackStatFunc));this.rootNode=null;this.selNode=null;this.selIndex=-1;this.lookupDelay=this.getProp('ludelay','500');this.lostFocusDelay=this.getProp('lfdelay','500');this.inAnimObj=null;this.inAnimType=null;this.prevText='';this.addHandlers(o,{'keyup':this.keyUp,'keypress':this.keyPress,'blur':this.onblur,'focus':this.onfocus},this);o.setAttribute('autocomplete','off');this.delimiter=this.getProp('del','');this.idtoken=this.getProp('idtok','');this.maxRows=new Number(this.getProp('maxRows','10'));if(this.maxRows==0)

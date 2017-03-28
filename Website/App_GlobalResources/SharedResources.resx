@@ -1948,4 +1948,7 @@ the modified URL.</value>
   <data name="NoRecords.Text" xml:space="preserve">
     <value>No records to display</value>
   </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

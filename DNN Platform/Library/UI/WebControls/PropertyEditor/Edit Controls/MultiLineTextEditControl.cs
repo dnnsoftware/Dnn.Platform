@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.WebControls
             ControlStyle.AddAttributesToRender(writer);
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute("aria-label", "editor");
             writer.RenderBeginTag(HtmlTextWriterTag.Textarea);
             writer.Write(propValue);
             writer.RenderEndTag();

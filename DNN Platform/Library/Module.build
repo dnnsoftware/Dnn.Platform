@@ -17,7 +17,7 @@
     <ItemGroup>
       <Templates Include="..\Website\Templates\*.*" />
       <Database Include="..\Website\App_Data\Database.mdf" />
-      <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
+      <RadSpell Include="..\Components\Telerik\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <InstallFiles Include="..\Website\Install\InstallWizard*.*" />
@@ -97,7 +97,6 @@
     <Zip Files="@(Selectize)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\Selectize"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\Selectize.zip" />
 
-    <!--
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
             XPath="dotnetnuke/packages/package/@version"
@@ -108,12 +107,12 @@
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="..\Components\Telerik\Package\bin" />
     <Copy SourceFiles="..\Components\Telerik\DotNetNuke.Telerik.Web.dnn" DestinationFolder="..\Components\Telerik\Package" />
     <Copy SourceFiles="..\Components\Telerik\Telerik_EULA.pdf" DestinationFolder="..\Components\Telerik\Package\Documentation" />
+    <Copy SourceFiles="..\Components\Telerik\App_Data\RadSpell\en-US.tdf" DestinationFolder="..\Components\Telerik\Package\App_Data\RadSpell" />
     <CreateItem Include="..\Components\Telerik\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="TelerikContent" />
     </CreateItem>
     <Zip Files="@(TelerikContent)" WorkingDirectory="..\Components\Telerik\Package" ZipFileName="$(WebsiteInstallPath)\Module\Telerik_$(TelerikVersion)_Install.zip" />
     <RemoveDir Directories ="..\Components\Telerik\Package" />
-    -->
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

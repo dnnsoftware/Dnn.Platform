@@ -248,16 +248,18 @@ namespace DotNetNuke.UI.UserControls
 			if (!String.IsNullOrEmpty(ControlName))
 			{
 				var c = Parent.FindControl(ControlName);
+			    var clientId = ControlName;
 				if (c != null)
 				{
-					var clientId = c.ClientID;
-					if (!string.IsNullOrEmpty(AssociateFormat))
-					{
-						clientId = string.Format(AssociateFormat, clientId);
-					}
-					label.Attributes["for"] = clientId;
+					clientId = c.ClientID;
 				}
-			}
+
+                if (!string.IsNullOrEmpty(AssociateFormat))
+                {
+                    clientId = string.Format(AssociateFormat, clientId);
+                }
+                label.Attributes["for"] = clientId;
+            }
 		}
 
 		private void RegisterClientDependencies()

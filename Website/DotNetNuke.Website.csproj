@@ -135,7 +135,7 @@
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\Packages\Microsoft.AspNet.Mvc.5.1.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -593,6 +593,13 @@
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
     <None Include="compilerconfig.json" />
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.designer.cs">
+      <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\EditExtension\EditExtension.ascx.cs">
       <DependentUpon>EditExtension.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -769,6 +776,7 @@
     <Content Include="admin\Skins\DnnCssExclude.ascx" />
     <Content Include="admin\Skins\DnnJsInclude.ascx" />
     <Content Include="admin\Skins\DnnCssInclude.ascx" />
+    <Content Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx" />
     <Content Include="DesktopModules\Admin\EditExtension\EditExtension.ascx" />
     <Content Include="DesktopModules\Admin\Security\ManageUsers.ascx" />
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />

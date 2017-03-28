@@ -601,6 +601,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                     ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
                     HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
+                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", "");
 
                     if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
                     {

@@ -1,6 +1,6 @@
 ﻿
 Type.registerNamespace('dnn.controls');dnn.extend(dnn.controls,{initMenu:function(ctl)
-{if(ctl)
+{if(ctl&&dnn.controls.controls[ctl.id]==null)
 {var menu=new dnn.controls.DNNMenu(ctl);menu.initialize();return menu;}}});dnn.controls.DNNMenu=function(o)
 {dnn.controls.DNNMenu.initializeBase(this,[o]);this.rootNode=null;this.nodes=[];this._loadNodes();this.mbcss=this.getProp('mbcss','');this.mcss=this.getProp('mcss','');this.css=this.getProp('css','');this.cssChild=this.getProp('csschild','');this.cssHover=this.getProp('csshover','');this.cssSel=this.getProp('csssel','');this.cssIcon=this.getProp('cssicon','');this.sysImgPath=this.getProp('sysimgpath','images/');this.imagePaths=this.getProp('imagepaths','').split(',');this.imageList=this.getProp('imagelist','').split(',');for(var i=0;i<this.imageList.length;i++)
 {var index=this.imageList[i].indexOf(']');if(index>-1)

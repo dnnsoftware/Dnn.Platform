@@ -250,6 +250,7 @@
     <Content Include="App_LocalResources\SharedResources.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="ClientScripts\ModuleEditor.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />

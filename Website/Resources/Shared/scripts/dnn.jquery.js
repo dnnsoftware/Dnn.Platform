@@ -89,6 +89,7 @@
 
             if (defaultAction || opts.isButton) {
                 $dnnDialog = $("<div class='dnnDialog'></div>").html(opts.text).dialog(opts);
+                $dnnDialog.parent().find('.ui-dialog-titlebar-close').html('Close');
                 $this.click(function (e, isTrigger) {
                     if (isTrigger) {
                         return true;
@@ -134,6 +135,7 @@
                         }
                         ]
                     });
+
                     $dnnDialog.dialog('open');
                     e.preventDefault();
                     return false;
@@ -1823,7 +1825,7 @@
             if (value != '' && skipTag != true) {
                 $('<span>').addClass('tag').append(
                     $('<span>').text(value).append('&nbsp;&nbsp;'),
-                    $('<a>', {
+                    $('<a aria-label="remove">', {
                         href: '#',
                         title: 'Removing tag'
                     }).click(function () {
@@ -1969,7 +1971,7 @@
             markup += '<div id="' + id + '_addTag">';
 
             if (settings.interactive) {
-                markup += '<input id="' + id + '_tag" value="" data-default="' + settings.defaultText + '" autocomplete="off" />';
+                markup += '<input id="' + id + '_tag" value="" data-default="' + settings.defaultText + '" autocomplete="off" aria-label="Search" />';
             }
 
             markup += '</div>';
@@ -2631,6 +2633,7 @@
                 url: url,
                 beforeSend: service.setModuleHeaders,
                 dropZone: $('#' + settings.dropZoneId),
+                pasteZone: null,
                 replaceFileInput: false,
                 submit: function (e, data) {
                     data.formData = { folder: settings.folder, filter: settings.fileFilter, overwrite: 'true' };

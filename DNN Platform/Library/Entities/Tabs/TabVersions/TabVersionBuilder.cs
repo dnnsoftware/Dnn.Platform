@@ -704,6 +704,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private int RollBackDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
+            if (moduleInfo == null) return Null.NullInteger;
 
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController == null) return Null.NullInteger;
@@ -720,7 +721,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
 
-            if (_moduleController.IsSharedModule(moduleInfo))
+            if (moduleInfo == null || _moduleController.IsSharedModule(moduleInfo))
             {
                 return;
             }

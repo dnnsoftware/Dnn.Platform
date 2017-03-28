@@ -101,6 +101,10 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 liRegister.Visible = false;
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
+		    if (string.IsNullOrEmpty(lblLogin.Text))
+		    {
+		        lblLogin.AssociatedControlID = string.Empty;
+		    }
 
             if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
             {

@@ -151,7 +151,10 @@
 				},
 				onError: function (xhr, status) {
 					displayMessage(composeMessageDialog, opts.autoSuggestErrorText + status);
-				}
+				},
+	            onReady: function() {
+	                composeMessageDialog.find('input[id^=token-input]').attr('aria-label', 'Token Input');
+	            }
 			});
 
 			composeMessageDialog.find('#subject').keyup(function () {
@@ -173,6 +176,7 @@
                 resizable: false,
                 open: function () {
                     composeMessageDialog.dialog("widget").find('.ui-dialog-buttonpane :button').removeClass().addClass('dnnTertiaryAction');
+                    composeMessageDialog.dialog("widget").find('.ui-dialog-titlebar-close').attr('aria-label', 'Close');
                     messageId = -1;
 
                     canSend = false;

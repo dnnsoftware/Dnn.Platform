@@ -1,6 +1,6 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Modules.Html.EditHtml" CodeBehind="EditHtml.ascx.cs" AutoEventWireup="false" Explicit="True" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.UserControls" %>
+<%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls.Internal" %>
 <%@ Register TagPrefix="dnncl" Assembly="DotNetNuke.Web.Client" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" %>
@@ -88,7 +88,7 @@
                             <asp:Label ID="lblMaxVersions" runat="server" />
                         </div>
                         <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5">
-                            <pagerstyle mode="NextPrevAndNumeric"></pagerstyle>
+                            <PagerSettings Mode="NumericFirstLast"></PagerSettings>
 					        <Columns>
 						        <dnnweb:DnnGridBoundColumn HeaderText="Version" DataField="Version" />
 						        <dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="LastModifiedOnDate"  />

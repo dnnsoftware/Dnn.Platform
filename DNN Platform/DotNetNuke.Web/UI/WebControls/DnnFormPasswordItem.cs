@@ -82,6 +82,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 Text = Convert.ToString(Value) // Load from ControlState
             };
             _password.Attributes.Add("autocomplete", "off");
+            _password.Attributes.Add("aria-label", DataField);
             _password.TextChanged += TextChanged;
 
             var passwordContainer = new Panel() { ID = "passwordContainer", CssClass = ContainerCssClass };

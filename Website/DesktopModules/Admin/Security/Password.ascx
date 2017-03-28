@@ -53,7 +53,7 @@
                 <asp:textbox id="txtQAPassword" runat="server" textmode="Password" size="25" maxlength="20" />
             </div>
             <div class="dnnFormItem">
-                <dnn:label id="plEditQuestion" runat="server" controlname="lblQuetxtEditQuestionstion" />
+                <dnn:label id="plEditQuestion" runat="server" controlname="txtEditQuestion" />
                 <asp:textbox id="txtEditQuestion" runat="server" size="25" maxlength="20" />
             </div>
             <div class="dnnFormItem">
