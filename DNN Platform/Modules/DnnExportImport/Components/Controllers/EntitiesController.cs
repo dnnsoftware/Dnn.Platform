@@ -71,9 +71,9 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords));
         }
 
-        public DateTime GetLastExportTime(int portalId)
+        public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            return DataProvider.Instance().GetLastExportTime(portalId) ?? Constants.MinDbTime;
+            return DataProvider.Instance().GetLastJobTime(portalId, jobType);
         }
 
         public void UpdateJobInfo(ExportImportJob job)

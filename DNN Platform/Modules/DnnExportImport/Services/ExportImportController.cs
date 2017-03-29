@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage LastExportUtcTime(int portalId)
+        public HttpResponseMessage LastJobTime(int portalId, JobType jobType)
         {
             if (!UserInfo.IsSuperUser && portalId != PortalSettings.PortalId)
             {
@@ -136,7 +136,7 @@ namespace Dnn.ExportImport.Services
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
 
             var controller = new BaseController();
-            var lastTime = controller.GetLastExportTime(portalId);
+            var lastTime = controller.GetLastJobTime(portalId, jobType);
             return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
         }
 

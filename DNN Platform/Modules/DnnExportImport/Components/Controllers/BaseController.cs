@@ -143,10 +143,10 @@ namespace Dnn.ExportImport.Components.Controllers
         /// differntial date/time to start the job from.
         /// </summary>
         /// <returns></returns>
-        public DateTime GetLastExportTime(int portalId)
+        public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
             var controller = EntitiesController.Instance;
-            return controller.GetLastExportTime(portalId);
+            return controller.GetLastJobTime(portalId, jobType);
         }
 
         protected static ImportExportSummary BuildJobSummary(int jobId)

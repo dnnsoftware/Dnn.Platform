@@ -513,12 +513,13 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]
-    @PortalId  int
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
+    @PortalId  int,
+	@JobType int
 AS
 BEGIN
 	SELECT
@@ -526,7 +527,7 @@ BEGIN
 	FROM
 		{databaseOwner}[{objectQualifier}ExportImportJobs]
 	WHERE 
-		PortalId=@PortalId AND JobType = 0 AND JobStatus=2
+		PortalId=@PortalId AND JobType = @JobType AND JobStatus=2
 	ORDER BY CreatedOnDate DESC
 END
 GO

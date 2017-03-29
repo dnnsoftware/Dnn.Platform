@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Components.Controllers
             var directory = DateTime.Now.ToString("yyyyMMddhhmmssfff");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDate = GetLastExportTime(exportDto.PortalId);
+                exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export) ?? Constants.MinDbTime;
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

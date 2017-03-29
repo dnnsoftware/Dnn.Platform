@@ -65,8 +65,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]', '
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastExportTime]
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]', 'P') IS NOT NULL
