@@ -19,12 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Results;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
@@ -50,6 +48,7 @@ namespace Dnn.ExportImport.Services
 
             var controller = new ExportController();
             var jobId = controller.QueueOperation(PortalSettings.UserId, exportDto);
+
             return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
 
@@ -69,7 +68,7 @@ namespace Dnn.ExportImport.Services
             if (controller.VerifyImportPackage(importDto.PackageId, null, out message))
             {
                 var jobId = controller.QueueOperation(PortalSettings.UserId, importDto);
-                return Request.CreateResponse(HttpStatusCode.OK, new {jobId});
+                return Request.CreateResponse(HttpStatusCode.OK, new { jobId });
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
@@ -138,7 +137,7 @@ namespace Dnn.ExportImport.Services
 
             var controller = new BaseController();
             var lastTime = controller.GetLastExportTime(portalId);
-            return Request.CreateResponse(HttpStatusCode.OK, new {lastTime});
+            return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
         }
 
         [HttpGet]

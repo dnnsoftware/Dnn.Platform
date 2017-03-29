@@ -36,6 +36,9 @@ namespace Dnn.ExportImport.Components.Common
         Cancelled
     }
 
+    /// <summary>
+    /// Mode for export job.
+    /// </summary>
     public enum ExportMode
     {
         Complete = 0,

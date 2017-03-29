@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Web.Caching;
 // ReSharper disable InconsistentNaming
 
 namespace Dnn.ExportImport.Components.Common

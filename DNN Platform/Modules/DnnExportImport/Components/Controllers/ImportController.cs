@@ -76,7 +76,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     //TODO: Build the import info from database.
                     if (summary != null)
-                        BuildJobSummary(ctx, summary);
+                        BuildJobSummary(packageId, ctx, summary);
                     isValid = true;
                 }
             }

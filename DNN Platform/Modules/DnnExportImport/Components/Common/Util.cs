@@ -1,4 +1,25 @@
-﻿using System;
+﻿#region Copyright
+// 
+// DotNetNuke® - http://www.dnnsoftware.com
+// Copyright (c) 2002-2017
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Dnn.ExportImport.Components.Entities;
@@ -102,6 +123,12 @@ namespace Dnn.ExportImport.Components.Common
             return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
         }
 
+        /// <summary>
+        /// Write dictionary items to an xml file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="itemsToWrite"></param>
+        /// <param name="rootTag">Root tag to create in xml file.</param>
         public static void WriteXml(string filePath, Dictionary<string, string> itemsToWrite,
             string rootTag)
         {
@@ -127,6 +154,13 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
+        /// <summary>
+        /// Read an xml file and retun value of all the tags provided in the request, if found.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="rootTag">Root that to look in xml file</param>
+        /// <param name="tagsToLook"></param>
+        /// <returns>Directionary of the items.</returns>
         public static Dictionary<string, string> ReadXml(string path, string rootTag, params string[] tagsToLook)
         {
             var items = new Dictionary<string, string>();
@@ -160,7 +194,7 @@ namespace Dnn.ExportImport.Components.Common
 
         private static DateTime FromEpoch()
         {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var epoch = new DateTime(1970, 1, 1);
             return epoch;
         }
 

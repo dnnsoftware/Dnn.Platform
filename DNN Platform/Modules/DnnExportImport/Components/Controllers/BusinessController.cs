@@ -20,10 +20,7 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Components.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Log.EventLog;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
