@@ -114,6 +114,13 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
+                                    label={Localization.get("LastExport")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.CompletedOn}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
                                     label={Localization.get("FileName")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.FileName : "-"}</div>
@@ -145,14 +152,7 @@ class JobDetails extends Component {
                                     label={Localization.get("ExportMode")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("LastExport")}
-                                />
-                                <div className="import-summary-item">{props.jobDetail.CompletedOn}</div>
-                            </GridCell>
+                            </GridCell>                            
                             <GridCell>
                                 <div className="summary-note">
                                     <div className="note-title">{Localization.get("SummaryNoteTitle")}</div>

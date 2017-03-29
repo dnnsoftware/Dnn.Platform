@@ -73,9 +73,9 @@ const jobsActions = {
         };
     },
 
-    getLastExportDate(parameters, callback, errorCallback) {
+    getLastExportDate(portalId, callback, errorCallback) {
         return (dispatch) => {
-            ApplicationService.getLastExportDate(parameters, (data) => {
+            ApplicationService.getLastExportDate(portalId, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_LAST_EXPORT_DATE,
                     lastExportDate: data.lastTime
@@ -203,7 +203,7 @@ const jobsActions = {
                         callback();
                     }
                 }, errorCallback);
-            }, 3000);
+            }, 2000);
         };
     }
 };

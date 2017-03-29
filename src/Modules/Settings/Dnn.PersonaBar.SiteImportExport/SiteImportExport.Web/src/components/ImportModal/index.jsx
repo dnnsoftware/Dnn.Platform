@@ -4,7 +4,7 @@ import {
     importExport as ImportExportActions,
     visiblePanel as VisiblePanelActions
 } from "../../actions";
-import { TemplateIcon, CycleIcon, CheckMarkIcon } from "dnn-svg-icons";
+import { TemplateIcon, CycleIcon, HourglassIcon, CheckMarkIcon } from "dnn-svg-icons";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import PackageCardOverlay from "./PackageCardOverlay";
@@ -141,7 +141,7 @@ class ImportModal extends Component {
                 <div className="package-file">{props.selectedPackage.FileName}</div>
                 <div className="analyzing-wrapper">
                     <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
-                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : CycleIcon }}>
+                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : HourglassIcon }}>
                     </div>
                     <div className="analyzing-message">{props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}</div>
                 </div>
