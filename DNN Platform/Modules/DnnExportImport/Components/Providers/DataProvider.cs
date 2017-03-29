@@ -55,6 +55,18 @@ namespace Dnn.ExportImport.Components.Providers
 
         #endregion
 
+        public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)
+        {
+            _dataProvider.ExecuteNonQuery(
+                "Export_GenericUpdateRecordChangers", tableName, primaryKeyName, primaryKeyId, createdBy, modifiedBy);
+        }
+
+        public void UpdateSettingRecordChangers(string tableName, string primaryKeyName, int parentKeyId, string settingName, int? createdBy, int? modifiedBy)
+        {
+            _dataProvider.ExecuteNonQuery(
+                "Export_GenedicUpdateSettingsRecordChangers", tableName, primaryKeyName, parentKeyId, settingName, createdBy, modifiedBy);
+        }
+
         public int AddNewJob(int portalId, int userId, JobType jobType,
             string jobName, string jobDescription, string directory, string serializedObject)
         {
@@ -182,24 +194,6 @@ namespace Dnn.ExportImport.Components.Providers
                 .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public void UpdateRoleGroupChangers(int roleGroupId, int createdBy, int modifiedBy)
-        {
-            _dataProvider.ExecuteNonQuery(
-                "Export_UpdateRoleGroupChangers", roleGroupId, createdBy, modifiedBy);
-        }
-
-        public void UpdateRoleChangers(int roleId, int createdBy, int modifiedBy)
-        {
-            _dataProvider.ExecuteNonQuery(
-                "Export_UpdateRoleChangers", roleId, createdBy, modifiedBy);
-        }
-
-        public void UpdateRoleSettingChangers(int roleId, string settingName, int createdBy, int modifiedBy)
-        {
-            _dataProvider.ExecuteNonQuery(
-                "Export_UpdateRoleSettingChangers", roleId, settingName, createdBy, modifiedBy);
-        }
-
         public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDate,
             DateTime? fromDate)
         {
@@ -298,9 +292,9 @@ namespace Dnn.ExportImport.Components.Providers
                                          && x.PermissionName == permissionName)?.PermissionID;
         }
 
-        public IDataReader GetAllPortalTabs(int portalId, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, toDate, fromDate);
+            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, includeDeleted, toDate, fromDate);
         }
 
         public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
@@ -323,14 +317,29 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabAliasSkins", tabId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabModules(int tabId, bool includeDeleted)
+        public IDataReader GetAllModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted);
+            return _dataProvider.ExecuteReader("Export_Modules", tabId, includeDeleted, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabModuleSettings(int tabId, bool includeDeleted)
+        public IDataReader GetAllModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, includeDeleted);
+            return _dataProvider.ExecuteReader("Export_ModuleSettings", moduleId, toDate, fromDate);
+        }
+
+        public IDataReader GetAllModulePermissions(int moduleId, DateTime toDate, DateTime? fromDate)
+        {
+            return _dataProvider.ExecuteReader("Export_ModulePermissions", moduleId, toDate, fromDate);
+        }
+
+        public IDataReader GetAllTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted, toDate, fromDate);
+        }
+
+        public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
+        {
+            return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);
         }
     }
 }

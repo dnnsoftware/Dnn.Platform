@@ -58,6 +58,57 @@ BEGIN
 END
 GO
 
+-- generic procedures to change created by and modified by columns for import processing
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+	@TableName       nvarchar(100),
+	@PrimaryKeyName  nvarchar(100),
+	@PrimaryKeyID    int,
+	@CreatedBy       int,
+	@ModifiedBy      int
+AS
+BEGIN
+    DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+	@TableName       nvarchar(100),
+	@PrimaryKeyName  nvarchar(100),
+	@PrimaryKeyID    int,
+	@SettingName     nvarchar(50),
+	@CreatedBy       int,
+	@ModifiedBy      int
+AS
+BEGIN
+    DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) +
+        N' AND SettingName=' + @SettingName + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO
+
 -- Jobs
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NULL
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobs](
@@ -71,7 +122,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NUL
 		[CreatedByUserID]    int NOT NULL,
 		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
 		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
-		[CompletedOnDate]    DateTime,  -- UTC date
+		[CompletedOnDate]    DateTime,  -- in UTC
 		[Directory]          nvarchar(100),
 		[JobObject]          nvarchar(max),
 
@@ -919,42 +970,6 @@ AS
 		RoleID = @RoleID
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
-	@RoleGroupID int,
-	@CreatedBy   int,
-	@ModifiedBy  int
-AS
-	UPDATE
-		{databaseOwner}{objectQualifier}RoleGroups
-	SET
-		CreatedByUserID = @CreatedBy,
-		LastModifiedByUserID = @ModifiedBy
-	WHERE
-		RoleGroupID = @RoleGroupID
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
-	@RoleID     int,
-	@CreatedBy  int,
-	@ModifiedBy int
-AS
-	UPDATE
-		{databaseOwner}{objectQualifier}Roles
-	SET
-		CreatedByUserID = @CreatedBy,
-		LastModifiedByUserID = @ModifiedBy
-	WHERE
-		RoleID = @RoleID
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
 GO
@@ -1053,9 +1068,9 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
-    @PortalID    int,
+    @PortalID  int,
 	@ToDate    datetime,
-    @FromDate   datetime=NULL
+    @FromDate  datetime=NULL
 AS
     SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}Export_UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](F.LastModifiedByUserId) LastModifiedByUserName
     FROM    
@@ -1103,8 +1118,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
     @PortalID    int,
 	@FolderPath  nvarchar(300),
-	@ToDate    datetime,
-	@FromDate   datetime=NULL
+	@ToDate      datetime,
+	@FromDate    datetime=NULL
 AS
     SELECT    *,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
@@ -1127,8 +1142,8 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
     @PortalID    int,
     @FolderID    int,
-	@ToDate    datetime,
-	@FromDate   datetime=NULL
+	@ToDate      datetime,
+	@FromDate    datetime=NULL
 AS
     SELECT F.*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
@@ -1151,28 +1166,28 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
-    @PortalID  int,
+    @PortalID        int,
+	@IncludeDeleted  bit,
 	@ToDate  datetime,
 	@FromDate datetime=NULL
 AS
 BEGIN
 	DECLARE @Now datetime = GETDATE()
 
-	SELECT
-		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.TabName, t.TabPath, t.IsDeleted,
-		ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) AS LastUpdatedOn
+	SELECT DISTINCT
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
-	WHERE 
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
+	WHERE
 		PortalID = @PortalID
 	AND
 		IsSystem = 0
-	AND
-		COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate
-	AND
-		(@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate)
+	AND (
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+		 OR
+			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
+		)
 	ORDER BY
 		TabID
 END
@@ -1295,11 +1310,15 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
 	@TabID          int,
-	@IncludeDeleted bit
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
 AS
 BEGIN
+	DECLARE @Now datetime = GETDATE()
+
 	SELECT
-		tm.*, md.FriendlyName, u2.Username AS LastModifiedByUserName
+		tm.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}TabModules AS tm
 			INNER JOIN {databaseOwner}{objectQualifier}Tabs              AS t  ON tm.TabID = t.TabID
@@ -1308,9 +1327,13 @@ BEGIN
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
 	WHERE
-		t.TabID = @TabID
+		tm.TabID = @TabID
 	AND
 		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
+	AND
+		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate)
 END
 GO
 
@@ -1320,11 +1343,15 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
 	@TabID          int,
-	@IncludeDeleted bit
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
 AS
 BEGIN
+	DECLARE @Now datetime = GETDATE()
+
 	SELECT
-		tms.*, u2.Username AS LastModifiedByUserName
+		tms.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}TabModuleSettings AS tms
 			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON tm.TabModuleID = tms.TabModuleID
@@ -1335,5 +1362,70 @@ BEGIN
 		t.TabID = @TabID
 	AND
 		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
+	AND
+		COALESCE(tms.LastModifiedOnDate, tms.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tms.LastModifiedOnDate, tms.CreatedOnDate) >= @FromDate)
 END
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+	@TabID          int,
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT DISTINCT
+		m.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Modules AS m
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules        AS tm ON tm.ModuleID = m.ModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		tm.TabID = @TabID
+	AND
+		(@IncludeDeleted = 1 OR m.IsDeleted = 0)
+	AND
+		COALESCE(m.LastModifiedOnDate, m.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(m.LastModifiedOnDate, m.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
+	@ModuleID  int,
+	@ToDate    datetime,
+	@FromDate  datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ms.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}ModuleSettings AS ms
+			INNER JOIN {databaseOwner}{objectQualifier}Modules    AS m  ON ms.ModuleID = m.ModuleID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON ms.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON ms.LastModifiedByUserID = u2.UserID
+	WHERE
+		m.ModuleID = @ModuleID
+	AND
+		COALESCE(ms.LastModifiedOnDate, ms.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(ms.LastModifiedOnDate, ms.CreatedOnDate) >= @FromDate)
+END
+GO
+

@@ -357,7 +357,7 @@ namespace Dnn.ExportImport.Components.Services
             var provider = DataProvider.Instance();
             foreach (var roleGroupItem in roleGroupItems)
             {
-                provider.UpdateRoleGroupChangers(
+                provider.UpdateRecordChangers("RoleGroups", "RoleGroupID",
                     roleGroupItem.RoleGroupId, roleGroupItem.CreatedBy, roleGroupItem.ModifiedBy);
             }
         }
@@ -367,17 +367,17 @@ namespace Dnn.ExportImport.Components.Services
             var provider = DataProvider.Instance();
             foreach (var roleItem in roleItems)
             {
-                provider.UpdateRoleChangers(
+                provider.UpdateRecordChangers("Roles", "RoleID",
                     roleItem.RoleId, roleItem.CreatedBy, roleItem.ModifiedBy);
             }
         }
 
-        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItem)
+        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItems)
         {
             var provider = DataProvider.Instance();
-            foreach (var item in settingItem)
+            foreach (var item in settingItems)
             {
-                provider.UpdateRoleSettingChangers(
+                provider.UpdateSettingRecordChangers("RoleSettings", "RoleID",
                     item.RoleId, item.Name, item.CreatedBy, item.ModifiedBy);
             }
         }

@@ -21,12 +21,18 @@ namespace Dnn.ExportImport.Components.Interfaces
         void RemoveJob(ExportImportJob job);
         IList<ExportImportChekpoint> GetJobChekpoints(int jobId);
         void UpdateJobChekpoint(ExportImportChekpoint checkpoint);
-        IList<ExportTabInfo> GetPortalTabs(int portalId, DateTime toDate, DateTime? fromDate);
+
+        IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
         IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabUrl> GetTabUrls(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate);
-        IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted);
-        IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, bool includeDeleted);
+
+        IList<ExportModule> GetModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
+        IList<ExportModuleSetting> GetModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate);
+        IList<ExportModulePermission> GetModulePermissions(int moduleId, DateTime toDate, DateTime? fromDate);
+
+        IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
+        IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate);
     }
 }

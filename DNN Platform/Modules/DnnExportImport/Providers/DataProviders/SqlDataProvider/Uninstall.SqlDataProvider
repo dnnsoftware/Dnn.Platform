@@ -13,6 +13,14 @@ IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
 	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
 GO
@@ -157,18 +165,6 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]', 'P')
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleGroupChangers]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleChangers]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
-GO
-
 --Portals Export/Import
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalSettings]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
@@ -220,10 +216,15 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS 
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModulePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+GO
+

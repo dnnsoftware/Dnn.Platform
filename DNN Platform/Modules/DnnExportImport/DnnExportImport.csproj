@@ -88,6 +88,9 @@
     <Compile Include="Components\Dto\ImportExportSummary.cs" />
     <Compile Include="Components\Dto\ImportPackageInfo.cs" />
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
+    <Compile Include="Components\Dto\Pages\ExportModule.cs" />
+    <Compile Include="Components\Dto\Pages\ExportModulePermission.cs" />
+    <Compile Include="Components\Dto\Pages\ExportModuleSetting.cs" />
     <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />

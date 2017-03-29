@@ -8,7 +8,7 @@ namespace Dnn.ExportImport.Components.Dto.Pages
     public class ExportTabModule : BasicExportImportDto
     {
         public int TabModuleID { get; set; }
-        public int TabId { get; set; }
+        public int TabID { get; set; }
         public int ModuleID { get; set; }
         public string PaneName { get; set; }
         public int ModuleOrder { get; set; }

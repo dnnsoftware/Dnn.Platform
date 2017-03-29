@@ -7,7 +7,7 @@ namespace Dnn.ExportImport.Components.Dto.Pages
     [JsonObject]
     public class ExportTabSetting : BasicExportImportDto
     {
-        public int TabId { get; set; }
+        public int TabID { get; set; }
         public string SettingName { get; set; }
         public string SettingValue { get; set; }
         public int? CreatedByUserID { get; set; }

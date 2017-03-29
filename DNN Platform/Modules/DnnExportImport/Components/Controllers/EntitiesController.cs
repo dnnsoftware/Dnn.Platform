@@ -85,10 +85,10 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
-        public IList<ExportTabInfo> GetPortalTabs(int portalId, DateTime toDate, DateTime? fromDate)
+        public IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabInfo>(
-                DataProvider.Instance().GetAllPortalTabs(portalId, toDate, fromDate));
+                DataProvider.Instance().GetAllPortalTabs(portalId, includeDeleted, toDate, fromDate));
         }
 
         public IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
@@ -115,16 +115,34 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllTabAliasSkins(tabId, toDate, fromDate));
         }
 
-        public IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted)
+        public IList<ExportModule> GetModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
-            return CBO.Instance.FillCollection<ExportTabModule>(
-                DataProvider.Instance().GetAllTabModules(tabId, includeDeleted));
+            return CBO.Instance.FillCollection<ExportModule>(
+                DataProvider.Instance().GetAllModules(tabId, includeDeleted, toDate, fromDate));
         }
 
-        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, bool includeDeleted)
+        public IList<ExportModuleSetting> GetModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.Instance.FillCollection<ExportModuleSetting>(
+                DataProvider.Instance().GetAllModuleSettings(moduleId, toDate, fromDate));
+        }
+
+        public IList<ExportModulePermission> GetModulePermissions(int moduleId, DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.Instance.FillCollection<ExportModulePermission>(
+                DataProvider.Instance().GetAllModulePermissions(moduleId, toDate, fromDate));
+        }
+
+        public IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.Instance.FillCollection<ExportTabModule>(
+                DataProvider.Instance().GetAllTabModules(tabId, includeDeleted, toDate, fromDate));
+        }
+
+        public IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabModuleSetting>(
-                DataProvider.Instance().GetAllTabModuleSettings(tabId, includeDeleted));
+                DataProvider.Instance().GetAllTabModuleSettings(tabId, toDate, fromDate));
         }
     }
 }
