@@ -64,6 +64,7 @@ const ArrowBack = require(`!raw!./svg/arrow_back.svg`);
 const ArrowForward = require(`!raw!./svg/arrow_forward.svg`);
 const DownloadIcon = require(`!raw!./svg/download.svg`);
 const ImageIcon = require(`!raw!./svg/image.svg`);
+const HourglassIcon = require(`!raw!./svg/hourglass.svg`);
 export {
     ActivityIcon, 
     AddIcon,
@@ -129,5 +130,6 @@ export {
     ArrowBack, 
     ArrowForward,
     DownloadIcon,
-    ImageIcon
+    ImageIcon,
+    HourglassIcon
 };
