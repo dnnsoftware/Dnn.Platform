@@ -33,6 +33,11 @@ class ApplicationService {
         sf.get("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
+    getLastExportDate(parameters, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.get("LastExportUtcTime?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+    }
+
     getJobDetails(jobId, callback, errorCallback) {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.get("JobDetails?jobId=" + jobId, {}, callback, errorCallback);

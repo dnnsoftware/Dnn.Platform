@@ -73,6 +73,20 @@ const jobsActions = {
         };
     },
 
+    getLastExportDate(parameters, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.getLastExportDate(parameters, (data) => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_LAST_EXPORT_DATE,
+                    lastExportDate: data.lastTime
+                });
+                if (callback) {
+                    callback();
+                }
+            }, errorCallback);
+        };
+    },
+
     getJobDetails(jobId, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getJobDetails(jobId, (data) => {

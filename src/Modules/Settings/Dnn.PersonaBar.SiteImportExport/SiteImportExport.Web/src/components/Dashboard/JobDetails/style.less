@@ -8,38 +8,50 @@
         float: left;
         font-weight: bold;
         text-transform: uppercase;
-        margin-bottom: 10px;
         padding-left: 4%;
     }
-    .container {
+    .export-summary {
         float: left;
-        padding: 2% 8%;
         width: 100%;
-        &.left-column {
-            border-right: 1px solid @alto;
-        }
-        &.right-column {
-            text-align: center;
-        }
-        .item-row {
-            float: left;
-            width: 100%;
-            .dnn-label {
+        padding: 0 30px 20px 30px;
+        .export-site-container {
+            font-weight: 700;
+            .left-column {
                 width: 50%;
                 float: left;
-                label {
-                    font-weight: bolder;
-                    clear: both;
+                border-right: 1px solid @alto;
+                padding: 10px 30px 10px 0;
+            }
+            .right-column {
+                width: 50%;
+                float: left;
+                padding: 10px 0 10px 30px;
+                .dnn-switch-container {
+                    float: right;
+                }
+                .summary-note {
                     float: left;
-                    text-align: left;
                     width: 100%;
-                    margin-bottom: 5px;
+                    color: @thunder;
+                    font-weight: 700;
+                    padding-top: 30px;
+                    .note-title {
+                        float: left;
+                        width: 15%;
+                    }
+                    .note-description {
+                        float: left;
+                        width: 85%;
+                    }
                 }
             }
-            .item-value {
-                width: 50%;
-                float: left;
-                text-align: right;
+            .import-summary-item {
+                padding-top: 7px;
+                float: right;
+                color: @thunder;
+            }
+            .dnn-grid-cell {
+                padding-bottom: 10px;
             }
         }
     }

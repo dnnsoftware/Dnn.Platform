@@ -43,6 +43,11 @@ export default function importExport(state = {
                 ...state,
                 job: action.job
             };
+        case ActionTypes.RETRIEVED_LAST_EXPORT_DATE:
+            return {
+                ...state,
+                lastExportDate: action.lastExportDate
+            };
         case ActionTypes.SUBMITTED_EXPORT_REQUEST:
             return {
                 ...state,

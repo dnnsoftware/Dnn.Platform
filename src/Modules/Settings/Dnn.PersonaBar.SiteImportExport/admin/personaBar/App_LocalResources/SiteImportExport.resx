@@ -180,8 +180,11 @@
   <data name="SearchPlaceHolder.Text" xml:space="preserve">
     <value>Search by Keyword</value>
   </data>
-  <data name="DownloadLog.Text" xml:space="preserve">
-    <value>Download Complete Log</value>
+  <data name="SummaryNoteTitle.Text" xml:space="preserve">
+    <value>*Note:</value>
+  </data>
+  <data name="SummaryNoteDescription.Text" xml:space="preserve">
+    <value>Your site export files are securely stored within your website's App_Data/ExportImport folder.</value>
   </data>
   <data name="ExportSummary.Text" xml:space="preserve">
     <value>Export Summary</value>
@@ -247,7 +250,7 @@
     <value>Permissions</value>
   </data>
   <data name="DeletionsInExport.Text" xml:space="preserve">
-    <value>Deletions Transferred in Export</value>
+    <value>Include Deletions</value>
   </data>
   <data name="ExportName.ErrorMessage" xml:space="preserve">
     <value>Template file name is required.</value>
@@ -256,13 +259,13 @@
     <value>Template description is required.</value>
   </data>
   <data name="ExportRequestSubmitted" xml:space="preserve">
-	<value>Export site request submitted successfully with Job Id </value>
+	<value>Your data export has been placed in the queue, and will begin shortly.</value>
   </data>
   <data name="ExportRequestSubmit.ErrorMessage" xml:space="preserve">
     <value>Failed to submit the export site request. Please try again.</value>
   </data>
   <data name="ImportRequestSubmitted" xml:space="preserve">
-	<value>Import site request submitted successfully with Job Id </value>
+	<value>Your data import has been placed in the queue, and will begin shortly.</value>
   </data>
   <data name="ImportRequestSubmit.ErrorMessage" xml:space="preserve">
     <value>Failed to submit the import site request. Please try again.</value>
@@ -383,5 +386,11 @@
   </data>
   <data name="FinishImporting.Text" xml:space="preserve">
     <value>To finish importing data to your site, click continue below, or click cancel to abort import.</value>
+  </data>
+  <data name="ExportModeComplete.Text" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="ExportModeDifferential.Text" xml:space="preserve">
+    <value>Differential</value>
   </data>
 </root>

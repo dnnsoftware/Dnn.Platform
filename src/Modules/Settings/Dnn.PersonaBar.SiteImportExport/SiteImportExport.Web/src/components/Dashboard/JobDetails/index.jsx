@@ -4,6 +4,7 @@ import "./style.less";
 import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
+import GridCell from "dnn-grid-cell";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
@@ -27,56 +28,142 @@ class JobDetails extends Component {
         }
     }
 
-    onDownloadLog() {
+    getSummaryItem(category) {
         const { props } = this;
+        if (props.jobDetail.Summary) {
+            let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
+            return detail ? detail.TotalItems : "-";
+        }
+        else {
+            return "-";
+        }
     }
 
-    renderedSummary() {
+    renderExportSummary() {
         const { props } = this;
-        if (props.jobDetail) {
-            return (
-                <div>
-                    <div className="item-row divider">
-                        <Label label={Localization.get("TemplateFile")} style={{ margin: "0 0 5px 0" }} />
-                        <div className="item-value">{props.jobDetail.Name}</div>
-                    </div>
-                    <div className="item-row divider">
-                        <Label label={Localization.get("Description")} style={{ margin: "0 0 5px 0" }} />
-                        <div className="item-value">{props.jobDetail.Description}</div>
-                    </div>
-                    <div className="item-row divider">
-                        <Label label={Localization.get("CreatedOn")} style={{ margin: "0 0 5px 0" }} />
-                        <div className="item-value">{props.jobDetail.CreatedOn}</div>
-                    </div>
-                    <div className="item-row divider">
-                        <Label label={Localization.get("CompletedOn")} style={{ margin: "0 0 5px 0" }} />
-                        <div className="item-value">{props.jobDetail.CompletedOn}</div>
-                    </div>
-                    { props.jobDetail.ExportFile &&
-                        <div className="item-row divider">
-                            <Label label={Localization.get("ExportFile")} style={{ margin: "0 0 5px 0" }} />
-                            <div className="item-value">{props.jobDetail.ExportFile}</div>
+        return <div style={{ float: "left", width: "100%" }}>
+            {props.jobDetail &&
+                <div className="export-summary">
+                    <GridCell className="export-site-container">
+                        <div className="left-column">
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Pages")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Users")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Roles")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Roles")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Vocabularies")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("PageTemplates")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("PageTemplates")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Vocabularies")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeProfileProperties")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeProfileProperties.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludePermissions")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludePermissions.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeExtensions")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions.toString()}</div>
+                            </GridCell>
                         </div>
-                    }
+                        <div className="right-column">
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("FileName")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.FileName : "-"}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("ModulePackages")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Extensions")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Assets")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("TotalExportSize")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.FileSizeKb : "-"}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("ExportMode")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("LastExport")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.CompletedOn}</div>
+                            </GridCell>
+                            <GridCell>
+                                <div className="summary-note">
+                                    <div className="note-title">{Localization.get("SummaryNoteTitle")}</div>
+                                    <div className="note-description">{Localization.get("SummaryNoteDescription")}</div>
+                                </div>
+                            </GridCell>
+                        </div>
+                    </GridCell>
                 </div>
-            );
-        }
-        else return <div />;
-    }
-
-    renderedLogItemList() {
-        const { props } = this;
-        if (props.jobDetail.Summary.length > 0) {
-            return props.jobDetail.Summary.map((logItem, index) => {
-                return (
-                    <div className="item-row divider">
-                        <Label label={logItem.Name} style={{ margin: "0 0 5px 0" }} />
-                        <div className="item-value">{logItem.Value}</div>
-                    </div>
-                );
-            });
-        }
-        else return <div />;
+            }
+        </div>;
     }
 
     /* eslint-disable react/no-danger */
@@ -84,27 +171,10 @@ class JobDetails extends Component {
         const { props } = this;
         if (props.jobDetail !== undefined) {
             const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(props.jobDetail));
-            const columnOne = <div className="container left-column">
-                {this.renderedSummary()}
-                {this.renderedLogItemList()}
-            </div>;
-            const columnTwo = <div className="container right-column">
-                <div className="item-row divider">
-                    <Label label="test" style={{ margin: "0 0 5px 0" }} />
-                </div>
-                <a href={"data:'" + data + "'"} download="data.log">
-                    <Button
-                        type="secondary"
-                        onClick={this.onDownloadLog.bind(this)}>
-                        {Localization.get("DownloadLog")}
-                    </Button>
-                </a>
-            </div>;
-
             return (
                 <div className="job-details">
                     <div className="summary-title">{props.jobDetail.JobType.includes("Export") ? Localization.get("ExportSummary") : Localization.get("ImportSummary")}</div>
-                    <Grid children={[columnOne, columnTwo]} numberOfColumns={2} />
+                    {this.renderExportSummary()}
                 </div>
             );
         }

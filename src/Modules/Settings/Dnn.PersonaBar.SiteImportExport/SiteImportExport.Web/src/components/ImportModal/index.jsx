@@ -86,7 +86,7 @@ class ImportModal extends Component {
     onImport() {
         const { props, state } = this;
         props.dispatch(ImportExportActions.importSite(state.importRequest, (data) => {
-            util.utilities.notify(Localization.get("ImportRequestSubmitted") + data.jobId);
+            util.utilities.notify(Localization.get("ImportRequestSubmitted"));
             this.goToStep(0);
             props.dispatch(ImportExportActions.getAllJobs({
                 portalId: state.importRequest.PortalId,
@@ -277,7 +277,7 @@ class ImportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("ExportMode")}
                                 />
-                                <div className="import-summary-item">{props.selectedPackage.ExportMode}</div>
+                                <div className="import-summary-item">{props.selectedPackage.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label

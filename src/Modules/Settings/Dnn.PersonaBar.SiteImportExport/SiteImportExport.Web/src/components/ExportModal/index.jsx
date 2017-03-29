@@ -13,6 +13,7 @@ import MultiLineInputWithError from "dnn-multi-line-input-with-error";
 import GridCell from "dnn-grid-cell";
 import GridSystem from "dnn-grid-system";
 import Switch from "dnn-switch";
+import RadioButtons from "dnn-radio-buttons";
 import PagePicker from "dnn-page-picker";
 import CheckBox from "dnn-checkbox";
 import Button from "dnn-button";
@@ -39,10 +40,11 @@ class ExportModal extends Component {
                 PortalId: -1,
                 ExportName: "",
                 ExportDescription: "",
-                ItemsToExport: ["Assets", "Users", "Roles", "Vocabularies", "Profile_Properties", "Permissions"],
+                ItemsToExport: ["Assets", "Users", "Roles", "Vocabularies", "Profile_Properties", "Permissions", "PageTemplates"],
                 IncludeDeletions: false,
                 IncludeContent: true,
-                IncludeFiles: true
+                IncludeFiles: true,
+                ExportMode: "Differential"
             },
             localData: {
                 defaultLanguage: "",
@@ -77,7 +79,9 @@ class ExportModal extends Component {
                 this.setState({
                     localData
                 });
-            }));
+            })); 
+            
+            props.dispatch(ImportExportActions.getLastExportDate(props.portalId));
         });
     }
 
@@ -96,7 +100,7 @@ class ExportModal extends Component {
         const { props, state } = this;
         if (this.Validate()) {
             props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
-                utilities.utilities.notify(Localization.get("ExportRequestSubmitted") + data.jobId);
+                utilities.utilities.notify(Localization.get("ExportRequestSubmitted"));
                 props.dispatch(ImportExportActions.getAllJobs({
                     portalId: props.portalId,
                     pageIndex: 0,
@@ -223,6 +227,11 @@ class ExportModal extends Component {
         });
     }
 
+    getExportModeOptions() {
+        let options = [{ label: Localization.get("ExportModeDifferential"), value: "Differential" }, { label: Localization.get("ExportModeComplete"), value: "Complete" }];
+        return options;
+    }
+
     render() {
         const { state, props } = this;
         const PortalTabsParameters = {
@@ -335,6 +344,16 @@ class ExportModal extends Component {
                             <InputGroup>
                                 <Label
                                     labelType="inline"
+                                    label={Localization.get("PageTemplates")}
+                                />
+                                <Switch
+                                    value={state.exportRequest.ItemsToExport.includes("PageTemplates")}
+                                    onChange={this.onChange.bind(this, "PageTemplates")}
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
                                     label={Localization.get("ProfileProperties")}
                                 />
                                 <Switch
@@ -391,6 +410,27 @@ class ExportModal extends Component {
                                 Reload={this.state.reloadPages}
                                 ShowIcon={false}
                             />
+                            <div className="seperator2">
+                                <hr />
+                            </div>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("ExportMode")}
+                                />
+                                <RadioButtons
+                                    onChange={this.onChange.bind(this, "ExportMode")}
+                                    options={this.getExportModeOptions()}
+                                    buttonGroup="exportMode"
+                                    value={state.exportRequest.ExportMode} />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("LastExport")}
+                                />
+                                <div className="lastExport">{props.lastExportDate}</div>
+                            </InputGroup>
                         </div>
                     </GridSystem>
                     <GridCell className="action-buttons">
@@ -411,7 +451,8 @@ ExportModal.propTypes = {
     viewingLog: PropTypes.bool,
     portalId: PropTypes.number,
     portals: PropTypes.array,
-    exportJobId: PropTypes.number
+    exportJobId: PropTypes.number,
+    lastExportDate: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -421,7 +462,8 @@ function mapStateToProps(state) {
         viewingLog: state.importExport.viewingLog,
         portals: state.importExport.portals,
         portalId: state.importExport.portalId,
-        exportJobId: state.importExport.exportJobId
+        exportJobId: state.importExport.exportJobId,
+        lastExportDate: state.importExport.lastExportDate
     };
 }
 

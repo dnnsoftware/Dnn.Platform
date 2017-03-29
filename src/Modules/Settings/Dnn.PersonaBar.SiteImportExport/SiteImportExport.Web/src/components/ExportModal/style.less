@@ -13,8 +13,7 @@
     .export-site-container {
         .left-column {
             width: 50%;
-            float: left;
-            border-right: 1px solid @alto;
+            float: left;            
             padding: 10px 30px 10px 30px;
             .dnn-dropdown-with-error {
                 width: 100%;
@@ -29,7 +28,6 @@
             padding: 10px 30px 10px 30px;
         }
         .export-switches {
-            border-right: 1px solid @alto;
             padding: 0 30px 0 30px;
             .dnn-ui-common-input-group {
                 padding: 5px 0;
@@ -44,10 +42,11 @@
         }
         .export-pages {
             padding: 0 30px 0 30px;
+            border-left: 1px solid @alto;
             .export-page-picker {
                 width: 100% !important;
                 .page-picker-content > div {
-                    height: 390px !important;
+                    height: 350px !important;
                 }
             }
             .language-box {
@@ -71,7 +70,7 @@
                 label {
                     float: left;
                 }
-                    font-weight: 700;
+                font-weight: 700;
             }
             .dnn-dropdown {
                 .collapsible-content {
@@ -88,12 +87,26 @@
             div.tooltip-text {
                 max-width: 250px;
             }
+            .dnn-radio-buttons {
+                float: right;
+                width: auto;
+                margin-top: 6px;
+            }
+            .lastExport {
+                margin-top: 6px;
+                font-weight: 700;
+                color: @thunder;
+                float: right;
+            }
         }
     }
-    .seperator{
+    .seperator {
         padding: 0 20px;
     }
-    .pageTitle{
+    .seperator2 {
+        padding: 30px 0 20px 0;
+    }
+    .pageTitle {
         text-transform: uppercase;
         font-weight: bold;
         padding: 20px 0 10px 30px;
