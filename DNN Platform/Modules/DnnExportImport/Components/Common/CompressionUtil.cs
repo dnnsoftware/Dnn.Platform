@@ -158,20 +158,24 @@ namespace Dnn.ExportImport.Components.Common
             {
                 existingEntry.Delete();
             }
-            if (string.IsNullOrEmpty(folder))
+            if (File.Exists(file))
             {
-                archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
-            }
-            else
-            {
-                using (var fs = File.OpenRead(file))
+                if (string.IsNullOrEmpty(folder))
                 {
-                    // this is custom code that copies a file location's data to a Stream (msFileBody); this is the Stream needing compression that prompted my initial question 
-                    var zipArchiveEntry = archive.CreateEntry(Path.Combine(folder, entryName), CompressionLevel.Optimal);
-                    using (var zipEntryStream = zipArchiveEntry.Open())
+                    archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
+                }
+                else
+                {
+                    using (var fs = File.OpenRead(file))
                     {
-                        //Copy the attachment stream to the zip entry stream
-                        fs.CopyTo(zipEntryStream);
+                        // this is custom code that copies a file location's data to a Stream (msFileBody); this is the Stream needing compression that prompted my initial question 
+                        var zipArchiveEntry = archive.CreateEntry(Path.Combine(folder, entryName),
+                            CompressionLevel.Optimal);
+                        using (var zipEntryStream = zipArchiveEntry.Open())
+                        {
+                            //Copy the attachment stream to the zip entry stream
+                            fs.CopyTo(zipEntryStream);
+                        }
                     }
                 }
             }

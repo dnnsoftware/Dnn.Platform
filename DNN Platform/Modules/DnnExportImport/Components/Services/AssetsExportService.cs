@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 2)
+            if (CheckPoint.Stage >= 1)
                 return;
 
             //Create Zip File to hold files
@@ -79,15 +79,6 @@ namespace Dnn.ExportImport.Components.Services
                 var assetsFile = string.Format(_assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (CheckPoint.Stage == 0)
-                {
-                    //Sync db and filesystem before exporting so all required files are found
-                    var folderManager = FolderManager.Instance;
-                    folderManager.Synchronize(portalId);
-                    CheckPoint.Stage++;
-                    CheckPoint.Progress = 5;
-                    CheckPointStageCallback(this);
-                }
-                if (CheckPoint.Stage == 1)
                 {
                     var fromDate = exportDto.FromDate?.DateTime;
                     var toDate = exportDto.ToDate;
@@ -366,16 +357,18 @@ namespace Dnn.ExportImport.Components.Services
             }
             else
             {
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
+                if (folderMapping == null) return false;
                 var previousParent = folder.ParentId;
                 folder.FolderId = 0;
-                folder.FolderMappingId =
-                    FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName)
-                        .FolderMappingID;
+                folder.FolderMappingId = folderMapping.FolderMappingID;
                 var createdBy = Util.GetUserIdOrName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
                 if (folder.ParentId != null && folder.ParentId > 0)
                 {
                     //Find the previously created parent folder id.
-                    folder.ParentId = Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId, CultureInfo.InvariantCulture))?.LocalId;
+                    folder.ParentId =
+                        Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId,
+                            CultureInfo.InvariantCulture))?.LocalId;
                 }
                 folder.CreatedByUserId = createdBy;
                 folder.CreatedOnDate = DateTime.UtcNow;
