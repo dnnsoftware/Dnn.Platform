@@ -42,7 +42,7 @@ class JobRow extends Component {
         const {props, state} = this;
         let opened = (props.openId !== "" && this.props.id === props.openId);
         return (
-            <div className={"collapsible-jobdetail " + state.collapsed + (props.className ? (" " + props.className) : "")}>
+            <div className={"collapsible-jobdetail " + !opened + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-jobdetail-header " + state.collapsed}>
                     <div className="term-header">
                         <div className="term-label-cssclass" onClick={this.toggle.bind(this)}>
