@@ -21,14 +21,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
+using System.Xml;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto.Pages;
+using Dnn.ExportImport.Components.Engines;
 using DotNetNuke.Entities.Tabs;
 using Dnn.ExportImport.Components.Providers;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Services
@@ -47,13 +58,18 @@ namespace Dnn.ExportImport.Components.Services
         private ProgressTotals _totals;
         private DataProvider _dataProvider;
         private ITabController _tabController;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            ProcessExportPages(exportJob, exportDto, exportDto.Pages);
+            var pages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked).Select(p => p.TabId).ToArray();
+            if (pages.Length > 0)
+            {
+                ProcessExportPages(exportJob, exportDto, pages.ToArray());
+            }
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
@@ -164,11 +180,11 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry("Imported Tab Permissions", _totals.TotalPermissions.ToString());
             Result.AddLogEntry("Imported Tab Urls", _totals.TotalUrls.ToString());
             Result.AddLogEntry("Imported Tab Alias Skins", _totals.TotalAliasSkins.ToString());
-            Result.AddLogEntry("Imported Tab Modules", _totals.TotalTabModules.ToString());
-            Result.AddLogEntry("Imported Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
             Result.AddLogEntry("Imported Modules", _totals.TotalModules.ToString());
             Result.AddLogEntry("Imported Module Settings", _totals.TotalModuleSettings.ToString());
             Result.AddLogEntry("Imported Module Permissions", _totals.TotalModulePermissions.ToString());
+            Result.AddLogEntry("Imported Tab Modules", _totals.TotalTabModules.ToString());
+            Result.AddLogEntry("Imported Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
         }
 
         private void AddTabRelatedItems(int portalId, TabInfo localTab, ExportTab otherTab)
@@ -237,6 +253,7 @@ namespace Dnn.ExportImport.Components.Services
             _dataProvider.UpdateRecordChangers("Tabs", "TabID", tabId, createdBy, modifiedBy);
         }
 
+        // ReSharper disable UnusedMember.Local
         private void UpdateTabPermissionChangers(int tabPermissionId, int createdBy, int modifiedBy)
         {
             _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);
@@ -333,7 +350,7 @@ namespace Dnn.ExportImport.Components.Services
                         SaveTabAliasSkins(exportPage, toDate, fromDate);
 
                     _totals.TotalModules +=
-                        SaveTabModulesAndRelatedItems(exportPage, exportDto.IncludeDeletions, toDate, fromDate);
+                        SaveTabModulesAndRelatedItems(exportDto, exportPage, exportDto.IncludeDeletions, toDate, fromDate);
 
                     _totals.TotalTabModules +=
                         SaveTabModules(exportPage, exportDto.IncludeDeletions, toDate, fromDate);
@@ -356,8 +373,11 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry("Exported Tab Permissions", _totals.TotalPermissions.ToString());
             Result.AddLogEntry("Exported Tab Urls", _totals.TotalUrls.ToString());
             Result.AddLogEntry("Exported Tab Alias Skins", _totals.TotalAliasSkins.ToString());
-            Result.AddLogEntry("Exported Tab Modules", _totals.TotalModules.ToString());
-            Result.AddLogEntry("Exported Tab Module Settings", _totals.TotalModuleSettings.ToString());
+            Result.AddLogEntry("Exported Modules", _totals.TotalModules.ToString());
+            Result.AddLogEntry("Exported Module Settings", _totals.TotalModuleSettings.ToString());
+            Result.AddLogEntry("Exported Module Permissions", _totals.TotalModulePermissions.ToString());
+            Result.AddLogEntry("Exported Tab Modules", _totals.TotalTabModules.ToString());
+            Result.AddLogEntry("Exported Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
         }
 
         private int SaveTabSettings(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
@@ -408,19 +428,25 @@ namespace Dnn.ExportImport.Components.Services
             return tabModuleSettings.Count;
         }
 
-        private int SaveTabModulesAndRelatedItems(ExportTab exportPage, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        private int SaveTabModulesAndRelatedItems(ExportDto exportDto, ExportTab exportPage, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             var modules = EntitiesController.Instance.GetModules(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (modules.Count > 0)
             {
                 Repository.CreateItems(modules, exportPage.ReferenceId);
-                foreach (var module in modules)
+                foreach (var exportModule in modules)
                 {
                     _totals.TotalModuleSettings +=
-                        SaveModuleSettings(module, toDate, fromDate);
+                        SaveModuleSettings(exportModule, toDate, fromDate);
 
                     _totals.TotalPermissions +=
-                        SaveModulePermissions(module, toDate, fromDate);
+                        SaveModulePermissions(exportModule, toDate, fromDate);
+
+                    if (exportDto.IncludeContent)
+                    {
+                        _totals.TotalContents +=
+                            SavePortableContent(exportDto, exportPage, exportModule /*, toDate, fromDate*/);
+                    }
                 }
             }
 
@@ -441,6 +467,46 @@ namespace Dnn.ExportImport.Components.Services
             if (modulePermission.Count > 0)
                 Repository.CreateItems(modulePermission, exportModule.ReferenceId);
             return modulePermission.Count;
+        }
+
+        private int SavePortableContent(ExportDto exportDto, ExportTab exportPage, ExportModule exportModule /*, DateTime toDate, DateTime? fromDat*/)
+        {
+            var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, exportDto.PortalId);
+            if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+            {
+                try
+                {
+                    var module = ModuleController.Instance.GetModule(exportModule.ModuleID, exportPage.TabId, true);
+                    if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+                    {
+                        var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                        var controller = businessController as IPortable;
+                        if (controller != null)
+                        {
+                            var content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                            if (!string.IsNullOrEmpty(content))
+                            {
+                                var record = new ExportModuleContent
+                                {
+                                    ModuleID = exportModule.ModuleID,
+                                    ModuleDefID = exportModule.ModuleDefID,
+                                    XmlContent = content,
+                                    ReferenceId = exportModule.Id,
+                                };
+                                Repository.AddSingleItem(record);
+                                return 1;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
+                    Logger.Error("Error cerating business class type. " + ex);
+                }
+            }
+            return 0;
         }
 
         private ExportTab SaveExportPage(TabInfo tab)
@@ -484,7 +550,7 @@ namespace Dnn.ExportImport.Components.Services
                 IsSystem = tab.IsSystem,
             };
             Repository.CreateItem(exportPage, null);
-            Result.AddLogEntry("Exported page", tab.TabName + "(" + tab.TabPath + ")");
+            Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
             return exportPage;
         }
 
@@ -521,6 +587,7 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalModules { get; set; }
             public int TotalModulePermissions { get; set; }
             public int TotalModuleSettings { get; set; }
+            public int TotalContents { get; set; }
 
             public int TotalTabModules { get; set; }
             public int TotalTabModuleSettings { get; set; }

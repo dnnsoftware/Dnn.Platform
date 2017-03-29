@@ -76,7 +76,7 @@ namespace Dnn.ExportImport.Components.Dto
 
 
         /// <summary>
-        /// Export mode. Differential or complete.
+        /// Export mode. Differential or Complete.
         /// </summary>
         public ExportMode ExportMode { get; set; }
 
@@ -95,10 +95,28 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime ToDate { get; set; }
 
         /// <summary>
-        /// The pages to be exported (list of TabId values). These are the ID's
+        /// The pages to be exported. These are the ID's (plus other information)
         /// of all checked items but not their children when a parent is checked.
-        /// If the value '-1' is included in the list, it means all site pages.
+        /// If the 'TabId=-1' is included in the list, it means all site pages.
         /// </summary>
-        public int[] Pages { get; set; }
+        public PageToExport[] Pages { get; set; }
+    }
+
+    /// <summary>
+    ///  Spercifies page to be exported.
+    /// </summary>
+    [JsonObject]
+    public class PageToExport
+    {
+        public int TabId { get; set; }
+        public int ParentTabId { get; set; }
+        public TriCheckedState CheckedState { get; set; }
+    }
+
+    public enum TriCheckedState
+    {
+        Checked,
+        UnChecked,
+        Partial,
     }
 }

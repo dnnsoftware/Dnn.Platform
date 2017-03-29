@@ -1344,7 +1344,6 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
 	@TabID          int,
-	@IncludeDeleted bit,
 	@ToDate         datetime,
 	@FromDate       datetime=NULL
 AS
@@ -1361,8 +1360,6 @@ BEGIN
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tm.LastModifiedByUserID = u2.UserID
 	WHERE
 		t.TabID = @TabID
-	AND
-		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
 	AND
 		COALESCE(tms.LastModifiedOnDate, tms.CreatedOnDate, @Now) <= @ToDate
 	AND

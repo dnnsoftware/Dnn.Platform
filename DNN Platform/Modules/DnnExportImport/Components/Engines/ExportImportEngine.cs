@@ -32,7 +32,6 @@ using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Repository;
 using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Common;
-using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
@@ -42,7 +41,7 @@ namespace Dnn.ExportImport.Components.Engines
 {
     public class ExportImportEngine
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        //private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
@@ -132,7 +131,7 @@ namespace Dnn.ExportImport.Components.Engines
             PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Started. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
-            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDate}] and [{exportDto.ToDate:g}]");
+            scheduleHistoryItem.AddLogNote($"<br/>Between [{exportDto.FromDate ?? Constants.MinDbTime}] and [{exportDto.ToDate:g}]");
             var firstIteration = true;
             AddJobToCache(exportJob);
 
