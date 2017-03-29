@@ -81,7 +81,7 @@ class ExportModal extends Component {
                 });
             })); 
             
-            props.dispatch(ImportExportActions.getLastExportDate(props.portalId));
+            props.dispatch(ImportExportActions.getLastJobTime({"portalId": props.portalId, "jobType": "Export"}));
         });
     }
 
@@ -261,7 +261,7 @@ class ExportModal extends Component {
                         </GridCell>
                         <GridCell>
                             <SingleLineInputWithError
-                                label={Localization.get("TemplateFile") + "*"}
+                                label={Localization.get("Name") + "*"}
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
                                 error={state.localData.errors.ExportName}

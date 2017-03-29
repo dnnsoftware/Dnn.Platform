@@ -65,9 +65,14 @@ class ImportModal extends Component {
             props.onCancel();
         }
         else {
-            props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
-                props.dispatch(ImportExportActions.selectPackage());
-            }));
+            util.utilities.confirm(Localization.get("CancelImport"),
+                Localization.get("ConfirmCancel"),
+                Localization.get("KeepImport"),
+                () => {
+                    props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
+                        props.dispatch(ImportExportActions.selectPackage());
+                    }));
+                });
         }
     }
 

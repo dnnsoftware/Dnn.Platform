@@ -73,15 +73,15 @@ const jobsActions = {
         };
     },
 
-    getLastExportDate(portalId, callback, errorCallback) {
+    getLastJobTime(parameters, callback, errorCallback) {
         return (dispatch) => {
-            ApplicationService.getLastExportDate(portalId, (data) => {
+            ApplicationService.getLastJobTime(parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_LAST_EXPORT_DATE,
                     lastExportDate: data.lastTime
                 });
                 if (callback) {
-                    callback();
+                    callback(data);
                 }
             }, errorCallback);
         };

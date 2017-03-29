@@ -114,16 +114,16 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("LastExport")}
+                                    label={Localization.get("Name")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.CompletedOn}</div>
+                                <div className="import-summary-item">{props.jobDetail.Name || "-" }</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("FileName")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.FileName : "-"}</div>
+                                <div className="import-summary-item">{props.jobDetail.ExportFile}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -144,7 +144,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("TotalExportSize")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.FileSizeKb : "-"}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.ExportSizeKb : "-"}</div>
                             </GridCell>
                             <GridCell>
                                 <Label

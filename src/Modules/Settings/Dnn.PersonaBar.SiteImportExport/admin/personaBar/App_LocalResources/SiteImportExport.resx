@@ -211,10 +211,10 @@
     <value>Site</value>
   </data>
   <data name="Description.Text" xml:space="preserve">
-    <value>Template Description</value>
+    <value>Description</value>
   </data>
-  <data name="TemplateFile.Text" xml:space="preserve">
-    <value>Template File Name</value>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="IncludeInExport.Text" xml:space="preserve">
     <value>Include in Export</value>
@@ -392,5 +392,14 @@
   </data>
   <data name="ExportModeDifferential.Text" xml:space="preserve">
     <value>Differential</value>
+  </data>
+  <data name="CancelImport.Text" xml:space="preserve">
+    <value>Cancelling will abort the import process. Are you sure you want to cancel?</value>
+  </data>
+  <data name="ConfirmCancel.Text" xml:space="preserve">
+    <value>Yes, Cancel</value>
+  </data>
+  <data name="KeepImport.Text" xml:space="preserve">
+    <value>No</value>
   </data>
 </root>

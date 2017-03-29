@@ -33,9 +33,9 @@ class ApplicationService {
         sf.get("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
-    getLastExportDate(portalId, callback, errorCallback) {
+    getLastJobTime(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
-        sf.get("LastExportUtcTime?portalId=" + portalId, {}, callback, errorCallback);
+        sf.get("LastJobTime?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
     getJobDetails(jobId, callback, errorCallback) {

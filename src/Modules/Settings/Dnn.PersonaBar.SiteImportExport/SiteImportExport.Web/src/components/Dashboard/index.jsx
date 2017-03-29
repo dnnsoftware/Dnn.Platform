@@ -28,7 +28,9 @@ class DashboardPanelBody extends Component {
             pageSize: 10,
             filter: null,
             keyword: "",
-            openId: ""
+            openId: "",
+            lastExportTime: "",
+            lastImportTime: ""
         };
     }
 
@@ -46,10 +48,12 @@ class DashboardPanelBody extends Component {
             }, () => {
                 if (props.portals.length === 1) {
                     props.dispatch(ImportExportActions.siteSelected(props.portals[0].PortalID, () => {
+                        this.getLastJobTime(props.portals[0].PortalID);
                         props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portals[0].PortalID)));
                     }));
                 }
                 else {
+                    this.getLastJobTime(props.portalId);
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 }
             });
@@ -59,9 +63,26 @@ class DashboardPanelBody extends Component {
                 this.setState({
                     portalId: props.portalId
                 }, () => {
+                    this.getLastJobTime(props.portalId);
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 });
             }
+        }
+    }
+
+    getLastJobTime(portalId) {
+        const { props } = this;
+        if (props.portalId > -1) {
+            props.dispatch(ImportExportActions.getLastJobTime({ "portalId": portalId, "jobType": "Export" }, (date) => {
+                this.setState({
+                    lastExportTime: date.lastTime
+                });
+            }));
+            props.dispatch(ImportExportActions.getLastJobTime({ "portalId": portalId, "jobType": "Import" }, (date) => {
+                this.setState({
+                    lastImportTime: date.lastTime
+                });
+            }));
         }
     }
 
@@ -195,14 +216,10 @@ class DashboardPanelBody extends Component {
                         <Label
                             labelType="block"
                             label={Localization.get("LastExport")} />
-                        <Label
-                            labelType="block"
-                            label={Localization.get("LastUpdate")} />
                     </div>
                     <div className="action-dates">
-                        <div>1/31/2017 12:45 PM</div>
-                        <div>1/31/2017 12:45 PM</div>
-                        <div>1/31/2017 12:45 PM</div>
+                        <div>{state.lastImportTime}</div>
+                        <div>{state.lastExportTime}</div>
                     </div>
                 </div>
                 <div className="action-buttons">
