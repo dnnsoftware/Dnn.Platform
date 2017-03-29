@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
@@ -39,7 +40,17 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Package file name. It is just fake name for UI representation
         /// </summary>
-        public string FileName => PackageId + ".resources";
+        public string FileName => PackageId;
+
+        /// <summary>
+        /// DateTime when the package was exported.
+        /// </summary>
+        public DateTime ExporTime { get; set; }
+
+        /// <summary>
+        /// The portal from which the exported package was created
+        /// </summary>
+        public string PortalName { get; set; }
 
         /// <summary>
         /// Package description

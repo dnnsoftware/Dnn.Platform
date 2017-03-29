@@ -67,11 +67,13 @@ namespace Dnn.ExportImport.Components.Common
         internal const string Category_UsersData = "USERS_DATA";
 
         //Manifest file tags
+        internal const string Manifest_PortalName = "PortalName";
         internal const string Manifest_PackageId = "PackageId";
         internal const string Manifest_PackageName = "PackageName";
         internal const string Manifest_PackageDescription = "PackageDescription";
         internal const string Manifest_ExportPath = "ExportPath";
         internal const string Manifest_ExportSize = "ExportSize";
+        internal const string Manifest_ExportTime = "ExportTime";
         internal const string Manifest_RootTag = "Package";
     }
 }

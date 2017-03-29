@@ -94,7 +94,7 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    var progressStep = 95.0 / totalFolders;
+                    var progressStep = 100.0 / totalFolders;
 
                     foreach (var folder in folders)
                     {
@@ -144,6 +144,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     CheckPoint.Stage++;
                     currentIndex = 0;
+                    CheckPoint.Progress = 100;
                     //TODO: Check if we need this step or not.
                     //var folderMappings =
                     //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()

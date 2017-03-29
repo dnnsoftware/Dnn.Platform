@@ -165,7 +165,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 //IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties =
                     exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
-                FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime,
+                FromDate = exportDto.FromDate?.DateTime,
                 ToDate = exportDto.ToDate,
                 ExportMode = exportDto.ExportMode
             };
@@ -212,7 +212,7 @@ namespace Dnn.ExportImport.Components.Controllers
             //TODO: Get export file info.
             summary.ExportFileInfo =
                 GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
-            summary.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime().DateTime;
+            summary.FromDate = exportDto.FromDate?.DateTime;
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
@@ -238,13 +238,15 @@ namespace Dnn.ExportImport.Components.Controllers
         protected static ImportPackageInfo GetPackageInfo(string manifestPath, DirectoryInfo importDirectoryInfo)
         {
             var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_PackageId,
-                Constants.Manifest_PackageName, Constants.Manifest_PackageDescription);
+                Constants.Manifest_PackageName, Constants.Manifest_PackageDescription, Constants.Manifest_ExportTime, Constants.Manifest_PortalName);
             return new ImportPackageInfo
             {
                 PackageId = manifestItems.GetValue<string>(Constants.Manifest_PackageId) ?? importDirectoryInfo.Name,
                 Name = manifestItems.GetValue<string>(Constants.Manifest_PackageName) ?? importDirectoryInfo.Name,
                 Description =
-                    manifestItems.GetValue<string>(Constants.Manifest_PackageDescription) ?? importDirectoryInfo.Name
+                    manifestItems.GetValue<string>(Constants.Manifest_PackageDescription) ?? importDirectoryInfo.Name,
+                ExporTime = manifestItems.GetValue<DateTime>(Constants.Manifest_ExportTime),
+                PortalName = manifestItems.GetValue<string>(Constants.Manifest_PortalName)
             };
         }
 

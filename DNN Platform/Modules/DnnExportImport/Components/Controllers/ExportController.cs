@@ -28,6 +28,7 @@ using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 using System.IO;
 using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Entities.Portals;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -36,8 +37,8 @@ namespace Dnn.ExportImport.Components.Controllers
         public int QueueOperation(int userId, ExportDto exportDto)
         {
             exportDto.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime();
-            exportDto.ToDate = DateTime.Now;
-            var directory = DateTime.Now.ToString("yyyyMMddhhmmssfff");
+            exportDto.ToDate = DateTime.UtcNow;
+            var directory = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
                 exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export) ?? Constants.MinDbTime;
@@ -54,8 +55,11 @@ namespace Dnn.ExportImport.Components.Controllers
         public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo)
         {
             var filePath = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
+            var portal = PortalController.Instance.GetPortal(exportJob.PortalId);
             var tagsToWrite = new Dictionary<string, string>
             {
+                {Constants.Manifest_PortalName, portal?.PortalName},
+                {Constants.Manifest_ExportTime, exportJob.CreatedOnDate.ToString(CultureInfo.InvariantCulture)},
                 {Constants.Manifest_PackageId, exportJob.Directory},
                 {Constants.Manifest_PackageName, exportJob.Name},
                 {

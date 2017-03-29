@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Date from which data was taken to perform export.
         /// </summary>
-        public DateTime FromDate { get; set; }
+        public DateTime? FromDate { get; set; }
 
         /// <summary>
         /// Date till which data was taken to perform export.
