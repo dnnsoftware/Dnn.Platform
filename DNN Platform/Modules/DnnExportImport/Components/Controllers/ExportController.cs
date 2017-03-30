@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Controllers
         public int QueueOperation(int userId, ExportDto exportDto)
         {
             exportDto.ToDate = DateUtils.GetDatabaseTime();
-            var directory = DateUtils.GetDatabaseTime().ToString("yyyy-MM-dd-HH-mm-ss");
+            var directory = DateUtils.GetDatabaseTime().ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
                 exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export);

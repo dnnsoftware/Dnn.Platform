@@ -99,9 +99,7 @@ namespace Dnn.ExportImport.Components.Services
                     foreach (var folder in folders)
                     {
                         var isUserFolder = false;
-                        var permissions =
-                            CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                .GetFolderPermissionsByPath(portalId, folder.FolderPath, toDate, fromDate));
+
                         var files =
                             CBO.FillCollection<ExportFile>(
                                 DataProvider.Instance()
@@ -124,8 +122,15 @@ namespace Dnn.ExportImport.Components.Services
 
                         Repository.CreateItem(folder, null);
                         totalFolderExported++;
-                        Repository.CreateItems(permissions, folder.Id);
-                        totalFolderPermissionsExported += permissions.Count;
+                        //Include permissions only if IncludePermissions=true
+                        if (exportDto.IncludePermissions)
+                        {
+                            var permissions =
+                                CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
+                                    .GetFolderPermissionsByPath(portalId, folder.FolderPath, toDate, fromDate));
+                            Repository.CreateItems(permissions, folder.Id);
+                            totalFolderPermissionsExported += permissions.Count;
+                        }
                         Repository.CreateItems(files, folder.Id);
                         totalFilesExported += files.Count;
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
@@ -205,7 +210,7 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    var progressStep = 95.0 / totalFolders;
+                    var progressStep = 90.0 / totalFolders;
 
                     foreach (var sourceFolder in sourceFolders)
                     {
@@ -217,30 +222,35 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 totalFolderImported++;
                                 Repository.UpdateItem(sourceFolder);
-                                //SyncUserFolder(importJob, userFolderPath, exportFolder);
 
-                                var sourceFolderPermissions =
-                                    Repository.GetRelatedItems<ExportFolderPermission>(sourceFolder.Id).ToList();
-                                //Replace folderId for each permission with new one.
-                                sourceFolderPermissions.ForEach(x =>
+                                //Include permissions only if permissions were exported in package.
+                                if (importDto.ExportDto.IncludePermissions)
                                 {
-                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
-                                    x.FolderPath = sourceFolder.FolderPath;
-                                });
+                                    /** PROCESS FOLDER PERMISSIONS **/
+                                    var sourceFolderPermissions =
+                                        Repository.GetRelatedItems<ExportFolderPermission>(sourceFolder.Id).ToList();
+                                    //Replace folderId for each permission with new one.
+                                    sourceFolderPermissions.ForEach(x =>
+                                    {
+                                        x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
+                                        x.FolderPath = sourceFolder.FolderPath;
+                                    });
 
-                                /** PROCESS FOLDER PERMISSIONS **/
-                                //File local files in the system related to the folder path.
-                                var localPermissions =
-                                    CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, DateUtils.GetDatabaseTime().AddYears(1), null));
+                                    /** PROCESS FOLDER PERMISSIONS **/
+                                    //File local files in the system related to the folder path.
+                                    var localPermissions =
+                                        CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
+                                            .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath,
+                                                DateUtils.GetDatabaseTime().AddYears(1), null));
 
-                                foreach (var folderPermission in sourceFolderPermissions)
-                                {
-                                    ProcessFolderPermission(importJob, importDto, db, folderPermission,
-                                        localPermissions);
-                                    Repository.UpdateItem(folderPermission);
+                                    foreach (var folderPermission in sourceFolderPermissions)
+                                    {
+                                        ProcessFolderPermission(importJob, importDto, db, folderPermission,
+                                            localPermissions);
+                                        Repository.UpdateItem(folderPermission);
+                                    }
+                                    totalFolderPermissionsImported += sourceFolderPermissions.Count;
                                 }
-                                totalFolderPermissionsImported += sourceFolderPermissions.Count;
 
                                 /** PROCESS FILES **/
                                 var sourceFiles =
@@ -273,7 +283,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     currentIndex = 0;
                     CheckPoint.Stage++;
-                    CheckPoint.Progress = 95;
+                    CheckPoint.Progress = 100;
                 }
                 finally
                 {

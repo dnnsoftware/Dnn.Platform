@@ -161,10 +161,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var importExportSummary = new ImportExportSummary
             {
                 IncludeDeletions = exportDto.IncludeDeletions,
-                //IncludeExtensions = exportDto.IncludeExtensions,
-                //IncludePermissions = exportDto.IncludePermissions,
-                IncludeProfileProperties =
-                    exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps),
+                IncludeExtensions = exportDto.IncludeExtensions,
+                IncludePermissions = exportDto.IncludePermissions,
+                IncludeProfileProperties = exportDto.IncludeProperfileProperties,
                 FromDate = exportDto.FromDate?.DateTime,
                 ToDate = exportDto.ToDate,
                 ExportMode = exportDto.ExportMode
@@ -217,11 +216,9 @@ namespace Dnn.ExportImport.Components.Controllers
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
             summary.ExportMode = exportDto.ExportMode;
-
-            //summary.IncludeExtensions = exportDto.IncludeExtensions;
-            //summary.IncludePermissions = exportDto.IncludePermissions;
-            summary.IncludeProfileProperties =
-                exportDto.ItemsToExport.ToList().Any(x => x == Constants.Category_ProfileProps);
+            summary.IncludeExtensions = exportDto.IncludeExtensions;
+            summary.IncludePermissions = exportDto.IncludePermissions;
+            summary.IncludeProfileProperties = exportDto.IncludeProperfileProperties;
         }
 
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)
@@ -259,7 +256,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 PortalId = job.PortalId,
                 User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
-                Status = (int) job.JobStatus,
+                Status = (int)job.JobStatus,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
                 Name = job.Name,
                 Description = job.Description,

@@ -74,6 +74,43 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeFiles { get; set; }
 
+        /// <summary>
+        /// Whether to include users in the export file or not.
+        /// </summary>
+        public bool IncludeUsers { get; set; }
+
+        /// <summary>
+        /// Whether to include vocabularies in the export file or not.
+        /// </summary>
+        public bool IncludeVocabularies { get; set; }
+
+        /// <summary>
+        /// Whether to include page templates in export file or not.
+        /// </summary>
+        public bool IncludeTemplates { get; set; }
+
+        /// <summary>
+        /// Whether to include profile properties in exported file. 
+        /// When this flag is enabled only then userprofile would be exported.
+        /// </summary>
+        public bool IncludeProperfileProperties { get; set; }
+
+        /// <summary>
+        /// Whether to include modules packages in exported file.
+        /// </summary>
+        public bool IncludeExtensions { get; set; }
+
+        /// <summary>
+        /// Whether to include roles or not in export file.
+        /// If this flag is disabled, User Roles won't be exported.
+        /// If this flag is disabled, Assets permissions won't be exported.
+        /// </summary>
+        public bool IncludeRoles { get; set; }
+
+        /// <summary>
+        /// Whether to incldue permissions with each entity in export file or not.
+        /// </summary>
+        public bool IncludePermissions { get; set; }
 
         /// <summary>
         /// Export mode. Differential or Complete.

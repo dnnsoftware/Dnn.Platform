@@ -464,19 +464,16 @@ namespace Dnn.ExportImport.Components.Engines
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
-        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto, List<BasePortableService> implementors)
+        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto,
+            List<BasePortableService> implementors)
         {
             // add all child items
             var includedItems = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-            foreach (var name in exportDto.ItemsToExport)
+            foreach (var name in exportDto.ItemsToExport.Where(x => !NotAllowedCategoriesinRequestArray.Contains(x.ToUpperInvariant())))
             {
                 includedItems.Add(name);
-                foreach (var impl in implementors)
-                {
-                    if (name.Equals(impl.ParentCategory, IgnoreCaseComp))
-                        includedItems.Add(impl.Category);
-                }
             }
+            includedItems.Remove(Constants.Category_Content);
 
             if (exportDto.Pages.Length > 0)
                 includedItems.Add(Constants.Category_Pages);
@@ -484,6 +481,40 @@ namespace Dnn.ExportImport.Components.Engines
             // must be included always when there is at least one other object to process
             if (includedItems.Count > 0)
                 includedItems.Add(Constants.Category_Portal);
+
+            if (exportDto.IncludeContent)
+                includedItems.Add(Constants.Category_Content);
+
+
+            if (exportDto.IncludeFiles)
+                includedItems.Add(Constants.Category_Assets);
+
+            if (exportDto.IncludeUsers)
+                includedItems.Add(Constants.Category_Users);
+
+            if (exportDto.IncludeRoles)
+                includedItems.Add(Constants.Category_Roles);
+
+            if (exportDto.IncludeVocabularies)
+                includedItems.Add(Constants.Category_Vocabularies);
+
+            if (exportDto.IncludeTemplates)
+                includedItems.Add(Constants.Category_Templates);
+
+            if (exportDto.IncludeProperfileProperties)
+                includedItems.Add(Constants.Category_ProfileProps);
+
+            //This might be added always.
+            if (exportDto.IncludeExtensions)
+                includedItems.Add(Constants.Category_Packages);
+
+            foreach (var impl in from includedItem in includedItems
+                                 from impl in implementors
+                                 where includedItem.Equals(impl.ParentCategory, IgnoreCaseComp)
+                                 select impl)
+            {
+                includedItems.Add(impl.Category);
+            }
 
             return includedItems;
         }
@@ -544,5 +575,21 @@ namespace Dnn.ExportImport.Components.Engines
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
         }
+
+        private static string[] NotAllowedCategoriesinRequestArray => new[]
+        {
+            Constants.Category_Content,
+            Constants.Category_Pages,
+            Constants.Category_Portal,
+            Constants.Category_Content,
+            Constants.Category_Assets,
+            Constants.Category_Users,
+            Constants.Category_UsersData,
+            Constants.Category_Roles,
+            Constants.Category_Vocabularies,
+            Constants.Category_Templates,
+            Constants.Category_ProfileProps,
+            Constants.Category_Packages
+        };
     }
 }
