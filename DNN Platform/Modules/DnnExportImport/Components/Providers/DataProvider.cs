@@ -83,7 +83,7 @@ namespace Dnn.ExportImport.Components.Providers
         {
             DateTime? completeDate = null;
             if (jobStatus == JobStatus.Failed || jobStatus == JobStatus.Successful)
-                completeDate = DateTime.UtcNow;
+                completeDate = DateUtils.GetDatabaseTime();
 
             _dataProvider.ExecuteNonQuery(
                 "ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);

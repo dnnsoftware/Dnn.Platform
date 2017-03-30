@@ -179,9 +179,9 @@ namespace Dnn.ExportImport.Components.Services
 
                 userRole.UserId = userId;
                 userRole.RoleId = roleId.Value;
-                userRole.LastModifiedOnDate = DateTime.UtcNow;
+                userRole.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?)DateTime.UtcNow
+                    ? (DateTime?)DateUtils.GetDatabaseTime()
                     : null;
                 userRole.LastModifiedByUserId = modifiedById;
                 if (isUpdate)
@@ -198,7 +198,7 @@ namespace Dnn.ExportImport.Components.Services
                         userRole.CreatedByUserName);
                     userRole.UserRoleId = 0;
                     userRole.CreatedByUserId = createdById;
-                    userRole.CreatedOnDate = DateTime.UtcNow;
+                    userRole.CreatedOnDate = DateUtils.GetDatabaseTime();
                     repUserRoles.Insert(userRole);
                     //Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
                 }
@@ -232,7 +232,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
                 userProfile.UserId = userId;
-                userProfile.LastUpdatedDate = DateTime.UtcNow;
+                userProfile.LastUpdatedDate = DateUtils.GetDatabaseTime();
                 if (isUpdate)
                 {
                     userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
@@ -280,7 +280,7 @@ namespace Dnn.ExportImport.Components.Services
             }
             var modifiedById = Util.GetUserIdOrName(importJob, userAuthentication.LastModifiedByUserId,
                 userAuthentication.LastModifiedByUserName);
-            userAuthentication.LastModifiedOnDate = DateTime.UtcNow;
+            userAuthentication.LastModifiedOnDate = DateUtils.GetDatabaseTime();
             userAuthentication.LastModifiedByUserId = modifiedById;
             userAuthentication.UserId = userId;
             if (isUpdate)
@@ -294,7 +294,7 @@ namespace Dnn.ExportImport.Components.Services
                 userAuthentication.UserAuthenticationId = 0;
                 var createdById = Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
                  userAuthentication.CreatedByUserName);
-                userAuthentication.CreatedOnDate = DateTime.UtcNow;
+                userAuthentication.CreatedOnDate = DateUtils.GetDatabaseTime();
                 userAuthentication.CreatedByUserId = createdById;
                 repUserAuthentication.Insert(userAuthentication);
                 //Result.AddLogEntry("Added user authentication", username);

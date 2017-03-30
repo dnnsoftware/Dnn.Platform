@@ -128,7 +128,7 @@ namespace Dnn.ExportImport.Components.Services
             profileProperty.PropertyDefinitionId = 0;
             profileProperty.PortalId = importJob.PortalId;
             profileProperty.CreatedOnDate =
-                profileProperty.LastModifiedOnDate = DateTime.UtcNow;
+                profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseTime();
             profileProperty.CreatedByUserId = createdById;
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
@@ -144,7 +144,7 @@ namespace Dnn.ExportImport.Components.Services
             profileProperty.PortalId = existingProfileProperty.PortalId;
             profileProperty.CreatedOnDate = existingProfileProperty.CreatedOnDate;
             profileProperty.CreatedByUserId = createdById;
-            profileProperty.LastModifiedOnDate = DateTime.UtcNow;
+            profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseTime();
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
             repProfileProperty.Update(profileProperty);

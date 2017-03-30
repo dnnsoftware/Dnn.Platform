@@ -157,7 +157,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalSettings =
-                    CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, DateTime.UtcNow.AddYears(1), null));
+                    CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, DateUtils.GetDatabaseTime().AddYears(1), null));
                 foreach (var exportPortalSetting in portalSettings)
                 {
                     if (CheckCancelled(importJob)) return;
@@ -189,7 +189,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     exportPortalSetting.PortalId = portalId;
                     exportPortalSetting.LastModifiedByUserId = modifiedBy;
-                    exportPortalSetting.LastModifiedOnDate = DateTime.UtcNow;
+                    exportPortalSetting.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                     if (isUpdate)
                     {
                         exportPortalSetting.PortalSettingId = existingPortalSetting.PortalSettingId;
@@ -200,7 +200,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalSetting.PortalSettingId = 0;
                         exportPortalSetting.CreatedByUserId = createdBy;
-                        exportPortalSetting.CreatedOnDate = DateTime.UtcNow;
+                        exportPortalSetting.CreatedOnDate = DateUtils.GetDatabaseTime();
                         repPortalSetting.Insert(exportPortalSetting);
                         Result.AddLogEntry("Added portal settings", exportPortalSetting.SettingName);
                     }
@@ -218,7 +218,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalLanguages =
-                    CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, DateTime.UtcNow.AddYears(1), null));
+                    CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance().GetPortalLanguages(portalId, DateUtils.GetDatabaseTime().AddYears(1), null));
                 var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
                 foreach (var exportPortalLanguage in portalLanguages)
                 {
@@ -250,7 +250,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     exportPortalLanguage.PortalId = portalId;
                     exportPortalLanguage.LastModifiedByUserId = modifiedBy;
-                    exportPortalLanguage.LastModifiedOnDate = DateTime.UtcNow;
+                    exportPortalLanguage.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                     if (isUpdate)
                     {
                         exportPortalLanguage.PortalLanguageId = existingPortalLanguage.PortalLanguageId;
@@ -261,7 +261,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalLanguage.PortalLanguageId = 0;
                         exportPortalLanguage.CreatedByUserId = createdBy;
-                        exportPortalLanguage.CreatedOnDate = DateTime.UtcNow;
+                        exportPortalLanguage.CreatedOnDate = DateUtils.GetDatabaseTime();
                         repPortalLanguage.Insert(exportPortalLanguage);
                         Result.AddLogEntry("Added portal language", exportPortalLanguage.CultureCode);
 
@@ -281,7 +281,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var portalId = importJob.PortalId;
                 var localPortalLocalizations =
-                    CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(portalId,DateTime.UtcNow.AddYears(1), null));
+                    CBO.FillCollection<ExportPortalLocalization>(DataProvider.Instance().GetPortalLocalizations(portalId,DateUtils.GetDatabaseTime().AddYears(1), null));
                 foreach (var exportPortalLocalization in portalLocalizations)
                 {
                     if (CancellationToken.IsCancellationRequested) return;
@@ -310,7 +310,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     exportPortalLocalization.PortalId = portalId;
                     exportPortalLocalization.LastModifiedByUserId = modifiedBy;
-                    exportPortalLocalization.LastModifiedOnDate = DateTime.UtcNow;
+                    exportPortalLocalization.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                     if (isUpdate)
                     {
                         exportPortalLocalization.PortalLocalizationId = existingPortalLocalization.PortalLocalizationId;
@@ -321,7 +321,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         exportPortalLocalization.PortalLocalizationId = 0;
                         exportPortalLocalization.CreatedByUserId = createdBy;
-                        exportPortalLocalization.CreatedOnDate = DateTime.UtcNow;
+                        exportPortalLocalization.CreatedOnDate = DateUtils.GetDatabaseTime();
                         repPortalLocalization.Insert(exportPortalLocalization);
                         Result.AddLogEntry("Added portal localization", exportPortalLocalization.CultureCode);
                     }

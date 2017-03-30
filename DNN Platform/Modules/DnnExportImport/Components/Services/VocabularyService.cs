@@ -186,7 +186,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changed = false;
             var dataService = Util.GetDataService();
-            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(DateTime.UtcNow.AddYears(1), null));
+            var localVocabularies = CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(DateUtils.GetDatabaseTime().AddYears(1), null));
             foreach (var other in otherVocabularies)
             {
                 if (CheckCancelled(importJob)) return;
@@ -241,7 +241,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(DateTime.UtcNow.AddYears(1), null));
+            var localTaxonomyTerms = CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(DateUtils.GetDatabaseTime().AddYears(1), null));
             foreach (var other in otherTaxonomyTerms)
             {
                 if (CheckCancelled(importJob)) return;

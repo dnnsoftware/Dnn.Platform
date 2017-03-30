@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.ExportImport.Components.Dto.Jobs;
+using DotNetNuke.Common.Utilities;
 
 namespace Dnn.ExportImport.Components.Models
 {
@@ -58,7 +59,7 @@ namespace Dnn.ExportImport.Components.Models
                 Name = name,
                 Value = value,
                 IsSummary = isSummary,
-                CreatedOnDate = DateTime.UtcNow,
+                CreatedOnDate = DateUtils.GetDatabaseTime(),
             };
 
             CompleteLog.Add(item);

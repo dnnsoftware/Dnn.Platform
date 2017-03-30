@@ -32,7 +32,7 @@ using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Repository;
 using Dnn.ExportImport.Components.Services;
 using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
@@ -71,7 +71,7 @@ namespace Dnn.ExportImport.Components.Engines
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
             if (exportDto == null)
             {
-                exportJob.CompletedOnDate = DateTime.UtcNow;
+                exportJob.CompletedOnDate = DateUtils.GetDatabaseTime();
                 exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Components.Engines
                 scheduleHistoryItem.AddLogNote("Export NOT Possible");
                 scheduleHistoryItem.AddLogNote("<br/>No items selected for exporting");
                 result.AddSummary("Export NOT Possible", "No items selected for exporting");
-                exportJob.CompletedOnDate = DateTime.UtcNow;
+                exportJob.CompletedOnDate = DateUtils.GetDatabaseTime();
                 exportJob.JobStatus = JobStatus.Failed;
                 return result;
             }
@@ -246,7 +246,7 @@ namespace Dnn.ExportImport.Components.Engines
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
-                importJob.CompletedOnDate = DateTime.UtcNow;
+                importJob.CompletedOnDate = DateUtils.GetDatabaseTime();
                 importJob.JobStatus = JobStatus.Failed;
                 return result;
             }
@@ -263,7 +263,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (!finfo.Exists)
             {
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
-                importJob.CompletedOnDate = DateTime.UtcNow;
+                importJob.CompletedOnDate = DateUtils.GetDatabaseTime();
                 importJob.JobStatus = JobStatus.Failed;
                 return result;
             }
@@ -277,7 +277,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var importVersion = new Version(importDto.SchemaVersion);
                 if (importVersion < exportVersion)
                 {
-                    importJob.CompletedOnDate = DateTime.UtcNow;
+                    importJob.CompletedOnDate = DateUtils.GetDatabaseTime();
                     importJob.JobStatus = JobStatus.Failed;
                     scheduleHistoryItem.AddLogNote("Import NOT Possible");
                     var msg =

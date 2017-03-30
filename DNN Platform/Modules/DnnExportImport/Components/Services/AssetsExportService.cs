@@ -197,7 +197,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     //Stage 2 starts
                     var localFolders =
-                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateTime.UtcNow.AddYears(1), null)).ToList();
+                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateUtils.GetDatabaseTime().AddYears(1), null)).ToList();
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
@@ -232,7 +232,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //File local files in the system related to the folder path.
                                 var localPermissions =
                                     CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, DateTime.UtcNow.AddYears(1), null));
+                                        .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath, DateUtils.GetDatabaseTime().AddYears(1), null));
 
                                 foreach (var folderPermission in sourceFolderPermissions)
                                 {
@@ -255,7 +255,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //File local files in the system related to the folder
                                 var localFiles =
                                     CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                        .GetFiles(portalId, sourceFolder.FolderId, DateTime.UtcNow.AddYears(1), null));
+                                        .GetFiles(portalId, sourceFolder.FolderId, DateUtils.GetDatabaseTime().AddYears(1), null));
 
                                 foreach (var file in sourceFiles)
                                 {
@@ -341,7 +341,7 @@ namespace Dnn.ExportImport.Components.Services
             if (isUpdate)
             {
                 existingFolder.LastModifiedByUserId = modifiedBy;
-                existingFolder.LastModifiedOnDate = DateTime.UtcNow;
+                existingFolder.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 existingFolder.LastUpdated = folder.LastUpdated;
                 existingFolder.IsProtected = folder.IsProtected;
                 existingFolder.IsCached = folder.IsCached;
@@ -372,9 +372,9 @@ namespace Dnn.ExportImport.Components.Services
                             CultureInfo.InvariantCulture))?.LocalId;
                 }
                 folder.CreatedByUserId = createdBy;
-                folder.CreatedOnDate = DateTime.UtcNow;
+                folder.CreatedOnDate = DateUtils.GetDatabaseTime();
                 folder.LastModifiedByUserId = modifiedBy;
-                folder.LastModifiedOnDate = DateTime.UtcNow;
+                folder.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 //ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
                 {
@@ -454,7 +454,7 @@ namespace Dnn.ExportImport.Components.Services
             if (isUpdate)
             {
                 existingFolderPermission.LastModifiedByUserId = modifiedBy;
-                existingFolderPermission.LastModifiedOnDate = DateTime.UtcNow;
+                existingFolderPermission.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 existingFolderPermission.FolderId = folderPermission.FolderId;
                 existingFolderPermission.AllowAccess = folderPermission.AllowAccess;
                 repExportFolderPermission.Update(existingFolderPermission);
@@ -471,7 +471,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     folderPermission.FolderPermissionId = 0;
                     folderPermission.LastModifiedByUserId = modifiedBy;
-                    folderPermission.LastModifiedOnDate = DateTime.UtcNow;
+                    folderPermission.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                     folderPermission.PermissionId = Convert.ToInt32(permissionId, CultureInfo.InvariantCulture);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0)
                     {
@@ -487,7 +487,7 @@ namespace Dnn.ExportImport.Components.Services
                         folderPermission.CreatedByUserName);
 
                     folderPermission.CreatedByUserId = createdBy;
-                    folderPermission.CreatedOnDate = DateTime.UtcNow;
+                    folderPermission.CreatedOnDate = DateUtils.GetDatabaseTime();
                     repExportFolderPermission.Insert(folderPermission);
                 }
             }
@@ -521,7 +521,7 @@ namespace Dnn.ExportImport.Components.Services
             file.PortalId = portalId;
             if (isUpdate)
             {
-                existingFile.LastModifiedOnDate = DateTime.UtcNow;
+                existingFile.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 existingFile.LastModifiedByUserId = modifiedBy;
                 file.FileId = existingFile.FileId;
                 ExportFile.MapFile(existingFile, file);
@@ -542,9 +542,9 @@ namespace Dnn.ExportImport.Components.Services
                 file.FileId = 0;
                 var createdBy = Util.GetUserIdOrName(importJob, file.CreatedByUserId, file.CreatedByUserName);
                 file.CreatedByUserId = createdBy;
-                file.CreatedOnDate = DateTime.UtcNow;
+                file.CreatedOnDate = DateUtils.GetDatabaseTime();
                 file.LastModifiedByUserId = modifiedBy;
-                file.LastModifiedOnDate = DateTime.UtcNow;
+                file.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 repExportFile.Insert(file);
                 if (file.Content != null)
                     DotNetNuke.Data.DataProvider.Instance().UpdateFileContent(file.FileId, file.Content);

@@ -259,7 +259,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 PortalId = job.PortalId,
                 User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
-                Status = (int)job.JobStatus,
+                Status = (int) job.JobStatus,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
                 Name = job.Name,
                 Description = job.Description,

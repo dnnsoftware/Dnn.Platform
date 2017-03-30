@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var changedGroups = new List<RoleGroupItem>();
             var portalId = importJob.PortalId;
-            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, DateTime.UtcNow.AddYears(1), null));
+            var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, DateUtils.GetDatabaseTime().AddYears(1), null));
             foreach (var other in otherRoleGroups)
             {
                 if (CheckCancelled(importJob)) return;

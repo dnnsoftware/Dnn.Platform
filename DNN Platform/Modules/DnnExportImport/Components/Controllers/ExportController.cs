@@ -28,6 +28,7 @@ using Dnn.ExportImport.Components.Providers;
 using Newtonsoft.Json;
 using System.IO;
 using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 
 namespace Dnn.ExportImport.Components.Controllers
@@ -36,12 +37,11 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
-            exportDto.FromDate = (exportDto.FromDate ?? Constants.MinDbTime).ToUniversalTime();
-            exportDto.ToDate = DateTime.UtcNow;
-            var directory = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss");
+            exportDto.ToDate = DateUtils.GetDatabaseTime();
+            var directory = DateUtils.GetDatabaseTime().ToString("yyyy-MM-dd-HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export) ?? Constants.MinDbTime;
+                exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

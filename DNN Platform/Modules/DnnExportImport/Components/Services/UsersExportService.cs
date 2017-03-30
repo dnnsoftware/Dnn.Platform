@@ -326,7 +326,7 @@ namespace Dnn.ExportImport.Components.Services
                 user.UserId = 0;
                 user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
                 user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
-                user.CreatedOnDate = user.LastModifiedOnDate = DateTime.UtcNow;
+                user.CreatedOnDate = user.LastModifiedOnDate = DateUtils.GetDatabaseTime();
                 repUser.Insert(user);
                 Result.AddLogEntry("Added user", user.Username);
             }
@@ -366,7 +366,7 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 userPortal.UserPortalId = 0;
-                userPortal.CreatedDate = DateTime.UtcNow;
+                userPortal.CreatedDate = DateUtils.GetDatabaseTime();
                 repUserPortal.Insert(userPortal);
                 //Result.AddLogEntry("Added user portal", $"{username}/{userPortal.PortalId}");
             }
@@ -386,7 +386,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 aspNetUser.UserId = Guid.Empty;
                 aspNetUser.ApplicationId = applicationId;
-                aspNetUser.LastActivityDate = DateTime.UtcNow;
+                aspNetUser.LastActivityDate = DateUtils.GetDatabaseTime();
                 var repAspnetUsers = db.GetRepository<ExportAspnetUser>();
                 repAspnetUsers.Insert(aspNetUser);
                 //aspNetUser.LocalId = aspNetUser.UserId;
@@ -395,7 +395,7 @@ namespace Dnn.ExportImport.Components.Services
                 var repAspnetMembership = db.GetRepository<ExportAspnetMembership>();
                 aspnetMembership.UserId = aspNetUser.UserId;
                 aspnetMembership.ApplicationId = applicationId;
-                aspnetMembership.CreateDate = DateTime.UtcNow;
+                aspnetMembership.CreateDate = DateUtils.GetDatabaseTime();
                 aspnetMembership.LastLoginDate =
                     aspnetMembership.LastPasswordChangedDate =
                         aspnetMembership.LastLockoutDate =
