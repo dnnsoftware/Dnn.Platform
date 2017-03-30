@@ -274,7 +274,7 @@
     <value>Submitted</value>
   </data>
   <data name="JobStatus1.Text" xml:space="preserve">
-    <value>InProgress</value>
+    <value>In Progress</value>
   </data>
   <data name="JobStatus2.Text" xml:space="preserve">
     <value>Completed</value>
