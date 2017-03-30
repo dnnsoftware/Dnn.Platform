@@ -412,7 +412,7 @@ AS
 	FROM
 		{databaseOwner}{objectQualifier}ExportImportJobs J
 	WHERE
-		PortalID = @PortalID
+		(PortalID = @PortalID OR @PortalID=-1)
 	AND
 		(@JobType IS NULL OR JobType = @JobType)
 	AND
@@ -443,7 +443,7 @@ BEGIN
 		FROM
 			{databaseOwner}{objectQualifier}ExportImportJobs
 		WHERE
-			PortalID = @PortalID
+			(PortalID = @PortalID OR @PortalID=-1)
 		AND
 			(@JobType IS NULL OR JobType = @JobType)
 		AND

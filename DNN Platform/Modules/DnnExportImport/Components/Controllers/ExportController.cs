@@ -68,7 +68,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 },
                 {Constants.Manifest_ExportPath, exportFileInfo.ExportPath},
                 {
-                    Constants.Manifest_ExportSize,
+                    Constants.Manifest_ExportSize,//This should be translated to user friendly text. e.g. 200 MB. 1 GB etc.
                     Convert.ToString(exportFileInfo.ExportSizeKb, CultureInfo.InvariantCulture)
                 }
             };

@@ -104,7 +104,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <summary>
         /// Retrieves one page of paginated proceessed jobs
         /// </summary>
-        public AllJobsResult GetAllJobs(int portalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
+        public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
             if (pageIndex < 0) pageIndex = 0;
             if (pageSize < 1) pageSize = 1;
@@ -115,7 +115,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 ? null
                 : EntitiesController.Instance.GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords);
 
-            var portal = PortalController.Instance.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(currentPortalId);
             return new AllJobsResult
             {
                 PortalId = portalId,

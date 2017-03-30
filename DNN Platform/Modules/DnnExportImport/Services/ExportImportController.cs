@@ -150,7 +150,7 @@ namespace Dnn.ExportImport.Services
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
             var controller = new BaseController();
-            var jobs = controller.GetAllJobs(portal, pageSize, pageIndex, jobType, keywords);
+            var jobs = controller.GetAllJobs(portal, PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 
