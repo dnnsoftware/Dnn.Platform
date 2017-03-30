@@ -123,34 +123,34 @@ namespace Dnn.ExportImport.Services
         }
 
         [HttpGet]
-        public HttpResponseMessage LastJobTime(int portalId, JobType jobType)
+        public HttpResponseMessage LastJobTime(int portal, JobType jobType)
         {
-            if (!UserInfo.IsSuperUser && portalId != PortalSettings.PortalId)
+            if (!UserInfo.IsSuperUser && portal != PortalSettings.PortalId)
             {
                 var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
 
-            if (portalId < 0)
+            if (portal < 0)
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
 
             var controller = new BaseController();
-            var lastTime = controller.GetLastJobTime(portalId, jobType);
+            var lastTime = controller.GetLastJobTime(portal, jobType);
             return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
         }
 
         [HttpGet]
-        public HttpResponseMessage AllJobs(int portalId, int? pageSize = 10, int? pageIndex = 0, int? jobType = null,
+        public HttpResponseMessage AllJobs(int portal, int? pageSize = 10, int? pageIndex = 0, int? jobType = null,
             string keywords = null)
         {
-            if (!UserInfo.IsSuperUser && portalId != PortalSettings.PortalId)
+            if (!UserInfo.IsSuperUser && portal != PortalSettings.PortalId)
             {
                 var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
             var controller = new BaseController();
-            var jobs = controller.GetAllJobs(portalId, pageSize, pageIndex, jobType, keywords);
+            var jobs = controller.GetAllJobs(portal, pageSize, pageIndex, jobType, keywords);
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 
