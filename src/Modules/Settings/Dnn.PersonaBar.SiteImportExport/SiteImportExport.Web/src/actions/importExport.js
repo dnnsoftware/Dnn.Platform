@@ -193,6 +193,40 @@ const jobsActions = {
                 }, errorCallback);
             }, 2000);
         };
+    },
+
+    cancelJob(jobId, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.cancelJob(jobId, data => {
+                dispatch({
+                    type: ActionTypes.CANCELLED_JOB
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (errorCallback) {
+                    errorCallback(data);
+                }
+            });
+        };
+    },
+
+    deleteJob(jobId, callback, errorCallback) {
+        return (dispatch) => {
+            ApplicationService.deleteJob(jobId, data => {
+                dispatch({
+                    type: ActionTypes.REMOVED_JOB
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (errorCallback) {
+                    errorCallback(data);
+                }
+            });
+        };
     }
 };
 

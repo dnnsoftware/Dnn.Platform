@@ -37,11 +37,17 @@ class ExportModal extends Component {
                 PortalId: -1,
                 ExportName: "",
                 ExportDescription: "",
-                ItemsToExport: ["Assets", "Users", "Roles", "Vocabularies", "Profile_Properties", "Permissions", "PageTemplates"],
+                IncludeUsers: true,
+                IncludeVocabularies: true,
+                IncludeTemplates: true,
+                IncludeProperfileProperties: true,
+                IncludeRoles: true,
+                IncludePermissions: true,
                 IncludeDeletions: false,
                 IncludeContent: true,
                 IncludeFiles: true,
-                ExportMode: "Differential"
+                ExportMode: "Differential",
+                ItemsToExport: []
             },
             errors: {
                 ExportName: false,
@@ -140,26 +146,7 @@ class ExportModal extends Component {
     onChange(key, event) {
         const value = typeof event === "object" ? event.target.value : event;
         let { exportRequest } = this.state;
-
-        if (key === "Assets" ||
-            key === "Users" ||
-            key === "Roles" ||
-            key === "Vocabularies" ||
-            key === "Profile_Properties" ||
-            key === "Permissions" ||
-            key === "PageTemplates") {
-            if (value) {
-                if (!(exportRequest.ItemsToExport.includes(key))) {
-                    exportRequest.ItemsToExport.push(key);
-                }
-            }
-            else {
-                exportRequest.ItemsToExport.splice(exportRequest.ItemsToExport.indexOf(key), 1);
-            }
-        }
-        else {
-            exportRequest[key] = value;
-        }
+        exportRequest[key] = value;
         this.setState({
             exportRequest
         });
@@ -254,8 +241,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Assets")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Assets")}
-                                    onChange={this.onChange.bind(this, "Assets")}
+                                    value={state.exportRequest.IncludeFiles}
+                                    onChange={this.onChange.bind(this, "IncludeFiles")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -264,8 +251,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Users")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Users")}
-                                    onChange={this.onChange.bind(this, "Users")}
+                                    value={state.exportRequest.IncludeUsers}
+                                    onChange={this.onChange.bind(this, "IncludeUsers")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -274,8 +261,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Roles")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Roles")}
-                                    onChange={this.onChange.bind(this, "Roles")}
+                                    value={state.exportRequest.IncludeRoles}
+                                    onChange={this.onChange.bind(this, "IncludeRoles")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -284,8 +271,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Vocabularies")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Vocabularies")}
-                                    onChange={this.onChange.bind(this, "Vocabularies")}
+                                    value={state.exportRequest.IncludeVocabularies}
+                                    onChange={this.onChange.bind(this, "IncludeVocabularies")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -294,8 +281,8 @@ class ExportModal extends Component {
                                     label={Localization.get("PageTemplates")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("PageTemplates")}
-                                    onChange={this.onChange.bind(this, "PageTemplates")}
+                                    value={state.exportRequest.IncludeTemplates}
+                                    onChange={this.onChange.bind(this, "IncludeTemplates")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -304,8 +291,8 @@ class ExportModal extends Component {
                                     label={Localization.get("ProfileProperties")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Profile_Properties")}
-                                    onChange={this.onChange.bind(this, "Profile_Properties")}
+                                    value={state.exportRequest.IncludeProperfileProperties}
+                                    onChange={this.onChange.bind(this, "IncludeProperfileProperties")}
                                 />
                             </InputGroup>
                             <InputGroup>
@@ -314,8 +301,8 @@ class ExportModal extends Component {
                                     label={Localization.get("Permissions")}
                                 />
                                 <Switch
-                                    value={state.exportRequest.ItemsToExport.includes("Permissions")}
-                                    onChange={this.onChange.bind(this, "Permissions")}
+                                    value={state.exportRequest.IncludePermissions}
+                                    onChange={this.onChange.bind(this, "IncludePermissions")}
                                 />
                             </InputGroup>
                             <InputGroup>

@@ -8,7 +8,7 @@ import GridCell from "dnn-grid-cell";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
-import util from "../../../utils";
+import utilities from "utils";
 import Localization from "localization";
 
 class JobDetails extends Component {
@@ -37,6 +37,14 @@ class JobDetails extends Component {
         else {
             return "-";
         }
+    }
+
+    cancel(jobId) {
+        this.props.cancelJob(jobId);
+    }
+
+    delete(jobId) {
+        this.props.deleteJob(jobId);
     }
 
     renderExportSummary() {
@@ -116,7 +124,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("Name")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Name || "-" }</div>
+                                <div className="import-summary-item">{props.jobDetail.Name || "-"}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -152,7 +160,7 @@ class JobDetails extends Component {
                                     label={Localization.get("ExportMode")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
-                            </GridCell>                            
+                            </GridCell>
                             <GridCell>
                                 <div className="summary-note">
                                     <div className="note-title">{Localization.get("SummaryNoteTitle")}</div>
@@ -160,6 +168,16 @@ class JobDetails extends Component {
                                 </div>
                             </GridCell>
                         </div>
+                        <GridCell className="action-buttons">
+                            {props.jobDetail.Status < 2 &&
+                                <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
+                                    {props.jobDetail.JobType.includes("Export") ? Localization.get("CancelExport") : Localization.get("CancelImport")}
+                                </Button>
+                            }
+                            {props.jobDetail.Status > 1 &&
+                                <Button type="secondary" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
+                            }
+                        </GridCell>
                     </GridCell>
                 </div>
             }
@@ -187,7 +205,9 @@ JobDetails.propTypes = {
     jobDetail: PropTypes.object,
     jobId: PropTypes.number,
     Collapse: PropTypes.func,
-    id: PropTypes.string
+    id: PropTypes.string,
+    cancelJob: PropTypes.func,
+    deleteJob: PropTypes.func
 };
 
 function mapStateToProps(state) {

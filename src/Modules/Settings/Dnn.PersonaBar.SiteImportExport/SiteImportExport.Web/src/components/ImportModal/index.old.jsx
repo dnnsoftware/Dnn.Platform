@@ -125,23 +125,24 @@ class ImportModal extends Component {
     renderPackagesList() {
         const { props } = this;
         if (props.importPackages && props.importPackages.length > 0) {
-            return <div className="package-card-wrapper">
-                {props.importPackages.map((pkg, index) => {
-                    return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
-                        <div id={"package-card-" + index}>
-                            <div className="package-name">{pkg.Name}</div>
-                            <div className="package-file">{pkg.FileName}</div>
-                            <div className="package-mode">{pkg.ExportMode}</div>
-                            <div className="package-site">{pkg.PortalName}</div>
-                            <div className="package-size">999</div>
-                        </div>
-                        <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
-                        {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
-                            <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
-                        }
-                    </div>;
-                })}
-            </div>;
+            return <Scrollbars
+                className="package-card-scroller"
+                autoHeight
+                autoHeightMin={0}
+                autoHeightMax={210}>
+                <ul style={{ width: 200, height: props.importPackages.length > 3 ? 210 : "auto" }}>
+                    {props.importPackages.map((pkg, index) => {
+                        return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
+                            <div id={"package-card-" + index}>
+                                {this.renderTemplateThumbnail()}
+                                <div className="package-name">{pkg.Name}</div>
+                                <div className="package-file">{pkg.FileName}</div>
+                            </div>
+                            <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
+                        </div>;
+                    })}
+                </ul>
+            </Scrollbars>;
         }
         else return <div className="noPackages">{Localization.get("NoPackages")}</div>;
     }
@@ -155,9 +156,7 @@ class ImportModal extends Component {
                     <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
                         dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : HourglassIcon }}>
                     </div>
-                    <div className="analyzing-message">
-                        {props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}
-                    </div>
+                    <div className="analyzing-message">{props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}</div>
                 </div>
             </div>}
         </div>;
@@ -320,7 +319,7 @@ class ImportModal extends Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { props, state } = this; 
         return (
             <div className={styles.importModal}>
                 <div className="pageTitle">{Localization.get("SelectImportPackage.Header")}</div>

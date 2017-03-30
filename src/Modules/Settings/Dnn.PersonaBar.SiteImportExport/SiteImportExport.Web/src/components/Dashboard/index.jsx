@@ -195,6 +195,39 @@ class DashboardPanelBody extends Component {
         });
     }
 
+    cancelJob(jobId) {
+        const { props } = this;
+        util.utilities.confirm(Localization.get("CancelJobMessage"),
+            Localization.get("ConfirmCancel"),
+            Localization.get("No"),
+            () => {
+                props.dispatch(ImportExportActions.cancelJob(jobId, (data) => {
+                    util.utilities.notify(Localization.get("JobCancelled"));
+                    this.toggle(jobId);
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                }, () => {
+                    util.utilities.notifyError(Localization.get("JobCancel.ErrorMessage"));
+                }));
+            }
+        );
+    }
+
+    deleteJob(jobId) {
+        const { props } = this;
+        util.utilities.confirm(Localization.get("DeleteJobMessage"),
+            Localization.get("ConfirmDelete"),
+            Localization.get("No"),
+            () => {
+                props.dispatch(ImportExportActions.deleteJob(jobId, (data) => {
+                    util.utilities.notify(Localization.get("JobDeleted"));
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                }, () => {
+                    util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));
+                }));
+            }
+        );
+    }
+
     renderTopPane() {
         const { state, props } = this;
         return <div className="top-panel">
@@ -264,7 +297,7 @@ class DashboardPanelBody extends Component {
     renderedJobList() {
         const { props, state } = this;
         let i = 0;
-        if (props.jobs && props.jobs.length > 0) {
+        if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
                 let id = "row-" + i++;
                 return (
@@ -286,7 +319,9 @@ class DashboardPanelBody extends Component {
                             jobId={job.JobId}
                             Collapse={this.collapse.bind(this)}
                             id={id}
-                            openId={this.state.openId} />
+                            openId={this.state.openId}
+                            cancelJob={this.cancelJob.bind(this)}
+                            deleteJob={this.deleteJob.bind(this)} />
                     </JobRow>
                 );
             });

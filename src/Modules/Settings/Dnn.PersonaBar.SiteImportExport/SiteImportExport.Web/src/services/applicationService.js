@@ -57,6 +57,16 @@ class ApplicationService {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
         sf.get("VerifyImportPackage?packageId=" + packageId, {}, callback, errorCallback);
     }
+
+    cancelJob(jobId, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.post("CancelProcess?jobId=" + jobId, {}, callback, errorCallback);
+    }
+
+    deleteJob(jobId, callback, errorCallback) {
+        const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
+        sf.post("RemoveJob?jobId=" + jobId, {}, callback, errorCallback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

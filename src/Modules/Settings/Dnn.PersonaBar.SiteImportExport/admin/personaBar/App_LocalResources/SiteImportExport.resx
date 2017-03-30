@@ -399,7 +399,40 @@
   <data name="ConfirmCancel.Text" xml:space="preserve">
     <value>Yes, Cancel</value>
   </data>
+  <data name="ConfirmDelete.Text" xml:space="preserve">
+    <value>Yes, Remove</value>
+  </data>
   <data name="KeepImport.Text" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="CancelExport.Text" xml:space="preserve">
+    <value>Cancel Export</value>
+  </data>
+  <data name="CancelImport.Text" xml:space="preserve">
+    <value>Cancel Import</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="JobCancelled.Text" xml:space="preserve">
+    <value>Your job cancel request has been placed in the queue, and will begin shortly.</value>
+  </data>
+  <data name="JobDeleted.Text" xml:space="preserve">
+    <value>Job has been removed.</value>
+  </data>
+  <data name="JobCancel.ErrorMessage" xml:space="preserve">
+    <value>Failed to cancel this job, please try again.</value>
+  </data>
+  <data name="JobDelete.ErrorMessage" xml:space="preserve">
+    <value>Failed to remove this job, please try again.</value>
+  </data>
+  <data name="CancelJobMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to cancel this job?</value>
+  </data>
+  <data name="DeleteJobMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to remove this job?</value>
   </data>
 </root>
