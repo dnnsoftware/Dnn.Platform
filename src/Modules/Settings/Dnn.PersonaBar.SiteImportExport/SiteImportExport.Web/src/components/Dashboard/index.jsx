@@ -36,18 +36,19 @@ class DashboardPanelBody extends Component {
 
     componentWillMount() {
         const { props, state } = this;
-        props.dispatch(ImportExportActions.getPortals());
+        if (props.portals.length === 0) {
+            props.dispatch(ImportExportActions.getPortals());
+        }
     }
 
     componentWillReceiveProps(props) {
         const { state } = this;
-
         if (state.portals !== props.portals) {
             this.setState({
                 portals: props.portals
             }, () => {
                 if (props.portals.length === 1) {
-                    props.dispatch(ImportExportActions.siteSelected(props.portals[0].PortalID, () => {
+                    props.dispatch(ImportExportActions.siteSelected(props.portals[0].PortalID, props.portals[0].PortalName, () => {
                         this.getLastJobTime(props.portals[0].PortalID);
                         props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portals[0].PortalID)));
                     }));
@@ -58,27 +59,25 @@ class DashboardPanelBody extends Component {
                 }
             });
         }
-        else {
-            if (state.portalId !== props.portalId) {
-                this.setState({
-                    portalId: props.portalId
-                }, () => {
-                    this.getLastJobTime(props.portalId);
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
-                });
-            }
+        else if (state.portalId !== props.portalId) {
+            this.setState({
+                portalId: props.portalId
+            }, () => {
+                this.getLastJobTime(props.portalId);
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            });
         }
     }
 
     getLastJobTime(portalId) {
         const { props } = this;
-        if (props.portalId > -1) {
-            props.dispatch(ImportExportActions.getLastJobTime({ "portalId": portalId, "jobType": "Export" }, (date) => {
+        if (portalId > -1) {
+            props.dispatch(ImportExportActions.getLastJobTime({ "portal": portalId, "jobType": "Export" }, (date) => {
                 this.setState({
                     lastExportTime: date.lastTime
                 });
             }));
-            props.dispatch(ImportExportActions.getLastJobTime({ "portalId": portalId, "jobType": "Import" }, (date) => {
+            props.dispatch(ImportExportActions.getLastJobTime({ "portal": portalId, "jobType": "Import" }, (date) => {
                 this.setState({
                     lastImportTime: date.lastTime
                 });
@@ -114,7 +113,7 @@ class DashboardPanelBody extends Component {
     getNextPage(portalId) {
         const { state, props } = this;
         return {
-            portalId: portalId,
+            portal: portalId,
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
             jobType: state.filter === -1 ? null : state.filter,
@@ -146,7 +145,8 @@ class DashboardPanelBody extends Component {
                 portalId: option.value,
                 pageIndex: 0
             }, () => {
-                props.dispatch(ImportExportActions.siteSelected(option.value));
+                props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
+                this.getLastJobTime(option.value);
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
             });
         }

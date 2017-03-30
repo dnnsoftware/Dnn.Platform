@@ -47,28 +47,28 @@ class App extends Component {
     }
 
     componentWillMount() {
-        const { props, state } = this;
+        const { props } = this;
 
         document.addEventListener("siteImportExport", (e) => {
-            props.dispatch(ImportExportActions.siteSelected(e.portalIdFromSites, () => {
-                this.selectPanel(e.jobType === "Export" ? 1 : 2);
+            props.dispatch(ImportExportActions.siteSelected(e.importExportJob.portalId, e.importExportJob.portalName, () => {
+                this.selectPanel(e.importExportJob.jobType === "Export" ? 1 : 2);
             }));
             this.updateReferrerInfo(e);
         }, false);
 
-        if (util.settings.portalIdFromSites > -1) {
-            props.dispatch(ImportExportActions.siteSelected(util.settings.portalIdFromSites, () => {
-                this.selectPanel(util.settings.jobType === "Export" ? 1 : 2);
+        if (util.settings.importExportJob) {
+            props.dispatch(ImportExportActions.siteSelected(util.settings.importExportJob.portalId, util.settings.importExportJob.portalName, () => {
+                this.selectPanel(util.settings.importExportJob.jobType === "Export" ? 1 : 2);
             }));
             this.updateReferrerInfo(util.settings);
         }
-        if (props.portalId > -1 || state.portalId === -1) {
+        /*if (props.portalId > -1 || state.portalId === -1) {
             this.setState({
                 portalId: props.portalId
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(props.portalId));
             });
-        }
+        }*/
     }
 
     selectPanel(panel, event) {
@@ -100,7 +100,8 @@ class App extends Component {
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
-                        {props.selectedPage === 1 && <ExportModal onCancel={this.selectPanel.bind(this, 0)} />}
+                        {props.selectedPage === 1 && 
+                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} portalId={props.portalId} portalName={props.portalName} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
@@ -110,7 +111,8 @@ class App extends Component {
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
-                        {props.selectedPage === 2 && <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
+                        {props.selectedPage === 2 && 
+                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} portalId={props.portalId} portalName={props.portalName} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
             </div>
@@ -122,14 +124,16 @@ App.PropTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    portalName: PropTypes.string
 };
 
 function mapStateToProps(state) {
     return {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
-        portalId: state.importExport.portalId
+        portalId: state.importExport.portalId,
+        portalName: state.importExport.portalName
     };
 }
 

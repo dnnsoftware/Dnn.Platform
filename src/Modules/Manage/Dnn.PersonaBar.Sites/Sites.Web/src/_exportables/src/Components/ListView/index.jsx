@@ -21,7 +21,7 @@ class ListView extends Component {
         super();
     }
     onDelete(portal, index) {
-        const {props} = this;
+        const { props } = this;
         utilities.confirm(Localization.get("deletePortal").replace("{0}", portal.PortalName),
             Localization.get("ConfirmPortalDelete"),
             Localization.get("CancelPortalDelete"),
@@ -39,7 +39,7 @@ class ListView extends Component {
 
         let settings = {
             portalId: portal.PortalID,
-            referrer: this.props.sitesModule,  
+            referrer: this.props.sitesModule,
             referrerText: Localization.get("BackToSites"),
             backToReferrerFunc: this.backToSites.bind(this),
             isHost: true
@@ -59,7 +59,7 @@ class ListView extends Component {
         }
     }
     navigateMap(page) {
-        const {props} = this;
+        const { props } = this;
         props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
 
@@ -69,12 +69,14 @@ class ListView extends Component {
         event.initEvent("siteImportExport", true, true);
 
         let settings = {
-            portalIdFromSites: portal.PortalID,
-            portalNameFromSites: portal.PortalName,
-            referrer: this.props.sitesModule,  
+            importExportJob: {
+                portalId: portal.PortalID,
+                portalName: portal.PortalName,
+                jobType: type
+            },
+            referrer: this.props.sitesModule,
             referrerText: Localization.get("BackToSites"),
-            backToReferrerFunc: this.backToSites.bind(this),
-            jobType: type
+            backToReferrerFunc: this.backToSites.bind(this)            
         };
 
         event = Object.assign(event, settings);
@@ -85,7 +87,7 @@ class ListView extends Component {
 
         document.dispatchEvent(event);
     }
-    
+
     getPortalButtons(portal, index) {
         let portalButtons = [
             {
@@ -145,7 +147,7 @@ class ListView extends Component {
         ].concat((this.props.getPortalMapping && this.props.getPortalMapping(portal)) || []);
     }
     getDetailList() {
-        const {props} = this;
+        const { props } = this;
         return props.portals.map((portal, index) => {
             return <PortalListItem
                 key={"portal-" + portal.PortalID}
@@ -163,7 +165,7 @@ class ListView extends Component {
         this.navigateMap(0);
     }
     render() {
-        const portalList = this.getDetailList(), {props} = this;
+        const portalList = this.getDetailList(), { props } = this;
 
         return (
             <GridCell className={styles.siteList}>

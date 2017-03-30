@@ -2,11 +2,12 @@ import { importExport as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const jobsActions = {
-    siteSelected(portalId, callback) {
+    siteSelected(portalId, portalName, callback) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SELECTED_SITE,
-                portalId: portalId === undefined ? -1 : portalId
+                portalId: portalId === undefined ? -1 : portalId,
+                portalName: portalName
             });
             if (callback) {
                 callback();
@@ -39,19 +40,6 @@ const jobsActions = {
                 });
                 if (callback) {
                     callback();
-                }
-            }, errorCallback);
-        };
-    },
-
-    getPortalLocales(portalId, callback, errorCallback) {
-        return (dispatch) => {
-            ApplicationService.getPortalLocales(portalId, (data) => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_PORTAL_LOCALES
-                });
-                if (callback) {
-                    callback(data);
                 }
             }, errorCallback);
         };

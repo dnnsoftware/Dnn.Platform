@@ -19,7 +19,8 @@ export default function importExport(state = {
         case ActionTypes.SELECTED_SITE:
             return {
                 ...state,
-                portalId: action.portalId
+                portalId: action.portalId,
+                portalName: action.portalName
             };
         case ActionTypes.GO_TO_WIZARD_STEP:
             return {

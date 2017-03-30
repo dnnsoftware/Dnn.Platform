@@ -4,7 +4,7 @@ import {
     importExport as ImportExportActions,
     visiblePanel as VisiblePanelActions
 } from "../../actions";
-import { TemplateIcon, CycleIcon, HourglassIcon, CheckMarkIcon } from "dnn-svg-icons";
+import { TemplateIcon, HourglassIcon, CheckMarkIcon } from "dnn-svg-icons";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import PackageCardOverlay from "./PackageCardOverlay";
@@ -21,7 +21,7 @@ class ImportModal extends Component {
         this.state = {
             wizardStep: 0,
             importRequest: {
-                PortalId: util.settings.portalId,
+                PortalId: -1,
                 PackageId: -1,
                 CollisionResolution: 1
             }
@@ -30,20 +30,21 @@ class ImportModal extends Component {
 
     componentWillMount() {
         const { props } = this;
-        if (!props.portals) {
-            props.dispatch(ImportExportActions.getPortals(() => {
-                props.dispatch(ImportExportActions.getImportPackages());
-            }));
-        }
-        else {
-            props.dispatch(ImportExportActions.getImportPackages());
-        }        
+        props.dispatch(ImportExportActions.getImportPackages());
     }
 
     componentWillReceiveProps(props) {
+        const { state } = this;
         this.setState({
             wizardStep: props.wizardStep
         });
+        const { importRequest } = state;
+        if (importRequest.PortalId === -1 || importRequest.PortalId !== props.portalId) {
+            importRequest.PortalId = props.portalId;
+            this.setState({
+                importRequest
+            });
+        }
     }
 
     goToStep(wizardStep) {
@@ -318,7 +319,7 @@ class ImportModal extends Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { props, state } = this; 
         return (
             <div className={styles.importModal}>
                 <div className="pageTitle">{Localization.get("SelectImportPackage.Header")}</div>
@@ -352,13 +353,13 @@ class ImportModal extends Component {
 
 ImportModal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    portalId: PropTypes.number,
+    portalId: PropTypes.number.isRequired,
+    portalName: PropTypes.string.isRequired,
     onCancel: PropTypes.func,
     wizardStep: PropTypes.number,
     importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
-    importSummary: PropTypes.object,
-    portals: PropTypes.array
+    importSummary: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -366,8 +367,7 @@ function mapStateToProps(state) {
         wizardStep: state.importExport.importWizardStep,
         importPackages: state.importExport.importPackages,
         selectedPackage: state.importExport.selectedPackage,
-        importSummary: state.importExport.importSummary,
-        portals: state.importExport.portals
+        importSummary: state.importExport.importSummary
     };
 }
 
