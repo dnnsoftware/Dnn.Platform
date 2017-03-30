@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Dto.Pages
         public int? RoleID { get; set; }
         public string RoleName { get; set; }
         public int? UserID { get; set; }
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedOnDate { get; set; }
         public int? LastModifiedByUserID { get; set; }
