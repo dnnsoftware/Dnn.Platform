@@ -21,11 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Common;
@@ -34,12 +30,11 @@ using Dnn.ExportImport.Components.Dto.Pages;
 using Dnn.ExportImport.Components.Engines;
 using DotNetNuke.Entities.Tabs;
 using Dnn.ExportImport.Components.Providers;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Services
@@ -57,9 +52,13 @@ namespace Dnn.ExportImport.Components.Services
 
         public virtual bool IncludeSystem { get; set; } = false;
 
+
         private ProgressTotals _totals;
         private DataProvider _dataProvider;
         private ITabController _tabController;
+        private ExportImportJob _importJob;
+        private ImportDto _importDto;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
@@ -70,8 +69,10 @@ namespace Dnn.ExportImport.Components.Services
             var pages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked).Select(p => p.TabId).ToArray();
             if (pages.Length > 0)
             {
+                _tabController = TabController.Instance;
                 ProcessExportPages(exportJob, exportDto, pages.ToArray());
             }
+
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
@@ -83,7 +84,12 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(importJob)) return;
 
-            ProcessImportPages(importJob, importDto);
+            _importJob = importJob;
+            _importDto = importDto;
+            _tabController = TabController.Instance;
+
+            ProcessImportPages();
+
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
@@ -97,16 +103,15 @@ namespace Dnn.ExportImport.Components.Services
 
         #region import methods
 
-        private void ProcessImportPages(ExportImportJob importJob, ImportDto importDto)
+        private void ProcessImportPages()
         {
             _dataProvider = DataProvider.Instance();
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
 
-            var portalId = importJob.PortalId;
+            var portalId = _importJob.PortalId;
 
-            _tabController = TabController.Instance;
             var localTabs = _tabController.GetTabsByPortal(portalId).Values;
 
             var exportedTabs = Repository.GetAllItems<ExportTab>().ToList(); // ordered by TabID
@@ -117,11 +122,11 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var otherTab in exportedTabs)
             {
-                if (CheckCancelled(importJob)) break;
+                if (CheckCancelled(_importJob)) break;
                 if (_totals.LastProcessedId > otherTab.Id) continue; // this is the exported DB row ID; not the TabID
 
-                ProcessImportPage(importJob, importDto, otherTab, exportedTabs, localTabs.ToList());
-                
+                ProcessImportPage(otherTab, exportedTabs, localTabs.ToList());
+
                 CheckPoint.ProcessedItems++;
                 CheckPoint.Progress += progressStep;
                 if (CheckPointStageCallback(this)) break;
@@ -129,39 +134,29 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.LastProcessedId = otherTab.Id;
                 CheckPoint.StageData = JsonConvert.SerializeObject(_totals);
             }
-
-            Result.AddSummary($"Imported {Category.Replace("_", " ")}", _totals.TotalTabs.ToString());
-            Result.AddLogEntry("Imported Tab Settings", _totals.TotalSettings.ToString());
-            Result.AddLogEntry("Imported Tab Permissions", _totals.TotalPermissions.ToString());
-            Result.AddLogEntry("Imported Tab Urls", _totals.TotalUrls.ToString());
-            Result.AddLogEntry("Imported Tab Alias Skins", _totals.TotalAliasSkins.ToString());
-            Result.AddLogEntry("Imported Modules", _totals.TotalModules.ToString());
-            Result.AddLogEntry("Imported Module Settings", _totals.TotalModuleSettings.ToString());
-            Result.AddLogEntry("Imported Module Permissions", _totals.TotalModulePermissions.ToString());
-            Result.AddLogEntry("Imported Tab Modules", _totals.TotalTabModules.ToString());
-            Result.AddLogEntry("Imported Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
+            ReportImportTotals();
         }
 
-        protected virtual void ProcessImportPage(ExportImportJob importJob, ImportDto importDto, ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
+        protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
         {
-            var portalId = importJob.PortalId;
-            var createdBy = Util.GetUserIdOrName(importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
-            var modifiedBy = Util.GetUserIdOrName(importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
+            var portalId = _importJob.PortalId;
+            var createdBy = Util.GetUserIdOrName(_importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
+            var modifiedBy = Util.GetUserIdOrName(_importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
 
             if (localTab != null)
             {
-                switch (importDto.CollisionResolution)
+                switch (_importDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
-                        Result.AddLogEntry("Ignored Tab", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                        Result.AddLogEntry("Ignored Tab", otherTab.TabName + " (" + otherTab.TabPath + ")");
                         break;
                     case CollisionResolution.Overwrite:
                         SetTabData(localTab, otherTab);
                         var parentId = GetParentLocalTabId(otherTab.TabId, exportedTabs, localTabs);
                         if (localTab.ParentId == -1 && otherTab.ParentId > 0)
                         {
-                            Result.AddLogEntry("WARN: Imported existing TAB parent NOT found", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                            Result.AddLogEntry("WARN: Imported existing TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")");
                         }
                         else
                         {
@@ -170,12 +165,12 @@ namespace Dnn.ExportImport.Components.Services
 
                         _tabController.UpdateTab(localTab);
                         UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
-                        AddTabRelatedItems(portalId, localTab, otherTab);
-                        Result.AddLogEntry("Updated Tab", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                        AddTabRelatedItems(localTab, otherTab);
+                        Result.AddLogEntry("Updated Tab", otherTab.TabName + " (" + otherTab.TabPath + ")");
                         _totals.TotalTabs++;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
                 }
             }
             else
@@ -185,20 +180,155 @@ namespace Dnn.ExportImport.Components.Services
                 localTab.ParentId = GetParentLocalTabId(otherTab.TabId, exportedTabs, localTabs);
                 if (localTab.ParentId == -1 && otherTab.ParentId > 0)
                 {
-                    Result.AddLogEntry("WARN: Imported new TAB parent NOT found", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                    Result.AddLogEntry("WARN: Imported new TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")");
                 }
 
                 otherTab.LocalId = _tabController.AddTab(localTab);
                 UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
-                AddTabRelatedItems(portalId, localTab, otherTab);
-                Result.AddLogEntry("Added Tab", otherTab.TabName + "(" + otherTab.TabPath + ")");
+                AddTabRelatedItems(localTab, otherTab);
+                Result.AddLogEntry("Added Tab", otherTab.TabName + " (" + otherTab.TabPath + ")");
                 _totals.TotalTabs++;
             }
         }
 
-        private void AddTabRelatedItems(int portalId, TabInfo localTab, ExportTab otherTab)
+        private void AddTabRelatedItems(TabInfo localTab, ExportTab otherTab)
         {
+            _totals.TotalSettings += ImportTabSettings(localTab, otherTab);
+            _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab);
+            _totals.TotalUrls += ImportTabUrls(localTab, otherTab);
+
             //TODO: add related items
+            throw new NotImplementedException();
+        }
+
+        private int ImportTabSettings(TabInfo localTab, ExportTab otherTab)
+        {
+            var tabSettings = Repository.GetRelatedItems<ExportTabSetting>(otherTab.ReferenceId ?? -1).ToList();
+            foreach (var other in tabSettings)
+            {
+                switch (_importDto.CollisionResolution)
+                {
+                    case CollisionResolution.Overwrite:
+                        if (localTab.TabSettings[other.SettingName].ToString() != other.SettingValue)
+                        {
+                            // the next will clear the cache
+                            _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
+
+                            var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                            var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                            _dataProvider.UpdateSettingRecordChangers("TabSettings", "TabID",
+                                localTab.TabID, other.SettingName, createdBy, modifiedBy);
+                            Result.AddLogEntry("Updated tab setting", other.SettingName);
+                        }
+                        else
+                        {
+                            goto case CollisionResolution.Ignore;
+                        }
+                        break;
+                    case CollisionResolution.Ignore:
+                        Result.AddLogEntry("Ignored tab setting", other.SettingName);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                }
+            }
+
+            return tabSettings.Count;
+        }
+
+        private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab)
+        {
+            var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.ReferenceId ?? -1).ToList();
+            var localTabPermissions = TabPermissionController.GetTabPermissions(localTab.TabID, _importDto.PortalId);
+            foreach (var other in tabPermissions)
+            {
+                var local = localTabPermissions.OfType<TabPermissionInfo>().FirstOrDefault(
+                    x => x.PermissionCode == other.PermissionCode &&
+                         x.PermissionKey == other.PermissionKey
+                         && x.PermissionName == other.PermissionName &&
+                         (x.RoleName == other.RoleName || string.IsNullOrEmpty(x.RoleName) && string.IsNullOrEmpty(other.RoleName))
+                         &&
+                         (x.Username == other.Username || string.IsNullOrEmpty(x.Username) && string.IsNullOrEmpty(other.Username)));
+
+                var isUpdate = false;
+                if (local != null)
+                {
+                    switch (_importDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Overwrite:
+                            isUpdate = true;
+                            break;
+                        case CollisionResolution.Ignore:
+                            Result.AddLogEntry("Ignored tab permission", other.PermissionKey);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                    }
+                }
+
+                //TODO:
+                /*
+                if (isUpdate)
+                {
+                    //TODO: Is there any real need to update existing permission record? Won't do anything
+                    //TabPermissionController.UpdatePermission(localTab.TabID, local);
+                    Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                }
+                else
+                {
+                    var local = new TabPermissionInfo
+                    {
+                        TabID = localTab.TabID,
+                        Username = other.Username,
+                        RoleID = other.RoleID,
+                    }
+                    //TODO
+                    Result.AddLogEntry("Added tab permission", other.PermissionKey);
+                }
+
+                var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
+                    local.TabPermissionID, createdBy, modifiedBy);
+                */
+            }
+
+            return tabPermissions.Count;
+        }
+
+        private int ImportTabUrls(TabInfo localTab, ExportTab otherTab)
+        {
+            var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.ReferenceId ?? -1).ToList();
+            foreach (var other in tabUrls)
+            {
+                switch (_importDto.CollisionResolution)
+                {
+                    case CollisionResolution.Overwrite:
+                        //if (localTab.TabSettings[other.SettingName].ToString() != other.SettingValue)
+                        //{
+                        //    // the next will clear the cache
+                        //    _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
+                        //
+                        //    var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                        //    var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        //    _dataProvider.UpdateSettingRecordChangers("TabSettings", "TabID",
+                        //        localTab.TabID, other.SettingName, createdBy, modifiedBy);
+                        //    Result.AddLogEntry("Updated tab URL", other.UrlKey);
+                        //}
+                        //else
+                        //{
+                        //    goto case CollisionResolution.Ignore;
+                        //}
+                        break;
+                    case CollisionResolution.Ignore:
+                        Result.AddLogEntry("Ignored tab URL", other.Url);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                }
+            }
+
+            return tabUrls.Count;
         }
 
         private static int GetParentLocalTabId(int otherTabId, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
@@ -324,7 +454,6 @@ namespace Dnn.ExportImport.Components.Services
             var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
             var isAllIncluded = selectedPages.Any(id => id == -1);
 
-            var tabController = TabController.Instance;
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                 exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
 
@@ -341,7 +470,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (_totals.LastProcessedId > pg.TabID) continue;
 
-                var tab = tabController.GetTab(pg.TabID, portalId);
+                var tab = _tabController.GetTab(pg.TabID, portalId);
                 if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
                 {
                     var exportPage = SaveExportPage(tab);
@@ -377,16 +506,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (CheckPointStageCallback(this)) break;
             }
 
-            Result.AddSummary($"Exported {Category.Replace("_", " ")}", _totals.TotalTabs.ToString());
-            Result.AddLogEntry("Exported Tab Settings", _totals.TotalSettings.ToString());
-            Result.AddLogEntry("Exported Tab Permissions", _totals.TotalPermissions.ToString());
-            Result.AddLogEntry("Exported Tab Urls", _totals.TotalUrls.ToString());
-            Result.AddLogEntry("Exported Tab Alias Skins", _totals.TotalAliasSkins.ToString());
-            Result.AddLogEntry("Exported Modules", _totals.TotalModules.ToString());
-            Result.AddLogEntry("Exported Module Settings", _totals.TotalModuleSettings.ToString());
-            Result.AddLogEntry("Exported Module Permissions", _totals.TotalModulePermissions.ToString());
-            Result.AddLogEntry("Exported Tab Modules", _totals.TotalTabModules.ToString());
-            Result.AddLogEntry("Exported Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
+            ReportExportTotals();
         }
 
         private int SaveTabSettings(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
@@ -577,6 +697,30 @@ namespace Dnn.ExportImport.Components.Services
             } while (tab != null);
 
             return false;
+        }
+
+        private void ReportExportTotals()
+        {
+            ReportTotals("Exported");
+        }
+
+        private void ReportImportTotals()
+        {
+            ReportTotals("Imported");
+        }
+
+        private void ReportTotals(string prefix)
+        {
+            Result.AddSummary(prefix + " Tabs", _totals.TotalTabs.ToString());
+            Result.AddLogEntry(prefix + " Tab Settings", _totals.TotalSettings.ToString());
+            Result.AddLogEntry(prefix + " Tab Permissions", _totals.TotalPermissions.ToString());
+            Result.AddLogEntry(prefix + " Tab Urls", _totals.TotalUrls.ToString());
+            Result.AddLogEntry(prefix + " Tab Alias Skins", _totals.TotalAliasSkins.ToString());
+            Result.AddLogEntry(prefix + " Modules", _totals.TotalModules.ToString());
+            Result.AddLogEntry(prefix + " Module Settings", _totals.TotalModuleSettings.ToString());
+            Result.AddLogEntry(prefix + " Module Permissions", _totals.TotalModulePermissions.ToString());
+            Result.AddLogEntry(prefix + " Tab Modules", _totals.TotalTabModules.ToString());
+            Result.AddLogEntry(prefix + " Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
         }
 
         #region private classes

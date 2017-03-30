@@ -36,7 +36,6 @@ namespace Dnn.ExportImport.Components.Dto.Pages
         public bool? InheritViewPermissions { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        //public int? PortalID { get; set; }
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedOnDate { get; set; }
         public int? LastModifiedByUserID { get; set; }

@@ -1169,9 +1169,9 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
     @PortalID        int,
 	@IncludeDeleted  bit,
-    @IncludeSystem  bit,
-	@ToDate  datetime,
-	@FromDate datetime=NULL
+    @IncludeSystem   bit,
+	@ToDate          datetime,
+	@FromDate        datetime=NULL
 AS
 BEGIN
 	DECLARE @Now datetime = GETDATE()
@@ -1210,7 +1210,7 @@ BEGIN
 	SELECT
 		ts.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
-		{databaseOwner}{objectQualifier}TabSettings as ts
+		{databaseOwner}{objectQualifier}TabSettings AS ts
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON ts.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON ts.LastModifiedByUserID = u2.UserID
 	WHERE
@@ -1235,10 +1235,11 @@ BEGIN
 	DECLARE @Now datetime = GETDATE()
 
 	SELECT
-		tp.*, p.PermissionCode, p.PermissionKey, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+		tp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
-		{databaseOwner}{objectQualifier}TabPermission AS tp
+		{databaseOwner}{objectQualifier}vw_TabPermissions         AS tp
 			INNER JOIN {databaseOwner}{objectQualifier}Permission AS p  ON tp.PermissionID = p.PermissionID
+			LEFT JOIN {databaseOwner}{objectQualifier}Roles       AS r  ON tp.RoleID = r.RoleID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tp.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tp.LastModifiedByUserID = u2.UserID
 	WHERE
