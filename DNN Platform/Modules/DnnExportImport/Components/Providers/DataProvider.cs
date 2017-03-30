@@ -292,9 +292,9 @@ namespace Dnn.ExportImport.Components.Providers
                                          && x.PermissionName == permissionName)?.PermissionID;
         }
 
-        public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, includeDeleted, toDate, fromDate);
+            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
         }
 
         public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)

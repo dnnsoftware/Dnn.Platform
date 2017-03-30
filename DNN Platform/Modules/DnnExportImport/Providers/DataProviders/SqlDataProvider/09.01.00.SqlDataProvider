@@ -1169,6 +1169,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
     @PortalID        int,
 	@IncludeDeleted  bit,
+    @IncludeSystem  bit,
 	@ToDate  datetime,
 	@FromDate datetime=NULL
 AS
@@ -1179,11 +1180,11 @@ BEGIN
 		t.TabID, IsNull(t.ParentId, -1) AS ParentId
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
-			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
+			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
 	WHERE
 		PortalID = @PortalID
 	AND
-		IsSystem = 0
+		(IsSystem = 0 OR @IncludeSystem = 1)
 	AND (
 			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR

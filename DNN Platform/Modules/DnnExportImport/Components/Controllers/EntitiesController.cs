@@ -106,10 +106,10 @@ namespace Dnn.ExportImport.Components.Controllers
             DataProvider.Instance().UpsertJobChekpoint(checkpoint);
         }
 
-        public IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        public IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportTabInfo>(
-                DataProvider.Instance().GetAllPortalTabs(portalId, includeDeleted, toDate, fromDate));
+                DataProvider.Instance().GetAllPortalTabs(portalId, includeDeleted, includeSystem, toDate, fromDate));
         }
 
         public IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate)

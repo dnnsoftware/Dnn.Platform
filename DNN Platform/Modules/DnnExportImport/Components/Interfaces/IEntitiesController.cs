@@ -43,7 +43,7 @@ namespace Dnn.ExportImport.Components.Interfaces
         IList<ExportImportChekpoint> GetJobChekpoints(int jobId);
         void UpdateJobChekpoint(ExportImportChekpoint checkpoint);
 
-        IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
+        IList<ExportTabInfo> GetPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate);
         IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabUrl> GetTabUrls(int tabId, DateTime toDate, DateTime? fromDate);
