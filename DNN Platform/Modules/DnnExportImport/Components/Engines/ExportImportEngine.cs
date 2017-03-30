@@ -469,10 +469,17 @@ namespace Dnn.ExportImport.Components.Engines
         {
             // add all child items
             var includedItems = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-            foreach (var name in exportDto.ItemsToExport.Where(x => !NotAllowedCategoriesinRequestArray.Contains(x.ToUpperInvariant())))
+            if (exportDto.ItemsToExport != null)
             {
-                includedItems.Add(name);
+                foreach (
+                    var name in
+                        exportDto.ItemsToExport.Where(
+                            x => !NotAllowedCategoriesinRequestArray.Contains(x.ToUpperInvariant())))
+                {
+                    includedItems.Add(name);
+                }
             }
+
             includedItems.Remove(Constants.Category_Content);
 
             if (exportDto.Pages.Length > 0)
@@ -508,12 +515,15 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
 
-            foreach (var impl in from includedItem in includedItems
-                                 from impl in implementors
-                                 where includedItem.Equals(impl.ParentCategory, IgnoreCaseComp)
-                                 select impl)
+            foreach (var includedItem in includedItems.ToList())
             {
-                includedItems.Add(impl.Category);
+                BasePortableService basePortableService;
+                if (
+                    (basePortableService =
+                        implementors.FirstOrDefault(x => x.ParentCategory.Equals(includedItem, IgnoreCaseComp))) != null)
+                {
+                    includedItems.Add(basePortableService.Category);
+                }
             }
 
             return includedItems;
