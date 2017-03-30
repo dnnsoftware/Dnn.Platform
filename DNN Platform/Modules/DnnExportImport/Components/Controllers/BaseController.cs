@@ -129,7 +129,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
-            if (job == null || job.PortalId != portalId)
+            if (portalId != -1 && job?.PortalId != portalId)
                 return null;
 
             var jobItem = ToJobItem(job);

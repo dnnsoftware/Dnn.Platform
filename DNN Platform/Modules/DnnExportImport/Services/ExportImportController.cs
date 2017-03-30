@@ -158,7 +158,7 @@ namespace Dnn.ExportImport.Services
         public HttpResponseMessage JobDetails(int jobId)
         {
             var controller = new BaseController();
-            var job = controller.GetJobDetails(PortalSettings.PortalId, jobId);
+            var job = controller.GetJobDetails(UserInfo.IsSuperUser ? -1 : PortalSettings.PortalId, jobId);
             return job != null
                 ? Request.CreateResponse(HttpStatusCode.OK, job)
                 : Request.CreateResponse(HttpStatusCode.BadRequest,
