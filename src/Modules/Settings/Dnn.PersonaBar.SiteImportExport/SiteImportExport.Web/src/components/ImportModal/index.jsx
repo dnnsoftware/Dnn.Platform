@@ -30,7 +30,14 @@ class ImportModal extends Component {
 
     componentWillMount() {
         const { props } = this;
-        props.dispatch(ImportExportActions.getImportPackages());
+        if (!props.portals) {
+            props.dispatch(ImportExportActions.getPortals(() => {
+                props.dispatch(ImportExportActions.getImportPackages());
+            }));
+        }
+        else {
+            props.dispatch(ImportExportActions.getImportPackages());
+        }        
     }
 
     componentWillReceiveProps(props) {
@@ -350,7 +357,8 @@ ImportModal.propTypes = {
     wizardStep: PropTypes.number,
     importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
-    importSummary: PropTypes.object
+    importSummary: PropTypes.object,
+    portals: PropTypes.array
 };
 
 function mapStateToProps(state) {
@@ -358,7 +366,8 @@ function mapStateToProps(state) {
         wizardStep: state.importExport.importWizardStep,
         importPackages: state.importExport.importPackages,
         selectedPackage: state.importExport.selectedPackage,
-        importSummary: state.importExport.importSummary
+        importSummary: state.importExport.importSummary,
+        portals: state.importExport.portals
     };
 }
 

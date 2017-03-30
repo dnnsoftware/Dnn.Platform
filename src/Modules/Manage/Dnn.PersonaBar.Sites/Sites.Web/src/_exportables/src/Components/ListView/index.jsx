@@ -10,7 +10,9 @@ import {
     TrashIcon,
     PreviewIcon,
     SettingsIcon,
-    TemplateIcon
+    TemplateIcon,
+    DownloadIcon,
+    UploadIcon
 } from "dnn-svg-icons";
 import styles from "./style.less";
 
@@ -60,10 +62,30 @@ class ListView extends Component {
         const {props} = this;
         props.dispatch(CommonVisiblePanelActions.selectPanel(page));
     }
-    onExport(portalBeingExported) {
-        const {props} = this;
-        props.dispatch(CommonExportPortalActions.setPortalBeingExported(portalBeingExported, this.navigateMap.bind(this, 2)));
+
+    onImportExport(portal, type) {
+        let event = document.createEvent("Event");
+
+        event.initEvent("siteImportExport", true, true);
+
+        let settings = {
+            portalIdFromSites: portal.PortalID,
+            portalNameFromSites: portal.PortalName,
+            referrer: this.props.sitesModule,  
+            referrerText: Localization.get("BackToSites"),
+            backToReferrerFunc: this.backToSites.bind(this),
+            jobType: type
+        };
+
+        event = Object.assign(event, settings);
+
+        utilities.loadPanel(this.props.siteImportExportModule, {
+            settings
+        });
+
+        document.dispatchEvent(event);
     }
+    
     getPortalButtons(portal, index) {
         let portalButtons = [
             {
@@ -77,9 +99,14 @@ class ListView extends Component {
                 title: Localization.get("SiteSettings")
             },
             {
-                icon: TemplateIcon,
-                onClick: this.onExport.bind(this, portal, index),
-                title: Localization.get("ExportTemplate")
+                icon: UploadIcon,
+                onClick: this.onImportExport.bind(this, portal, "Export", index),
+                title: Localization.get("SiteExport")
+            },
+            {
+                icon: DownloadIcon,
+                onClick: this.onImportExport.bind(this, portal, "Import", index),
+                title: Localization.get("SiteImport")
             }
         ];
         if (portal.allowDelete) {
@@ -159,12 +186,14 @@ ListView.propTypes = {
     onSettingClick: PropTypes.func,
     onDeletePortal: PropTypes.func,
     onPreviewPortal: PropTypes.func,
-    sitesModule: PropTypes.string
+    sitesModule: PropTypes.string,
+    siteImportExportModule: PropTypes.string
 };
 
 ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
-    sitesModule: "Dnn.Sites"
+    sitesModule: "Dnn.Sites",
+    siteImportExportModule: "Dnn.SiteImportExport"
 };
 
 function mapStateToProps(state) {

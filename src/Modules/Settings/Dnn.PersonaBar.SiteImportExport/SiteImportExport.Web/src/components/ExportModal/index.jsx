@@ -62,27 +62,29 @@ class ExportModal extends Component {
     componentWillMount() {
         const { props, state } = this;
         const { exportRequest } = state;
-        exportRequest.PortalId = props.portalId;
-        this.setState({
-            exportRequest
-        }, () => {
-            if (!props.portals || props.portals.length === 0) {
-                props.dispatch(ImportExportActions.getPortals());
-            }
+        if (props.portalId > -1 || exportRequest.PortalId === -1) {
+            exportRequest.PortalId = props.portalId;
+            this.setState({
+                exportRequest
+            }, () => {
+                if (!props.portals || props.portals.length === 0) {
+                    props.dispatch(ImportExportActions.getPortals());
+                }
 
-            props.dispatch(ImportExportActions.getPortalLocales(props.portalId, (data) => {
-                const { localData } = this.state;
-                localData.locales = data.Results;
-                localData.defaultLanguage = data.DefaultLanguage;
-                localData.contentLocalizationEnabled = data.ContentLocalizationEnabled;
-                localData.selectedLocales = data.Results.map(locale => { return locale.Code; });
-                this.setState({
-                    localData
-                });
-            })); 
-            
-            props.dispatch(ImportExportActions.getLastJobTime({"portalId": props.portalId, "jobType": "Export"}));
-        });
+                props.dispatch(ImportExportActions.getPortalLocales(props.portalId, (data) => {
+                    const { localData } = this.state;
+                    localData.locales = data.Results;
+                    localData.defaultLanguage = data.DefaultLanguage;
+                    localData.contentLocalizationEnabled = data.ContentLocalizationEnabled;
+                    localData.selectedLocales = data.Results.map(locale => { return locale.Code; });
+                    this.setState({
+                        localData
+                    });
+                }));
+
+                props.dispatch(ImportExportActions.getLastJobTime({ "portalId": props.portalId, "jobType": "Export" }));
+            });
+        }
     }
 
     goToStep(wizardStep) {
