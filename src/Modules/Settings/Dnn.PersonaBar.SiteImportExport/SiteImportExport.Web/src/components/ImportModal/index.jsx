@@ -30,7 +30,7 @@ class ImportModal extends Component {
                 CollisionResolution: 1
             },
             pageIndex: 0,
-            pageSize: 10,
+            pageSize: 5,
             filter: null,
             keyword: ""
         };
@@ -86,7 +86,7 @@ class ImportModal extends Component {
             props.onCancel();
         }
         else {
-            util.utilities.confirm(Localization.get("CancelImport"),
+            util.utilities.confirm(Localization.get("CancelImportMessage"),
                 Localization.get("ConfirmCancel"),
                 Localization.get("KeepImport"),
                 () => {
@@ -115,7 +115,7 @@ class ImportModal extends Component {
             util.utilities.notify(Localization.get("ImportRequestSubmitted"));
             this.goToStep(0);
             props.dispatch(ImportExportActions.getAllJobs({
-                portalId: state.importRequest.PortalId,
+                portal: state.importRequest.PortalId,
                 pageIndex: 0,
                 pageSize: 10
             }));

@@ -71,7 +71,9 @@ class PackagesList extends Component {
                                 </div>
                             </GridCell>
                         </div>
-                        <PackageCardOverlay selectPackage={this.onSelect.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
+                        {(!props.selectedPackage || props.selectedPackage.PackageId !== pkg.PackageId) &&
+                            <PackageCardOverlay selectPackage={this.onSelect.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
+                        }
                         {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
                             <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
                         }
@@ -85,15 +87,15 @@ class PackagesList extends Component {
 
 PackagesList.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    importPackages: PropTypes.array,    
+    importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
     selectPackage: PropTypes.func
 };
 
 function mapStateToProps(state) {
-    return {        
+    return {
         importPackages: state.importExport.importPackages,
-        selectedPackage: state.importExport.selectedPackage        
+        selectedPackage: state.importExport.selectedPackage
     };
 }
 

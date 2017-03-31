@@ -183,6 +183,7 @@ class ExportModal extends Component {
                                 label={Localization.get("Name") + "*"}
                                 inputStyle={{ margin: "0" }}
                                 withLabel={false}
+                                maxLength={100}
                                 error={state.errors.ExportName}
                                 errorMessage={Localization.get("ExportName.ErrorMessage")}
                                 value={state.exportRequest.ExportName}
@@ -195,6 +196,7 @@ class ExportModal extends Component {
                         <GridCell>
                             <MultiLineInputWithError
                                 inputStyle={{ "minHeight": 110 }}
+                                maxLength={250}
                                 style={{ "width": "100%" }}
                                 label={Localization.get("Description") + "*"}
                                 value={state.exportRequest.ExportDescription}

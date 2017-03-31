@@ -217,7 +217,7 @@ class DashboardPanelBody extends Component {
     }
 
     renderTopPane() {
-        const { state, props } = this;
+        const { props } = this;
         return <div className="top-panel">
             <GridCell columnSize={100} >
                 <div className="site-selection">
@@ -252,6 +252,7 @@ class DashboardPanelBody extends Component {
                         {Localization.get("ExportButton")}
                     </Button>
                     <Button
+                        disabled={props.portalId < 0}
                         className="action-button"
                         type="secondary"
                         onClick={this.onImportData.bind(this)}>
