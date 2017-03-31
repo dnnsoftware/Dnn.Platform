@@ -51,12 +51,31 @@ namespace Dnn.ExportImport.Components.Controllers
             return jobId;
         }
 
-        public IEnumerable<ImportPackageInfo> GetImportPackages()
+        /// <summary>
+        /// Get list of packages to import
+        /// </summary>
+        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description</param>
+        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name</param>
+        /// <param name="pageIndex">Page index to get</param>
+        /// <param name="pageSize">Page size. Should not be more than 100.</param>
+        /// <returns></returns>
+        public IEnumerable<ImportPackageInfo> GetImportPackages(string keyword, string order = "newest",
+            int pageIndex = 0, int pageSize = 10)
         {
+            pageSize = pageSize > 100 ? 100 : pageSize;
             var directories = Directory.GetDirectories(ExportFolder);
-            return (from directory in directories.Where(IsValidImportFolder)
-                let dirInfo = new DirectoryInfo(directory)
-                select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo)).ToList();
+            var importPackages = (from directory in directories.Where(IsValidImportFolder)
+                                  let dirInfo = new DirectoryInfo(directory)
+                                  select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo));
+            importPackages = !string.IsNullOrEmpty(keyword)
+                ? importPackages.Where(GetImportPackageFilterFunc(keyword))
+                : importPackages;
+            string sortOrder;
+            var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
+            importPackages = sortOrder == "asc"
+                ? importPackages.OrderBy(orderByFunc)
+                : importPackages.OrderByDescending(orderByFunc);
+            return importPackages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
@@ -107,6 +126,32 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) &&
                    File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
+        }
+
+        private Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
+        {
+            Func<ImportPackageInfo, bool> keywordFunc =
+                packageInfo =>
+                    packageInfo.Name.ToLowerInvariant().Contains(keyword.ToLowerInvariant()) ||
+                    packageInfo.Description.ToLowerInvariant().Contains(keyword.ToLowerInvariant());
+            return keywordFunc;
+        }
+
+        private Func<ImportPackageInfo, object> GetImportPackageOrderByFunc(string orderBy, out string order)
+        {
+            orderBy = orderBy.ToLowerInvariant();
+            order = orderBy == "newest" ? "desc" : "asc";
+            Func<ImportPackageInfo, object> sortFunc;
+            switch (orderBy)
+            {
+                case "name":
+                    sortFunc = packageInfo => packageInfo.Name;
+                    break;
+                default:
+                    sortFunc = packageInfo => packageInfo.ExporTime;
+                    break;
+            }
+            return sortFunc;
         }
     }
 }

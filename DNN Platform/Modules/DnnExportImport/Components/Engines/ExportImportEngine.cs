@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -218,23 +219,24 @@ namespace Dnn.ExportImport.Components.Engines
                 var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
                 var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
                 result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
+                var exportSize = zipDbFinfo.Length;
                 var exportFileInfo = new ExportFileInfo
                 {
-                    ExportPath = exportJob.Directory,
-                    ExportSizeKb = zipDbFinfo.Length / 1000.0
+                    ExportPath = exportJob.Directory
                 };
                 if (File.Exists(zipAssetsName))
                 {
                     var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
-                    exportFileInfo.ExportSizeKb += zipAssetsFInfo.Length / 1000.0;
+                    exportSize += zipAssetsFInfo.Length;
                     result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
                 }
                 if (File.Exists(zipTemplatesName))
                 {
                     var zipTemplatesFInfo = new FileInfo(zipTemplatesName); // refresh to get new size
-                    exportFileInfo.ExportSizeKb += zipTemplatesFInfo.Length / 1000.0;
+                    exportSize += zipTemplatesFInfo.Length;
                     result.AddSummary("Exported Templates File Size", Util.FormatSize(zipTemplatesFInfo.Length));
                 }
+                exportFileInfo.ExportSize = Util.FormatSize(exportSize);
                 exportController.CreatePackageManifest(exportJob, exportFileInfo);
             }
 

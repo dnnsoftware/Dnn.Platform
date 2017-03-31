@@ -48,6 +48,11 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime ExporTime { get; set; }
 
         /// <summary>
+        /// Formatted export file size
+        /// </summary>
+        public string ExportSize { get; set; }
+
+        /// <summary>
         /// The portal from which the exported package was created
         /// </summary>
         public string PortalName { get; set; }

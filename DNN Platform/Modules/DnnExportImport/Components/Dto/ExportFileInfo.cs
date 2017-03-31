@@ -34,8 +34,8 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public string ExportPath { get; set; }
         /// <summary>
-        /// Total size of exported files in KB.
+        /// Formatted size of export file
         /// </summary>
-        public double ExportSizeKb { get; set; }
+        public string ExportSize { get; set; }
     }
 }

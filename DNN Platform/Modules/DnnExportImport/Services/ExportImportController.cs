@@ -85,11 +85,20 @@ namespace Dnn.ExportImport.Services
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
+        /// <summary>
+        /// Get list of packages to import
+        /// </summary>
+        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description</param>
+        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name</param>
+        /// <param name="pageIndex">Page index to get</param>
+        /// <param name="pageSize">Page size. Should not be more than 100.</param>
+        /// <returns></returns>
         [HttpGet]
-        public HttpResponseMessage GetImportPackages()
+        public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0,
+            int pageSize = 10)
         {
             var controller = new ImportController();
-            var packages = controller.GetImportPackages().OrderBy(package => package.Name).ToList();
+            var packages = controller.GetImportPackages(keyword, order, pageIndex, pageSize).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, packages);
         }
 

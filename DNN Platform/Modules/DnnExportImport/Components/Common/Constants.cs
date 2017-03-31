@@ -73,8 +73,8 @@ namespace Dnn.ExportImport.Components.Common
         //Manifest file tags
         internal const string Manifest_PortalName = "PortalName";
         internal const string Manifest_PackageId = "PackageId";
-        internal const string Manifest_PackageName = "PackageName";
-        internal const string Manifest_PackageDescription = "PackageDescription";
+        internal const string Manifest_PackageName = "Name";
+        internal const string Manifest_PackageDescription = "Description";
         internal const string Manifest_ExportPath = "ExportPath";
         internal const string Manifest_ExportSize = "ExportSize";
         internal const string Manifest_ExportTime = "ExportTime";

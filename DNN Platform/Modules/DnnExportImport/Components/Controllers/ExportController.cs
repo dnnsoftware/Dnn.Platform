@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Controllers
             var tagsToWrite = new Dictionary<string, string>
             {
                 {Constants.Manifest_PortalName, portal?.PortalName},
-                {Constants.Manifest_ExportTime, exportJob.CreatedOnDate.ToString(CultureInfo.InvariantCulture)},
+                {Constants.Manifest_ExportTime,Convert.ToString(exportJob.CreatedOnDate, CultureInfo.InvariantCulture)},
                 {Constants.Manifest_PackageId, exportJob.Directory},
                 {Constants.Manifest_PackageName, exportJob.Name},
                 {
@@ -69,7 +69,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {Constants.Manifest_ExportPath, exportFileInfo.ExportPath},
                 {
                     Constants.Manifest_ExportSize,//This should be translated to user friendly text. e.g. 200 MB. 1 GB etc.
-                    Convert.ToString(exportFileInfo.ExportSizeKb, CultureInfo.InvariantCulture)
+                    exportFileInfo.ExportSize
                 }
             };
             Util.WriteXml(filePath, tagsToWrite, Constants.Manifest_RootTag);

@@ -110,14 +110,14 @@ namespace Dnn.ExportImport.Components.Services
                             isUserFolder = true;
                             folder.UserId = userId;
                             folder.Username =
-                                UserController.GetUserById(portalId, Convert.ToInt32(userId, CultureInfo.InvariantCulture))?.Username;
+                                UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
                         }
                         if (folder.ParentId != null && folder.ParentId > 0)
                         {
                             //If parent id exists then change the parent folder id to parent id.
                             folder.ParentId =
                                 Repository.GetItem<ExportFolder>(
-                                    x => x.FolderId == Convert.ToInt32(folder.ParentId, CultureInfo.InvariantCulture))?.Id;
+                                    x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
                         }
 
                         Repository.CreateItem(folder, null);
@@ -231,7 +231,7 @@ namespace Dnn.ExportImport.Components.Services
                                     //Replace folderId for each permission with new one.
                                     sourceFolderPermissions.ForEach(x =>
                                     {
-                                        x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
+                                        x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
                                         x.FolderPath = sourceFolder.FolderPath;
                                     });
 
@@ -257,7 +257,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //Replace folderId for each file with new one.
                                 sourceFiles.ForEach(x =>
                                 {
-                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId, CultureInfo.InvariantCulture);
+                                    x.FolderId = Convert.ToInt32(sourceFolder.LocalId);
                                     x.Folder = sourceFolder.FolderPath;
                                 });
 
@@ -379,8 +379,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     //Find the previously created parent folder id.
                     folder.ParentId =
-                        Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId,
-                            CultureInfo.InvariantCulture))?.LocalId;
+                        Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId))?.LocalId;
                 }
                 folder.CreatedByUserId = createdBy;
                 folder.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
@@ -483,7 +482,7 @@ namespace Dnn.ExportImport.Components.Services
                     folderPermission.FolderPermissionId = 0;
                     folderPermission.LastModifiedByUserId = modifiedBy;
                     folderPermission.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-                    folderPermission.PermissionId = Convert.ToInt32(permissionId, CultureInfo.InvariantCulture);
+                    folderPermission.PermissionId = Convert.ToInt32(permissionId);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0)
                     {
                         folderPermission.UserId =
@@ -608,7 +607,7 @@ namespace Dnn.ExportImport.Components.Services
             if (!string.IsNullOrEmpty(CheckPoint.StageData))
             {
                 dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip, CultureInfo.InvariantCulture) ?? 0;
+                return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
         }

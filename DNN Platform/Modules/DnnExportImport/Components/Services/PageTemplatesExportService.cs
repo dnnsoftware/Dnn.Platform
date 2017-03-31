@@ -150,7 +150,7 @@ namespace Dnn.ExportImport.Components.Services
             if (!string.IsNullOrEmpty(CheckPoint.StageData))
             {
                 dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip, CultureInfo.InvariantCulture) ?? 0;
+                return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
         }
