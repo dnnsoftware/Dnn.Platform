@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Dnn.ExportImport.Dto;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 

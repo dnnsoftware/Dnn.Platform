@@ -22,8 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlTypes;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using Dnn.ExportImport.Components.Common;

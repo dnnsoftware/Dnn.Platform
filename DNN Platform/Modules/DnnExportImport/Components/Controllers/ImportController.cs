@@ -23,15 +23,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
+using Dnn.ExportImport.Repository;
 using Newtonsoft.Json;
-using DotNetNuke.Entities.Portals.Internal;
-using Dnn.ExportImport.Components.Repository;
-using DotNetNuke.Collections;
 
 namespace Dnn.ExportImport.Components.Controllers
 {

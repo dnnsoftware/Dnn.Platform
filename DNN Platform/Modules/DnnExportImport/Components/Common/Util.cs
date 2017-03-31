@@ -36,19 +36,13 @@ using System.Xml;
 using System.Text;
 using System.IO;
 using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Common
 {
     public static class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
-
-        private const long Kb = 1024;
-        private const long Mb = Kb * Kb;
-        private const long Gb = Mb * Kb;
 
         public static IEnumerable<BasePortableService> GetPortableImplementors()
         {
@@ -78,12 +72,16 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        public static string FormatSize(long bytes)
+        public static string FormatSize(long bytes, byte decimals=1)
         {
-            if (bytes < Kb) return bytes + " B";
-            if (bytes < Mb) return (1.0 * bytes / Kb).ToString("F1") + " KB";
-            if (bytes < Gb) return (1.0 * bytes / Mb).ToString("F1") + " MB";
-            return (1.0 * bytes / Gb).ToString("F1") + " GB";
+            const long kb = 1024;
+            const long mb = kb * kb;
+            const long gb = mb * kb;
+
+            if (bytes < kb) return bytes + " B";
+            if (bytes < mb) return (1.0 * bytes / kb).ToString("F" + decimals) + " KB";
+            if (bytes < gb) return (1.0 * bytes / mb).ToString("F" + decimals) + " MB";
+            return (1.0 * bytes / gb).ToString("F" + decimals) + " GB";
         }
 
         public static string GetExpImpJobCacheKey(ExportImportJob job)

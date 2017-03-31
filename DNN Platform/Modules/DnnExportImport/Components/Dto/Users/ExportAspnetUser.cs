@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using Dnn.ExportImport.Dto;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 

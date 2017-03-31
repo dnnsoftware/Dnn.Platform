@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dnn.ExportImport</RootNamespace>
-    <AssemblyName>DotNetNuke.Modules.SiteExportImport</AssemblyName>
+    <AssemblyName>DotNetNuke.SiteExportImport</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\DotNetNuke.SiteExportImport.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\DotNetNuke.Modules.SiteExportImport.XML</DocumentationFile>
+    <DocumentationFile>bin\DotNetNuke.SiteExportImport.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -81,18 +82,12 @@
     <Compile Include="Components\Dto\Assets\ExportFolder.cs" />
     <Compile Include="Components\Dto\Assets\ExportFolderMapping.cs" />
     <Compile Include="Components\Dto\Assets\ExportFolderPermission.cs" />
-    <Compile Include="Components\Dto\BasicExportImportDto.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ExportFileInfo.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
     <Compile Include="Components\Dto\ImportExportSummary.cs" />
     <Compile Include="Components\Dto\ImportPackageInfo.cs" />
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
-    <Compile Include="Components\Dto\Pages\ExportModule.cs" />
-    <Compile Include="Components\Dto\Pages\ExportModuleContent.cs" />
-    <Compile Include="Components\Dto\Pages\ExportModulePermission.cs" />
-    <Compile Include="Components\Dto\Pages\ExportModuleSetting.cs" />
-    <Compile Include="Components\Dto\Pages\ExportTab.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
     <Compile Include="Components\Dto\Pages\ExportTabAliasSkin.cs" />
@@ -107,30 +102,21 @@
     <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
     <Compile Include="Components\Dto\ProfileProperties\ExportProfileProperty.cs" />
-    <Compile Include="Components\Dto\Roles\ExportRole.cs" />
-    <Compile Include="Components\Dto\Roles\ExportRoleGroup.cs" />
-    <Compile Include="Components\Dto\Roles\ExportRoleSetting.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
-    <Compile Include="Components\Dto\Taxonomy\TaxonomyScopeType.cs" />
-    <Compile Include="Components\Dto\Taxonomy\TaxonomyTerm.cs" />
-    <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabulary.cs" />
-    <Compile Include="Components\Dto\Taxonomy\TaxonomyVocabularyType.cs" />
     <Compile Include="Components\Dto\Users\ExportUserAuthentication.cs" />
     <Compile Include="Components\Dto\Users\ExportUserProfile.cs" />
     <Compile Include="Components\Dto\Users\ExportUserRelationship.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
-    <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Common\Enums.cs" />
+    <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Models\ExportImportResult.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetMembership.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetUser.cs" />
     <Compile Include="Components\Dto\Users\ExportUserPortal.cs" />
     <Compile Include="Components\Dto\Users\ExportUserRole.cs" />
     <Compile Include="Components\Dto\Users\ExportUser.cs" />
-    <Compile Include="Components\Interfaces\IExportImportRepository.cs" />
-    <Compile Include="Components\Repository\ExportImportRepository.cs" />
     <Compile Include="Components\Models\ProgressToken.cs" />
     <Compile Include="Components\Providers\DataProvider.cs" />
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
@@ -171,6 +157,10 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DnnExportImportLibrary\DnnExportImportLibrary.csproj">
+      <Project>{2c624453-4ed2-4bcb-9d71-664ac7d5955c}</Project>
+      <Name>DnnExportImportLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

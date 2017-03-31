@@ -22,8 +22,8 @@
 using System;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Models;
+using Dnn.ExportImport.Interfaces;
 
 namespace Dnn.ExportImport.Components.Services
 {

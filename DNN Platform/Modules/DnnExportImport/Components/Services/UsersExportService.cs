@@ -23,7 +23,6 @@ using System;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;

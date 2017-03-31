@@ -22,16 +22,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto.Pages;
+using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Engines;
-using DotNetNuke.Entities.Tabs;
-using Dnn.ExportImport.Components.Providers;
-using DotNetNuke.Entities.Modules;
+using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
         protected ImportDto ImportDto => _importDto;
 
         private ProgressTotals _totals;
-        private DataProvider _dataProvider;
+        private Providers.DataProvider _dataProvider;
         private ITabController _tabController;
         private ExportImportJob _importJob;
         private ImportDto _importDto;
@@ -106,7 +106,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportPages()
         {
-            _dataProvider = DataProvider.Instance();
+            _dataProvider = Providers.DataProvider.Instance();
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
@@ -197,6 +197,7 @@ namespace Dnn.ExportImport.Components.Services
             _totals.TotalSettings += ImportTabSettings(localTab, otherTab);
             _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab);
             _totals.TotalUrls += ImportTabUrls(localTab, otherTab);
+            _totals.TotalAliasSkins += ImportTabAliasSkins(localTab, otherTab);
 
             //TODO: add related items
             throw new NotImplementedException();
@@ -345,15 +346,77 @@ namespace Dnn.ExportImport.Components.Services
                     };
 
 
-                    //TODO: fix the TabURlInfo primary key then use this one
                     TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
 
-                    var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    //TODO: fix the TabURlInfo primary key then use this one
+                    //var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                    //var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                     //_dataProvider.UpdateRecordChangers("TabUrls", "TabId", local.TabId, createdBy, modifiedBy);
 
                     Result.AddLogEntry("Added Tab Url", other.Url);
                     count++;
+                }
+            }
+
+            return count;
+        }
+
+        private int ImportTabAliasSkins(TabInfo localTab, ExportTab otherTab)
+        {
+            var count = 0;
+            var tabAliasSkins = Repository.GetRelatedItems<ExportTabAliasSkin>(otherTab.ReferenceId ?? -1).ToList();
+            var localALiasSkins = localTab.AliasSkins;
+            using (var db = DataContext.Instance())
+            {
+                foreach (var other in tabAliasSkins)
+                {
+                    var local = localALiasSkins.FirstOrDefault(alias =>
+                        alias.SkinSrc != other.SkinSrc || alias.HttpAlias != other.HTTPAlias);
+
+                    if (local != null)
+                    {
+                        switch (_importDto.CollisionResolution)
+                        {
+                            case CollisionResolution.Overwrite:
+                                local.SkinSrc = other.SkinSrc;
+                                local.HttpAlias = other.HTTPAlias;
+
+                                var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
+                                aliasSkinCtx.Update(local);
+
+                                Result.AddLogEntry("Update Tab alias skin", other.SkinSrc);
+                                break;
+                            case CollisionResolution.Ignore:
+                                Result.AddLogEntry("Ignored tab alias skin", other.SkinSrc);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                        }
+                    }
+                    else
+                    {
+                        local = new TabAliasSkinInfo
+                        {
+                            TabId = localTab.TabID,
+                            SkinSrc = other.SkinSrc,
+                            HttpAlias = other.HTTPAlias,
+                            PortalAliasId = other.PortalAliasId, //TODO: map properly
+
+                            //TODO: set remaining fields
+                        };
+
+                        var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
+                        aliasSkinCtx.Insert(local);
+
+
+                        //TODO: fix the TabURlInfo primary key then use this one
+                        var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                        var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        _dataProvider.UpdateRecordChangers("TabAliasSkins", "TabAliasSkinId", local.TabAliasSkinId, createdBy, modifiedBy);
+
+                        Result.AddLogEntry("Added Tab alias skin", other.SkinSrc);
+                        count++;
+                    }
                 }
             }
 

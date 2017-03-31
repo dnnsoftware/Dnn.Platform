@@ -41,6 +41,10 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>DotNetNuke.SiteExportImport.Library</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>LiteDB.dll</name>
             </assembly>
           </assemblies>

@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -33,7 +32,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
+using Dnn.ExportImport.Interfaces;
 using DotNetNuke.Common;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;

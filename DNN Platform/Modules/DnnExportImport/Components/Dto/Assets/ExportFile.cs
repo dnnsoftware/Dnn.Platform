@@ -21,6 +21,7 @@
 
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
+using Dnn.ExportImport.Dto;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Assets

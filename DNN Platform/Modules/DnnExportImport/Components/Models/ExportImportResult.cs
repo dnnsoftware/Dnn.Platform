@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.ExportImport.Components.Dto.Jobs;
