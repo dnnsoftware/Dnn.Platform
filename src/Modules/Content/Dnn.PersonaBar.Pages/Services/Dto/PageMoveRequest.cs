@@ -10,6 +10,9 @@
 
         public string Action { get; set; }
 
+        /// <summary>
+        /// Whether need initialize the page data after the page drag into page list.
+        /// </summary>
         public bool Initialize { get; set; }
     }
 }

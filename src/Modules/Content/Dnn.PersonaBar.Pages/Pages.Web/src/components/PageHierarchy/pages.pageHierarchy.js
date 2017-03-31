@@ -712,7 +712,7 @@ window.dnn.pages = window.dnn.pages || {};
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target, isDragItem;
+                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target, draggingNewPage;
                         var params, movePage200Callback, movePageErrorCallback;
 
                         pageDropped = {
@@ -725,7 +725,7 @@ window.dnn.pages = window.dnn.pages || {};
                         sourceFind   = handler._findDataPosition(sourcePageId);
                         source       = viewModel.pagesList()[sourceFind.level].pages()[sourceFind.index];
                         sourceData   = handler._clonePageData(source);
-                        isDragItem = item.find('> div').hasClass('drag-item');
+                        draggingNewPage = item.find('> div').hasClass('drag-item');
 
                         targetId     = self.data('page-id');
 
@@ -762,7 +762,7 @@ window.dnn.pages = window.dnn.pages || {};
                                 RelatedPageId: -1, // Not necesary for parent
                                 ParentId: targetId,
                                 Action:   'parent',
-                                Initialize: isDragItem
+                                Initialize: draggingNewPage
                             };
 
                             movePage200Callback = function(data) {
@@ -913,7 +913,7 @@ window.dnn.pages = window.dnn.pages || {};
 
                     stop: function (event, ui) {
                         var item, sourceParentFind,
-                        isDragItem, $pageList, level, parentId, pageId, index, find,
+                        draggingNewPage, $pageList, level, parentId, pageId, index, find,
                         movePageData, allowDrop, pageItem, moveAction, relatedPageId, params;
 
                         if (!uiOnDragStart) {return;}
@@ -927,7 +927,7 @@ window.dnn.pages = window.dnn.pages || {};
                         handler._removeHiddenLists();
 
                         // Means drag from drag container, which always need post data.
-                        isDragItem = ui.item.find('> div').hasClass('drag-item');
+                        draggingNewPage = ui.item.find('> div').hasClass('drag-item');
 
                         $pageList = ui.item.parents('.pages-list:eq(0)');
                         level = $pageList.data('page-level');
@@ -936,7 +936,7 @@ window.dnn.pages = window.dnn.pages || {};
                         index = ui.item.parent().find('> li').index(ui.item);
                         find = handler._findDataPosition(pageId);
 
-                        if (!isDragItem && find && find.level === level && find.index === index) {
+                        if (!draggingNewPage && find && find.level === level && find.index === index) {
                             return;
                         }
 
@@ -959,7 +959,7 @@ window.dnn.pages = window.dnn.pages || {};
                         relatedPageId = -1;
 
                         if (ui.item.prev().length === 0 && ui.item.next().length === 0) {
-                            if (isDragItem && parentId === undefined) {
+                            if (draggingNewPage && parentId === undefined) {
                                 // If release drag item not in pane, then append it as last item in root.
                                 ui.item.remove();
                                 viewModel.inDrag(false);
@@ -987,7 +987,7 @@ window.dnn.pages = window.dnn.pages || {};
                             RelatedPageId: relatedPageId,
                             ParentId: parentId,
                             Action: moveAction,
-                            Initialize: isDragItem
+                            Initialize: draggingNewPage
                         };
 
                         handler._getService().post('MovePage', params, function(data) {
@@ -1030,7 +1030,7 @@ window.dnn.pages = window.dnn.pages || {};
                                 viewModel.pagesList()[targetFind.level].pages.splice(targetFind.index, 1, sourceParentData);
                             }
 
-                            if (isDragItem) {
+                            if (draggingNewPage) {
                                 handler._needScrollToSelectedPage = true;
                                 viewModel.selectedPage(pageData);
                                 viewModel.dragPage(handler._getEmptyPageData());
