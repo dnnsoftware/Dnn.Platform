@@ -150,9 +150,9 @@ const jobsActions = {
         };
     },
 
-    getImportPackages(callback, errorCallback) {
+    getImportPackages(parameters, callback, errorCallback) {
         return (dispatch) => {
-            ApplicationService.getImportPackages((data) => {
+            ApplicationService.getImportPackages(parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_IMPORT_PACKAGES,
                     importPackages: data

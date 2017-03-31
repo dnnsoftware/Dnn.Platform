@@ -4,14 +4,18 @@ import {
     importExport as ImportExportActions,
     visiblePanel as VisiblePanelActions
 } from "../../actions";
-import { TemplateIcon, HourglassIcon, CheckMarkIcon } from "dnn-svg-icons";
-import { Scrollbars } from "react-custom-scrollbars";
+import {
+    TemplateIcon,
+    HourglassIcon,
+    CheckMarkIcon
+} from "dnn-svg-icons";
 import Localization from "localization";
 import PackageCardOverlay from "./PackageCardOverlay";
 import Button from "dnn-button";
 import Label from "dnn-label";
 import Switch from "dnn-switch";
 import GridCell from "dnn-grid-cell";
+import FiltersBar from "./FiltersBar";
 import styles from "./style.less";
 import util from "utils";
 
@@ -24,7 +28,11 @@ class ImportModal extends Component {
                 PortalId: -1,
                 PackageId: -1,
                 CollisionResolution: 1
-            }
+            },
+            pageIndex: 0,
+            pageSize: 10,
+            filter: null,
+            keyword: ""
         };
     }
 
@@ -128,12 +136,19 @@ class ImportModal extends Component {
             return <div className="package-card-wrapper">
                 {props.importPackages.map((pkg, index) => {
                     return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
-                        <div id={"package-card-" + index}>
-                            <div className="package-name">{pkg.Name}</div>
-                            <div className="package-file">{pkg.FileName}</div>
-                            <div className="package-mode">{pkg.ExportMode}</div>
-                            <div className="package-site">{pkg.PortalName}</div>
-                            <div className="package-size">999</div>
+                        <div className="card-grid">
+                            <GridCell columnSize={35} className="left-column">
+                                <div className="package-name">{pkg.Name}</div>
+                                <div className="package-field">{pkg.ExporTime}</div>
+                            </GridCell>
+                            <GridCell columnSize={40} className="middle-column">
+                                <div className="package-field">{Localization.get("FileName") + pkg.FileName}</div>
+                                <div className="package-field">{Localization.get("Website") + pkg.PortalName}</div>
+                            </GridCell>
+                            <GridCell columnSize={25} className="right-column">
+                                <div className="package-field">{Localization.get("Mode") + pkg.ExportMode}</div>
+                                <div className="package-field">{Localization.get("FileSize") + "999"}</div>
+                            </GridCell>
                         </div>
                         <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
                         {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
@@ -291,7 +306,9 @@ class ImportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("ExportMode")}
                                 />
-                                <div className="import-summary-item">{props.selectedPackage.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
+                                <div className="import-summary-item">
+                                    {props.selectedPackage.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
+                                </div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -319,13 +336,45 @@ class ImportModal extends Component {
         </div>;
     }
 
+    getNextPage() {
+        const { state } = this;
+        return {
+            pageIndex: state.pageIndex || 0,
+            pageSize: state.pageSize,
+            orderBy: state.filter === -1 ? null : state.filter,
+            keywords: state.keyword
+        };
+    }
+
+    onFilterChanged(filter) {
+        const { props } = this;
+        this.setState({
+            pageIndex: 0,
+            filter: filter.value
+        }, () => {
+            props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        });
+    }
+
+    onKeywordChanged(keyword) {
+        const { props } = this;
+        this.setState({
+            pageIndex: 0,
+            keyword: keyword
+        }, () => {
+            props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        });
+    }
+
     render() {
         const { props, state } = this;
         return (
             <div className={styles.importModal}>
-                <div className="pageTitle">{Localization.get("SelectImportPackage.Header")}</div>
-                <div className="pageDescription">{Localization.get("SelectImportPackage")}</div>
+                <div className="pageTitle">{Localization.get("SelectImportPackage")}</div>
                 <div className="packages-wrapper">
+                    <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
+                        onKeywordChanged={this.onKeywordChanged.bind(this)}
+                    />
                     <div className="packages">
                         {state.wizardStep === 0 &&
                             this.renderPackagesList()

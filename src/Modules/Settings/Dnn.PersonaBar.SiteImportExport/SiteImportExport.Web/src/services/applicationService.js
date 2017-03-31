@@ -48,9 +48,9 @@ class ApplicationService {
         sf.post("Import", payload, callback, errorCallback);
     }
 
-    getImportPackages(callback, errorCallback) {
+    getImportPackages(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
-        sf.get("GetImportPackages", {}, callback, errorCallback);
+        sf.get("GetImportPackages?"+ serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
     verifyImportPackage(packageId, callback, errorCallback) {

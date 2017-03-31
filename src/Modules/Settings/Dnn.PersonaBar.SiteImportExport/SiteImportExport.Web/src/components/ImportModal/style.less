@@ -23,6 +23,10 @@
             .packages {
                 .package-card-wrapper {
                     .package-card {
+                        border: 1px solid @alto;
+                        width: 100%;
+                        display: inline-block;
+                        position: relative;
                         &:hover {
                             .package-card-overlay {
                                 opacity: 0.75;
@@ -44,32 +48,39 @@
                                 }
                             }
                         }
-                        border: 1px solid @alto;
-                        width: 100%;
-                        display: inline-block;
-                        position: relative;
-                        .package-name {
-                            white-space: pre-wrap;
-                            white-space: -moz-pre-wrap;
-                            white-space: -pre-wrap;
-                            white-space: -o-pre-wrap;
-                            word-wrap: break-word;
-                            font-weight: 700;
-                            color: @thunder;
-                            padding: 5px 10px;
-                        }
-                        .package-file {
-                            white-space: pre-wrap;
-                            white-space: -moz-pre-wrap;
-                            white-space: -pre-wrap;
-                            white-space: -o-pre-wrap;
-                            word-wrap: break-word;
-                            font-weight: 700;
-                            color: @curiousBlue;
-                            padding: 5px 10px;
-                        }
-                        .package-image {
+                        .card-grid {
+                            padding: 10px 0;
                             width: 100%;
+                            float: left;
+                            .left-column {
+                                border-right: 1px solid @alto;
+                                padding: 0 10px;
+                            }
+                            .middle-column {
+                                padding: 0 20px;
+                            }
+                            .right-column {
+                                padding: 0 20px;
+                            }
+                            .package-name {
+                                white-space: pre-wrap;
+                                white-space: -moz-pre-wrap;
+                                white-space: -pre-wrap;
+                                white-space: -o-pre-wrap;
+                                word-wrap: break-word;
+                                font-weight: bold;
+                                color: @thunder;
+                                padding: 5px 10px;
+                            }
+                            .package-field {
+                                white-space: pre-wrap;
+                                white-space: -moz-pre-wrap;
+                                white-space: -pre-wrap;
+                                white-space: -o-pre-wrap;
+                                word-wrap: break-word;                                
+                                color: @thunder;
+                                padding: 5px 10px;
+                            }
                         }
                         &:not(:last-child) {
                             margin-bottom: 15px;
@@ -111,7 +122,7 @@
                                     }
                                     font-size: 15px;
                                 }
-                            }                            
+                            }
                             .dnn-text-overflow-wrapper {
                                 position: absolute;
                                 bottom: 92px;

@@ -309,11 +309,8 @@
   <data name="AllSites.Text" xml:space="preserve">
     <value>--ALL SITES--</value>
   </data>
-  <data name="SelectImportPackage.Header" xml:space="preserve">
-    <value>Select Package to Import</value>
-  </data>
   <data name="SelectImportPackage.Text" xml:space="preserve">
-    <value>To begin importing site data, select a package from the gallery below.</value>
+    <value>Select Package to Import</value>
   </data>
   <data name="ClicktoSelect.Text" xml:space="preserve">
     <value>click to select package</value>
@@ -434,5 +431,26 @@
   </data>
   <data name="DeleteJobMessage.Text" xml:space="preserve">
     <value>Are you sure you want to remove this job?</value>
+  </data>
+  <data name="SortByDateNewest.Text" xml:space="preserve">
+    <value>Date (Newest)</value>
+  </data>
+  <data name="SortByDateOldest.Text" xml:space="preserve">
+    <value>Date (Oldest)</value>
+  </data>
+  <data name="SortByName.Text" xml:space="preserve">
+    <value>Name (Alphabetical)</value>
+  </data>
+  <data name="ShowSortLabel.Text" xml:space="preserve">
+    <value>Sort By:</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="FileSize.Text" xml:space="preserve">
+    <value>File</value>
   </data>
 </root>
