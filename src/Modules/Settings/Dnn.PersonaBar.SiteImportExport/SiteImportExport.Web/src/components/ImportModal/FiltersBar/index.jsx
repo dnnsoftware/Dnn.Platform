@@ -11,7 +11,7 @@ class FiltersBar extends Component {
         this.state = {
             selectedJobFilter: {
                 label: Localization.get("SortByDateNewest"),
-                value: 0
+                value: "newest"
             },
             searchText: ""
         };
@@ -31,9 +31,9 @@ class FiltersBar extends Component {
 
     BuildFiltersOptions() {
         const jobFilters = [
-            { "Key": Localization.get("SortByDateNewest"), "Value": 0 },
-            { "Key": Localization.get("SortByDateOldest"), "Value": 1 },
-            { "Key": Localization.get("SortByName"), "Value": 2 }
+            { "Key": Localization.get("SortByDateNewest"), "Value": "newest" },
+            { "Key": Localization.get("SortByDateOldest"), "Value": "oldest" },
+            { "Key": Localization.get("SortByName"), "Value": "name" }
         ];
         let jobFiltersOptions = [];
         jobFiltersOptions = jobFilters.map((jobFilters) => {

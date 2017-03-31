@@ -4,17 +4,14 @@ import {
     importExport as ImportExportActions,
     visiblePanel as VisiblePanelActions
 } from "../../actions";
-import {
-    TemplateIcon,
-    HourglassIcon,
-    CheckMarkIcon
-} from "dnn-svg-icons";
 import Localization from "localization";
 import ImportSummary from "./ImportSummary";
 import PackagesList from "./PackagesList";
+import PackageCard from "./PackageCard";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
 import FiltersBar from "./FiltersBar";
+import ProgressBar from "./ProgressBar";
 import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
@@ -145,8 +142,8 @@ class ImportModal extends Component {
         return {
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
-            orderBy: state.filter === -1 ? null : state.filter,
-            keywords: state.keyword
+            order: state.filter === -1 ? null : state.filter,
+            keyword: state.keyword
         };
     }
 
@@ -187,16 +184,10 @@ class ImportModal extends Component {
     renderPackageVerification() {
         const { props } = this;
         return <div>
-            {props.selectedPackage && <div className="package-analyzing">
-                <div className="package-file">{props.selectedPackage.FileName}</div>
-                <div className="analyzing-wrapper">
-                    <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
-                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : HourglassIcon }}>
-                    </div>
-                    <div className="analyzing-message">
-                        {props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}
-                    </div>
-                </div>
+            {props.selectedPackage && <div className="package-analyzing">                
+                <div className="noDataText">{Localization.get("VerifyPackage")}</div>
+                <div className="noDataImage"></div>
+                <ProgressBar className="progressCards" visible={true} />
             </div>}
         </div>;
     }
@@ -237,7 +228,10 @@ class ImportModal extends Component {
                         {state.wizardStep === 0 &&
                             <PackagesList selectPackage={this.selectPackage.bind(this)} />
                         }
-                        {state.wizardStep === 1 &&
+                        {state.wizardStep === 1 && 
+                            <PackageCard selectedPackage={props.selectedPackage} />
+                        }
+                        {state.wizardStep === 1 && !props.importSummary &&                            
                             this.renderPackageVerification()
                         }
                     </div>
@@ -253,7 +247,11 @@ class ImportModal extends Component {
                 <GridCell className="action-buttons">
                     <Button type="secondary" onClick={this.cancelImport.bind(this)}>{Localization.get("Cancel")}</Button>
                     {props.wizardStep === 0 &&
-                        <Button type="primary" disabled={props.selectedPackage ? false : true} onClick={this.onAnalyze.bind(this)}>{Localization.get("Continue")}</Button>
+                        <Button type="primary"
+                            disabled={props.selectedPackage ? false : true}
+                            onClick={this.onAnalyze.bind(this)}>
+                            {Localization.get("Continue")}
+                        </Button>
                     }
                     {props.wizardStep === 1 &&
                         <Button type="primary" disabled={!props.importSummary} onClick={this.onImport.bind(this)}>{Localization.get("Continue")}</Button>

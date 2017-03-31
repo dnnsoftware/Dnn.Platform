@@ -51,8 +51,7 @@ const jobsActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_JOBS,
                     jobs: data.Jobs,
-                    totalJobs: data.TotalJobs,
-                    portalName: data.PortalName
+                    totalJobs: data.TotalJobs
                 });
                 if (callback) {
                     callback();

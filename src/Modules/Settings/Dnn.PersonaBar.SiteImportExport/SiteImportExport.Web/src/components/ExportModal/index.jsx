@@ -26,7 +26,7 @@ const scrollAreaStyle = {
     border: "1px solid #c8c8c8"
 };
 
-const keysToValidate = ["ExportName", "ExportDescription"];
+const keysToValidate = ["ExportName"];
 
 class ExportModal extends Component {
     constructor() {
@@ -198,7 +198,7 @@ class ExportModal extends Component {
                                 inputStyle={{ "minHeight": 110 }}
                                 maxLength={250}
                                 style={{ "width": "100%" }}
-                                label={Localization.get("Description") + "*"}
+                                label={Localization.get("Description")}
                                 value={state.exportRequest.ExportDescription}
                                 error={state.errors.ExportDescription}
                                 errorMessage={Localization.get("ExportDescription.ErrorMessage")}
@@ -370,7 +370,9 @@ function mapStateToProps(state) {
         exportLogs: state.importExport.exportLogs,
         viewingLog: state.importExport.viewingLog,
         exportJobId: state.importExport.exportJobId,
-        lastExportDate: state.importExport.lastExportDate
+        lastExportDate: state.importExport.lastExportDate,
+        portalId: state.importExport.portalId,
+        portalName: state.importExport.portalName
     };
 }
 

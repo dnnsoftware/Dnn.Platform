@@ -101,7 +101,7 @@ class App extends Component {
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
                         {props.selectedPage === 1 && 
-                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} portalId={props.portalId} portalName={props.portalName} />}
+                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
@@ -113,7 +113,7 @@ class App extends Component {
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
                         {props.selectedPage === 2 && 
-                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} portalId={props.portalId} portalName={props.portalName} />}
+                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
             </div>

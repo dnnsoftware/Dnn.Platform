@@ -20,8 +20,6 @@ class DashboardPanelBody extends Component {
         super();
         this.state = {
             jobs: [],
-            portals: [],
-            portalId: undefined,
             pageIndex: 0,
             pageSize: 10,
             filter: null,
@@ -33,16 +31,7 @@ class DashboardPanelBody extends Component {
     componentWillMount() {
         const { props } = this;
         if (props.portals.length === 0) {
-            props.dispatch(ImportExportActions.getPortals());
-        }
-    }
-
-    componentWillReceiveProps(props) {
-        const { state } = this;
-        if (state.portals !== props.portals) {
-            this.setState({
-                portals: props.portals
-            }, () => {
+            props.dispatch(ImportExportActions.getPortals(() => {
                 if (props.portals.length === 1) {
                     props.dispatch(ImportExportActions.siteSelected(props.portals[0].PortalID, props.portals[0].PortalName, () => {
                         this.getLastJobTime(props.portals[0].PortalID);
@@ -53,15 +42,7 @@ class DashboardPanelBody extends Component {
                     this.getLastJobTime(props.portalId);
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 }
-            });
-        }
-        else if (state.portalId !== props.portalId) {
-            this.setState({
-                portalId: props.portalId
-            }, () => {
-                this.getLastJobTime(props.portalId);
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
-            });
+            }));
         }
     }
 
@@ -127,10 +108,9 @@ class DashboardPanelBody extends Component {
     }
 
     onPortalChange(option) {
-        const { props, state } = this;
-        if (option.value !== state.portalId) {
+        const { props } = this;
+        if (option.value !== props.portalId) {
             this.setState({
-                portalId: option.value,
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));

@@ -21,211 +21,165 @@
             width: 100%;
             padding: 0 40px 70px 40px;
             .packages {
-                .package-card-wrapper {
-                    .package-card {
-                        border: 1px solid @alto;
+                .package-analyzing {
+                    .noDataText {
+                        font-size: x-large;
+                        color: @thunder;
+                        margin-top: 40px;
+                        height: 70px;
+                    }
+                    .noDataImage {
+                        width: 648px;
+                        height: 256px;
+                        background: url(./img/nodata.png);
+                        background-size: 100% 100%;
+                        line-height: 256px;
+                        text-align: center;
+                    }
+                }
+                .package-card {
+                    text-align: left;
+                    border: 1px solid @alto;
+                    width: 100%;
+                    display: inline-block;
+                    position: relative;
+                    &:hover {
+                        .package-card-overlay {
+                            opacity: 0.75;
+                        }
+                    }
+                    &.selected {
+                        border: 2px solid @curiousBlue;
+                        .checkmark {
+                            position: absolute;
+                            top: 5px;
+                            right: 5px;
+                            background-color: @curiousBlue;
+                            display: block;
+                            width: 15px;
+                            height: 15px;
+                            svg {
+                                width: 100%;
+                                fill: @white;
+                            }
+                        }
+                    }
+                    .card-grid {
+                        padding: 20px 0 10px 0;
                         width: 100%;
-                        display: inline-block;
-                        position: relative;
-                        &:hover {
-                            .package-card-overlay {
-                                opacity: 0.75;
+                        float: left;
+                        .card-column1 {
+                            border-right: 1px solid @alto;
+                            padding: 0 20px;
+                            .package-name {
+                                font-weight: bold;
+                                padding-bottom: 10px;
+                            }
+                            .package-field {
+                                padding-bottom: 10px;
+                                color: @thunder;
                             }
                         }
-                        &.selected {
-                            border: 2px solid @curiousBlue;
-                            .checkmark {
-                                position: absolute;
-                                top: 5px;
-                                right: 5px;
-                                background-color: @curiousBlue;
-                                display: block;
-                                width: 15px;
-                                height: 15px;
-                                svg {
-                                    width: 100%;
-                                    fill: @white;
+                        .card-column2, .card-column4 {
+                            .package-field {
+                                float: left;
+                                width: 100%;
+                                padding: 0 0 13px 20px;
+                                .dnn-label {
+                                    padding-top: 0;
+                                    font-weight: 700;
                                 }
-                            }
-                        }
-                        .card-grid {
-                            padding: 20px 0 10px 0;
-                            width: 100%;
-                            float: left;
-                            .card-column1 {
-                                border-right: 1px solid @alto;
-                                padding: 0 20px;
-                                .package-name {
-                                    font-weight: bold;
-                                    padding-bottom: 10px;
-                                }
-                                .package-field {
-                                    padding-bottom: 10px;
+                                span {
+                                    float: right;
                                     color: @thunder;
                                 }
                             }
-                            .card-column2, .card-column4 {
-                                .package-field {
-                                    float: left;
-                                    width: 100%;
-                                    padding: 0 0 13px 20px;
-                                    .dnn-label {
-                                        padding-top: 0;
-                                        font-weight: 700;
-                                    }
-                                    span {
-                                        float: right;
-                                        color: @thunder;
-                                    }
-                                }
-                            }
-                            .card-column3 {
-                                color: @thunder;
-                                .package-field {
-                                    float: right;
-                                    padding: 0 10px 10px 0;
-                                }
-                            }
-                            .card-column5 {
-                                color: @thunder;
-                                .package-field {
-                                    padding: 0 20px 10px 0 ;
-                                }
+                        }
+                        .card-column3 {
+                            color: @thunder;
+                            .package-field {
+                                float: right;
+                                padding: 0 10px 10px 0;
                             }
                         }
-                        &:not(:last-child) {
-                            margin-bottom: 15px;
+                        .card-column5 {
+                            color: @thunder;
+                            .package-field {
+                                padding: 0 20px 10px 0;
+                            }
                         }
-                        .template-icon {
-                            background-color: @gallery;
-                            height: 120px;
+                    }
+                    &:not(:last-child) {
+                        margin-bottom: 15px;
+                    }
+                    .template-icon {
+                        background-color: @gallery;
+                        height: 120px;
+                        text-align: center;
+                        svg {
+                            width: 60px;
+                            height: 60px;
+                            margin-top: 30px;
+                        }
+                    }
+                    .package-card-overlay {
+                        position: absolute;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: @curiousBlue;
+                        transition: .3s;
+                        opacity: 0;
+                        cursor: pointer;
+                        .icon-container {
+                            color: #fff;
                             text-align: center;
-                            svg {
-                                width: 60px;
-                                height: 60px;
-                                margin-top: 30px;
+                            width: 100%;
+                            position: absolute;
+                            top: 50%;
+                            -webkit-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                            transform: translateY(-50%);
+                            >div {
+                                display: inline;
+                                margin-right: 10px;
+                                svg {
+                                    width: 40px;
+                                    fill: white;
+                                }
+                                font-size: 15px;
                             }
                         }
-                        .package-card-overlay {
+                        .dnn-text-overflow-wrapper {
                             position: absolute;
-                            top: 0;
+                            bottom: 92px;
+                            font-size: 15px;
+                            margin-left: 16px;
+                            opacity: 0;
+                        }
+                        .dnn-ui-common-tooltip {
                             width: 100%;
                             height: 100%;
-                            background: @curiousBlue;
-                            transition: .3s;
-                            opacity: 0;
-                            cursor: pointer;
-                            .icon-container {
-                                color: #fff;
-                                text-align: center;
-                                width: 100%;
-                                position: absolute;
-                                top: 50%;
-                                -webkit-transform: translateY(-50%);
-                                -ms-transform: translateY(-50%);
-                                transform: translateY(-50%);
-                                >div {
-                                    display: inline;
-                                    margin-right: 10px;
-                                    svg {
-                                        width: 40px;
-                                        fill: white;
-                                    }
-                                    font-size: 15px;
-                                }
-                            }
-                            .dnn-text-overflow-wrapper {
-                                position: absolute;
-                                bottom: 92px;
-                                font-size: 15px;
-                                margin-left: 16px;
-                                opacity: 0;
-                            }
-                            .dnn-ui-common-tooltip {
+                            .icon {
                                 width: 100%;
                                 height: 100%;
-                                .icon {
-                                    width: 100%;
-                                    height: 100%;
-                                    margin-top: 0;
-                                    svg {
-                                        display: none;
-                                    }
-                                }
-                                .tooltip-text {
-                                    border: 1px solid @alto;
-                                    background-color: #fff !important;
-                                    color: @thunder !important;
-                                    max-width: 500px !important;
-                                    text-align: left;
-                                    >div {
-                                        white-space: pre-wrap;
-                                        font-weight: 700;
-                                        color: @thunder;
-                                    }
+                                margin-top: 0;
+                                svg {
+                                    display: none;
                                 }
                             }
-                        }
-                    }
-                }
-                .package-analyzing {
-                    background-color: @gallery;
-                    padding: 10px;
-                    float: left;
-                    width: 100%;
-                    .package-file {
-                        float: left;
-                        font-weight: 700;
-                        color: @curiousBlue;
-                        padding: 5px 10px 20px 5px;
-                        width: 100%;
-                    }
-                    .analyzing-wrapper {
-                        float: left;
-                        width: 100%;
-                        text-align: center;
-                        .analyzing-icon {
-                            width: 35px;
-                            height: 35px;
-                            margin-left: 320px;
-                            > svg {
-                                fill: @curiousBlue;
+                            .tooltip-text {
+                                border: 1px solid @alto;
+                                background-color: #fff !important;
+                                color: @thunder !important;
+                                max-width: 500px !important;
+                                text-align: left;
+                                >div {
+                                    white-space: pre-wrap;
+                                    font-weight: 700;
+                                    color: @thunder;
+                                }
                             }
-                            -webkit-animation:spin 2s linear infinite;
-                            -moz-animation:spin 2s linear infinite;
-                            animation:spin 2s linear infinite;
-                        }
-                        .analyzed-icon {
-                            width: 35px;
-                            height: 35px;
-                            margin-left: 320px;
-                            > svg {
-                                fill: @curiousBlue;
-                            }
-                        }
-                        @-moz-keyframes spin {
-                            100% {
-                                -moz-transform: rotate(-360deg);
-                            }
-                        }
-                        @-webkit-keyframes spin {
-                            100% {
-                                -webkit-transform: rotate(-360deg);
-                            }
-                        }
-                        @keyframes spin {
-                            100% {
-                                -webkit-transform: rotate(-360deg);
-                                transform: rotate(-360deg);
-                            }
-                        }
-                        .analyzing-message {
-                            width: 100%;
-                            float: left;
-                            font-weight: 700;
-                            font-size: 14px;
-                            color: @curiousBlue;
-                            padding: 20px 10px;
                         }
                     }
                 }

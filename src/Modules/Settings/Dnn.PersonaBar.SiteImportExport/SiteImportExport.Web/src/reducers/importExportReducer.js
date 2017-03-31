@@ -36,8 +36,7 @@ export default function importExport(state = {
             return {
                 ...state,
                 jobs: action.jobs,
-                totalJobs: action.totalJobs,
-                portalName: action.portalName
+                totalJobs: action.totalJobs
             };
         case ActionTypes.RETRIEVED_JOB_DETAILS:
             return {
