@@ -28,6 +28,7 @@ using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using Dnn.ExportImport.Components.Dto.Pages;
+using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -164,6 +165,12 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return CBO.Instance.FillCollection<ExportTabModuleSetting>(
                 DataProvider.Instance().GetAllTabModuleSettings(tabId, toDate, fromDate));
+        }
+
+        public PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
+        {
+            return CBO.Instance.FillObject<PermissionInfo>(
+                DataProvider.Instance().GetPermissionInfo(permissionCode, permissionKey, permissionName));
         }
     }
 }

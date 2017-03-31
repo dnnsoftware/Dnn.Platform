@@ -161,9 +161,9 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var exportPortalSetting in portalSettings)
                 {
                     if (CheckCancelled(importJob)) return;
-                    var createdBy = Util.GetUserIdOrName(importJob, exportPortalSetting.CreatedByUserId,
+                    var createdBy = Util.GetUserIdByName(importJob, exportPortalSetting.CreatedByUserId,
                         exportPortalSetting.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalSetting.LastModifiedByUserId,
+                    var modifiedBy = Util.GetUserIdByName(importJob, exportPortalSetting.LastModifiedByUserId,
                         exportPortalSetting.LastModifiedByUserName);
                     var existingPortalSetting =
                         localPortalSettings.FirstOrDefault(
@@ -223,9 +223,9 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var exportPortalLanguage in portalLanguages)
                 {
                     if (CheckCancelled(importJob)) return;
-                    var createdBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.CreatedByUserId,
+                    var createdBy = Util.GetUserIdByName(importJob, exportPortalLanguage.CreatedByUserId,
                         exportPortalLanguage.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdOrName(importJob, exportPortalLanguage.LastModifiedByUserId,
+                    var modifiedBy = Util.GetUserIdByName(importJob, exportPortalLanguage.LastModifiedByUserId,
                         exportPortalLanguage.LastModifiedByUserName);
                     var localLanguageId =
                         localLanguages.FirstOrDefault(x => x.Code == exportPortalLanguage.CultureCode)?.LanguageId;

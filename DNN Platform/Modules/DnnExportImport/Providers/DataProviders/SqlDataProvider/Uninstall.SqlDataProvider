@@ -228,3 +228,6 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModulePermissions]', 'P')
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPermissionInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+GO

@@ -332,7 +332,7 @@ namespace Dnn.ExportImport.Components.Services
                         (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folder.FolderPath)));
             var isUpdate = false;
             var repExportFolder = db.GetRepository<ExportFolder>();
-            var modifiedBy = Util.GetUserIdOrName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
+            var modifiedBy = Util.GetUserIdByName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
             if (existingFolder != null)
             {
                 switch (importDto.CollisionResolution)
@@ -373,7 +373,7 @@ namespace Dnn.ExportImport.Components.Services
                 var previousParent = folder.ParentId;
                 folder.FolderId = 0;
                 folder.FolderMappingId = folderMapping.FolderMappingID;
-                var createdBy = Util.GetUserIdOrName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
+                var createdBy = Util.GetUserIdByName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
                 if (folder.ParentId != null && folder.ParentId > 0)
                 {
                     //Find the previously created parent folder id.
@@ -445,7 +445,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var isUpdate = false;
             var repExportFolderPermission = db.GetRepository<ExportFolderPermission>();
-            var modifiedBy = Util.GetUserIdOrName(importJob, folderPermission.LastModifiedByUserId,
+            var modifiedBy = Util.GetUserIdByName(importJob, folderPermission.LastModifiedByUserId,
                 folderPermission.LastModifiedByUserName);
             if (existingFolderPermission != null)
             {
@@ -493,7 +493,7 @@ namespace Dnn.ExportImport.Components.Services
                         folderPermission.RoleId =
                             RoleController.Instance.GetRoleByName(portalId, folderPermission.RoleName)?.RoleID;
                     }
-                    var createdBy = Util.GetUserIdOrName(importJob, folderPermission.CreatedByUserId,
+                    var createdBy = Util.GetUserIdByName(importJob, folderPermission.CreatedByUserId,
                         folderPermission.CreatedByUserName);
 
                     folderPermission.CreatedByUserId = createdBy;
@@ -513,7 +513,7 @@ namespace Dnn.ExportImport.Components.Services
             var existingFile = localFiles.FirstOrDefault(x => x.FileName == file.FileName);
             var isUpdate = false;
             var repExportFile = db.GetRepository<ExportFile>();
-            var modifiedBy = Util.GetUserIdOrName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
+            var modifiedBy = Util.GetUserIdByName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
             if (existingFile != null)
             {
                 switch (importDto.CollisionResolution)
@@ -550,7 +550,7 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 file.FileId = 0;
-                var createdBy = Util.GetUserIdOrName(importJob, file.CreatedByUserId, file.CreatedByUserName);
+                var createdBy = Util.GetUserIdByName(importJob, file.CreatedByUserId, file.CreatedByUserName);
                 file.CreatedByUserId = createdBy;
                 file.CreatedOnDate = DateUtils.GetDatabaseTime();
                 file.LastModifiedByUserId = modifiedBy;

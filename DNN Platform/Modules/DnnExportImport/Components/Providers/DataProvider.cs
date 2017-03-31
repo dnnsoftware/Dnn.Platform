@@ -341,5 +341,10 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);
         }
+
+        public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
+        {
+            return _dataProvider.ExecuteReader("Export_GetPermissionInfo", permissionCode, permissionKey, permissionName);
+        }
     }
 }

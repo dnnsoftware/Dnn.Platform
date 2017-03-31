@@ -82,7 +82,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                         .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
-                    var modifiedById = Util.GetUserIdOrName(importJob, profileProperty.LastModifiedByUserId,
+                    var modifiedById = Util.GetUserIdByName(importJob, profileProperty.LastModifiedByUserId,
                         profileProperty.LastModifiedByUserName);
 
                     if (existingProfileProperty != null)
@@ -102,7 +102,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     else
                     {
-                        var createdById = Util.GetUserIdOrName(importJob, profileProperty.CreatedByUserId,
+                        var createdById = Util.GetUserIdByName(importJob, profileProperty.CreatedByUserId,
                             profileProperty.CreatedByUserName);
 
                         ProcessCreateProfileProperty(importJob, db, profileProperty, createdById, modifiedById);

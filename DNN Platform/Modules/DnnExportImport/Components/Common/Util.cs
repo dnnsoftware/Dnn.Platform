@@ -35,6 +35,10 @@ using DotNetNuke.Entities.Portals.Internal;
 using System.Xml;
 using System.Text;
 using System.IO;
+using Dnn.ExportImport.Components.Controllers;
+using Dnn.ExportImport.Components.Providers;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Common
 {
@@ -87,7 +91,7 @@ namespace Dnn.ExportImport.Components.Common
             return string.Join(":", "ExpImpKey", job.PortalId.ToString(), job.JobId.ToString());
         }
 
-        public static int GetUserIdOrName(ExportImportJob importJob, int? exportedUserId, string exportUsername)
+        public static int GetUserIdByName(ExportImportJob importJob, int? exportedUserId, string exportUsername)
         {
             if (!exportedUserId.HasValue || exportedUserId <= 0)
                 return -1;
@@ -102,10 +106,31 @@ namespace Dnn.ExportImport.Components.Common
             return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
-        public static int? GetRoleId(int portalId, string exportRolename)
+        public static int? GetRoleIdByName(int portalId, string exportRolename)
         {
+            if (string.IsNullOrEmpty(exportRolename)) return -1;
+
             var role = RoleController.Instance.GetRoleByName(portalId, exportRolename);
             return role?.RoleID;
+        }
+
+        public static int? GeModuleDefIdByFriendltName(string friendlyName)
+        {
+            if (string.IsNullOrEmpty(friendlyName)) return null;
+
+            var moduleDefInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName);
+            return moduleDefInfo?.ModuleDefID;
+        }
+
+        public static int? GePermissionIdByName(string permissionCode, string permissionKey, string permissionName)
+        {
+            if (string.IsNullOrEmpty(permissionName) ||
+                string.IsNullOrEmpty(permissionKey) ||
+                string.IsNullOrEmpty(permissionName))
+                return null;
+
+            var permission = EntitiesController.Instance.GetPermissionInfo(permissionName, permissionKey, permissionName);
+            return permission?.PermissionID;
         }
 
         public static int? GetProfilePropertyId(int portalId, int? exportedProfilePropertyId,

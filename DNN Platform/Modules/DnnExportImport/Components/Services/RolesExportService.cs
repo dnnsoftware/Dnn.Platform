@@ -165,8 +165,8 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var other in otherRoleGroups)
             {
                 if (CheckCancelled(importJob)) return;
-                var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localRoleGroups.FirstOrDefault(t => t.RoleGroupName == other.RoleGroupName);
 
                 if (local != null)
@@ -217,8 +217,8 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var other in otherRoles)
             {
                 if (CheckCancelled(importJob)) return;
-                var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var localRoleInfo = RoleController.Instance.GetRoleByName(portalId, other.RoleName);
                 if (localRoleInfo != null)
                 {
@@ -312,8 +312,8 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var other in otherRoleSettings)
             {
                 if (CheckCancelled(importJob)) return;
-                var createdBy = Util.GetUserIdOrName(importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = Util.GetUserIdOrName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
+                var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var otherRole = otherRoles.FirstOrDefault(r => r.RoleID == other.RoleID);
                 if (otherRole == null || !otherRole.LocalId.HasValue) continue;
                 var localRoleInfo = RoleController.Instance.GetRoleById(portalId, otherRole.LocalId.Value);

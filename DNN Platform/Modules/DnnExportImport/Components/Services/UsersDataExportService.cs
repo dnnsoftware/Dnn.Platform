@@ -154,7 +154,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var userRole in userRoles)
             {
                 if (CheckCancelled(importJob)) return;
-                var roleId = Util.GetRoleId(importJob.PortalId, userRole.RoleName);
+                var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
                 var existingUserRole = RoleController.Instance.GetUserRole(importJob.PortalId, userId, roleId.Value);
@@ -174,7 +174,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
 
-                var modifiedById = Util.GetUserIdOrName(importJob, userRole.LastModifiedByUserId,
+                var modifiedById = Util.GetUserIdByName(importJob, userRole.LastModifiedByUserId,
                     userRole.LastModifiedByUserName);
 
                 userRole.UserId = userId;
@@ -194,7 +194,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var createdById = Util.GetUserIdOrName(importJob, userRole.CreatedByUserId,
+                    var createdById = Util.GetUserIdByName(importJob, userRole.CreatedByUserId,
                         userRole.CreatedByUserName);
                     userRole.UserRoleId = 0;
                     userRole.CreatedByUserId = createdById;
@@ -278,7 +278,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            var modifiedById = Util.GetUserIdOrName(importJob, userAuthentication.LastModifiedByUserId,
+            var modifiedById = Util.GetUserIdByName(importJob, userAuthentication.LastModifiedByUserId,
                 userAuthentication.LastModifiedByUserName);
             userAuthentication.LastModifiedOnDate = DateUtils.GetDatabaseTime();
             userAuthentication.LastModifiedByUserId = modifiedById;
@@ -292,7 +292,7 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 userAuthentication.UserAuthenticationId = 0;
-                var createdById = Util.GetUserIdOrName(importJob, userAuthentication.CreatedByUserId,
+                var createdById = Util.GetUserIdByName(importJob, userAuthentication.CreatedByUserId,
                  userAuthentication.CreatedByUserName);
                 userAuthentication.CreatedOnDate = DateUtils.GetDatabaseTime();
                 userAuthentication.CreatedByUserId = createdById;

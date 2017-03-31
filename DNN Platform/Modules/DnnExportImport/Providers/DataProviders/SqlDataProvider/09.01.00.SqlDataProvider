@@ -1235,11 +1235,10 @@ BEGIN
 	DECLARE @Now datetime = GETDATE()
 
 	SELECT
-		tp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+		tp.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
-		{databaseOwner}{objectQualifier}vw_TabPermissions         AS tp
-			INNER JOIN {databaseOwner}{objectQualifier}Permission AS p  ON tp.PermissionID = p.PermissionID
-			LEFT JOIN {databaseOwner}{objectQualifier}Roles       AS r  ON tp.RoleID = r.RoleID
+		{databaseOwner}{objectQualifier}vw_TabPermissions AS tp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = tp.ModuleDefID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tp.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tp.LastModifiedByUserID = u2.UserID
 	WHERE
@@ -1429,3 +1428,52 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModulePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+	@ModuleID  int,
+	@ToDate    datetime,
+	@FromDate  datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		mp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}vw_ModulePermissions      AS mp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON mp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON mp.LastModifiedByUserID = u2.UserID
+	WHERE
+		ModuleID = @ModuleID
+	AND
+		COALESCE(mp.LastModifiedOnDate, mp.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(mp.LastModifiedOnDate, mp.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPermissionInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+	@PermissionCode  varchar(50),
+	@PermissionKey   varchar(50),
+	@PermissionName  varchar(50)
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Permission
+	WHERE
+		PermissionCode = @PermissionCode
+	AND
+		PermissionKey = @PermissionKey
+	AND
+		PermissionName = @PermissionName
+END
+GO

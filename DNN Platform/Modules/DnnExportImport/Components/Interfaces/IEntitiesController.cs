@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto.Pages;
 using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Interfaces
 {
@@ -55,5 +56,7 @@ namespace Dnn.ExportImport.Components.Interfaces
 
         IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
         IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate);
+
+        PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName);
     }
 }

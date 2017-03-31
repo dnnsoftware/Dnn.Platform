@@ -66,11 +66,11 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            var pages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked).Select(p => p.TabId).ToArray();
-            if (pages.Length > 0)
+            var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.Partial);
+            if (checkedPages.Any())
             {
                 _tabController = TabController.Instance;
-                ProcessExportPages(exportJob, exportDto, pages.ToArray());
+                ProcessExportPages(exportJob, exportDto, exportDto.Pages);
             }
 
             CheckPoint.Progress = 100;
@@ -140,8 +140,8 @@ namespace Dnn.ExportImport.Components.Services
         protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
         {
             var portalId = _importJob.PortalId;
-            var createdBy = Util.GetUserIdOrName(_importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
-            var modifiedBy = Util.GetUserIdOrName(_importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
+            var createdBy = Util.GetUserIdByName(_importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
+            var modifiedBy = Util.GetUserIdByName(_importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
 
             if (localTab != null)
@@ -214,8 +214,8 @@ namespace Dnn.ExportImport.Components.Services
                             // the next will clear the cache
                             _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
 
-                            var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                            var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                            var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                            var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                             _dataProvider.UpdateSettingRecordChangers("TabSettings", "TabID",
                                 localTab.TabID, other.SettingName, createdBy, modifiedBy);
                             Result.AddLogEntry("Updated tab setting", other.SettingName);
@@ -238,8 +238,9 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab)
         {
+            var count = 0;
             var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.ReferenceId ?? -1).ToList();
-            var localTabPermissions = TabPermissionController.GetTabPermissions(localTab.TabID, _importDto.PortalId);
+            var localTabPermissions = localTab.TabPermissions.ToList();
             foreach (var other in tabPermissions)
             {
                 var local = localTabPermissions.OfType<TabPermissionInfo>().FirstOrDefault(
@@ -266,69 +267,101 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
 
-                //TODO:
-                /*
                 if (isUpdate)
                 {
-                    //TODO: Is there any real need to update existing permission record? Won't do anything
-                    //TabPermissionController.UpdatePermission(localTab.TabID, local);
-                    Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    //UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
+                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
                 }
                 else
                 {
-                    var local = new TabPermissionInfo
+                    local = new TabPermissionInfo
                     {
                         TabID = localTab.TabID,
+                        UserID = Util.GetUserIdByName(_importJob, other.UserID, other.Username),
                         Username = other.Username,
-                        RoleID = other.RoleID,
-                    }
-                    //TODO
-                    Result.AddLogEntry("Added tab permission", other.PermissionKey);
-                }
+                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1, //TODO: is this right? Won't give false role?
+                        RoleName = other.RoleName,
+                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
+                        PermissionKey = other.PermissionKey,
+                        AllowAccess = other.AllowAccess,
+                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1
+                    };
 
-                var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
-                    local.TabPermissionID, createdBy, modifiedBy);
-                */
+                    other.LocalId = localTab.TabPermissions.Add(local);
+                    var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                    var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
+                        local.TabPermissionID, createdBy, modifiedBy);
+
+                    Result.AddLogEntry("Added tab permission", other.PermissionKey);
+                    count++;
+                }
             }
 
-            return tabPermissions.Count;
+            return count;
         }
 
         private int ImportTabUrls(TabInfo localTab, ExportTab otherTab)
         {
+            var count = 0;
             var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.ReferenceId ?? -1).ToList();
+            var localUrls = localTab.TabUrls;
             foreach (var other in tabUrls)
             {
-                switch (_importDto.CollisionResolution)
+                var local = localUrls.FirstOrDefault(url =>
+                    string.Equals(url.Url, other.Url, StringComparison.InvariantCultureIgnoreCase));
+
+                var isUpdate = false;
+                if (local != null)
                 {
-                    case CollisionResolution.Overwrite:
-                        //if (localTab.TabSettings[other.SettingName].ToString() != other.SettingValue)
-                        //{
-                        //    // the next will clear the cache
-                        //    _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
-                        //
-                        //    var createdBy = Util.GetUserIdOrName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                        //    var modifiedBy = Util.GetUserIdOrName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        //    _dataProvider.UpdateSettingRecordChangers("TabSettings", "TabID",
-                        //        localTab.TabID, other.SettingName, createdBy, modifiedBy);
-                        //    Result.AddLogEntry("Updated tab URL", other.UrlKey);
-                        //}
-                        //else
-                        //{
-                        //    goto case CollisionResolution.Ignore;
-                        //}
-                        break;
-                    case CollisionResolution.Ignore:
-                        Result.AddLogEntry("Ignored tab URL", other.Url);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                    switch (_importDto.CollisionResolution)
+                    {
+                        case CollisionResolution.Overwrite:
+                            isUpdate = true;
+                            break;
+                        case CollisionResolution.Ignore:
+                            Result.AddLogEntry("Ignored tab url", other.QueryString);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
+                    }
+                }
+
+                if (isUpdate)
+                {
+                    //TODO
+                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    count++;
+                }
+                else
+                {
+                    local = new TabUrlInfo
+                    {
+                        TabId = localTab.TabID,
+                        CultureCode = other.CultureCode,
+                        HttpStatus = other.HttpStatus,
+                        IsSystem = other.IsSystem,
+                        PortalAliasId = -1, //TODO: check what to do here
+                        PortalAliasUsage = (PortalAliasUsageType)(other.PortalAliasUsage ?? 0), // reset to default
+                        QueryString = other.QueryString,
+                        SeqNum = other.SeqNum,
+                        Url = other.Url,
+                    };
+
+
+                    //TODO: fix the TabURlInfo primary key then use this one
+                    //other.LocalId = localTab.TabUrls.Add(local);
+                    //var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                    //var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    //_dataProvider.UpdateRecordChangers("TabUrls", "TabPermissionID",
+                    //    local.TabId, createdBy, modifiedBy);
+                    //
+                    //Result.AddLogEntry("Added tab permission", other.Url);
+                    count++;
                 }
             }
 
-            return tabUrls.Count;
+            return count;
         }
 
         private static int GetParentLocalTabId(int otherTabId, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
@@ -442,7 +475,7 @@ namespace Dnn.ExportImport.Components.Services
 
         #region export methods
 
-        private void ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, int[] selectedPages)
+        private void ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, PageToExport[] selectedPages)
         {
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
@@ -452,7 +485,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var toDate = exportJob.CreatedOnDate.ToLocalTime();
             var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
-            var isAllIncluded = selectedPages.Any(id => id == -1);
+            var isAllIncluded = selectedPages.Any(p => p.TabId == -1);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                 exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
@@ -464,14 +497,14 @@ namespace Dnn.ExportImport.Components.Services
 
             //Note: We assume child tabs have bigger TabID values for restarting from checkpoints.
             //      Anything other than this might not work properly with shedule restarts.
-            foreach (var pg in allTabs)
+            foreach (var otherPg in allTabs)
             {
                 if (CheckCancelled(exportJob)) break;
 
-                if (_totals.LastProcessedId > pg.TabID) continue;
+                if (_totals.LastProcessedId > otherPg.TabID) continue;
 
-                var tab = _tabController.GetTab(pg.TabID, portalId);
-                if (isAllIncluded || IsTabIncluded(pg, allTabs, selectedPages))
+                var tab = _tabController.GetTab(otherPg.TabID, portalId);
+                if (isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var exportPage = SaveExportPage(tab);
 
@@ -568,9 +601,8 @@ namespace Dnn.ExportImport.Components.Services
                     _totals.TotalModuleSettings +=
                         SaveModuleSettings(exportModule, toDate, fromDate);
 
-                    //TODO: the sp is missing, so comment the code.
-                    //_totals.TotalPermissions +=
-                    //    SaveModulePermissions(exportModule, toDate, fromDate);
+                    _totals.TotalPermissions +=
+                        SaveModulePermissions(exportModule, toDate, fromDate);
 
                     if (exportDto.IncludeContent)
                     {
@@ -686,13 +718,29 @@ namespace Dnn.ExportImport.Components.Services
 
         #endregion
 
-        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, int[] selectedPages)
+        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
         {
+            var first = true;
             do
             {
-                if (selectedPages.Any(id => id == tab.TabID))
-                    return true;
+                var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
+                if (pg != null)
+                {
+                    // this is the current page or a parent page for the one we are checking for.
+                    if (pg.CheckedState == TriCheckedState.UnChecked)
+                        return false;
 
+                    // this is the current page or a parent page for the one we are checking for.
+                    // it must be fully checked
+                    if (pg.CheckedState == TriCheckedState.Checked)
+                        return true;
+
+                    // this is the current page we are checking for and it is partially checked.
+                    if (first)
+                        return true;
+                }
+
+                first = false;
                 tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
             } while (tab != null);
 
