@@ -202,7 +202,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     //Stage 2 starts
                     var localFolders =
-                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateUtils.GetDatabaseTime().AddYears(1), null)).ToList();
+                        CBO.FillCollection<ExportFolder>(DataProvider.Instance().GetFolders(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null)).ToList();
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
@@ -211,10 +211,9 @@ namespace Dnn.ExportImport.Components.Services
                     if (CheckPointStageCallback(this)) return;
 
                     var progressStep = 90.0 / totalFolders;
-
-                    foreach (var sourceFolder in sourceFolders)
+                    using (var db = DataContext.Instance())
                     {
-                        using (var db = DataContext.Instance())
+                        foreach (var sourceFolder in sourceFolders)
                         {
                             /** PROCESS FOLDERS **/
                             //Create new or update existing folder
@@ -241,7 +240,7 @@ namespace Dnn.ExportImport.Components.Services
                                     var localPermissions =
                                         CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
                                             .GetFolderPermissionsByPath(portalId, sourceFolder.FolderPath,
-                                                DateUtils.GetDatabaseTime().AddYears(1), null));
+                                                DateUtils.GetDatabaseUtcTime().AddYears(1), null));
 
                                     foreach (var folderPermission in sourceFolderPermissions)
                                     {
@@ -265,7 +264,8 @@ namespace Dnn.ExportImport.Components.Services
                                 //File local files in the system related to the folder
                                 var localFiles =
                                     CBO.FillCollection<ExportFile>(DataProvider.Instance()
-                                        .GetFiles(portalId, sourceFolder.FolderId, DateUtils.GetDatabaseTime().AddYears(1), null));
+                                        .GetFiles(portalId, sourceFolder.FolderId,
+                                            DateUtils.GetDatabaseUtcTime().AddYears(1), null));
 
                                 foreach (var file in sourceFiles)
                                 {
@@ -274,12 +274,13 @@ namespace Dnn.ExportImport.Components.Services
                                 }
                                 totalFilesImported += sourceFiles.Count;
                             }
+
+                            currentIndex++;
+                            CheckPoint.ProcessedItems++;
+                            CheckPoint.Progress += progressStep;
+                            //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                         }
-                        currentIndex++;
-                        CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress += progressStep;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     currentIndex = 0;
                     CheckPoint.Stage++;
@@ -351,7 +352,7 @@ namespace Dnn.ExportImport.Components.Services
             if (isUpdate)
             {
                 existingFolder.LastModifiedByUserId = modifiedBy;
-                existingFolder.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                existingFolder.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 existingFolder.LastUpdated = folder.LastUpdated;
                 existingFolder.IsProtected = folder.IsProtected;
                 existingFolder.IsCached = folder.IsCached;
@@ -382,9 +383,9 @@ namespace Dnn.ExportImport.Components.Services
                             CultureInfo.InvariantCulture))?.LocalId;
                 }
                 folder.CreatedByUserId = createdBy;
-                folder.CreatedOnDate = DateUtils.GetDatabaseTime();
+                folder.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
                 folder.LastModifiedByUserId = modifiedBy;
-                folder.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                folder.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 //ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
                 {
@@ -464,7 +465,7 @@ namespace Dnn.ExportImport.Components.Services
             if (isUpdate)
             {
                 existingFolderPermission.LastModifiedByUserId = modifiedBy;
-                existingFolderPermission.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                existingFolderPermission.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 existingFolderPermission.FolderId = folderPermission.FolderId;
                 existingFolderPermission.AllowAccess = folderPermission.AllowAccess;
                 repExportFolderPermission.Update(existingFolderPermission);
@@ -481,7 +482,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     folderPermission.FolderPermissionId = 0;
                     folderPermission.LastModifiedByUserId = modifiedBy;
-                    folderPermission.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                    folderPermission.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                     folderPermission.PermissionId = Convert.ToInt32(permissionId, CultureInfo.InvariantCulture);
                     if (folderPermission.UserId != null && folderPermission.UserId > 0)
                     {
@@ -497,7 +498,7 @@ namespace Dnn.ExportImport.Components.Services
                         folderPermission.CreatedByUserName);
 
                     folderPermission.CreatedByUserId = createdBy;
-                    folderPermission.CreatedOnDate = DateUtils.GetDatabaseTime();
+                    folderPermission.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
                     repExportFolderPermission.Insert(folderPermission);
                 }
             }
@@ -531,7 +532,7 @@ namespace Dnn.ExportImport.Components.Services
             file.PortalId = portalId;
             if (isUpdate)
             {
-                existingFile.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                existingFile.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 existingFile.LastModifiedByUserId = modifiedBy;
                 file.FileId = existingFile.FileId;
                 ExportFile.MapFile(existingFile, file);
@@ -552,9 +553,9 @@ namespace Dnn.ExportImport.Components.Services
                 file.FileId = 0;
                 var createdBy = Util.GetUserIdByName(importJob, file.CreatedByUserId, file.CreatedByUserName);
                 file.CreatedByUserId = createdBy;
-                file.CreatedOnDate = DateUtils.GetDatabaseTime();
+                file.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
                 file.LastModifiedByUserId = modifiedBy;
-                file.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                file.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 repExportFile.Insert(file);
                 if (file.Content != null)
                     DotNetNuke.Data.DataProvider.Instance().UpdateFileContent(file.FileId, file.Content);

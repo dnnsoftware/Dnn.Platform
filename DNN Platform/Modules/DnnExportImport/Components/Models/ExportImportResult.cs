@@ -59,7 +59,7 @@ namespace Dnn.ExportImport.Components.Models
                 Name = name,
                 Value = value,
                 IsSummary = isSummary,
-                CreatedOnDate = DateUtils.GetDatabaseTime(),
+                CreatedOnDate = DateUtils.GetDatabaseUtcTime(),
             };
 
             CompleteLog.Add(item);

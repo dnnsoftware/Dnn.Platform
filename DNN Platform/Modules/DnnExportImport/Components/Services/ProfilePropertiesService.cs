@@ -74,12 +74,12 @@ namespace Dnn.ExportImport.Components.Services
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
             CheckPointStageCallback(this);
-
-            foreach (var profileProperty in profileProperties)
+            using (var db = DataContext.Instance())
             {
-                if (CheckCancelled(importJob)) return;
-                using (var db = DataContext.Instance())
+                foreach (var profileProperty in profileProperties)
                 {
+                    if (CheckCancelled(importJob)) return;
+
                     var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                         .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
                     var modifiedById = Util.GetUserIdByName(importJob, profileProperty.LastModifiedByUserId,
@@ -128,7 +128,7 @@ namespace Dnn.ExportImport.Components.Services
             profileProperty.PropertyDefinitionId = 0;
             profileProperty.PortalId = importJob.PortalId;
             profileProperty.CreatedOnDate =
-                profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
             profileProperty.CreatedByUserId = createdById;
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
@@ -144,7 +144,7 @@ namespace Dnn.ExportImport.Components.Services
             profileProperty.PortalId = existingProfileProperty.PortalId;
             profileProperty.CreatedOnDate = existingProfileProperty.CreatedOnDate;
             profileProperty.CreatedByUserId = createdById;
-            profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+            profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
             profileProperty.LastModifiedByUserId = modifiedById;
             var repProfileProperty = db.GetRepository<ExportProfileProperty>();
             repProfileProperty.Update(profileProperty);

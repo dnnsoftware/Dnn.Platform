@@ -220,11 +220,12 @@ namespace Dnn.ExportImport.Components.Services
                     var users =
                         Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
-                    foreach (var user in users)
+                    using (var db = DataContext.Instance())
                     {
-                        if (CheckCancelled(importJob)) return;
-                        using (var db = DataContext.Instance())
+                        foreach (var user in users)
                         {
+                            if (CheckCancelled(importJob)) return;
+
                             var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
                             if (aspNetUser == null)
                             {
@@ -250,14 +251,15 @@ namespace Dnn.ExportImport.Components.Services
                             //Update the source repository local ids.
                             Repository.UpdateItem(user);
                             Repository.UpdateItem(userPortal);
-                        }
-                        currentIndex++;
-                        CheckPoint.ProcessedItems++;
-                        if (currentIndex % progressStep == 0)
-                            CheckPoint.Progress += 1;
 
-                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                            currentIndex++;
+                            CheckPoint.ProcessedItems++;
+                            if (currentIndex % progressStep == 0)
+                                CheckPoint.Progress += 1;
+
+                            //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                        }
                     }
                     totalUsersImported += currentIndex;
                     currentIndex = 0;//Reset current index to 0
@@ -326,7 +328,7 @@ namespace Dnn.ExportImport.Components.Services
                 user.UserId = 0;
                 user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
                 user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
-                user.CreatedOnDate = user.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                user.CreatedOnDate = user.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 repUser.Insert(user);
                 Result.AddLogEntry("Added user", user.Username);
             }
@@ -366,7 +368,7 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 userPortal.UserPortalId = 0;
-                userPortal.CreatedDate = DateUtils.GetDatabaseTime();
+                userPortal.CreatedDate = DateUtils.GetDatabaseUtcTime();
                 repUserPortal.Insert(userPortal);
                 //Result.AddLogEntry("Added user portal", $"{username}/{userPortal.PortalId}");
             }
@@ -386,7 +388,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 aspNetUser.UserId = Guid.Empty;
                 aspNetUser.ApplicationId = applicationId;
-                aspNetUser.LastActivityDate = DateUtils.GetDatabaseTime();
+                aspNetUser.LastActivityDate = DateUtils.GetDatabaseUtcTime();
                 var repAspnetUsers = db.GetRepository<ExportAspnetUser>();
                 repAspnetUsers.Insert(aspNetUser);
                 //aspNetUser.LocalId = aspNetUser.UserId;
@@ -395,7 +397,7 @@ namespace Dnn.ExportImport.Components.Services
                 var repAspnetMembership = db.GetRepository<ExportAspnetMembership>();
                 aspnetMembership.UserId = aspNetUser.UserId;
                 aspnetMembership.ApplicationId = applicationId;
-                aspnetMembership.CreateDate = DateUtils.GetDatabaseTime();
+                aspnetMembership.CreateDate = DateUtils.GetDatabaseUtcTime();
                 aspnetMembership.LastLoginDate =
                     aspnetMembership.LastPasswordChangedDate =
                         aspnetMembership.LastLockoutDate =

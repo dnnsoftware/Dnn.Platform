@@ -90,23 +90,25 @@ namespace Dnn.ExportImport.Components.Services
                     if (CheckCancelled(importJob)) return;
                     var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
-                    foreach (var user in users)
+                    using (var db = DataContext.Instance())
                     {
-                        if (CheckCancelled(importJob)) return;
-                        var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
-                        var userAuthentication =
-                            Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                        var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
-
-                        using (var db = DataContext.Instance())
+                        foreach (var user in users)
                         {
+                            if (CheckCancelled(importJob)) return;
+                            var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                            var userAuthentication =
+                                Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                            var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
+
+
                             ProcessUserRoles(importJob, importDto, db, userRoles, user.UserId, user.Username);
                             totalUserRolesImported += userRoles.Count;
 
                             ProcessUserProfiles(importJob, importDto, db, userProfiles, user.UserId, user.Username);
                             totalProfilesImported += userProfiles.Count;
 
-                            ProcessUserAuthentications(importJob, importDto, db, userAuthentication, user.UserId, user.Username);
+                            ProcessUserAuthentications(importJob, importDto, db, userAuthentication, user.UserId,
+                                user.Username);
                             if (userAuthentication != null) totalAuthenticationImported++;
                             //Update the source repository local ids.
                             Repository.UpdateItems(userRoles);
@@ -114,13 +116,14 @@ namespace Dnn.ExportImport.Components.Services
                             Repository.UpdateItem(userAuthentication);
                             DataProvider.Instance()
                                 .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
+
+                            currentIndex++;
+                            CheckPoint.ProcessedItems++;
+                            if (totalProcessed % progressStep == 0)
+                                CheckPoint.Progress += 1;
+                            //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                         }
-                        currentIndex++;
-                        CheckPoint.ProcessedItems++;
-                        if (totalProcessed % progressStep == 0)
-                            CheckPoint.Progress += 1;
-                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalProcessed += currentIndex;
                     currentIndex = 0;//Reset current index to 0
@@ -179,9 +182,9 @@ namespace Dnn.ExportImport.Components.Services
 
                 userRole.UserId = userId;
                 userRole.RoleId = roleId.Value;
-                userRole.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+                userRole.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
                 userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?)DateUtils.GetDatabaseTime()
+                    ? (DateTime?)DateUtils.GetDatabaseUtcTime()
                     : null;
                 userRole.LastModifiedByUserId = modifiedById;
                 if (isUpdate)
@@ -198,7 +201,7 @@ namespace Dnn.ExportImport.Components.Services
                         userRole.CreatedByUserName);
                     userRole.UserRoleId = 0;
                     userRole.CreatedByUserId = createdById;
-                    userRole.CreatedOnDate = DateUtils.GetDatabaseTime();
+                    userRole.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
                     repUserRoles.Insert(userRole);
                     //Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
                 }
@@ -232,7 +235,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
                 userProfile.UserId = userId;
-                userProfile.LastUpdatedDate = DateUtils.GetDatabaseTime();
+                userProfile.LastUpdatedDate = DateUtils.GetDatabaseUtcTime();
                 if (isUpdate)
                 {
                     userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
@@ -280,7 +283,7 @@ namespace Dnn.ExportImport.Components.Services
             }
             var modifiedById = Util.GetUserIdByName(importJob, userAuthentication.LastModifiedByUserId,
                 userAuthentication.LastModifiedByUserName);
-            userAuthentication.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+            userAuthentication.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
             userAuthentication.LastModifiedByUserId = modifiedById;
             userAuthentication.UserId = userId;
             if (isUpdate)
@@ -294,7 +297,7 @@ namespace Dnn.ExportImport.Components.Services
                 userAuthentication.UserAuthenticationId = 0;
                 var createdById = Util.GetUserIdByName(importJob, userAuthentication.CreatedByUserId,
                  userAuthentication.CreatedByUserName);
-                userAuthentication.CreatedOnDate = DateUtils.GetDatabaseTime();
+                userAuthentication.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
                 userAuthentication.CreatedByUserId = createdById;
                 repUserAuthentication.Insert(userAuthentication);
                 //Result.AddLogEntry("Added user authentication", username);
