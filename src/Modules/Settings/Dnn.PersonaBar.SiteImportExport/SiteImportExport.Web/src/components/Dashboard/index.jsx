@@ -14,9 +14,7 @@ import Localization from "localization";
 import JobRow from "./JobRow";
 import FiltersBar from "./FiltersBar";
 import JobDetails from "./JobDetails";
-import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
-/*eslint-disable*/
 class DashboardPanelBody extends Component {
     constructor() {
         super();
@@ -28,14 +26,12 @@ class DashboardPanelBody extends Component {
             pageSize: 10,
             filter: null,
             keyword: "",
-            openId: "",
-            lastExportTime: "",
-            lastImportTime: ""
+            openId: ""
         };
     }
 
     componentWillMount() {
-        const { props, state } = this;
+        const { props } = this;
         if (props.portals.length === 0) {
             props.dispatch(ImportExportActions.getPortals());
         }
@@ -72,16 +68,8 @@ class DashboardPanelBody extends Component {
     getLastJobTime(portalId) {
         const { props } = this;
         if (portalId > -1) {
-            props.dispatch(ImportExportActions.getLastJobTime({ "portal": portalId, "jobType": "Export" }, (date) => {
-                this.setState({
-                    lastExportTime: date.lastTime
-                });
-            }));
-            props.dispatch(ImportExportActions.getLastJobTime({ "portal": portalId, "jobType": "Import" }, (date) => {
-                this.setState({
-                    lastImportTime: date.lastTime
-                });
-            }));
+            props.dispatch(ImportExportActions.getLastExportTime({ "portal": portalId, "jobType": "Export" }));
+            props.dispatch(ImportExportActions.getLastImportTime({ "portal": portalId, "jobType": "Import" }));
         }
     }
 
@@ -251,8 +239,8 @@ class DashboardPanelBody extends Component {
                             label={Localization.get("LastExport")} />
                     </div>
                     <div className="action-dates">
-                        <div>{state.lastImportTime}</div>
-                        <div>{state.lastExportTime}</div>
+                        <div>{props.lastImportTime || "-- --"}</div>
+                        <div>{props.lastExportTime || "-- --"}</div>
                     </div>
                 </div>
                 <div className="action-buttons">
@@ -401,7 +389,9 @@ DashboardPanelBody.propTypes = {
     totalJobs: PropTypes.number,
     portalName: PropTypes.string,
     selectPanel: PropTypes.func,
-    portalId: PropTypes.number
+    portalId: PropTypes.number,
+    lastExportTime: PropTypes.string,
+    lastImportTime: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -410,7 +400,9 @@ function mapStateToProps(state) {
         portalId: state.importExport.portalId,
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
-        portalName: state.importExport.portalName
+        portalName: state.importExport.portalName,
+        lastExportTime: state.importExport.lastExportDate,
+        lastImportTime: state.importExport.lastImportDate
     };
 }
 

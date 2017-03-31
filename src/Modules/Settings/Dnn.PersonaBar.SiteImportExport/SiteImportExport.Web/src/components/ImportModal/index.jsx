@@ -10,12 +10,12 @@ import {
     CheckMarkIcon
 } from "dnn-svg-icons";
 import Localization from "localization";
-import PackageCardOverlay from "./PackageCardOverlay";
+import ImportSummary from "./ImportSummary";
+import PackagesList from "./PackagesList";
 import Button from "dnn-button";
-import Label from "dnn-label";
-import Switch from "dnn-switch";
 import GridCell from "dnn-grid-cell";
 import FiltersBar from "./FiltersBar";
+import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
 
@@ -65,13 +65,18 @@ class ImportModal extends Component {
 
     selectPackage(pkg) {
         const { props } = this;
-        props.dispatch(ImportExportActions.selectPackage(pkg, () => {
-            let { importRequest } = this.state;
-            importRequest.PackageId = pkg.PackageId;
-            this.setState({
-                importRequest
-            });
-        }));
+        if (props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) {
+            props.dispatch(ImportExportActions.selectPackage());
+        }
+        else {
+            props.dispatch(ImportExportActions.selectPackage(pkg, () => {
+                let { importRequest } = this.state;
+                importRequest.PackageId = pkg.PackageId;
+                this.setState({
+                    importRequest
+                });
+            }));
+        }
     }
 
     cancelImport() {
@@ -120,64 +125,6 @@ class ImportModal extends Component {
         }));
     }
 
-    /* eslint-disable react/no-danger */
-    renderTemplateThumbnail(imgData) {
-        if (imgData) {
-            return <img className="package-image" src={"data:image/jpeg;base64," + btoa(imgData)}></img>;
-        }
-        else {
-            return <div className="template-icon" dangerouslySetInnerHTML={{ __html: TemplateIcon }}></div>;
-        }
-    }
-
-    renderPackagesList() {
-        const { props } = this;
-        if (props.importPackages && props.importPackages.length > 0) {
-            return <div className="package-card-wrapper">
-                {props.importPackages.map((pkg, index) => {
-                    return <div className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
-                        <div className="card-grid">
-                            <GridCell columnSize={35} className="left-column">
-                                <div className="package-name">{pkg.Name}</div>
-                                <div className="package-field">{pkg.ExporTime}</div>
-                            </GridCell>
-                            <GridCell columnSize={40} className="middle-column">
-                                <div className="package-field">{Localization.get("FileName") + pkg.FileName}</div>
-                                <div className="package-field">{Localization.get("Website") + pkg.PortalName}</div>
-                            </GridCell>
-                            <GridCell columnSize={25} className="right-column">
-                                <div className="package-field">{Localization.get("Mode") + pkg.ExportMode}</div>
-                                <div className="package-field">{Localization.get("FileSize") + "999"}</div>
-                            </GridCell>
-                        </div>
-                        <PackageCardOverlay selectPackage={this.selectPackage.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
-                        {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
-                            <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
-                        }
-                    </div>;
-                })}
-            </div>;
-        }
-        else return <div className="noPackages">{Localization.get("NoPackages")}</div>;
-    }
-
-    renderPackageVerification() {
-        const { props } = this;
-        return <div>
-            {props.selectedPackage && <div className="package-analyzing">
-                <div className="package-file">{props.selectedPackage.FileName}</div>
-                <div className="analyzing-wrapper">
-                    <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
-                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : HourglassIcon }}>
-                    </div>
-                    <div className="analyzing-message">
-                        {props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}
-                    </div>
-                </div>
-            </div>}
-        </div>;
-    }
-
     getSummaryItem(category) {
         const { props } = this;
         let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
@@ -191,149 +138,6 @@ class ImportModal extends Component {
         this.setState({
             importRequest
         });
-    }
-
-    renderImportSummary() {
-        const { props, state } = this;
-        return <div style={{ float: "left", width: "100%" }}>
-            {props.importSummary && props.selectedPackage &&
-                <div className="import-summary">
-                    <div className="sectionTitle">{Localization.get("ImportSummary")}</div>
-                    <GridCell className="import-site-container">
-                        <div className="left-column">
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Pages")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Users")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Roles")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Roles")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Vocabularies")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("PageTemplates")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("PageTemplates")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Vocabularies")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("IncludeProfileProperties")}
-                                />
-                                <div className="import-summary-item">{props.importSummary.IncludeProfileProperties.toString()}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("IncludePermissions")}
-                                />
-                                <div className="import-summary-item">{props.importSummary.IncludePermissions.toString()}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("IncludeExtensions")}
-                                />
-                                <div className="import-summary-item">{props.importSummary.IncludeExtensions.toString()}</div>
-                            </GridCell>
-                        </div>
-                        <div className="right-column">
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("FileName")}
-                                />
-                                <div className="import-summary-item">{props.selectedPackage.FileName}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Timestamp")}
-                                />
-                                <div className="import-summary-item">{props.importSummary.Timestamp}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("ModulePackages")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Extensions")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Assets")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Assets")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("TotalExportSize")}
-                                />
-                                <div className="import-summary-item">{props.selectedPackage.TotalExportSize}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("ExportMode")}
-                                />
-                                <div className="import-summary-item">
-                                    {props.selectedPackage.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
-                                </div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("LastExport")}
-                                />
-                                <div className="import-summary-item">{props.selectedPackage.LastExport}</div>
-                            </GridCell>
-                            <div className="seperator">
-                                <hr />
-                            </div>
-                            <Label
-                                labelType="inline"
-                                label={Localization.get("OverwriteCollisions")}
-                            />
-                            <Switch
-                                value={state.importRequest.CollisionResolution === 0 ? false : true}
-                                onChange={this.onSwitchChange.bind(this)}
-                            />
-                        </div>
-                    </GridCell>
-                    <div className="finish-importing">{Localization.get("FinishImporting")}</div>
-                </div>
-            }
-        </div>;
     }
 
     getNextPage() {
@@ -366,25 +170,84 @@ class ImportModal extends Component {
         });
     }
 
+    onPageChange(currentPage, pageSize) {
+        let { state, props } = this;
+        if (pageSize !== undefined && state.pageSize !== pageSize) {
+            state.pageSize = pageSize;
+        }
+        state.pageIndex = currentPage;
+        this.setState({
+            state
+        }, () => {
+            props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        });
+    }
+
+    /* eslint-disable react/no-danger */
+    renderPackageVerification() {
+        const { props } = this;
+        return <div>
+            {props.selectedPackage && <div className="package-analyzing">
+                <div className="package-file">{props.selectedPackage.FileName}</div>
+                <div className="analyzing-wrapper">
+                    <div className={props.importSummary ? "analyzed-icon" : "analyzing-icon"}
+                        dangerouslySetInnerHTML={{ __html: props.importSummary ? CheckMarkIcon : HourglassIcon }}>
+                    </div>
+                    <div className="analyzing-message">
+                        {props.importSummary ? Localization.get("AnalyzedPackage") : Localization.get("AnalyzingPackage")}
+                    </div>
+                </div>
+            </div>}
+        </div>;
+    }
+
+    renderPager() {
+        const { props, state } = this;
+        return (
+            <div className="packagePager">
+                {props.importPackages && <Pager
+                    showStartEndButtons={false}
+                    showPageSizeOptions={true}
+                    showPageInfo={false}
+                    numericCounters={4}
+                    pageSize={state.pageSize}
+                    totalRecords={props.totalPackages}
+                    onPageChanged={this.onPageChange.bind(this)}
+                    pageSizeDropDownWithoutBorder={true}
+                    pageSizeOptionText={"{0} results per page"}
+                    summaryText={"Showing {0}-{1} of {2} results"}
+                    culture={util.utilities.getCulture()}
+                />}
+            </div>
+        );
+    }
+
     render() {
         const { props, state } = this;
         return (
             <div className={styles.importModal}>
                 <div className="pageTitle">{Localization.get("SelectImportPackage")}</div>
                 <div className="packages-wrapper">
-                    <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
-                        onKeywordChanged={this.onKeywordChanged.bind(this)}
-                    />
+                    {state.wizardStep === 0 &&
+                        <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
+                            onKeywordChanged={this.onKeywordChanged.bind(this)}
+                        />
+                    }
                     <div className="packages">
                         {state.wizardStep === 0 &&
-                            this.renderPackagesList()
+                            <PackagesList selectPackage={this.selectPackage.bind(this)} />
                         }
                         {state.wizardStep === 1 &&
                             this.renderPackageVerification()
                         }
                     </div>
+                    {state.wizardStep === 0 &&
+                        this.renderPager()
+                    }
                     {state.wizardStep === 1 &&
-                        this.renderImportSummary()
+                        <ImportSummary
+                            collisionResolution={state.importRequest.CollisionResolution}
+                            onSwitchChange={this.onSwitchChange.bind(this)} />
                     }
                 </div>
                 <GridCell className="action-buttons">
@@ -409,7 +272,8 @@ ImportModal.propTypes = {
     wizardStep: PropTypes.number,
     importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
-    importSummary: PropTypes.object
+    importSummary: PropTypes.object,
+    totalPackages: PropTypes.number
 };
 
 function mapStateToProps(state) {
@@ -417,7 +281,8 @@ function mapStateToProps(state) {
         wizardStep: state.importExport.importWizardStep,
         importPackages: state.importExport.importPackages,
         selectedPackage: state.importExport.selectedPackage,
-        importSummary: state.importExport.importSummary
+        importSummary: state.importExport.importSummary,
+        totalPackages: state.importExport.totalPackages
     };
 }
 

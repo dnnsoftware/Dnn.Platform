@@ -62,23 +62,8 @@ class ExportModal extends Component {
         exportRequest.PortalId = props.portalId;
         this.setState({
             exportRequest
-        }, () => {
-            props.dispatch(ImportExportActions.getLastJobTime({ "portal": props.portalId, "jobType": "Export" }));
         });
-    }
-
-    componentWillReceiveProps(props) {
-        /*const { state } = this;
-        const { exportRequest } = state;
-        if (exportRequest.PortalId === -1 || exportRequest.PortalId !== props.portalId) {
-            exportRequest.PortalId = props.portalId;
-            this.setState({
-                exportRequest
-            }, () => {
-                props.dispatch(ImportExportActions.getLastJobTime({ "portal": props.portalId, "jobType": "Export" }));
-            });
-        }*/
-    }
+    }    
 
     goToStep(wizardStep) {
         const { props } = this;
