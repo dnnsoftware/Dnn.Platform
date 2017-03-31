@@ -273,7 +273,7 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetFiles(int portalId, int folderId, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetFiles(int portalId, int? folderId, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, toDate, _dataProvider.GetNull(fromDate));
         }

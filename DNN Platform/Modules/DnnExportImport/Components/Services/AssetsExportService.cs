@@ -103,7 +103,7 @@ namespace Dnn.ExportImport.Components.Services
                         var files =
                             CBO.FillCollection<ExportFile>(
                                 DataProvider.Instance()
-                                    .GetFiles(portalId, folder.FolderId, toDate, fromDate));
+                                    .GetFiles(portalId, folder.FolderId, toDate, fromDate)).Where(x => x.Extension != Constants.TemplatesExtension).ToList();
                         int? userId;
                         if (IsUserFolder(folder.FolderPath, out userId))
                         {

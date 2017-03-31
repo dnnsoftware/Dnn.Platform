@@ -112,11 +112,16 @@ namespace Dnn.ExportImport.Components.Repository
         {
             return InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
-
+        
         public int GetCount<T>() where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
             return collection?.Count() ?? 0;
+        }
+        public int GetCount<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            return collection?.Count(predicate) ?? 0;
         }
 
         public IEnumerable<T> GetAllItems<T>(

@@ -37,6 +37,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportDbName = "export.dnndb"; // export database file name
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
         internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
+        internal const string ExportZipTemplates = "export_templates.zip"; //Compressed templates file name
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
@@ -44,6 +45,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         internal const string LastJobStartTimeKey = "EXPORT_LastJobStartTime";
         internal const string MaxTimeToRunJobKey = "EXPORT_MaxTimeToRunJob";
+        internal const string TemplatesExtension = "template";
 
         internal const int LogColumnLength = 255;
 
@@ -59,6 +61,7 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_ProfileProps = "PROFILE_PROPERTIES";
         public const string Category_Content = "CONTENT";
         public const string Category_Templates = "TEMPLATES";
+        public const string Category_Templates_Dnn = "DNN_TEMPLATES";
         public const string Category_Assets = "ASSETS";
         public const string Category_Packages = "PACKAGES";
 

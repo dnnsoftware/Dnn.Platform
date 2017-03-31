@@ -215,6 +215,7 @@ namespace Dnn.ExportImport.Components.Engines
 
                 var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
                 var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
+                var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
                 var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
                 result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
                 var exportFileInfo = new ExportFileInfo
@@ -227,6 +228,12 @@ namespace Dnn.ExportImport.Components.Engines
                     var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
                     exportFileInfo.ExportSizeKb += zipAssetsFInfo.Length / 1000.0;
                     result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
+                }
+                if (File.Exists(zipTemplatesName))
+                {
+                    var zipTemplatesFInfo = new FileInfo(zipTemplatesName); // refresh to get new size
+                    exportFileInfo.ExportSizeKb += zipTemplatesFInfo.Length / 1000.0;
+                    result.AddSummary("Exported Templates File Size", Util.FormatSize(zipTemplatesFInfo.Length));
                 }
                 exportController.CreatePackageManifest(exportJob, exportFileInfo);
             }
@@ -506,7 +513,8 @@ namespace Dnn.ExportImport.Components.Engines
                 includedItems.Add(Constants.Category_Vocabularies);
 
             if (exportDto.IncludeTemplates)
-                includedItems.Add(Constants.Category_Templates);
+                includedItems.Add(DotNetNuke.Application.DotNetNukeContext.Current.Application.SKU == "DNN"
+                    ? Constants.Category_Templates_Dnn : Constants.Category_Templates);
 
             if (exportDto.IncludeProperfileProperties)
                 includedItems.Add(Constants.Category_ProfileProps);
@@ -598,6 +606,7 @@ namespace Dnn.ExportImport.Components.Engines
             Constants.Category_Roles,
             Constants.Category_Vocabularies,
             Constants.Category_Templates,
+            Constants.Category_Templates_Dnn,
             Constants.Category_ProfileProps,
             Constants.Category_Packages
         };

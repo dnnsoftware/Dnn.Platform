@@ -1149,7 +1149,7 @@ AS
     SELECT F.*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
     FROM    
         {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
-    WHERE F.FolderID = @FolderID AND F.PortalID = @PortalID
+    WHERE (F.FolderID = @FolderID OR @FolderID IS NULL) AND F.PortalID = @PortalID
 	AND 
         (CASE 
         WHEN @FromDate IS NULL THEN 0
