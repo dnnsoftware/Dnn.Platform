@@ -310,29 +310,24 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var other in tabUrls)
             {
                 var local = localUrls.FirstOrDefault(url =>
-                    string.Equals(url.Url, other.Url, StringComparison.InvariantCultureIgnoreCase));
+                    url.SeqNum == other.SeqNum);
 
-                var isUpdate = false;
                 if (local != null)
                 {
                     switch (_importDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
-                            isUpdate = true;
+                            local.Url = other.Url;
+
+                            TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
+                            Result.AddLogEntry("Update Tab Url", other.Url);
                             break;
                         case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored tab url", other.QueryString);
+                            Result.AddLogEntry("Ignored tab url", other.Url);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
                     }
-                }
-
-                if (isUpdate)
-                {
-                    //TODO
-                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
-                    count++;
                 }
                 else
                 {
@@ -351,13 +346,13 @@ namespace Dnn.ExportImport.Components.Services
 
 
                     //TODO: fix the TabURlInfo primary key then use this one
-                    //other.LocalId = localTab.TabUrls.Add(local);
-                    //var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                    //var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    //_dataProvider.UpdateRecordChangers("TabUrls", "TabPermissionID",
-                    //    local.TabId, createdBy, modifiedBy);
-                    //
-                    //Result.AddLogEntry("Added tab permission", other.Url);
+                    TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
+
+                    var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
+                    var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    //_dataProvider.UpdateRecordChangers("TabUrls", "TabId", local.TabId, createdBy, modifiedBy);
+
+                    Result.AddLogEntry("Added Tab Url", other.Url);
                     count++;
                 }
             }
