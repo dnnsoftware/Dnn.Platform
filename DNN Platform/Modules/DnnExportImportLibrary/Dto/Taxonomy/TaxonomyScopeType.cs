@@ -21,9 +21,7 @@
 
 // ReSharper disable InconsistentNaming
 
-using Dnn.ExportImport.Dto;
-
-namespace Dnn.ExportImport.Components.Dto.Taxonomy
+namespace Dnn.ExportImport.Dto.Taxonomy
 {
     public class TaxonomyScopeType : BasicExportImportDto
     {

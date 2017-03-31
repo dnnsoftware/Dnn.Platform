@@ -22,9 +22,8 @@
 // ReSharper disable InconsistentNaming
 
 using System;
-using Dnn.ExportImport.Dto;
 
-namespace Dnn.ExportImport.Components.Dto.Roles
+namespace Dnn.ExportImport.Dto.Roles
 {
     public class ExportRoleSetting : BasicExportImportDto
     {

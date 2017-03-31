@@ -1,10 +1,7 @@
-﻿using Dnn.ExportImport.Dto;
-using Newtonsoft.Json;
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
 
-namespace Dnn.ExportImport.Components.Dto.Pages
+namespace Dnn.ExportImport.Dto.Pages
 {
-    [JsonObject]
     public class ExportModuleContent : BasicExportImportDto
     {
         public int ModuleID { get; set; }

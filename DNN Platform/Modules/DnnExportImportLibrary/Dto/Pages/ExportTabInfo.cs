@@ -21,7 +21,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace Dnn.ExportImport.Components.Dto.Pages
+namespace Dnn.ExportImport.Dto.Pages
 {
     public class ExportTabInfo
     {

@@ -20,11 +20,10 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
 
 // ReSharper disable InconsistentNaming
 
-namespace Dnn.ExportImport.Components.Dto.Taxonomy
+namespace Dnn.ExportImport.Dto.Taxonomy
 {
     public class TaxonomyVocabulary : BasicExportImportDto
     {

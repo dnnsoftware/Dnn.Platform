@@ -27,7 +27,7 @@ using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
-using Dnn.ExportImport.Components.Dto.Pages;
+using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Controllers

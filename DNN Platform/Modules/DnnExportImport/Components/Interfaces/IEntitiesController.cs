@@ -22,8 +22,8 @@
 using System;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto.Pages;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Security.Permissions;
 
 namespace Dnn.ExportImport.Components.Interfaces

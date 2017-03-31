@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.Roles;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Providers;
+using Dnn.ExportImport.Dto.Roles;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Roles;
 
