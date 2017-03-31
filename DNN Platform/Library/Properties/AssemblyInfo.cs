@@ -53,3 +53,4 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Professional")]
+[assembly: InternalsVisibleTo("DotNetNuke.SiteExportImport")]

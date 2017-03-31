@@ -19,9 +19,9 @@
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>DotNetNuke.Modules.SiteExportImport</moduleName>
+            <moduleName>DotNetNuke.SiteExportImport</moduleName>
             <foldername>SiteExportImport</foldername>
-            <businessControllerClass>Dnn.ExportImport.Components.Controllers.BusinessController, DotNetNuke.Modules.SiteExportImport</businessControllerClass>
+            <businessControllerClass>Dnn.ExportImport.Components.Controllers.BusinessController, DotNetNuke.SiteExportImport</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
@@ -37,11 +37,11 @@
           <assemblies>
             <assembly>
               <path>bin</path>
-              <name>DotNetNuke.Modules.SiteExportImport.dll</name>
+              <name>DotNetNuke.SiteExportImport.dll</name>
             </assembly>
             <assembly>
               <path>bin</path>
-              <name>DotNetNuke.SiteExportImport.Library</name>
+              <name>DotNetNuke.SiteExportImport.Library.dll</name>
             </assembly>
             <assembly>
               <path>bin</path>

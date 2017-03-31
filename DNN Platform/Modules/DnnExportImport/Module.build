@@ -5,7 +5,7 @@
     <Extension>zip</Extension>
     <DNNFileName>dnn_SiteExportImport</DNNFileName>
     <PackageName>DNNCE_SiteExportImport</PackageName>
-    <ModuleFolderName>$(WebsitePath)\DesktopModules\SiteExportImport</ModuleFolderName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\Admin\SiteExportImport</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

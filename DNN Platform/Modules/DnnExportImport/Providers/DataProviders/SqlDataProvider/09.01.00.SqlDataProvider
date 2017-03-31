@@ -18,7 +18,7 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WH
 GO
 
 IF NOT EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
-				WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
+				WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport')
 BEGIN
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule
 	(   [TypeFullName]
@@ -38,7 +38,7 @@ BEGIN
 	  , [LastModifiedOnDate]
 	  , [FriendlyName]
 	) VALUES
-    (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
+    (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport'
 	  , 1
 	  , N'd'
 	  , 1

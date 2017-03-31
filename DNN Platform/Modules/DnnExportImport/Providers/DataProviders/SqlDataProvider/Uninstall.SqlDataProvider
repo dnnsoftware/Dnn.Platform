@@ -8,9 +8,9 @@ DELETE FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] =
 GO
 
 IF EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
-			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport')
+			WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule
-	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.Modules.SiteExportImport'
+	WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport'
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]', 'P') IS NOT NULL
