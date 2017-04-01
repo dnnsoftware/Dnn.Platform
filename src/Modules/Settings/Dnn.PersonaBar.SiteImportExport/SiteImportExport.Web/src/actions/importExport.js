@@ -39,7 +39,7 @@ const jobsActions = {
                     portals: data.Results
                 });
                 if (callback) {
-                    callback();
+                    callback(data);
                 }
             }, errorCallback);
         };
