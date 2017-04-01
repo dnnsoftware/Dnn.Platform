@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities
         /// <returns>A DateTime</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public DateTime CreatedOnDate { get; private set; }
+        public DateTime CreatedOnDate { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities
         /// <returns>A DateTime</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false), XmlIgnore]
-        public DateTime LastModifiedOnDate { get; private set; }
+        public DateTime LastModifiedOnDate { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

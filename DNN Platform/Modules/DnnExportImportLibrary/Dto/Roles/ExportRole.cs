@@ -28,7 +28,6 @@ namespace Dnn.ExportImport.Dto.Roles
     public class ExportRole : BasicExportImportDto
     {
         public int RoleID { get; set; }
-        public int? PortalID { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
         public decimal? ServiceFee { get; set; }

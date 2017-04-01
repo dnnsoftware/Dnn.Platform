@@ -28,14 +28,17 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using Newtonsoft.Json;
+// ReSharper disable SuggestBaseTypeForParameter
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -57,8 +60,9 @@ namespace Dnn.ExportImport.Components.Services
         private ProgressTotals _totals;
         private Providers.DataProvider _dataProvider;
         private ITabController _tabController;
-        private ExportImportJob _importJob;
+        private ExportImportJob _exportImportJob;
         private ImportDto _importDto;
+        private ExportDto _exportDto;
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
@@ -70,8 +74,10 @@ namespace Dnn.ExportImport.Components.Services
             var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.Partial);
             if (checkedPages.Any())
             {
+                _exportImportJob = exportJob;
+                _exportDto = exportDto;
                 _tabController = TabController.Instance;
-                ProcessExportPages(exportJob, exportDto, exportDto.Pages);
+                ProcessExportPages();
             }
 
             CheckPoint.Progress = 100;
@@ -85,7 +91,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(importJob)) return;
 
-            _importJob = importJob;
+            _exportImportJob = importJob;
             _importDto = importDto;
             _tabController = TabController.Instance;
 
@@ -111,7 +117,7 @@ namespace Dnn.ExportImport.Components.Services
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
 
-            var portalId = _importJob.PortalId;
+            var portalId = _exportImportJob.PortalId;
 
             var localTabs = _tabController.GetTabsByPortal(portalId).Values;
 
@@ -123,7 +129,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var otherTab in exportedTabs)
             {
-                if (CheckCancelled(_importJob)) break;
+                if (CheckCancelled(_exportImportJob)) break;
                 if (_totals.LastProcessedId > otherTab.Id) continue; // this is the exported DB row ID; not the TabID
 
                 ProcessImportPage(otherTab, exportedTabs, localTabs.ToList());
@@ -140,9 +146,9 @@ namespace Dnn.ExportImport.Components.Services
 
         protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs)
         {
-            var portalId = _importJob.PortalId;
-            var createdBy = Util.GetUserIdByName(_importJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
-            var modifiedBy = Util.GetUserIdByName(_importJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
+            var portalId = _exportImportJob.PortalId;
+            var createdBy = Util.GetUserIdByName(_exportImportJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
+            var modifiedBy = Util.GetUserIdByName(_exportImportJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
 
             if (localTab != null)
@@ -198,9 +204,9 @@ namespace Dnn.ExportImport.Components.Services
             _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab);
             _totals.TotalUrls += ImportTabUrls(localTab, otherTab);
             _totals.TotalAliasSkins += ImportTabAliasSkins(localTab, otherTab);
-
-            //TODO: add related items
-            throw new NotImplementedException();
+            _totals.TotalModules += ImportTabModulesAndRelatedItems(localTab, otherTab);
+            _totals.TotalTabModules += ImportTabModules(localTab, otherTab);
+            _totals.TotalTabModuleSettings += ImportTabModuleSettings(localTab, otherTab);
         }
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab)
@@ -216,8 +222,8 @@ namespace Dnn.ExportImport.Components.Services
                             // the next will clear the cache
                             _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
 
-                            var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                            var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                            var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                            var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                             _dataProvider.UpdateSettingRecordChangers("TabSettings", "TabID",
                                 localTab.TabID, other.SettingName, createdBy, modifiedBy);
                             Result.AddLogEntry("Updated tab setting", other.SettingName);
@@ -279,19 +285,20 @@ namespace Dnn.ExportImport.Components.Services
                     local = new TabPermissionInfo
                     {
                         TabID = localTab.TabID,
-                        UserID = Util.GetUserIdByName(_importJob, other.UserID, other.Username),
+                        UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
                         Username = other.Username,
                         RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1, //TODO: is this right? Won't give false role?
                         RoleName = other.RoleName,
                         ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
                         PermissionKey = other.PermissionKey,
                         AllowAccess = other.AllowAccess,
-                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1
+                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+
                     };
 
                     other.LocalId = localTab.TabPermissions.Add(local);
-                    var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                     _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
                         local.TabPermissionID, createdBy, modifiedBy);
 
@@ -332,19 +339,19 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
+                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(_importDto.PortalId).FirstOrDefault(a => a.IsPrimary);
                     local = new TabUrlInfo
                     {
                         TabId = localTab.TabID,
                         CultureCode = other.CultureCode,
                         HttpStatus = other.HttpStatus,
                         IsSystem = other.IsSystem,
-                        PortalAliasId = -1, //TODO: check what to do here
+                        PortalAliasId = alias?.PortalAliasID ?? -1,
                         PortalAliasUsage = (PortalAliasUsageType)(other.PortalAliasUsage ?? 0), // reset to default
                         QueryString = other.QueryString,
                         SeqNum = other.SeqNum,
                         Url = other.Url,
                     };
-
 
                     TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
 
@@ -354,6 +361,7 @@ namespace Dnn.ExportImport.Components.Services
                     //_dataProvider.UpdateRecordChangers("TabUrls", "TabId", local.TabId, createdBy, modifiedBy);
 
                     Result.AddLogEntry("Added Tab Url", other.Url);
+                    Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
                     count++;
                 }
             }
@@ -373,6 +381,8 @@ namespace Dnn.ExportImport.Components.Services
                     var local = localALiasSkins.FirstOrDefault(alias =>
                         alias.SkinSrc != other.SkinSrc || alias.HttpAlias != other.HTTPAlias);
 
+                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                     if (local != null)
                     {
                         switch (_importDto.CollisionResolution)
@@ -380,6 +390,9 @@ namespace Dnn.ExportImport.Components.Services
                             case CollisionResolution.Overwrite:
                                 local.SkinSrc = other.SkinSrc;
                                 local.HttpAlias = other.HTTPAlias;
+                                local.CreatedByUserID = createdBy;
+                                local.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
+                                local.LastModifiedByUserID = modifiedBy;
 
                                 var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
                                 aliasSkinCtx.Update(local);
@@ -395,32 +408,109 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     else
                     {
+                        var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(_importDto.PortalId).FirstOrDefault(a => a.IsPrimary);
+
                         local = new TabAliasSkinInfo
                         {
                             TabId = localTab.TabID,
                             SkinSrc = other.SkinSrc,
                             HttpAlias = other.HTTPAlias,
-                            PortalAliasId = other.PortalAliasId, //TODO: map properly
-
-                            //TODO: set remaining fields
+                            PortalAliasId = alias?.PortalAliasID ?? -1,
+                            CreatedByUserID = createdBy,
+                            LastModifiedByUserID = modifiedBy,
+                            CreatedOnDate = DateUtils.GetDatabaseLocalTime(),
+                            LastModifiedOnDate = DateTime.Now,
                         };
 
                         var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
                         aliasSkinCtx.Insert(local);
-
-
-                        //TODO: fix the TabURlInfo primary key then use this one
-                        var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                        var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("TabAliasSkins", "TabAliasSkinId", local.TabAliasSkinId, createdBy, modifiedBy);
-
                         Result.AddLogEntry("Added Tab alias skin", other.SkinSrc);
+                        Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
                         count++;
                     }
                 }
             }
 
             return count;
+        }
+
+        private int ImportTabModulesAndRelatedItems(TabInfo localTab, ExportTab otherTab)
+        {
+            var count = 0;
+            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.ReferenceId ?? -1);
+            var localModules = EntitiesController.Instance.GetModules(
+                otherTab.TabId, _exportDto.IncludeDeletions, Constants.MinDbTime, Constants.MaxDbTime);
+            using (var db = DataContext.Instance())
+            {
+                foreach (var other in exportedModules)
+                {
+                    var locals = localModules.Where(m => m.FriendlyName == other.FriendlyName).ToList();
+                    if (locals.Count == 0)
+                    {
+                        var local = new ModuleInfo
+                        {
+
+                        };
+
+                        //TODO:
+                        _totals.TotalModuleSettings += ImportModuleSettings(localTab, otherTab, local, other);
+                        _totals.TotalPermissions += ImportModulePermissions(localTab, otherTab, local, other);
+
+                        if (_exportDto.IncludeContent)
+                        {
+                            _totals.TotalContents += ImportPortableContent(localTab, otherTab, local, other);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var local in locals)
+                        {
+                            //TODO:
+                            _totals.TotalModuleSettings += ImportModuleSettings(localTab, otherTab, local, other);
+                            _totals.TotalPermissions += ImportModulePermissions(localTab, otherTab, local, other);
+
+                            if (_exportDto.IncludeContent)
+                            {
+                                _totals.TotalContents += ImportPortableContent(localTab, otherTab, local, other);
+                            }
+                        }
+                    }
+
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        private int ImportModuleSettings(TabInfo localTab, ExportTab otherTab, object local, ExportModule other)
+        {
+            //TODO: throw new NotImplementedException();
+            return 0;
+        }
+
+        private int ImportModulePermissions(TabInfo localTab, ExportTab otherTab, object local, ExportModule other)
+        {
+            //TODO: throw new NotImplementedException();
+            return 0;
+        }
+
+        private int ImportPortableContent(TabInfo localTab, ExportTab otherTab, object local, ExportModule other)
+        {
+            //TODO: throw new NotImplementedException();
+            return 0;
+        }
+
+        private int ImportTabModules(TabInfo localTab, ExportTab otherTab)
+        {
+            //TODO: throw new NotImplementedException();
+            return 0;
+        }
+
+        private int ImportTabModuleSettings(TabInfo localTab, ExportTab otherTab)
+        {
+            //TODO: throw new NotImplementedException();
+            return 0;
         }
 
         private static int GetParentLocalTabId(int otherTabId, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
@@ -534,20 +624,21 @@ namespace Dnn.ExportImport.Components.Services
 
         #region export methods
 
-        private void ProcessExportPages(ExportImportJob exportJob, ExportDto exportDto, PageToExport[] selectedPages)
+        private void ProcessExportPages()
         {
+            var selectedPages = _exportDto.Pages;
             _totals = string.IsNullOrEmpty(CheckPoint.StageData)
                 ? new ProgressTotals()
                 : JsonConvert.DeserializeObject<ProgressTotals>(CheckPoint.StageData);
 
-            var portalId = exportJob.PortalId;
+            var portalId = _exportImportJob.PortalId;
 
-            var toDate = exportJob.CreatedOnDate.ToLocalTime();
-            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
+            var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
+            var fromDate = _exportDto.FromDate?.DateTime.ToLocalTime();
             var isAllIncluded = selectedPages.Any(p => p.TabId == -1);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
-                exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
+                _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
 
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? allTabs.Count : CheckPoint.TotalItems;
@@ -558,7 +649,7 @@ namespace Dnn.ExportImport.Components.Services
             //      Anything other than this might not work properly with shedule restarts.
             foreach (var otherPg in allTabs)
             {
-                if (CheckCancelled(exportJob)) break;
+                if (CheckCancelled(_exportImportJob)) break;
 
                 if (_totals.LastProcessedId > otherPg.TabID) continue;
 
@@ -580,10 +671,10 @@ namespace Dnn.ExportImport.Components.Services
                         SaveTabAliasSkins(exportPage, toDate, fromDate);
 
                     _totals.TotalModules +=
-                        SaveTabModulesAndRelatedItems(exportDto, exportPage, exportDto.IncludeDeletions, toDate, fromDate);
+                        SaveTabModulesAndRelatedItems(exportPage, toDate, fromDate);
 
                     _totals.TotalTabModules +=
-                        SaveTabModules(exportPage, exportDto.IncludeDeletions, toDate, fromDate);
+                        SaveTabModules(exportPage, _exportDto.IncludeDeletions, toDate, fromDate);
 
                     _totals.TotalTabModuleSettings +=
                         SaveTabModuleSettings(exportPage, toDate, fromDate);
@@ -649,9 +740,9 @@ namespace Dnn.ExportImport.Components.Services
             return tabModuleSettings.Count;
         }
 
-        private int SaveTabModulesAndRelatedItems(ExportDto exportDto, ExportTab exportPage, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        private int SaveTabModulesAndRelatedItems(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            var modules = EntitiesController.Instance.GetModules(exportPage.TabId, includeDeleted, toDate, fromDate);
+            var modules = EntitiesController.Instance.GetModules(exportPage.TabId, _exportDto.IncludeDeletions, toDate, fromDate);
             if (modules.Count > 0)
             {
                 Repository.CreateItems(modules, exportPage.ReferenceId);
@@ -663,10 +754,10 @@ namespace Dnn.ExportImport.Components.Services
                     _totals.TotalPermissions +=
                         SaveModulePermissions(exportModule, toDate, fromDate);
 
-                    if (exportDto.IncludeContent)
+                    if (_exportDto.IncludeContent)
                     {
                         _totals.TotalContents +=
-                            SavePortableContent(exportDto, exportPage, exportModule /*, toDate, fromDate*/);
+                            SavePortableContent(exportPage, exportModule /*, toDate, fromDate*/);
                     }
                 }
             }
@@ -690,10 +781,10 @@ namespace Dnn.ExportImport.Components.Services
             return modulePermission.Count;
         }
 
-        private int SavePortableContent(ExportDto exportDto, ExportTab exportPage, ExportModule exportModule /*, DateTime toDate, DateTime? fromDat*/)
+        private int SavePortableContent(ExportTab exportPage, ExportModule exportModule /*, DateTime toDate, DateTime? fromDat*/)
         {
             var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, exportDto.PortalId);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, _exportDto.PortalId);
             if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
             {
                 try

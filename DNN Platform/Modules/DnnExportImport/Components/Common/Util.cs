@@ -210,15 +210,9 @@ namespace Dnn.ExportImport.Components.Common
                 if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) &&
                     (property.GetValue(item) as DateTime?) == DateTime.MinValue)
                 {
-                    property.SetValue(item, FromEpoch());
+                    property.SetValue(item, Constants.EpochTime);
                 }
             }
-        }
-
-        private static DateTime FromEpoch()
-        {
-            var epoch = new DateTime(1970, 1, 1);
-            return epoch;
         }
 
         private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)

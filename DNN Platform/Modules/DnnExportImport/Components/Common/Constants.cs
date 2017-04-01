@@ -49,6 +49,7 @@ namespace Dnn.ExportImport.Components.Common
 
         internal const int LogColumnLength = 255;
 
+        internal static DateTime EpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
