@@ -84,7 +84,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 var page = context.Handler as CDefault;
                 if (page == null) return;
 
-				page.Init += OnPageInit;
+				page.PreRender += OnPagePreRender;
             }
             catch (Exception ex)
             {
@@ -97,7 +97,7 @@ namespace DotNetNuke.HttpModules.Analytics
             }
         }
 
-		private static void OnPageInit(object sender, EventArgs e)
+		private static void OnPagePreRender(object sender, EventArgs e)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace DotNetNuke.HttpModules.Analytics
             catch (Exception ex)
             {
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-				log.AddProperty("Analytics.AnalyticsModule", "OnPageInit");
+				log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);
