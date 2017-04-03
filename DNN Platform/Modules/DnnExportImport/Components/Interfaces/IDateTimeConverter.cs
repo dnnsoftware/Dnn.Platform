@@ -19,31 +19,19 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Entities.Users;
-using Newtonsoft.Json;
 
-namespace Dnn.ExportImport.Components.Dto.Jobs
+namespace Dnn.ExportImport.Components.Interfaces
 {
-    [JsonObject]
-    public class AllJobsResult : IDateTimeConverter
+    /// <summary>
+    /// Contract to convert all the datetiem properties in the class to User's local time
+    /// </summary>
+    internal interface IDateTimeConverter
     {
-        public int PortalId { get; set; }
-        public string PortalName { get; set; }
-        public int TotalJobs { get; set; }
-        public IEnumerable<JobItem> Jobs { get; set; }
-
-        public void ConvertToLocal(UserInfo userInfo)
-        {
-            if (userInfo == null) return;
-            var tempJobs = new List<JobItem>();
-            foreach (var job in Jobs)
-            {
-                job.ConvertToLocal(userInfo);
-                tempJobs.Add(job);
-            }
-            Jobs = tempJobs;
-        }
+        /// <summary>
+        /// Converts the datetime properties to user locale.
+        /// </summary>
+        /// <param name="userInfo"></param>
+        void ConvertToLocal(UserInfo userInfo);
     }
 }

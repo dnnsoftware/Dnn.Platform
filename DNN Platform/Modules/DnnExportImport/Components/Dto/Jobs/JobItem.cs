@@ -20,12 +20,15 @@
 #endregion
 
 using System;
+using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Interfaces;
+using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto.Jobs
 {
     [JsonObject]
-    public class JobItem
+    public class JobItem : IDateTimeConverter
     {
         public int JobId { get; set; }
         public int PortalId { get; set; }
@@ -40,5 +43,14 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string ExportFile { get; set; }
         //public IEnumerable<LogItem> Summary { get; set; }
         public ImportExportSummary Summary { get; set; }
+
+        public void ConvertToLocal(UserInfo userInfo)
+        {
+            if (userInfo == null) return;
+            Summary?.ConvertToLocal(userInfo);
+            CreatedOn = userInfo.LocalTime(CreatedOn);
+            if (CompletedOn != null)
+                CompletedOn = userInfo.LocalTime(CompletedOn.Value);
+        }
     }
 }

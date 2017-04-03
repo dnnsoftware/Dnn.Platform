@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using Dnn.ExportImport.Components.Interfaces;
+using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
@@ -27,7 +29,7 @@ namespace Dnn.ExportImport.Components.Dto
     /// Export file(s) info.
     /// </summary>
     [JsonObject]
-    public class ExportFileInfo
+    public class ExportFileInfo : IDateTimeConverter
     {
         /// <summary>
         /// Path for exported files.
@@ -37,5 +39,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// Formatted size of export file
         /// </summary>
         public string ExportSize { get; set; }
+
+        public void ConvertToLocal(UserInfo userInfo)
+        {
+            //Nothing to convert.
+        }
     }
 }

@@ -20,12 +20,14 @@
 #endregion
 
 using System;
+using Dnn.ExportImport.Components.Interfaces;
+using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
 {
     [JsonObject]
-    public class ImportPackageInfo
+    public class ImportPackageInfo : IDateTimeConverter
     {
         /// <summary>
         /// Package Id. Used to identify the package and path.
@@ -66,5 +68,11 @@ namespace Dnn.ExportImport.Components.Dto
         /// Path to the thumbnail image for the package.
         /// </summary>
         public string Thumb => PackageId + ".jpg";
+
+        public void ConvertToLocal(UserInfo userInfo)
+        {
+            if (userInfo == null) return;
+            ExporTime = userInfo.LocalTime(ExporTime);
+        }
     }
 }

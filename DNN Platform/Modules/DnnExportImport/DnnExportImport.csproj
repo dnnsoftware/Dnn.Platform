@@ -104,6 +104,7 @@
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
     <Compile Include="Components\Common\Enums.cs" />
+    <Compile Include="Components\Interfaces\IDateTimeConverter.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Models\ExportImportResult.cs" />
     <Compile Include="Components\Dto\Users\ExportAspnetMembership.cs" />

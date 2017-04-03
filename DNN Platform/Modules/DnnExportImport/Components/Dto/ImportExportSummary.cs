@@ -22,6 +22,8 @@
 using System;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Interfaces;
+using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Dto
@@ -30,7 +32,7 @@ namespace Dnn.ExportImport.Components.Dto
     /// Import/Export summary class to provide information about what will happen with this job.
     /// </summary>
     [JsonObject]
-    public class ImportExportSummary
+    public class ImportExportSummary : IDateTimeConverter
     {
         public ImportExportSummary()
         {
@@ -76,5 +78,13 @@ namespace Dnn.ExportImport.Components.Dto
         /// Exported file information.
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
+
+        public void ConvertToLocal(UserInfo userInfo)
+        {
+            if (userInfo == null) return;
+            ToDate = userInfo.LocalTime(ToDate);
+            if (FromDate != null)
+                FromDate = userInfo.LocalTime(FromDate.Value);
+        }
     }
 }

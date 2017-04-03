@@ -59,23 +59,27 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="pageIndex">Page index to get</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns></returns>
-        public IEnumerable<ImportPackageInfo> GetImportPackages(string keyword, string order = "newest",
+        public IEnumerable<ImportPackageInfo> GetImportPackages(out int total, string keyword, string order = "newest",
             int pageIndex = 0, int pageSize = 10)
         {
             pageSize = pageSize > 100 ? 100 : pageSize;
             var directories = Directory.GetDirectories(ExportFolder);
             var importPackages = (from directory in directories.Where(IsValidImportFolder)
-                                  let dirInfo = new DirectoryInfo(directory)
-                                  select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo));
+                let dirInfo = new DirectoryInfo(directory)
+                select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo));
+
+            var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
+            total = importPackagesList.Count;
+
             importPackages = !string.IsNullOrEmpty(keyword)
-                ? importPackages.Where(GetImportPackageFilterFunc(keyword))
-                : importPackages;
+                ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
+                : importPackagesList;
             string sortOrder;
             var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
                 ? importPackages.OrderBy(orderByFunc)
                 : importPackages.OrderByDescending(orderByFunc);
-            return importPackages.Skip(pageIndex * pageSize).Take(pageSize);
+            return importPackages.Skip(pageIndex*pageSize).Take(pageSize);
         }
 
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)

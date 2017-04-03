@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -80,6 +81,7 @@ namespace Dnn.ExportImport.Services
             string message;
             var summary = new ImportExportSummary();
             var isValid = controller.VerifyImportPackage(packageId, summary, out message);
+            summary?.ConvertToLocal(UserInfo);
             return isValid
                 ? Request.CreateResponse(HttpStatusCode.OK, summary)
                 : Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
@@ -98,8 +100,10 @@ namespace Dnn.ExportImport.Services
             int pageSize = 10)
         {
             var controller = new ImportController();
-            var packages = controller.GetImportPackages(keyword, order, pageIndex, pageSize).ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, packages);
+            int total;
+            var packages = controller.GetImportPackages(out total, keyword, order, pageIndex, pageSize).ToList();
+            packages.ForEach(package => package.ConvertToLocal(UserInfo));
+            return Request.CreateResponse(HttpStatusCode.OK, new { packages, total });
         }
 
         // this is POST so users can't cancel using a simple browser link
@@ -146,7 +150,8 @@ namespace Dnn.ExportImport.Services
 
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);
-            return Request.CreateResponse(HttpStatusCode.OK, new { lastTime });
+            return Request.CreateResponse(HttpStatusCode.OK,
+                new { lastTime = lastTime != null ? (DateTime?)UserInfo.LocalTime(lastTime.Value) : null });
         }
 
         [HttpGet]
@@ -160,6 +165,7 @@ namespace Dnn.ExportImport.Services
             }
             var controller = new BaseController();
             var jobs = controller.GetAllJobs(portal, PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
+            jobs?.ConvertToLocal(UserInfo);
             return Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
 
@@ -168,6 +174,7 @@ namespace Dnn.ExportImport.Services
         {
             var controller = new BaseController();
             var job = controller.GetJobDetails(UserInfo.IsSuperUser ? -1 : PortalSettings.PortalId, jobId);
+            job?.ConvertToLocal(UserInfo);
             return job != null
                 ? Request.CreateResponse(HttpStatusCode.OK, job)
                 : Request.CreateResponse(HttpStatusCode.BadRequest,

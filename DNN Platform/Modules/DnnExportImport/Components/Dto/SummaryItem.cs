@@ -20,6 +20,8 @@
 #endregion
 
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Interfaces;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
@@ -29,7 +31,7 @@ namespace Dnn.ExportImport.Components.Dto
     /// Details of the summary item to show in the export/import summary and progress.
     /// </summary>
     [JsonObject]
-    public class SummaryItem
+    public class SummaryItem : IDateTimeConverter
     {
         /// <summary>
         /// Category of the import/export. Also identifier for localization
@@ -61,5 +63,10 @@ namespace Dnn.ExportImport.Components.Dto
         /// Order to show on UI.
         /// </summary>
         public uint Order { get; set; }
+
+        public void ConvertToLocal(UserInfo userInfo)
+        {
+            //Nothing to convert.
+        }
     }
 }
