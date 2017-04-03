@@ -54,6 +54,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <summary>
         /// Get list of packages to import
         /// </summary>
+        /// <param name="total">Total number of packages</param>
         /// <param name="keyword">Keyword to search the import package. This will look into the package name and description</param>
         /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name</param>
         /// <param name="pageIndex">Page index to get</param>

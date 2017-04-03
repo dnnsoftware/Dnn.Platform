@@ -37,7 +37,9 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
+            if (Jobs == null) return;
             var tempJobs = new List<JobItem>();
+
             foreach (var job in Jobs)
             {
                 job.ConvertToLocal(userInfo);

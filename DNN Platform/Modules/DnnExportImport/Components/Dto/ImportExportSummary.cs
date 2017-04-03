@@ -85,6 +85,16 @@ namespace Dnn.ExportImport.Components.Dto
             ToDate = userInfo.LocalTime(ToDate);
             if (FromDate != null)
                 FromDate = userInfo.LocalTime(FromDate.Value);
+            ExportFileInfo?.ConvertToLocal(userInfo);
+
+            if (SummaryItems == null) return;
+            var tempSummaryItems = new List<SummaryItem>();
+            foreach (var summaryItem in SummaryItems)
+            {
+                summaryItem.ConvertToLocal(userInfo);
+                tempSummaryItems.Add(summaryItem);
+            }
+            SummaryItems = tempSummaryItems;
         }
     }
 }
