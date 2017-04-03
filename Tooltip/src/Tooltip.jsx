@@ -13,8 +13,8 @@ const colors = {
     global: "#21A3DA"
 };
 
-function getStyle(type) {
-    const color = colors[type];
+function getStyle(type, _color) {
+    const color = _color || colors[type];
     return {
         style: {
             background: color,
@@ -67,7 +67,7 @@ class Tooltip extends Component {
     }
     
     render() {
-        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick} = this.props;
+        const {messages, type, rendered, tooltipPlace, style, className, delayHide, customIcon, tooltipClass, onClick, tooltipColor} = this.props;
         const containerClass = "dnn-ui-common-tooltip " + type + " " + (className ? className : "");
         const message = getTooltipText(messages);
         const TooltipIcon = !customIcon ? getIconComponent(type) : CustomIcon;
@@ -75,7 +75,7 @@ class Tooltip extends Component {
         if (!message || rendered === false) {
             return <noscript />;
         }
-
+        const tooltipStyle = this.props.tooltipStyle || getStyle(type, tooltipColor);
         return (
             <div className={containerClass} style={style}>
                 <div id={this.state.id} className="icon" onClick={onClick}
@@ -84,7 +84,7 @@ class Tooltip extends Component {
                     <TooltipIcon icon={customIcon ? customIcon : null} />
                 </div>
                 <ReactPortalTooltip
-                    style={getStyle(type)}
+                    style={tooltipStyle}
                     active={this.state.isTooltipActive}
                     position={tooltipPlace}
                     tooltipTimeout={delayHide}
@@ -103,6 +103,8 @@ Tooltip.propTypes = {
     rendered: PropTypes.bool,
     tooltipPlace: PropTypes.oneOf(["top", "bottom"]).isRequired,
     style: PropTypes.object,
+    tooltipStyle: PropTypes.object,
+    tooltipColor: PropTypes.string,
     className: PropTypes.string,
     delayHide: PropTypes.number,
     customIcon: PropTypes.node,
