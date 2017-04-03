@@ -456,4 +456,7 @@
   <data name="FileSize.Text" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="VerifyPackage.Text" xml:space="preserve">
+    <value>Just a moment, we are checking the package ...</value>
+  </data>
 </root>

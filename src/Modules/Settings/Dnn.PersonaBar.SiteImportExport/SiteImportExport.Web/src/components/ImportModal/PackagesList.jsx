@@ -8,9 +8,36 @@ import {
     CheckMarkIcon
 } from "dnn-svg-icons";
 
+const tooltipStyle = {
+    style: {
+        background: "#fff",
+        color: "white",
+        padding: "10px 20px",
+        transition: "opacity 0.2s ease-in-out, visibility 0.2s ease-in-out",
+        boxShadow: "0 0 17px 2px #4b4e4f",
+        maxWidth: 500,
+        fontFamily: "'proxima_nova', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        zIndex: 9999
+    },
+    arrowStyle: {
+        color: "#fff",
+        borderColor: "#c8c8c8"
+    }
+};
+
 class PackagesList extends Component {
     onSelect(pkg) {
         this.props.selectPackage(pkg);
+    }
+
+    renderTooltipMessage(description) {
+        return (
+            "<div><div style='text-transform: uppercase;font-weight: 700;padding: 20px 20px 15px 20px;color: #000'>" +
+            Localization.get("PackageDescription") +
+            "</div><div style='color: #4b4e4f;padding: 0 20px 20px 20px;'>" +
+            description +
+            "</div></div>"
+        );
     }
 
     /* eslint-disable react/no-danger */
@@ -29,8 +56,9 @@ class PackagesList extends Component {
                                 <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
                             }
                             <Tooltip
+                            tooltipStyle={tooltipStyle}
                                 onClick={this.onSelect.bind(this, pkg)}
-                                messages={[pkg.Description]}
+                                messages={[this.renderTooltipMessage(pkg.Description)]}
                                 tooltipPlace="bottom"
                             />
                         </PackageCard>

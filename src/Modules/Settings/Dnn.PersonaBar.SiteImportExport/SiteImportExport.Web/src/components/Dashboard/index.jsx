@@ -188,6 +188,7 @@ class DashboardPanelBody extends Component {
             () => {
                 props.dispatch(ImportExportActions.deleteJob(jobId, (data) => {
                     util.utilities.notify(Localization.get("JobDeleted"));
+                    this.collapse();
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
                 }, () => {
                     util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));

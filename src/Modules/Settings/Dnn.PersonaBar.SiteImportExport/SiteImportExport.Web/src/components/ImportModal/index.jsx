@@ -184,7 +184,7 @@ class ImportModal extends Component {
     renderPackageVerification() {
         const { props } = this;
         return <div>
-            {props.selectedPackage && <div className="package-analyzing">                
+            {props.selectedPackage && <div className="package-analyzing">
                 <div className="noDataText">{Localization.get("VerifyPackage")}</div>
                 <div className="noDataImage"></div>
                 <ProgressBar className="progressCards" visible={true} />
@@ -197,7 +197,7 @@ class ImportModal extends Component {
         return (
             <div className="packagePager">
                 {props.importPackages && <Pager
-                    showStartEndButtons={false}
+                    showStartEndButtons={true}
                     showPageSizeOptions={true}
                     showPageInfo={false}
                     numericCounters={4}
@@ -228,10 +228,12 @@ class ImportModal extends Component {
                         {state.wizardStep === 0 &&
                             <PackagesList selectPackage={this.selectPackage.bind(this)} />
                         }
-                        {state.wizardStep === 1 && 
-                            <PackageCard selectedPackage={props.selectedPackage} />
+                        {state.wizardStep === 1 &&
+                            <div className="package-card-wrapper">
+                                <PackageCard selectedPackage={props.selectedPackage} />
+                            </div>
                         }
-                        {state.wizardStep === 1 && !props.importSummary &&                            
+                        {state.wizardStep === 1 && !props.importSummary &&
                             this.renderPackageVerification()
                         }
                     </div>
@@ -280,7 +282,8 @@ function mapStateToProps(state) {
         importPackages: state.importExport.importPackages,
         selectedPackage: state.importExport.selectedPackage,
         importSummary: state.importExport.importSummary,
-        totalPackages: state.importExport.totalPackages
+        totalPackages: state.importExport.totalPackages,
+        portalId: state.importExport.portalId
     };
 }
 
