@@ -9,6 +9,9 @@ class ImportSummary extends Component {
     getSummaryItem(category) {
         const { props } = this;
         let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
+        if (category === "Templates" && !detail) {
+            detail = props.importSummary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
+        }
         return detail ? detail.TotalItems : "-";
     }
 
@@ -58,7 +61,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("PageTemplates")}
                                     />
-                                    <div className="import-summary-item">{this.getSummaryItem("PageTemplates")}</div>
+                                    <div className="import-summary-item">{this.getSummaryItem("Templates")}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
@@ -102,7 +105,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("Timestamp")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.Timestamp}</div>
+                                    <div className="import-summary-item">{props.selectedPackage.ExporTime}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
@@ -123,7 +126,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("TotalExportSize")}
                                     />
-                                    <div className="import-summary-item">{props.selectedPackage.TotalExportSize}</div>
+                                    <div className="import-summary-item">{props.importSummary.ExportFileInfo.ExportSize}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
@@ -139,7 +142,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("LastExport")}
                                     />
-                                    <div className="import-summary-item">{props.selectedPackage.LastExport}</div>
+                                    <div className="import-summary-item">{props.lastExportTime}</div>
                                 </GridCell>
                                 <div className="seperator">
                                     <hr />
@@ -166,13 +169,15 @@ ImportSummary.propTypes = {
     importSummary: PropTypes.object,
     selectedPackage: PropTypes.object,
     collisionResolution: PropTypes.number,
-    onSwitchChange: PropTypes.func
+    onSwitchChange: PropTypes.func,
+    lastExportTime: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    return {        
+    return {
         selectedPackage: state.importExport.selectedPackage,
-        importSummary: state.importExport.importSummary
+        importSummary: state.importExport.importSummary,
+        lastExportTime: state.importExport.lastExportDate
     };
 }
 

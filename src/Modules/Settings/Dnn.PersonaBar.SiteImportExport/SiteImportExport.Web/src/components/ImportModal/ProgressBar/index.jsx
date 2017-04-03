@@ -20,7 +20,7 @@ class ProgressBar extends Component {
 
     componentWillUnmount() {
         clearTimeout(this.timeout);
-        this.setState({percent: 0});
+        this.setState({ percent: 0 });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,29 +28,28 @@ class ProgressBar extends Component {
 
             if (!nextProps.visible && this.started) {
                 this.started = false;
-                this.setState({percent: 0});
+                this.setState({ percent: 0 });
                 clearTimeout(this.timeout);
             }
 
             if (nextProps.visible && !this.started) {
                 this.started = true;
-                this.setState({percent: 0});
+                this.setState({ percent: 0 });
                 this.increase();
             }
         }
     }
 
     increase() {
-        if (this.state.percent > 100) {
-            clearTimeout(this.timeout);
-            this.setState({percent: 0});
-            return;
+        if (this.state.percent > 95) {
+            //clearTimeout(this.timeout);
+            this.setState({ percent: 0 });
         }
-
-        this.setState({
-            percent: (this.state.percent + 2)
-        });
-
+        else {
+            this.setState({
+                percent: (this.state.percent + 5)
+            });
+        }
         this.timeout = setTimeout(() => {
             this.increase();
         }, 1000);
@@ -67,13 +66,13 @@ class ProgressBar extends Component {
                     trailWidth={5}
                     strokeLinecap={'square'}
                     trailColor={'#eff0f0'}
-                    strokeColor={'#9fdbf0'}/>
+                    strokeColor={'#9fdbf0'} />
             </div>
         );
     }
 }
 
-ProgressBar.propTypes = {    
+ProgressBar.propTypes = {
     visible: PropTypes.bool,
     className: PropTypes.string
 };
