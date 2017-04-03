@@ -28,14 +28,14 @@ class ImportModal extends Component {
             },
             pageIndex: 0,
             pageSize: 5,
-            filter: null,
+            filter: "newest",
             keyword: ""
         };
     }
 
     componentWillMount() {
         const { props } = this;
-        props.dispatch(ImportExportActions.getImportPackages());
+        props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
     }
 
     componentWillReceiveProps(props) {
@@ -142,7 +142,7 @@ class ImportModal extends Component {
         return {
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
-            order: state.filter === -1 ? null : state.filter,
+            order: state.filter,
             keyword: state.keyword
         };
     }

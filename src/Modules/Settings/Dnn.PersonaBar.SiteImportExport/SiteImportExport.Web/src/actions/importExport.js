@@ -168,27 +168,13 @@ const jobsActions = {
             ApplicationService.getImportPackages(parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_IMPORT_PACKAGES,
-                    importPackages: data
+                    importPackages: data.packages,
+                    total: data.total
                 });
                 if (callback) {
                     callback();
                 }
             }, errorCallback);
-
-            /*dispatch({
-                type: ActionTypes.RETRIEVED_IMPORT_PACKAGES,
-                importPackages: [
-                    { FileName: "12-25-2016_export.resource", Name: "Default Website - English (United States)", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/pages-fullscreen-html5-portfolio-template.jpg" },
-                    { FileName: "12-25-2016_export.resource", Name: "New Application Marketing Template", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/canvas-creative-one-page-business-template.jpg" },
-                    { FileName: "12-25-2016_export.resource", Name: "Product Launch Site Template", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/rhythm-modern-multipurpose-business-html5-template.jpg" },
-                    { FileName: "12-25-2016_export.resource", Name: "Default Website - English (United States)", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/zap-one-page-parallax-business-html-template.jpg" },
-                    { FileName: "12-25-2016_export.resource", Name: "New Application Marketing Template", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/carna-corporate-portfolio-site-template.jpg" },
-                    { FileName: "12-25-2016_export.resource", Name: "Product Launch Site Template", Description: "We provide a suite of solutions for creating rich, rewarding online experiences for customers, partners and employees. Our products and technology are the foundation for 750,000+ websites worldwide. In addition to our commercial CMS, Evoq, we're the steward of the DotNetNuke Open Source Project.", image: "https://cdn.colorlib.com/wp/wp-content/uploads/sites/2/lydia-personal-photography-boostrap-template.jpg" }
-                ]
-            });
-            if (callback) {
-                callback();
-            }*/
         };
     },
 

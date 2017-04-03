@@ -1,8 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import Localization from "localization";
-import {
-    importExport as ImportExportActions
-} from "../../actions";
 
 class PackageCardOverlay extends Component {
     /* eslint-disable react/no-danger */

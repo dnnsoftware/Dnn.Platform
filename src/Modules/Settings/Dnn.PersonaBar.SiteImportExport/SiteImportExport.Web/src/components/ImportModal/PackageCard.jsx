@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from "react";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
+import Tooltip from "dnn-tooltip";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 class PackageCard extends Component {
@@ -55,11 +56,11 @@ class PackageCard extends Component {
                             <TextOverflowWrapper text={"Differential"} maxWidth={70} />
                         </div>
                         <div className="package-field">
-                            <TextOverflowWrapper text={"1.2 GB"} maxWidth={70} />
+                            <TextOverflowWrapper text={props.selectedPackage.ExportSize} maxWidth={70} />
                         </div>
                     </GridCell>
                 </div>
-                {props.children}
+                {props.children}                
             </div>
         );
     }
