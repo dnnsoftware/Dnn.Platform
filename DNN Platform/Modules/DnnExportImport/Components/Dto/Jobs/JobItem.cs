@@ -48,9 +48,9 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         {
             if (userInfo == null) return;
             Summary?.ConvertToLocal(userInfo);
-            CreatedOn = userInfo.LocalTime(CreatedOn);
+            CreatedOn = Util.ToLocalDateTime(CreatedOn, userInfo);
             if (CompletedOn != null)
-                CompletedOn = userInfo.LocalTime(CompletedOn.Value);
+                CompletedOn = Util.ToLocalDateTime(CompletedOn.Value, userInfo);
         }
     }
 }

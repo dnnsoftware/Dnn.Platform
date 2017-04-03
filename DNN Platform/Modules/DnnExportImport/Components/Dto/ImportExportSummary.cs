@@ -82,9 +82,9 @@ namespace Dnn.ExportImport.Components.Dto
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
-            ToDate = userInfo.LocalTime(ToDate);
+            ToDate = Util.ToLocalDateTime(ToDate, userInfo);
             if (FromDate != null)
-                FromDate = userInfo.LocalTime(FromDate.Value);
+                FromDate = Util.ToLocalDateTime(FromDate.Value, userInfo);
             ExportFileInfo?.ConvertToLocal(userInfo);
 
             if (SummaryItems == null) return;

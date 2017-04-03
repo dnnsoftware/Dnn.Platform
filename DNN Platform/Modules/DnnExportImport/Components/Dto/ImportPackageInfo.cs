@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
@@ -72,7 +73,7 @@ namespace Dnn.ExportImport.Components.Dto
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
-            ExporTime = userInfo.LocalTime(ExporTime);
+            ExporTime = Util.ToLocalDateTime(ExporTime, userInfo);
         }
     }
 }

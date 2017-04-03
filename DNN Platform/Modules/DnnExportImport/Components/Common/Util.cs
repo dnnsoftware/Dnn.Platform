@@ -215,6 +215,26 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
+        public static DateTime ToLocalDateTime(DateTime dateTime, UserInfo userInfo)
+        {
+            if (dateTime.Kind != DateTimeKind.Local)
+            {
+                dateTime = new DateTime(
+                    dateTime.Year, dateTime.Month, dateTime.Day,
+                    dateTime.Hour, dateTime.Minute, dateTime.Second,
+                    DateTimeKind.Utc);
+                return userInfo.LocalTime(dateTime);
+            }
+            return dateTime;
+        }
+
+        public static DateTime? ToLocalDateTime(DateTime? dateTime, UserInfo userInfo)
+        {
+            if (dateTime != null && dateTime.Value.Kind == DateTimeKind.Utc)
+                return userInfo.LocalTime(dateTime.Value);
+            return dateTime;
+        }
+
         private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)
         {
             return (from f in xmlDoc.Descendants(rootTag)

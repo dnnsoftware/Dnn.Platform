@@ -151,7 +151,7 @@ namespace Dnn.ExportImport.Services
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);
             return Request.CreateResponse(HttpStatusCode.OK,
-                new { lastTime = lastTime != null ? (DateTime?)UserInfo.LocalTime(lastTime.Value) : null });
+                new {lastTime = Util.ToLocalDateTime(lastTime, UserInfo)});
         }
 
         [HttpGet]
