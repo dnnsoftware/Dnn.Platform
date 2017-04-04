@@ -18,12 +18,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
         void DeletePage(PageItem page);
 
-        /// <summary>
-        /// Initialize the page after page add into page list. such as clean tab urls.
-        /// </summary>
-        /// <param name="pageId"></param>
-        void InitializePage(int pageId);
-
         void EditModeForPage(int pageId, int userId);
 
         TabInfo SavePageDetails(PageSettings pageSettings);

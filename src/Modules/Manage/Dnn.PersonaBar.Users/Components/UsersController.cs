@@ -141,9 +141,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             try
             {
-                //This is copied and modified from UserController core class as the original code for ResetAndChangePassword is restricted to Admin only.
-                var resetPassword = UserController.ResetPassword(user, string.Empty);
-                var passwordChanged = UserController.ChangePassword(user, resetPassword, newPassword);
+                var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
                     throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
