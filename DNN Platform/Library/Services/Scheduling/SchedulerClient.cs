@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Scheduling
     public abstract class SchedulerClient
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SchedulerClient));
+
         public SchedulerClient()
         {
             SchedulerEventGUID = Null.NullString;

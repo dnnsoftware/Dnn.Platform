@@ -1,0 +1,1479 @@
+﻿-- DNN-9447: Import/Export feature
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'SITE_EXPORT', N'Site Export Request', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_EXPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'SITE_EXPORT', NULL, 1, 100, 0, 1, 1, 2, N'', N'')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_IMPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
+	VALUES (N'SITE_IMPORT', N'Site Import Request', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogConfig] WHERE [LogTypeKey] = N'SITE_IMPORT')
+	INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress])
+	VALUES (N'SITE_IMPORT', NULL, 1, 100, 0, 1, 1, 2, N'', N'')
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule
+				WHERE TypeFullName = N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport')
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+	(   [TypeFullName]
+	  , [TimeLapse]
+	  , [TimeLapseMeasurement]
+	  , [RetryTimeLapse]
+	  , [RetryTimeLapseMeasurement]
+	  , [RetainHistoryNum]
+	  , [AttachToEvent]
+	  , [CatchUpEnabled]
+	  , [Enabled]
+	  , [ObjectDependencies]
+	  , [Servers]
+	  , [CreatedByUserID]
+	  , [CreatedOnDate]
+	  , [LastModifiedByUserID]
+	  , [LastModifiedOnDate]
+	  , [FriendlyName]
+	) VALUES
+    (   N'Dnn.ExportImport.Components.Scheduler.ExportImportScheduler, DotNetNuke.SiteExportImport'
+	  , 1
+	  , N'd'
+	  , 1
+	  , N'h'
+	  , 100
+	  , N''
+	  , 0
+	  , 1
+	  , N''
+	  , NULL
+	  , NULL
+	  , NULL
+	  , NULL
+	  , NULL
+	  , N'Site Import/Export'
+	 )
+END
+GO
+
+-- generic procedures to change created by and modified by columns for import processing
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GenericUpdateRecordChangers]
+	@TableName       nvarchar(100),
+	@PrimaryKeyName  nvarchar(100),
+	@PrimaryKeyID    int,
+	@CreatedBy       int,
+	@ModifiedBy      int
+AS
+BEGIN
+    DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GenedicUpdateSettingsRecordChangers]
+	@TableName       nvarchar(100),
+	@PrimaryKeyName  nvarchar(100),
+	@PrimaryKeyID    int,
+	@SettingName     nvarchar(50),
+	@CreatedBy       int,
+	@ModifiedBy      int
+AS
+BEGIN
+    DECLARE @sqlCommand varchar(1000)
+
+    SET @sqlCommand =
+        N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
+        N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
+        N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) +
+        N' AND SettingName=' + @SettingName + N';'
+
+    --PRINT (@sqlCommand)
+    EXEC (@sqlCommand)
+END
+GO
+
+-- Jobs
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobs](
+		[JobId]              int IDENTITY(1,1) NOT NULL,
+		[PortalId]           int NOT NULL,
+		[JobType]            int NOT NULL,
+		[JobStatus]          int NOT NULL DEFAULT 0,
+		[IsCancelled]		 bit NOT NULL DEFAULT 0,
+		[Name]				 nvarchar(100),
+		[Description]		 nvarchar(250),
+		[CreatedByUserID]    int NOT NULL,
+		[CreatedOnDate]      DateTime NOT NULL DEFAULT GetUtcDate(),
+		[LastModifiedOnDate] DateTime NOT NULL DEFAULT GetUtcDate(),
+		[CompletedOnDate]    DateTime,  -- in UTC
+		[Directory]          nvarchar(100),
+		[JobObject]          nvarchar(max),
+
+		CONSTRAINT [PK_{objectQualifier}ExportImportJobs] PRIMARY KEY ([JobId] DESC)
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_JobType')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_JobType]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([JobType])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_JobStatus')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_JobStatus]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([JobStatus])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobs_CreatedOn')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobs_CreatedOn]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobs] ([CreatedOnDate])
+GO
+
+-- Job Checkpoints
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints](
+		[CheckpointId]       int IDENTITY(1,1) NOT NULL,
+		[JobId]              int NOT NULL,
+		[Category]           nvarchar(50) NOT NULL,
+		[Stage]              int NOT NULL,
+		[StageData]          nvarchar(max),
+		[Progress]			 int NOT NULL,
+		[TotalItems]		 int NOT NULL DEFAULT(0),
+		[ProcessedItems]	 int NOT NULL DEFAULT(0)
+		CONSTRAINT [PK_{objectQualifier}ExportImportCheckpoints] PRIMARY KEY ([CheckpointId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'IX_{objectQualifier}ExportImportCheckpoints_JobId')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportCheckpoints_JobId]
+		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([JobId])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'IX_{objectQualifier}ExportImportCheckpoints_Category')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportCheckpoints_Category]
+		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([Category])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
+				WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'FK_{objectQualifier}ExportImportCheckpoints_JobId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ADD
+		CONSTRAINT [FK_{objectQualifier}ExportImportCheckpoints_JobId] FOREIGN KEY ( [JobId] )
+		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
+		ON DELETE CASCADE
+GO
+
+-- JobLogs
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs](
+		[JobLogId]       int IDENTITY(1,1) NOT NULL,
+		[JobId]          int NOT NULL,
+		[Name]           nvarchar(255),
+		[Value]          nvarchar(255),
+		[IsSummary]      bit NOT NULL DEFAULT 0,
+		[CreatedOnDate]  DateTime NOT NULL DEFAULT GetUtcDate(),
+
+		CONSTRAINT [PK_{objectQualifier}ExportImportJobLogs] PRIMARY KEY ([JobLogId])
+	)
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]')
+				AND name = N'IX_{objectQualifier}ExportImportJobLogs_JobId')
+	CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportJobLogs_JobId]
+		ON {databaseOwner}[{objectQualifier}ExportImportJobLogs] ([JobId])
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
+				WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]')
+				AND name = N'FK_{objectQualifier}ExportImportJobLogs_JobId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}ExportImportJobLogs] ADD
+		CONSTRAINT [FK_{objectQualifier}ExportImportJobLogs_JobId] FOREIGN KEY ( [JobId] )
+		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
+		ON DELETE CASCADE
+GO
+
+-- STORED PROCEDURES
+
+-- Collect and insert Export/Import logs in one batch
+-- see post: Send (Pass) DataTable as parameter to Stored Procedure in C# and VB.Net
+-- http://www.aspsnippets.com/Articles/Send-Pass-DataTable-as-parameter-to-Stored-Procedure-in-C-and-VBNet.aspx
+
+-- We must drop the procedure that uses the 'ExportImportJobLogsType' custom type before dropping the custom type itself
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportJobLogsType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType]
+GO
+
+CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType] AS TABLE
+(
+	[JobId]         int,
+	[Name]          nvarchar(100),
+	[Value]         nvarchar(100),
+	[IsSummary]     bit,
+	[CreatedOnDate] datetime
+);
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_AddBulk]
+	@DataTable {databaseOwner}[{objectQualifier}ExportImportJobLogsType] READONLY
+AS
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}ExportImportJobLogs (
+			[JobId],
+			[Name],
+			[Value],
+			[IsSummary],
+			[CreatedOnDate] )
+		SELECT
+			dt.[JobId],
+			dt.[Name],
+			dt.[Value],
+			dt.[IsSummary],
+			dt.[CreatedOnDate]
+		FROM
+			@DataTable dt
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Add]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Add]
+	@PortalId    int,
+	@JobType     int,
+	@CreatedBy   int,
+	@JobName     nvarchar(100),
+	@Description nvarchar(250),
+	@Directory   nvarchar(100),
+	@JobObject   nvarchar(max)
+AS
+BEGIN
+	INSERT INTO
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+		(
+			[PortalId],
+			[JobType],
+			[Name],
+			[Description],
+			[CreatedByUserID],
+			[Directory],
+			[JobObject]
+		)
+	VALUES
+		(
+			IsNull(@PortalId, -1),
+			@JobType,
+			@JobName,
+			@Description,
+			IsNull(@CreatedBy, -1),
+			@Directory,
+			@JobObject
+		)
+
+	SELECT SCOPE_IDENTITY()
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateInfo]
+	@JobId       int,
+	@JobName     nvarchar(100),
+	@Description nvarchar(250)
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	SET
+		[Name] = @JobName,
+		[Description] = GetUtcDate()
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_UpdateStatus]
+	@JobId int,
+	@JobStatus int,
+	@CompletedOn datetime = NULL
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	SET
+		JobStatus = @JobStatus,
+		LastModifiedOnDate = GetUtcDate(),
+		CompletedOnDate = @CompletedOn
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_SetCancelled]
+	@JobId int
+AS
+BEGIN
+	UPDATE
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	SET
+		IsCancelled = 1,
+		LastModifiedOnDate = GetUtcDate()
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_Remove]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_Remove]
+	@JobId int
+AS
+BEGIN
+	-- deletion of logs will be cascaded
+	DELETE FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
+AS
+BEGIN
+	SELECT
+		TOP(1) *
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE
+		JobStatus in (0, 1) -- 0=Submitted, 1=InProgress
+	ORDER BY
+		JobId ASC
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_GetJobsCount]
+    @PortalID  int,
+	@JobType   int = NULL,
+	@Keywords  nvarchar(100) = NULL
+AS
+	SELECT
+		Count(*)
+	FROM
+		{databaseOwner}{objectQualifier}ExportImportJobs J
+	WHERE
+		(PortalID = @PortalID OR @PortalID=-1)
+	AND
+		(@JobType IS NULL OR JobType = @JobType)
+	AND
+		(   @Keywords IS NULL
+		 OR [Name] LIKE ('%' + @Keywords + '%')
+		 OR [Description] LIKE ('%' + @Keywords + '%') )
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetAll]
+    @PortalID  int = -1, -- might be null or -1 for all portals
+    @PageSize  int = 10, -- number of items per page
+    @PageIndex int =  0, -- page number starting at 0
+	@JobType   int = NULL,
+	@Keywords  nvarchar(100) = NULL
+AS
+BEGIN
+	SET @PortalId = IsNull(@PortalId, -1)
+	SET @PageSize = IsNull(@PageSize, 10)
+	SET @PageIndex = IsNull(@PageIndex, 0)
+
+	; WITH AllJobs AS (
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, *
+		FROM
+			{databaseOwner}{objectQualifier}ExportImportJobs
+		WHERE
+			(PortalID = @PortalID OR @PortalID=-1)
+		AND
+			(@JobType IS NULL OR JobType = @JobType)
+		AND
+			(   @Keywords IS NULL
+			 OR [Name] LIKE ('%' + @Keywords + '%')
+			 OR [Description] LIKE ('%' + @Keywords + '%') )
+	)
+	SELECT
+		TOP(@PageSize) *
+	FROM
+		AllJobs
+	WHERE
+		RowNum >= (@PageIndex * @PageSize + 1)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobs_GetById]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_GetById]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Full]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobLogs]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_Summary]
+    @JobId  int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobLogs]
+	WHERE
+		JobId = @JobId
+	  AND
+		IsSummary = 1
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobLogs_LastJobTime]
+    @PortalId  int,
+	@JobType int
+AS
+BEGIN
+	SELECT
+		TOP 1 CreatedOnDate AS LastExportTime
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportJobs]
+	WHERE 
+		PortalId=@PortalId AND JobType = @JobType AND JobStatus=2
+	ORDER BY CreatedOnDate DESC
+END
+GO
+
+-- checkpoints procs
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_GetByJob]
+	@JobId		int
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}[{objectQualifier}ExportImportCheckpoints]
+	WHERE
+		JobId = @JobId
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
+	@JobId			int,
+	@Category		nvarchar(50),
+	@Stage			int,
+	@StageData		nvarchar(max),
+	@Progress		int,
+	@TotalItems		int,
+	@ProcessedItems int
+AS
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
+	 USING (SELECT @JobId, @Category, @Progress, @TotalItems, @ProcessedItems) AS source (JobId, Category, Progress, TotalItems, ProcessedItems)
+		ON (target.JobId = source.JobId AND target.Category = source.Category)
+	 WHEN MATCHED THEN
+		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems
+	 WHEN NOT MATCHED THEN 
+		INSERT ([JobId], [Category], [Stage], [StageData], [Progress], [TotalItems], [ProcessedItems])
+		VALUES (@JobId,  @Category,  @Stage,  @StageData, @Progress, @TotalItems, @ProcessedItems);
+END
+GO
+
+-- Users Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserName]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Export_UserName]
+(
+	@userId Int
+)
+RETURNS
+	nVarChar(255)
+AS
+BEGIN
+	DECLARE @Username AS nVarChar(255)
+
+	SELECT  @Username = Username FROM {databaseOwner}[{objectQualifier}Users] WHERE UserID = @UserId
+	RETURN  @Username
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UserIdByUsername]', 'FN') IS NOT NULL
+    DROP FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Export_UserIdByUsername]
+(
+	@username nvarchar(100)
+)
+RETURNS
+	int
+AS
+BEGIN
+	DECLARE @UserId AS int
+
+	SELECT  @UserId = UserID FROM {databaseOwner}[{objectQualifier}Users] WHERE Username = @username
+	IF(@UserId IS NULL)
+	BEGIN
+		RETURN -1;
+	END
+	RETURN @UserId;
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
+	@PortalID        int,
+	@PageIndex       int,
+	@PageSize        int,
+	@IncludeDeleted  bit,
+	@ToDate datetime,
+	@FromDate		 datetime=NULL
+AS
+BEGIN
+	DECLARE
+		@PageLowerBound int,
+		@PageUpperBound int,
+		@RowsToReturn int
+
+	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+
+	; WITH [tmpUsers] AS (
+		SELECT U.*,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
+		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
+			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
+			WHERE VU.PortalID = @PortalID
+			AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+			AND (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
+			ELSE U.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+			AND (CASE
+			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
+			ELSE U.LastModifiedOnDate END)<= @ToDate
+			
+	)
+	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
+		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
+		ORDER by RowId
+
+	SET ROWCOUNT 0;
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
+	@PortalId  int,
+	@UserId    int
+AS
+	SELECT
+		 [UserId]
+		,[PortalId]
+		,[UserPortalId]
+		,[CreatedDate]
+		,[Authorised]
+		,[IsDeleted]
+		,[RefreshRoles]
+		,[VanityUrl]
+ 	FROM {databaseOwner}[{objectQualifier}UserPortals]
+	WHERE UserId = @UserId AND PortalId = @PortalId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
+	@PortalId int,
+	@UserId    int
+AS
+	SELECT
+		UP.ProfileID,
+		UP.UserID,
+		UP.PropertyDefinitionID,
+		CASE WHEN (UP.PropertyValue Is Null) THEN UP.PropertyText ELSE UP.PropertyValue END AS 'PropertyValue',
+		UP.Visibility,
+		UP.ExtendedVisibility,
+		UP.LastUpdatedDate,
+		PPD.PropertyName
+ 	FROM {databaseOwner}[{objectQualifier}UserProfile] UP
+	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
+	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
+	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
+	@Username nvarchar(256)
+AS
+	SELECT *
+ 	FROM {databaseOwner}[aspnet_Users]
+	WHERE  UserName=@Username
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
+	@UserId uniqueidentifier,
+	@ApplicationId uniqueidentifier
+AS
+	SELECT *
+ 	FROM {databaseOwner}[aspnet_Membership]
+	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserRoles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
+	@PortalId  int,
+	@UserId    int
+AS
+	SELECT
+		 [UserRoleID]
+		,[RoleID]
+		,[UserID]
+		,[PortalID]
+		,[RoleName]
+		,[ExpiryDate]
+		,[IsTrialUsed]
+		,[EffectiveDate]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,[Status]
+		,[IsOwner]
+		,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName
+		,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
+	WHERE UserID = @UserId AND PortalID = @PortalId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
+	@UserID int,
+	@CreatedByUserName nvarchar(100),
+	@ModifiedByUserName nvarchar(100)
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}Users
+	SET
+		CreatedByUserID = {databaseOwner}[{objectQualifier}Export_UserIdByUsername](@CreatedByUserName),
+		LastModifiedByUserID = {databaseOwner}[{objectQualifier}Export_UserIdByUsername](@ModifiedByUserName)
+	WHERE
+		UserID = @UserID
+GO
+
+--Profile Properties
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
+	@PortalID	int,
+	@IncludeDeleted bit = 0,
+	@ToDate datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT	*
+	FROM	{databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
+	WHERE  (PortalId = @PortalID OR (PortalId IS NULL AND @PortalID IS NULL))
+	AND PPD.Deleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+	AND
+		(CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
+		ELSE PPD.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+		WHEN PPD.LastModifiedOnDate IS NULL THEN PPD.CreatedOnDate
+		ELSE PPD.LastModifiedOnDate END)<= @ToDate
+	ORDER BY ViewOrder
+GO
+
+
+-- Taxonomy Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_ScopeTypes]
+AS
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_ScopeTypes
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_VocabularyTypes]
+AS
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_VocabularyTypes
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Terms]
+	@ToDate   datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT
+		t.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_Terms AS t
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON t.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON t.LastModifiedByUserID = u2.UserID
+	WHERE (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
+			ELSE t.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN t.LastModifiedOnDate IS NULL THEN t.CreatedOnDate
+			ELSE t.LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportTaxonomy_Vocabularies]
+	@ToDate   datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT
+		v.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Taxonomy_Vocabularies AS v
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON v.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON v.LastModifiedByUserID = u2.UserID
+	WHERE (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
+			ELSE v.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN v.LastModifiedOnDate IS NULL THEN v.CreatedOnDate
+			ELSE v.LastModifiedOnDate END)<= @ToDate
+GO
+
+-- Roles Import/Export
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleGroups]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
+	@PortalID  int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+	SELECT
+		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}RoleGroups AS rg
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rg.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rg.LastModifiedByUserID = u2.UserID
+	WHERE
+		rg.PortalID = @PortalID
+	AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
+		ELSE rg.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
+			ELSE rg.LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Roles]
+	@PortalID  int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+	SELECT
+		r.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Roles AS r
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}RoleGroups AS rg on r.RoleGroupID = rg.RoleGroupID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON r.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON r.LastModifiedByUserID = u2.UserID
+	WHERE
+		r.PortalID = @PortalID
+	AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate
+		ELSE r.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN r.LastModifiedOnDate IS NULL THEN r.CreatedOnDate
+			ELSE r.LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSettings]
+	@PortalID  int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+	SELECT
+		rs.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}RoleSettings AS rs
+			INNER JOIN {databaseOwner}{objectQualifier}Roles AS r on r.RoleID = rs.RoleID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rs.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rs.LastModifiedByUserID = u2.UserID
+	WHERE
+		r.PortalID = @PortalID
+	AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate
+		ELSE rs.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN rs.LastModifiedOnDate IS NULL THEN rs.CreatedOnDate
+			ELSE rs.LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleSetAutoAssign]
+	@RoleID int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}Roles
+	SET
+		AutoAssignment = 1
+	WHERE
+		RoleID = @RoleID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateRoleSettingChangers]
+	@RoleID      int,
+	@SettingName nvarchar(50),
+	@CreatedBy   int,
+	@ModifiedBy  int
+AS
+	UPDATE
+		{databaseOwner}{objectQualifier}RoleSettings
+	SET
+		CreatedByUserID = @CreatedBy,
+		LastModifiedByUserID = @ModifiedBy
+	WHERE
+		RoleID = @RoleID
+      AND
+        SettingName = @SettingName
+GO
+
+--Portals Export/Import
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalSettings]
+	@PortalID	int,
+	@ToDate   datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT	*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM
+		{databaseOwner}[{objectQualifier}PortalSettings]
+	WHERE  PortalId = @PortalID
+	AND
+		(CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLanguages]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLanguages]
+	@PortalID	int,
+	@ToDate   datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT	PL.*,{databaseOwner}[{objectQualifier}Export_UserName](PL.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](PL.LastModifiedByUserId) LastModifiedByUserName, L.[CultureCode]
+	FROM
+		{databaseOwner}[{objectQualifier}PortalLanguages] PL
+	INNER JOIN {databaseOwner}[{objectQualifier}Languages] L ON PL.[LanguageID]=L.[LanguageID]
+	WHERE  PortalId = @PortalID
+	AND
+			(CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate
+			ELSE PL.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN PL.LastModifiedOnDate IS NULL THEN PL.CreatedOnDate
+			ELSE PL.LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPortalLocalizations]
+	@PortalID	int,
+	@ToDate datetime,
+	@FromDate	datetime=NULL
+AS
+	SELECT	*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+	FROM
+		{databaseOwner}[{objectQualifier}PortalLocalization]
+	WHERE  PortalId = @PortalID
+	AND
+		(CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @ToDate
+GO
+
+--Assets
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
+    @PortalID  int,
+	@ToDate    datetime,
+    @FromDate  datetime=NULL
+AS
+    SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}Export_UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](F.LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}Folders]  F INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
+    WHERE  F.PortalID = @PortalID
+    AND 
+        (CASE 
+        WHEN @FromDate IS NULL THEN 0
+        WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
+        ELSE ISNULL(F.LastModifiedOnDate,0) END)>= ISNULL(@FromDate,0)
+    AND (CASE
+			WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate
+			ELSE F.LastModifiedOnDate END)<= @ToDate
+	ORDER BY F.PortalID, F.CreatedOnDate, F.FolderPath
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderMappings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderMappings]
+    @PortalID    int,
+	@ToDate datetime,
+    @FromDate    datetime=NULL
+AS
+    SELECT    *,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}FolderMappings]
+    WHERE  PortalID = @PortalID
+    AND 
+        (CASE 
+        WHEN @FromDate IS NULL THEN 0
+        WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+        ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@FromDate,0)
+    AND (CASE
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)<= @ToDate
+	ORDER BY [Priority]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolderPermissionsByPath]
+    @PortalID    int,
+	@FolderPath  nvarchar(300),
+	@ToDate      datetime,
+	@FromDate    datetime=NULL
+AS
+    SELECT    *,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE  PortalID = @PortalID AND (FolderPath =ISNULL(@FolderPath,''))
+    AND 
+        (CASE 
+        WHEN @FromDate IS NULL THEN 0
+        WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate 
+        ELSE ISNULL(LastModifiedOnDate,0) END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+			ELSE LastModifiedOnDate END)<= @ToDate
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFiles]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFiles]
+    @PortalID    int,
+    @FolderID    int,
+	@ToDate      datetime,
+	@FromDate    datetime=NULL
+AS
+    SELECT F.*,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
+    FROM    
+        {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
+    WHERE (F.FolderID = @FolderID OR @FolderID IS NULL) AND F.PortalID = @PortalID
+	AND 
+        (CASE 
+        WHEN @FromDate IS NULL THEN 0
+        WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate 
+        ELSE F.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+	AND (CASE
+			WHEN F.LastModifiedOnDate IS NULL THEN F.CreatedOnDate
+			ELSE F.LastModifiedOnDate END)<= @ToDate
+    ORDER BY [FolderID], [FileName]
+GO
+
+-- Pages / Tabs
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+    @PortalID        int,
+	@IncludeDeleted  bit,
+    @IncludeSystem   bit,
+	@ToDate          datetime,
+	@FromDate        datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT DISTINCT
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId
+	FROM
+		{databaseOwner}{objectQualifier}Tabs t
+			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
+	WHERE
+		PortalID = @PortalID
+	AND
+		(IsSystem = 0 OR @IncludeSystem = 1)
+	AND (
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+		 OR
+			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
+		)
+	ORDER BY
+		TabID
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabSettings]
+	@TabID     int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ts.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabSettings AS ts
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON ts.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON ts.LastModifiedByUserID = u2.UserID
+	WHERE
+		TabID = @TabID
+	AND
+		COALESCE(ts.LastModifiedOnDate, ts.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(ts.LastModifiedOnDate, ts.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabPermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabPermissions]
+	@TabID     int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tp.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}vw_TabPermissions AS tp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = tp.ModuleDefID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tp.LastModifiedByUserID = u2.UserID
+	WHERE
+		TabID = @TabID
+	AND
+		COALESCE(tp.LastModifiedOnDate, tp.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tp.LastModifiedOnDate, tp.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
+	@TabID     int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tu.*, pa.HTTPAlias, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabUrls as tu
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}PortalAlias AS pa ON tu.PortalAliasId = pa.PortalAliasID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users       AS u1 ON tu.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users       AS u2 ON tu.LastModifiedByUserID = u2.UserID
+	WHERE
+		tu.TabID = @TabID
+	AND
+		COALESCE(tu.LastModifiedOnDate, tu.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tu.LastModifiedOnDate, tu.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
+	@TabID     int,
+	@ToDate  datetime,
+	@FromDate datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ta.*, pa.HTTPAlias, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabAliasSkins as ta
+			INNER JOIN {databaseOwner}{objectQualifier}PortalAlias AS pa ON ta.PortalAliasId = pa.PortalAliasID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u1 ON ta.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u2 ON ta.LastModifiedByUserID = u2.UserID
+	WHERE
+		ta.TabID = @TabID
+	AND
+		COALESCE(ta.LastModifiedOnDate, ta.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(ta.LastModifiedOnDate, ta.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
+	@TabID          int,
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tm.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModules AS tm
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs              AS t  ON tm.TabID = t.TabID
+			INNER JOIN {databaseOwner}{objectQualifier}Modules           AS m  ON tm.ModuleID = m.ModuleID 
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID 
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		tm.TabID = @TabID
+	AND
+		(@IncludeDeleted = 1 OR tm.IsDeleted = 0)
+	AND
+		COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModuleSettings]
+	@TabID          int,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		tms.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}TabModuleSettings AS tms
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON tm.TabModuleID = tms.TabModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}Tabs       AS t  ON tm.TabID = t.TabID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		t.TabID = @TabID
+	AND
+		COALESCE(tms.LastModifiedOnDate, tms.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(tms.LastModifiedOnDate, tms.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
+	@TabID          int,
+	@IncludeDeleted bit,
+	@ToDate         datetime,
+	@FromDate       datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT DISTINCT
+		m.*, md.FriendlyName, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}Modules AS m
+			INNER JOIN {databaseOwner}{objectQualifier}TabModules        AS tm ON tm.ModuleID = m.ModuleID
+			INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions AS md ON md.ModuleDefID = m.ModuleDefID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u1 ON tm.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users        AS u2 ON tm.LastModifiedByUserID = u2.UserID
+	WHERE
+		tm.TabID = @TabID
+	AND
+		(@IncludeDeleted = 1 OR m.IsDeleted = 0)
+	AND
+		COALESCE(m.LastModifiedOnDate, m.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(m.LastModifiedOnDate, m.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModuleSettings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ModuleSettings]
+	@ModuleID  int,
+	@ToDate    datetime,
+	@FromDate  datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		ms.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}ModuleSettings AS ms
+			INNER JOIN {databaseOwner}{objectQualifier}Modules    AS m  ON ms.ModuleID = m.ModuleID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON ms.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON ms.LastModifiedByUserID = u2.UserID
+	WHERE
+		m.ModuleID = @ModuleID
+	AND
+		COALESCE(ms.LastModifiedOnDate, ms.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(ms.LastModifiedOnDate, ms.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_ModulePermissions]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_ModulePermissions]
+	@ModuleID  int,
+	@ToDate    datetime,
+	@FromDate  datetime=NULL
+AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
+	SELECT
+		mp.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
+	FROM
+		{databaseOwner}{objectQualifier}vw_ModulePermissions      AS mp
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON mp.CreatedByUserID = u1.UserID
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON mp.LastModifiedByUserID = u2.UserID
+	WHERE
+		ModuleID = @ModuleID
+	AND
+		COALESCE(mp.LastModifiedOnDate, mp.CreatedOnDate, @Now) <= @ToDate
+	AND
+		(@FromDate IS NULL OR ISNULL(mp.LastModifiedOnDate, mp.CreatedOnDate) >= @FromDate)
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPermissionInfo]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+	@PermissionCode  varchar(50),
+	@PermissionKey   varchar(50),
+	@PermissionName  varchar(50)
+AS
+BEGIN
+	SELECT
+		*
+	FROM
+		{databaseOwner}{objectQualifier}Permission
+	WHERE
+		PermissionCode = @PermissionCode
+	AND
+		PermissionKey = @PermissionKey
+	AND
+		PermissionName = @PermissionName
+END
+GO

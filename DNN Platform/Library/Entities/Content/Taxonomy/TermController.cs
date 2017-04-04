@@ -51,9 +51,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class TermController : ITermController
     {
         private readonly IDataService _DataService;
-        private const string _CacheKey = "Terms_{0}";
         private const CacheItemPriority _CachePriority = CacheItemPriority.Normal;
-
         private const int _CacheTimeOut = 20;
 
         #region Constructors
@@ -108,7 +106,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             //Clear Cache
-            DataCache.RemoveCache(string.Format(_CacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
 
             return term.TermId;
         }
@@ -151,7 +149,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             //Clear Cache
-            DataCache.RemoveCache(string.Format(_CacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
         }
 
 		/// <summary>
@@ -205,7 +203,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             //Argument Contract
             Requires.NotNegative("vocabularyId", vocabularyId);
 
-            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(_CacheKey, vocabularyId), _CacheTimeOut, _CachePriority, vocabularyId), GetTermsCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(DataCache.TermCacheKey, vocabularyId), _CacheTimeOut, _CachePriority, vocabularyId), GetTermsCallBack).AsQueryable();
         }
 
 		/// <summary>
@@ -271,7 +269,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
 
             //Clear Cache
-            DataCache.RemoveCache(string.Format(_CacheKey, term.VocabularyId));
+            DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
         }
 
         #endregion

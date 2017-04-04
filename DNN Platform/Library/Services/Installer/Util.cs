@@ -186,6 +186,7 @@ namespace DotNetNuke.Services.Installer
         public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
         public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
+        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         // ReSharper restore InconsistentNaming
         #endregion
 

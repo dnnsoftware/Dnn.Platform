@@ -1,0 +1,77 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="SiteExportImport" type="Library" version="09.01.00" isSystem="false">
+      <friendlyName>Site Export Import</friendlyName>
+      <description>DotNetNuke Corporation Site Export Import Library</description>
+      <iconFile>Images/Files_32x32_Standard.png</iconFile>
+      <owner>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
+      </owner>
+      <license src="License.txt"></license>
+      <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">09.01.00</dependency>
+      </dependencies>
+      <components>
+        <component type="Module">
+          <desktopModule>
+            <moduleName>DotNetNuke.SiteExportImport</moduleName>
+            <foldername>SiteExportImport</foldername>
+            <businessControllerClass>Dnn.ExportImport.Components.Controllers.BusinessController, DotNetNuke.SiteExportImport</businessControllerClass>
+            <supportedFeatures>
+              <supportedFeature type="Upgradeable" />
+            </supportedFeatures>
+            <moduleDefinitions>
+              <moduleDefinition>
+                <friendlyName>Site Export Import</friendlyName>
+                <defaultCacheTime>0</defaultCacheTime>
+              </moduleDefinition>
+            </moduleDefinitions>
+          </desktopModule>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.SiteExportImport.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.SiteExportImport.Library.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>LiteDB.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/SiteExportImport</basePath>
+            <resourceFile>
+              <name>Resources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules/SiteExportImport</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>09.01.00.SqlDataProvider</name>
+              <version>09.01.00</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+            </script>
+          </scripts>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>
