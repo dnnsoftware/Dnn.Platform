@@ -34,7 +34,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string PortalName { get; set; }
         public int TotalJobs { get; set; }
         public DateTime? LastExportTime { get; set; }
-        public DateTime? LastImporTime { get; set; }
+        public DateTime? LastImportTime { get; set; }
         public IEnumerable<JobItem> Jobs { get; set; }
 
         public void ConvertToLocal(UserInfo userInfo)

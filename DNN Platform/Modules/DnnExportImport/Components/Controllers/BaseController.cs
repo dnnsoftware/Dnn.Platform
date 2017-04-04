@@ -119,7 +119,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return new AllJobsResult
             {
                 LastExportTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Export) : null,
-                LastImporTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Import) : null,
+                LastImportTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Import) : null,
                 PortalId = portalId,
                 PortalName = portal.PortalName,
                 TotalJobs = count,
