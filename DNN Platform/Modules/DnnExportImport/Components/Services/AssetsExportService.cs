@@ -215,7 +215,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var sourceFolder in sourceFolders)
                         {
-                            /** PROCESS FOLDERS **/
+                            // PROCESS FOLDERS
                             //Create new or update existing folder
                             if (ProcessFolder(importJob, importDto, db, sourceFolder, localFolders))
                             {
@@ -225,7 +225,7 @@ namespace Dnn.ExportImport.Components.Services
                                 //Include permissions only if permissions were exported in package.
                                 if (importDto.ExportDto.IncludePermissions)
                                 {
-                                    /** PROCESS FOLDER PERMISSIONS **/
+                                    // PROCESS FOLDER PERMISSIONS
                                     var sourceFolderPermissions =
                                         Repository.GetRelatedItems<ExportFolderPermission>(sourceFolder.Id).ToList();
                                     //Replace folderId for each permission with new one.
@@ -235,7 +235,7 @@ namespace Dnn.ExportImport.Components.Services
                                         x.FolderPath = sourceFolder.FolderPath;
                                     });
 
-                                    /** PROCESS FOLDER PERMISSIONS **/
+                                    // PROCESS FOLDER PERMISSIONS
                                     //File local files in the system related to the folder path.
                                     var localPermissions =
                                         CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
@@ -251,7 +251,7 @@ namespace Dnn.ExportImport.Components.Services
                                     totalFolderPermissionsImported += sourceFolderPermissions.Count;
                                 }
 
-                                /** PROCESS FILES **/
+                                // PROCESS FILES
                                 var sourceFiles =
                                     Repository.GetRelatedItems<ExportFile>(sourceFolder.Id).ToList();
                                 //Replace folderId for each file with new one.

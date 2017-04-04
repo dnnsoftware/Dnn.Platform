@@ -116,6 +116,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 0)
             {
                 ProcessRoleGroups(importJob, importDto, otherRoleGroups);
+                Repository.UpdateItems(otherRoleGroups);
                 Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
                 CheckPoint.Progress = 40;
                 CheckPoint.ProcessedItems = otherRoleGroups.Count;

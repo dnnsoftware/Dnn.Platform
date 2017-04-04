@@ -75,7 +75,6 @@ namespace Dnn.ExportImport.Repository
         {
             if (item == null) return null;
             var collection = DbCollection<T>();
-            //collection.EnsureIndex(x => x.Id, true);
             item.ReferenceId = referenceId;
             item.Id = collection.Insert(item);
             if (referenceId.HasValue)
@@ -86,19 +85,18 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        public IEnumerable<T> CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
+        public void CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
         {
-            var allItems = items.ToList();
+            var allItems = items as T[] ?? items.ToArray();
+            if (allItems.Length ==0) return;
+
             var collection = DbCollection<T>();
-            //collection.EnsureIndex(x => x.Id, true);
             foreach (var item in allItems)
             {
                 item.ReferenceId = referenceId;
                 item.Id = collection.Insert(item);
-                //collection.EnsureIndex(x => x.Id, true);
             }
             collection.EnsureIndex(x => x.Id, true);
-            return allItems;
         }
 
         public T GetItem<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
@@ -176,10 +174,8 @@ namespace Dnn.ExportImport.Repository
         {
             if (item == null) return;
             var collection = DbCollection<T>();
-            //collection.EnsureIndex(x => x.Id, true);
             if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
             collection.Update(item);
-            //collection.EnsureIndex(x => x.Id, true);
             if (item.ReferenceId.HasValue)
             {
                 collection.EnsureIndex(x => x.ReferenceId);
@@ -189,13 +185,14 @@ namespace Dnn.ExportImport.Repository
 
         public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
         {
+            var allItems = items as T[] ?? items.ToArray();
+            if (allItems.Length == 0) return;
+
             var collection = DbCollection<T>();
-            //collection.EnsureIndex(x => x.Id, true);
-            foreach (var item in items)
+            foreach (var item in allItems)
             {
                 if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
                 collection.Update(item);
-                //collection.EnsureIndex(x => x.Id, true);
                 if (item.ReferenceId.HasValue)
                 {
                     collection.EnsureIndex(x => x.ReferenceId);
@@ -207,7 +204,6 @@ namespace Dnn.ExportImport.Repository
         public bool DeleteItem<T>(int id) where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
-            //collection.EnsureIndex(x => x.Id, true);
             var item = collection.FindById(id);
             if (item == null) throw new KeyNotFoundException();
             return collection.Delete(id);
@@ -215,7 +211,7 @@ namespace Dnn.ExportImport.Repository
 
         private LiteCollection<T> DbCollection<T>()
         {
-            return _lightDb.GetCollection<T>(typeof(T).Name/*.ToLowerInvariant()*/);
+            return _lightDb.GetCollection<T>(typeof(T).Name);
         }
     }
 }
