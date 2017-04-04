@@ -403,9 +403,6 @@ namespace Dnn.ExportImport.Components.Services
                             case CollisionResolution.Overwrite:
                                 local.SkinSrc = other.SkinSrc;
                                 local.HttpAlias = other.HTTPAlias;
-                                local.CreatedByUserID = createdBy;
-                                local.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
-                                local.LastModifiedByUserID = modifiedBy;
 
                                 var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
                                 aliasSkinCtx.Update(local);
@@ -429,14 +426,11 @@ namespace Dnn.ExportImport.Components.Services
                             SkinSrc = other.SkinSrc,
                             HttpAlias = other.HTTPAlias,
                             PortalAliasId = alias?.PortalAliasID ?? -1,
-                            CreatedByUserID = createdBy,
-                            LastModifiedByUserID = modifiedBy,
-                            CreatedOnDate = DateUtils.GetDatabaseLocalTime(),
-                            LastModifiedOnDate = DateTime.Now,
                         };
 
                         var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
                         aliasSkinCtx.Insert(local);
+                        //TODO: update changers
                         Result.AddLogEntry("Added Tab alias skin", other.SkinSrc);
                         Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
                         count++;
@@ -730,10 +724,7 @@ namespace Dnn.ExportImport.Components.Services
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
                         ContentItemId = -1, //TODO: what about this?
-                        CreatedByUserID = createdBy,
-                        LastModifiedByUserID = modifiedBy,
-                    //TODO
-                };
+                    };
 
                     other.LocalId = _moduleController.AddModule(local); //TODO: is this the right call?
                     _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.ModuleID, createdBy, modifiedBy);
@@ -772,8 +763,6 @@ namespace Dnn.ExportImport.Components.Services
                         local.VersionGuid = other.VersionGuid;
                         local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
                         local.LocalizedVersionGuid = other.LocalizedVersionGuid;
-                        local.CreatedByUserID = createdBy;
-                        local.LastModifiedByUserID = modifiedBy;
 
                         _moduleController.UpdateModule(local); //TODO: is this the right call?
                         _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.ModuleID, createdBy, modifiedBy);
@@ -874,10 +863,6 @@ namespace Dnn.ExportImport.Components.Services
             localTab.IsSecure = otherTab.IsSecure;
             localTab.PermanentRedirect = otherTab.PermanentRedirect;
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
-            localTab.CreatedByUserID = otherTab.CreatedByUserID ?? -1;  // set a separate call
-            localTab.CreatedOnDate = otherTab.CreatedOnDate ?? DateTime.MinValue;
-            localTab.LastModifiedByUserID = otherTab.LastModifiedByUserID ?? -1;
-            localTab.LastModifiedOnDate = otherTab.LastModifiedOnDate ?? DateTime.MinValue;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
             //localTab.ContentItemID = otherTab.ContentItemID ?? -1;  //TODO: what to set here?

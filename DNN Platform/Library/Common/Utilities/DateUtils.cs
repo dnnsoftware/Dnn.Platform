@@ -45,7 +45,17 @@ namespace DotNetNuke.Common.Utilities
         /// Gets the database time.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
+        [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime")]
         public static DateTime GetDatabaseTime()
+        {
+            return GetDatabaseUtcTime();
+        }
+
+        /// <summary>
+        /// Gets the database server's time in UTC.
+        /// </summary>
+        /// <returns>Date/time of the database in UTC</returns>
+        public static DateTime GetDatabaseUtcTime()
         {
             try
             {
@@ -66,13 +76,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets the database time in UTC.
+        /// Gets the database server's local time of the DB server and not the web server's local time.
         /// </summary>
         /// <returns>Date/time of the database in UTC</returns>
-        public static DateTime GetDatabaseUtcTime()
-        {
-            return GetDatabaseTime();
-        }
         public static DateTime GetDatabaseLocalTime()
         {
             try
