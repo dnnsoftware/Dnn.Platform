@@ -104,7 +104,9 @@ class ImportModal extends Component {
         const { props } = this;
         if (props.selectedPackage) {
             props.dispatch(ImportExportActions.importWizardGoToSetp(1, () => {
-                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackage.PackageId));
+                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackage.PackageId, ()=>{}, ()=> {
+                    props.dispatch(ImportExportActions.packageVerified(true));
+                }));
             }));
         }
         else {
