@@ -38,6 +38,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -117,6 +118,8 @@ namespace Dnn.ExportImport.Components.Controllers
             var portal = PortalController.Instance.GetPortal(currentPortalId);
             return new AllJobsResult
             {
+                LastExportTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Export) : null,
+                LastImporTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Import) : null,
                 PortalId = portalId,
                 PortalName = portal.PortalName,
                 TotalJobs = count,
@@ -258,6 +261,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
+                Cancelled = job.IsCancelled,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
                 Name = job.Name,
                 Description = job.Description,

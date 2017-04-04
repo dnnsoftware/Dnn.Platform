@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Entities.Users;
@@ -32,6 +33,8 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public int PortalId { get; set; }
         public string PortalName { get; set; }
         public int TotalJobs { get; set; }
+        public DateTime? LastExportTime { get; set; }
+        public DateTime? LastImporTime { get; set; }
         public IEnumerable<JobItem> Jobs { get; set; }
 
         public void ConvertToLocal(UserInfo userInfo)
