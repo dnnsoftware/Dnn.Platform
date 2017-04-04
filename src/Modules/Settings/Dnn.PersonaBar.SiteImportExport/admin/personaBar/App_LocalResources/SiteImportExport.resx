@@ -253,10 +253,10 @@
     <value>Include Deletions</value>
   </data>
   <data name="ExportName.ErrorMessage" xml:space="preserve">
-    <value>Template file name is required.</value>
+    <value>Name is required.</value>
   </data>
   <data name="ExportDescription.ErrorMessage" xml:space="preserve">
-    <value>Template description is required.</value>
+    <value>Description is required.</value>
   </data>
   <data name="ExportRequestSubmitted" xml:space="preserve">
 	<value>Your data export has been placed in the queue, and will begin shortly.</value>
@@ -361,7 +361,7 @@
     <value>Include Extensions</value>
   </data>
   <data name="FileName.Text" xml:space="preserve">
-    <value>File Name</value>
+    <value>Folder Name</value>
   </data>
   <data name="Timestamp.Text" xml:space="preserve">
     <value>Timestamp</value>
