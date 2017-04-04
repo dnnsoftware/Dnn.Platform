@@ -55,6 +55,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -97,9 +98,8 @@
     <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
     <Compile Include="Components\Dto\ProfileProperties\ExportProfileProperty.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
-    <Compile Include="Components\Dto\Users\ExportUserAuthentication.cs" />
-    <Compile Include="Components\Dto\Users\ExportUserProfile.cs" />
-    <Compile Include="Components\Dto\Users\ExportUserRelationship.cs" />
+    <Compile Include="Components\Dto\Users\ImportAspnetMembership.cs" />
+    <Compile Include="Components\Dto\Users\ImportAspnetUser.cs" />
     <Compile Include="Components\Engines\ExportImportEngine.cs" />
     <Compile Include="Components\Entities\ExportImportChekpoint.cs" />
     <Compile Include="Components\Entities\ExportImportJobLog.cs" />
@@ -107,11 +107,6 @@
     <Compile Include="Components\Interfaces\IDateTimeConverter.cs" />
     <Compile Include="Components\Interfaces\IEntitiesController.cs" />
     <Compile Include="Components\Models\ExportImportResult.cs" />
-    <Compile Include="Components\Dto\Users\ExportAspnetMembership.cs" />
-    <Compile Include="Components\Dto\Users\ExportAspnetUser.cs" />
-    <Compile Include="Components\Dto\Users\ExportUserPortal.cs" />
-    <Compile Include="Components\Dto\Users\ExportUserRole.cs" />
-    <Compile Include="Components\Dto\Users\ExportUser.cs" />
     <Compile Include="Components\Models\ProgressToken.cs" />
     <Compile Include="Components\Providers\DataProvider.cs" />
     <Compile Include="Components\Scheduler\ExportImportScheduler.cs" />
@@ -169,6 +164,7 @@
       <LastGenOutput>ExportImport.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Module.build" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

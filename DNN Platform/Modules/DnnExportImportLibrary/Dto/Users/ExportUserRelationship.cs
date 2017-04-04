@@ -20,38 +20,39 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
-namespace Dnn.ExportImport.Components.Dto.Users
+namespace Dnn.ExportImport.Dto.Users
 {
-    [JsonObject]
-    [Serializable]
-    [TableName("UserProfile")]
-    [PrimaryKey("ProfileID")]
-    public class ExportUserProfile : BasicExportImportDto
+    public class ExportUserRelationship : BasicExportImportDto // Do we import Relationships table as well?
     {
-        [JsonProperty(PropertyName = "ProfileID")]
-        [ColumnName("ProfileID")]
-        public int ProfileId { get; set; }
+        public int UserRelationshipId { get; set; }
 
-        [JsonProperty(PropertyName = "UserID")]
-        [ColumnName("UserID")]
         public int UserId { get; set; }
+        public string UserName { get; set; } //This could be used to find "UserId"
 
-        [JsonProperty(PropertyName = "PropertyDefinitionID")]
-        [ColumnName("PropertyDefinitionID")]
-        public int PropertyDefinitionId { get; set; }
 
-        [IgnoreColumn]
-        [JsonIgnore]
-        public string PropertyName { get; set; }
+        public int RelatedUserId { get; set; }
+        public string RelatedUserUserName { get; set; } //This could be used to find "RelatedUserId"
 
-        public string PropertyValue { get; set; }
-        public string PropertyText { get; set; }
-        public int Visibility { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
-        public string ExtendedVisibility { get; set; }
+
+        public int RelationshipId { get; set; }
+
+        //[IgnoreColumn]
+        //public string RelationshipName { get; set; } //This could be used to find "LastModifiedByUserId"
+
+        public int Status { get; set; }
+
+        public int CreatedByUserId { get; set; }
+
+        public string CreatedByUserName { get; set; } //This could be used to find "CreatedByUserId"
+
+        public DateTime CreatedOnDate { get; set; }
+
+        public int LastModifiedByUserId { get; set; }
+
+        public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
+
+        public DateTime? LastModifiedOnDate { get; set; }
+
     }
 }
