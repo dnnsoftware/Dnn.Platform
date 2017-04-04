@@ -31,20 +31,20 @@ class DashboardPanelBody extends Component {
     componentWillMount() {
         const { props } = this;
         const persistedSettings = util.utilities.persistent.load();
-        if (props.portals.length === 0) {
-            props.dispatch(ImportExportActions.getPortals((data) => {
-                if (data.TotalResults === 1) {
-                    props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
-                        this.getLastJobTime(data.Results[0].PortalID);
-                        props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
-                    }));
-                }
-                else {
-                    this.getLastJobTime(props.portalId);
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
-                }
-            }));
-        }
+
+        props.dispatch(ImportExportActions.getPortals((data) => {
+            if (data.TotalResults === 1) {
+                props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
+                    this.getLastJobTime(data.Results[0].PortalID);
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
+                }));
+            }
+            else {
+                this.getLastJobTime(props.portalId);
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            }
+        }));
+
 
         this.jobListTimeout = setInterval(() => {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
