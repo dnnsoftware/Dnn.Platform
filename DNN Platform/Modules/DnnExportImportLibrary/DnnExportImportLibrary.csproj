@@ -61,6 +61,8 @@
     <Compile Include="Dto\Pages\ExportTabSetting.cs" />
     <Compile Include="Dto\Pages\ExportTabUrl.cs" />
     <Compile Include="Dto\PageTemplates\PageTemplate.cs" />
+    <Compile Include="Dto\Portal\ExportPortalLanguage.cs" />
+    <Compile Include="Dto\Portal\ExportPortalSetting.cs" />
     <Compile Include="Dto\ProfileProperties\ExportProfileProperty.cs" />
     <Compile Include="Dto\Roles\ExportRole.cs" />
     <Compile Include="Dto\Roles\ExportRoleGroup.cs" />

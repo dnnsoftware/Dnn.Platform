@@ -88,9 +88,6 @@
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
     <Compile Include="Components\Dto\Users\ImportAspnetMembership.cs" />
     <Compile Include="Components\Dto\Users\ImportAspnetUser.cs" />
