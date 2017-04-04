@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{424CCB69-AD4D-4CBC-83D3-E7588343A2E4}"
 	ProjectSection(SolutionItems) = preProject
@@ -105,6 +105,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.Servers", "Modules\Settings\Dnn.PersonaBar.Servers\Dnn.PersonaBar.Servers.csproj", "{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteSettings", "Modules\Settings\Dnn.PersonaBar.SiteSettings\Dnn.PersonaBar.SiteSettings.csproj", "{C0A07377-E031-4C5B-AC56-0080555C9AC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.PersonaBar.SiteImportExport", "Modules\Settings\Dnn.PersonaBar.SiteImportExport\Dnn.PersonaBar.SiteImportExport.csproj", "{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -305,6 +307,16 @@ Global
 		{C0A07377-E031-4C5B-AC56-0080555C9AC2}.Npm_Release|Any CPU.Build.0 = Npm_Release|Any CPU
 		{C0A07377-E031-4C5B-AC56-0080555C9AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0A07377-E031-4C5B-AC56-0080555C9AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Cloud_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Cloud_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Npm_Release|Any CPU.ActiveCfg = Npm_Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Npm_Release|Any CPU.Build.0 = Npm_Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -332,5 +344,6 @@ Global
 		{9CCA271F-CFAA-42A3-B577-7D5CBB38C646} = {25C1958E-8E53-4819-808E-D364614A2ED7}
 		{9FA6939A-0ABF-42AF-B43A-4063AFE3EE47} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 		{C0A07377-E031-4C5B-AC56-0080555C9AC2} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
+		{312D5D02-5E41-4851-B7B1-4AEE27F8E42C} = {D01B5E16-A6B9-4B79-8CC2-A035A5FA783E}
 	EndGlobalSection
 EndGlobal

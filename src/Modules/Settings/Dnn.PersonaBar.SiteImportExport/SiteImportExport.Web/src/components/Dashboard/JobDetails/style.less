@@ -1,0 +1,65 @@
+@import "~dnn-global-styles/index";
+.job-details {
+    margin: 10px 0;
+    float: left;
+    width: 100%;
+    .summary-title {
+        width: 100%;
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-left: 4%;
+    }
+    .export-summary {
+        float: left;
+        width: 100%;
+        padding: 0 30px 20px 30px;
+        .export-site-container {
+            font-weight: 700;
+            .left-column {
+                width: 50%;
+                float: left;
+                border-right: 1px solid @alto;
+                padding: 10px 30px 10px 0;
+            }
+            .right-column {
+                width: 50%;
+                float: left;
+                padding: 10px 0 10px 30px;
+                .dnn-switch-container {
+                    float: right;
+                }
+                .summary-note {
+                    float: left;
+                    width: 100%;
+                    color: @thunder;
+                    font-weight: 700;
+                    padding-top: 30px;
+                    .note-title {
+                        float: left;
+                        width: 15%;
+                    }
+                    .note-description {
+                        float: left;
+                        width: 85%;
+                    }
+                }
+            }
+            .import-summary-item {
+                padding-top: 7px;
+                float: right;
+                color: @thunder;
+            }
+            .dnn-grid-cell {
+                padding-bottom: 10px;
+            }
+            .action-buttons {
+                text-align: center;
+                padding: 30px 0 0 0;
+                button {
+                    margin: 5px;
+                }
+            }
+        }
+    }
+}

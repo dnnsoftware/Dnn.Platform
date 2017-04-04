@@ -415,4 +415,10 @@
   <data name="ViewSite.Text" xml:space="preserve">
     <value>View Site</value>
   </data>
+    <data name="SiteExport.Text" xml:space="preserve">
+    <value>Site Export</value>
+  </data>
+  <data name="SiteImport.Text" xml:space="preserve">
+    <value>Site Import</value>
+  </data>
 </root>

@@ -1,0 +1,99 @@
+@import "~dnn-global-styles/index";
+.collapsible-jobdetail {
+    display: table;
+    width: 100%;
+    &.false {
+        border-top: 2px solid @curiousBlue !important;
+        border-bottom: 2px solid @curiousBlue !important;
+        position: relative;
+        margin-top: -1px;
+    }
+    &:not(:last-child) {
+        border-bottom: 1px solid #ddd;
+    }
+    .job-collapsible > div {
+        float: left;
+        padding-bottom: 25px;
+    }
+    div.collapsible-jobdetail-header {
+        width: 100%;
+        float: left;
+        position: relative;
+        padding: 15px 0 15px 0;
+        box-sizing: border-box;
+        .term-header {
+            cursor: pointer;
+            .term-label-cssclass {
+                width: 5%;
+                float: left;
+                .jobIndicator-export {
+                    color: #fff;
+                    background-color: #ff8a14;
+                    width: 15px;
+                    height: 15px;
+                    display: block;
+                    float: left;
+                    margin: 0 0 0 12px;
+                }
+                .jobIndicator-import {
+                    color: #fff;
+                    background-color: #099;
+                    width: 15px;
+                    height: 15px;
+                    display: block;
+                    float: left;
+                    margin: 0 0 0 12px;
+                }
+            }
+            .term-label-createdate {
+                width: 20%;
+                float: left;
+            }
+            .term-label-jobtype {
+                width: 15%;
+                float: left;
+            }
+            .term-label-username {
+                width: 20%;
+                float: left;
+            }
+            .term-label-portalname {
+                width: 20%;
+                float: left;
+            }
+            .term-label-jobstatus {
+                width: 15%;
+                float: left;
+                .job-status0 {
+                    color: #ff8a14;
+                }
+                .job-status1 {
+                    color: @mantis;
+                }
+                .job-status2 {
+                    color: @curiousBlue;
+                }
+                .job-status3 {
+                    color: @alizarinCrimson;
+                }
+                .job-status4 {
+                    color: @alto;
+                }
+            }
+            .term-label-arrow {
+                width: 5%;
+                float: left;
+                .arrow-icon svg {
+                    width: 16px;
+                    height: 16px;
+                    float: left;
+                    fill: @thunder;
+                    margin-right: 5px;
+                }
+            }
+            .term-label-wrapper {
+                word-wrap: break-word;
+            }
+        }
+    }
+}
