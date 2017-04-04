@@ -80,6 +80,11 @@ export default function importExport(state = {
                 selectedPackage: action.selectedPackage,
                 importSummary: action.importSummary
             };
+        case ActionTypes.VERIFIED_PACKAGE:
+            return {
+                ...state,
+                packageVerified: action.packageVerified
+            };
         default:
             return {
                 ...state

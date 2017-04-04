@@ -1,4 +1,8 @@
 import React, { PropTypes, Component } from "react";
+import { connect } from "react-redux";
+import {
+    importExport as ImportExportActions
+} from "actions";
 import { Line } from "rc-progress";
 import "./style.less";
 
@@ -46,9 +50,20 @@ class ProgressBar extends Component {
             this.setState({ percent: 0 });
         }
         else {
-            this.setState({
-                percent: (this.state.percent + 5)
-            });
+            if (this.props.loaded) {
+                this.setState({
+                    percent: (100)
+                }, () => {
+                    this.timeout = setTimeout(() => {
+                        this.props.dispatch(ImportExportActions.packageVerified(true));
+                    }, 500);
+                });
+            }
+            else {
+                this.setState({
+                    percent: (this.state.percent + 5)
+                });
+            }
         }
         this.timeout = setTimeout(() => {
             this.increase();
@@ -73,8 +88,16 @@ class ProgressBar extends Component {
 }
 
 ProgressBar.propTypes = {
+    dispatch: PropTypes.func.isRequired,
     visible: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
+    loaded: PropTypes.bool
 };
 
-export default ProgressBar;
+function mapStateToProps(state) {
+    return {
+
+    };
+}
+
+export default connect(mapStateToProps)(ProgressBar);

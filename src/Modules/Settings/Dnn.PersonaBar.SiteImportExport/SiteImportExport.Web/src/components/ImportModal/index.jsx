@@ -36,6 +36,7 @@ class ImportModal extends Component {
     componentWillMount() {
         const { props } = this;
         props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        props.dispatch(ImportExportActions.packageVerified(false));
     }
 
     componentWillReceiveProps(props) {
@@ -87,6 +88,7 @@ class ImportModal extends Component {
                 Localization.get("ConfirmCancel"),
                 Localization.get("KeepImport"),
                 () => {
+                    props.dispatch(ImportExportActions.packageVerified(false));
                     props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
                         props.dispatch(ImportExportActions.selectPackage());
                     }));
@@ -184,11 +186,12 @@ class ImportModal extends Component {
     renderPackageVerification() {
         const { props } = this;
         return <div>
-            {props.selectedPackage && <div className="package-analyzing">
-                <div className="noDataText">{Localization.get("VerifyPackage")}</div>
-                <div className="noDataImage"></div>
-                <ProgressBar className="progressCards" visible={true} />
-            </div>}
+            {props.selectedPackage && !props.packageVerified && 
+                <div className="package-analyzing">
+                    <div className="noDataText">{Localization.get("VerifyPackage")}</div>
+                    <div className="noDataImage"></div>
+                    <ProgressBar className="progressCards" visible={true} loaded={props.importSummary} />
+                </div>}
         </div>;
     }
 
@@ -233,7 +236,7 @@ class ImportModal extends Component {
                                 <PackageCard selectedPackage={props.selectedPackage} />
                             </div>
                         }
-                        {state.wizardStep === 1 && !props.importSummary &&
+                        {state.wizardStep === 1 && !props.packageVerified &&
                             this.renderPackageVerification()
                         }
                     </div>
@@ -273,7 +276,8 @@ ImportModal.propTypes = {
     importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
     importSummary: PropTypes.object,
-    totalPackages: PropTypes.number
+    totalPackages: PropTypes.number,
+    packageVerified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -283,7 +287,8 @@ function mapStateToProps(state) {
         selectedPackage: state.importExport.selectedPackage,
         importSummary: state.importExport.importSummary,
         totalPackages: state.importExport.totalPackages,
-        portalId: state.importExport.portalId
+        portalId: state.importExport.portalId,
+        packageVerified: state.importExport.packageVerified
     };
 }
 

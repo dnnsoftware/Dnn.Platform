@@ -163,6 +163,18 @@ const jobsActions = {
         };
     },
 
+    packageVerified(verified, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.VERIFIED_PACKAGE,
+                packageVerified: verified
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+
     getImportPackages(parameters, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getImportPackages(parameters, (data) => {

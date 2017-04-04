@@ -23,7 +23,7 @@ class PackageCard extends Component {
                         <div className="package-field">
                             <Label
                                 labelType="inline"
-                                label={Localization.get("FileName")} />
+                                label={Localization.get("FolderName")} />
                         </div>
                         <div className="package-field">
                             <Label

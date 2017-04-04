@@ -31,13 +31,16 @@ class PackagesList extends Component {
     }
 
     renderTooltipMessage(description) {
-        return (
-            "<div><div style='text-transform: uppercase;font-weight: 700;padding: 20px 20px 15px 20px;color: #000'>" +
-            Localization.get("PackageDescription") +
-            "</div><div style='color: #4b4e4f;padding: 0 20px 20px 20px;'>" +
-            description +
-            "</div></div>"
-        );
+        if (description) {
+            return (
+                "<div><div style='text-transform: uppercase;font-weight: 700;padding: 20px 20px 15px 20px;color: #000'>" +
+                Localization.get("PackageDescription") +
+                "</div><div style='color: #4b4e4f;padding: 0 20px 20px 20px;'>" +
+                description +
+                "</div></div>"
+            );
+        }
+        else return;
     }
 
     /* eslint-disable react/no-danger */
@@ -49,14 +52,16 @@ class PackagesList extends Component {
                     return <div className="package-card-wrapper">
                         <PackageCard selectedPackage={pkg}
                             className={(props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId) ? "package-card selected" : "package-card"}>
-                            {(!props.selectedPackage || props.selectedPackage.PackageId !== pkg.PackageId) &&
-                                <PackageCardOverlay selectPackage={this.onSelect.bind(this, pkg)} packageName={pkg.Name} packageDescription={pkg.Description} />
-                            }
+                            <PackageCardOverlay
+                                selectPackage={this.onSelect.bind(this, pkg)}
+                                packageName={pkg.Name}
+                                packageDescription={pkg.Description}
+                                isSelected={props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId} />
                             {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
                                 <div className="checkmark" dangerouslySetInnerHTML={{ __html: CheckMarkIcon }}></div>
                             }
                             <Tooltip
-                            tooltipStyle={tooltipStyle}
+                                tooltipStyle={tooltipStyle}
                                 onClick={this.onSelect.bind(this, pkg)}
                                 messages={[this.renderTooltipMessage(pkg.Description)]}
                                 tooltipPlace="bottom"
