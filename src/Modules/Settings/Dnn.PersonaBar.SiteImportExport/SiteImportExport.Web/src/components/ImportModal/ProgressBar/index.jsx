@@ -56,7 +56,7 @@ class ProgressBar extends Component {
                 }, () => {
                     this.timeout = setTimeout(() => {
                         this.props.dispatch(ImportExportActions.packageVerified(true));
-                    }, 500);
+                    }, 100);
                 });
             }
             else {
@@ -67,7 +67,7 @@ class ProgressBar extends Component {
         }
         this.timeout = setTimeout(() => {
             this.increase();
-        }, 1000);
+        }, 500);
     }
 
     render() {

@@ -248,7 +248,7 @@ class ImportModal extends Component {
                     {props.wizardStep === 0 &&
                         this.renderPager()
                     }
-                    {props.wizardStep === 1 &&
+                    {props.wizardStep === 1 && props.packageVerified &&
                         <ImportSummary
                             collisionResolution={state.importRequest.CollisionResolution}
                             onSwitchChange={this.onSwitchChange.bind(this)} />
