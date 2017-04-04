@@ -21,17 +21,15 @@
 
 using System;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Data;
-using DotNetNuke.Security.Membership;
 using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -219,46 +217,39 @@ namespace Dnn.ExportImport.Components.Services
                     var users =
                         Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
-                    using (var db = DataContext.Instance())
+                    foreach (var user in users)
                     {
-                        foreach (var user in users)
+                        if (CheckCancelled(importJob)) return;
+
+                        var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                        if (aspNetUser == null)
                         {
-                            if (CheckCancelled(importJob)) return;
-
-                            var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
-                            if (aspNetUser == null)
-                            {
-                                currentIndex++;
-                                continue;
-                            }
-
-                            var aspnetMembership =
-                                Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
-                            if (aspnetMembership == null)
-                            {
-                                currentIndex++;
-                                continue;
-                            }
-
-                            var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                            ProcessUser(importJob, importDto, db, user, userPortal, aspNetUser, aspnetMembership);
-                            totalAspnetUserImported += 1;
-                            totalAspnetMembershipImported += 1;
-                            ProcessUserPortal(importJob, importDto, db, userPortal, user.UserId, user.Username);
-                            totalPortalsImported += userPortal != null ? 1 : 0;
-
-                            //Update the source repository local ids.
-                            Repository.UpdateItem(user);
-                            Repository.UpdateItem(userPortal);
-
                             currentIndex++;
-                            CheckPoint.ProcessedItems++;
-                            if (currentIndex % progressStep == 0)
-                                CheckPoint.Progress += 1;
-
-                            //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                            if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                            continue;
                         }
+
+                        var aspnetMembership =
+                            Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                        if (aspnetMembership == null)
+                        {
+                            currentIndex++;
+                            continue;
+                        }
+
+                        var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
+                        ProcessUser(importJob, importDto, user, userPortal, aspNetUser, aspnetMembership);
+                        totalAspnetUserImported += 1;
+                        totalAspnetMembershipImported += 1;
+                        ProcessUserPortal(importJob, importDto, userPortal, user.UserId);
+                        totalPortalsImported += userPortal != null ? 1 : 0;
+
+                        currentIndex++;
+                        CheckPoint.ProcessedItems++;
+                        if (currentIndex % progressStep == 0)
+                            CheckPoint.Progress += 1;
+
+                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalUsersImported += currentIndex;
                     currentIndex = 0;//Reset current index to 0
@@ -285,14 +276,12 @@ namespace Dnn.ExportImport.Components.Services
             return Repository.GetCount<ExportUser>();
         }
 
-        private void ProcessUser(ExportImportJob importJob, ImportDto importDto, IDataContext db, ExportUser user,
+        private void ProcessUser(ExportImportJob importJob, ImportDto importDto, ExportUser user,
             ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
         {
             if (user == null) return;
             var existingUser = UserController.GetUserByName(user.Username);
             var isUpdate = false;
-            var repUser = db.GetRepository<ExportUser>();
-
             if (existingUser != null)
             {
                 switch (importDto.CollisionResolution)
@@ -307,38 +296,33 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
+
             if (isUpdate)
             {
-                existingUser.FirstName = user.FirstName;
-                existingUser.LastName = user.LastName;
-                existingUser.DisplayName = user.DisplayName;
-                existingUser.Email = user.Email;
-                existingUser.IsDeleted = user.IsDeleted;
-                existingUser.IsSuperUser = user.IsSuperUser;
-                existingUser.VanityUrl = userPortal?.VanityUrl;
-                MembershipProvider.Instance().UpdateUser(existingUser);
-                DataCache.ClearCache(DataCache.UserCacheKey);
+                var modifiedBy = Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
                 user.UserId = existingUser.UserID;
-                Result.AddLogEntry("Updated user", user.Username);
+                DotNetNuke.Data.DataProvider.Instance().UpdateUser(user.UserId, importJob.PortalId, user.FirstName, user.LastName, user.IsSuperUser,
+                        user.Email, user.DisplayName, userPortal?.VanityUrl, user.UpdatePassword, aspnetMembership.IsApproved,
+                        false, user.LastIpAddress, user.PasswordResetToken ?? Guid.NewGuid(), user.PasswordResetExpiration ?? DateTime.Now.AddYears(10), user.IsDeleted, modifiedBy);
+
+                ProcessUserMembership(aspnetUser, aspnetMembership, true);
             }
             else
             {
-                ProcessUserMembership(aspnetUser, aspnetMembership);
-                user.UserId = 0;
+                var createdBy = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
                 user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
                 user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
-                user.CreatedOnDate = user.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-                repUser.Insert(user);
-                Result.AddLogEntry("Added user", user.Username);
+                user.UserId = DotNetNuke.Data.DataProvider.Instance().AddUser(importJob.PortalId, user.Username, user.FirstName, user.LastName, user.AffiliateId,
+                        user.IsSuperUser, user.Email, user.DisplayName, user.UpdatePassword, aspnetMembership.IsApproved, createdBy);
+
+                ProcessUserMembership(aspnetUser, aspnetMembership);
             }
-            user.LocalId = user.UserId;
         }
 
-        private void ProcessUserPortal(ExportImportJob importJob, ImportDto importDto, IDataContext db,
-            ExportUserPortal userPortal, int userId, string username)
+        private void ProcessUserPortal(ExportImportJob importJob, ImportDto importDto,
+            ExportUserPortal userPortal, int userId)
         {
             if (userPortal == null) return;
-            var repUserPortal = db.GetRepository<ExportUserPortal>();
             var existingPortal =
                 CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(importJob.PortalId, userId));
             var isUpdate = false;
@@ -356,57 +340,70 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            userPortal.UserId = userId;
-            userPortal.PortalId = importJob.PortalId;
+
             if (isUpdate)
             {
-                userPortal.UserPortalId = existingPortal.UserPortalId;
-                repUserPortal.Update(userPortal);
-                //Result.AddLogEntry("Updated user portal", $"{username}/{userPortal.PortalId}");
+                //Nothing to do
             }
             else
             {
-                userPortal.UserPortalId = 0;
-                userPortal.CreatedDate = DateUtils.GetDatabaseUtcTime();
-                repUserPortal.Insert(userPortal);
-                //Result.AddLogEntry("Added user portal", $"{username}/{userPortal.PortalId}");
+                DotNetNuke.Data.DataProvider.Instance().AddUserPortal(importJob.PortalId, userId);
             }
-            userPortal.LocalId = userPortal.UserPortalId;
         }
 
-        private void ProcessUserMembership(ExportAspnetUser aspNetUser, ExportAspnetMembership aspnetMembership)
+        private void ProcessUserMembership(ExportAspnetUser aspNetUser, ExportAspnetMembership aspnetMembership,
+            bool update = false)
         {
             using (var db =
                 new PetaPocoDataContext(DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
                     "aspnet_"))
             {
-                var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
-                    "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+                var repAspnetUsers = db.GetRepository<ImportAspnetUser>();
+                var repAspnetMembership = db.GetRepository<ImportAspnetMembership>();
 
-                //AspnetUser
+                if (update)
+                {
+                    var existingAspnetUser =
+                          CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(aspNetUser.UserName));
+                    var existingAspnetMembership =
+                        CBO.FillObject<ExportAspnetMembership>(
+                            DataProvider.Instance()
+                                .GetUserMembership(aspNetUser.UserId, aspNetUser.ApplicationId));
 
-                aspNetUser.UserId = Guid.Empty;
-                aspNetUser.ApplicationId = applicationId;
-                aspNetUser.LastActivityDate = DateUtils.GetDatabaseUtcTime();
-                var repAspnetUsers = db.GetRepository<ExportAspnetUser>();
-                repAspnetUsers.Insert(aspNetUser);
-                //aspNetUser.LocalId = aspNetUser.UserId;
+                    aspNetUser.LastActivityDate = existingAspnetUser.LastActivityDate;
+                    aspNetUser.UserId = existingAspnetUser.UserId;
+                    aspNetUser.ApplicationId = existingAspnetUser.ApplicationId;
+                    repAspnetUsers.Update(new ImportAspnetUser(aspNetUser));
 
-                //AspnetMembership
-                var repAspnetMembership = db.GetRepository<ExportAspnetMembership>();
-                aspnetMembership.UserId = aspNetUser.UserId;
-                aspnetMembership.ApplicationId = applicationId;
-                aspnetMembership.CreateDate = DateUtils.GetDatabaseUtcTime();
-                aspnetMembership.LastLoginDate =
-                    aspnetMembership.LastPasswordChangedDate =
-                        aspnetMembership.LastLockoutDate =
-                            aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
-                                aspnetMembership.FailedPasswordAttemptWindowStart =
-                                    new DateTime(1754, 1, 1);
-                //aspnetMembership.FailedPasswordAnswerAttemptCount =
-                //    aspnetMembership.FailedPasswordAttemptCount = 0;
-                repAspnetMembership.Insert(aspnetMembership);
-                //aspnetMembership.LocalId = aspnetMembership.UserId;
+                    aspnetMembership.UserId = existingAspnetMembership.UserId;
+                    aspnetMembership.ApplicationId = existingAspnetMembership.ApplicationId;
+                    aspnetMembership.CreateDate = existingAspnetMembership.CreateDate;
+                    repAspnetMembership.Update(new ImportAspnetMembership(aspnetMembership));
+                }
+                else
+                {
+                    var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
+                        "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+
+                    //AspnetUser
+
+                    aspNetUser.UserId = Guid.Empty;
+                    aspNetUser.ApplicationId = applicationId;
+                    aspNetUser.LastActivityDate = DateUtils.GetDatabaseUtcTime();
+                    repAspnetUsers.Insert(new ImportAspnetUser(aspNetUser));
+
+                    //AspnetMembership
+                    aspnetMembership.UserId = aspNetUser.UserId;
+                    aspnetMembership.ApplicationId = applicationId;
+                    aspnetMembership.CreateDate = DateUtils.GetDatabaseUtcTime();
+                    aspnetMembership.LastLoginDate =
+                        aspnetMembership.LastPasswordChangedDate =
+                            aspnetMembership.LastLockoutDate =
+                                aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
+                                    aspnetMembership.FailedPasswordAttemptWindowStart =
+                                        new DateTime(1754, 1, 1);
+                    repAspnetMembership.Insert(new ImportAspnetMembership(aspnetMembership));
+                }
             }
         }
 

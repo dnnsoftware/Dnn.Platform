@@ -20,62 +20,33 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
-namespace Dnn.ExportImport.Components.Dto.Users
+namespace Dnn.ExportImport.Dto.Users
 {
-    [JsonObject]
-    [Serializable]
-    [TableName("UserRelationships")]
-    [PrimaryKey("UserRelationshipID")]
-    public class ExportUserRelationship : BasicExportImportDto // Do we import Relationships table as well?
+    public class ExportUserRole : BasicExportImportDto
     {
-        [ColumnName("UserRelationshipID")]
-        [JsonProperty(PropertyName = "UserRelationshipID")]
-        public int UserRelationshipId { get; set; }
+        public int UserRoleId { get; set; }
 
-        [ColumnName("UserID")]
-        [JsonProperty(PropertyName = "UserID")]
         public int UserId { get; set; }
-        [IgnoreColumn]
-        public string UserName { get; set; } //This could be used to find "UserId"
 
+        public int RoleId { get; set; }
 
-        [ColumnName("RelatedUserID")]
-        [JsonProperty(PropertyName = "RelatedUserID")]
-        public int RelatedUserId { get; set; }
-        [IgnoreColumn]
-        public string RelatedUserUserName { get; set; } //This could be used to find "RelatedUserId"
+        public string RoleName { get; set; }
 
+        public DateTime? ExpiryDate { get; set; }
+        public bool IsTrialUsed { get; set; }
+        public DateTime? EffectiveDate { get; set; }
 
-        [ColumnName("RelationshipID")]
-        [JsonProperty(PropertyName = "RelationshipID")] // Do we import Relationships table as well?
-        public int RelationshipId { get; set; }
-
-        //[IgnoreColumn]
-        //public string RelationshipName { get; set; } //This could be used to find "LastModifiedByUserId"
-
-        public int Status { get; set; }
-
-        [ColumnName("CreatedByUserID")]
-        [JsonProperty(PropertyName = "CreatedByUserID")]
         public int CreatedByUserId { get; set; }
 
-        [IgnoreColumn]
         public string CreatedByUserName { get; set; } //This could be used to find "CreatedByUserId"
-
         public DateTime CreatedOnDate { get; set; }
 
-        [ColumnName("LastModifiedByUserID")]
-        [JsonProperty(PropertyName = "LastModifiedByUserID")]
         public int LastModifiedByUserId { get; set; }
 
-        [IgnoreColumn]
         public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
-
         public DateTime? LastModifiedOnDate { get; set; }
-
+        public int Status { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

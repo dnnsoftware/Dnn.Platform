@@ -21,14 +21,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.Users;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
 using Newtonsoft.Json;
@@ -90,40 +89,38 @@ namespace Dnn.ExportImport.Components.Services
                     if (CheckCancelled(importJob)) return;
                     var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
                     skip = 0;
-                    using (var db = DataContext.Instance())
+                    foreach (var user in users)
                     {
-                        foreach (var user in users)
+                        if (CheckCancelled(importJob)) return;
+                        var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                        var userAuthentication =
+                            Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                        var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
+
+                        //Find the correct userId from the system which was added/updated by UserExportService.
+                        var userId = UserController.GetUserByName(user.Username)?.UserID;
+                        if (userId != null)
                         {
-                            if (CheckCancelled(importJob)) return;
-                            var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
-                            var userAuthentication =
-                                Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                            var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
-
-
-                            ProcessUserRoles(importJob, importDto, db, userRoles, user.UserId, user.Username);
+                            ProcessUserRoles(importJob, importDto, userRoles, userId.Value);
                             totalUserRolesImported += userRoles.Count;
 
-                            ProcessUserProfiles(importJob, importDto, db, userProfiles, user.UserId, user.Username);
+                            ProcessUserProfiles(importJob, importDto, userProfiles, userId.Value);
                             totalProfilesImported += userProfiles.Count;
 
-                            ProcessUserAuthentications(importJob, importDto, db, userAuthentication, user.UserId,
-                                user.Username);
+                            ProcessUserAuthentications(importJob, importDto, userAuthentication, userId.Value);
                             if (userAuthentication != null) totalAuthenticationImported++;
-                            //Update the source repository local ids.
-                            Repository.UpdateItems(userRoles);
-                            Repository.UpdateItems(userProfiles);
-                            Repository.UpdateItem(userAuthentication);
-                            DataProvider.Instance()
-                                .UpdateUserChangers(user.UserId, user.CreatedByUserName, user.LastModifiedByUserName);
 
-                            currentIndex++;
-                            CheckPoint.ProcessedItems++;
-                            if (totalProcessed % progressStep == 0)
-                                CheckPoint.Progress += 1;
-                            //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                            if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                            //TODO: Do we need this part?
+                            DataProvider.Instance()
+                                .UpdateUserChangers(userId.Value, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
+
+                        currentIndex++;
+                        CheckPoint.ProcessedItems++;
+                        if (totalProcessed % progressStep == 0)
+                            CheckPoint.Progress += 1;
+                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
                     totalProcessed += currentIndex;
                     currentIndex = 0;//Reset current index to 0
@@ -149,11 +146,9 @@ namespace Dnn.ExportImport.Components.Services
             return Repository.GetCount<ExportUser>();
         }
 
-        private void ProcessUserRoles(ExportImportJob importJob, ImportDto importDto, IDataContext db,
-            IEnumerable<ExportUserRole> userRoles, int userId, string username)
+        private void ProcessUserRoles(ExportImportJob importJob, ImportDto importDto,
+            IEnumerable<ExportUserRole> userRoles, int userId)
         {
-            var repUserRoles = db.GetRepository<ExportUserRole>();
-
             foreach (var userRole in userRoles)
             {
                 if (CheckCancelled(importJob)) return;
@@ -170,55 +165,40 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore:
-                            //Result.AddLogEntry("Ignored user role", $"{username}/{userRole.RoleName}");
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
 
-                var modifiedById = Util.GetUserIdByName(importJob, userRole.LastModifiedByUserId,
-                    userRole.LastModifiedByUserName);
-
-                userRole.UserId = userId;
-                userRole.RoleId = roleId.Value;
-                userRole.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-                userRole.EffectiveDate = userRole.EffectiveDate != null
-                    ? (DateTime?)DateUtils.GetDatabaseUtcTime()
-                    : null;
-                userRole.LastModifiedByUserId = modifiedById;
                 if (isUpdate)
                 {
-                    userRole.CreatedByUserId = existingUserRole.CreatedByUserID;
-                    userRole.CreatedOnDate = existingUserRole.CreatedOnDate;
+                    var modifiedBy = Util.GetUserIdByName(importJob, userRole.LastModifiedByUserId, userRole.LastModifiedByUserName);
                     userRole.UserRoleId = existingUserRole.UserRoleID;
-                    repUserRoles.Update(userRole);
-                    //Result.AddLogEntry("Updated user role", $"{username}/{userRole.RoleName}");
+                    DotNetNuke.Data.DataProvider.Instance()
+                        .UpdateUserRole(userRole.UserRoleId, userRole.Status, userRole.IsOwner,
+                            userRole.EffectiveDate ?? Null.NullDate, userRole.ExpiryDate ?? Null.NullDate, modifiedBy);
                 }
                 else
                 {
-                    var createdById = Util.GetUserIdByName(importJob, userRole.CreatedByUserId,
-                        userRole.CreatedByUserName);
-                    userRole.UserRoleId = 0;
-                    userRole.CreatedByUserId = createdById;
-                    userRole.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
-                    repUserRoles.Insert(userRole);
-                    //Result.AddLogEntry("Added user role", $"{username}/{userRole.RoleName}");
+                    var createdBy = Util.GetUserIdByName(importJob, userRole.CreatedByUserId, userRole.CreatedByUserName);
+                    userRole.UserRoleId = DotNetNuke.Data.DataProvider.Instance()
+                        .AddUserRole(importJob.PortalId, userId, roleId.Value, userRole.Status, userRole.IsOwner,
+                            userRole.EffectiveDate ?? Null.NullDate, userRole.ExpiryDate ?? Null.NullDate, createdBy);
                 }
-                userRole.LocalId = userRole.UserRoleId;
             }
         }
 
-        private void ProcessUserProfiles(ExportImportJob importJob, ImportDto importDto, IDataContext db,
-            IEnumerable<ExportUserProfile> userProfiles, int userId, string username)
+        private void ProcessUserProfiles(ExportImportJob importJob, ImportDto importDto,
+            IEnumerable<ExportUserProfile> userProfiles, int userId)
         {
-            var repUserProfile = db.GetRepository<ExportUserProfile>();
+            var allUserProfileProperties =
+                CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId));
             foreach (var userProfile in userProfiles)
             {
                 if (CheckCancelled(importJob)) return;
                 var existingUserProfile =
-                    CBO.FillCollection<ExportUserProfile>(
-                        DataProvider.Instance().GetUserProfile(importJob.PortalId, userId)).FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
+                    allUserProfileProperties.FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
                 var isUpdate = false;
                 if (existingUserProfile != null)
                 {
@@ -228,43 +208,41 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore:
-                            //Result.AddLogEntry("Ignored user profile", userProfile.PropertyName);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
-                userProfile.UserId = userId;
-                userProfile.LastUpdatedDate = DateUtils.GetDatabaseUtcTime();
                 if (isUpdate)
                 {
                     userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
                     userProfile.ProfileId = existingUserProfile.ProfileId;
-                    repUserProfile.Update(userProfile);
-                    //Result.AddLogEntry("Updated user profile", $"{username}/{userProfile.PropertyName}");
+                    DotNetNuke.Data.DataProvider.Instance()
+                        .UpdateProfileProperty(userProfile.ProfileId, userId, userProfile.PropertyDefinitionId,
+                            userProfile.PropertyValue
+                            , userProfile.Visibility, userProfile.ExtendedVisibility, DateUtils.GetDatabaseLocalTime());
                 }
                 else
                 {
-                    userProfile.ProfileId = 0;
                     var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
                         userProfile.PropertyDefinitionId,
                         userProfile.PropertyName);
                     if (profileDefinitionId == null) continue;
-
                     userProfile.PropertyDefinitionId = profileDefinitionId.Value;
-                    repUserProfile.Insert(userProfile);
-                    //Result.AddLogEntry("Added user profile", userProfile.PropertyName);
+
+                    DotNetNuke.Data.DataProvider.Instance()
+                        .UpdateProfileProperty(Null.NullInteger, userId, userProfile.PropertyDefinitionId,
+                            userProfile.PropertyValue, userProfile.Visibility, userProfile.ExtendedVisibility,
+                            DateUtils.GetDatabaseLocalTime());
                 }
-                userProfile.LocalId = userProfile.ProfileId;
             }
         }
 
-        private void ProcessUserAuthentications(ExportImportJob importJob, ImportDto importDto, IDataContext db,
-            ExportUserAuthentication userAuthentication, int userId, string username)
+        private void ProcessUserAuthentications(ExportImportJob importJob, ImportDto importDto,
+            ExportUserAuthentication userAuthentication, int userId)
         {
             if (userAuthentication == null) return;
 
-            var repUserAuthentication = db.GetRepository<ExportUserAuthentication>();
             var existingUserAuthenticaiton = AuthenticationController.GetUserAuthentication(userId);
             var isUpdate = false;
             if (existingUserAuthenticaiton != null)
@@ -275,34 +253,24 @@ namespace Dnn.ExportImport.Components.Services
                         isUpdate = true;
                         break;
                     case CollisionResolution.Ignore:
-                        //Result.AddLogEntry("Ignored user authentication", username);
                         return;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            var modifiedById = Util.GetUserIdByName(importJob, userAuthentication.LastModifiedByUserId,
-                userAuthentication.LastModifiedByUserName);
-            userAuthentication.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-            userAuthentication.LastModifiedByUserId = modifiedById;
-            userAuthentication.UserId = userId;
             if (isUpdate)
             {
+                //TODO: Do we need this part?
                 userAuthentication.UserAuthenticationId = existingUserAuthenticaiton.UserAuthenticationID;
-                repUserAuthentication.Update(userAuthentication);
-                //Result.AddLogEntry("Updated user authentication", username);
+                //No updates.
             }
             else
             {
                 userAuthentication.UserAuthenticationId = 0;
-                var createdById = Util.GetUserIdByName(importJob, userAuthentication.CreatedByUserId,
-                 userAuthentication.CreatedByUserName);
-                userAuthentication.CreatedOnDate = DateUtils.GetDatabaseLocalTime();
-                userAuthentication.CreatedByUserId = createdById;
-                repUserAuthentication.Insert(userAuthentication);
-                //Result.AddLogEntry("Added user authentication", username);
+                var createdById = Util.GetUserIdByName(importJob, userAuthentication.CreatedByUserId, userAuthentication.CreatedByUserName);
+                userAuthentication.UserAuthenticationId = DotNetNuke.Data.DataProvider.Instance().AddUserAuthentication(userAuthentication.UserId, userAuthentication.AuthenticationType,
+                        userAuthentication.AuthenticationToken, createdById);
             }
-            userAuthentication.LocalId = userAuthentication.UserAuthenticationId;
         }
 
         private int GetCurrentSkip()

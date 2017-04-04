@@ -20,7 +20,7 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
+using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
@@ -28,34 +28,28 @@ namespace Dnn.ExportImport.Components.Dto.Users
 {
     [JsonObject]
     [Serializable]
-    [TableName("Membership")]
-    [PrimaryKey("UserId", AutoIncrement=false)]
-    public class ExportAspnetMembership : BasicExportImportDto
+    [TableName("Users")]
+    [PrimaryKey("UserId")]
+    public class ImportAspnetUser: ExportAspnetUser
     {
-        public Guid ApplicationId { get; set; }
-        public Guid UserId { get; set; }
-        public string Password { get; set; }
-        public int PasswordFormat { get; set; }
-        public string PasswordSalt { get; set; }
+        [IgnoreColumn]
+        public override int Id { get; set; }
 
-        [JsonProperty(PropertyName= "MobilePIN")]
-        [ColumnName("MobilePIN")]
-        public string MobilePin { get; set; }
+        [IgnoreColumn]
+        public override int? ReferenceId { get; set; }
 
-        public string Email { get; set; }
-        public string LoweredEmail { get; set; }
-        public string PasswordQuestion { get; set; }
-        public string PasswordAnswer { get; set; }
-        public bool IsApproved { get; set; }
-        public bool IsLockedOut { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime LastLoginDate { get; set; }
-        public DateTime LastPasswordChangedDate { get; set; }
-        public DateTime LastLockoutDate { get; set; }
-        public int FailedPasswordAttemptCount { get; set; }
-        public DateTime FailedPasswordAttemptWindowStart { get; set; }
-        public int FailedPasswordAnswerAttemptCount { get; set; }
-        public DateTime FailedPasswordAnswerAttemptWindowStart { get; set; }
-        public string Comment { get; set; }
+        [IgnoreColumn]
+        public override int? LocalId { get; set; }
+
+        public ImportAspnetUser(ExportAspnetUser aspnetUser)
+        {
+            ApplicationId = aspnetUser.ApplicationId;
+            UserId = aspnetUser.UserId;
+            UserName = aspnetUser.UserName;
+            LoweredUserName = aspnetUser.LoweredUserName;
+            MobileAlias = aspnetUser.MobileAlias;
+            IsAnonymous = aspnetUser.IsAnonymous;
+            LastActivityDate = aspnetUser.LastActivityDate;
+        }
     }
 }

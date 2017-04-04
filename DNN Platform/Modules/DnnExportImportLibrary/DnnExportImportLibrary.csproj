@@ -63,6 +63,14 @@
     <Compile Include="Dto\Taxonomy\TaxonomyTerm.cs" />
     <Compile Include="Dto\Taxonomy\TaxonomyVocabulary.cs" />
     <Compile Include="Dto\Taxonomy\TaxonomyVocabularyType.cs" />
+    <Compile Include="Dto\Users\ExportAspnetMembership.cs" />
+    <Compile Include="Dto\Users\ExportAspnetUser.cs" />
+    <Compile Include="Dto\Users\ExportUser.cs" />
+    <Compile Include="Dto\Users\ExportUserAuthentication.cs" />
+    <Compile Include="Dto\Users\ExportUserPortal.cs" />
+    <Compile Include="Dto\Users\ExportUserProfile.cs" />
+    <Compile Include="Dto\Users\ExportUserRelationship.cs" />
+    <Compile Include="Dto\Users\ExportUserRole.cs" />
     <Compile Include="Interfaces\IExportImportRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ExportImportRepository.cs" />

@@ -20,24 +20,23 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
-namespace Dnn.ExportImport.Components.Dto.Users
+namespace Dnn.ExportImport.Dto.Users
 {
-    [JsonObject]
-    [Serializable]
-    [TableName("Users")]
-    [PrimaryKey("UserId")]
-    public class ExportAspnetUser : BasicExportImportDto
+    public class ExportUserProfile : BasicExportImportDto
     {
-        public Guid ApplicationId { get; set; }
-        public Guid UserId { get; set; }
-        public string UserName { get; set; }
-        public string LoweredUserName { get; set; }
-        public string MobileAlias { get; set; }
-        public bool IsAnonymous { get; set; }
-        public DateTime? LastActivityDate { get; set; }
+        public int ProfileId { get; set; }
+
+        public int UserId { get; set; }
+
+        public int PropertyDefinitionId { get; set; }
+
+        public string PropertyName { get; set; }
+
+        public string PropertyValue { get; set; }
+        public string PropertyText { get; set; }
+        public int Visibility { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
+        public string ExtendedVisibility { get; set; }
     }
 }
