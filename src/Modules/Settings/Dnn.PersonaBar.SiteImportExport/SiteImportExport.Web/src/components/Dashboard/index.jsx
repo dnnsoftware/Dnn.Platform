@@ -30,6 +30,7 @@ class DashboardPanelBody extends Component {
 
     componentWillMount() {
         const { props } = this;
+        const persistedSettings = util.utilities.persistent.load();
         if (props.portals.length === 0) {
             props.dispatch(ImportExportActions.getPortals((data) => {
                 if (data.TotalResults === 1) {
@@ -44,6 +45,16 @@ class DashboardPanelBody extends Component {
                 }
             }));
         }
+
+        this.jobListTimeout = setInterval(() => {
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+            }
+        }, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.jobListTimeout);
     }
 
     getLastJobTime(portalId) {
@@ -82,7 +93,7 @@ class DashboardPanelBody extends Component {
     getNextPage(portalId) {
         const { state, props } = this;
         return {
-            portal: portalId,
+            portal: portalId === undefined ? props.portalId : portalId,
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
             jobType: state.filter === -1 ? null : state.filter,

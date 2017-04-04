@@ -25,7 +25,7 @@ class ApplicationService {
 
     getAllJobs(parameters, callback, errorCallback) {
         const sf = this.getServiceFramework("SiteExportImport", "ExportImport");        
-        sf.get("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
+        sf.getsilence("AllJobs?" + serializeQueryStringParameters(parameters), {}, callback, errorCallback);
     }
 
     getLastJobTime(parameters, callback, errorCallback) {
