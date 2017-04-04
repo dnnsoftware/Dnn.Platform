@@ -63,7 +63,7 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
-    }    
+    }
 
     goToStep(wizardStep) {
         const { props } = this;
@@ -170,9 +170,11 @@ class ExportModal extends Component {
                 <GridCell className="export-site-container">
                     <div className="left-column">
                         <GridCell>
+                            <Label
+                                labelType="block"
+                                label={Localization.get("Site")} />
                             <Dropdown
                                 enabled={false}
-                                label={Localization.get("Site")}
                                 options={this.getPortalOptions()}
                                 value={props.portalId}
                                 onSelect={this.onChange.bind(this, "PortalId")}
@@ -200,8 +202,6 @@ class ExportModal extends Component {
                                 style={{ "width": "100%" }}
                                 label={Localization.get("Description")}
                                 value={state.exportRequest.ExportDescription}
-                                error={state.errors.ExportDescription}
-                                errorMessage={Localization.get("ExportDescription.ErrorMessage")}
                                 onChange={this.onChange.bind(this, "ExportDescription")}
                             />
                         </GridCell>
@@ -338,7 +338,7 @@ class ExportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("LastExport")}
                                 />
-                                <div className="lastExport">{props.lastExportDate}</div>
+                                <div className="lastExport">{props.lastExportDate || "-- --"}</div>
                             </InputGroup>
                         </div>
                     </GridSystem>

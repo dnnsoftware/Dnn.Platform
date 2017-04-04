@@ -255,9 +255,6 @@
   <data name="ExportName.ErrorMessage" xml:space="preserve">
     <value>Name is required.</value>
   </data>
-  <data name="ExportDescription.ErrorMessage" xml:space="preserve">
-    <value>Description is required.</value>
-  </data>
   <data name="ExportRequestSubmitted" xml:space="preserve">
 	<value>Your data export has been placed in the queue, and will begin shortly.</value>
   </data>
@@ -315,6 +312,9 @@
   <data name="ClicktoSelect.Text" xml:space="preserve">
     <value>click to select package</value>
   </data>
+  <data name="ClicktoDeselect.Text" xml:space="preserve">
+    <value>click to deselect package</value>
+  </data>
   <data name="PackageDescription.Text" xml:space="preserve">
     <value>Package Description</value>
   </data>
@@ -360,7 +360,7 @@
   <data name="IncludeExtensions.Text" xml:space="preserve">
     <value>Include Extensions</value>
   </data>
-  <data name="FileName.Text" xml:space="preserve">
+  <data name="FolderName.Text" xml:space="preserve">
     <value>Folder Name</value>
   </data>
   <data name="Timestamp.Text" xml:space="preserve">
@@ -454,7 +454,7 @@
     <value>Mode</value>
   </data>
   <data name="FileSize.Text" xml:space="preserve">
-    <value>File</value>
+    <value>Size</value>
   </data>
   <data name="VerifyPackage.Text" xml:space="preserve">
     <value>Just a moment, we are checking the package ...</value>

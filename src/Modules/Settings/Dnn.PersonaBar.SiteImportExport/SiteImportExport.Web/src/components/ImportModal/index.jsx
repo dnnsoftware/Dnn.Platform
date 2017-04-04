@@ -20,7 +20,6 @@ class ImportModal extends Component {
     constructor() {
         super();
         this.state = {
-            wizardStep: 0,
             importRequest: {
                 PortalId: -1,
                 PackageId: -1,
@@ -34,15 +33,21 @@ class ImportModal extends Component {
     }
 
     componentWillMount() {
-        const { props } = this;
-        props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        const { props, state } = this;
+        if (!props.importPackages || props.importPackages.length === 0) {
+            props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+            props.dispatch(ImportExportActions.packageVerified(false));
+        }
+        const { importRequest } = state;
+        importRequest.PortalId = props.portalId;
+        importRequest.PackageId = props.selectedPackage ? props.selectedPackage.PackageId : -1;
+        this.setState({
+            importRequest
+        });
     }
 
     componentWillReceiveProps(props) {
         const { state } = this;
-        this.setState({
-            wizardStep: props.wizardStep
-        });
         const { importRequest } = state;
         if (importRequest.PortalId === -1 || importRequest.PortalId !== props.portalId) {
             importRequest.PortalId = props.portalId;
@@ -87,6 +92,7 @@ class ImportModal extends Component {
                 Localization.get("ConfirmCancel"),
                 Localization.get("KeepImport"),
                 () => {
+                    props.dispatch(ImportExportActions.packageVerified(false));
                     props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
                         props.dispatch(ImportExportActions.selectPackage());
                     }));
@@ -108,8 +114,9 @@ class ImportModal extends Component {
 
     onImport() {
         const { props, state } = this;
-        props.dispatch(ImportExportActions.importSite(state.importRequest, (data) => {
+        props.dispatch(ImportExportActions.importSite(state.importRequest, () => {
             util.utilities.notify(Localization.get("ImportRequestSubmitted"));
+            props.dispatch(ImportExportActions.packageVerified(false));
             this.goToStep(0);
             props.dispatch(ImportExportActions.getAllJobs({
                 portal: state.importRequest.PortalId,
@@ -184,11 +191,12 @@ class ImportModal extends Component {
     renderPackageVerification() {
         const { props } = this;
         return <div>
-            {props.selectedPackage && <div className="package-analyzing">
-                <div className="noDataText">{Localization.get("VerifyPackage")}</div>
-                <div className="noDataImage"></div>
-                <ProgressBar className="progressCards" visible={true} />
-            </div>}
+            {props.selectedPackage && !props.packageVerified &&
+                <div className="package-analyzing">
+                    <div className="noDataText">{Localization.get("VerifyPackage")}</div>
+                    <div className="noDataImage"></div>
+                    <ProgressBar className="progressCards" visible={true} loaded={props.importSummary} />
+                </div>}
         </div>;
     }
 
@@ -219,28 +227,28 @@ class ImportModal extends Component {
             <div className={styles.importModal}>
                 <div className="pageTitle">{Localization.get("SelectImportPackage")}</div>
                 <div className="packages-wrapper">
-                    {state.wizardStep === 0 &&
+                    {props.wizardStep === 0 &&
                         <FiltersBar onFilterChanged={this.onFilterChanged.bind(this)}
                             onKeywordChanged={this.onKeywordChanged.bind(this)}
                         />
                     }
                     <div className="packages">
-                        {state.wizardStep === 0 &&
+                        {props.wizardStep === 0 &&
                             <PackagesList selectPackage={this.selectPackage.bind(this)} />
                         }
-                        {state.wizardStep === 1 &&
+                        {props.wizardStep === 1 &&
                             <div className="package-card-wrapper">
                                 <PackageCard selectedPackage={props.selectedPackage} />
                             </div>
                         }
-                        {state.wizardStep === 1 && !props.importSummary &&
+                        {props.wizardStep === 1 && !props.packageVerified &&
                             this.renderPackageVerification()
                         }
                     </div>
-                    {state.wizardStep === 0 &&
+                    {props.wizardStep === 0 &&
                         this.renderPager()
                     }
-                    {state.wizardStep === 1 &&
+                    {props.wizardStep === 1 && props.packageVerified &&
                         <ImportSummary
                             collisionResolution={state.importRequest.CollisionResolution}
                             onSwitchChange={this.onSwitchChange.bind(this)} />
@@ -273,7 +281,8 @@ ImportModal.propTypes = {
     importPackages: PropTypes.array,
     selectedPackage: PropTypes.object,
     importSummary: PropTypes.object,
-    totalPackages: PropTypes.number
+    totalPackages: PropTypes.number,
+    packageVerified: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -283,7 +292,8 @@ function mapStateToProps(state) {
         selectedPackage: state.importExport.selectedPackage,
         importSummary: state.importExport.importSummary,
         totalPackages: state.importExport.totalPackages,
-        portalId: state.importExport.portalId
+        portalId: state.importExport.portalId,
+        packageVerified: state.importExport.packageVerified
     };
 }
 

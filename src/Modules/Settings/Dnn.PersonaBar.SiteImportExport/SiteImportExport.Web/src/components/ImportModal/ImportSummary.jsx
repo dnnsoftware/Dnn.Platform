@@ -96,7 +96,7 @@ class ImportSummary extends Component {
                                 <GridCell>
                                     <Label
                                         labelType="inline"
-                                        label={Localization.get("FileName")}
+                                        label={Localization.get("FolderName")}
                                     />
                                     <div className="import-summary-item">{props.selectedPackage.FileName}</div>
                                 </GridCell>

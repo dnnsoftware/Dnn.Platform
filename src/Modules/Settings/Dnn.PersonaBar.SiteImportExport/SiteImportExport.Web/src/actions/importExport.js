@@ -125,7 +125,8 @@ const jobsActions = {
             ApplicationService.importSite(payload, data => {
                 dispatch({
                     type: ActionTypes.SUBMITTED_IMPORT_REQUEST,
-                    jobId: data.jobId
+                    jobId: data.jobId,
+                    packageVerified: false
                 });
                 if (callback) {
                     callback(data);
@@ -156,6 +157,18 @@ const jobsActions = {
                 type: ActionTypes.SELECTED_PACKAGE,
                 selectedPackage: pkg,
                 importSummary: undefined
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+
+    packageVerified(verified, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.VERIFIED_PACKAGE,
+                packageVerified: verified
             });
             if (callback) {
                 callback();

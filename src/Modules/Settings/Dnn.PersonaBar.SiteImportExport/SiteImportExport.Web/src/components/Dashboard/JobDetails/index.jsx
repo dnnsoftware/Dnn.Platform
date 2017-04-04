@@ -32,6 +32,9 @@ class JobDetails extends Component {
         const { props } = this;
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
+            if (category === "Templates" && !detail) {
+                detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
+            }
             return detail ? detail.TotalItems : "-";
         }
         else {
@@ -87,7 +90,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("PageTemplates")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("PageTemplates")}</div>
+                                <div className="import-summary-item">{this.getSummaryItem("Templates")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -129,7 +132,7 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("FileName")}
+                                    label={Localization.get("FolderName")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.ExportFile}</div>
                             </GridCell>
@@ -152,7 +155,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("TotalExportSize")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.ExportSizeKb : "-"}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.ExportFileInfo ? props.jobDetail.Summary.ExportFileInfo.ExportSize : "-"}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
