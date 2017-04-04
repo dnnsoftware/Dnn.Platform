@@ -56,7 +56,8 @@ export default function importExport(state = {
         case ActionTypes.SUBMITTED_IMPORT_REQUEST:
             return {
                 ...state,
-                importJobId: action.jobId
+                importJobId: action.jobId,
+                packageVerified: action.packageVerified
             };
         case ActionTypes.RETRIEVED_IMPORT_PACKAGES:
             return {

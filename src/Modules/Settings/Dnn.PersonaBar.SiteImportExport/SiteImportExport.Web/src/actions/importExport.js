@@ -125,7 +125,8 @@ const jobsActions = {
             ApplicationService.importSite(payload, data => {
                 dispatch({
                     type: ActionTypes.SUBMITTED_IMPORT_REQUEST,
-                    jobId: data.jobId
+                    jobId: data.jobId,
+                    packageVerified: false
                 });
                 if (callback) {
                     callback(data);
