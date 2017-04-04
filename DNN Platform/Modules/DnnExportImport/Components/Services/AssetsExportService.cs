@@ -333,13 +333,16 @@ namespace Dnn.ExportImport.Components.Services
             }
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? "" : folder.FolderPath;
             folder.PortalId = portalId;
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
+            if (folderMapping == null) return false;
+
             if (isUpdate)
             {
                 Util.FixDateTime(existingFolder);
                 DotNetNuke.Data.DataProvider.Instance()
                     .UpdateFolder(importJob.PortalId, folder.VersionGuid, existingFolder.FolderId, folder.FolderPath,
                         folder.StorageLocation, folder.MappedPath, folder.IsProtected, folder.IsCached,
-                        DateUtils.GetDatabaseLocalTime(), modifiedBy, folder.FolderMappingId, folder.IsVersioned,
+                        DateUtils.GetDatabaseLocalTime(), modifiedBy, folderMapping.FolderMappingID, folder.IsVersioned,
                         folder.WorkflowId ?? Null.NullInteger, existingFolder.ParentId ?? Null.NullInteger);
 
                 folder.FolderId = existingFolder.FolderId;
@@ -352,8 +355,6 @@ namespace Dnn.ExportImport.Components.Services
             }
             else
             {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
-                if (folderMapping == null) return false;
                 folder.FolderMappingId = folderMapping.FolderMappingID;
                 var createdBy = Util.GetUserIdByName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
                 if (folder.ParentId != null && folder.ParentId > 0)
@@ -366,7 +367,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
                 {
                     folder.FolderId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddFolder(importJob.PortalId, folder.UniqueId, folder.VersionGuid, folder.FolderPath,
+                        .AddFolder(importJob.PortalId, Guid.NewGuid(), folder.VersionGuid, folder.FolderPath,
                             folder.MappedPath, folder.StorageLocation, folder.IsProtected, folder.IsCached,
                             DateUtils.GetDatabaseLocalTime(),
                             createdBy, folderMapping.FolderMappingID, folder.IsVersioned, folder.WorkflowId ?? Null.NullInteger,
@@ -438,8 +439,9 @@ namespace Dnn.ExportImport.Components.Services
 
                 DotNetNuke.Data.DataProvider.Instance()
                     .UpdateFolderPermission(existingFolderPermission.FolderPermissionId, folderPermission.FolderId,
-                        existingFolderPermission.PermissionId, folderPermission.RoleId ?? Null.NullInteger,
+                        existingFolderPermission.PermissionId, folderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
                         folderPermission.AllowAccess, existingFolderPermission.UserId ?? Null.NullInteger, modifiedBy);
+
                 folderPermission.FolderPermissionId = existingFolderPermission.FolderPermissionId;
             }
             else
@@ -466,7 +468,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     folderPermission.FolderPermissionId = DotNetNuke.Data.DataProvider.Instance()
                         .AddFolderPermission(folderPermission.FolderId, folderPermission.PermissionId,
-                            folderPermission.RoleId ?? Null.NullInteger, folderPermission.AllowAccess,
+                            folderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing), folderPermission.AllowAccess,
                             folderPermission.UserId ?? Null.NullInteger, createdBy);
                 }
             }
@@ -518,7 +520,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var createdBy = Util.GetUserIdByName(importJob, file.CreatedByUserId, file.CreatedByUserName);
                 file.FileId = DotNetNuke.Data.DataProvider.Instance()
-                    .AddFile(importJob.PortalId, file.UniqueId, file.VersionGuid, file.FileName, file.Extension,
+                    .AddFile(importJob.PortalId, Guid.NewGuid(), file.VersionGuid, file.FileName, file.Extension,
                         file.Size,
                         file.Width ?? Null.NullInteger, file.Height ?? Null.NullInteger, file.ContentType, file.Folder,
                         file.FolderId,
