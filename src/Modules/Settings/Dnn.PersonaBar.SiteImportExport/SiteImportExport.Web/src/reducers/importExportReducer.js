@@ -36,17 +36,14 @@ export default function importExport(state = {
             return {
                 ...state,
                 jobs: action.jobs,
-                totalJobs: action.totalJobs
+                totalJobs: action.totalJobs,
+                lastExportTime: action.lastExportTime,
+                lastImportTime: action.lastImportTime
             };
         case ActionTypes.RETRIEVED_JOB_DETAILS:
             return {
                 ...state,
                 job: action.job
-            };
-        case ActionTypes.RETRIEVED_LAST_EXPORT_DATE:
-            return {
-                ...state,
-                lastExportDate: action.lastExportDate
             };
         case ActionTypes.SUBMITTED_EXPORT_REQUEST:
             return {
@@ -85,6 +82,11 @@ export default function importExport(state = {
             return {
                 ...state,
                 packageVerified: action.packageVerified
+            };
+        case ActionTypes.RETRIEVED_LAST_EXPORT_DATE:
+            return {
+                ...state,
+                lastExportTime: action.lastExportTime
             };
         default:
             return {

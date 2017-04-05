@@ -35,12 +35,10 @@ class DashboardPanelBody extends Component {
         props.dispatch(ImportExportActions.getPortals((data) => {
             if (data.TotalResults === 1) {
                 props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
-                    this.getLastJobTime(data.Results[0].PortalID);
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
                 }));
             }
             else {
-                this.getLastJobTime(props.portalId);
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
             }
         }));
@@ -50,19 +48,11 @@ class DashboardPanelBody extends Component {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
             }
-        }, 5000);
+        }, 500000);
     }
 
     componentWillUnmount() {
         clearInterval(this.jobListTimeout);
-    }
-
-    getLastJobTime(portalId) {
-        const { props } = this;
-        if (portalId > -1) {
-            props.dispatch(ImportExportActions.getLastExportTime({ "portal": portalId, "jobType": "Export" }));
-            props.dispatch(ImportExportActions.getLastImportTime({ "portal": portalId, "jobType": "Import" }));
-        }
     }
 
     uncollapse(id) {
@@ -125,7 +115,6 @@ class DashboardPanelBody extends Component {
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
-                this.getLastJobTime(option.value);
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
             });
         }
@@ -276,7 +265,7 @@ class DashboardPanelBody extends Component {
     }
 
     renderedJobList() {
-        const { props, state } = this;
+        const { props } = this;
         let i = 0;
         if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
@@ -394,8 +383,8 @@ function mapStateToProps(state) {
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
         portalName: state.importExport.portalName,
-        lastExportTime: state.importExport.lastExportDate,
-        lastImportTime: state.importExport.lastImportDate
+        lastExportTime: state.importExport.lastExportTime,
+        lastImportTime: state.importExport.lastImportTime
     };
 }
 

@@ -142,7 +142,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("LastExport")}
                                     />
-                                    <div className="import-summary-item">{props.lastExportTime}</div>
+                                    <div className="import-summary-item">{props.lastExportTime || "-- --"}</div>
                                 </GridCell>
                                 <div className="seperator">
                                     <hr />
@@ -177,7 +177,7 @@ function mapStateToProps(state) {
     return {
         selectedPackage: state.importExport.selectedPackage,
         importSummary: state.importExport.importSummary,
-        lastExportTime: state.importExport.lastExportDate
+        lastExportTime: state.importExport.lastExportTime
     };
 }
 

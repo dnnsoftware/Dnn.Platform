@@ -51,6 +51,7 @@ class App extends Component {
 
         document.addEventListener("siteImportExport", (e) => {
             props.dispatch(ImportExportActions.siteSelected(e.importExportJob.portalId, e.importExportJob.portalName, () => {
+                props.dispatch(ImportExportActions.getLastExportTime({ "portal": e.importExportJob.portalId, "jobType": "Export" }));
                 this.selectPanel(e.importExportJob.jobType === "Export" ? 1 : 2);
             }));
             this.updateReferrerInfo(e);
@@ -58,6 +59,7 @@ class App extends Component {
 
         if (util.settings.importExportJob) {
             props.dispatch(ImportExportActions.siteSelected(util.settings.importExportJob.portalId, util.settings.importExportJob.portalName, () => {
+                props.dispatch(ImportExportActions.getLastExportTime({ "portal": util.settings.importExportJob.portalId, "jobType": "Export" }));
                 this.selectPanel(util.settings.importExportJob.jobType === "Export" ? 1 : 2);
             }));
             this.updateReferrerInfo(util.settings);
