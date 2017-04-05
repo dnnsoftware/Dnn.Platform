@@ -278,6 +278,7 @@ class DashboardPanelBody extends Component {
                         jobUser={job.User}
                         jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
                         jobStatus={job.Status}
+                        jobCancelled={job.Cancelled}
                         index={index}
                         key={"jobTerm-" + index}
                         closeOnClick={true}

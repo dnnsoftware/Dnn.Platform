@@ -95,12 +95,7 @@ class ExportModal extends Component {
 
     Validate() {
         let success = true;
-        const { exportRequest } = this.state;
         success = this.ValidateTexts();
-        if (success && exportRequest.pages.length <= 0) {
-            success = false;
-            utilities.notify(Localization.get("ErrorPages"));
-        }
         return success;
     }
 

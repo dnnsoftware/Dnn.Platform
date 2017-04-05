@@ -427,13 +427,13 @@
     <value>Failed to cancel this job, please try again.</value>
   </data>
   <data name="JobDelete.ErrorMessage" xml:space="preserve">
-    <value>Failed to remove this log, please try again.</value>
+    <value>Failed to remove this job, please try again.</value>
   </data>
   <data name="CancelJobMessage.Text" xml:space="preserve">
     <value>Cancelling will abort the process. Are you sure you want to cancel?</value>
   </data>
   <data name="DeleteJobMessage.Text" xml:space="preserve">
-    <value>Are you sure you want to remove this log?</value>
+    <value>Are you sure you want to remove this job?</value>
   </data>
   <data name="SortByDateNewest.Text" xml:space="preserve">
     <value>Date (Newest)</value>
