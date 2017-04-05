@@ -84,7 +84,7 @@ const jobsActions = {
                     job: data
                 });
                 if (callback) {
-                    callback();
+                    callback(data);
                 }
             }, errorCallback);
         };

@@ -24,10 +24,14 @@ class JobDetails extends Component {
         }
 
         this.jobDetailTimeout = setInterval(() => {
-            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport" && props.jobStatus === 1) {
-                props.dispatch(ImportExportActions.getJobDetails(props.jobId));
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport" && props.jobStatus < 2) {
+                props.dispatch(ImportExportActions.getJobDetails(props.jobId, (data) => {
+                    if (data.Status > 1) {
+                        clearInterval(this.jobDetailTimeout);
+                    }
+                }));
             }
-        }, 5000);
+        }, 2500);
     }
 
     componentWillUnmount() {
@@ -49,7 +53,7 @@ class JobDetails extends Component {
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{float: "right"}}>{detail.ProcessedItems + "/" + detail.TotalItems}</div>                        
+                        <div style={{ float: "right" }}>{detail.ProcessedItems + "/" + detail.TotalItems}</div>
                     </div>;
                 }
             }
@@ -190,12 +194,12 @@ class JobDetails extends Component {
                             </GridCell>
                         </div>
                         <GridCell className="action-buttons">
-                            {props.jobDetail.Status < 2 && !props.jobDetail.Cancelled &&
+                            {props.jobStatus < 2 && !props.jobDetail.Cancelled &&
                                 <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
                                     {props.jobDetail.JobType.includes("Export") ? Localization.get("CancelExport") : Localization.get("CancelImport")}
                                 </Button>
                             }
-                            {(props.jobDetail.Status > 1 || props.jobDetail.Cancelled) &&
+                            {(props.jobStatus > 1 || props.jobDetail.Cancelled) &&
                                 <Button type="secondary" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
                             }
                         </GridCell>

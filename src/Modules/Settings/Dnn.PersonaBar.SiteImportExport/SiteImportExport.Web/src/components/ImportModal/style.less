@@ -28,15 +28,15 @@
                     .noDataText {
                         font-size: x-large;
                         color: @thunder;
-                        padding: 40px 0;
+                        padding: 40px 0 0 0;
                     }
                     .noDataImage {
-                        width: 648px;
-                        height: 256px;
-                        background: url(./img/nodata.png);
-                        background-size: 100% 100%;
-                        line-height: 256px;
+                        width: 100%;
                         text-align: center;
+                        > svg {
+                            width: 648px;
+                            height: 400px;
+                        }
                     }
                 }
                 .package-card-wrapper {
