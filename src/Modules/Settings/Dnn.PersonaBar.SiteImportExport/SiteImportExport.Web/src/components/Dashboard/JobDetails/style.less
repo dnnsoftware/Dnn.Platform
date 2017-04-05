@@ -35,6 +35,7 @@
                     color: @thunder;
                     font-weight: 700;
                     padding-top: 30px;
+                    padding-right: 29px;
                     .note-title {
                         float: left;
                         width: 15%;
@@ -49,6 +50,70 @@
                 padding-top: 7px;
                 float: right;
                 color: @thunder;
+                width: 120px;
+                text-align: right;
+                margin-right: 29px;
+                >div {
+                    margin-right: -29px;
+                }
+                @-ms-keyframes spin {
+                    from {
+                        -ms-transform: rotate(360deg);
+                    }
+                    to {
+                        -ms-transform: rotate(0deg);
+                    }
+                }
+                @-moz-keyframes spin {
+                    from {
+                        -moz-transform: rotate(360deg);
+                    }
+                    to {
+                        -moz-transform: rotate(0deg);
+                    }
+                }
+                @-webkit-keyframes spin {
+                    from {
+                        -webkit-transform: rotate(360deg);
+                    }
+                    to {
+                        -webkit-transform: rotate(0deg);
+                    }
+                }
+                @keyframes spin {
+                    from {
+                        transform: rotate(360deg);
+                    }
+                    to {
+                        transform: rotate(0deg);
+                    }
+                }
+                .cycle-icon {
+                    width: 24px;
+                    height: 24px;
+                    float: right;
+                    margin-top: -5px;
+                    margin-left: 5px;
+                    > svg {
+                        fill: @mantis;
+                    }
+                    -webkit-animation-name: spin;
+                    -webkit-animation-duration: 4000ms;
+                    -webkit-animation-iteration-count: infinite;
+                    -webkit-animation-timing-function: linear;
+                    -moz-animation-name: spin;
+                    -moz-animation-duration: 4000ms;
+                    -moz-animation-iteration-count: infinite;
+                    -moz-animation-timing-function: linear;
+                    -ms-animation-name: spin;
+                    -ms-animation-duration: 4000ms;
+                    -ms-animation-iteration-count: infinite;
+                    -ms-animation-timing-function: linear;
+                    animation-name: spin;
+                    animation-duration: 4000ms;
+                    animation-iteration-count: infinite;
+                    animation-timing-function: linear;
+                }
             }
             .dnn-grid-cell {
                 padding-bottom: 10px;

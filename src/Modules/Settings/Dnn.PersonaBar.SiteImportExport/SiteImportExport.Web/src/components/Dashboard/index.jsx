@@ -48,7 +48,7 @@ class DashboardPanelBody extends Component {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
             }
-        }, 500000);
+        }, 5000);
     }
 
     componentWillUnmount() {
@@ -288,6 +288,7 @@ class DashboardPanelBody extends Component {
                         id={id}>
                         <JobDetails
                             jobId={job.JobId}
+                            jobStatus={job.Status}
                             Collapse={this.collapse.bind(this)}
                             id={id}
                             openId={this.state.openId}

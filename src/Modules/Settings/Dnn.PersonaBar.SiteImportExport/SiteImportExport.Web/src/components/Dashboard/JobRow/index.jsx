@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import Collapse from "dnn-collapsible";
-import { ArrowDownIcon } from "dnn-svg-icons";
+import { ArrowDownIcon, CycleIcon } from "dnn-svg-icons";
 import Localization from "localization";
 import "./style.less";
 
@@ -74,7 +73,10 @@ class JobRow extends Component {
                             <div className="term-label-wrapper">
                                 <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
                                     {Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))}&nbsp;
-                                    </span>
+                                    {props.jobStatus === 1 &&
+                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                    }
+                                </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>

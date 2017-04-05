@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import "./style.less";
-import Grid from "dnn-grid-system";
 import Label from "dnn-label";
 import Button from "dnn-button";
 import GridCell from "dnn-grid-cell";
+import { CycleIcon } from "dnn-svg-icons";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
-import utilities from "utils";
+import util from "utils";
 import Localization from "localization";
 
 class JobDetails extends Component {
@@ -18,16 +18,23 @@ class JobDetails extends Component {
 
     componentWillMount() {
         const { props } = this;
+        const persistedSettings = util.utilities.persistent.load();
         if (props.jobId) {
             props.dispatch(ImportExportActions.getJobDetails(props.jobId));
         }
-        else {
-            this.setState({
-                jobDetail: {}
-            });
-        }
+
+        this.jobDetailTimeout = setInterval(() => {
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport" && props.jobStatus === 1) {
+                props.dispatch(ImportExportActions.getJobDetails(props.jobId));
+            }
+        }, 5000);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.jobDetailTimeout);
+    }
+
+    /* eslint-disable react/no-danger */
     getSummaryItem(category) {
         const { props } = this;
         if (props.jobDetail.Summary) {
@@ -35,7 +42,18 @@ class JobDetails extends Component {
             if (category === "Templates" && !detail) {
                 detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
             }
-            return detail ? detail.TotalItems : "-";
+            if (detail) {
+                if (detail.ProcessedItems === detail.TotalItems) {
+                    return detail.ProcessedItems + "/" + detail.TotalItems;
+                }
+                else {
+                    return <div>
+                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                        <div style={{float: "right"}}>{detail.ProcessedItems + "/" + detail.TotalItems}</div>                        
+                    </div>;
+                }
+            }
+            else return "-";
         }
         else {
             return "-";
@@ -191,7 +209,6 @@ class JobDetails extends Component {
     render() {
         const { props } = this;
         if (props.jobDetail !== undefined) {
-            const data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(props.jobDetail));
             return (
                 <div className="job-details">
                     <div className="summary-title">{props.jobDetail.JobType.includes("Export") ? Localization.get("ExportSummary") : Localization.get("ImportSummary")}</div>
@@ -207,6 +224,7 @@ JobDetails.propTypes = {
     dispatch: PropTypes.func.isRequired,
     jobDetail: PropTypes.object,
     jobId: PropTypes.number,
+    jobStatus: PropTypes.string,
     Collapse: PropTypes.func,
     id: PropTypes.string,
     cancelJob: PropTypes.func,
