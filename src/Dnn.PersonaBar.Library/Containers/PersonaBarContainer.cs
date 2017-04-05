@@ -81,8 +81,7 @@ namespace Dnn.PersonaBar.Library.Containers
             var settings = new Dictionary<string, object>();
             var user = portalSettings.UserInfo;
             var portalId = portalSettings.PortalId;
-            var preferredLocale = portalSettings.UserInfo.Profile.PreferredLocale;
-            var preferredTimeZone = UserTimeZoneHelper.GetPreferredTimeZone(portalSettings.UserInfo.Profile.PreferredTimeZone);
+            var preferredTimeZone = TimeZoneHelper.GetPreferredTimeZone(user.Profile.PreferredTimeZone);
 
             var menuStructure = PersonaBarController.Instance.GetMenu(portalSettings, user);
 
@@ -100,7 +99,6 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalId);
             settings.Add("preferredTimeZone", preferredTimeZone);
-            settings.Add("preferredLocale", preferredLocale);
             if (BeaconService.Instance.IsBeaconEnabledForPersonaBar())
             {
                 settings.Add("beaconUrl", GetBeaconUrl());

@@ -99,13 +99,13 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Containers\IPersonaBarContainer.cs" />
     <Compile Include="Containers\PersonaBarContainer.cs" />
-    <Compile Include="Helper\UserTimeZoneHelper.cs" />
+    <Compile Include="Helper\TimeZoneHelper.cs" />
     <Compile Include="Controllers\IExtensionController.cs" />
     <Compile Include="Controllers\IMenuItemController.cs" />
     <Compile Include="Controllers\TabsController.cs" />
     <Compile Include="Data\DataService.cs" />
     <Compile Include="Data\IDataService.cs" />
-    <Compile Include="Dto\UserTimeZone.cs" />
+    <Compile Include="Dto\TimeZoneDto.cs" />
     <Compile Include="Dto\Tabs\LocaleInfoDto.cs" />
     <Compile Include="Dto\Tabs\NodeCheckedState.cs" />
     <Compile Include="Dto\Permission.cs" />

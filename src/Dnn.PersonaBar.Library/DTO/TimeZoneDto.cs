@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Dnn.PersonaBar.Library.Dto
 {
     [DataContract]
-    public class UserTimeZone
+    public class TimeZoneDto
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }

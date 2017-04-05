@@ -3,11 +3,11 @@ using Dnn.PersonaBar.Library.Dto;
 
 namespace Dnn.PersonaBar.Library.Helper
 {
-    public class UserTimeZoneHelper
+    public class TimeZoneHelper
     {
-        public static UserTimeZone GetPreferredTimeZone(TimeZoneInfo userTimeZone)
+        public static TimeZoneDto GetPreferredTimeZone(TimeZoneInfo userTimeZone)
         {
-            return new UserTimeZone()
+            return new TimeZoneDto()
             {
                 Id = userTimeZone.Id,
                 DisplayName = userTimeZone.DisplayName,
