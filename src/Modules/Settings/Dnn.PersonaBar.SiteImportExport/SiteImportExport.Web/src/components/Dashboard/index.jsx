@@ -345,7 +345,7 @@ class DashboardPanelBody extends Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { props } = this;
         return (
             <div>
                 {props.portals.length > 0 && <div>

@@ -53,7 +53,7 @@ const jobsActions = {
                     jobs: data.Jobs,
                     totalJobs: data.TotalJobs,
                     lastExportTime: data.LastExportTimeString,
-                    lastImportTime: data.LastExportTimeString
+                    lastImportTime: data.LastImportTimeString
                 });
                 if (callback) {
                     callback();
