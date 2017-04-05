@@ -15,7 +15,7 @@ class PackageCard extends Component {
                             <TextOverflowWrapper text={props.selectedPackage.Name} maxWidth={200} />
                         </div>
                         <div className="package-field">
-                            <TextOverflowWrapper text={props.selectedPackage.ExporTime} maxWidth={200} />
+                            <TextOverflowWrapper text={props.selectedPackage.ExporTimeString} maxWidth={200} />
                         </div>
                     </GridCell>
                     <GridCell columnSize={17} className="card-column2">

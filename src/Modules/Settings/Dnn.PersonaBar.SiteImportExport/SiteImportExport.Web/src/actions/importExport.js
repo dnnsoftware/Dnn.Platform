@@ -52,8 +52,8 @@ const jobsActions = {
                     type: ActionTypes.RETRIEVED_JOBS,
                     jobs: data.Jobs,
                     totalJobs: data.TotalJobs,
-                    lastExportTime: data.LastExportTime,
-                    lastImportTime: data.LastImportTime
+                    lastExportTime: data.LastExportTimeString,
+                    lastImportTime: data.LastExportTimeString
                 });
                 if (callback) {
                     callback();
