@@ -16,6 +16,8 @@ import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
 
+const noDataImg = require(`!raw!./img/nodata.svg`);
+
 class ImportModal extends Component {
     constructor() {
         super();
@@ -196,7 +198,7 @@ class ImportModal extends Component {
             {props.selectedPackage && !props.packageVerified &&
                 <div className="package-analyzing">
                     <div className="noDataText">{Localization.get("VerifyPackage")}</div>
-                    <div className="noDataImage"></div>
+                    <div className="noDataImage" dangerouslySetInnerHTML={{ __html: noDataImg }}></div>
                     <ProgressBar className="progressCards" visible={true} loaded={props.importSummary} />
                 </div>}
         </div>;
