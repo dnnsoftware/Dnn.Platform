@@ -162,4 +162,9 @@ License link: https://github.com/balupton/history.js/blob/master/license.txt
 HtmlDiff
 Used for Html version comparison
 License Type: MIT
-License link: https://raw.github.com/Rohland/htmldiff.net/master/license.txt
+License link: https://github.com/Rohland/htmldiff.net/blob/master/license.txt
+
+LiteDB
+Used for Export/Import intermediate database
+License Type: MIT
+License link: https://github.com/mbdavid/LiteDB/blob/master/LICENSE

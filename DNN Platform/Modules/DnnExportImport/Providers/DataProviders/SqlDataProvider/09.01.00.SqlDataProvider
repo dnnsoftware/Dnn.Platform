@@ -1278,34 +1278,6 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
-	@TabID     int,
-	@ToDate  datetime,
-	@FromDate datetime=NULL
-AS
-BEGIN
-	DECLARE @Now datetime = GETDATE()
-
-	SELECT
-		ta.*, pa.HTTPAlias, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
-	FROM
-		{databaseOwner}{objectQualifier}TabAliasSkins as ta
-			INNER JOIN {databaseOwner}{objectQualifier}PortalAlias AS pa ON ta.PortalAliasId = pa.PortalAliasID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u1 ON ta.CreatedByUserID = u1.UserID
-			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users  AS u2 ON ta.LastModifiedByUserID = u2.UserID
-	WHERE
-		ta.TabID = @TabID
-	AND
-		COALESCE(ta.LastModifiedOnDate, ta.CreatedOnDate, @Now) <= @ToDate
-	AND
-		(@FromDate IS NULL OR ISNULL(ta.LastModifiedOnDate, ta.CreatedOnDate) >= @FromDate)
-END
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabModules]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabModules]
 GO
@@ -1475,5 +1447,22 @@ BEGIN
 		PermissionKey = @PermissionKey
 	AND
 		PermissionName = @PermissionName
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
+	@TabId           int,
+	@SeqNum          int,
+	@CreatedBy       int,
+	@ModifiedBy      int
+AS
+BEGIN
+    UPDATE {databaseOwner}{objectQualifier}TabUrls
+    SET CreatedByUserID = @CreatedBy, LastModifiedByUserID = @ModifiedBy
+    WHERE TabId = @TabId AND SeqNum = @SeqNum
 END
 GO

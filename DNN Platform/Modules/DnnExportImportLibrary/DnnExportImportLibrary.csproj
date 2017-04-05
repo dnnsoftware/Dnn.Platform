@@ -53,7 +53,6 @@
     <Compile Include="Dto\Pages\ExportModulePermission.cs" />
     <Compile Include="Dto\Pages\ExportModuleSetting.cs" />
     <Compile Include="Dto\Pages\ExportTab.cs" />
-    <Compile Include="Dto\Pages\ExportTabAliasSkin.cs" />
     <Compile Include="Dto\Pages\ExportTabInfo.cs" />
     <Compile Include="Dto\Pages\ExportTabModule.cs" />
     <Compile Include="Dto\Pages\ExportTabModuleSetting.cs" />

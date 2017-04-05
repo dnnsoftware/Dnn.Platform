@@ -131,12 +131,6 @@ namespace Dnn.ExportImport.Components.Controllers
                 DataProvider.Instance().GetAllTabUrls(tabId, toDate, fromDate));
         }
 
-        public IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate)
-        {
-            return CBO.Instance.FillCollection<ExportTabAliasSkin>(
-                DataProvider.Instance().GetAllTabAliasSkins(tabId, toDate, fromDate));
-        }
-
         public IList<ExportModule> GetModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             return CBO.Instance.FillCollection<ExportModule>(

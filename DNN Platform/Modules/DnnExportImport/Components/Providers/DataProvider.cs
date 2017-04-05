@@ -312,11 +312,6 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabUrls", tabId, toDate, fromDate);
         }
 
-        public IDataReader GetAllTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_TabAliasSkins", tabId, toDate, fromDate);
-        }
-
         public IDataReader GetAllModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider.ExecuteReader("Export_Modules", tabId, includeDeleted, toDate, fromDate);
@@ -345,6 +340,11 @@ namespace Dnn.ExportImport.Components.Providers
         public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
         {
             return _dataProvider.ExecuteReader("Export_GetPermissionInfo", permissionCode, permissionKey, permissionName);
+        }
+
+        public void UpdateTabUrlChangers(int tabId, int seqNum, int? createdBy, int? modifiedBy)
+        {
+            _dataProvider.ExecuteNonQuery("Export_UpdateTabUrlChangers", tabId, seqNum, createdBy, modifiedBy);
         }
     }
 }

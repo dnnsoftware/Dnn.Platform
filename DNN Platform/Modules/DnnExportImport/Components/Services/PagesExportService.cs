@@ -29,7 +29,6 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
@@ -207,7 +206,6 @@ namespace Dnn.ExportImport.Components.Services
             _totals.TotalSettings += ImportTabSettings(localTab, otherTab, isNew);
             _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab, isNew);
             _totals.TotalUrls += ImportTabUrls(localTab, otherTab, isNew);
-            _totals.TotalAliasSkins += ImportTabAliasSkins(localTab, otherTab, isNew);
             _totals.TotalModules += ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
             _totals.TotalTabModules += ImportTabModules(localTab, otherTab, isNew);
         }
@@ -368,73 +366,13 @@ namespace Dnn.ExportImport.Components.Services
 
                     TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
 
-                    //TODO: fix the TabURlInfo primary key then use this one
-                    //var createdBy = Util.GetUserIdByName(_importJob, other.CreatedByUserID, other.CreatedByUserName);
-                    //var modifiedBy = Util.GetUserIdByName(_importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    //_dataProvider.UpdateRecordChangers("TabUrls", "TabId", local.TabId, createdBy, modifiedBy);
+                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    _dataProvider.UpdateTabUrlChangers(local.TabId, local.SeqNum, createdBy, modifiedBy);
 
                     Result.AddLogEntry("Added Tab Url", other.Url);
                     Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
                     count++;
-                }
-            }
-
-            return count;
-        }
-
-        private int ImportTabAliasSkins(TabInfo localTab, ExportTab otherTab, bool isNew)
-        {
-            var count = 0;
-            var tabAliasSkins = Repository.GetRelatedItems<ExportTabAliasSkin>(otherTab.ReferenceId ?? -1).ToList();
-            var localALiasSkins = localTab.AliasSkins;
-            using (var db = DataContext.Instance())
-            {
-                foreach (var other in tabAliasSkins)
-                {
-                    var local = isNew ? null : localALiasSkins.FirstOrDefault(alias =>
-                        alias.SkinSrc != other.SkinSrc || alias.HttpAlias != other.HTTPAlias);
-
-                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    if (local != null)
-                    {
-                        switch (_importDto.CollisionResolution)
-                        {
-                            case CollisionResolution.Overwrite:
-                                local.SkinSrc = other.SkinSrc;
-                                local.HttpAlias = other.HTTPAlias;
-
-                                var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
-                                aliasSkinCtx.Update(local);
-
-                                Result.AddLogEntry("Update Tab alias skin", other.SkinSrc);
-                                break;
-                            case CollisionResolution.Ignore:
-                                Result.AddLogEntry("Ignored tab alias skin", other.SkinSrc);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException(_importDto.CollisionResolution.ToString());
-                        }
-                    }
-                    else
-                    {
-                        var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(_importDto.PortalId).FirstOrDefault(a => a.IsPrimary);
-
-                        local = new TabAliasSkinInfo
-                        {
-                            TabId = localTab.TabID,
-                            SkinSrc = other.SkinSrc,
-                            HttpAlias = other.HTTPAlias,
-                            PortalAliasId = alias?.PortalAliasID ?? -1,
-                        };
-
-                        var aliasSkinCtx = db.GetRepository<TabAliasSkinInfo>();
-                        aliasSkinCtx.Insert(local);
-                        //TODO: update changers
-                        Result.AddLogEntry("Added Tab alias skin", other.SkinSrc);
-                        Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
-                        count++;
-                    }
                 }
             }
 
@@ -723,7 +661,7 @@ namespace Dnn.ExportImport.Components.Services
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
-                        ContentItemId = -1, //TODO: what about this?
+                        //ContentItemId = -1, //TODO: what about this?
                     };
 
                     other.LocalId = _moduleController.AddModule(local); //TODO: is this the right call?
@@ -899,11 +837,6 @@ namespace Dnn.ExportImport.Components.Services
             _dataProvider.UpdateRecordChangers("TabUrls", "TabUrlID", tabUrlId, createdBy, modifiedBy);
         }
 
-        private void UpdateTabAliasSkinChangers(int tabId, int createdBy, int modifiedBy)
-        {
-            _dataProvider.UpdateRecordChangers("TabAliasSkins", "TabAliasSkinID", tabId, createdBy, modifiedBy);
-        }
-
         private void UpdateTabModuleChangers(int tabModuleId, int createdBy, int modifiedBy)
         {
             _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", tabModuleId, createdBy, modifiedBy);
@@ -978,9 +911,6 @@ namespace Dnn.ExportImport.Components.Services
                     _totals.TotalUrls +=
                         ExportTabUrls(exportPage, toDate, fromDate);
 
-                    _totals.TotalAliasSkins +=
-                        ExportTabAliasSkins(exportPage, toDate, fromDate);
-
                     _totals.TotalModules +=
                         ExportTabModulesAndRelatedItems(exportPage, toDate, fromDate);
 
@@ -1025,14 +955,6 @@ namespace Dnn.ExportImport.Components.Services
             if (tabUrls.Count > 0)
                 Repository.CreateItems(tabUrls, exportPage.ReferenceId);
             return tabUrls.Count;
-        }
-
-        private int ExportTabAliasSkins(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
-        {
-            var tabSkins = EntitiesController.Instance.GetTabAliasSkins(exportPage.TabId, toDate, fromDate);
-            if (tabSkins.Count > 0)
-                Repository.CreateItems(tabSkins, exportPage.ReferenceId);
-            return tabSkins.Count;
         }
 
         private int ExportTabModules(ExportTab exportPage, bool includeDeleted, DateTime toDate, DateTime? fromDate)
@@ -1229,7 +1151,6 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddLogEntry(prefix + " Tab Settings", _totals.TotalSettings.ToString());
             Result.AddLogEntry(prefix + " Tab Permissions", _totals.TotalPermissions.ToString());
             Result.AddLogEntry(prefix + " Tab Urls", _totals.TotalUrls.ToString());
-            Result.AddLogEntry(prefix + " Tab Alias Skins", _totals.TotalAliasSkins.ToString());
             Result.AddLogEntry(prefix + " Modules", _totals.TotalModules.ToString());
             Result.AddLogEntry(prefix + " Module Settings", _totals.TotalModuleSettings.ToString());
             Result.AddLogEntry(prefix + " Module Permissions", _totals.TotalModulePermissions.ToString());
@@ -1252,7 +1173,6 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalSettings { get; set; }
             public int TotalPermissions { get; set; }
             public int TotalUrls { get; set; }
-            public int TotalAliasSkins { get; set; }
 
             public int TotalModules { get; set; }
             public int TotalModulePermissions { get; set; }

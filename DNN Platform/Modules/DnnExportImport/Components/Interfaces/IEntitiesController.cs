@@ -48,7 +48,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         IList<ExportTabSetting> GetTabSettings(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabPermission> GetTabPermissions(int tabId, DateTime toDate, DateTime? fromDate);
         IList<ExportTabUrl> GetTabUrls(int tabId, DateTime toDate, DateTime? fromDate);
-        IList<ExportTabAliasSkin> GetTabAliasSkins(int tabId, DateTime toDate, DateTime? fromDate);
 
         IList<ExportModule> GetModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
         IList<ExportModuleSetting> GetModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate);

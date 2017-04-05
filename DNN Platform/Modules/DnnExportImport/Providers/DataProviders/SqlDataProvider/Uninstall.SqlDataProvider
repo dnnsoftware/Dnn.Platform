@@ -212,10 +212,6 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabUrls]', 'P') IS NOT NU
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabUrls]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabAliasSkins]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_TabAliasSkins]
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_Modules]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Modules]
 GO
@@ -230,4 +226,8 @@ GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPermissionInfo]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPermissionInfo]
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
 GO
