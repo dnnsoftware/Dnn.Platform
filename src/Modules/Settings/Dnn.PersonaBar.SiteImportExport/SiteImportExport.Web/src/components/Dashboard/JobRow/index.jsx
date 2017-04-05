@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import Collapse from "dnn-collapsible";
-import { ArrowDownIcon } from "dnn-svg-icons";
+import { ArrowDownIcon, CycleIcon } from "dnn-svg-icons";
 import Localization from "localization";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import "./style.less";
 
 /*eslint-disable eqeqeq*/
@@ -33,13 +33,13 @@ class JobRow extends Component {
     }
 
     getTypeIndicator() {
-        const {props} = this;
+        const { props } = this;
         return props.jobType.includes("Import") ? <div className="jobIndicator-import"></div> : <div className="jobIndicator-export"></div>;
     }
 
     /* eslint-disable react/no-danger */
     render() {
-        const {props, state} = this;
+        const { props, state } = this;
         let opened = (props.openId !== "" && this.props.id === props.openId);
         return (
             <div className={"collapsible-jobdetail " + !opened + (props.className ? (" " + props.className) : "")}>
@@ -72,7 +72,12 @@ class JobRow extends Component {
                         </div>
                         <div className="term-label-jobstatus" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <span className={"job-status" + props.jobStatus}>{Localization.get("JobStatus" + props.jobStatus)}&nbsp; </span>
+                                <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
+                                    <TextOverflowWrapper text={Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))} maxWidth={80} />                                    
+                                    {props.jobStatus === 1 &&
+                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                    }
+                                </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
@@ -82,19 +87,20 @@ class JobRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} style={{ float: "left", width: "100%" }}>{opened && props.children }</Collapse>                
+                <Collapse autoScroll={true} isOpened={opened} fixedHeight={450} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
             </div>
         );
     }
 }
 
-JobRow.propTypes = {    
+JobRow.propTypes = {
     jobId: PropTypes.string,
     jobType: PropTypes.string,
     jobDate: PropTypes.string,
     jobUser: PropTypes.string,
     jobPortal: PropTypes.string,
     jobStatus: PropTypes.string,
+    jobCancelled: PropTypes.bool,
     children: PropTypes.node,
     className: PropTypes.string,
     OpenCollapse: PropTypes.func,

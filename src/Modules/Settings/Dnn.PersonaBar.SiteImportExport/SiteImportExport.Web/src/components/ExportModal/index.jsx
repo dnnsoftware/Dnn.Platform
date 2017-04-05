@@ -95,12 +95,7 @@ class ExportModal extends Component {
 
     Validate() {
         let success = true;
-        const { exportRequest } = this.state;
         success = this.ValidateTexts();
-        if (success && exportRequest.pages.length <= 0) {
-            success = false;
-            utilities.notify(Localization.get("ErrorPages"));
-        }
         return success;
     }
 
@@ -338,7 +333,7 @@ class ExportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("LastExport")}
                                 />
-                                <div className="lastExport">{props.lastExportDate || "-- --"}</div>
+                                <div className="lastExport">{props.lastExportTime || "-- --"}</div>
                             </InputGroup>
                         </div>
                     </GridSystem>
@@ -361,7 +356,7 @@ ExportModal.propTypes = {
     portalId: PropTypes.number.isRequired,
     portalName: PropTypes.string.isRequired,
     exportJobId: PropTypes.number,
-    lastExportDate: PropTypes.string
+    lastExportTime: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -370,7 +365,7 @@ function mapStateToProps(state) {
         exportLogs: state.importExport.exportLogs,
         viewingLog: state.importExport.viewingLog,
         exportJobId: state.importExport.exportJobId,
-        lastExportDate: state.importExport.lastExportDate,
+        lastExportTime: state.importExport.lastExportTime,
         portalId: state.importExport.portalId,
         portalName: state.importExport.portalName
     };

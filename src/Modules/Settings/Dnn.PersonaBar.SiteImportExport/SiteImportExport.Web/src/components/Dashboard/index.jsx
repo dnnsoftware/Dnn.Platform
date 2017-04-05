@@ -30,28 +30,29 @@ class DashboardPanelBody extends Component {
 
     componentWillMount() {
         const { props } = this;
-        if (props.portals.length === 0) {
-            props.dispatch(ImportExportActions.getPortals((data) => {
-                if (data.TotalResults === 1) {
-                    props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
-                        this.getLastJobTime(data.Results[0].PortalID);
-                        props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
-                    }));
-                }
-                else {
-                    this.getLastJobTime(props.portalId);
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
-                }
-            }));
-        }
+        const persistedSettings = util.utilities.persistent.load();
+
+        props.dispatch(ImportExportActions.getPortals((data) => {
+            if (data.TotalResults === 1) {
+                props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
+                }));
+            }
+            else {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            }
+        }));
+
+
+        this.jobListTimeout = setInterval(() => {
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
+            }
+        }, 5000);
     }
 
-    getLastJobTime(portalId) {
-        const { props } = this;
-        if (portalId > -1) {
-            props.dispatch(ImportExportActions.getLastExportTime({ "portal": portalId, "jobType": "Export" }));
-            props.dispatch(ImportExportActions.getLastImportTime({ "portal": portalId, "jobType": "Import" }));
-        }
+    componentWillUnmount() {
+        clearInterval(this.jobListTimeout);
     }
 
     uncollapse(id) {
@@ -82,7 +83,7 @@ class DashboardPanelBody extends Component {
     getNextPage(portalId) {
         const { state, props } = this;
         return {
-            portal: portalId,
+            portal: portalId === undefined ? props.portalId : portalId,
             pageIndex: state.pageIndex || 0,
             pageSize: state.pageSize,
             jobType: state.filter === -1 ? null : state.filter,
@@ -114,7 +115,6 @@ class DashboardPanelBody extends Component {
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
-                this.getLastJobTime(option.value);
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
             });
         }
@@ -265,7 +265,7 @@ class DashboardPanelBody extends Component {
     }
 
     renderedJobList() {
-        const { props, state } = this;
+        const { props } = this;
         let i = 0;
         if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
@@ -278,6 +278,7 @@ class DashboardPanelBody extends Component {
                         jobUser={job.User}
                         jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
                         jobStatus={job.Status}
+                        jobCancelled={job.Cancelled}
                         index={index}
                         key={"jobTerm-" + index}
                         closeOnClick={true}
@@ -287,6 +288,7 @@ class DashboardPanelBody extends Component {
                         id={id}>
                         <JobDetails
                             jobId={job.JobId}
+                            jobStatus={job.Status}
                             Collapse={this.collapse.bind(this)}
                             id={id}
                             openId={this.state.openId}
@@ -383,8 +385,8 @@ function mapStateToProps(state) {
         portals: state.importExport.portals,
         totalJobs: state.importExport.totalJobs,
         portalName: state.importExport.portalName,
-        lastExportTime: state.importExport.lastExportDate,
-        lastImportTime: state.importExport.lastImportDate
+        lastExportTime: state.importExport.lastExportTime,
+        lastImportTime: state.importExport.lastImportTime
     };
 }
 

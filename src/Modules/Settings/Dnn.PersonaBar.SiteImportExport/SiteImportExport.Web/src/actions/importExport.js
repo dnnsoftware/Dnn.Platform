@@ -51,7 +51,9 @@ const jobsActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_JOBS,
                     jobs: data.Jobs,
-                    totalJobs: data.TotalJobs
+                    totalJobs: data.TotalJobs,
+                    lastExportTime: data.LastExportTime,
+                    lastImportTime: data.LastImportTime
                 });
                 if (callback) {
                     callback();
@@ -65,21 +67,7 @@ const jobsActions = {
             ApplicationService.getLastJobTime(parameters, (data) => {
                 dispatch({
                     type: ActionTypes.RETRIEVED_LAST_EXPORT_DATE,
-                    lastExportDate: data.lastTime
-                });
-                if (callback) {
-                    callback(data);
-                }
-            }, errorCallback);
-        };
-    },
-
-    getLastImportTime(parameters, callback, errorCallback) {
-        return (dispatch) => {
-            ApplicationService.getLastJobTime(parameters, (data) => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_LAST_IMPORT_DATE,
-                    lastImportDate: data.lastTime
+                    lastExportTime: data.lastTime
                 });
                 if (callback) {
                     callback(data);
