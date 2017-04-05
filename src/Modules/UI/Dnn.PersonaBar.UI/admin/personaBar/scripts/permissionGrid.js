@@ -143,7 +143,8 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
 
             if (!rolesData) {
                 var handler = this;
-                this._getService().get('GetRoles', {}, function(data) {
+                var params = $.extend({}, this.options.parameters);
+                this._getService().get('GetRoles', params, function (data) {
                     handler._buildRoleSelector(data);
                 });
 
@@ -188,8 +189,16 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
 
             setTimeout(function () {
                 var service = handler._getService();
-                service.moduleRoot = 'InternalServices';
-                new dnn.permissionGridManager(service, 'permissionGrid');
+
+                var serviceUrl = '';
+                if (typeof service.getSearchUserUrl === "function") {
+                    serviceUrl = service.getSearchUserUrl();
+                } else {
+                    service.moduleRoot = 'InternalServices';
+                    serviceUrl = sf.getServiceRoot() + 'ItemListService/SearchUser';
+                }
+                
+                new dnn.permissionGridManager(serviceUrl, 'permissionGrid');
             }, 0);
         },
 

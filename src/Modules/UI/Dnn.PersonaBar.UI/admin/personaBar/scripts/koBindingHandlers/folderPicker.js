@@ -13,46 +13,71 @@ define([
         'css!../../../../../Resources/Shared/components/DropDownList/dnn.DropDownList.css'
 ],
 
-function($, ko) {
+function ($, ko) {
+    var createFolderPicker = function (element, koOptions) {
+        if (dnn[element.id]) {
+            return;
+        }
+
+        var selectFolderCallback = koOptions.selectFolderCallback;
+        var koElement = koOptions.koElement;
+        var id = "#{0}".replace(/\{0\}/g, element.id);
+
+        var selectFolderProxyCallback = function () {
+            selectFolderCallback.call(koElement, this.selectedItem());
+        };
+
+        var rootNodeId = koOptions.options.services.rootNodeId;
+        if (typeof rootNodeId === "function") {
+            koOptions.options.services.rootNodeId = rootNodeId();
+        }
+        var params = koOptions.options.services.parameters;
+        if (typeof params === "function") {
+            koOptions.options.services.parameters = params();
+        }
+
+        var options = {
+            disabled: false,
+            initialState: {
+                selectedItem: koOptions.selectedFolder
+            },
+            services: {
+                moduleId: '',
+                serviceRoot: 'InternalServices',
+                getTreeMethod: 'ItemListService/GetFolders',
+                sortTreeMethod: 'ItemListService/SortFolders',
+                getNodeDescendantsMethod: 'ItemListService/GetFolderDescendants',
+                searchTreeMethod: 'ItemListService/SearchFolders',
+                getTreeWithNodeMethod: 'ItemListService/GetTreePathForFolder',
+                rootId: 'Root',
+                parameters: {}
+            },
+            onSelectionChangedBackScript: selectFolderProxyCallback
+        };
+
+        $.extend(true, options, koOptions.options);
+
+        dnn.createDropDownList(id, options, {});
+
+        var folderPicker = dnn[element.id];
+
+        koElement.subscribe(function (folder) {
+            folderPicker.selectedItem({ key: folder.FolderID, value: folder.FolderName });
+        });
+    };
+
     ko.bindingHandlers.folderPicker = {
         init: function (element, valueAccessor) {
             var koOptions = valueAccessor();
-            var selectFolderCallback = koOptions.selectFolderCallback;
-            var koElement = koOptions.koElement;
-            var id = "#{0}".replace(/\{0\}/g, element.id);
-
-            var selectFolderProxyCallback = function () {
-                selectFolderCallback.call(koElement, this.selectedItem());
-            };
-
-            var options = {
-                disabled: false,
-                initialState: { 
-                    selectedItem: koOptions.selectedFolder
-                },
-                services: {
-                    moduleId: '',
-                    serviceRoot: 'InternalServices',
-                    getTreeMethod: 'ItemListService/GetFolders',
-                    sortTreeMethod: 'ItemListService/SortFolders',
-                    getNodeDescendantsMethod: 'ItemListService/GetFolderDescendants',
-                    searchTreeMethod: 'ItemListService/SearchFolders',
-                    getTreeWithNodeMethod: 'ItemListService/GetTreePathForFolder',
-                    rootId: 'Root',
-                    parameters: { }
-                },
-                onSelectionChangedBackScript: selectFolderProxyCallback
-            };
-
-            $.extend(true, options, koOptions.options);
-
-            dnn.createDropDownList(id, options, {});
-
-            var folderPicker = dnn[element.id];
-
-            koElement.subscribe(function (folder) {
-                folderPicker.selectedItem({ key: folder.FolderID, value: folder.FolderName });
-            });
+            if (typeof koOptions.enabled === "undefined" || koOptions.enabled === true) {
+                createFolderPicker(element, koOptions);
+            }
+        },
+        update: function (element, valueAccessor) {
+            var koOptions = valueAccessor();
+            if (koOptions.enabled === true) {
+                createFolderPicker(element, koOptions);
+            }
         }
     };
 });
