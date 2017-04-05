@@ -274,7 +274,7 @@ class DashboardPanelBody extends Component {
                     <JobRow
                         jobId={job.JobId}
                         jobType={job.JobType}
-                        jobDate={job.CreatedOn}
+                        jobDate={job.CreatedOnString}
                         jobUser={job.User}
                         jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
                         jobStatus={job.Status}
@@ -288,7 +288,6 @@ class DashboardPanelBody extends Component {
                         id={id}>
                         <JobDetails
                             jobId={job.JobId}
-                            jobStatus={job.Status}
                             Collapse={this.collapse.bind(this)}
                             id={id}
                             openId={this.state.openId}
