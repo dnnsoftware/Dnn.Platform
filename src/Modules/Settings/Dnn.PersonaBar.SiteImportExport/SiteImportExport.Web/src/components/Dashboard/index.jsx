@@ -112,7 +112,8 @@ class DashboardPanelBody extends Component {
         const { props } = this;
         if (option.value !== props.portalId) {
             this.setState({
-                pageIndex: 0
+                pageIndex: 0,
+                openId: ""
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));

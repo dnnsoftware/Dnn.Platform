@@ -48,12 +48,12 @@ class JobDetails extends Component {
             }
             if (detail) {
                 if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled) {
-                    return detail.ProcessedItems + "/" + detail.TotalItems;
+                    return detail.ProcessedItems + " / " + detail.TotalItems;
                 }
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{ float: "right" }}>{detail.ProcessedItems + "/" + detail.TotalItems}</div>
+                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems/detail.TotalItems*100).toFixed(1) + "%)"}</div>
                     </div>;
                 }
             }
