@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Collapse from "dnn-collapsible";
 import { ArrowDownIcon, CycleIcon } from "dnn-svg-icons";
 import Localization from "localization";
+import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 import "./style.less";
 
 /*eslint-disable eqeqeq*/
@@ -72,7 +73,7 @@ class JobRow extends Component {
                         <div className="term-label-jobstatus" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
                                 <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
-                                    {Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))}&nbsp;
+                                    <TextOverflowWrapper text={Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))} maxWidth={80} />                                    
                                     {props.jobStatus === 1 &&
                                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
                                     }

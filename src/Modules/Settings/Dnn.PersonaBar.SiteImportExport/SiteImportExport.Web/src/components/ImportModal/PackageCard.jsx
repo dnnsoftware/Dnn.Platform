@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from "react";
 import Localization from "localization";
 import GridCell from "dnn-grid-cell";
 import Label from "dnn-label";
-import Tooltip from "dnn-tooltip";
 import TextOverflowWrapper from "dnn-text-overflow-wrapper";
 
 class PackageCard extends Component {
