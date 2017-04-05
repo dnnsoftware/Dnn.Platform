@@ -136,6 +136,7 @@ class DashboardPanelBody extends Component {
             state.pageSize = pageSize;
         }
         state.pageIndex = currentPage;
+        state.openId = "";
         this.setState({
             state
         }, () => {
@@ -147,7 +148,8 @@ class DashboardPanelBody extends Component {
         const { props } = this;
         this.setState({
             pageIndex: 0,
-            filter: filter.value
+            filter: filter.value,
+            openId: ""
         }, () => {
             props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
         });
@@ -157,7 +159,8 @@ class DashboardPanelBody extends Component {
         const { props } = this;
         this.setState({
             pageIndex: 0,
-            keyword: keyword
+            keyword: keyword,
+            openId: ""
         }, () => {
             props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
         });
