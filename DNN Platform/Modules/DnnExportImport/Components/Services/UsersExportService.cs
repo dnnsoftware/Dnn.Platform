@@ -99,7 +99,7 @@ namespace Dnn.ExportImport.Components.Services
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
 
-            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
+            var progressStep = totalUsers > 100 ? totalUsers / 100 : 1;
             try
             {
                 do
@@ -147,13 +147,14 @@ namespace Dnn.ExportImport.Components.Services
                         totalAuthenticationExported += userAuthentication != null ? 1 : 0;
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
-                        if (totalUsersExported % progressStep == 0)
+                        totalUsersExported++;
+                        if (CheckPoint.ProcessedItems % progressStep == 0)
                             CheckPoint.Progress += 1;
 
+                        CheckPoint.StageData = null;
                         //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
-                    totalUsersExported += currentIndex;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;
@@ -208,7 +209,7 @@ namespace Dnn.ExportImport.Components.Services
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
 
-            var progressStep = totalUsersToBeProcessed > 100 ? totalUsersToBeProcessed / 100 : 1;
+            var progressStep = totalUsers > 100 ? totalUsers / 100 : 1;
             try
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
@@ -245,13 +246,14 @@ namespace Dnn.ExportImport.Components.Services
 
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
-                        if (currentIndex % progressStep == 0)
+                        totalUsersImported++;
+                        if (CheckPoint.ProcessedItems % progressStep == 0)
                             CheckPoint.Progress += 1;
 
+                        CheckPoint.StageData = null;
                         //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
-                    totalUsersImported += currentIndex;
                     currentIndex = 0;//Reset current index to 0
                     pageIndex++;
                     CheckPoint.Stage++;

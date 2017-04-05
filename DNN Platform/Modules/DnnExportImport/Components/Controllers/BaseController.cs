@@ -187,7 +187,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 TotalItems = checkpoint.TotalItems,
                 ProcessedItems = checkpoint.ProcessedItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
-                Category = checkpoint.Category,
+                Category = checkpoint.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : checkpoint.Category,//Always return TEMPLATES as category name.
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
             }));
             importExportSummary.SummaryItems = summaryItems;
@@ -206,7 +206,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 summaryItems.Add(new SummaryItem
                 {
                     TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category,
+                    Category = implementor.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : implementor.Category,//Always return TEMPLATES as category name.
                     Order = implementor.Priority
                 });
             }
