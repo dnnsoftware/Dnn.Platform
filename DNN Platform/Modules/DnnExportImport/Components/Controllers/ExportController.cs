@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {Constants.Manifest_PackageName, exportJob.Name},
                 {
                     Constants.Manifest_PackageDescription,
-                    !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name
+                    exportJob.Description
                 },
                 {Constants.Manifest_ExportPath, exportFileInfo.ExportPath},
                 {

@@ -51,6 +51,11 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime ExporTime { get; set; }
 
         /// <summary>
+        /// Formatted DateTime when the package was exported.
+        /// </summary>
+        public string ExporTimeString => Util.GetDateTimeString(ExporTime);
+
+        /// <summary>
         /// Formatted export file size
         /// </summary>
         public string ExportSize { get; set; }

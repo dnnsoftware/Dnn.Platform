@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Portals.Internal;
 using System.Xml;
 using System.Text;
 using System.IO;
+using System.Threading;
 using Dnn.ExportImport.Components.Controllers;
 using DotNetNuke.Entities.Modules.Definitions;
 
@@ -233,6 +234,11 @@ namespace Dnn.ExportImport.Components.Common
             if (dateTime != null && dateTime.Value.Kind == DateTimeKind.Utc)
                 return userInfo.LocalTime(dateTime.Value);
             return dateTime;
+        }
+
+        public static string GetDateTimeString(DateTime? dateTime)
+        {
+            return dateTime?.ToString(Thread.CurrentThread.CurrentUICulture) ?? "";
         }
 
         private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)
