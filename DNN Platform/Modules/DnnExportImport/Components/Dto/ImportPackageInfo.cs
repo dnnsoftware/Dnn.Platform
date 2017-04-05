@@ -61,6 +61,21 @@ namespace Dnn.ExportImport.Components.Dto
         public string ExportSize { get; set; }
 
         /// <summary>
+        /// Size of exported DB compressed file.
+        /// </summary>
+        public string ExportDbSize { get; set; }
+
+        /// <summary>
+        /// Size of exported assets compressed file
+        /// </summary>
+        public string ExportFilesSize { get; set; }
+
+        /// <summary>
+        /// Size of exported assets compressed file
+        /// </summary>
+        public string ExportTemplatesSize { get; set; }
+
+        /// <summary>
         /// The portal from which the exported package was created
         /// </summary>
         public string PortalName { get; set; }
@@ -75,10 +90,16 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public string Thumb => PackageId + ".jpg";
 
+        /// <summary>
+        /// Complete summary of import package
+        /// </summary>
+        public ImportExportSummary Summary { get; set; }
+
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
             ExporTime = Util.ToLocalDateTime(ExporTime, userInfo);
+            Summary?.ConvertToLocal(userInfo);
         }
     }
 }

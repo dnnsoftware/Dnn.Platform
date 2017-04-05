@@ -172,7 +172,8 @@ namespace Dnn.ExportImport.Components.Engines
                                 service.CheckPoint = new ExportImportChekpoint
                                 {
                                     JobId = exportJob.JobId,
-                                    Category = service.Category
+                                    Category = service.Category,
+                                    StartDate = DateUtils.GetDatabaseUtcTime()
                                 };
 
                                 // persist the record in db
@@ -208,12 +209,19 @@ namespace Dnn.ExportImport.Components.Engines
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
             {
+                //Create Export Summary for manifest file.
+                var summary = new ImportExportSummary();
+                using (var ctx = new ExportImportRepository(dbName))
+                {
+                    BaseController.BuildJobSummary(exportJob.Directory, ctx, summary);
+                }
                 DoPacking(exportJob, dbName);
-                //TODO: Thumb generation at root with name exportJob.Directory.jpg
-                var exportController = new ExportController();
+                //Complete the job.
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
+                //TODO: Thumb generation at root with name exportJob.Directory.jpg
+                var exportController = new ExportController();
                 var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
                 var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
                 var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
@@ -222,22 +230,26 @@ namespace Dnn.ExportImport.Components.Engines
                 var exportSize = zipDbFinfo.Length;
                 var exportFileInfo = new ExportFileInfo
                 {
-                    ExportPath = exportJob.Directory
+                    ExportPath = exportJob.Directory,
+                    ExportDbSize = Util.FormatSize(zipDbFinfo.Length)
                 };
                 if (File.Exists(zipAssetsName))
                 {
                     var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
                     exportSize += zipAssetsFInfo.Length;
+                    exportFileInfo.ExportFilesSize = Util.FormatSize(zipAssetsFInfo.Length);
                     result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
                 }
                 if (File.Exists(zipTemplatesName))
                 {
                     var zipTemplatesFInfo = new FileInfo(zipTemplatesName); // refresh to get new size
                     exportSize += zipTemplatesFInfo.Length;
+                    exportFileInfo.ExportTemplatesSize = Util.FormatSize(zipTemplatesFInfo.Length);
                     result.AddSummary("Exported Templates File Size", Util.FormatSize(zipTemplatesFInfo.Length));
                 }
                 exportFileInfo.ExportSize = Util.FormatSize(exportSize);
-                exportController.CreatePackageManifest(exportJob, exportFileInfo);
+                summary.ExportFileInfo = exportFileInfo;
+                exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
             }
 
             return result;

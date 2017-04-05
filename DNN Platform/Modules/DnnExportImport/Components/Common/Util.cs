@@ -38,6 +38,7 @@ using System.IO;
 using System.Threading;
 using Dnn.ExportImport.Components.Controllers;
 using DotNetNuke.Entities.Modules.Definitions;
+using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Common
 {
@@ -73,7 +74,7 @@ namespace Dnn.ExportImport.Components.Common
             }
         }
 
-        public static string FormatSize(long bytes, byte decimals=1)
+        public static string FormatSize(long bytes, byte decimals = 1)
         {
             const long kb = 1024;
             const long mb = kb * kb;
@@ -147,59 +148,20 @@ namespace Dnn.ExportImport.Components.Common
             return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
         }
 
-        /// <summary>
-        /// Write dictionary items to an xml file
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="itemsToWrite"></param>
-        /// <param name="rootTag">Root tag to create in xml file.</param>
-        public static void WriteXml(string filePath, Dictionary<string, string> itemsToWrite,
-            string rootTag)
+        public static void WriteJson<T>(string filePath, T item)
         {
-            var xmlSettings = new XmlWriterSettings
-            {
-                ConformanceLevel = ConformanceLevel.Fragment,
-                OmitXmlDeclaration = true,
-                Indent = true,
-                IndentChars = "  ",
-                Encoding = Encoding.UTF8,
-                WriteEndDocumentOnClose = true
-            };
-            if (File.Exists(filePath)) File.Delete(filePath);
-            using (var writer = XmlWriter.Create(filePath, xmlSettings))
-            {
-                writer.WriteStartElement(rootTag);
-                foreach (var item in itemsToWrite)
-                {
-                    writer.WriteElementString(item.Key, item.Value);
-                }
-                writer.WriteEndElement();
-                writer.Close();
-            }
+            var content = JsonConvert.SerializeObject(item);
+            File.WriteAllText(filePath, content, Encoding.UTF8);
         }
 
-        /// <summary>
-        /// Read an xml file and retun value of all the tags provided in the request, if found.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="rootTag">Root that to look in xml file</param>
-        /// <param name="tagsToLook"></param>
-        /// <returns>Directionary of the items.</returns>
-        public static Dictionary<string, string> ReadXml(string path, string rootTag, params string[] tagsToLook)
+        public static void ReadJson<T>(string filePath, ref T item)
         {
-            var items = new Dictionary<string, string>();
-            if (File.Exists(path))
+            if (File.Exists(filePath))
             {
-                using (var reader = PortalTemplateIO.Instance.OpenTextReader(path))
-                {
-                    var xmlDoc = XDocument.Load(reader);
-                    foreach (var tag in tagsToLook)
-                    {
-                        items.Add(tag, GetTagValue(xmlDoc, tag, rootTag));
-                    }
-                }
+                var content = File.ReadAllText(filePath);
+                //TODO: This might throw error if file is corrupt. Should we handle error here?
+                item = JsonConvert.DeserializeObject<T>(content);
             }
-            return items;
         }
 
         //TODO: We should implement some base serializer to fix dates for all the entities.

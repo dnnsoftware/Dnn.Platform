@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -37,8 +36,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -194,7 +191,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return importExportSummary;
         }
 
-        protected static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
+        protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new List<SummaryItem>();
             var implementors = Util.GetPortableImplementors();
@@ -211,8 +208,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 });
             }
             //TODO: Get export file info.
-            summary.ExportFileInfo =
-                GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
+            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
             summary.FromDate = exportDto.FromDate?.DateTime;
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
@@ -225,30 +221,24 @@ namespace Dnn.ExportImport.Components.Controllers
 
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)
         {
-            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_ExportPath,
-                Constants.Manifest_ExportSize);
-            return new ExportFileInfo
+            ImportPackageInfo packageInfo = null;
+            Util.ReadJson(manifestPath, ref packageInfo);
+            if (packageInfo != null)
             {
-                ExportPath = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportPath),
-                ExportSize = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportSize)
-            };
+                return new ExportFileInfo
+                {
+                    ExportPath = packageInfo.Summary.ExportFileInfo.ExportPath,
+                    ExportSize = packageInfo.Summary.ExportFileInfo.ExportFilesSize
+                };
+            }
+            return null;
         }
 
-        protected static ImportPackageInfo GetPackageInfo(string manifestPath, DirectoryInfo importDirectoryInfo)
+        protected static ImportPackageInfo GetPackageInfo(string manifestPath)
         {
-            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_PackageId,
-                Constants.Manifest_PackageName, Constants.Manifest_PackageDescription, Constants.Manifest_ExportTime,
-                Constants.Manifest_PortalName, Constants.Manifest_ExportSize);
-            return new ImportPackageInfo
-            {
-                PackageId = manifestItems.GetValue<string>(Constants.Manifest_PackageId) ?? importDirectoryInfo.Name,
-                Name = manifestItems.GetValue<string>(Constants.Manifest_PackageName) ?? importDirectoryInfo.Name,
-                Description =
-                    manifestItems.GetValue<string>(Constants.Manifest_PackageDescription) ?? importDirectoryInfo.Name,
-                ExporTime = Convert.ToDateTime(manifestItems.GetValue<string>(Constants.Manifest_ExportTime), CultureInfo.InvariantCulture),
-                PortalName = manifestItems.GetValue<string>(Constants.Manifest_PortalName),
-                ExportSize = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportSize)
-            };
+            ImportPackageInfo packageInfo = null;
+            Util.ReadJson(manifestPath, ref packageInfo);
+            return packageInfo;
         }
 
         private static JobItem ToJobItem(ExportImportJob job)
