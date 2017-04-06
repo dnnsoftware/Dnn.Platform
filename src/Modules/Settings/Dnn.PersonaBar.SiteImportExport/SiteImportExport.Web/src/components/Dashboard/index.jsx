@@ -213,7 +213,6 @@ class DashboardPanelBody extends Component {
             () => {
                 props.dispatch(ImportExportActions.cancelJob(jobId, () => {
                     util.utilities.notify(Localization.get("JobCancelled"));
-                    this.collapse();
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);

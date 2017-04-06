@@ -109,7 +109,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("Timestamp")}
                                     />
-                                    <div className="import-summary-item">{props.selectedPackage.ExporTime}</div>
+                                    <div className="import-summary-item">{props.selectedPackage.ExporTimeString}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label

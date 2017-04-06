@@ -28,13 +28,15 @@ class JobDetails extends Component {
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
             if (detail) {
-                if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled) {
+                if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled || props.jobDetail.Status !== 1) {
                     return detail.ProcessedItems + " / " + detail.TotalItems;
                 }
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}</div>
+                        <div style={{ float: "right" }}>
+                            {detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}
+                        </div>
                     </div>;
                 }
             }

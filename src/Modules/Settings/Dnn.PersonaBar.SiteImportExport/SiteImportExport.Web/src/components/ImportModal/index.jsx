@@ -87,6 +87,10 @@ class ImportModal extends Component {
         if (props.wizardStep === 0) {
             this.goToStep(0);
             props.onCancel();
+            props.dispatch(ImportExportActions.packageVerified(false));
+            props.dispatch(ImportExportActions.importWizardGoToSetp(0, () => {
+                props.dispatch(ImportExportActions.selectPackage());
+            }));
         }
         else {
             util.utilities.confirm(Localization.get("CancelImportMessage"),
@@ -105,7 +109,7 @@ class ImportModal extends Component {
         const { props } = this;
         if (props.selectedPackage) {
             props.dispatch(ImportExportActions.importWizardGoToSetp(1, () => {
-                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackage.PackageId, ()=>{}, ()=> {
+                props.dispatch(ImportExportActions.verifyImportPackage(props.selectedPackage.PackageId, () => { }, () => {
                     props.dispatch(ImportExportActions.packageVerified(true));
                 }));
             }));
