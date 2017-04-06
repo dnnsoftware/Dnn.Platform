@@ -126,45 +126,51 @@ namespace Dnn.ExportImport.Components.Services
 
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
-                        var aspnetMembership =
-                            CBO.FillObject<ExportAspnetMembership>(
-                                DataProvider.Instance()
-                                    .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
+                        if (aspnetUser != null)
+                        {
+                            aspnetUser.ReferenceId = user.Id;
+                            exportAspnetUserList.Add(aspnetUser);
+                            var aspnetMembership =
+                                    CBO.FillObject<ExportAspnetMembership>(
+                                        DataProvider.Instance()
+                                            .GetUserMembership(aspnetUser.UserId, aspnetUser.ApplicationId));
+                            if (aspnetMembership != null)
+                            {
+                                aspnetMembership.ReferenceId = user.Id;
+                                exportAspnetMembershipList.Add(aspnetMembership);
+                            }
+                        }
+
                         var userRoles =
                             CBO.FillCollection<ExportUserRole>(DataProvider.Instance()
                                 .GetUserRoles(portalId, user.UserId));
+                        userRoles.ForEach(x => { x.ReferenceId = user.Id; });
+                        exportUserRoleList.AddRange(userRoles);
+
                         var userPortal =
                             CBO.FillObject<ExportUserPortal>(DataProvider.Instance()
                                 .GetUserPortal(portalId, user.UserId));
-                        var userAuthentication =
-                            CBO.FillObject<ExportUserAuthentication>(
-                                DataProvider.Instance().GetUserAuthentication(user.UserId));
-                        var userProfiles =
-                            CBO.FillCollection<ExportUserProfile>(DataProvider.Instance()
-                                .GetUserProfile(portalId, user.UserId));
-
-                        aspnetUser.ReferenceId = user.Id;
-                        exportAspnetUserList.Add(aspnetUser);
-                        aspnetMembership.ReferenceId = user.Id;
-                        exportAspnetMembershipList.Add(aspnetMembership);
-
                         if (userPortal != null)
                         {
                             userPortal.ReferenceId = user.Id;
                             exportUserPortalList.Add(userPortal);
                         }
-                        userProfiles.ForEach(x => { x.ReferenceId = user.Id; });
-                        exportUserProfileList.AddRange(userProfiles);
 
-
-                        userRoles.ForEach(x => { x.ReferenceId = user.Id; });
-                        exportUserRoleList.AddRange(userRoles);
-
+                        var userAuthentication =
+                            CBO.FillObject<ExportUserAuthentication>(
+                                DataProvider.Instance().GetUserAuthentication(user.UserId));
                         if (userAuthentication != null)
                         {
                             userAuthentication.ReferenceId = user.Id;
                             exportUserAuthenticationList.Add(userAuthentication);
                         }
+
+                        var userProfiles =
+                            CBO.FillCollection<ExportUserProfile>(DataProvider.Instance()
+                                .GetUserProfile(portalId, user.UserId));
+                        userProfiles.ForEach(x => { x.ReferenceId = user.Id; });
+                        exportUserProfileList.AddRange(userProfiles);
+
                         CheckPoint.ProcessedItems++;
 
                         if (CheckPoint.ProcessedItems % progressStep == 0)
