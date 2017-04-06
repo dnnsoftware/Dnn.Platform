@@ -69,11 +69,11 @@ namespace Dnn.ExportImport.Components.Controllers
                                  select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName));
 
             var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
-            total = importPackagesList.Count;
 
             importPackages = !string.IsNullOrEmpty(keyword)
                 ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
                 : importPackagesList;
+            total = importPackagesList.Count;
             string sortOrder;
             var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
