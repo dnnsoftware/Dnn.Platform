@@ -172,13 +172,9 @@ namespace Dnn.ExportImport.Components.Controllers
                 ToDate = exportDto.ToDate,
                 ExportMode = exportDto.ExportMode
             };
-            if (job.JobType == JobType.Export)
-            {
-                //TODO: Get file info.
-                importExportSummary.ExportFileInfo = job.JobType == JobType.Export
-                    ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
-                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
-            }
+            importExportSummary.ExportFileInfo = job.JobType == JobType.Export
+                ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
+                : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
             if (!checkpoints.Any()) return importExportSummary;
