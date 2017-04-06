@@ -319,6 +319,8 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
+            user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
+            user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
 
             if (isUpdate)
             {
@@ -333,8 +335,6 @@ namespace Dnn.ExportImport.Components.Services
             else
             {
                 var createdBy = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
-                user.FirstName = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
-                user.LastName = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
                 user.UserId = DotNetNuke.Data.DataProvider.Instance().AddUser(importJob.PortalId, user.Username, user.FirstName, user.LastName, user.AffiliateId,
                         user.IsSuperUser, user.Email, user.DisplayName, user.UpdatePassword, aspnetMembership.IsApproved, createdBy);
 

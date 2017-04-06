@@ -367,7 +367,8 @@ namespace Dnn.ExportImport.Components.Engines
                                                  {
                                                      JobId = importJob.JobId,
                                                      Category = service.Category,
-                                                     Progress = 0
+                                                     Progress = 0,
+                                                     StartDate = DateUtils.GetDatabaseUtcTime()
                                                  };
                             CheckpointCallback(service);
 
