@@ -22,6 +22,11 @@ export default function importExport(state = {
                 portalId: action.portalId,
                 portalName: action.portalName
             };
+        case ActionTypes.SELECTED_JOB:
+            return {
+                ...state,
+                currentJobId: action.currentJobId
+            };
         case ActionTypes.GO_TO_WIZARD_STEP:
             return {
                 ...state,

@@ -18,24 +18,9 @@ class JobDetails extends Component {
 
     componentWillMount() {
         const { props } = this;
-        const persistedSettings = util.utilities.persistent.load();
         if (props.jobId) {
             props.dispatch(ImportExportActions.getJobDetails(props.jobId));
         }
-
-        this.jobDetailTimeout = setInterval(() => {
-            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
-                props.dispatch(ImportExportActions.getJobDetails(props.jobId, (data) => {
-                    if (data.Status > 1) {
-                        clearInterval(this.jobDetailTimeout);
-                    }
-                }));
-            }
-        }, 2500);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.jobDetailTimeout);
     }
 
     /* eslint-disable react/no-danger */
@@ -53,7 +38,7 @@ class JobDetails extends Component {
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems/detail.TotalItems*100).toFixed(1) + "%)"}</div>
+                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}</div>
                     </div>;
                 }
             }
@@ -229,7 +214,6 @@ JobDetails.propTypes = {
     jobDetail: PropTypes.object,
     jobId: PropTypes.number,
     Collapse: PropTypes.func,
-    id: PropTypes.string,
     cancelJob: PropTypes.func,
     deleteJob: PropTypes.func
 };

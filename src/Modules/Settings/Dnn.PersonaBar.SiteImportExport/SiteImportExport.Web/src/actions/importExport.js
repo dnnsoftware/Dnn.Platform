@@ -7,7 +7,8 @@ const jobsActions = {
             dispatch({
                 type: ActionTypes.SELECTED_SITE,
                 portalId: portalId === undefined ? -1 : portalId,
-                portalName: portalName
+                portalName: portalName,
+                currentJobId: null
             });
             if (callback) {
                 callback();
@@ -45,6 +46,18 @@ const jobsActions = {
         };
     },
 
+    jobSelected(jobId, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SELECTED_JOB,
+                currentJobId: jobId === undefined ? null : jobId
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },
+
     getAllJobs(parameters, callback, errorCallback) {
         return (dispatch) => {
             ApplicationService.getAllJobs(parameters, (data) => {
@@ -56,7 +69,7 @@ const jobsActions = {
                     lastImportTime: data.LastImportTimeString
                 });
                 if (callback) {
-                    callback();
+                    callback(data);
                 }
             }, errorCallback);
         };

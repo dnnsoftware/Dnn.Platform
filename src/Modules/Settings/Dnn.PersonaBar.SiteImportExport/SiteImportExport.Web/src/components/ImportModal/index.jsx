@@ -36,10 +36,9 @@ class ImportModal extends Component {
 
     componentWillMount() {
         const { props, state } = this;
-        if (!props.importPackages || props.importPackages.length === 0) {
-            props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
-            props.dispatch(ImportExportActions.packageVerified(false));
-        }
+        props.dispatch(ImportExportActions.getImportPackages(this.getNextPage()));
+        props.dispatch(ImportExportActions.packageVerified(false));
+
         const { importRequest } = state;
         importRequest.PortalId = props.portalId;
         importRequest.PackageId = props.selectedPackage ? props.selectedPackage.PackageId : -1;
