@@ -324,7 +324,7 @@ class DashboardPanelBody extends Component {
                         jobType={job.JobType}
                         jobDate={job.CreatedOnString}
                         jobUser={job.User}
-                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
+                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId) ? props.portals.find(p => p.PortalID === job.PortalId).PortalName : Localization.get("DeletedPortal")}
                         jobStatus={job.Status}
                         jobCancelled={job.Cancelled}
                         index={index}

@@ -468,4 +468,7 @@
   <data name="VerifyPackage.Text" xml:space="preserve">
     <value>Just a moment, we are checking the package ...</value>
   </data>
+  <data name="DeletedPortal.Text" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
 </root>
