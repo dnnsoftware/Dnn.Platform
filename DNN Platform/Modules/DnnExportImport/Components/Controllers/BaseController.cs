@@ -33,6 +33,7 @@ using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Interfaces;
 using DotNetNuke.Common;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
@@ -41,6 +42,8 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     public class BaseController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
+
         public static readonly string ExportFolder;
 
         static BaseController()
@@ -95,6 +98,7 @@ namespace Dnn.ExportImport.Components.Controllers
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
             // if the job is running; then it will create few exceptions in the log file
             controller.RemoveJob(job);
+            DeleteJobData(job);
             return true;
         }
 
@@ -259,6 +263,24 @@ namespace Dnn.ExportImport.Components.Controllers
                 CompletedOn = job.CompletedOnDate,
                 ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null
             };
+        }
+
+        private static void DeleteJobData(ExportImportJob job)
+        {
+            if (job.JobType != JobType.Export) return;
+            var jobFolder = Path.Combine(ExportFolder, job.Directory);
+            try
+            {
+                if (Directory.Exists(jobFolder))
+                {
+                    Directory.Delete(jobFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(
+                    $"Failed to delete the job data. Error:{ex.Message}. It will need to be deleted manually. Folder Path:{jobFolder}");
+            }
         }
     }
 }
