@@ -65,7 +65,8 @@ export default function importExport(state = {
             return {
                 ...state,
                 importPackages: action.importPackages,
-                totalPackages: action.total
+                totalPackages: action.total,
+                selectedPackage: action.selectedPackage
             };
         case ActionTypes.GO_TO_IMPORT_WIZARD_STEP:
             return {
