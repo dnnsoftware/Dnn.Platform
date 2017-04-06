@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
-            const int pageSize = 250;
+            const int pageSize = 1000;
             var totalUsersExported = 0;
             var totalUserRolesExported = 0;
             var totalPortalsExported = 0;
