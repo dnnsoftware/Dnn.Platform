@@ -174,6 +174,12 @@ namespace Dnn.ExportImport.Repository
             return InternalGetItems(predicate);
         }
 
+        public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            return collection.Find(predicate);
+        }
+
         public void UpdateItem<T>(T item) where T : BasicExportImportDto
         {
             if (item == null) return;

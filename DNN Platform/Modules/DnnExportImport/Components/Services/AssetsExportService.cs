@@ -96,6 +96,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     foreach (var folder in folders)
                     {
+                        if (CheckCancelled(exportJob)) break;
                         var isUserFolder = false;
 
                         var files =
@@ -213,6 +214,7 @@ namespace Dnn.ExportImport.Components.Services
                     var progressStep = 90.0 / totalFolders;
                     foreach (var sourceFolder in sourceFolders)
                     {
+                        if (CheckCancelled(importJob)) break;
                         // PROCESS FOLDERS
                         //Create new or update existing folder
                         if (ProcessFolder(importJob, importDto, sourceFolder, localFolders))

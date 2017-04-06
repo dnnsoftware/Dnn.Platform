@@ -33,7 +33,7 @@ namespace Dnn.ExportImport.Components.Common
         public const string CurrentSchemaVersion = "1.0.0";
 
         internal const string ExportFolder = @"\App_Data\ExportImport\";
-        internal const string ExportManifestName = "export.manifest"; // export database file name
+        internal const string ExportManifestName = "export.json"; // export manifest file name
         internal const string ExportDbName = "export.dnndb"; // export database file name
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
         internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name

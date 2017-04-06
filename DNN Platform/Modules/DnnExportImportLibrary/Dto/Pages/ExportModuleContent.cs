@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Dto.Pages
     {
         public int ModuleID { get; set; }
         public int ModuleDefID { get; set; }
+        public bool IsRestored { get; set; }
         public string XmlContent { get; set; }
     }
 }

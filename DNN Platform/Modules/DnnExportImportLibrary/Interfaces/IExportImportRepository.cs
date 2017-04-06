@@ -60,6 +60,8 @@ namespace Dnn.ExportImport.Interfaces
         IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto;
 
+        IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto;
+
         void UpdateItem<T>(T item) where T : BasicExportImportDto;
 
         void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto;

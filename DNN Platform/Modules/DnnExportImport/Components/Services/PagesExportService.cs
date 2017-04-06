@@ -29,7 +29,6 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -206,8 +205,7 @@ namespace Dnn.ExportImport.Components.Services
             _totals.TotalSettings += ImportTabSettings(localTab, otherTab, isNew);
             _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab, isNew);
             _totals.TotalUrls += ImportTabUrls(localTab, otherTab, isNew);
-            _totals.TotalModules += ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
-            _totals.TotalTabModules += ImportTabModules(localTab, otherTab, isNew);
+            _totals.TotalTabModules += ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
         }
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab, bool isNew)
@@ -295,28 +293,31 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    local = new TabPermissionInfo
+                    var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName);
+                    if (roleId.HasValue)
                     {
-                        TabID = localTab.TabID,
-                        UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
-                        Username = other.Username,
-                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1, //TODO: is this right? Won't give false role?
-                        RoleName = other.RoleName,
-                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
-                        PermissionKey = other.PermissionKey,
-                        AllowAccess = other.AllowAccess,
-                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+                        local = new TabPermissionInfo
+                        {
+                            TabID = localTab.TabID,
+                            UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
+                            Username = other.Username,
+                            RoleID = roleId.Value,
+                            RoleName = other.RoleName,
+                            ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
+                            PermissionKey = other.PermissionKey,
+                            AllowAccess = other.AllowAccess,
+                            PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+                        };
 
-                    };
+                        other.LocalId = localTab.TabPermissions.Add(local);
+                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
+                            local.TabPermissionID, createdBy, modifiedBy);
 
-                    other.LocalId = localTab.TabPermissions.Add(local);
-                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
-                        local.TabPermissionID, createdBy, modifiedBy);
-
-                    Result.AddLogEntry("Added tab permission", other.PermissionKey);
-                    count++;
+                        Result.AddLogEntry("Added tab permission", other.PermissionKey);
+                        count++;
+                    }
                 }
             }
 
@@ -382,79 +383,151 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabModulesAndRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.ReferenceId ?? -1);
-            var localModules = isNew ? new List<ExportModule>() : EntitiesController.Instance.GetModules(
-                otherTab.TabId, true, Constants.MinDbTime, Constants.MaxDbTime);
-            foreach (var other in exportedModules)
+            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.ReferenceId ?? -1).ToList();
+            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.ReferenceId ?? -1).ToList();
+            var localModules = isNew ? new List<ExportModule>()
+                : EntitiesController.Instance.GetModules(otherTab.TabId, true, Constants.MinDbTime, Constants.MaxDbTime).ToList();
+            var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
+
+            foreach (var other in exportedTabModules)
             {
-                //TODO: how to decide existing when more than one module of same module definition is used.
-                var locals = localModules.Where(m => m.FriendlyName == other.FriendlyName).ToList();
+                var locals = localTabModules.Where(m => m.DesktopModule.FriendlyName == other.FriendlyName &&
+                    m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder).ToList();
+
+                var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
+                if (otherModule == null) continue; // must not happen
+
                 if (locals.Count == 0)
                 {
                     var local = new ModuleInfo
                     {
                         TabID = localTab.TabID,
-                        ModuleDefID = other.ModuleDefID, //TODO: map to local ID
-                        AllTabs = other.AllTabs,
+                        PaneName = other.PaneName,
+                        ModuleOrder = other.ModuleOrder,
+                        CacheTime = other.CacheTime,
+                        Alignment = other.Alignment,
+                        Color = other.Color,
+                        Border = other.Border,
+                        IconFile = other.IconFile,
+                        Visibility = (VisibilityState)other.Visibility,
+                        ContainerSrc = other.ContainerSrc,
+                        DisplayTitle = other.DisplayTitle,
+                        DisplayPrint = other.DisplayPrint,
+                        DisplaySyndicate = other.DisplaySyndicate,
+                        IsWebSlice = other.IsWebSlice,
+                        WebSliceTitle = other.WebSliceTitle,
+                        WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
+                        WebSliceTTL = other.WebSliceTTL ?? -1,
                         IsDeleted = other.IsDeleted,
-                        InheritViewPermissions = other.InheritViewPermissions ?? false,
-                        StartDate = other.StartDate ?? DateTime.MinValue,
-                        EndDate = other.EndDate ?? DateTime.MinValue,
-                        PortalID = localTab.PortalID,
-                        LastContentModifiedOnDate = other.LastContentModifiedOnDate ?? DateTime.MinValue,
-                        ContentItemId = -1, //TODO: what about this?
-                        IsShareable = other.IsShareable,
-                        IsShareableViewOnly = other.IsShareableViewOnly,
+                        CacheMethod = other.CacheMethod,
+                        ModuleTitle = other.ModuleTitle,
+                        Header = other.Header,
+                        Footer = other.Footer,
+                        CultureCode = other.CultureCode,
+                        UniqueId = other.UniqueId,
+                        VersionGuid = other.VersionGuid,
+                        DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
+                        LocalizedVersionGuid = other.LocalizedVersionGuid,
                     };
-                    other.LocalId = _moduleController.AddModule(local); //TODO: is this the right call?
+
+                    //this will create 2 records:  Module and TabModule
+                    otherModule.LocalId = _moduleController.AddModule(local);
+                    other.LocalId = local.TabModuleID;
 
                     var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                    _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.TabModuleID, createdBy, modifiedBy);
+
+                    createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
+                    modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
                     _dataProvider.UpdateRecordChangers("Modules", "ModuleID", local.ModuleID, createdBy, modifiedBy);
 
-                    _totals.TotalModuleSettings += ImportModuleSettings(local, other, isNew);
-                    _totals.TotalPermissions += ImportModulePermissions(local, other, isNew);
+                    _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
+                    _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+                    _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
 
                     if (_exportDto.IncludeContent)
                     {
-                        _totals.TotalContents += ImportPortableContent(localTab.TabID, local, other, isNew);
+                        _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
                     }
 
+                    Result.AddLogEntry("Added tab module", local.TabModuleID.ToString());
                     Result.AddLogEntry("Added module", local.ModuleID.ToString());
+                    count++;
                 }
                 else
                 {
-                    foreach (var item in locals)
+                    foreach (var local in locals)
                     {
-                        var local = _moduleController.GetModule(item.ModuleID, localTab.TabID, false);
-                        local.AllTabs = other.AllTabs;
-                        local.IsDeleted = other.IsDeleted;
-                        local.InheritViewPermissions = other.InheritViewPermissions ?? false;
-                        local.StartDate = other.StartDate ?? DateTime.MinValue;
-                        local.EndDate = other.EndDate ?? DateTime.MinValue;
-                        local.PortalID = localTab.PortalID;
-                        local.LastContentModifiedOnDate = other.LastContentModifiedOnDate ?? DateTime.MinValue;
-                        //local.ContentItemId = -1; //TODO: what to do for this?
-                        local.IsShareable = other.IsShareable;
-                        local.IsShareableViewOnly = other.IsShareableViewOnly;
-                        _moduleController.UpdateModule(local); //TODO: is this the right call?
+                        var localModule = localModules.FirstOrDefault(m => m.ModuleID == local.ModuleID);
+                        if (localModule == null) continue; // must not happen
+
+                        // setting module properties
+                        localModule.AllTabs = otherModule.AllTabs;
+                        localModule.StartDate = otherModule.StartDate;
+                        localModule.EndDate = otherModule.EndDate;
+                        localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
+                        localModule.IsDeleted = otherModule.IsDeleted;
+                        localModule.IsShareable = otherModule.IsShareable;
+                        localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+
+
+                        // setting tab module properties
+                        local.ModuleTitle = other.ModuleTitle;
+                        local.Header = other.Header;
+                        local.Footer = other.Footer;
+                        local.ModuleOrder = other.ModuleOrder;
+                        local.PaneName = other.PaneName;
+                        local.CacheMethod = other.CacheMethod;
+                        local.CacheTime = other.CacheTime;
+                        local.Alignment = other.Alignment;
+                        local.Color = other.Color;
+                        local.Border = other.Border;
+                        local.IconFile = other.IconFile;
+                        local.Visibility = (VisibilityState)other.Visibility;
+                        local.ContainerSrc = other.ContainerSrc;
+                        local.DisplayTitle = other.DisplayTitle;
+                        local.DisplayPrint = other.DisplayPrint;
+                        local.DisplaySyndicate = other.DisplaySyndicate;
+                        local.IsWebSlice = other.IsWebSlice;
+                        local.WebSliceTitle = other.WebSliceTitle;
+                        local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
+                        local.WebSliceTTL = other.WebSliceTTL ?? -1;
+                        local.UniqueId = other.UniqueId;
+                        local.VersionGuid = other.VersionGuid;
+                        local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
+                        local.LocalizedVersionGuid = other.LocalizedVersionGuid;
+                        local.CultureCode = other.CultureCode;
+
+                        // updates both module and tab module db records
+                        _moduleController.UpdateModule(local);
+                        other.LocalId = local.TabModuleID;
+                        otherModule.LocalId = localModule.ModuleID;
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("Modules", "ModuleID", item.ModuleID, createdBy, modifiedBy);
+                        _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.TabModuleID, createdBy, modifiedBy);
 
-                        _totals.TotalModuleSettings += ImportModuleSettings(local, other, isNew);
-                        _totals.TotalPermissions += ImportModulePermissions(local, other, isNew);
+                        createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
+                        modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
+                        _dataProvider.UpdateRecordChangers("Modules", "ModuleID", local.ModuleID, createdBy, modifiedBy);
+
+                        _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
+
+                        _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
+                        _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
 
                         if (_exportDto.IncludeContent)
                         {
-                            _totals.TotalContents += ImportPortableContent(localTab.TabID, local, other, isNew);
+                            _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
                         }
+
+                        Result.AddLogEntry("Updated tab module", local.TabModuleID.ToString());
                         Result.AddLogEntry("Updated module", local.ModuleID.ToString());
+
+                        count++;
                     }
                 }
-
-                count++;
             }
 
             return count;
@@ -550,26 +623,30 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    local = new ModulePermissionInfo
+                    var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName);
+                    if (roleId.HasValue)
                     {
-                        ModuleID = localModule.ModuleID,
-                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1, //TODO: is this right? Won't give false role?
-                        RoleName = other.RoleName,
-                        UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
-                        Username = other.Username,
-                        PermissionKey = other.PermissionKey,
-                        AllowAccess = other.AllowAccess,
-                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
-                    };
+                        local = new ModulePermissionInfo
+                        {
+                            ModuleID = localModule.ModuleID,
+                            RoleID = roleId.Value,
+                            RoleName = other.RoleName,
+                            UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
+                            Username = other.Username,
+                            PermissionKey = other.PermissionKey,
+                            AllowAccess = other.AllowAccess,
+                            PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+                        };
 
-                    other.LocalId = localModule.ModulePermissions.Add(local);
-                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    _dataProvider.UpdateRecordChangers("ModulePermissions", "ModulePermissionID",
-                        local.ModulePermissionID, createdBy, modifiedBy);
+                        other.LocalId = localModule.ModulePermissions.Add(local);
+                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        _dataProvider.UpdateRecordChangers("ModulePermissions", "ModulePermissionID",
+                            local.ModulePermissionID, createdBy, modifiedBy);
 
-                    Result.AddLogEntry("Added module permission", other.PermissionKey);
-                    count++;
+                        Result.AddLogEntry("Added module permission", other.PermissionKey);
+                        count++;
+                    }
                 }
             }
 
@@ -594,12 +671,18 @@ namespace Dnn.ExportImport.Components.Services
                             //Note: there is no chek whether the content exists or not to manage conflict resolution
                             if (isNew || _importDto.CollisionResolution == CollisionResolution.Overwrite)
                             {
-                                var exportedContent = Repository.GetRelatedItems<ExportModuleContent>(otherModule.ReferenceId ?? -1);
+                                var exportedContent = Repository.GetRelatedItems<ExportModuleContent>(otherModule.ReferenceId ?? -1).ToList();
                                 var version = DotNetNukeContext.Current.Application.Version.ToString(3);
                                 foreach (var moduleContent in exportedContent)
                                 {
-                                    controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
+                                    if (!moduleContent.IsRestored)
+                                    {
+                                        controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
+                                        moduleContent.IsRestored = true;
+                                        Repository.UpdateItem(moduleContent);
+                                    }
                                 }
+
                                 Result.AddLogEntry("Inserted/Updated module content:", localModule.ModuleID.ToString());
                                 return 1;
                             }
@@ -613,106 +696,6 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             return 0;
-        }
-
-        private int ImportTabModules(TabInfo localTab, ExportTab otherTab, bool isNew)
-        {
-            var count = 0;
-            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.ReferenceId ?? -1);
-            var localModules = isNew
-                ? new List<ModuleInfo>()
-                : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
-            foreach (var other in exportedTabModules)
-            {
-                var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-
-                //TODO: how to decide existing when more than one module of same module definition is used.
-                var locals = localModules.Where(m => m.DesktopModule.FriendlyName == other.FriendlyName).ToList();
-                if (locals.Count == 0)
-                {
-                    var local = new ModuleInfo()
-                    {
-                        TabID = other.TabID,
-                        ModuleID = other.ModuleID,
-                        PaneName = other.PaneName,
-                        ModuleOrder = other.ModuleOrder,
-                        CacheTime = other.CacheTime,
-                        Alignment = other.Alignment,
-                        Color = other.Color,
-                        Border = other.Border,
-                        IconFile = other.IconFile,
-                        Visibility = (VisibilityState)other.Visibility,
-                        ContainerSrc = other.ContainerSrc,
-                        DisplayTitle = other.DisplayTitle,
-                        DisplayPrint = other.DisplayPrint,
-                        DisplaySyndicate = other.DisplaySyndicate,
-                        IsWebSlice = other.IsWebSlice,
-                        WebSliceTitle = other.WebSliceTitle,
-                        WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
-                        WebSliceTTL = other.WebSliceTTL ?? -1,
-                        IsDeleted = other.IsDeleted,
-                        CacheMethod = other.CacheMethod,
-                        ModuleTitle = other.ModuleTitle,
-                        Header = other.Header,
-                        Footer = other.Footer,
-                        CultureCode = other.CultureCode,
-                        UniqueId = other.UniqueId,
-                        VersionGuid = other.VersionGuid,
-                        DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
-                        LocalizedVersionGuid = other.LocalizedVersionGuid,
-                        //ContentItemId = -1, //TODO: what about this?
-                    };
-
-                    other.LocalId = _moduleController.AddModule(local); //TODO: is this the right call?
-                    _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.ModuleID, createdBy, modifiedBy);
-                    _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
-                    Result.AddLogEntry("Added tab module", local.TabModuleID.ToString());
-                }
-                else
-                {
-                    foreach (var local in locals)
-                    {
-                        local.TabID = localTab.TabID;
-                        local.ModuleID = other.ModuleID;
-                        local.PaneName = other.PaneName;
-                        local.ModuleOrder = other.ModuleOrder;
-                        local.CacheTime = other.CacheTime;
-                        local.Alignment = other.Alignment;
-                        local.Color = other.Color;
-                        local.Border = other.Border;
-                        local.IconFile = other.IconFile;
-                        local.Visibility = (VisibilityState)other.Visibility;
-                        local.ContainerSrc = other.ContainerSrc;
-                        local.DisplayTitle = other.DisplayTitle;
-                        local.DisplayPrint = other.DisplayPrint;
-                        local.DisplaySyndicate = other.DisplaySyndicate;
-                        local.IsWebSlice = other.IsWebSlice;
-                        local.WebSliceTitle = other.WebSliceTitle;
-                        local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue;
-                        local.WebSliceTTL = other.WebSliceTTL ?? -1;
-                        local.IsDeleted = other.IsDeleted;
-                        local.CacheMethod = other.CacheMethod;
-                        local.ModuleTitle = other.ModuleTitle;
-                        local.Header = other.Header;
-                        local.Footer = other.Footer;
-                        local.CultureCode = other.CultureCode;
-                        local.UniqueId = other.UniqueId;
-                        local.VersionGuid = other.VersionGuid;
-                        local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
-                        local.LocalizedVersionGuid = other.LocalizedVersionGuid;
-
-                        _moduleController.UpdateModule(local); //TODO: is this the right call?
-                        _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.ModuleID, createdBy, modifiedBy);
-                        _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
-                        Result.AddLogEntry("Updated tab module", local.TabModuleID.ToString());
-                    }
-                }
-
-                count++;
-            }
-
-            return count;
         }
 
         private int ImportTabModuleSettings(ModuleInfo localTabModule, ExportTabModule otherTabModule, bool isNew)
@@ -803,7 +786,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
-            //localTab.ContentItemID = otherTab.ContentItemID ?? -1;  //TODO: what to set here?
+            //localTab.ContentItemID = otherTab.ContentItemID ?? -1;  //TODO: what to set here for a new record?
             localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.DefaultLanguageGuid = otherTab.DefaultLanguageGuid ?? Guid.Empty;
@@ -1028,22 +1011,29 @@ namespace Dnn.ExportImport.Components.Services
                     var module = _moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
                     if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
                     {
-                        var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var controller = businessController as IPortable;
-                        if (controller != null)
+                        // check if module's contnt was exported before
+                        var existingItems = Repository.FindItems<ExportModule>(m => m.ModuleID == module.ModuleID);
+                        if (!existingItems.Any())
                         {
-                            var content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                            if (!string.IsNullOrEmpty(content))
+                            var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
+                                module.DesktopModule.BusinessControllerClass);
+                            var controller = businessController as IPortable;
+                            if (controller != null)
                             {
-                                var record = new ExportModuleContent
+                                var content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                                if (!string.IsNullOrEmpty(content))
                                 {
-                                    ModuleID = exportModule.ModuleID,
-                                    ModuleDefID = exportModule.ModuleDefID,
-                                    XmlContent = content,
-                                    ReferenceId = exportModule.Id,
-                                };
-                                Repository.AddSingleItem(record);
-                                return 1;
+                                    var record = new ExportModuleContent
+                                    {
+                                        ModuleID = exportModule.ModuleID,
+                                        ModuleDefID = exportModule.ModuleDefID,
+                                        XmlContent = content,
+                                        ReferenceId = exportModule.Id,
+                                    };
+
+                                    Repository.AddSingleItem(record);
+                                    return 1;
+                                }
                             }
                         }
                     }
