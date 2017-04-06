@@ -427,7 +427,7 @@
     <value>Delete</value>
   </data>
   <data name="JobCancelled.Text" xml:space="preserve">
-    <value>Your job cancel request has been placed in the queue, and will begin shortly.</value>
+    <value>Job has been cancelled.</value>
   </data>
   <data name="JobDeleted.Text" xml:space="preserve">
     <value>Job has been removed.</value>

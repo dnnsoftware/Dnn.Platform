@@ -14,14 +14,14 @@ const tooltipStyle = {
         color: "white",
         padding: "10px 20px",
         transition: "opacity 0.2s ease-in-out, visibility 0.2s ease-in-out",
-        boxShadow: "0 0 17px 2px #4b4e4f",
+        boxShadow: "0 0 10px 1px #C8C8C8",
         maxWidth: 500,
         fontFamily: "'proxima_nova', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         zIndex: 9999
     },
     arrowStyle: {
         color: "#fff",
-        borderColor: "#c8c8c8"
+        borderColor: "#C8C8C8"
     }
 };
 
