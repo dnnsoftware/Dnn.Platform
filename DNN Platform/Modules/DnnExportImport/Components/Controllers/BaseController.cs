@@ -225,15 +225,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             ImportPackageInfo packageInfo = null;
             Util.ReadJson(manifestPath, ref packageInfo);
-            if (packageInfo != null)
-            {
-                return new ExportFileInfo
-                {
-                    ExportPath = packageInfo.Summary.ExportFileInfo.ExportPath,
-                    ExportSize = packageInfo.Summary.ExportFileInfo.ExportFilesSize
-                };
-            }
-            return null;
+            return packageInfo?.Summary.ExportFileInfo;
         }
 
         protected static ImportPackageInfo GetPackageInfo(string manifestPath)
