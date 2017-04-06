@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -34,15 +33,17 @@ using DotNetNuke.Services.Log.EventLog;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Interfaces;
 using DotNetNuke.Common;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
-using DotNetNuke.Collections;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
     public class BaseController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
+
         public static readonly string ExportFolder;
 
         static BaseController()
@@ -97,6 +98,7 @@ namespace Dnn.ExportImport.Components.Controllers
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
             // if the job is running; then it will create few exceptions in the log file
             controller.RemoveJob(job);
+            DeleteJobData(job);
             return true;
         }
 
@@ -117,6 +119,8 @@ namespace Dnn.ExportImport.Components.Controllers
             var portal = PortalController.Instance.GetPortal(currentPortalId);
             return new AllJobsResult
             {
+                LastExportTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Export) : null,
+                LastImportTime = portalId > -1 ? EntitiesController.Instance.GetLastJobTime(portalId, JobType.Import) : null,
                 PortalId = portalId,
                 PortalName = portal.PortalName,
                 TotalJobs = count,
@@ -163,17 +167,14 @@ namespace Dnn.ExportImport.Components.Controllers
                 IncludeExtensions = exportDto.IncludeExtensions,
                 IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties = exportDto.IncludeProperfileProperties,
+                IncludeContent = exportDto.IncludeContent,
                 FromDate = exportDto.FromDate?.DateTime,
                 ToDate = exportDto.ToDate,
                 ExportMode = exportDto.ExportMode
             };
-            if (job.JobType == JobType.Export)
-            {
-                //TODO: Get file info.
-                importExportSummary.ExportFileInfo = job.JobType == JobType.Export
-                    ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
-                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
-            }
+            importExportSummary.ExportFileInfo = job.JobType == JobType.Export
+                ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
+                : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
             if (!checkpoints.Any()) return importExportSummary;
@@ -184,14 +185,14 @@ namespace Dnn.ExportImport.Components.Controllers
                 TotalItems = checkpoint.TotalItems,
                 ProcessedItems = checkpoint.ProcessedItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
-                Category = checkpoint.Category,
+                Category = checkpoint.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : checkpoint.Category,//Always return TEMPLATES as category name.
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
         }
 
-        protected static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
+        protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
         {
             var summaryItems = new List<SummaryItem>();
             var implementors = Util.GetPortableImplementors();
@@ -203,49 +204,35 @@ namespace Dnn.ExportImport.Components.Controllers
                 summaryItems.Add(new SummaryItem
                 {
                     TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category,
+                    Category = implementor.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : implementor.Category,//Always return TEMPLATES as category name.
                     Order = implementor.Priority
                 });
             }
             //TODO: Get export file info.
-            summary.ExportFileInfo =
-                GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
+            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
             summary.FromDate = exportDto.FromDate?.DateTime;
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
-            summary.ExportMode = exportDto.ExportMode;
+            summary.IncludeContent = exportDto.IncludeContent;
             summary.IncludeExtensions = exportDto.IncludeExtensions;
             summary.IncludePermissions = exportDto.IncludePermissions;
             summary.IncludeProfileProperties = exportDto.IncludeProperfileProperties;
+            summary.ExportMode = exportDto.ExportMode;
         }
 
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)
         {
-            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_ExportPath,
-                Constants.Manifest_ExportSize);
-            return new ExportFileInfo
-            {
-                ExportPath = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportPath),
-                ExportSize = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportSize)
-            };
+            ImportPackageInfo packageInfo = null;
+            Util.ReadJson(manifestPath, ref packageInfo);
+            return packageInfo?.Summary.ExportFileInfo;
         }
 
-        protected static ImportPackageInfo GetPackageInfo(string manifestPath, DirectoryInfo importDirectoryInfo)
+        protected static ImportPackageInfo GetPackageInfo(string manifestPath)
         {
-            var manifestItems = Util.ReadXml(manifestPath, Constants.Manifest_RootTag, Constants.Manifest_PackageId,
-                Constants.Manifest_PackageName, Constants.Manifest_PackageDescription, Constants.Manifest_ExportTime,
-                Constants.Manifest_PortalName, Constants.Manifest_ExportSize);
-            return new ImportPackageInfo
-            {
-                PackageId = manifestItems.GetValue<string>(Constants.Manifest_PackageId) ?? importDirectoryInfo.Name,
-                Name = manifestItems.GetValue<string>(Constants.Manifest_PackageName) ?? importDirectoryInfo.Name,
-                Description =
-                    manifestItems.GetValue<string>(Constants.Manifest_PackageDescription) ?? importDirectoryInfo.Name,
-                ExporTime = Convert.ToDateTime(manifestItems.GetValue<string>(Constants.Manifest_ExportTime), CultureInfo.InvariantCulture),
-                PortalName = manifestItems.GetValue<string>(Constants.Manifest_PortalName),
-                ExportSize = manifestItems.GetValueOrDefault<string>(Constants.Manifest_ExportSize)
-            };
+            ImportPackageInfo packageInfo = null;
+            Util.ReadJson(manifestPath, ref packageInfo);
+            return packageInfo;
         }
 
         private static JobItem ToJobItem(ExportImportJob job)
@@ -258,6 +245,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
+                Cancelled = job.IsCancelled,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
                 Name = job.Name,
                 Description = job.Description,
@@ -265,6 +253,24 @@ namespace Dnn.ExportImport.Components.Controllers
                 CompletedOn = job.CompletedOnDate,
                 ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null
             };
+        }
+
+        private static void DeleteJobData(ExportImportJob job)
+        {
+            if (job.JobType != JobType.Export) return;
+            var jobFolder = Path.Combine(ExportFolder, job.Directory);
+            try
+            {
+                if (Directory.Exists(jobFolder))
+                {
+                    Directory.Delete(jobFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(
+                    $"Failed to delete the job data. Error:{ex.Message}. It will need to be deleted manually. Folder Path:{jobFolder}");
+            }
         }
     }
 }

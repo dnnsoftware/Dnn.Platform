@@ -65,22 +65,21 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             pageSize = pageSize > 100 ? 100 : pageSize;
             var directories = Directory.GetDirectories(ExportFolder);
-            var importPackages = (from directory in directories.Where(IsValidImportFolder)
-                let dirInfo = new DirectoryInfo(directory)
-                select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName), dirInfo));
+            var importPackages = from directory in directories.Where(IsValidImportFolder)
+                                 select GetPackageInfo(Path.Combine(directory, Constants.ExportManifestName));
 
             var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
-            total = importPackagesList.Count;
 
             importPackages = !string.IsNullOrEmpty(keyword)
                 ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
                 : importPackagesList;
+            total = importPackagesList.Count;
             string sortOrder;
             var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
                 ? importPackages.OrderBy(orderByFunc)
                 : importPackages.OrderByDescending(orderByFunc);
-            return importPackages.Skip(pageIndex*pageSize).Take(pageSize);
+            return importPackages.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)

@@ -52,27 +52,25 @@ namespace Dnn.ExportImport.Components.Controllers
             return jobId;
         }
 
-        public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo)
+        public void CreatePackageManifest(ExportImportJob exportJob, ExportFileInfo exportFileInfo,
+            ImportExportSummary summary)
         {
             var filePath = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportManifestName);
             var portal = PortalController.Instance.GetPortal(exportJob.PortalId);
-            var tagsToWrite = new Dictionary<string, string>
+            var packageInfo = new ImportPackageInfo
             {
-                {Constants.Manifest_PortalName, portal?.PortalName},
-                {Constants.Manifest_ExportTime,Convert.ToString(exportJob.CreatedOnDate, CultureInfo.InvariantCulture)},
-                {Constants.Manifest_PackageId, exportJob.Directory},
-                {Constants.Manifest_PackageName, exportJob.Name},
-                {
-                    Constants.Manifest_PackageDescription,
-                    !string.IsNullOrEmpty(exportJob.Description) ? exportJob.Description : exportJob.Name
-                },
-                {Constants.Manifest_ExportPath, exportFileInfo.ExportPath},
-                {
-                    Constants.Manifest_ExportSize,//This should be translated to user friendly text. e.g. 200 MB. 1 GB etc.
-                    exportFileInfo.ExportSize
-                }
+                Summary = summary,
+                PackageId = exportJob.Directory,
+                Name = exportJob.Name,
+                Description = exportJob.Description,
+                ExporTime = exportJob.CreatedOnDate,
+                PortalName = portal?.PortalName,
+                ExportSize = exportFileInfo.ExportFilesSize,
+                ExportFilesSize = exportFileInfo.ExportFilesSize,
+                ExportDbSize = exportFileInfo.ExportDbSize,
+                ExportTemplatesSize = exportFileInfo.ExportTemplatesSize,
             };
-            Util.WriteXml(filePath, tagsToWrite, Constants.Manifest_RootTag);
+            Util.WriteJson(filePath, packageInfo);
         }
     }
 }

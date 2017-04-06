@@ -35,11 +35,15 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string User { get; set; }
         public string JobType { get; set; }
         public int Status { get; set; }
+        public bool Cancelled { get; set; }
         public string JobStatus { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string CreatedOnString => Util.GetDateTimeString(CreatedOn);
         public DateTime? CompletedOn { get; set; }
+        public string CompletedOnString => Util.GetDateTimeString(CompletedOn);
+
         public string ExportFile { get; set; }
         //public IEnumerable<LogItem> Summary { get; set; }
         public ImportExportSummary Summary { get; set; }

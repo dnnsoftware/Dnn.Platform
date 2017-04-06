@@ -20,44 +20,51 @@
 #endregion
 
 using System;
-using Dnn.ExportImport.Dto;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 
-namespace Dnn.ExportImport.Components.Dto.Assets
+namespace Dnn.ExportImport.Dto.Assets
 {
-    [JsonObject]
-    [Serializable]
-    [TableName("FolderMappings")]
-    [PrimaryKey("FolderMappingID")]
-    public class ExportFolderMapping: BasicExportImportDto
+    public class ExportFolderPermission:BasicExportImportDto
     {
-        [ColumnName("FolderMappingID")]
-        [JsonProperty(PropertyName = "FolderMappingID")]
-        public int FolderMappingId { get; set; }
+        public int FolderPermissionId { get; set; }
 
-        [ColumnName("PortalID")]
-        [JsonProperty(PropertyName = "PortalID")]
-        public int PortalId { get; set; }
+        public int FolderId { get; set; }
 
-        public string MappingName { get; set; }
-        public string FolderProviderType { get; set; }
-        public int? Priority { get; set; }
+        public string FolderPath { get; set; }
 
-        [ColumnName("CreatedByUserID")]
-        [JsonProperty(PropertyName = "CreatedByUserID")]
+        public string PortalId { get; set; }
+
+
+        public int PermissionId { get; set; }
+
+        public bool AllowAccess { get; set; }
+
+        public int? RoleId { get; set; }
+
+        public string RoleName { get; set; }
+
+        public int? UserId { get; set; }
+
+        public string Username { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string PermissionCode { get; set; }
+
+        public int ModuleDefId { get; set; }
+
+        public string PermissionKey { get; set; }
+
+        public string PermissionName { get; set; }
+
         public int? CreatedByUserId { get; set; }
 
-        [IgnoreColumn]
         public string CreatedByUserName { get; set; } //This could be used to find "CreatedByUserId"
         public DateTime? CreatedOnDate { get; set; }
 
-        [ColumnName("LastModifiedByUserID")]
-        [JsonProperty(PropertyName = "LastModifiedByUserID")]
         public int? LastModifiedByUserId { get; set; }
 
-        [IgnoreColumn]
         public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
+
     }
 }

@@ -40,6 +40,21 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public string ExportSize { get; set; }
 
+        /// <summary>
+        /// Size of exported DB compressed file.
+        /// </summary>
+        public string ExportDbSize { get; set; }
+
+        /// <summary>
+        /// Size of exported assets compressed file
+        /// </summary>
+        public string ExportFilesSize { get; set; }
+
+        /// <summary>
+        /// Size of exported assets compressed file
+        /// </summary>
+        public string ExportTemplatesSize { get; set; }
+
         public void ConvertToLocal(UserInfo userInfo)
         {
             //Nothing to convert.

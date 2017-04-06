@@ -43,19 +43,26 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Dto\Assets\ExportFile.cs" />
+    <Compile Include="Dto\Assets\ExportFolder.cs" />
+    <Compile Include="Dto\Assets\ExportFolderMapping.cs" />
+    <Compile Include="Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Dto\BasicExportImportDto.cs" />
     <Compile Include="Dto\Pages\ExportModule.cs" />
     <Compile Include="Dto\Pages\ExportModuleContent.cs" />
     <Compile Include="Dto\Pages\ExportModulePermission.cs" />
     <Compile Include="Dto\Pages\ExportModuleSetting.cs" />
     <Compile Include="Dto\Pages\ExportTab.cs" />
-    <Compile Include="Dto\Pages\ExportTabAliasSkin.cs" />
     <Compile Include="Dto\Pages\ExportTabInfo.cs" />
     <Compile Include="Dto\Pages\ExportTabModule.cs" />
     <Compile Include="Dto\Pages\ExportTabModuleSetting.cs" />
     <Compile Include="Dto\Pages\ExportTabPermission.cs" />
     <Compile Include="Dto\Pages\ExportTabSetting.cs" />
     <Compile Include="Dto\Pages\ExportTabUrl.cs" />
+    <Compile Include="Dto\PageTemplates\PageTemplate.cs" />
+    <Compile Include="Dto\Portal\ExportPortalLanguage.cs" />
+    <Compile Include="Dto\Portal\ExportPortalSetting.cs" />
+    <Compile Include="Dto\ProfileProperties\ExportProfileProperty.cs" />
     <Compile Include="Dto\Roles\ExportRole.cs" />
     <Compile Include="Dto\Roles\ExportRoleGroup.cs" />
     <Compile Include="Dto\Roles\ExportRoleSetting.cs" />

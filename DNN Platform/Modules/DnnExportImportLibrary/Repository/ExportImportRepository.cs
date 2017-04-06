@@ -75,28 +75,26 @@ namespace Dnn.ExportImport.Repository
         {
             if (item == null) return null;
             var collection = DbCollection<T>();
-            item.ReferenceId = referenceId;
-            item.Id = collection.Insert(item);
-            if (referenceId.HasValue)
+            if (referenceId != null)
             {
-                collection.EnsureIndex(x => x.ReferenceId);
+                item.ReferenceId = referenceId;
             }
-            collection.EnsureIndex(x => x.Id, true);
+            item.Id = collection.Insert(item);
             return item;
         }
 
         public void CreateItems<T>(IEnumerable<T> items, int? referenceId) where T : BasicExportImportDto
         {
-            var allItems = items as T[] ?? items.ToArray();
-            if (allItems.Length ==0) return;
+            if (items == null) return;
+            var allItems = items.ToList();
+            if (allItems.Count == 0) return;
 
             var collection = DbCollection<T>();
-            foreach (var item in allItems)
+            if (referenceId != null)
             {
-                item.ReferenceId = referenceId;
-                item.Id = collection.Insert(item);
+                allItems.ForEach(x => { x.ReferenceId = referenceId; });
             }
-            collection.EnsureIndex(x => x.Id, true);
+            collection.Insert(allItems);
         }
 
         public T GetItem<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
@@ -110,7 +108,7 @@ namespace Dnn.ExportImport.Repository
         {
             return InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
-        
+
         public int GetCount<T>() where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
@@ -120,6 +118,12 @@ namespace Dnn.ExportImport.Repository
         {
             var collection = DbCollection<T>();
             return collection?.Count(predicate) ?? 0;
+        }
+
+        public void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            collection.EnsureIndex(predicate, unique);
         }
 
         public IEnumerable<T> GetAllItems<T>(
@@ -170,17 +174,18 @@ namespace Dnn.ExportImport.Repository
             return InternalGetItems(predicate);
         }
 
+        public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            return collection.Find(predicate);
+        }
+
         public void UpdateItem<T>(T item) where T : BasicExportImportDto
         {
             if (item == null) return;
             var collection = DbCollection<T>();
             if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
             collection.Update(item);
-            if (item.ReferenceId.HasValue)
-            {
-                collection.EnsureIndex(x => x.ReferenceId);
-            }
-            collection.EnsureIndex(x => x.Id, true);
         }
 
         public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
@@ -189,16 +194,7 @@ namespace Dnn.ExportImport.Repository
             if (allItems.Length == 0) return;
 
             var collection = DbCollection<T>();
-            foreach (var item in allItems)
-            {
-                if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
-                collection.Update(item);
-                if (item.ReferenceId.HasValue)
-                {
-                    collection.EnsureIndex(x => x.ReferenceId);
-                }
-            }
-            collection.EnsureIndex(x => x.Id, true);
+            collection.Update(allItems);
         }
 
         public bool DeleteItem<T>(int id) where T : BasicExportImportDto
@@ -207,6 +203,13 @@ namespace Dnn.ExportImport.Repository
             var item = collection.FindById(id);
             if (item == null) throw new KeyNotFoundException();
             return collection.Delete(id);
+        }
+
+        public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            if (deleteExpression != null)
+                collection.Delete(deleteExpression);
         }
 
         private LiteCollection<T> DbCollection<T>()

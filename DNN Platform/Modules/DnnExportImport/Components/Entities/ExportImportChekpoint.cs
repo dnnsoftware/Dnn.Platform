@@ -39,6 +39,8 @@ namespace Dnn.ExportImport.Components.Entities
         public string Category { get; set; }
         public int Stage { get; set; } // all stages start from 0 and increase
         public string StageData { get; set; } // discretionary data
+        public DateTime StartDate { get; set; }
+        public DateTime LastUpdateDate { get; set; }
 
         public double Progress
         {
@@ -70,6 +72,8 @@ namespace Dnn.ExportImport.Components.Entities
             Progress = Null.SetNullInteger(dr[nameof(Progress)]);
             TotalItems = Null.SetNullInteger(dr[nameof(TotalItems)]);
             ProcessedItems = Null.SetNullInteger(dr[nameof(ProcessedItems)]);
+            StartDate = Null.SetNullDateTime(dr[nameof(StartDate)]);
+            LastUpdateDate = Null.SetNullDateTime(dr[nameof(LastUpdateDate)]);
         }
     }
 }

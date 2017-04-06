@@ -56,6 +56,11 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
+        /// Does this import/export includes content or not.
+        /// </summary>
+        public bool IncludeContent { get; set; }
+
+        /// <summary>
         /// Export mode. Differential or complete.
         /// </summary>
         public ExportMode ExportMode { get; set; }
@@ -66,9 +71,19 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime? FromDate { get; set; }
 
         /// <summary>
+        /// Formatted Date from which data was taken to perform export.
+        /// </summary>
+        public string FromDateString => Util.GetDateTimeString(FromDate);
+
+        /// <summary>
         /// Date till which data was taken to perform export.
         /// </summary>
         public DateTime ToDate { get; set; }
+
+        /// <summary>
+        /// Formatted Date till which data was taken to perform export.
+        /// </summary>
+        public string ToDateString => Util.GetDateTimeString(ToDate);
 
         /// <summary>
         /// Summary of each item export.

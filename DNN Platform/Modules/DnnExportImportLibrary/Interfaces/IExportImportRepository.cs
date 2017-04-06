@@ -46,6 +46,8 @@ namespace Dnn.ExportImport.Interfaces
 
         int GetCount<T>() where T : BasicExportImportDto;
 
+        void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false) where T : BasicExportImportDto;
+
         int GetCount<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto;
         T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto;
@@ -58,10 +60,14 @@ namespace Dnn.ExportImport.Interfaces
         IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto;
 
+        IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto;
+
         void UpdateItem<T>(T item) where T : BasicExportImportDto;
 
         void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto;
 
         bool DeleteItem<T>(int id) where T : BasicExportImportDto;
+
+        void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto;
     }
 }

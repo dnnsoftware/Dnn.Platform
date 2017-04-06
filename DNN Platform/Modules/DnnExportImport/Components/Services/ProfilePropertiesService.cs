@@ -23,10 +23,9 @@ using System;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.ProfileProperties;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Dto.ProfileProperties;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -74,39 +73,34 @@ namespace Dnn.ExportImport.Components.Services
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? profileProperties.Count : CheckPoint.TotalItems;
             CheckPointStageCallback(this);
-            using (var db = DataContext.Instance())
+
+            foreach (var profileProperty in profileProperties)
             {
-                foreach (var profileProperty in profileProperties)
+                if (CheckCancelled(importJob)) return;
+
+                var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
+                    .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
+
+                if (existingProfileProperty != null)
                 {
-                    if (CheckCancelled(importJob)) return;
-
-                    var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
-                        .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));
-                    var modifiedById = Util.GetUserIdByName(importJob, profileProperty.LastModifiedByUserId,
-                        profileProperty.LastModifiedByUserName);
-
-                    if (existingProfileProperty != null)
+                    switch (importDto.CollisionResolution)
                     {
-                        switch (importDto.CollisionResolution)
-                        {
-                            case CollisionResolution.Overwrite:
-                                ProcessUpdateProfileProperty(db, profileProperty, existingProfileProperty,
-                                    existingProfileProperty.CreatedByUserId, modifiedById);
-                                break;
-                            case CollisionResolution.Ignore:
-                                Result.AddLogEntry("Ignored profile property", profileProperty.PropertyName);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                        }
+                        case CollisionResolution.Overwrite:
+                            var modifiedById = Util.GetUserIdByName(importJob, profileProperty.LastModifiedByUserId, profileProperty.LastModifiedByUserName);
+                            ProcessUpdateProfileProperty(profileProperty, existingProfileProperty, modifiedById);
+                            break;
+                        case CollisionResolution.Ignore:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
-                    else
-                    {
-                        var createdById = Util.GetUserIdByName(importJob, profileProperty.CreatedByUserId,
-                            profileProperty.CreatedByUserName);
+                }
+                else
+                {
+                    var createdById = Util.GetUserIdByName(importJob, profileProperty.CreatedByUserId,
+                        profileProperty.CreatedByUserName);
 
-                        ProcessCreateProfileProperty(importJob, db, profileProperty, createdById, modifiedById);
-                    }
+                    ProcessCreateProfileProperty(importJob, profileProperty, createdById);
                 }
             }
 
@@ -122,33 +116,28 @@ namespace Dnn.ExportImport.Components.Services
             return Repository.GetCount<ExportProfileProperty>();
         }
 
-        private void ProcessCreateProfileProperty(ExportImportJob importJob, IDataContext db,
-            ExportProfileProperty profileProperty, int createdById, int modifiedById)
+        private static void ProcessCreateProfileProperty(ExportImportJob importJob,
+            ExportProfileProperty profileProperty, int createdById)
         {
-            profileProperty.PropertyDefinitionId = 0;
-            profileProperty.PortalId = importJob.PortalId;
-            profileProperty.CreatedOnDate =
-                profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-            profileProperty.CreatedByUserId = createdById;
-            profileProperty.LastModifiedByUserId = modifiedById;
-            var repProfileProperty = db.GetRepository<ExportProfileProperty>();
-            repProfileProperty.Insert(profileProperty);
-            Result.AddLogEntry("Added profile property", profileProperty.PropertyName);
+            DotNetNuke.Data.DataProvider.Instance()
+                .AddPropertyDefinition(importJob.PortalId, profileProperty.ModuleDefId ?? Null.NullInteger,
+                    profileProperty.DataType ?? Null.NullInteger,
+                    profileProperty.DefaultValue, profileProperty.PropertyCategory, profileProperty.PropertyName,
+                    profileProperty.ReadOnly, profileProperty.Required,
+                    profileProperty.ValidationExpression, profileProperty.ViewOrder, profileProperty.Visible,
+                    profileProperty.Length, profileProperty.DefaultVisibility, createdById);
         }
 
-        private void ProcessUpdateProfileProperty(IDataContext db,
-            ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty,
-            int? createdById, int modifiedById)
+        private static void ProcessUpdateProfileProperty(ExportProfileProperty profileProperty, ExportProfileProperty existingProfileProperty,
+            int modifiedById)
         {
-            profileProperty.PropertyDefinitionId = existingProfileProperty.PropertyDefinitionId;
-            profileProperty.PortalId = existingProfileProperty.PortalId;
-            profileProperty.CreatedOnDate = existingProfileProperty.CreatedOnDate;
-            profileProperty.CreatedByUserId = createdById;
-            profileProperty.LastModifiedOnDate = DateUtils.GetDatabaseLocalTime();
-            profileProperty.LastModifiedByUserId = modifiedById;
-            var repProfileProperty = db.GetRepository<ExportProfileProperty>();
-            repProfileProperty.Update(profileProperty);
-            Result.AddLogEntry("Updated profile property", profileProperty.PropertyName);
+            DotNetNuke.Data.DataProvider.Instance()
+                .UpdatePropertyDefinition(existingProfileProperty.PropertyDefinitionId,
+                    profileProperty.DataType ?? Null.NullInteger,
+                    profileProperty.DefaultValue, profileProperty.PropertyCategory, profileProperty.PropertyName,
+                    profileProperty.ReadOnly, profileProperty.Required,
+                    profileProperty.ValidationExpression, profileProperty.ViewOrder, profileProperty.Visible,
+                    profileProperty.Length, profileProperty.DefaultVisibility, modifiedById);
         }
     }
 }

@@ -80,10 +80,6 @@
     <Compile Include="Components\Controllers\EntitiesController.cs" />
     <Compile Include="Components\Controllers\ExportController.cs" />
     <Compile Include="Components\Controllers\ImportController.cs" />
-    <Compile Include="Components\Dto\Assets\ExportFile.cs" />
-    <Compile Include="Components\Dto\Assets\ExportFolder.cs" />
-    <Compile Include="Components\Dto\Assets\ExportFolderMapping.cs" />
-    <Compile Include="Components\Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Components\Dto\ExportDto.cs" />
     <Compile Include="Components\Dto\ExportFileInfo.cs" />
     <Compile Include="Components\Dto\ImportDto.cs" />
@@ -92,11 +88,6 @@
     <Compile Include="Components\Dto\Jobs\AllJobsResult.cs" />
     <Compile Include="Components\Dto\Jobs\JobItem.cs" />
     <Compile Include="Components\Dto\Jobs\LogItem.cs" />
-    <Compile Include="Components\Dto\PageTemplates\PageTemplate.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalLanguage.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalSetting.cs" />
-    <Compile Include="Components\Dto\Portal\ExportPortalLocalization.cs" />
-    <Compile Include="Components\Dto\ProfileProperties\ExportProfileProperty.cs" />
     <Compile Include="Components\Dto\SummaryItem.cs" />
     <Compile Include="Components\Dto\Users\ImportAspnetMembership.cs" />
     <Compile Include="Components\Dto\Users\ImportAspnetUser.cs" />
