@@ -18,17 +18,17 @@ class JobRow extends Component {
     }
 
     componentWillMount() {
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
+        let opened = (this.props.openId !== "" && this.props.jobId === this.props.openId);
         this.setState({
             opened
         });
     }
 
     toggle() {
-        if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
+        if ((this.props.openId !== "" && this.props.jobId === this.props.openId)) {
             this.props.Collapse();
         } else {
-            this.props.OpenCollapse(this.props.id);
+            this.props.OpenCollapse(this.props.jobId);
         }
     }
 
@@ -40,7 +40,7 @@ class JobRow extends Component {
     /* eslint-disable react/no-danger */
     render() {
         const { props, state } = this;
-        let opened = (props.openId !== "" && this.props.id === props.openId);
+        let opened = (props.openId !== "" && this.props.jobId === props.openId);
         return (
             <div className={"collapsible-jobdetail " + !opened + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-jobdetail-header " + state.collapsed}>
@@ -87,7 +87,7 @@ class JobRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} fixedHeight={450} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapse autoScroll={true} isOpened={opened} fixedHeight={480} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
             </div>
         );
     }
@@ -105,7 +105,6 @@ JobRow.propTypes = {
     className: PropTypes.string,
     OpenCollapse: PropTypes.func,
     Collapse: PropTypes.func,
-    id: PropTypes.string,
     openId: PropTypes.string
 };
 

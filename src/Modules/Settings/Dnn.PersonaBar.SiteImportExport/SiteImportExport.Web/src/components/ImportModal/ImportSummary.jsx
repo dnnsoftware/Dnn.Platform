@@ -9,9 +9,6 @@ class ImportSummary extends Component {
     getSummaryItem(category) {
         const { props } = this;
         let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
-        if (category === "Templates" && !detail) {
-            detail = props.importSummary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
-        }
         return detail ? detail.TotalItems : "-";
     }
 
@@ -66,9 +63,9 @@ class ImportSummary extends Component {
                                 <GridCell>
                                     <Label
                                         labelType="inline"
-                                        label={Localization.get("Vocabularies")}
+                                        label={Localization.get("IncludeContent")}
                                     />
-                                    <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludeContent ? props.importSummary.IncludeContent.toString() : "-"}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
@@ -90,6 +87,13 @@ class ImportSummary extends Component {
                                         label={Localization.get("IncludeExtensions")}
                                     />
                                     <div className="import-summary-item">{props.importSummary.IncludeExtensions.toString()}</div>
+                                </GridCell>
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={Localization.get("IncludeDeletions")}
+                                    />
+                                    <div className="import-summary-item">{props.importSummary.IncludeDeletions.toString()}</div>
                                 </GridCell>
                             </div>
                             <div className="right-column">

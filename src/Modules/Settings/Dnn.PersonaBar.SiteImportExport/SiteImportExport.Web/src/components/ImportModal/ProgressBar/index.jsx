@@ -67,7 +67,7 @@ class ProgressBar extends Component {
         }
         this.timeout = setTimeout(() => {
             this.increase();
-        }, 500);
+        }, 200);
     }
 
     render() {

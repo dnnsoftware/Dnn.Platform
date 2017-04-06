@@ -8,7 +8,6 @@ import { CycleIcon } from "dnn-svg-icons";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
-import util from "utils";
 import Localization from "localization";
 
 class JobDetails extends Component {
@@ -18,24 +17,9 @@ class JobDetails extends Component {
 
     componentWillMount() {
         const { props } = this;
-        const persistedSettings = util.utilities.persistent.load();
         if (props.jobId) {
             props.dispatch(ImportExportActions.getJobDetails(props.jobId));
         }
-
-        this.jobDetailTimeout = setInterval(() => {
-            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
-                props.dispatch(ImportExportActions.getJobDetails(props.jobId, (data) => {
-                    if (data.Status > 1) {
-                        clearInterval(this.jobDetailTimeout);
-                    }
-                }));
-            }
-        }, 2500);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.jobDetailTimeout);
     }
 
     /* eslint-disable react/no-danger */
@@ -43,17 +27,14 @@ class JobDetails extends Component {
         const { props } = this;
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
-            if (category === "Templates" && !detail) {
-                detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
-            }
             if (detail) {
                 if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled) {
-                    return detail.ProcessedItems + "/" + detail.TotalItems;
+                    return detail.ProcessedItems + " / " + detail.TotalItems;
                 }
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{ float: "right" }}>{detail.ProcessedItems + "/" + detail.TotalItems}</div>
+                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}</div>
                     </div>;
                 }
             }
@@ -117,9 +98,9 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("Vocabularies")}
+                                    label={Localization.get("IncludeContent")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? props.jobDetail.Summary.IncludeContent.toString() : "-"}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -141,6 +122,13 @@ class JobDetails extends Component {
                                     label={Localization.get("IncludeExtensions")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeDeletions")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions.toString()}</div>
                             </GridCell>
                         </div>
                         <div className="right-column">
@@ -229,7 +217,6 @@ JobDetails.propTypes = {
     jobDetail: PropTypes.object,
     jobId: PropTypes.number,
     Collapse: PropTypes.func,
-    id: PropTypes.string,
     cancelJob: PropTypes.func,
     deleteJob: PropTypes.func
 };

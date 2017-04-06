@@ -45,6 +45,7 @@ class ExportModal extends Component {
                 IncludePermissions: true,
                 IncludeDeletions: false,
                 IncludeContent: true,
+                IncludeExtensions: true,
                 IncludeFiles: true,
                 ExportMode: "Differential",
                 ItemsToExport: []
@@ -285,6 +286,16 @@ class ExportModal extends Component {
                                 <Switch
                                     value={state.exportRequest.IncludePermissions}
                                     onChange={this.onChange.bind(this, "IncludePermissions")}
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Extensions")}
+                                />
+                                <Switch
+                                    value={state.exportRequest.IncludeExtensions}
+                                    onChange={this.onChange.bind(this, "IncludeExtensions")}
                                 />
                             </InputGroup>
                             <InputGroup>

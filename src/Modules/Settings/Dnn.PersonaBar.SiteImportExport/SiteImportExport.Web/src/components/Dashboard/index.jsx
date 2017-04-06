@@ -24,56 +24,76 @@ class DashboardPanelBody extends Component {
             pageSize: 10,
             filter: null,
             keyword: "",
-            openId: ""
+            currentJobId: null
         };
     }
 
     componentWillMount() {
         const { props } = this;
-        const persistedSettings = util.utilities.persistent.load();
-
         props.dispatch(ImportExportActions.getPortals((data) => {
             if (data.TotalResults === 1) {
                 props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID)));
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID), (data) => {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                            this.addInterval(props);
+                        }
+                    }));
                 }));
             }
             else {
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        this.addInterval(props);
+                    }
+                }));
             }
         }));
+    }
 
-
-        this.jobListTimeout = setInterval(() => {
-            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage()));
-            }
-        }, 5000);
+    componentWillReceiveProps(props) {
+        if (this.state.currentJobId !== props.currentJobId) {
+            this.setState({
+                currentJobId: props.currentJobId
+            });
+        }
     }
 
     componentWillUnmount() {
         clearInterval(this.jobListTimeout);
     }
 
+    addInterval(props) {
+        const persistedSettings = util.utilities.persistent.load();
+        this.jobListTimeout = setInterval(() => {
+            if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(), (data) => {
+                    if (!data.Jobs || !data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        clearInterval(this.jobListTimeout);
+                        if (this.state.currentJobId) {
+                            props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
+                        }
+                    }
+                    else if (this.state.currentJobId && data.Jobs.find(j => j.JobId === this.state.currentJobId && j.Status < 2 && !j.Cancelled)) {
+                        props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
+                    }
+                }));
+            }
+        }, 5000);
+    }
+
     uncollapse(id) {
-        setTimeout(() => {
-            this.setState({
-                openId: id
-            });
-        }, this.timeout);
+        this.props.dispatch(ImportExportActions.jobSelected(id));
     }
 
     collapse() {
-        if (this.state.openId !== "") {
-            this.setState({
-                openId: ""
-            });
+        if (this.props.currentJobId !== "") {
+            this.props.dispatch(ImportExportActions.jobSelected());
         }
     }
 
-    toggle(openId) {
-        if (openId !== "") {
-            this.uncollapse(openId);
+    toggle(id) {
+        if (id !== "") {
+            this.uncollapse(id);
         }
         else {
             this.collapse();
@@ -115,7 +135,11 @@ class DashboardPanelBody extends Component {
                 pageIndex: 0
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
-                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value)));
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value), (data) => {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        this.addInterval(props);
+                    }
+                }));
             });
         }
     }
@@ -139,7 +163,13 @@ class DashboardPanelBody extends Component {
         this.setState({
             state
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            props.dispatch(ImportExportActions.jobSelected(null, () => {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        this.addInterval(props);
+                    }
+                }));
+            }));
         });
     }
 
@@ -149,7 +179,13 @@ class DashboardPanelBody extends Component {
             pageIndex: 0,
             filter: filter.value
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            props.dispatch(ImportExportActions.jobSelected(null, () => {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        this.addInterval(props);
+                    }
+                }));
+            }));
         });
     }
 
@@ -159,7 +195,13 @@ class DashboardPanelBody extends Component {
             pageIndex: 0,
             keyword: keyword
         }, () => {
-            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+            props.dispatch(ImportExportActions.jobSelected(null, () => {
+                props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                        this.addInterval(props);
+                    }
+                }));
+            }));
         });
     }
 
@@ -169,10 +211,14 @@ class DashboardPanelBody extends Component {
             Localization.get("ConfirmCancel"),
             Localization.get("No"),
             () => {
-                props.dispatch(ImportExportActions.cancelJob(jobId, (data) => {
+                props.dispatch(ImportExportActions.cancelJob(jobId, () => {
                     util.utilities.notify(Localization.get("JobCancelled"));
-                    this.toggle(jobId);
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                    this.collapse();
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                            this.addInterval(props);
+                        }
+                    }));
                 }, () => {
                     util.utilities.notifyError(Localization.get("JobCancel.ErrorMessage"));
                 }));
@@ -186,10 +232,14 @@ class DashboardPanelBody extends Component {
             Localization.get("ConfirmDelete"),
             Localization.get("No"),
             () => {
-                props.dispatch(ImportExportActions.deleteJob(jobId, (data) => {
+                props.dispatch(ImportExportActions.deleteJob(jobId, () => {
                     util.utilities.notify(Localization.get("JobDeleted"));
                     this.collapse();
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId)));
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                            this.addInterval(props);
+                        }
+                    }));
                 }, () => {
                     util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));
                 }));
@@ -269,7 +319,6 @@ class DashboardPanelBody extends Component {
         let i = 0;
         if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
-                let id = "row-" + i++;
                 return (
                     <JobRow
                         jobId={job.JobId}
@@ -282,15 +331,13 @@ class DashboardPanelBody extends Component {
                         index={index}
                         key={"jobTerm-" + index}
                         closeOnClick={true}
-                        openId={this.state.openId}
-                        OpenCollapse={this.toggle.bind(this)}
-                        Collapse={this.collapse.bind(this)}
-                        id={id}>
+                        openId={props.currentJobId}
+                        OpenCollapse={this.toggle.bind(this, job.JobId)}
+                        Collapse={this.collapse.bind(this)}>
                         <JobDetails
                             jobId={job.JobId}
                             Collapse={this.collapse.bind(this)}
-                            id={id}
-                            openId={this.state.openId}
+                            openId={props.currentJobId}
                             cancelJob={this.cancelJob.bind(this)}
                             deleteJob={this.deleteJob.bind(this)} />
                     </JobRow>
@@ -341,7 +388,7 @@ class DashboardPanelBody extends Component {
     }
 
     render() {
-        const { props, state } = this;
+        const { props } = this;
         return (
             <div>
                 {props.portals.length > 0 && <div>
@@ -374,7 +421,8 @@ DashboardPanelBody.propTypes = {
     selectPanel: PropTypes.func,
     portalId: PropTypes.number,
     lastExportTime: PropTypes.string,
-    lastImportTime: PropTypes.string
+    lastImportTime: PropTypes.string,
+    currentJobId: PropTypes.number
 };
 
 function mapStateToProps(state) {
@@ -385,7 +433,8 @@ function mapStateToProps(state) {
         totalJobs: state.importExport.totalJobs,
         portalName: state.importExport.portalName,
         lastExportTime: state.importExport.lastExportTime,
-        lastImportTime: state.importExport.lastImportTime
+        lastImportTime: state.importExport.lastImportTime,
+        currentJobId: state.importExport.currentJobId
     };
 }
 
