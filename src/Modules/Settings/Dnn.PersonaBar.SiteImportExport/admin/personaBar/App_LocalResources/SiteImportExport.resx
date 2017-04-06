@@ -249,6 +249,9 @@
   <data name="Permissions.Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
+  <data name="Extensions.Text" xml:space="preserve">
+    <value>Extensions</value>
+  </data>
   <data name="DeletionsInExport.Text" xml:space="preserve">
     <value>Include Deletions</value>
   </data>
@@ -359,6 +362,12 @@
   </data>
   <data name="IncludeExtensions.Text" xml:space="preserve">
     <value>Include Extensions</value>
+  </data>
+  <data name="IncludeDeletions.Text" xml:space="preserve">
+    <value>Include Deletions</value>
+  </data>
+  <data name="IncludeContent.Text" xml:space="preserve">
+    <value>Include Content</value>
   </data>
   <data name="FolderName.Text" xml:space="preserve">
     <value>Folder Name</value>

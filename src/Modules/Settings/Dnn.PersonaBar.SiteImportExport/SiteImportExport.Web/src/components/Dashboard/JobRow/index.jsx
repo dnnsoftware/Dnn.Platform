@@ -87,7 +87,7 @@ class JobRow extends Component {
                         </div>
                     </div>
                 </div>
-                <Collapse autoScroll={true} isOpened={opened} fixedHeight={450} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
+                <Collapse autoScroll={true} isOpened={opened} fixedHeight={480} style={{ float: "left", width: "100%" }}>{opened && props.children}</Collapse>
             </div>
         );
     }

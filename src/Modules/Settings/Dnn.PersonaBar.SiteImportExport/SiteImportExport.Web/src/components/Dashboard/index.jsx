@@ -34,7 +34,7 @@ class DashboardPanelBody extends Component {
             if (data.TotalResults === 1) {
                 props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID), (data) => {
-                        if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
                     }));
@@ -42,7 +42,7 @@ class DashboardPanelBody extends Component {
             }
             else {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                    if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
                 }));
@@ -67,10 +67,13 @@ class DashboardPanelBody extends Component {
         this.jobListTimeout = setInterval(() => {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(), (data) => {
-                    if (!data.Jobs || !data.Jobs.find(j => j.Status < 2)) {
+                    if (!data.Jobs || !data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         clearInterval(this.jobListTimeout);
+                        if (this.state.currentJobId) {
+                            props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
+                        }
                     }
-                    else if (this.state.currentJobId && data.Jobs.find(j => j.JobId === this.state.currentJobId && j.Status < 2)) {
+                    else if (this.state.currentJobId && data.Jobs.find(j => j.JobId === this.state.currentJobId && j.Status < 2 && !j.Cancelled)) {
                         props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
                     }
                 }));
@@ -133,7 +136,7 @@ class DashboardPanelBody extends Component {
             }, () => {
                 props.dispatch(ImportExportActions.siteSelected(option.value, option.label));
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(option.value), (data) => {
-                    if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
                 }));
@@ -162,7 +165,7 @@ class DashboardPanelBody extends Component {
         }, () => {
             props.dispatch(ImportExportActions.jobSelected(null, () => {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                    if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
                 }));
@@ -178,7 +181,7 @@ class DashboardPanelBody extends Component {
         }, () => {
             props.dispatch(ImportExportActions.jobSelected(null, () => {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                    if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
                 }));
@@ -194,7 +197,7 @@ class DashboardPanelBody extends Component {
         }, () => {
             props.dispatch(ImportExportActions.jobSelected(null, () => {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                    if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                    if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
                 }));
@@ -208,11 +211,11 @@ class DashboardPanelBody extends Component {
             Localization.get("ConfirmCancel"),
             Localization.get("No"),
             () => {
-                props.dispatch(ImportExportActions.cancelJob(jobId, (data) => {
+                props.dispatch(ImportExportActions.cancelJob(jobId, () => {
                     util.utilities.notify(Localization.get("JobCancelled"));
-                    this.toggle(jobId);
+                    this.collapse();
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                        if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
                     }));
@@ -233,7 +236,7 @@ class DashboardPanelBody extends Component {
                     util.utilities.notify(Localization.get("JobDeleted"));
                     this.collapse();
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                        if (data.Jobs && data.Jobs.find(j => j.Status < 2)) {
+                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
                     }));

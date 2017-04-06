@@ -8,7 +8,6 @@ import { CycleIcon } from "dnn-svg-icons";
 import {
     importExport as ImportExportActions
 } from "../../../actions";
-import util from "utils";
 import Localization from "localization";
 
 class JobDetails extends Component {
@@ -28,9 +27,6 @@ class JobDetails extends Component {
         const { props } = this;
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
-            if (category === "Templates" && !detail) {
-                detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "DNN_TEMPLATES");
-            }
             if (detail) {
                 if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled) {
                     return detail.ProcessedItems + " / " + detail.TotalItems;
@@ -102,9 +98,9 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("Vocabularies")}
+                                    label={Localization.get("IncludeContent")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("Vocabularies")}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? props.jobDetail.Summary.IncludeContent.toString() : "-"}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
@@ -126,6 +122,13 @@ class JobDetails extends Component {
                                     label={Localization.get("IncludeExtensions")}
                                 />
                                 <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions.toString()}</div>
+                            </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("IncludeDeletions")}
+                                />
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions.toString()}</div>
                             </GridCell>
                         </div>
                         <div className="right-column">
