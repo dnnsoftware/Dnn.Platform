@@ -199,16 +199,12 @@ namespace Dnn.ExportImport.Repository
             return collection.Delete(id);
         }
 
-//        public void DeleteItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
-//        {
-//            var allItems = items as T[] ?? items.ToArray();
-//            if (allItems.Length == 0) return;
-//
-//            var collection = DbCollection<T>();
-//            var ids = allItems.Select(x => x.Id).ToList();
-//            Expression<Func<T, bool>> deleteExpression = x => ids.Contains(x.Id);
-//            collection.Delete(deleteExpression);
-//        }
+        public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto
+        {
+            var collection = DbCollection<T>();
+            if (deleteExpression != null)
+                collection.Delete(deleteExpression);
+        }
 
         private LiteCollection<T> DbCollection<T>()
         {

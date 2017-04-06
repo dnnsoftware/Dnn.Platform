@@ -46,6 +46,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string LastJobStartTimeKey = "EXPORT_LastJobStartTime";
         internal const string MaxTimeToRunJobKey = "EXPORT_MaxTimeToRunJob";
         internal const string TemplatesExtension = "template";
+        internal const int DefaultPageSize = 1000;
 
         internal const int LogColumnLength = 255;
 

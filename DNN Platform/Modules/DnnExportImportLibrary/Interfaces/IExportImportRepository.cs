@@ -65,5 +65,7 @@ namespace Dnn.ExportImport.Interfaces
         void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto;
 
         bool DeleteItem<T>(int id) where T : BasicExportImportDto;
+
+        void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto;
     }
 }

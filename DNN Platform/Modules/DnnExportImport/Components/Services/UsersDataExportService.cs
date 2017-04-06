@@ -60,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckCancelled(importJob)) return;
 
             var pageIndex = 0;
-            const int pageSize = 1000;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUserRolesImported = 0;
             var totalProfilesImported = 0;
             var totalAuthenticationImported = 0;

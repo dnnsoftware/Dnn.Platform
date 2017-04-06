@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
-            const int pageSize = 1000;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUsersExported = 0;
             var totalUserRolesExported = 0;
             var totalPortalsExported = 0;
@@ -63,41 +63,40 @@ namespace Dnn.ExportImport.Components.Services
             var totalAuthenticationExported = 0;
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
+            var isDirty = false;
             var dataReader = DataProvider.Instance()
                 .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate,
                     fromDate);
-            var allUser = CBO.FillCollection<ExportUser>(dataReader).ToList();
-            var firstOrDefault = allUser.FirstOrDefault();
+            var allUsers = CBO.FillCollection<ExportUser>(dataReader).ToList();
+            var firstOrDefault = allUsers.FirstOrDefault();
             if (firstOrDefault == null) return;
 
-            var totalUsers = allUser.Any() ? firstOrDefault.Total : 0;
+            var totalUsers = allUsers.Any() ? firstOrDefault.Total : 0;
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
-            var skip = GetCurrentSkip();
-            var currentIndex = skip;
-
             //Skip the export if all the users has been processed already.
-            if (CheckPoint.Stage >= totalPages && skip == 0)
+            if (CheckPoint.Stage >= totalPages)
                 return;
 
             //Check if there is any pending stage or partially processed data.
-            if (CheckPoint.Stage > 0 || skip > 0)
+            if (CheckPoint.Stage > 0)
             {
+                isDirty = true;
                 pageIndex = CheckPoint.Stage;
                 if (pageIndex > 0)
                 {
                     dataReader = DataProvider.Instance()
                         .GetAllUsers(portalId, pageIndex, pageSize, false, toDate, fromDate);
-                    allUser =
+                    allUsers =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 }
-                allUser = allUser.Skip(skip).ToList();
             }
 
-            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
 
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
             if (CheckPointStageCallback(this)) return;
 
             var progressStep = totalUsers > 100 ? totalUsers / 100 : 1;
@@ -107,8 +106,13 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     if (CheckCancelled(exportJob)) return;
 
-                    //Add 1000 users to Lite DB.
-                    Repository.CreateItems(allUser, null);
+                    //Delete data from Local DB if process was some how broken/stopped in between.
+                    if (!isDirty)
+                    {
+                        //Add 1000 users to Lite DB.
+                        Repository.CreateItems(allUsers, null);
+                    }
+                    isDirty = false;
                     var exportAspnetUserList = new List<ExportAspnetUser>();
                     var exportAspnetMembershipList = new List<ExportAspnetMembership>();
                     var exportUserRoleList = new List<ExportUserRole>();
@@ -116,8 +120,10 @@ namespace Dnn.ExportImport.Components.Services
                     var exportUserAuthenticationList = new List<ExportUserAuthentication>();
                     var exportUserProfileList = new List<ExportUserProfile>();
 
-                    foreach (var user in allUser)
+                    foreach (var user in allUsers)
                     {
+                        if (CheckCancelled(exportJob)) return;
+
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
                         var aspnetMembership =
@@ -159,13 +165,11 @@ namespace Dnn.ExportImport.Components.Services
                             userAuthentication.ReferenceId = user.Id;
                             exportUserAuthenticationList.Add(userAuthentication);
                         }
-                        currentIndex++;
                         CheckPoint.ProcessedItems++;
 
                         if (CheckPoint.ProcessedItems % progressStep == 0)
                             CheckPoint.Progress += 1;
-                        CheckPoint.StageData = null;
-                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                        if (CheckPoint.ProcessedItems % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
 
                     Repository.CreateItems(exportAspnetUserList, null);
@@ -175,23 +179,20 @@ namespace Dnn.ExportImport.Components.Services
                     Repository.CreateItems(exportUserRoleList, null);
                     Repository.CreateItems(exportUserAuthenticationList, null);
 
-                    totalUsersExported += allUser.Count;
-                    currentIndex = 0;
+                    totalUsersExported += allUsers.Count;
                     CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
 
                     pageIndex++;
                     dataReader = DataProvider.Instance()
                         .GetAllUsers(portalId, pageIndex, pageSize, false, toDate, fromDate);
-                    allUser =
+                    allUsers =
                         CBO.FillCollection<ExportUser>(dataReader).ToList();
                 } while (totalUsersExported < totalUsersToBeProcessed);
                 CheckPoint.Progress = 100;
             }
             finally
             {
-                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
                 Result.AddSummary("Exported Users", totalUsersExported.ToString());
                 Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
@@ -208,7 +209,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckCancelled(importJob)) return;
 
             var pageIndex = 0;
-            const int pageSize = 1000;
+            const int pageSize = Constants.DefaultPageSize;
             var totalUsersImported = 0;
             var totalPortalsImported = 0;
             var totalAspnetUserImported = 0;
