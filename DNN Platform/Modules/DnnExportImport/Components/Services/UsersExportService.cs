@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -54,7 +55,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
-            const int pageSize = 1000;
+            const int pageSize = 250;
             var totalUsersExported = 0;
             var totalUserRolesExported = 0;
             var totalPortalsExported = 0;
@@ -105,9 +106,18 @@ namespace Dnn.ExportImport.Components.Services
                 do
                 {
                     if (CheckCancelled(exportJob)) return;
+
+                    //Add 1000 users to Lite DB.
+                    Repository.CreateItems(allUser, null);
+                    var exportAspnetUserList = new List<ExportAspnetUser>();
+                    var exportAspnetMembershipList = new List<ExportAspnetMembership>();
+                    var exportUserRoleList = new List<ExportUserRole>();
+                    var exportUserPortalList = new List<ExportUserPortal>();
+                    var exportUserAuthenticationList = new List<ExportUserAuthentication>();
+                    var exportUserProfileList = new List<ExportUserProfile>();
+
                     foreach (var user in allUser)
                     {
-                        if (CheckCancelled(exportJob)) return;
                         var aspnetUser =
                             CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(user.Username));
                         var aspnetMembership =
@@ -127,34 +137,45 @@ namespace Dnn.ExportImport.Components.Services
                             CBO.FillCollection<ExportUserProfile>(DataProvider.Instance()
                                 .GetUserProfile(portalId, user.UserId));
 
-                        Repository.CreateItem(user, null);
-                        Repository.CreateItem(aspnetUser, user.Id);
-                        totalAspnetUserExported += 1;
+                        aspnetUser.ReferenceId = user.Id;
+                        exportAspnetUserList.Add(aspnetUser);
+                        aspnetMembership.ReferenceId = user.Id;
+                        exportAspnetMembershipList.Add(aspnetMembership);
 
-                        Repository.CreateItem(aspnetMembership, user.Id);
-                        totalAspnetMembershipExported += aspnetMembership != null ? 1 : 0;
+                        if (userPortal != null)
+                        {
+                            userPortal.ReferenceId = user.Id;
+                            exportUserPortalList.Add(userPortal);
+                        }
+                        userProfiles.ForEach(x => { x.ReferenceId = user.Id; });
+                        exportUserProfileList.AddRange(userProfiles);
 
-                        Repository.CreateItem(userPortal, user.Id);
-                        totalPortalsExported += userPortal != null ? 1 : 0;
 
-                        Repository.CreateItems(userProfiles, user.Id);
-                        totalProfilesExported += userProfiles.Count;
+                        userRoles.ForEach(x => { x.ReferenceId = user.Id; });
+                        exportUserRoleList.AddRange(userRoles);
 
-                        Repository.CreateItems(userRoles, user.Id);
-                        totalUserRolesExported += userRoles.Count;
-
-                        Repository.CreateItem(userAuthentication, user.Id);
-                        totalAuthenticationExported += userAuthentication != null ? 1 : 0;
+                        if (userAuthentication != null)
+                        {
+                            userAuthentication.ReferenceId = user.Id;
+                            exportUserAuthenticationList.Add(userAuthentication);
+                        }
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
-                        totalUsersExported++;
+
                         if (CheckPoint.ProcessedItems % progressStep == 0)
                             CheckPoint.Progress += 1;
-
                         CheckPoint.StageData = null;
-                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
                     }
+
+                    Repository.CreateItems(exportAspnetUserList, null);
+                    Repository.CreateItems(exportAspnetMembershipList, null);
+                    Repository.CreateItems(exportUserPortalList, null);
+                    Repository.CreateItems(exportUserProfileList, null);
+                    Repository.CreateItems(exportUserRoleList, null);
+                    Repository.CreateItems(exportUserAuthenticationList, null);
+
+                    totalUsersExported += allUser.Count;
                     currentIndex = 0;
                     CheckPoint.Stage++;
                     CheckPoint.StageData = null;

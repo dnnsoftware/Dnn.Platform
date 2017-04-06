@@ -46,6 +46,8 @@ namespace Dnn.ExportImport.Interfaces
 
         int GetCount<T>() where T : BasicExportImportDto;
 
+        void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false) where T : BasicExportImportDto;
+
         int GetCount<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto;
         T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto;
