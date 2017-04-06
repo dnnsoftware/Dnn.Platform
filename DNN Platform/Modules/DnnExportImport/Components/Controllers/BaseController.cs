@@ -167,6 +167,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 IncludeExtensions = exportDto.IncludeExtensions,
                 IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties = exportDto.IncludeProperfileProperties,
+                IncludeContent = exportDto.IncludeContent,
                 FromDate = exportDto.FromDate?.DateTime,
                 ToDate = exportDto.ToDate,
                 ExportMode = exportDto.ExportMode
@@ -217,10 +218,11 @@ namespace Dnn.ExportImport.Components.Controllers
             summary.ToDate = exportDto.ToDate;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
-            summary.ExportMode = exportDto.ExportMode;
+            summary.IncludeContent = exportDto.IncludeContent;
             summary.IncludeExtensions = exportDto.IncludeExtensions;
             summary.IncludePermissions = exportDto.IncludePermissions;
             summary.IncludeProfileProperties = exportDto.IncludeProperfileProperties;
+            summary.ExportMode = exportDto.ExportMode;
         }
 
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)

@@ -56,6 +56,11 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
+        /// Does this import/export includes content or not.
+        /// </summary>
+        public bool IncludeContent { get; set; }
+
+        /// <summary>
         /// Export mode. Differential or complete.
         /// </summary>
         public ExportMode ExportMode { get; set; }
