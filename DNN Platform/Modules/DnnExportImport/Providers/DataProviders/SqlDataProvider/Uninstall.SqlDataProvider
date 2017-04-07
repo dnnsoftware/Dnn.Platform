@@ -126,6 +126,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserAuthentication]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserAuthentication]
+GO
+
 --Profile Properties
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]

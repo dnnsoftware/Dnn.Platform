@@ -455,15 +455,19 @@ namespace Dnn.ExportImport.Components.Services
                 if (permissionId != null)
                 {
                     folderPermission.PermissionId = Convert.ToInt32(permissionId);
-                    if (folderPermission.UserId != null && folderPermission.UserId > 0)
+                    if (folderPermission.UserId != null && folderPermission.UserId > 0 && !string.IsNullOrEmpty(folderPermission.Username))
                     {
                         folderPermission.UserId =
                             UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
+                        if (folderPermission.UserId == null)
+                            return;
                     }
-                    if (folderPermission.RoleId != null && folderPermission.RoleId >= 0)
+                    if (folderPermission.RoleId != null && folderPermission.RoleId >= 0 && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
                         folderPermission.RoleId =
                             RoleController.Instance.GetRoleByName(portalId, folderPermission.RoleName)?.RoleID;
+                        if (folderPermission.RoleId == null)
+                            return;
                     }
                     var createdBy = Util.GetUserIdByName(importJob, folderPermission.CreatedByUserId,
                         folderPermission.CreatedByUserName);

@@ -30,7 +30,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
     [Serializable]
     [TableName("Users")]
     [PrimaryKey("UserId")]
-    public class ImportAspnetUser: ExportAspnetUser
+    public class ImportAspnetUser : ExportAspnetUser
     {
         [IgnoreColumn]
         public override int Id { get; set; }
@@ -43,6 +43,7 @@ namespace Dnn.ExportImport.Components.Dto.Users
 
         public ImportAspnetUser(ExportAspnetUser aspnetUser)
         {
+            if (aspnetUser == null) return;
             ApplicationId = aspnetUser.ApplicationId;
             UserId = aspnetUser.UserId;
             UserName = aspnetUser.UserName;

@@ -19,9 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Providers;
@@ -30,6 +27,7 @@ using System.IO;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Common;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -37,8 +35,10 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         public int QueueOperation(int userId, ExportDto exportDto)
         {
-            exportDto.ToDate = DateUtils.GetDatabaseUtcTime();
-            var directory = DateUtils.GetDatabaseUtcTime().ToString("yyyy-MM-dd_HH-mm-ss");
+            exportDto.ProductSku = DotNetNuke.Application.DotNetNukeContext.Current.Application.SKU;
+            exportDto.ProductVersion = Globals.FormatVersion(DotNetNuke.Application.DotNetNukeContext.Current.Application.Version, true);
+            exportDto.ToDate = DateUtils.GetDatabaseLocalTime();
+            var directory = DateUtils.GetDatabaseLocalTime().ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
                 exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export);
