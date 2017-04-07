@@ -102,35 +102,35 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("IncludeContent")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? props.jobDetail.Summary.IncludeContent.toString() : "-"}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeProfileProperties")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeProfileProperties.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeProfileProperties ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludePermissions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludePermissions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludePermissions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeExtensions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeDeletions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                         </div>
                         <div className="right-column">
@@ -174,7 +174,9 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("ExportMode")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
+                                <div className="import-summary-item">
+                                    {props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
+                                </div>
                             </GridCell>
                             <GridCell>
                                 <div className="summary-note">

@@ -411,6 +411,9 @@
   <data name="KeepImport.Text" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="No.Text" xml:space="preserve">
     <value>No</value>
   </data>
