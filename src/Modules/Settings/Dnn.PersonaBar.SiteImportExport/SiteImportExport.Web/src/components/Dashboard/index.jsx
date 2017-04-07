@@ -213,7 +213,6 @@ class DashboardPanelBody extends Component {
             () => {
                 props.dispatch(ImportExportActions.cancelJob(jobId, () => {
                     util.utilities.notify(Localization.get("JobCancelled"));
-                    this.collapse();
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
@@ -325,7 +324,7 @@ class DashboardPanelBody extends Component {
                         jobType={job.JobType}
                         jobDate={job.CreatedOnString}
                         jobUser={job.User}
-                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId).PortalName}
+                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId) ? props.portals.find(p => p.PortalID === job.PortalId).PortalName : Localization.get("DeletedPortal")}
                         jobStatus={job.Status}
                         jobCancelled={job.Cancelled}
                         index={index}

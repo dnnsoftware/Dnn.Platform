@@ -65,35 +65,35 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("IncludeContent")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.IncludeContent ? props.importSummary.IncludeContent.toString() : "-"}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludeContent ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("IncludeProfileProperties")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.IncludeProfileProperties.toString()}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludeProfileProperties ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("IncludePermissions")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.IncludePermissions.toString()}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludePermissions ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("IncludeExtensions")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.IncludeExtensions.toString()}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludeExtensions ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("IncludeDeletions")}
                                     />
-                                    <div className="import-summary-item">{props.importSummary.IncludeDeletions.toString()}</div>
+                                    <div className="import-summary-item">{props.importSummary.IncludeDeletions ? Localization.get("Yes") : Localization.get("No")}</div>
                                 </GridCell>
                             </div>
                             <div className="right-column">
@@ -109,7 +109,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("Timestamp")}
                                     />
-                                    <div className="import-summary-item">{props.selectedPackage.ExporTime}</div>
+                                    <div className="import-summary-item">{props.selectedPackage.ExporTimeString}</div>
                                 </GridCell>
                                 <GridCell>
                                     <Label

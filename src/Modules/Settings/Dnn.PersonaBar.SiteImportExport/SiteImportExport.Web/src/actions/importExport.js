@@ -183,7 +183,8 @@ const jobsActions = {
                 dispatch({
                     type: ActionTypes.RETRIEVED_IMPORT_PACKAGES,
                     importPackages: data.packages,
-                    total: data.total
+                    total: data.total,
+                    selectedPackage: null
                 });
                 if (callback) {
                     callback();

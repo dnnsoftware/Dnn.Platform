@@ -411,6 +411,9 @@
   <data name="KeepImport.Text" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="No.Text" xml:space="preserve">
     <value>No</value>
   </data>
@@ -427,7 +430,7 @@
     <value>Delete</value>
   </data>
   <data name="JobCancelled.Text" xml:space="preserve">
-    <value>Your job cancel request has been placed in the queue, and will begin shortly.</value>
+    <value>Job has been cancelled.</value>
   </data>
   <data name="JobDeleted.Text" xml:space="preserve">
     <value>Job has been removed.</value>
@@ -467,5 +470,8 @@
   </data>
   <data name="VerifyPackage.Text" xml:space="preserve">
     <value>Just a moment, we are checking the package ...</value>
+  </data>
+  <data name="DeletedPortal.Text" xml:space="preserve">
+    <value>Deleted</value>
   </data>
 </root>

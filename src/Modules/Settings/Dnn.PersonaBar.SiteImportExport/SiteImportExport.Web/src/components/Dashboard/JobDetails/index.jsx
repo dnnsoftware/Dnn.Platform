@@ -28,13 +28,15 @@ class JobDetails extends Component {
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
             if (detail) {
-                if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled) {
+                if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled || props.jobDetail.Status !== 1) {
                     return detail.ProcessedItems + " / " + detail.TotalItems;
                 }
                 else {
                     return <div>
                         <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                        <div style={{ float: "right" }}>{detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}</div>
+                        <div style={{ float: "right" }}>
+                            {detail.ProcessedItems + " / " + detail.TotalItems + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}
+                        </div>
                     </div>;
                 }
             }
@@ -100,35 +102,35 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("IncludeContent")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? props.jobDetail.Summary.IncludeContent.toString() : "-"}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeContent ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeProfileProperties")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeProfileProperties.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeProfileProperties ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludePermissions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludePermissions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludePermissions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeExtensions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeExtensions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
                                     label={Localization.get("IncludeDeletions")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions.toString()}</div>
+                                <div className="import-summary-item">{props.jobDetail.Summary.IncludeDeletions ? Localization.get("Yes") : Localization.get("No")}</div>
                             </GridCell>
                         </div>
                         <div className="right-column">
@@ -172,7 +174,9 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("ExportMode")}
                                 />
-                                <div className="import-summary-item">{props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}</div>
+                                <div className="import-summary-item">
+                                    {props.jobDetail.Summary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
+                                </div>
                             </GridCell>
                             <GridCell>
                                 <div className="summary-note">
