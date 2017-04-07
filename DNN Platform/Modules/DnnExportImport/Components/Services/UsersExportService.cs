@@ -266,7 +266,8 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                        ProcessUser(importJob, importDto, user, userPortal, aspNetUser, aspnetMembership);
+                        ProcessUser(importJob, importDto, user, userPortal, new ImportAspnetUser(aspNetUser),
+                            new ImportAspnetMembership(aspnetMembership));
                         totalAspnetUserImported += 1;
                         totalAspnetMembershipImported += 1;
                         ProcessUserPortal(importJob, importDto, userPortal, user.UserId);
@@ -307,10 +308,10 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         private void ProcessUser(ExportImportJob importJob, ImportDto importDto, ExportUser user,
-            ExportUserPortal userPortal, ExportAspnetUser aspnetUser, ExportAspnetMembership aspnetMembership)
+            ExportUserPortal userPortal, ImportAspnetUser aspnetUser, ImportAspnetMembership aspnetMembership)
         {
             if (user == null) return;
-            var existingUser = UserController.GetUserByName(user.Username);
+            var existingUser = CBO.FillObject<ExportUser>(DotNetNuke.Data.DataProvider.Instance().GetUserByUsername(importJob.PortalId, user.Username));
             var isUpdate = false;
             if (existingUser != null)
             {
@@ -332,7 +333,7 @@ namespace Dnn.ExportImport.Components.Services
             if (isUpdate)
             {
                 var modifiedBy = Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
-                user.UserId = existingUser.UserID;
+                user.UserId = existingUser.UserId;
                 DotNetNuke.Data.DataProvider.Instance().UpdateUser(user.UserId, importJob.PortalId, user.FirstName, user.LastName, user.IsSuperUser,
                         user.Email, user.DisplayName, userPortal?.VanityUrl, user.UpdatePassword, aspnetMembership.IsApproved,
                         false, user.LastIpAddress, user.PasswordResetToken ?? Guid.NewGuid(), user.PasswordResetExpiration ?? DateTime.Now.AddYears(10), user.IsDeleted, modifiedBy);
@@ -381,7 +382,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void ProcessUserMembership(ExportAspnetUser aspNetUser, ExportAspnetMembership aspnetMembership,
+        private void ProcessUserMembership(ImportAspnetUser aspNetUser, ImportAspnetMembership aspnetMembership,
             bool update = false)
         {
             using (var db =
@@ -390,49 +391,67 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var repAspnetUsers = db.GetRepository<ImportAspnetUser>();
                 var repAspnetMembership = db.GetRepository<ImportAspnetMembership>();
-
+                var updateStep = 0;
                 if (update)
                 {
                     var existingAspnetUser =
-                          CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(aspNetUser.UserName));
-                    var existingAspnetMembership =
-                        CBO.FillObject<ExportAspnetMembership>(
-                            DataProvider.Instance()
-                                .GetUserMembership(aspNetUser.UserId, aspNetUser.ApplicationId));
+                        CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(aspNetUser.UserName));
+                    if (existingAspnetUser != null)
+                    {
+                        var existingAspnetMembership =
+                            CBO.FillObject<ExportAspnetMembership>(
+                                DataProvider.Instance()
+                                    .GetUserMembership(existingAspnetUser.UserId, existingAspnetUser.ApplicationId));
 
-                    aspNetUser.LastActivityDate = existingAspnetUser.LastActivityDate;
-                    aspNetUser.UserId = existingAspnetUser.UserId;
-                    aspNetUser.ApplicationId = existingAspnetUser.ApplicationId;
-                    repAspnetUsers.Update(new ImportAspnetUser(aspNetUser));
-
-                    aspnetMembership.UserId = existingAspnetMembership.UserId;
-                    aspnetMembership.ApplicationId = existingAspnetMembership.ApplicationId;
-                    aspnetMembership.CreateDate = existingAspnetMembership.CreateDate;
-                    repAspnetMembership.Update(new ImportAspnetMembership(aspnetMembership));
+                        aspNetUser.LastActivityDate = existingAspnetUser.LastActivityDate;
+                        aspNetUser.UserId = existingAspnetUser.UserId;
+                        aspNetUser.ApplicationId = existingAspnetUser.ApplicationId;
+                        repAspnetUsers.Update(aspNetUser);
+                        updateStep++;
+                        if (existingAspnetMembership != null)
+                        {
+                            aspnetMembership.UserId = existingAspnetMembership.UserId;
+                            aspnetMembership.ApplicationId = existingAspnetMembership.ApplicationId;
+                            aspnetMembership.CreateDate = existingAspnetMembership.CreateDate;
+                            repAspnetMembership.Update(aspnetMembership);
+                            updateStep++;
+                        }
+                    }
                 }
-                else
+
+                if (updateStep < 2)
                 {
                     var applicationId = db.ExecuteScalar<Guid>(CommandType.Text,
                         "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
 
-                    //AspnetUser
-
-                    aspNetUser.UserId = Guid.Empty;
-                    aspNetUser.ApplicationId = applicationId;
-                    aspNetUser.LastActivityDate = DateUtils.GetDatabaseUtcTime();
-                    repAspnetUsers.Insert(new ImportAspnetUser(aspNetUser));
-
-                    //AspnetMembership
-                    aspnetMembership.UserId = aspNetUser.UserId;
-                    aspnetMembership.ApplicationId = applicationId;
-                    aspnetMembership.CreateDate = DateUtils.GetDatabaseUtcTime();
-                    aspnetMembership.LastLoginDate =
-                        aspnetMembership.LastPasswordChangedDate =
-                            aspnetMembership.LastLockoutDate =
-                                aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
-                                    aspnetMembership.FailedPasswordAttemptWindowStart =
-                                        new DateTime(1754, 1, 1);
-                    repAspnetMembership.Insert(new ImportAspnetMembership(aspnetMembership));
+                    if (updateStep < 1)
+                    {
+                        //AspnetUser
+                        aspNetUser.UserId = Guid.Empty;
+                        aspNetUser.ApplicationId = applicationId;
+                        aspNetUser.LastActivityDate = DateUtils.GetDatabaseUtcTime();
+                        repAspnetUsers.Insert(aspNetUser);
+                    }
+                    if (updateStep == 1)
+                    {
+                        var existingAspnetUser =
+                            CBO.FillObject<ExportAspnetUser>(DataProvider.Instance().GetAspNetUser(aspNetUser.UserName));
+                        aspNetUser.UserId = existingAspnetUser.UserId;
+                    }
+                    if (updateStep < 2)
+                    {
+                        //AspnetMembership
+                        aspnetMembership.UserId = aspNetUser.UserId;
+                        aspnetMembership.ApplicationId = applicationId;
+                        aspnetMembership.CreateDate = DateUtils.GetDatabaseUtcTime();
+                        aspnetMembership.LastLoginDate =
+                            aspnetMembership.LastPasswordChangedDate =
+                                aspnetMembership.LastLockoutDate =
+                                    aspnetMembership.FailedPasswordAnswerAttemptWindowStart =
+                                        aspnetMembership.FailedPasswordAttemptWindowStart =
+                                            new DateTime(1754, 1, 1);
+                        repAspnetMembership.Insert(aspnetMembership);
+                    }
                 }
             }
         }
