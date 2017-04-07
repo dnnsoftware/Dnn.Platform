@@ -94,6 +94,7 @@ namespace Dnn.ExportImport.Components.Services
 
             _exportImportJob = importJob;
             _importDto = importDto;
+            _exportDto = importDto.ExportDto;
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
 
@@ -210,10 +211,10 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
-            var tabSettings = Repository.GetRelatedItems<ExportTabSetting>(otherTab.ReferenceId ?? -1).ToList();
+            var tabSettings = Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).ToList();
             foreach (var other in tabSettings)
             {
-                var localValue = isNew ? string.Empty : localTab.TabSettings[other.SettingName].ToString();
+                var localValue = isNew ? string.Empty : Convert.ToString(localTab.TabSettings[other.SettingName]);
                 if (string.IsNullOrEmpty(localValue))
                 {
                     _tabController.UpdateTabSetting(localTab.TabID, other.SettingName, other.SettingValue);
@@ -258,7 +259,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.ReferenceId ?? -1).ToList();
+            var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.Id).ToList();
             var localTabPermissions = localTab.TabPermissions.ToList();
             foreach (var other in tabPermissions)
             {
@@ -312,8 +313,7 @@ namespace Dnn.ExportImport.Components.Services
                         other.LocalId = localTab.TabPermissions.Add(local);
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
-                            local.TabPermissionID, createdBy, modifiedBy);
+                        UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
 
                         Result.AddLogEntry("Added tab permission", other.PermissionKey);
                         count++;
@@ -327,7 +327,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabUrls(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.ReferenceId ?? -1).ToList();
+            var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.Id).ToList();
             var localUrls = localTab.TabUrls;
             foreach (var other in tabUrls)
             {
@@ -383,8 +383,8 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabModulesAndRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.ReferenceId ?? -1).ToList();
-            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.ReferenceId ?? -1).ToList();
+            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.Id).ToList();
+            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id).ToList();
             var localModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(otherTab.TabId, true, Constants.MinDbTime, Constants.MaxDbTime).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
@@ -397,11 +397,15 @@ namespace Dnn.ExportImport.Components.Services
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
                 if (otherModule == null) continue; // must not happen
 
+                var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(other.FriendlyName);
+                if (moduleDefinition == null) continue; // the module is not installed, therefore ignore it
+
                 if (locals.Count == 0)
                 {
                     var local = new ModuleInfo
                     {
                         TabID = localTab.TabID,
+                        ModuleDefID = moduleDefinition.ModuleDefID,
                         PaneName = other.PaneName,
                         ModuleOrder = other.ModuleOrder,
                         CacheTime = other.CacheTime,
@@ -436,11 +440,12 @@ namespace Dnn.ExportImport.Components.Services
 
                     var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.TabModuleID, createdBy, modifiedBy);
+
+                    UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
 
                     createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
                     modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
-                    _dataProvider.UpdateRecordChangers("Modules", "ModuleID", local.ModuleID, createdBy, modifiedBy);
+                    UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
 
                     _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
                     _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
@@ -459,7 +464,8 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     foreach (var local in locals)
                     {
-                        var localModule = localModules.FirstOrDefault(m => m.ModuleID == local.ModuleID);
+                        var localModule = localModules.FirstOrDefault(
+                            m => m.ModuleID == local.ModuleID && m.FriendlyName == local.DesktopModule.FriendlyName);
                         if (localModule == null) continue; // must not happen
 
                         // setting module properties
@@ -470,7 +476,6 @@ namespace Dnn.ExportImport.Components.Services
                         localModule.IsDeleted = otherModule.IsDeleted;
                         localModule.IsShareable = otherModule.IsShareable;
                         localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-
 
                         // setting tab module properties
                         local.ModuleTitle = other.ModuleTitle;
@@ -506,11 +511,11 @@ namespace Dnn.ExportImport.Components.Services
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("TabModules", "TabModuleID", local.TabModuleID, createdBy, modifiedBy);
+                        UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
 
                         createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
                         modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("Modules", "ModuleID", local.ModuleID, createdBy, modifiedBy);
+                        UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
 
                         _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
 
@@ -536,10 +541,10 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportModuleSettings(ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var count = 0;
-            var moduleSettings = Repository.GetRelatedItems<ExportModuleSetting>(otherModule.ReferenceId ?? -1).ToList();
+            var moduleSettings = Repository.GetRelatedItems<ExportModuleSetting>(otherModule.Id).ToList();
             foreach (var other in moduleSettings)
             {
-                var localValue = isNew ? string.Empty : localModule.ModuleSettings[other.SettingName].ToString();
+                var localValue = isNew ? string.Empty : Convert.ToString(localModule.ModuleSettings[other.SettingName]);
                 if (string.IsNullOrEmpty(localValue))
                 {
                     _moduleController.UpdateModuleSetting(localModule.ModuleID, other.SettingName, other.SettingValue);
@@ -586,7 +591,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportModulePermissions(ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var count = 0;
-            var modulePermissions = Repository.GetRelatedItems<ExportModulePermission>(otherModule.ReferenceId ?? -1).ToList();
+            var modulePermissions = Repository.GetRelatedItems<ExportModulePermission>(otherModule.Id).ToList();
             var localModulePermissions = isNew
                 ? new List<ModulePermissionInfo>()
                 : localModule.ModulePermissions.OfType<ModulePermissionInfo>().ToList();
@@ -641,8 +646,7 @@ namespace Dnn.ExportImport.Components.Services
                         other.LocalId = localModule.ModulePermissions.Add(local);
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("ModulePermissions", "ModulePermissionID",
-                            local.ModulePermissionID, createdBy, modifiedBy);
+                        UpdateModulePermissionChangers(local.ModulePermissionID, createdBy, modifiedBy);
 
                         Result.AddLogEntry("Added module permission", other.PermissionKey);
                         count++;
@@ -655,44 +659,52 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportPortableContent(int tabId, ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
-            var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, _exportDto.PortalId);
-            if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+            var exportedContent = Repository.FindItems<ExportModuleContent>(m => m.ModuleID == otherModule.ModuleID).ToList();
+            if (exportedContent.Count > 0)
             {
-                try
+                var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
+                var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, _exportDto.PortalId);
+                if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
                 {
-                    var module = _moduleController.GetModule(localModule.ModuleID, tabId, true);
-                    if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+                    try
                     {
-                        var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var controller = businessController as IPortable;
-                        if (controller != null)
+                        var module = _moduleController.GetModule(localModule.ModuleID, tabId, true);
+                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
                         {
-                            //Note: there is no chek whether the content exists or not to manage conflict resolution
-                            if (isNew || _importDto.CollisionResolution == CollisionResolution.Overwrite)
+                            var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
+                            var controller = businessController as IPortable;
+                            if (controller != null)
                             {
-                                var exportedContent = Repository.GetRelatedItems<ExportModuleContent>(otherModule.ReferenceId ?? -1).ToList();
-                                var version = DotNetNukeContext.Current.Application.Version.ToString(3);
-                                foreach (var moduleContent in exportedContent)
+                                //Note: there is no chek whether the content exists or not to manage conflict resolution
+                                if (isNew || _importDto.CollisionResolution == CollisionResolution.Overwrite)
                                 {
-                                    if (!moduleContent.IsRestored)
+                                    var restoreCount = 0;
+                                    var version = DotNetNukeContext.Current.Application.Version.ToString(3);
+                                    foreach (var moduleContent in exportedContent)
                                     {
-                                        controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
-                                        moduleContent.IsRestored = true;
-                                        Repository.UpdateItem(moduleContent);
+                                        if (!moduleContent.IsRestored)
+                                        {
+                                            controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
+                                            moduleContent.IsRestored = true;
+                                            Repository.UpdateItem(moduleContent);
+                                            restoreCount++;
+                                        }
+                                    }
+
+                                    if (restoreCount > 0)
+                                    {
+                                        Result.AddLogEntry("Added/Updated module content", localModule.ModuleID.ToString());
+                                        return restoreCount;
                                     }
                                 }
-
-                                Result.AddLogEntry("Inserted/Updated module content:", localModule.ModuleID.ToString());
-                                return 1;
                             }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
-                    Logger.Error("Error cerating business class type. " + ex);
+                    catch (Exception ex)
+                    {
+                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
+                        Logger.Error("Error cerating business class type. " + ex);
+                    }
                 }
             }
             return 0;
@@ -701,14 +713,14 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabModuleSettings(ModuleInfo localTabModule, ExportTabModule otherTabModule, bool isNew)
         {
             var count = 0;
-            var tabModuleSettings = Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.ReferenceId ?? -1).ToList();
+            var tabModuleSettings = Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.Id).ToList();
             foreach (var other in tabModuleSettings)
             {
-                var localValue = isNew ? string.Empty : localTabModule.TabModuleSettings[other.SettingName].ToString();
+                var localValue = isNew ? "" : Convert.ToString(localTabModule.TabModuleSettings[other.SettingName]);
                 if (string.IsNullOrEmpty(localValue))
                 {
                     // the next will clear the cache
-                    _moduleController.UpdateTabModuleSetting(localTabModule.ModuleID, other.SettingName, other.SettingValue);
+                    _moduleController.UpdateTabModuleSetting(localTabModule.TabModuleID, other.SettingName, other.SettingValue);
                     var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                     _dataProvider.UpdateSettingRecordChangers("TabModuleSettings", "TabModuleID",
@@ -724,7 +736,7 @@ namespace Dnn.ExportImport.Components.Services
                             if (localValue != other.SettingValue)
                             {
                                 // the next will clear the cache
-                                _moduleController.UpdateTabModuleSetting(localTabModule.ModuleID, other.SettingName, other.SettingValue);
+                                _moduleController.UpdateTabModuleSetting(localTabModule.TabModuleID, other.SettingName, other.SettingValue);
                                 var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                                 var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                                 _dataProvider.UpdateSettingRecordChangers("TabModuleSettings", "TabModuleID",
@@ -756,7 +768,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var localTab = localTabs.FirstOrDefault(t => t.TabName == otherTab.TabName && t.TabPath == otherTab.TabPath);
                 if (localTab != null)
-                    return localTab.TabID;
+                    return localTab.ParentId;
             }
 
             return -1;
@@ -767,7 +779,6 @@ namespace Dnn.ExportImport.Components.Services
             localTab.TabOrder = otherTab.TabOrder;
             localTab.TabName = otherTab.TabName;
             localTab.IsVisible = otherTab.IsVisible;
-            localTab.ParentId = otherTab.ParentId ?? -1;
             localTab.IconFile = otherTab.IconFile;
             localTab.DisableLink = otherTab.DisableLink;
             localTab.Title = otherTab.Title;
@@ -786,7 +797,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
-            //localTab.ContentItemID = otherTab.ContentItemID ?? -1;  //TODO: what to set here for a new record?
+            //TODO: check if these GUIDs need changing
             localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.DefaultLanguageGuid = otherTab.DefaultLanguageGuid ?? Guid.Empty;
@@ -807,7 +818,7 @@ namespace Dnn.ExportImport.Components.Services
         // ReSharper disable UnusedMember.Local
         private void UpdateTabPermissionChangers(int tabPermissionId, int createdBy, int modifiedBy)
         {
-            _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);
+            _dataProvider.UpdateRecordChangers("TabPermission", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);
         }
 
         private void UpdateTabSettingChangers(int tabId, string settingName, int createdBy, int modifiedBy)
@@ -837,7 +848,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void UpdateModulePermissionChangers(int modulePermissionId, int createdBy, int modifiedBy)
         {
-            _dataProvider.UpdateRecordChangers("ModulePermissions", "ModulePermissionID", modulePermissionId, createdBy, modifiedBy);
+            _dataProvider.UpdateRecordChangers("ModulePermission", "ModulePermissionID", modulePermissionId, createdBy, modifiedBy);
         }
 
         private void UpdateModuleSettingsChangers(int moduleId, string settingName, int createdBy, int modifiedBy)
@@ -920,7 +931,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, toDate, fromDate);
             if (tabSettings.Count > 0)
-                Repository.CreateItems(tabSettings, exportPage.ReferenceId);
+                Repository.CreateItems(tabSettings, exportPage.Id);
             return tabSettings.Count;
         }
 
@@ -928,7 +939,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, toDate, fromDate);
             if (tabPermissions.Count > 0)
-                Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
+                Repository.CreateItems(tabPermissions, exportPage.Id);
             return tabPermissions.Count;
         }
 
@@ -936,7 +947,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, toDate, fromDate);
             if (tabUrls.Count > 0)
-                Repository.CreateItems(tabUrls, exportPage.ReferenceId);
+                Repository.CreateItems(tabUrls, exportPage.Id);
             return tabUrls.Count;
         }
 
@@ -944,7 +955,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModules.Count > 0)
-                Repository.CreateItems(tabModules, exportPage.ReferenceId);
+                Repository.CreateItems(tabModules, exportPage.Id);
             return tabModules.Count;
         }
 
@@ -952,7 +963,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, toDate, fromDate);
             if (tabModuleSettings.Count > 0)
-                Repository.CreateItems(tabModuleSettings, exportPage.ReferenceId);
+                Repository.CreateItems(tabModuleSettings, exportPage.Id);
             return tabModuleSettings.Count;
         }
 
@@ -961,7 +972,7 @@ namespace Dnn.ExportImport.Components.Services
             var modules = EntitiesController.Instance.GetModules(exportPage.TabId, _exportDto.IncludeDeletions, toDate, fromDate);
             if (modules.Count > 0)
             {
-                Repository.CreateItems(modules, exportPage.ReferenceId);
+                Repository.CreateItems(modules, exportPage.Id);
                 foreach (var exportModule in modules)
                 {
                     _totals.TotalModuleSettings +=
@@ -985,7 +996,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var moduleSettings = EntitiesController.Instance.GetModuleSettings(exportModule.ModuleID, toDate, fromDate);
             if (moduleSettings.Count > 0)
-                Repository.CreateItems(moduleSettings, exportModule.ReferenceId);
+                Repository.CreateItems(moduleSettings, exportModule.Id);
             return moduleSettings.Count;
         }
 
@@ -993,27 +1004,27 @@ namespace Dnn.ExportImport.Components.Services
         {
             var modulePermission = EntitiesController.Instance.GetModulePermissions(exportModule.ModuleID, toDate, fromDate);
             if (modulePermission.Count > 0)
-                Repository.CreateItems(modulePermission, exportModule.ReferenceId);
+                Repository.CreateItems(modulePermission, exportModule.Id);
             return modulePermission.Count;
         }
 
+        // Note: until now there is no use of time range for content
         // ReSharper disable UnusedParameter.Local
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
         // ReSharper enable UnusedParameter.Local
         {
-            //Note: until now there is no use of time range for content
-            var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, _exportDto.PortalId);
-            if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
+            // check if module's contnt was exported before
+            var existingItems = Repository.FindItems<ExportModuleContent>(m => m.ModuleID == exportModule.ModuleID);
+            if (!existingItems.Any())
             {
-                try
+                var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
+                var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, _exportDto.PortalId);
+                if (!string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
                 {
-                    var module = _moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
-                    if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+                    try
                     {
-                        // check if module's contnt was exported before
-                        var existingItems = Repository.FindItems<ExportModule>(m => m.ModuleID == module.ModuleID);
-                        if (!existingItems.Any())
+                        var module = _moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
+                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
                         {
                             var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
                                 module.DesktopModule.BusinessControllerClass);
@@ -1028,20 +1039,19 @@ namespace Dnn.ExportImport.Components.Services
                                         ModuleID = exportModule.ModuleID,
                                         ModuleDefID = exportModule.ModuleDefID,
                                         XmlContent = content,
-                                        ReferenceId = exportModule.Id,
                                     };
 
-                                    Repository.AddSingleItem(record);
+                                    Repository.CreateItem(record, exportModule.Id);
                                     return 1;
                                 }
                             }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
-                    Logger.Error("Error cerating business class type. " + ex);
+                    catch (Exception ex)
+                    {
+                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
+                        Logger.Error("Error cerating business class type. " + ex);
+                    }
                 }
             }
             return 0;

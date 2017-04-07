@@ -37,6 +37,7 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using Dnn.ExportImport.Components.Controllers;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
 using Newtonsoft.Json;
 
@@ -193,9 +194,45 @@ namespace Dnn.ExportImport.Components.Common
 
         public static DateTime? ToLocalDateTime(DateTime? dateTime, UserInfo userInfo)
         {
-            if (dateTime != null && dateTime.Value.Kind == DateTimeKind.Utc)
+            if (dateTime != null && dateTime.Value.Kind != DateTimeKind.Local)
                 return userInfo.LocalTime(dateTime.Value);
             return dateTime;
+        }
+
+        /// <summary>
+        /// Convert the UTC time to Database local time.
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static DateTime? ConvertToDbLocalTime(DateTime? dateTime)
+        {
+            if (dateTime == null) return null;
+            if (dateTime.Value.Kind != DateTimeKind.Utc) return dateTime;
+            var differenceInUtcTimes =
+                TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
+            var localDateTime = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(
+                    localDateTime.Year, localDateTime.Month, localDateTime.Day,
+                    localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
+                    DateTimeKind.Local);
+        }
+
+        /// <summary>
+        /// Convert the Local time to Database Utc time.
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static DateTime? ConvertToDbUtcTime(DateTime? dateTime)
+        {
+            if (dateTime == null) return null;
+            if (dateTime.Value.Kind == DateTimeKind.Utc) return dateTime;
+            var differenceInUtcTimes =
+                TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
+            var localDateTime = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(
+                localDateTime.Year, localDateTime.Month, localDateTime.Day,
+                localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
+                DateTimeKind.Utc);
         }
 
         public static string GetDateTimeString(DateTime? dateTime)

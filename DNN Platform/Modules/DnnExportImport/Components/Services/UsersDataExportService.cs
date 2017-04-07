@@ -109,10 +109,6 @@ namespace Dnn.ExportImport.Components.Services
 
                             ProcessUserAuthentications(importJob, importDto, userAuthentication, userId.Value);
                             if (userAuthentication != null) totalAuthenticationImported++;
-
-                            //TODO: Do we need this part?
-                            DataProvider.Instance()
-                                .UpdateUserChangers(userId.Value, user.CreatedByUserName, user.LastModifiedByUserName);
                         }
 
                         currentIndex++;
@@ -194,7 +190,7 @@ namespace Dnn.ExportImport.Components.Services
             IEnumerable<ExportUserProfile> userProfiles, int userId)
         {
             var allUserProfileProperties =
-                CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId));
+                CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var userProfile in userProfiles)
             {
                 if (CheckCancelled(importJob)) return;

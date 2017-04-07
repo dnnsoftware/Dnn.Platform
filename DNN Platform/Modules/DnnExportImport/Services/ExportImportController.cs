@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -151,7 +150,7 @@ namespace Dnn.ExportImport.Services
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);
             return Request.CreateResponse(HttpStatusCode.OK,
-                new {lastTime = Util.GetDateTimeString(Util.ToLocalDateTime(lastTime, UserInfo))});
+                new { lastTime = Util.GetDateTimeString(lastTime) });
         }
 
         [HttpGet]

@@ -39,6 +39,16 @@ namespace Dnn.ExportImport.Components.Dto
         public int PortalId { get; set; }
 
         /// <summary>
+        /// SKU of the product from which the export is done.
+        /// </summary>
+        public string ProductSku { get; set; }
+
+        /// <summary>
+        /// Version of the product from which the export is done.
+        /// </summary>
+        public string ProductVersion { get; set; }
+
+        /// <summary>
         /// Name of export job.
         /// </summary>
         public string ExportName { get; set; }

@@ -102,7 +102,7 @@ BEGIN
         N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
         N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
         N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) +
-        N' AND SettingName=' + @SettingName + N';'
+        N' AND SettingName=''' + @SettingName + N''';'
 
     --PRINT (@sqlCommand)
     EXEC (@sqlCommand)
@@ -390,9 +390,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 AS
 BEGIN
 	SELECT
-		TOP(1) *
+		TOP(1) Jobs.*
 	FROM
-		{databaseOwner}[{objectQualifier}ExportImportJobs]
+		{databaseOwner}[{objectQualifier}ExportImportJobs] Jobs
+		INNER JOIN {databaseOwner}[{objectQualifier}Portals] Portals ON Portals.PortalID=Jobs.PortalId
 	WHERE
 		JobStatus in (0, 1) -- 0=Submitted, 1=InProgress
 	ORDER BY
@@ -441,11 +442,12 @@ BEGIN
 
 	; WITH AllJobs AS (
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, *
+			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, Jobs.*
 		FROM
-			{databaseOwner}{objectQualifier}ExportImportJobs
+			{databaseOwner}{objectQualifier}ExportImportJobs Jobs
+		INNER JOIN {databaseOwner}{objectQualifier}Portals Portals ON Portals.PortalID=Jobs.PortalId
 		WHERE
-			(PortalID = @PortalID OR @PortalID=-1)
+			(Jobs.PortalID = @PortalID OR @PortalID=-1)
 		AND
 			(@JobType IS NULL OR JobType = @JobType)
 		AND
@@ -630,7 +632,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@PageIndex       int,
 	@PageSize        int,
 	@IncludeDeleted  bit,
-	@ToDate datetime,
+	@ToDate			 datetime,
 	@FromDate		 datetime=NULL
 AS
 BEGIN
@@ -654,7 +656,6 @@ BEGIN
 			AND (CASE
 			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
 			ELSE U.LastModifiedOnDate END)<= @ToDate
-			
 	)
 	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
 		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
@@ -669,8 +670,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
-	@PortalId  int,
-	@UserId    int
+	@PortalId	int,
+	@UserId		int,
+	@ToDate		datetime,
+	@FromDate	datetime=NULL
 AS
 	SELECT
 		 [UserId]
@@ -683,6 +686,10 @@ AS
 		,[VanityUrl]
  	FROM {databaseOwner}[{objectQualifier}UserPortals]
 	WHERE UserId = @UserId AND PortalId = @PortalId
+		AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		ELSE [CreatedDate] END)>= ISNULL(@FromDate,0)
+		AND [CreatedDate]<= @ToDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
@@ -690,8 +697,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
-	@PortalId int,
-	@UserId    int
+	@PortalId	int,
+	@UserId		int,
+	@ToDate		datetime,
+	@FromDate	datetime=NULL
 AS
 	SELECT
 		UP.ProfileID,
@@ -706,6 +715,10 @@ AS
 	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
 	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
+		AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		ELSE UP.LastUpdatedDate END)>= ISNULL(@FromDate,0)
+		AND UP.LastUpdatedDate<= @ToDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
@@ -713,11 +726,18 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-	@Username nvarchar(256)
+	@Username		nvarchar(256),
+	@ToDate			datetime,
+	@FromDate		datetime=NULL
+
 AS
 	SELECT *
  	FROM {databaseOwner}[aspnet_Users]
 	WHERE  UserName=@Username
+		AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		ELSE [LastActivityDate] END)>= ISNULL(@FromDate,0)
+		AND [LastActivityDate]<= @ToDate
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
@@ -725,8 +745,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P')
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-	@UserId uniqueidentifier,
-	@ApplicationId uniqueidentifier
+	@UserId			uniqueidentifier,
+	@ApplicationId	uniqueidentifier
 AS
 	SELECT *
  	FROM {databaseOwner}[aspnet_Membership]
@@ -738,8 +758,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserRoles]', 'P') IS N
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
-	@PortalId  int,
-	@UserId    int
+	@PortalId	 int,
+	@UserId		 int,
+	@ToDate		 datetime,
+	@FromDate	 datetime=NULL
 AS
 	SELECT
 		 [UserRoleID]
@@ -759,7 +781,37 @@ AS
 		,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName
 		,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
 	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
-	WHERE UserID = @UserId AND PortalID = @PortalId
+	WHERE	UserID = @UserId AND PortalID = @PortalId
+		AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+		AND (CASE
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)<= @ToDate
+
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserAuthentication]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserAuthentication]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserAuthentication]
+	@UserID          int,
+	@ToDate			 datetime,
+	@FromDate		 datetime=NULL
+AS
+BEGIN
+	SELECT * FROM {databaseOwner}[{objectQualifier}UserAuthentication]
+	WHERE UserId = @UserID
+		AND (CASE
+		WHEN @FromDate IS NULL THEN 0
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+		AND (CASE
+		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
+		ELSE LastModifiedOnDate END)<= @ToDate
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL

@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -62,19 +61,14 @@ namespace Dnn.ExportImport.Components.Engines
 
         public int ProgressPercentage { get; private set; } = 1;
 
-        public ExportImportResult Export(ExportImportJob exportJob, ScheduleHistoryItem scheduleHistoryItem)
+        public void Export(ExportImportJob exportJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
-            var result = new ExportImportResult
-            {
-                JobId = exportJob.JobId,
-            };
-
             var exportDto = JsonConvert.DeserializeObject<ExportDto>(exportJob.JobObject);
             if (exportDto == null)
             {
                 exportJob.CompletedOnDate = DateUtils.GetDatabaseUtcTime();
                 exportJob.JobStatus = JobStatus.Failed;
-                return result;
+                return;
             }
 
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
@@ -106,7 +100,7 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     scheduleHistoryItem.AddLogNote("Resuming data not found.");
                     result.AddSummary("Resuming data not found.", finfo.Name);
-                    return result;
+                    return;
                 }
             }
 
@@ -126,7 +120,7 @@ namespace Dnn.ExportImport.Components.Engines
                 result.AddSummary("Export NOT Possible", "No items selected for exporting");
                 exportJob.CompletedOnDate = DateUtils.GetDatabaseUtcTime();
                 exportJob.JobStatus = JobStatus.Failed;
-                return result;
+                return;
             }
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Preparing Check Points. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
@@ -251,25 +245,18 @@ namespace Dnn.ExportImport.Components.Engines
                 summary.ExportFileInfo = exportFileInfo;
                 exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
             }
-
-            return result;
         }
 
-        public ExportImportResult Import(ExportImportJob importJob, ScheduleHistoryItem scheduleHistoryItem)
+        public void Import(ExportImportJob importJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
             _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
-            var result = new ExportImportResult
-            {
-                JobId = importJob.JobId,
-            };
-
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
                 importJob.CompletedOnDate = DateUtils.GetDatabaseUtcTime();
                 importJob.JobStatus = JobStatus.Failed;
-                return result;
+                return;
             }
 
             var dbName = Path.Combine(ExportFolder, importJob.Directory, Constants.ExportDbName);
@@ -286,7 +273,7 @@ namespace Dnn.ExportImport.Components.Engines
                 scheduleHistoryItem.AddLogNote("<br/>Import file not found. Name: " + dbName);
                 importJob.CompletedOnDate = DateUtils.GetDatabaseUtcTime();
                 importJob.JobStatus = JobStatus.Failed;
-                return result;
+                return;
             }
 
             //TODO: unzip files first
@@ -304,7 +291,7 @@ namespace Dnn.ExportImport.Components.Engines
                     var msg =
                         $"Exported version ({exportedDto.SchemaVersion}) is newer than import engine version ({importDto.SchemaVersion})";
                     result.AddSummary("Import NOT Possible", msg);
-                    return result;
+                    return;
                 }
 
                 var checkpoints = EntitiesController.Instance.GetJobChekpoints(importJob.JobId);
@@ -402,7 +389,6 @@ namespace Dnn.ExportImport.Components.Engines
                     importJob.JobStatus = JobStatus.Successful;
                 }
             }
-            return result;
         }
 
         private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,

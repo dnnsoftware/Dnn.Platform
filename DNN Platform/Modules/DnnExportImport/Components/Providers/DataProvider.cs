@@ -201,9 +201,9 @@ namespace Dnn.ExportImport.Components.Providers
                 .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAspNetUser(string username)
+        public IDataReader GetAspNetUser(string username, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
+            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public IDataReader GetUserMembership(Guid userId, Guid applicationId)
@@ -211,24 +211,24 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_GetUserMembership", userId, applicationId);
         }
 
-        public IDataReader GetUserRoles(int portalId, int userId)
+        public IDataReader GetUserRoles(int portalId, int userId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserRoles", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserRoles", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetUserPortal(int portalId, int userId)
+        public IDataReader GetUserPortal(int portalId, int userId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserPortal", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserPortal", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetUserAuthentication(int userId)
+        public IDataReader GetUserAuthentication(int userId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("GetUserAuthentication", userId);
+            return _dataProvider.ExecuteReader("Export_GetUserAuthentication", userId, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetUserProfile(int portalId, int userId)
+        public IDataReader GetUserProfile(int portalId, int userId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
+            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)

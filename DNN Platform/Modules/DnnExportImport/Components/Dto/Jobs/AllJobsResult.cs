@@ -45,6 +45,9 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
 
         public void ConvertToLocal(UserInfo userInfo)
         {
+            LastExportTime = Util.ToLocalDateTime(LastExportTime, userInfo);
+            LastImportTime = Util.ToLocalDateTime(LastImportTime, userInfo);
+
             if (userInfo == null) return;
             if (Jobs == null) return;
             var tempJobs = new List<JobItem>();

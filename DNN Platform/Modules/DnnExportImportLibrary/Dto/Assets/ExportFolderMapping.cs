@@ -26,7 +26,6 @@ namespace Dnn.ExportImport.Dto.Assets
     public class ExportFolderMapping: BasicExportImportDto
     {
         public int FolderMappingId { get; set; }
-        public int PortalId { get; set; }
 
         public string MappingName { get; set; }
         public string FolderProviderType { get; set; }

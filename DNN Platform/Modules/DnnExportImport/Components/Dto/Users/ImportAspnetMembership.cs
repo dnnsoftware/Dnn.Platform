@@ -46,6 +46,8 @@ namespace Dnn.ExportImport.Components.Dto.Users
 
         public ImportAspnetMembership(ExportAspnetMembership aspnetMembership)
         {
+            if (aspnetMembership == null) return;
+
             ApplicationId = aspnetMembership.ApplicationId;
             UserId = aspnetMembership.UserId;
             Password = aspnetMembership.Password;
