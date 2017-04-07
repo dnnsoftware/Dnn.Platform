@@ -73,17 +73,36 @@ namespace Dnn.ExportImport.Components.Scheduler
                 {
                     job.JobStatus = JobStatus.InProgress;
                     EntitiesController.Instance.UpdateJobStatus(job);
-                    ExportImportResult result;
+                    var result = new ExportImportResult
+                    {
+                        JobId = job.JobId,
+                    };
                     var engine = new ExportImportEngine();
 
                     switch (job.JobType)
                     {
                         case JobType.Export:
-                            result = engine.Export(job, ScheduleHistoryItem);
+                            try
+                            {
+                                engine.Export(job, result, ScheduleHistoryItem);
+                            }
+                            catch (Exception)
+                            {
+                                AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                throw;
+                            }
                             EntitiesController.Instance.UpdateJobStatus(job);
                             break;
                         case JobType.Import:
-                            result = engine.Import(job, ScheduleHistoryItem);
+                            try
+                            {
+                                engine.Import(job, result, ScheduleHistoryItem);
+                            }
+                            catch (Exception)
+                            {
+                                AddLogsToDatabase(job.JobId, result.CompleteLog);
+                                throw;
+                            }
                             EntitiesController.Instance.UpdateJobStatus(job);
                             if (job.JobStatus == JobStatus.Successful || job.JobStatus == JobStatus.Cancelled)
                             {
@@ -95,28 +114,24 @@ namespace Dnn.ExportImport.Components.Scheduler
                             throw new Exception("Unknown job type: " + job.JobType);
                     }
 
-
-                    if (result != null)
+                    ScheduleHistoryItem.Succeeded = true;
+                    var sb = new StringBuilder();
+                    var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
+                    var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
+                    sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
+                    var summary = result.Summary;
+                    if (summary.Count > 0)
                     {
-                        ScheduleHistoryItem.Succeeded = true;
-                        var sb = new StringBuilder();
-                        var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
-                        var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
-                        sb.AppendFormat("<br/><b>{0} {1}</b>", jobType, jobStatus);
-                        var summary = result.Summary;
-                        if (summary.Count > 0)
+                        sb.Append("<br/><b>Summary:</b><ul>");
+                        foreach (var entry in summary)
                         {
-                            sb.Append("<br/><b>Summary:</b><ul>");
-                            foreach (var entry in summary)
-                            {
-                                sb.Append($"<li>{entry.Name}: {entry.Value}</li>");
-                            }
-                            sb.Append("</ul>");
+                            sb.Append($"<li>{entry.Name}: {entry.Value}</li>");
                         }
-
-                        ScheduleHistoryItem.AddLogNote(sb.ToString());
-                        AddLogsToDatabase(job.JobId, result.CompleteLog);
+                        sb.Append("</ul>");
                     }
+
+                    ScheduleHistoryItem.AddLogNote(sb.ToString());
+                    AddLogsToDatabase(job.JobId, result.CompleteLog);
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
@@ -127,10 +142,11 @@ namespace Dnn.ExportImport.Components.Scheduler
                 ScheduleHistoryItem.Succeeded = false;
                 ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
                 Errored(ref ex);
-                if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
-                {
-                    Exceptions.LogException(ex);
-                }
+                // this duplicates the logging
+                //if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                //{
+                //    Exceptions.LogException(ex);
+                //}
             }
         }
 

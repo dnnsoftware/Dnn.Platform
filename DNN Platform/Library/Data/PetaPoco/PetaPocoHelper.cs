@@ -21,15 +21,19 @@
 
 #endregion
 
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
 using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
 {
     public static class PetaPocoHelper
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
+
         #region Public Methods
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
@@ -51,9 +55,17 @@ namespace DotNetNuke.Data.PetaPoco
                     database.CommandTimeout = timeoutSec;
                 }
 
-                database.Execute(sql, args);
+                try
+                {
+                    database.Execute(sql, args);
+                }
+                catch (Exception)
+                {
+                    Logger.Error($"[1] Error executing SQL: " + sql);
+                    throw;
+                }
             }
-		}
+        }
 
         public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable)
         {
@@ -76,7 +88,15 @@ namespace DotNetNuke.Data.PetaPoco
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);
                     con.Open();
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+                        Logger.Error($"[2] Error executing SQL: " + cmd.CommandText);
+                        throw;
+                    }
                     con.Close();
                 }
             }
@@ -100,7 +120,16 @@ namespace DotNetNuke.Data.PetaPoco
 			{
 				database.CommandTimeout = timeoutSec;
 			}
-            return database.ExecuteReader(sql, args);
+
+            try
+            {
+                return database.ExecuteReader(sql, args);
+            }
+            catch (Exception)
+            {
+                Logger.Error($"[3] Error executing SQL: " + sql);
+                throw;
+            }
         }
 
         public static T ExecuteScalar<T>(string connectionString, CommandType type, string sql, params object[] args)
@@ -122,9 +151,17 @@ namespace DotNetNuke.Data.PetaPoco
                     database.CommandTimeout = timeoutSec;
                 }
 
-                return database.ExecuteScalar<T>(sql, args);
+                try
+                {
+                    return database.ExecuteScalar<T>(sql, args);
+                }
+                catch (Exception)
+                {
+                    Logger.Error($"[4] Error executing SQL: " + sql);
+                    throw;
+                }
             }
-		}
+        }
 
         // ReSharper disable once InconsistentNaming
         public static void ExecuteSQL(string connectionString, string sql)
@@ -142,9 +179,17 @@ namespace DotNetNuke.Data.PetaPoco
                     database.CommandTimeout = timeoutSec;
                 }
 
-                database.Execute(sql);
+                try
+                {
+                    database.Execute(sql);
+                }
+                catch (Exception)
+                {
+                    Logger.Error($"[5] Error executing SQL: " + sql);
+                    throw;
+                }
             }
-		}
+        }
 
         #endregion
     }
