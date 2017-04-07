@@ -102,7 +102,7 @@ BEGIN
         N' UPDATE {databaseOwner}{objectQualifier}' + @TableName +
         N' SET CreatedByUserID=' + CONVERT(nvarchar, @CreatedBy) + ', LastModifiedByUserID=' + CONVERT(nvarchar, @ModifiedBy) +
         N' WHERE ' + @PrimaryKeyName + N'=' + CONVERT(nvarchar, @PrimaryKeyID) +
-        N' AND SettingName=' + @SettingName + N';'
+        N' AND SettingName=''' + @SettingName + N''';'
 
     --PRINT (@sqlCommand)
     EXEC (@sqlCommand)

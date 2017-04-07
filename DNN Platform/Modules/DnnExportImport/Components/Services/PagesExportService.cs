@@ -210,7 +210,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
-            var tabSettings = Repository.GetRelatedItems<ExportTabSetting>(otherTab.ReferenceId ?? -1).ToList();
+            var tabSettings = Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).ToList();
             foreach (var other in tabSettings)
             {
                 var localValue = isNew ? string.Empty : localTab.TabSettings[other.SettingName].ToString();
@@ -258,7 +258,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.ReferenceId ?? -1).ToList();
+            var tabPermissions = Repository.GetRelatedItems<ExportTabPermission>(otherTab.Id).ToList();
             var localTabPermissions = localTab.TabPermissions.ToList();
             foreach (var other in tabPermissions)
             {
@@ -312,8 +312,7 @@ namespace Dnn.ExportImport.Components.Services
                         other.LocalId = localTab.TabPermissions.Add(local);
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID",
-                            local.TabPermissionID, createdBy, modifiedBy);
+                        UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
 
                         Result.AddLogEntry("Added tab permission", other.PermissionKey);
                         count++;
@@ -327,7 +326,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabUrls(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.ReferenceId ?? -1).ToList();
+            var tabUrls = Repository.GetRelatedItems<ExportTabUrl>(otherTab.Id).ToList();
             var localUrls = localTab.TabUrls;
             foreach (var other in tabUrls)
             {
@@ -383,8 +382,8 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabModulesAndRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
             var count = 0;
-            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.ReferenceId ?? -1).ToList();
-            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.ReferenceId ?? -1).ToList();
+            var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.Id).ToList();
+            var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id).ToList();
             var localModules = isNew ? new List<ExportModule>()
                 : EntitiesController.Instance.GetModules(otherTab.TabId, true, Constants.MinDbTime, Constants.MaxDbTime).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
@@ -536,7 +535,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportModuleSettings(ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var count = 0;
-            var moduleSettings = Repository.GetRelatedItems<ExportModuleSetting>(otherModule.ReferenceId ?? -1).ToList();
+            var moduleSettings = Repository.GetRelatedItems<ExportModuleSetting>(otherModule.Id).ToList();
             foreach (var other in moduleSettings)
             {
                 var localValue = isNew ? string.Empty : localModule.ModuleSettings[other.SettingName].ToString();
@@ -586,7 +585,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportModulePermissions(ModuleInfo localModule, ExportModule otherModule, bool isNew)
         {
             var count = 0;
-            var modulePermissions = Repository.GetRelatedItems<ExportModulePermission>(otherModule.ReferenceId ?? -1).ToList();
+            var modulePermissions = Repository.GetRelatedItems<ExportModulePermission>(otherModule.Id).ToList();
             var localModulePermissions = isNew
                 ? new List<ModulePermissionInfo>()
                 : localModule.ModulePermissions.OfType<ModulePermissionInfo>().ToList();
@@ -671,7 +670,7 @@ namespace Dnn.ExportImport.Components.Services
                             //Note: there is no chek whether the content exists or not to manage conflict resolution
                             if (isNew || _importDto.CollisionResolution == CollisionResolution.Overwrite)
                             {
-                                var exportedContent = Repository.GetRelatedItems<ExportModuleContent>(otherModule.ReferenceId ?? -1).ToList();
+                                var exportedContent = Repository.GetRelatedItems<ExportModuleContent>(otherModule.Id).ToList();
                                 var version = DotNetNukeContext.Current.Application.Version.ToString(3);
                                 foreach (var moduleContent in exportedContent)
                                 {
@@ -701,7 +700,7 @@ namespace Dnn.ExportImport.Components.Services
         private int ImportTabModuleSettings(ModuleInfo localTabModule, ExportTabModule otherTabModule, bool isNew)
         {
             var count = 0;
-            var tabModuleSettings = Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.ReferenceId ?? -1).ToList();
+            var tabModuleSettings = Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.Id).ToList();
             foreach (var other in tabModuleSettings)
             {
                 var localValue = isNew ? string.Empty : localTabModule.TabModuleSettings[other.SettingName].ToString();
@@ -807,7 +806,7 @@ namespace Dnn.ExportImport.Components.Services
         // ReSharper disable UnusedMember.Local
         private void UpdateTabPermissionChangers(int tabPermissionId, int createdBy, int modifiedBy)
         {
-            _dataProvider.UpdateRecordChangers("TabPermissions", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);
+            _dataProvider.UpdateRecordChangers("TabPermission", "TabPermissionID", tabPermissionId, createdBy, modifiedBy);
         }
 
         private void UpdateTabSettingChangers(int tabId, string settingName, int createdBy, int modifiedBy)
@@ -920,7 +919,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, toDate, fromDate);
             if (tabSettings.Count > 0)
-                Repository.CreateItems(tabSettings, exportPage.ReferenceId);
+                Repository.CreateItems(tabSettings, exportPage.Id);
             return tabSettings.Count;
         }
 
@@ -928,7 +927,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, toDate, fromDate);
             if (tabPermissions.Count > 0)
-                Repository.CreateItems(tabPermissions, exportPage.ReferenceId);
+                Repository.CreateItems(tabPermissions, exportPage.Id);
             return tabPermissions.Count;
         }
 
@@ -936,7 +935,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, toDate, fromDate);
             if (tabUrls.Count > 0)
-                Repository.CreateItems(tabUrls, exportPage.ReferenceId);
+                Repository.CreateItems(tabUrls, exportPage.Id);
             return tabUrls.Count;
         }
 
@@ -944,7 +943,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModules.Count > 0)
-                Repository.CreateItems(tabModules, exportPage.ReferenceId);
+                Repository.CreateItems(tabModules, exportPage.Id);
             return tabModules.Count;
         }
 
@@ -952,7 +951,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, toDate, fromDate);
             if (tabModuleSettings.Count > 0)
-                Repository.CreateItems(tabModuleSettings, exportPage.ReferenceId);
+                Repository.CreateItems(tabModuleSettings, exportPage.Id);
             return tabModuleSettings.Count;
         }
 
@@ -961,7 +960,7 @@ namespace Dnn.ExportImport.Components.Services
             var modules = EntitiesController.Instance.GetModules(exportPage.TabId, _exportDto.IncludeDeletions, toDate, fromDate);
             if (modules.Count > 0)
             {
-                Repository.CreateItems(modules, exportPage.ReferenceId);
+                Repository.CreateItems(modules, exportPage.Id);
                 foreach (var exportModule in modules)
                 {
                     _totals.TotalModuleSettings +=
@@ -985,7 +984,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var moduleSettings = EntitiesController.Instance.GetModuleSettings(exportModule.ModuleID, toDate, fromDate);
             if (moduleSettings.Count > 0)
-                Repository.CreateItems(moduleSettings, exportModule.ReferenceId);
+                Repository.CreateItems(moduleSettings, exportModule.Id);
             return moduleSettings.Count;
         }
 
@@ -993,7 +992,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var modulePermission = EntitiesController.Instance.GetModulePermissions(exportModule.ModuleID, toDate, fromDate);
             if (modulePermission.Count > 0)
-                Repository.CreateItems(modulePermission, exportModule.ReferenceId);
+                Repository.CreateItems(modulePermission, exportModule.Id);
             return modulePermission.Count;
         }
 

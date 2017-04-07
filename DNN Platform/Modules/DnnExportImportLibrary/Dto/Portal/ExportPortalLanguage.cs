@@ -29,8 +29,6 @@ namespace Dnn.ExportImport.Dto.Portal
 
         public string CultureCode { get; set; }
 
-        public int PortalId { get; set; }
-
         public int LanguageId { get; set; }
 
         public int? CreatedByUserId { get; set; }
