@@ -390,9 +390,10 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportJobs_FirstActive]
 AS
 BEGIN
 	SELECT
-		TOP(1) *
+		TOP(1) Jobs.*
 	FROM
-		{databaseOwner}[{objectQualifier}ExportImportJobs]
+		{databaseOwner}[{objectQualifier}ExportImportJobs] Jobs
+		INNER JOIN {databaseOwner}[{objectQualifier}Portals] Portals ON Portals.PortalID=Jobs.PortalId
 	WHERE
 		JobStatus in (0, 1) -- 0=Submitted, 1=InProgress
 	ORDER BY
@@ -441,11 +442,12 @@ BEGIN
 
 	; WITH AllJobs AS (
 		SELECT
-			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, *
+			ROW_NUMBER() OVER (ORDER BY JobId DESC) AS RowNum, Jobs.*
 		FROM
-			{databaseOwner}{objectQualifier}ExportImportJobs
+			{databaseOwner}{objectQualifier}ExportImportJobs Jobs
+		INNER JOIN {databaseOwner}{objectQualifier}Portals Portals ON Portals.PortalID=Jobs.PortalId
 		WHERE
-			(PortalID = @PortalID OR @PortalID=-1)
+			(Jobs.PortalID = @PortalID OR @PortalID=-1)
 		AND
 			(@JobType IS NULL OR JobType = @JobType)
 		AND
