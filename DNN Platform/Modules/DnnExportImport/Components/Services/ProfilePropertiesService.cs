@@ -46,7 +46,6 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage > 0) return;
             if (CheckCancelled(exportJob)) return;
 
-            //TODO: Verify that profile properties stores created on and modified on info in UTC or local
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
                     DataProvider.Instance()
