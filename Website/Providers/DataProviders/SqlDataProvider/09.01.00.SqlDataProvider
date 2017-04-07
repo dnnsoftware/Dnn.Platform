@@ -118,6 +118,48 @@ DELETE FROM {databaseOwner}[{objectQualifier}Files]
     WHERE PortalId IS NULL AND FileName IN ('GettingStartedFallback.png', 'GettingStartedFallback.htm', 'GettingStarted.css')                                                                                    
 GO
 
+/***** DNN-9481: add the server detect schedule. *****/
+
+DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE FriendlyName = 'Web Server Monitor'
+GO
+
+INSERT INTO {databaseOwner}{objectQualifier}Schedule (
+    TypeFullName ,
+    TimeLapse ,
+    TimeLapseMeasurement ,
+    RetryTimeLapse ,
+    RetryTimeLapseMeasurement ,
+    RetainHistoryNum ,
+    AttachToEvent ,
+    CatchUpEnabled ,
+    Enabled,
+    ObjectDependencies ,
+    Servers ,
+    CreatedByUserID ,
+    CreatedOnDate ,
+    LastModifiedByUserID ,
+    LastModifiedOnDate ,
+    FriendlyName)
+
+    VALUES (
+    'DotNetNuke.Entities.Host.ServerMonitorSchedule, DotNetNuke', 
+    1, 
+    'm', 
+    30, 
+    's', 
+    10, 
+    '', 
+    0, 
+    1,
+    '',
+    NULL,
+    -1,
+    GETDATE(),
+    -1,
+    GETDATE(),
+    'Web Server Monitor')
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
