@@ -402,9 +402,13 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (locals.Count == 0)
                 {
+                    var sharedModules = Repository.FindItems<ExportModule>(m => m.ModuleID == other.ModuleID);
+                    var sharedModule = sharedModules.FirstOrDefault(m => m.LocalId.HasValue);
+
                     var local = new ModuleInfo
                     {
                         TabID = localTab.TabID,
+                        ModuleID = sharedModule?.LocalId ?? -1,
                         ModuleDefID = moduleDefinition.ModuleDefID,
                         PaneName = other.PaneName,
                         ModuleOrder = other.ModuleOrder,
@@ -437,27 +441,31 @@ namespace Dnn.ExportImport.Components.Services
                     //this will create 2 records:  Module and TabModule
                     otherModule.LocalId = _moduleController.AddModule(local);
                     other.LocalId = local.TabModuleID;
+                    Repository.UpdateItem(otherModule);
 
                     var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-
                     UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
 
-                    createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
-                    modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
-                    UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
-
-                    _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
-                    _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
-                    _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
-
-                    if (_exportDto.IncludeContent)
+                    if (sharedModule == null)
                     {
-                        _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
+                        createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
+                        modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
+                        UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
+
+                        _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
+                        _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+                        _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
+
+                        if (_exportDto.IncludeContent)
+                        {
+                            _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
+                        }
+
+                        Result.AddLogEntry("Added module", local.ModuleID.ToString());
                     }
 
                     Result.AddLogEntry("Added tab module", local.TabModuleID.ToString());
-                    Result.AddLogEntry("Added module", local.ModuleID.ToString());
                     count++;
                 }
                 else
@@ -508,6 +516,7 @@ namespace Dnn.ExportImport.Components.Services
                         _moduleController.UpdateModule(local);
                         other.LocalId = local.TabModuleID;
                         otherModule.LocalId = localModule.ModuleID;
+                        Repository.UpdateItem(otherModule);
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
