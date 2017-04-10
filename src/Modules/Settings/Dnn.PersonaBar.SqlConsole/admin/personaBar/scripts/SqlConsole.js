@@ -378,7 +378,8 @@ define(['jquery',
             });
 
             table.statistics = ko.computed(function () {
-                return 'Showing ' + (table.startIndex() + 1) + '-' + table.endIndex() + ' of ' + table.filterData().length + ' items';
+                var args = [table.startIndex() + 1, table.endIndex(), table.filterData().length];
+                return viewModel.resx.PageInfo.replace(/\{(\d+)\}/gi, function (i) { var index = parseInt(arguments[1]); return args[index]; });
             });
 
             table.pagesNumber = ko.computed(function () {
