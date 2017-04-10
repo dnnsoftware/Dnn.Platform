@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 //This is called from RunPooledThread()
                 ticksElapsed = Environment.TickCount - ticksElapsed;
-                Process = GetSchedulerClient(objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
+                Process = SchedulingController.GetSchedulerClient(objScheduleHistoryItem);
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
                 
 				//Set up the handlers for the CoreScheduler
@@ -168,24 +168,6 @@ namespace DotNetNuke.Services.Scheduling
                 numberOfProcessesInQueue -= 1;
                 processesCompleted += 1;
             }
-        }
-
-        private SchedulerClient GetSchedulerClient(string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
-        {
-            //This is a method to encapsulate returning
-            //an object whose class inherits SchedulerClient.
-            Type t = BuildManager.GetType(strProcess, true, true);
-            var param = new ScheduleHistoryItem[1];
-            param[0] = objScheduleHistoryItem;
-            var types = new Type[1];
-            
-			//Get the constructor for the Class
-            types[0] = typeof (ScheduleHistoryItem);
-            ConstructorInfo objConstructor;
-            objConstructor = t.GetConstructor(types);
-            
-			//Return an instance of the class as an object
-            return (SchedulerClient) objConstructor.Invoke(param);
         }
 
         //This subroutine is callback for Threadpool.QueueWorkItem.  This is the necessary

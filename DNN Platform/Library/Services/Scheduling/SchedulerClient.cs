@@ -51,6 +51,12 @@ namespace DotNetNuke.Services.Scheduling
 
         public string Status { get; set; }
 
+
+        /// <summary>
+        /// The schedule should only run on one server.
+        /// </summary>
+	    public virtual bool RunsOnSingleServer { get; set; } = true; 
+
         public int ThreadID
         {
             get

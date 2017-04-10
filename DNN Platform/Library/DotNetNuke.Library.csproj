@@ -188,6 +188,7 @@
     <Compile Include="Data\PetaPoco\FluentColumnMap.cs" />
     <Compile Include="Data\PetaPoco\FluentMapper.cs" />
     <Compile Include="Data\PetaPoco\FluentMapperExtensions.cs" />
+    <Compile Include="Entities\Host\ServerMonitorSchedule.cs" />
     <Compile Include="Entities\Modules\ICustomTokenProvider.cs" />
     <Compile Include="Entities\Modules\InstalledModuleInfo.cs" />
     <Compile Include="Entities\Modules\InstalledModulesController.cs" />

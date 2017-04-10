@@ -24,7 +24,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Linq;
+using System.Reflection;
+using System.Web.Compilation;
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
@@ -41,6 +44,8 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
+        private static SharedDictionary<string, ConstructorInfo> _scheduleClientConstructors = new SharedDictionary<string, ConstructorInfo>();
+
         [Obsolete("Obsoleted in 5.2.1 - use alternate overload")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers)
@@ -283,9 +288,9 @@ namespace DotNetNuke.Services.Scheduling
             string lwrServers = "";
             if (servers != null)
             {
-                lwrServers = servers.ToLower();
+                lwrServers = servers.ToLowerInvariant();
             }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
+            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLowerInvariant()))
             {
                 return true;
             }
@@ -293,5 +298,43 @@ namespace DotNetNuke.Services.Scheduling
             return false;
         }
 
+        public static SchedulerClient GetSchedulerClient(ScheduleHistoryItem scheduleHistoryItemItem)
+        {
+            try
+            {
+                //This is a method to encapsulate returning an object whose class inherits SchedulerClient.
+                var typeName = scheduleHistoryItemItem.TypeFullName;
+                ConstructorInfo constructor;
+                using (_scheduleClientConstructors.GetReadLock())
+                {
+                    _scheduleClientConstructors.TryGetValue(typeName, out constructor);
+                }
+
+                if (constructor == null)
+                {
+                    using (_scheduleClientConstructors.GetWriteLock())
+                    {
+                        var type = BuildManager.GetType(typeName, true, true);
+                        var types = new Type[1];
+
+                        //Get the constructor for the Class
+                        types[0] = typeof(ScheduleHistoryItem);
+                        constructor = type.GetConstructor(types);
+
+                        _scheduleClientConstructors.Add(typeName, constructor);
+                    }
+
+                }
+
+                //Return an instance of the class as an object
+                return (SchedulerClient)constructor?.Invoke(new object[] { scheduleHistoryItemItem });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.ProcessSchedulerException(ex);
+                return null;
+            }
+            
+        }
     }
 }
