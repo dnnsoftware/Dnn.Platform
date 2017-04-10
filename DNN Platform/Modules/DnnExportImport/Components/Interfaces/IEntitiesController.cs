@@ -55,8 +55,11 @@ namespace Dnn.ExportImport.Components.Interfaces
 
         IList<ExportTabModule> GetTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate);
         IList<ExportTabModuleSetting> GetTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate);
-        void SetTabModuleDeleted(int tabModuleId);
 
         PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName);
+
+        void SetTabDeleted(int tabId, bool isDeleted);
+        void SetTabModuleDeleted(int tabModuleId, bool isDeleted);
+        void SetUserDeleted(int portalId, int userId, bool isDeleted);
     }
 }

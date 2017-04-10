@@ -173,8 +173,13 @@ namespace Dnn.ExportImport.Components.Services
                             localTab.ParentId = parentId;
                         }
 
+                        // this is not saved upon adding the tab
+                        EntitiesController.Instance.SetTabDeleted(localTab.TabID, localTab.IsDeleted);
+
                         _tabController.UpdateTab(localTab);
                         UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
+
+
                         AddTabRelatedItems(localTab, otherTab, false);
                         Result.AddLogEntry("Updated Tab", otherTab.TabName + " (" + otherTab.TabPath + ")");
                         _totals.TotalTabs++;
@@ -195,6 +200,15 @@ namespace Dnn.ExportImport.Components.Services
 
                 otherTab.LocalId = _tabController.AddTab(localTab);
                 UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
+
+                // this is not saved upon updating the tab
+                if (otherTab.IsDeleted)
+                {
+                    localTab.IsDeleted = otherTab.IsDeleted;
+                    EntitiesController.Instance.SetTabDeleted(localTab.TabID, true);
+                    //_tabController.UpdateTab(localTab); // to clear cache
+                }
+
                 AddTabRelatedItems(localTab, otherTab, true);
                 Result.AddLogEntry("Added Tab", otherTab.TabName + " (" + otherTab.TabPath + ")");
                 _totals.TotalTabs++;
@@ -443,11 +457,11 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = local.TabModuleID;
                     Repository.UpdateItem(otherModule);
 
-                    // this is not saved upon updating the module
+                    // this is not saved upon adding the module
                     if (other.IsDeleted)
                     {
                         local.IsDeleted = other.IsDeleted;
-                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID);
+                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
                         //_moduleController.UpdateModule(local); // to clear cache
                     }
 
@@ -519,6 +533,7 @@ namespace Dnn.ExportImport.Components.Services
                         local.DisplayTitle = other.DisplayTitle;
                         local.DisplayPrint = other.DisplayPrint;
                         local.DisplaySyndicate = other.DisplaySyndicate;
+                        local.IsDeleted = other.IsDeleted;
                         local.IsShareable = otherModule.IsShareable;
                         local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                         local.IsWebSlice = other.IsWebSlice;
@@ -532,11 +547,7 @@ namespace Dnn.ExportImport.Components.Services
                         local.CultureCode = other.CultureCode;
 
                         // this is not saved upon updating the module
-                        if (other.IsDeleted)
-                        {
-                            local.IsDeleted = other.IsDeleted;
-                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID);
-                        }
+                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
 
                         // updates both module and tab module db records
                         _moduleController.UpdateModule(local);

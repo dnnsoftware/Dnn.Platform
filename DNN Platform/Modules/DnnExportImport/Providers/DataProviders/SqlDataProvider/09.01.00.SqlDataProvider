@@ -1553,17 +1553,48 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabDeleted]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabDeleted]
+	@TabId     int,
+	@IsDeleted bit
+AS
+BEGIN
+    UPDATE {databaseOwner}{objectQualifier}Tabs
+    SET IsDeleted = @IsDeleted
+    WHERE TabId = @TabId
+END
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
-	@TabModuleId     int
+	@TabModuleId int,
+	@IsDeleted   bit
 AS
 BEGIN
     UPDATE {databaseOwner}{objectQualifier}TabModules
-    SET IsDeleted = 1
+    SET IsDeleted = @IsDeleted
     WHERE TabModuleId = @TabModuleId
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetUserDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetUserDeleted]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetUserDeleted]
+	@PortalID   int,
+	@UserID     int,
+	@IsDeleted  bit
+AS
+BEGIN
+    UPDATE {databaseOwner}{objectQualifier}UserPortals
+    SET IsDeleted = @IsDeleted
+    WHERE PortalID = @PortalID AND UserID = @UserID
+END
+GO

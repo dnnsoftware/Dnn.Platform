@@ -330,9 +330,19 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);
         }
 
-        public void SetTabModuleDeleted(int tabModuleId)
+        public void SetTabDeleted(int tabId, bool isDeleted)
         {
-            _dataProvider.ExecuteNonQuery("Export_SetTabModuleDeleted", tabModuleId);
+            _dataProvider.ExecuteNonQuery("Export_SetTabDeleted", tabId, isDeleted);
+        }
+
+        public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
+        {
+            _dataProvider.ExecuteNonQuery("Export_SetTabModuleDeleted", tabModuleId, isDeleted);
+        }
+
+        public void SetUserDeleted(int portalId, int userId, bool isDeleted)
+        {
+            _dataProvider.ExecuteNonQuery("Export_SetUserDeleted", portalId, userId, isDeleted);
         }
 
         public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)

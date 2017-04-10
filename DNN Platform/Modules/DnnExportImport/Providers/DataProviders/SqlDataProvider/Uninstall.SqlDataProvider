@@ -224,6 +224,15 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]', '
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabDeleted]
+GO
+
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetUserDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetUserDeleted]
+GO
+

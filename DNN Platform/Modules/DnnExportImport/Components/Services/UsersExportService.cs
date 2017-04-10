@@ -24,14 +24,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Dto.Users;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Users;
-using DotNetNuke.Collections;
 using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
@@ -97,7 +96,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     using (var reader = DataProvider.Instance()
                         .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate, fromDate,
-                            Util.ConvertToDbUtcTime(toDate).Value, Util.ConvertToDbUtcTime(fromDate)))
+                            Util.ConvertToDbUtcTime(toDate) ?? Constants.MaxDbTime, Util.ConvertToDbUtcTime(fromDate)))
                     {
                         //Main Users
                         CBO.FillCollection(reader, exportUsersList, false);
@@ -186,7 +185,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
 
-            var pageIndex = 0;
             const int pageSize = Constants.DefaultPageSize;
             var totalUsersImported = 0;
             var totalPortalsImported = 0;
@@ -202,7 +200,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage >= totalPages && skip == 0)
                 return;
 
-            pageIndex = CheckPoint.Stage;
+            var pageIndex = CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
             //Update the total items count in the check points. This should be updated only once.
@@ -304,6 +302,9 @@ namespace Dnn.ExportImport.Components.Services
                 var createdBy = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
                 user.UserId = DotNetNuke.Data.DataProvider.Instance().AddUser(importJob.PortalId, user.Username, user.FirstName, user.LastName, user.AffiliateId ?? Null.NullInteger,
                         user.IsSuperUser, user.Email, user.DisplayName, user.UpdatePassword, aspnetMembership?.IsApproved ?? true, createdBy);
+
+                if (user.IsDeletedPortal)
+                    EntitiesController.Instance.SetUserDeleted(importJob.PortalId, user.UserId, true);
             }
             ProcessUserMembership(aspnetUser, aspnetMembership);
 

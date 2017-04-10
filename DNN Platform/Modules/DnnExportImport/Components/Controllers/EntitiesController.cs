@@ -171,16 +171,25 @@ namespace Dnn.ExportImport.Components.Controllers
                 _dataProvider.GetAllTabModuleSettings(tabId, toDate, fromDate));
         }
 
-        public void SetTabModuleDeleted(int tabModuleId)
-        {
-            _dataProvider.SetTabModuleDeleted(tabModuleId);
-
-        }
-
         public PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
         {
             return CBO.Instance.FillObject<PermissionInfo>(
                 _dataProvider.GetPermissionInfo(permissionCode, permissionKey, permissionName));
+        }
+
+        public void SetTabDeleted(int tabId, bool isDeleted)
+        {
+            _dataProvider.SetTabDeleted(tabId, isDeleted);
+        }
+
+        public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
+        {
+            _dataProvider.SetTabModuleDeleted(tabModuleId, isDeleted);
+        }
+
+        public void SetUserDeleted(int portalId, int userId, bool isDeleted)
+        {
+            _dataProvider.SetUserDeleted(portalId, userId, isDeleted);
         }
     }
 }
