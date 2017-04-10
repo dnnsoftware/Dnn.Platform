@@ -626,42 +626,180 @@ GO
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 GO
-
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
-	@PortalID        int,
+	@PortalId		 int,
 	@PageIndex       int,
 	@PageSize        int,
 	@IncludeDeleted  bit,
-	@ToDate			 datetime,
-	@FromDate		 datetime=NULL
+	@ToDate			 datetime ,
+	@FromDate		 datetime=NULL,
+	@ToDateUtc		 datetime ,
+	@FromDateUtc	 datetime=NULL,
+	@OnlyCount		 bit = false
 AS
 BEGIN
-	DECLARE
-		@PageLowerBound int,
-		@PageUpperBound int,
-		@RowsToReturn int
-
-	EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
-
-	; WITH [tmpUsers] AS (
-		SELECT U.*,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.CreatedOnDate) AS RowId
-		,  row_number() over (order by U.CreatedOnDate DESC) AS RowIdDesc
-			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}vw_Users] VU ON U.UserID=VU.UserID
-			WHERE VU.PortalID = @PortalID
+	--GET ONLY USERS COUNT
+	IF @OnlyCount = 1
+	BEGIN
+		; WITH [tmpUsers] AS (
+		SELECT U.UserID
+			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] VP ON U.UserID=VP.UserId
+			WHERE VP.PortalId = @PortalID
 			AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 			AND (CASE
 			WHEN @FromDate IS NULL THEN 0
-			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
-			ELSE U.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
+			WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
+			WHEN U.CreatedOnDate IS NOT NULL THEN U.CreatedOnDate
+			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
 			AND (CASE
-			WHEN U.LastModifiedOnDate IS NULL THEN U.CreatedOnDate
-			ELSE U.LastModifiedOnDate END)<= @ToDate
-	)
-	SELECT (RowIdDesc + RowId - 1) Total,  * FROM [tmpUsers]
-		WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
-		ORDER by RowId
+			WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
+			WHEN U.CreatedOnDate IS NOT NULL THEN U.CreatedOnDate
+			ELSE @ToDate END)<= @ToDate
+		)
+		SELECT COUNT(UserID) TotalUsers FROM [tmpUsers];
+	END
+	--GET USERS
+	IF @OnlyCount = 0
+	BEGIN
+		--Do not allow more than 1000 page size.
+		IF @PageSize>1000
+		BEGIN
+			SET @PageSize = 1000;
+		END
 
-	SET ROWCOUNT 0;
+		DECLARE
+			@PageLowerBound int,
+			@PageUpperBound int,
+			@RowsToReturn int
+
+		--Calculate paging information.
+		EXEC {databaseOwner}[{objectQualifier}CalculatePagingInformation] @PageIndex, @PageSize, @RowsToReturn output, @PageLowerBound output, @PageUpperBound output
+	
+		--Prepare users query.
+		; WITH [tmpUsers] AS (
+			SELECT U.*,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.UserID) AS RowId
+				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] VP ON U.UserID=VP.UserId
+				WHERE VP.PortalId = @PortalID
+				AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+				AND (CASE
+				WHEN @FromDate IS NULL THEN 0
+				WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
+				WHEN U.CreatedOnDate IS NOT NULL THEN U.CreatedOnDate
+				ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+				AND (CASE
+				WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
+				WHEN U.CreatedOnDate IS NOT NULL THEN U.CreatedOnDate
+				ELSE @ToDate END)<= @ToDate
+		)
+
+		--Perform paging on Users and Add them to temporary variable
+		SELECT  * INTO #tmpPagedUsers FROM [tmpUsers]
+			WHERE RowId > @PageLowerBound AND RowId < @PageUpperBound
+			ORDER by RowId;
+
+		--Users
+		SELECT * FROM #tmpPagedUsers
+
+		--UserAuthentication
+		SELECT * FROM {databaseOwner}[{objectQualifier}UserAuthentication]
+		WHERE UserId IN(SELECT UserID FROM #tmpPagedUsers)
+			AND (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN LastModifiedOnDate IS NOT NULL THEN LastModifiedOnDate
+			WHEN CreatedOnDate IS NOT NULL THEN CreatedOnDate
+			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+			AND (CASE
+			WHEN LastModifiedOnDate IS NOT NULL THEN LastModifiedOnDate
+			WHEN CreatedOnDate IS NOT NULL THEN CreatedOnDate
+			ELSE @ToDate END)<= @ToDate
+
+		--User Roles
+		SELECT
+			 [UserRoleID]
+			,R.[RoleID]
+			,[UserID]
+			,[PortalID]
+			,R.[RoleName]
+			,[ExpiryDate]
+			,[IsTrialUsed]
+			,[EffectiveDate]
+			,UR.[CreatedByUserID]
+			,UR.[CreatedOnDate]
+			,UR.[LastModifiedByUserID]
+			,UR.[LastModifiedOnDate]
+			,UR.[Status]
+			,[IsOwner]
+			,{databaseOwner}[{objectQualifier}Export_UserName](UR.CreatedByUserId) CreatedByUserName
+			,{databaseOwner}[{objectQualifier}Export_UserName](UR.LastModifiedByUserId) LastModifiedByUserName
+		FROM {databaseOwner}[{objectQualifier}UserRoles] UR INNER JOIN {databaseOwner}{objectQualifier}Roles R ON R.RoleID=UR.RoleID
+		WHERE	UserID  IN(SELECT UserID FROM #tmpPagedUsers) AND R.PortalID = @PortalId
+			AND (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN UR.LastModifiedOnDate IS NOT NULL THEN UR.LastModifiedOnDate
+			WHEN UR.CreatedOnDate IS NOT NULL THEN UR.CreatedOnDate
+			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+			AND (CASE
+			WHEN UR.LastModifiedOnDate IS NOT NULL THEN UR.LastModifiedOnDate
+			WHEN UR.CreatedOnDate IS NOT NULL THEN UR.CreatedOnDate
+			ELSE @ToDate END)<= @ToDate
+
+		--User Profile
+		SELECT
+			UP.ProfileID,
+			UP.UserID,
+			UP.PropertyDefinitionID,
+			CASE WHEN (UP.PropertyValue Is Null) THEN UP.PropertyText ELSE UP.PropertyValue END AS 'PropertyValue',
+			UP.Visibility,
+			UP.ExtendedVisibility,
+			UP.LastUpdatedDate,
+			PPD.PropertyName
+ 		FROM {databaseOwner}[{objectQualifier}UserProfile] UP
+		INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
+		ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
+		WHERE UserId IN(SELECT UserID FROM #tmpPagedUsers) AND PPD.PortalId=@PortalId
+			AND (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
+			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+			AND (CASE
+			WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
+			ELSE @ToDate END<= @ToDate)
+
+		--User Portals
+		SELECT
+			 [UserId]
+			,[PortalId]
+			,[UserPortalId]
+			,[CreatedDate]
+			,[Authorised]
+			,[IsDeleted]
+			,[RefreshRoles]
+			,[VanityUrl]
+ 		FROM {databaseOwner}[{objectQualifier}UserPortals]
+		WHERE UserId IN(SELECT UserID FROM #tmpPagedUsers) AND PortalId = @PortalId
+			AND (CASE
+			WHEN @FromDate IS NULL THEN 0
+			WHEN [CreatedDate] IS NOT NULL THEN CreatedDate
+			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+			AND (CASE
+			WHEN [CreatedDate] IS NOT NULL THEN [CreatedDate]
+			ELSE @ToDate END<= @ToDate)
+
+		--AspNet User
+		SELECT * INTO #tmpAspNetUsers
+ 		FROM {databaseOwner}[aspnet_Users]
+		WHERE  UserName IN(SELECT Username FROM #tmpPagedUsers)
+			AND (CASE
+			WHEN @FromDateUtc IS NULL THEN 0
+			ELSE [LastActivityDate] END)>= ISNULL(@FromDateUtc,0)
+			AND [LastActivityDate] <= @ToDateUtc
+
+		SELECT * FROM #tmpAspNetUsers;
+		--AspNet membership
+		SELECT *
+ 		FROM {databaseOwner}[aspnet_Membership]
+		WHERE UserId IN(SELECT UserId FROM #tmpAspNetUsers)
+	END
 END
 GO
 
@@ -688,8 +826,11 @@ AS
 	WHERE UserId = @UserId AND PortalId = @PortalId
 		AND (CASE
 		WHEN @FromDate IS NULL THEN 0
-		ELSE [CreatedDate] END)>= ISNULL(@FromDate,0)
-		AND [CreatedDate]<= @ToDate
+		WHEN [CreatedDate] IS NOT NULL THEN CreatedDate
+		ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+		AND (CASE
+		WHEN [CreatedDate] IS NOT NULL THEN [CreatedDate]
+		ELSE @ToDate END<= @ToDate)
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
@@ -717,8 +858,12 @@ AS
 	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
 		AND (CASE
 		WHEN @FromDate IS NULL THEN 0
-		ELSE UP.LastUpdatedDate END)>= ISNULL(@FromDate,0)
-		AND UP.LastUpdatedDate<= @ToDate
+		WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
+		ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
+		AND (CASE
+		WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
+		ELSE @ToDate END<= @ToDate)
+
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
@@ -737,7 +882,8 @@ AS
 		AND (CASE
 		WHEN @FromDate IS NULL THEN 0
 		ELSE [LastActivityDate] END)>= ISNULL(@FromDate,0)
-		AND [LastActivityDate]<= @ToDate
+		AND [LastActivityDate] <= @ToDate
+
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
@@ -745,73 +891,11 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P')
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-	@UserId			uniqueidentifier,
-	@ApplicationId	uniqueidentifier
+	@UserId			uniqueidentifier
 AS
 	SELECT *
  	FROM {databaseOwner}[aspnet_Membership]
-	WHERE UserId=@UserId AND ApplicationId=@ApplicationId
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserRoles]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserRoles]
-	@PortalId	 int,
-	@UserId		 int,
-	@ToDate		 datetime,
-	@FromDate	 datetime=NULL
-AS
-	SELECT
-		 [UserRoleID]
-		,[RoleID]
-		,[UserID]
-		,[PortalID]
-		,[RoleName]
-		,[ExpiryDate]
-		,[IsTrialUsed]
-		,[EffectiveDate]
-		,[CreatedByUserID]
-		,[CreatedOnDate]
-		,[LastModifiedByUserID]
-		,[LastModifiedOnDate]
-		,[Status]
-		,[IsOwner]
-		,{databaseOwner}[{objectQualifier}Export_UserName](CreatedByUserId) CreatedByUserName
-		,{databaseOwner}[{objectQualifier}Export_UserName](LastModifiedByUserId) LastModifiedByUserName
-	FROM {databaseOwner}[{objectQualifier}vw_UserRoles]
-	WHERE	UserID = @UserId AND PortalID = @PortalId
-		AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-		AND (CASE
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)<= @ToDate
-
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserAuthentication]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserAuthentication]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserAuthentication]
-	@UserID          int,
-	@ToDate			 datetime,
-	@FromDate		 datetime=NULL
-AS
-BEGIN
-	SELECT * FROM {databaseOwner}[{objectQualifier}UserAuthentication]
-	WHERE UserId = @UserID
-		AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-		AND (CASE
-		WHEN LastModifiedOnDate IS NULL THEN CreatedOnDate
-		ELSE LastModifiedOnDate END)<= @ToDate
-END
+	WHERE UserId=@UserId
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
