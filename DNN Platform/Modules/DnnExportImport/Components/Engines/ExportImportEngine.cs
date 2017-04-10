@@ -384,7 +384,7 @@ namespace Dnn.ExportImport.Components.Engines
                     result.AddSummary($"Job time slot ({_timeoutSeconds} sec) expired",
                         "Job will resume in the next scheduler iteration");
                 }
-                else if (importJob.JobStatus == JobStatus.InProgress && !TimeIsUp)
+                else if (importJob.JobStatus == JobStatus.InProgress)
                 {
                     importJob.JobStatus = JobStatus.Successful;
                 }

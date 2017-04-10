@@ -59,8 +59,6 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalTemplates : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    var progressStep = 100.0 / totalTemplates;
-
                     foreach (var template in templates)
                     {
                         Repository.CreateItem(template, null);
@@ -73,8 +71,8 @@ namespace Dnn.ExportImport.Components.Services
                             portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(template), templatesFile,
                             folderOffset);
 
-                        CheckPoint.Progress += progressStep;
                         CheckPoint.ProcessedItems++;
+                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalTemplates;
                         currentIndex++;
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;

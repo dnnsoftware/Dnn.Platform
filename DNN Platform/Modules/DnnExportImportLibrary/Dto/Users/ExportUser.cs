@@ -25,9 +25,7 @@ namespace Dnn.ExportImport.Dto.Users
 {
     public class ExportUser : BasicExportImportDto
     {
-        public int Total { get; set; }
         public int RowId { get; set; }
-        public int RowIdDesc { get; set; }
 
         public int UserId { get; set; }
 
@@ -35,14 +33,14 @@ namespace Dnn.ExportImport.Dto.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsSuperUser { get; set; }
-        public int AffiliateId { get; set; }
+        public int? AffiliateId { get; set; }
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public bool UpdatePassword { get; set; }
 
         public string LastIpAddress { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeletedPortal { get; set; }
 
         public int CreatedByUserId { get; set; } //How do we insert this value?
         public string CreatedByUserName { get; set; }//This could be used to find "CreatedByUserId"

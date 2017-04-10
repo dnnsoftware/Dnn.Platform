@@ -195,40 +195,33 @@ namespace Dnn.ExportImport.Components.Providers
         }
 
         public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDate,
-            DateTime? fromDate)
+            DateTime? fromDate, DateTime toDateUtc, DateTime? fromDateUtc)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
+                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate,
+                    _dataProvider.GetNull(fromDate), toDateUtc, _dataProvider.GetNull(fromDateUtc), false);
         }
 
-        public IDataReader GetAspNetUser(string username, DateTime toDate, DateTime? fromDate)
+        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username, toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider
+                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDate,
+                    _dataProvider.GetNull(fromDate), _dataProvider.GetNull(null), _dataProvider.GetNull(null), true);
         }
 
-        public IDataReader GetUserMembership(Guid userId, Guid applicationId)
+        public IDataReader GetAspNetUser(string username)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserMembership", userId, applicationId);
+            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
         }
 
-        public IDataReader GetUserRoles(int portalId, int userId, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetUserMembership(Guid userId)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserRoles", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetUserMembership", userId);
         }
 
-        public IDataReader GetUserPortal(int portalId, int userId, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetUserProfile(int portalId, int userId)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserPortal", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetUserAuthentication(int userId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserAuthentication", userId, toDate, _dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetUserProfile(int portalId, int userId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
@@ -335,6 +328,21 @@ namespace Dnn.ExportImport.Components.Providers
         public IDataReader GetAllTabModuleSettings(int tabId, DateTime toDate, DateTime? fromDate)
         {
             return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);
+        }
+
+        public void SetTabDeleted(int tabId, bool isDeleted)
+        {
+            _dataProvider.ExecuteNonQuery("Export_SetTabDeleted", tabId, isDeleted);
+        }
+
+        public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
+        {
+            _dataProvider.ExecuteNonQuery("Export_SetTabModuleDeleted", tabModuleId, isDeleted);
+        }
+
+        public void SetUserDeleted(int portalId, int userId, bool isDeleted)
+        {
+            _dataProvider.ExecuteNonQuery("Export_SetUserDeleted", portalId, userId, isDeleted);
         }
 
         public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)

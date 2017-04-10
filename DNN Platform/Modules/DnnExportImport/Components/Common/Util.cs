@@ -104,6 +104,9 @@ namespace Dnn.ExportImport.Components.Common
                 return -1;
 
             var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
+            if (user == null)
+                return -1;
+
             return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
