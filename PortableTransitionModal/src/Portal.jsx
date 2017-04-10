@@ -13,7 +13,7 @@ class Portal extends Component {
         this.componentDidUpdate();
     }
     componentDidUpdate() {
-        ReactDOM.render(<div className={`TransitionModalPortal ${this.props.className ? this.props.className : "" }`} {...this.props}>{this.props.children}</div>, this.portalElement);
+        ReactDOM.render(<div className={`TransitionModalPortal ${this.props.className ? this.props.className : "" }`}>{this.props.children}</div>, this.portalElement);
     }
     componentWillUnmount() {
         document.body.removeChild(this.portalElement);
