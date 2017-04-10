@@ -135,6 +135,10 @@ UPDATE {databaseOwner}[{objectQualifier}PersonaBarMenu] SET IconFile = N'Images/
     WHERE Identifier IN ('Content','Manage','Settings','Edit')
 GO
 
+/***** DNN-9665: remove logout menu item as it will used in flyout menu instead. *****/
+EXEC {databaseOwner}[{objectQualifier}PersonaBar_DeletePersonaBarMenuByIdentifier] @Identifier = N'Logout'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
