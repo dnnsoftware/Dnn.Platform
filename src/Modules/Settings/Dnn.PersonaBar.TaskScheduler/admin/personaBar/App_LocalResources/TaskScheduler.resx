@@ -570,4 +570,7 @@
   <data name="pagerSummary.Text" xml:space="preserve">
     <value>Showing {0}-{1} of {2} results</value>
   </data>
+  <data name="Servers.Text" xml:space="preserve">
+    <value>Servers</value>
+  </data>
 </root>
