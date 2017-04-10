@@ -45,6 +45,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "includeInMenu")]
         public bool IncludeInMenu { get; set; }
 
+        [DataMember(Name = "disableLink")]
+        public bool DisableLink { get; set; }
+
         [DataMember(Name = "created")]
         public string Created { get; set; }
 

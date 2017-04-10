@@ -444,6 +444,7 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.Description = GetTabDescription(pageSettings);
             tab.KeyWords = GetKeyWords(pageSettings);
             tab.IsVisible = pageSettings.IncludeInMenu;
+            tab.DisableLink = pageSettings.DisableLink;
 
             tab.StartDate = pageSettings.StartDate ?? Null.NullDate;
             tab.EndDate = pageSettings.EndDate ?? Null.NullDate;

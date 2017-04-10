@@ -7,6 +7,7 @@ import Dropdown from "dnn-dropdown";
 import Localization from "../../localization";
 import PageUrls from "./PageUrls/PageUrls";
 import MultiLineInputWithError from "dnn-multi-line-input-with-error";
+import Switch from "dnn-switch";
 
 class Seo extends Component {
 
@@ -31,7 +32,7 @@ class Seo extends Component {
     }
     
     render() {
-        const {page} = this.props;
+        const {page, onChangeField} = this.props;
         
         const editing = page.tabId !== 0;
         
@@ -52,14 +53,27 @@ class Seo extends Component {
                             onChange={this.onChangeField.bind(this, "pageHeadText")} />
                     </GridCell>
                     <GridCell className="right-column">
-                        <Label
-                            labelType="block"
-                            tooltipMessage={Localization.get("SitemapPriority_tooltip")}
-                            label={Localization.get("SitemapPriority")} />
-                        <Dropdown options={this.getSitemapPriorityOptions()}
-                            value={page.sitemapPriority} 
-                            onSelect={this.onSitemapPrioritySelected.bind(this)} 
-                            withBorder={true} />
+                        <GridCell>
+                            <Label
+                                labelType="block"
+                                tooltipMessage={Localization.get("SitemapPriority_tooltip")}
+                                label={Localization.get("SitemapPriority")} />
+                            <Dropdown options={this.getSitemapPriorityOptions()}
+                                value={page.sitemapPriority} 
+                                onSelect={this.onSitemapPrioritySelected.bind(this)} 
+                                withBorder={true} />
+                        </GridCell>
+                        <GridCell className="new-section">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={Localization.get("AllowIndexing_tooltip")}
+                                label={Localization.get("AllowIndexing")}
+                                />
+                            <Switch
+                                labelHidden={true}
+                                value={page.allowIndex}
+                                onChange={onChangeField.bind(this, "allowIndex")} />
+                    </GridCell>
                     </GridCell>
                 </GridSystem>
             </div>

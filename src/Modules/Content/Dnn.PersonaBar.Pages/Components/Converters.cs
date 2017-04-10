@@ -85,6 +85,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 PageType = pageType,
                 CreatedOnDate = tab.CreatedOnDate,
                 IncludeInMenu = tab.IsVisible,
+                DisableLink = tab.DisableLink,
                 CustomUrlEnabled = !tab.IsSuperTab && (Config.GetFriendlyUrlProvider() == "advanced"),
                 StartDate = tab.StartDate != Null.NullDate ? tab.StartDate : (DateTime?) null,
                 EndDate = tab.EndDate != Null.NullDate ? tab.EndDate : (DateTime?) null,

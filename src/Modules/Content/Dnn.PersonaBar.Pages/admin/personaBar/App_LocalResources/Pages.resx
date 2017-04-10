@@ -729,4 +729,10 @@
   <data name="PageDeletedMessage.Text" xml:space="preserve">
     <value>Page deleted successfully</value>
   </data>
+  <data name="DisableLink.Text" xml:space="preserve">
+    <value>Disable Page</value>
+  </data>
+  <data name="DisableLink_tooltip.Text" xml:space="preserve">
+    <value>If the page is disabled it cannot be clicked in any navigation menu. This option is used to provide place-holders for child menu items.</value>
+  </data>
 </root>

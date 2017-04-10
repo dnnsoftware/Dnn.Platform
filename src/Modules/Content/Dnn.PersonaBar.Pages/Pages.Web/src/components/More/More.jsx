@@ -64,13 +64,13 @@ class More extends Component {
                     <GridCell className="right-column">
                         <Label
                             labelType="inline"
-                            tooltipMessage={Localization.get("AllowIndexing_tooltip")}
-                            label={Localization.get("AllowIndexing")}
+                            tooltipMessage={Localization.get("DisableLink_tooltip")}
+                            label={Localization.get("DisableLink")}
                             />
                         <Switch
                             labelHidden={true}
-                            value={page.allowIndex}
-                            onChange={onChangeField.bind(this, "allowIndex")} />
+                            value={page.disableLink}
+                            onChange={onChangeField.bind(this, "disableLink")} />
                     </GridCell>
                 </GridSystem>
 
