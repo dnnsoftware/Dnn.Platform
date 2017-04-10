@@ -443,6 +443,14 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = local.TabModuleID;
                     Repository.UpdateItem(otherModule);
 
+                    // this is not saved upon updating the module
+                    if (other.IsDeleted)
+                    {
+                        local.IsDeleted = other.IsDeleted;
+                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID);
+                        //_moduleController.UpdateModule(local); // to clear cache
+                    }
+
                     var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                     var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                     UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
@@ -485,7 +493,16 @@ namespace Dnn.ExportImport.Components.Services
                         localModule.IsShareable = otherModule.IsShareable;
                         localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
 
+                        local.AllTabs = otherModule.AllTabs;
+                        local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
+                        local.EndDate = otherModule.EndDate ?? DateTime.MaxValue;
+                        local.InheritViewPermissions = otherModule.InheritViewPermissions ?? true;
+                        local.IsDeleted = otherModule.IsDeleted;
+                        local.IsShareable = otherModule.IsShareable;
+                        local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+
                         // setting tab module properties
+                        local.AllTabs = otherModule.AllTabs;
                         local.ModuleTitle = other.ModuleTitle;
                         local.Header = other.Header;
                         local.Footer = other.Footer;
@@ -502,6 +519,8 @@ namespace Dnn.ExportImport.Components.Services
                         local.DisplayTitle = other.DisplayTitle;
                         local.DisplayPrint = other.DisplayPrint;
                         local.DisplaySyndicate = other.DisplaySyndicate;
+                        local.IsShareable = otherModule.IsShareable;
+                        local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
                         local.IsWebSlice = other.IsWebSlice;
                         local.WebSliceTitle = other.WebSliceTitle;
                         local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
@@ -511,6 +530,13 @@ namespace Dnn.ExportImport.Components.Services
                         local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
                         local.LocalizedVersionGuid = other.LocalizedVersionGuid;
                         local.CultureCode = other.CultureCode;
+
+                        // this is not saved upon updating the module
+                        if (other.IsDeleted)
+                        {
+                            local.IsDeleted = other.IsDeleted;
+                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID);
+                        }
 
                         // updates both module and tab module db records
                         _moduleController.UpdateModule(local);

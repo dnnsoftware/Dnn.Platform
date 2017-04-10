@@ -1521,3 +1521,18 @@ BEGIN
     WHERE TabId = @TabId AND SeqNum = @SeqNum
 END
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
+	@TabModuleId     int
+AS
+BEGIN
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+    SET IsDeleted = 1
+    WHERE TabModuleId = @TabModuleId
+END
+GO
+

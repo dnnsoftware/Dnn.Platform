@@ -235,3 +235,7 @@ GO
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateTabUrlChangers]
 GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabModuleDeleted]
+GO
