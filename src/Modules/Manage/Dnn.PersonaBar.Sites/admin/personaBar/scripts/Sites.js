@@ -13,6 +13,7 @@
     var init = function (wrapper, util, params, callback) {
         identifier = params.identifier;
         window.dnn.initSites = function initializeSites() {
+            params.cultureCode = config.culture;
             return params;
         };
         loadScript();
