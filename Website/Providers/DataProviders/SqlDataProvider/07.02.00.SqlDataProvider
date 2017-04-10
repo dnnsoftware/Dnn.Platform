@@ -346,12 +346,12 @@ GO
 /** DNN-2995 - SI: Performance improvement in dbo.GetUsersByEmail **/
 /*******************************************************************/
 
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{objectQualifier}Users ' AND COLUMN_NAME = 'LowerEmail')
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'LowerEmail')
 	BEGIN
-		ALTER TABLE {databaseOwner}{objectQualifier}Users
+		ALTER TABLE {databaseOwner}[{objectQualifier}Users]
 		  ADD LowerEmail AS LOWER(Email) PERSISTED
 
-		CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}{objectQualifier}Users(Email)
+		CREATE NONCLUSTERED INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}[{objectQualifier}Users] (Email)
 	END
 GO
 

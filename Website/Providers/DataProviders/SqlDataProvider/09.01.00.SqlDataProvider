@@ -118,6 +118,15 @@ DELETE FROM {databaseOwner}[{objectQualifier}Files]
     WHERE PortalId IS NULL AND FileName IN ('GettingStartedFallback.png', 'GettingStartedFallback.htm', 'GettingStarted.css')                                                                                    
 GO
 
+/***** DNN-9651: Drop duplicate index and unused calculated column *****/
+IF Exists (SELECT * FROM sys.indexes WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_{objectQualifier}Users_LowerEmail')
+	DROP INDEX IX_{objectQualifier}Users_LowerEmail ON {databaseOwner}[{objectQualifier}Users];
+GO
+
+IF Exists (SELECT * FROM sys.columns WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'LowerEmail')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Users] DROP COLUMN LowerEmail;
+GO
+/***** End DNN-9651 *****/
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
