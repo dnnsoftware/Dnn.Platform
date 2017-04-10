@@ -53,6 +53,7 @@ namespace Dnn.ExportImport.Components.Common
         internal static DateTime EpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MinDbTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static int MaxZipFilesMemory = 104857600;//100 MB
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 
@@ -71,15 +72,5 @@ namespace Dnn.ExportImport.Components.Common
         internal const string Category_Portal = "PORTAL";
         internal const string Category_Pages = "PAGES";
         internal const string Category_UsersData = "USERS_DATA";
-
-        //Manifest file tags
-        internal const string Manifest_PortalName = "PortalName";
-        internal const string Manifest_PackageId = "PackageId";
-        internal const string Manifest_PackageName = "Name";
-        internal const string Manifest_PackageDescription = "Description";
-        internal const string Manifest_ExportPath = "ExportPath";
-        internal const string Manifest_ExportSize = "ExportSize";
-        internal const string Manifest_ExportTime = "ExportTime";
-        internal const string Manifest_RootTag = "Package";
     }
 }

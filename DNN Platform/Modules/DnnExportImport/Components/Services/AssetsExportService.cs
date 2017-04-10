@@ -92,8 +92,6 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    var progressStep = 100.0 / totalFolders;
-
                     foreach (var folder in folders)
                     {
                         if (CheckCancelled(exportJob)) break;
@@ -135,13 +133,16 @@ namespace Dnn.ExportImport.Components.Services
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
                                            (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
 
-                        CompressionUtil.AddFilesToArchive(
-                            files.Select(
-                                file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
-                            assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
-
-                        CheckPoint.Progress += progressStep;
+                        if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
+                        {
+                            CompressionUtil.AddFilesToArchive(
+                                files.Select(
+                                    file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
+                                assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
+                        }
                         CheckPoint.ProcessedItems++;
+                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalFolders;
+                        CheckPoint.StageData = null;
                         currentIndex++;
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
@@ -211,7 +212,6 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
 
-                    var progressStep = 90.0 / totalFolders;
                     foreach (var sourceFolder in sourceFolders)
                     {
                         if (CheckCancelled(importJob)) break;
@@ -274,7 +274,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress += progressStep;
+                        CheckPoint.Progress = 10 + CheckPoint.ProcessedItems * 90.0 / totalFolders;
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }

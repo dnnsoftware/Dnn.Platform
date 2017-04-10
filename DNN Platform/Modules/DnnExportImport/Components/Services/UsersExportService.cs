@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
                     totalAspnetMembershipExported += exportAspnetMembershipList.Count;
 
                     CheckPoint.ProcessedItems += exportUsersList.Count;
-                    CheckPoint.Progress = (double)totalUsers / totalUsersExported * 100;
+                    CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     CheckPoint.Stage++;
                     if (CheckPointStageCallback(this)) return;
 
@@ -209,7 +209,6 @@ namespace Dnn.ExportImport.Components.Services
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
 
-            var progressStep = totalUsers > 100 ? totalUsers / 100 : 1;
             try
             {
                 while (totalUsersImported < totalUsersToBeProcessed)
@@ -237,8 +236,7 @@ namespace Dnn.ExportImport.Components.Services
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
                         totalUsersImported++;
-                        if (CheckPoint.ProcessedItems % progressStep == 0)
-                            CheckPoint.Progress += 1;
+                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
 
                         CheckPoint.StageData = null;
                         //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.

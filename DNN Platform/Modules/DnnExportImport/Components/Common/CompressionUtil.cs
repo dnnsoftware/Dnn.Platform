@@ -121,10 +121,22 @@ namespace Dnn.ExportImport.Components.Common
         public static void AddFilesToArchive(IEnumerable<string> files, string archivePath, int folderOffset,
             string folder = null)
         {
-            using (var archive = OpenCreate(archivePath))
+            var enumerable = files as IList<string> ?? files.ToList();
+            if (!enumerable.Any()) return;
+            ZipArchive archive = null;
+            using (archive = OpenCreate(archivePath))
             {
-                foreach (var file in files)
+                long currentTotalSize = 0;
+                foreach (var file in enumerable.Where(File.Exists))
                 {
+                    if (currentTotalSize >= Constants.MaxZipFilesMemory)
+                    {
+                        currentTotalSize = 0;
+                        archive.Dispose();
+                        archive = OpenCreate(archivePath);
+                    }
+                    var fileInfo = new FileInfo(file);
+                    currentTotalSize += fileInfo.Length;
                     AddFileToArchive(archive, file, folderOffset, folder);
                 }
             }
@@ -143,7 +155,10 @@ namespace Dnn.ExportImport.Components.Common
         {
             using (var archive = OpenCreate(archivePath))
             {
-                AddFileToArchive(archive, file, folderOffset, folder);
+                if (File.Exists(file))
+                {
+                    AddFileToArchive(archive, file, folderOffset, folder);
+                }
             }
         }
 
@@ -158,27 +173,8 @@ namespace Dnn.ExportImport.Components.Common
             {
                 existingEntry.Delete();
             }
-            if (File.Exists(file))
-            {
-                if (string.IsNullOrEmpty(folder))
-                {
-                    archive.CreateEntryFromFile(file, entryName, CompressionLevel.Optimal);
-                }
-                else
-                {
-                    using (var fs = File.OpenRead(file))
-                    {
-                        // this is custom code that copies a file location's data to a Stream (msFileBody); this is the Stream needing compression that prompted my initial question 
-                        var zipArchiveEntry = archive.CreateEntry(Path.Combine(folder, entryName),
-                            CompressionLevel.Optimal);
-                        using (var zipEntryStream = zipArchiveEntry.Open())
-                        {
-                            //Copy the attachment stream to the zip entry stream
-                            fs.CopyTo(zipEntryStream);
-                        }
-                    }
-                }
-            }
+            archive.CreateEntryFromFile(file,
+                string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Optimal);
         }
 
         /// <summary>
