@@ -213,6 +213,7 @@ class EditThemeAttributes extends Component {
                         <GridCell>
                             <GridCell columnSize="50">
                                 <DropdownWithError
+                                    defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getThemeOptions()}
                                     value={state.themeName}
                                     onSelect={this.onThemeChanged.bind(this)}
@@ -230,6 +231,7 @@ class EditThemeAttributes extends Component {
                             <div className="clear split" />
                             <GridCell columnSize="50">
                                 <DropdownWithError
+                                    defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getThemeFileOptions()}
                                     value={state.path}
                                     onSelect={this.onThemeFileChanged.bind(this)}
@@ -240,6 +242,7 @@ class EditThemeAttributes extends Component {
                             </GridCell>
                             <GridCell columnSize="50" className="right-column">
                                 <DropdownWithError
+                                    defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getSettingOptions()}
                                     value={state.setting}
                                     onSelect={this.onSettingChanged.bind(this)}
@@ -250,6 +253,7 @@ class EditThemeAttributes extends Component {
                             </GridCell>
                             <GridCell columnSize="50">
                                 <DropdownWithError
+                                    defaultDropdownValue={Localization.get("NoneSpecified")}
                                     options={this.getTokenOptions()}
                                     value={state.token}
                                     onSelect={this.onTokenChanged.bind(this)}
