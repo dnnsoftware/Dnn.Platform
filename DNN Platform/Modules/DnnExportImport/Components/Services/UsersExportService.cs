@@ -230,9 +230,6 @@ namespace Dnn.ExportImport.Components.Services
                            aspnetMembership != null ? new ImportAspnetMembership(aspnetMembership) : null);
                         totalAspnetUserImported += aspNetUser != null ? 1 : 0;
                         totalAspnetMembershipImported += aspnetMembership != null ? 1 : 0;
-                        ProcessUserPortal(importJob, importDto, userPortal, user.UserId);
-                        totalPortalsImported += userPortal != null ? 1 : 0;
-
                         currentIndex++;
                         CheckPoint.ProcessedItems++;
                         totalUsersImported++;
@@ -300,54 +297,19 @@ namespace Dnn.ExportImport.Components.Services
                 user.UserId = existingUser.UserId;
                 DotNetNuke.Data.DataProvider.Instance().UpdateUser(user.UserId, importJob.PortalId, user.FirstName, user.LastName, user.IsSuperUser,
                         user.Email, user.DisplayName, vanityUrl, user.UpdatePassword, aspnetMembership?.IsApproved ?? true,
-                        false, user.LastIpAddress, user.PasswordResetToken ?? Guid.NewGuid(), user.PasswordResetExpiration ?? DateTime.Now.AddYears(10), user.IsDeleted, modifiedBy);
-
-                ProcessUserMembership(aspnetUser, aspnetMembership, true);
+                        false, user.LastIpAddress, user.PasswordResetToken ?? Guid.NewGuid(), user.PasswordResetExpiration ?? DateTime.Now.AddYears(10), user.IsDeletedPortal, modifiedBy);
             }
             else
             {
                 var createdBy = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
                 user.UserId = DotNetNuke.Data.DataProvider.Instance().AddUser(importJob.PortalId, user.Username, user.FirstName, user.LastName, user.AffiliateId ?? Null.NullInteger,
                         user.IsSuperUser, user.Email, user.DisplayName, user.UpdatePassword, aspnetMembership?.IsApproved ?? true, createdBy);
-
-                ProcessUserMembership(aspnetUser, aspnetMembership);
             }
+            ProcessUserMembership(aspnetUser, aspnetMembership);
+
         }
 
-        private void ProcessUserPortal(ExportImportJob importJob, ImportDto importDto,
-            ExportUserPortal userPortal, int userId)
-        {
-            if (userPortal == null) return;
-            var existingPortal =
-                CBO.FillObject<ExportUserPortal>(DataProvider.Instance().GetUserPortal(importJob.PortalId, userId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
-            var isUpdate = false;
-            if (existingPortal != null)
-            {
-                switch (importDto.CollisionResolution)
-                {
-                    case CollisionResolution.Overwrite:
-                        isUpdate = true;
-                        break;
-                    case CollisionResolution.Ignore:
-                        //Result.AddLogEntry("Ignored user portal", $"{username}/{userPortal.PortalId}");
-                        return;
-                    default:
-                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                }
-            }
-
-            if (isUpdate)
-            {
-                //Nothing to do
-            }
-            else
-            {
-                DotNetNuke.Data.DataProvider.Instance().AddUserPortal(importJob.PortalId, userId);
-            }
-        }
-
-        private void ProcessUserMembership(ImportAspnetUser aspNetUser, ImportAspnetMembership aspnetMembership,
-            bool update = false)
+        private void ProcessUserMembership(ImportAspnetUser aspNetUser, ImportAspnetMembership aspnetMembership)
         {
             if (aspNetUser == null) return;
             using (var db =
@@ -360,7 +322,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var existingAspnetUser =
                     CBO.FillObject<ExportAspnetUser>(DataProvider.Instance()
-                        .GetAspNetUser(aspNetUser.UserName, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+                        .GetAspNetUser(aspNetUser.UserName));
                 if (existingAspnetUser != null)
                 {
                     aspNetUser.LastActivityDate = existingAspnetUser.LastActivityDate;

@@ -209,9 +209,9 @@ namespace Dnn.ExportImport.Components.Providers
                     _dataProvider.GetNull(fromDate), _dataProvider.GetNull(null), _dataProvider.GetNull(null), true);
         }
 
-        public IDataReader GetAspNetUser(string username, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetAspNetUser(string username)
         {
-            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username, toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
         }
 
         public IDataReader GetUserMembership(Guid userId)
@@ -219,14 +219,9 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_GetUserMembership", userId);
         }
 
-        public IDataReader GetUserPortal(int portalId, int userId, DateTime toDate, DateTime? fromDate)
+        public IDataReader GetUserProfile(int portalId, int userId)
         {
-            return _dataProvider.ExecuteReader("Export_GetUserPortal", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetUserProfile(int portalId, int userId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId, toDate, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)

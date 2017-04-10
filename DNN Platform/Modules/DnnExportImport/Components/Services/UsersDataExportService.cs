@@ -188,7 +188,7 @@ namespace Dnn.ExportImport.Components.Services
             IEnumerable<ExportUserProfile> userProfiles, int userId)
         {
             var allUserProfileProperties =
-                CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
+                CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId));
             foreach (var userProfile in userProfiles)
             {
                 if (CheckCancelled(importJob)) return;

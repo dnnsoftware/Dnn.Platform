@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Dto.Users
 
         public string LastIpAddress { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeletedPortal { get; set; }
 
         public int CreatedByUserId { get; set; } //How do we insert this value?
         public string CreatedByUserName { get; set; }//This could be used to find "CreatedByUserId"

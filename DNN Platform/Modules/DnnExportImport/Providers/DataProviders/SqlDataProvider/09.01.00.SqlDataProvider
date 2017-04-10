@@ -643,9 +643,9 @@ BEGIN
 	BEGIN
 		; WITH [tmpUsers] AS (
 		SELECT U.UserID
-			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] VP ON U.UserID=VP.UserId
-			WHERE VP.PortalId = @PortalID
-			AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] UP ON U.UserID=UP.UserId
+			WHERE UP.PortalId = @PortalID
+			AND UP.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 			AND (CASE
 			WHEN @FromDate IS NULL THEN 0
 			WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
@@ -677,10 +677,10 @@ BEGIN
 	
 		--Prepare users query.
 		; WITH [tmpUsers] AS (
-			SELECT U.*,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.UserID) AS RowId
-				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] VP ON U.UserID=VP.UserId
-				WHERE VP.PortalId = @PortalID
-				AND U.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
+			SELECT U.*, UP.IsDeleted IsDeletedPortal,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.UserID) AS RowId
+				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] UP ON U.UserID=UP.UserId
+				WHERE UP.PortalId = @PortalID
+				AND UP.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 				AND (CASE
 				WHEN @FromDate IS NULL THEN 0
 				WHEN U.LastModifiedOnDate IS NOT NULL THEN U.LastModifiedOnDate
@@ -777,13 +777,6 @@ BEGIN
 			,[VanityUrl]
  		FROM {databaseOwner}[{objectQualifier}UserPortals]
 		WHERE UserId IN(SELECT UserID FROM #tmpPagedUsers) AND PortalId = @PortalId
-			AND (CASE
-			WHEN @FromDate IS NULL THEN 0
-			WHEN [CreatedDate] IS NOT NULL THEN CreatedDate
-			ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
-			AND (CASE
-			WHEN [CreatedDate] IS NOT NULL THEN [CreatedDate]
-			ELSE @ToDate END<= @ToDate)
 
 		--AspNet User
 		SELECT * INTO #tmpAspNetUsers
@@ -803,45 +796,13 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserPortal]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserPortal]
-	@PortalId	int,
-	@UserId		int,
-	@ToDate		datetime,
-	@FromDate	datetime=NULL
-AS
-	SELECT
-		 [UserId]
-		,[PortalId]
-		,[UserPortalId]
-		,[CreatedDate]
-		,[Authorised]
-		,[IsDeleted]
-		,[RefreshRoles]
-		,[VanityUrl]
- 	FROM {databaseOwner}[{objectQualifier}UserPortals]
-	WHERE UserId = @UserId AND PortalId = @PortalId
-		AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN [CreatedDate] IS NOT NULL THEN CreatedDate
-		ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
-		AND (CASE
-		WHEN [CreatedDate] IS NOT NULL THEN [CreatedDate]
-		ELSE @ToDate END<= @ToDate)
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
 	@PortalId	int,
-	@UserId		int,
-	@ToDate		datetime,
-	@FromDate	datetime=NULL
+	@UserId		int
 AS
 	SELECT
 		UP.ProfileID,
@@ -856,13 +817,6 @@ AS
 	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
 	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
 	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
-		AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
-		ELSE ISNULL(@FromDate,0) END)>= ISNULL(@FromDate,0)
-		AND (CASE
-		WHEN UP.LastUpdatedDate IS NOT NULL THEN UP.LastUpdatedDate
-		ELSE @ToDate END<= @ToDate)
 
 GO
 
@@ -871,18 +825,11 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS 
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-	@Username		nvarchar(256),
-	@ToDate			datetime,
-	@FromDate		datetime=NULL
-
+	@Username		nvarchar(256)
 AS
 	SELECT *
  	FROM {databaseOwner}[aspnet_Users]
 	WHERE  UserName=@Username
-		AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		ELSE [LastActivityDate] END)>= ISNULL(@FromDate,0)
-		AND [LastActivityDate] <= @ToDate
 
 GO
 
