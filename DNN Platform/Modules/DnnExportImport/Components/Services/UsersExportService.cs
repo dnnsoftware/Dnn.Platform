@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
                     totalAspnetMembershipExported += exportAspnetMembershipList.Count;
 
                     CheckPoint.ProcessedItems += exportUsersList.Count;
-                    CheckPoint.Progress += (double)totalUsers / totalUsersExported * 100;
+                    CheckPoint.Progress = (double)totalUsers / totalUsersExported * 100;
                     CheckPoint.Stage++;
                     if (CheckPointStageCallback(this)) return;
 
