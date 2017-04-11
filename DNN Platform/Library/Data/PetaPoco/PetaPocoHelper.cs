@@ -61,7 +61,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception)
                 {
-                    Logger.Error($"[1] Error executing SQL: " + sql);
+                    Logger.Error($"[1] Error executing SQL: {sql} (arguments count={args.Length}");
                     throw;
                 }
             }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Data.PetaPoco
                     }
                     catch (Exception)
                     {
-                        Logger.Error($"[2] Error executing SQL: " + cmd.CommandText);
+                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
                         throw;
                     }
                     con.Close();
@@ -127,7 +127,7 @@ namespace DotNetNuke.Data.PetaPoco
             }
             catch (Exception)
             {
-                Logger.Error($"[3] Error executing SQL: " + sql);
+                Logger.Error($"[3] Error executing SQL: {sql} (arguments count={args.Length}");
                 throw;
             }
         }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception)
                 {
-                    Logger.Error($"[4] Error executing SQL: " + sql);
+                    Logger.Error($"[4] Error executing SQL: {sql} (arguments count={args.Length}");
                     throw;
                 }
             }
@@ -185,7 +185,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception)
                 {
-                    Logger.Error($"[5] Error executing SQL: " + sql);
+                    Logger.Error("[5] Error executing SQL: " + sql);
                     throw;
                 }
             }
