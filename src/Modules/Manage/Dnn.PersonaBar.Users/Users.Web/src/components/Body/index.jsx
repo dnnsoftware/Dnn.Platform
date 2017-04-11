@@ -15,7 +15,7 @@ import utilities from "utils";
 
 const searchParameters = {
     searchText: "",
-    filter: 5,
+    filter: 0,
     pageIndex: 0,
     pageSize: 10,
     sortColumn: "",
