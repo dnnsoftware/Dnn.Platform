@@ -171,7 +171,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         row["JobId"] = jobId;
                         row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
                         row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
-                        row["IsSummary"] = item.IsSummary;
+                        row["Level"] = (int)item.ReportLevel;
                         row["CreatedOnDate"] = item.CreatedOnDate;
                         table.Rows.Add(row);
                     }
@@ -187,7 +187,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             new Tuple<string,Type>("JobId", typeof(int)),
             new Tuple<string,Type>("Name" , typeof(string)),
             new Tuple<string,Type>("Value", typeof(string)),
-            new Tuple<string,Type>("IsSummary", typeof(bool)),
+            new Tuple<string,Type>("Level", typeof(bool)),
             new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
     }

@@ -36,7 +36,7 @@ namespace Dnn.ExportImport.Components.Entities
         public int JobId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
-        public bool IsSummary { get; set; }
+        public int Level { get; set; }
         public DateTime CreatedOnDate { get; set; }
 
         public int KeyID
@@ -47,12 +47,12 @@ namespace Dnn.ExportImport.Components.Entities
 
         public void Fill(IDataReader dr)
         {
-            JobLogId = Null.SetNullInteger(dr["JobLogId"]);
-            JobId = Null.SetNullInteger(dr["JobId"]);
-            Name = Null.SetNullString(dr["Name"]);
-            Value = Null.SetNullString(dr["Value"]);
-            IsSummary = Null.SetNullBoolean(dr["IsSummary"]);
-            CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
+            JobLogId = Null.SetNullInteger(dr[nameof(JobLogId)]);
+            JobId = Null.SetNullInteger(dr[nameof(JobId)]);
+            Name = Null.SetNullString(dr[nameof(Name)]);
+            Value = Null.SetNullString(dr[nameof(Value)]);
+            Level = Null.SetNullInteger(dr[nameof(Level)]);
+            CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
         }
     }
 }

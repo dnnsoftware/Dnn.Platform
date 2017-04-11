@@ -166,7 +166,7 @@ namespace Dnn.ExportImport.Components.Services
                         var parentId = GetParentLocalTabId(otherTab.TabId, exportedTabs, localTabs);
                         if (localTab.ParentId == -1 && otherTab.ParentId > 0)
                         {
-                            Result.AddLogEntry("WARN: Imported existing TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")");
+                            Result.AddLogEntry("Imported existing TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")", ReportLevel.Warn);
                         }
                         else
                         {
@@ -195,7 +195,7 @@ namespace Dnn.ExportImport.Components.Services
                 localTab.ParentId = GetParentLocalTabId(otherTab.TabId, exportedTabs, localTabs);
                 if (localTab.ParentId == -1 && otherTab.ParentId > 0)
                 {
-                    Result.AddLogEntry("WARN: Imported new TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")");
+                    Result.AddLogEntry("Imported new TAB parent NOT found", otherTab.TabName + " (" + otherTab.TabPath + ")", ReportLevel.Warn);
                 }
 
                 otherTab.LocalId = _tabController.AddTab(localTab);
@@ -386,7 +386,7 @@ namespace Dnn.ExportImport.Components.Services
                     _dataProvider.UpdateTabUrlChangers(local.TabId, local.SeqNum, createdBy, modifiedBy);
 
                     Result.AddLogEntry("Added Tab Url", other.Url);
-                    Result.AddLogEntry("WARN: Tab alias skin might have different portal alias than intended.", other.HTTPAlias);
+                    Result.AddLogEntry("Tab alias skin might have different portal alias than intended.", other.HTTPAlias, ReportLevel.Warn);
                     count++;
                 }
             }
@@ -748,7 +748,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
+                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
                         Logger.Error("Error cerating business class type. " + ex);
                     }
                 }
@@ -919,7 +919,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
             var fromDate = _exportDto.FromDate?.DateTime.ToLocalTime();
-            var isAllIncluded = selectedPages.Any(p => p.TabId == -1);
+            var isAllIncluded = selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
                 _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
@@ -937,9 +937,9 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (_totals.LastProcessedId > otherPg.TabID) continue;
 
-                var tab = _tabController.GetTab(otherPg.TabID, portalId);
                 if (isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
+                    var tab = _tabController.GetTab(otherPg.TabID, portalId);
                     var exportPage = SaveExportPage(tab);
 
                     _totals.TotalSettings +=
@@ -1095,7 +1095,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass);
+                        Result.AddLogEntry("Error cerating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
                         Logger.Error("Error cerating business class type. " + ex);
                     }
                 }

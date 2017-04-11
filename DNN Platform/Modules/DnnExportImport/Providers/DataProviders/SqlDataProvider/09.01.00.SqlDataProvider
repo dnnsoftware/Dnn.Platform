@@ -198,7 +198,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportJobLogs]', N'U') IS 
 		[JobId]          int NOT NULL,
 		[Name]           nvarchar(255),
 		[Value]          nvarchar(255),
-		[IsSummary]      bit NOT NULL DEFAULT 0,
+		[Level]          int NOT NULL DEFAULT 0,
 		[CreatedOnDate]  DateTime NOT NULL DEFAULT GetUtcDate(),
 
 		CONSTRAINT [PK_{objectQualifier}ExportImportJobLogs] PRIMARY KEY ([JobLogId])
@@ -241,7 +241,7 @@ CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType] AS TABLE
 	[JobId]         int,
 	[Name]          nvarchar(100),
 	[Value]         nvarchar(100),
-	[IsSummary]     bit,
+	[Level]         int,
 	[CreatedOnDate] datetime
 );
 GO
@@ -254,13 +254,13 @@ BEGIN
 			[JobId],
 			[Name],
 			[Value],
-			[IsSummary],
+			[Level],
 			[CreatedOnDate] )
 		SELECT
 			dt.[JobId],
 			dt.[Name],
 			dt.[Value],
-			dt.[IsSummary],
+			dt.[Level],
 			dt.[CreatedOnDate]
 		FROM
 			@DataTable dt
@@ -513,7 +513,7 @@ BEGIN
 	WHERE
 		JobId = @JobId
 	  AND
-		IsSummary = 1
+		Level >= 1
 END
 GO
 

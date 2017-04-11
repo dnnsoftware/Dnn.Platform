@@ -60,4 +60,12 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         Overwrite,
     }
+
+    public enum ReportLevel
+    {
+        Verbose,
+        Info,
+        Warn,
+        Error
+    }
 }

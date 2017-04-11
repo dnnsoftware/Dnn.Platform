@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto.Jobs;
 using DotNetNuke.Common.Utilities;
 
@@ -33,7 +34,7 @@ namespace Dnn.ExportImport.Components.Models
 
         public IList<LogItem> Summary
         {
-            get { return CompleteLog.Where(item => item.IsSummary).ToList(); }
+            get { return CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
         }
 
         public ExportImportResult()
@@ -43,21 +44,16 @@ namespace Dnn.ExportImport.Components.Models
 
         public LogItem AddSummary(string name, string value)
         {
-            return AddLogEntry(name, value, true);
+            return AddLogEntry(name, value, ReportLevel.Info);
         }
 
-        public LogItem AddLogEntry(string name, string value)
-        {
-            return AddLogEntry(name, value, false);
-        }
-
-        private LogItem AddLogEntry(string name, string value, bool isSummary)
+        public LogItem AddLogEntry(string name, string value, ReportLevel level = ReportLevel.Verbose)
         {
             var item = new LogItem
             {
                 Name = name,
                 Value = value,
-                IsSummary = isSummary,
+                ReportLevel = level,
                 CreatedOnDate = DateUtils.GetDatabaseUtcTime(),
             };
 
