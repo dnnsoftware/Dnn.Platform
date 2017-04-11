@@ -56,26 +56,6 @@ namespace Dnn.ExportImport.Components.Dto
         public string ExporTimeString => Util.GetDateTimeString(ExporTime);
 
         /// <summary>
-        /// Formatted export file size
-        /// </summary>
-        public string ExportSize { get; set; }
-
-        /// <summary>
-        /// Size of exported DB compressed file.
-        /// </summary>
-        public string ExportDbSize { get; set; }
-
-        /// <summary>
-        /// Size of exported assets compressed file
-        /// </summary>
-        public string ExportFilesSize { get; set; }
-
-        /// <summary>
-        /// Size of exported assets compressed file
-        /// </summary>
-        public string ExportTemplatesSize { get; set; }
-
-        /// <summary>
         /// The portal from which the exported package was created
         /// </summary>
         public string PortalName { get; set; }

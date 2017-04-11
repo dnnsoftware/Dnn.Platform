@@ -64,11 +64,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Name = exportJob.Name,
                 Description = exportJob.Description,
                 ExporTime = exportJob.CreatedOnDate,
-                PortalName = portal?.PortalName,
-                ExportSize = exportFileInfo.ExportFilesSize,
-                ExportFilesSize = exportFileInfo.ExportFilesSize,
-                ExportDbSize = exportFileInfo.ExportDbSize,
-                ExportTemplatesSize = exportFileInfo.ExportTemplatesSize,
+                PortalName = portal?.PortalName
             };
             Util.WriteJson(filePath, packageInfo);
         }
