@@ -729,4 +729,10 @@
   <data name="PageDeletedMessage.Text" xml:space="preserve">
     <value>Page deleted successfully</value>
   </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
 </root>
