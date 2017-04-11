@@ -80,7 +80,7 @@ class ExportModal extends Component {
     onExportPortal() {
         const { props, state } = this;
         if (this.Validate()) {
-            props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
+            props.dispatch(ImportExportActions.exportSite(state.exportRequest, () => {
                 utilities.utilities.notify(Localization.get("ExportRequestSubmitted"));
                 props.dispatch(ImportExportActions.getAllJobs({
                     portal: props.portalId,
@@ -97,6 +97,10 @@ class ExportModal extends Component {
     Validate() {
         let success = true;
         success = this.ValidateTexts();
+        if (success && !this.ValidateHasExportItem()) {
+            utilities.utilities.notifyError(Localization.get("NoExportItem.ErrorMessage"));
+            success = false;
+        }
         return success;
     }
 
@@ -115,6 +119,20 @@ class ExportModal extends Component {
             }
             this.setState({});
         });
+        return success;
+    }
+
+    ValidateHasExportItem() {
+        let success = true;
+        const { exportRequest } = this.state;
+        if (exportRequest.IncludeContent || exportRequest.IncludeFiles || exportRequest.IncludeUsers || exportRequest.IncludeRoles ||
+            exportRequest.IncludeVocabularies || exportRequest.IncludeTemplates || exportRequest.IncludeProperfileProperties ||
+            exportRequest.IncludePermissions || exportRequest.IncludeExtensions || (exportRequest.pages && exportRequest.pages.length > 0)) {
+            success = true;
+        }
+        else {
+            success = false;
+        }
         return success;
     }
 
