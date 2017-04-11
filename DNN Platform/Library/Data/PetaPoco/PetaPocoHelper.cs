@@ -61,7 +61,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception)
                 {
-                    Logger.Error($"[1] Error executing SQL: {sql} (arguments count={args.Length}");
+                    Logger.Error($"[1] Error executing SQL: {sql} (arguments count={args.Length})");
                     throw;
                 }
             }
@@ -127,7 +127,11 @@ namespace DotNetNuke.Data.PetaPoco
             }
             catch (Exception)
             {
-                Logger.Error($"[3] Error executing SQL: {sql} (arguments count={args.Length}");
+                // very special case for installation
+                if (!sql.EndsWith("GetDatabaseVersion"))
+                {
+                    Logger.Error($"[3] Error executing SQL: {sql} (arguments count={args.Length})");
+                }
                 throw;
             }
         }
@@ -157,7 +161,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception)
                 {
-                    Logger.Error($"[4] Error executing SQL: {sql} (arguments count={args.Length}");
+                    Logger.Error($"[4] Error executing SQL: {sql} (arguments count={args.Length})");
                     throw;
                 }
             }
