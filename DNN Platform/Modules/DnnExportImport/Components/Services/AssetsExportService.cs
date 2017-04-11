@@ -29,6 +29,7 @@ using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Assets;
 using DotNetNuke.Entities.Portals;
@@ -56,7 +57,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string ParentCategory => null;
 
-        public override uint Priority => 5;
+        public override uint Priority => 50;
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
@@ -85,67 +86,72 @@ namespace Dnn.ExportImport.Components.Services
                     var folders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                             .GetFolders(portalId, toDate, fromDate)).ToList();
-                    folders = folders.Skip(skip).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
+                    folders = folders.Skip(skip).ToList();
+
 
                     //Update the total items count in the check points. This should be updated only once.
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
+                    CheckPoint.ProcessedItems = skip;
+                    CheckPoint.Progress = skip * 100.0 / CheckPoint.TotalItems;
                     if (CheckPointStageCallback(this)) return;
-
-                    foreach (var folder in folders)
+                    using (var zipArchive = CompressionUtil.OpenCreate(assetsFile))
                     {
-                        if (CheckCancelled(exportJob)) break;
-                        var isUserFolder = false;
+                        foreach (var folder in folders)
+                        {
+                            if (CheckCancelled(exportJob)) break;
+                            var isUserFolder = false;
 
-                        var files =
-                            CBO.FillCollection<ExportFile>(
-                                DataProvider.Instance()
-                                    .GetFiles(portalId, folder.FolderId, toDate, fromDate)).Where(x => x.Extension != Constants.TemplatesExtension).ToList();
-                        int? userId;
-                        if (IsUserFolder(folder.FolderPath, out userId))
-                        {
-                            isUserFolder = true;
-                            folder.UserId = userId;
-                            folder.Username =
-                                UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
-                        }
-                        if (folder.ParentId != null && folder.ParentId > 0)
-                        {
-                            //If parent id exists then change the parent folder id to parent id.
-                            folder.ParentId =
-                                Repository.GetItem<ExportFolder>(
-                                    x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
-                        }
+                            var files =
+                                CBO.FillCollection<ExportFile>(
+                                    DataProvider.Instance()
+                                        .GetFiles(portalId, folder.FolderId, toDate, fromDate)).Where(x => x.Extension != Constants.TemplatesExtension).ToList();
+                            int? userId;
+                            if (IsUserFolder(folder.FolderPath, out userId))
+                            {
+                                isUserFolder = true;
+                                folder.UserId = userId;
+                                folder.Username =
+                                    UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
+                            }
+                            if (folder.ParentId != null && folder.ParentId > 0)
+                            {
+                                //If parent id exists then change the parent folder id to parent id.
+                                folder.ParentId =
+                                    Repository.GetItem<ExportFolder>(
+                                        x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
+                            }
 
-                        Repository.CreateItem(folder, null);
-                        totalFolderExported++;
-                        //Include permissions only if IncludePermissions=true
-                        if (exportDto.IncludePermissions)
-                        {
-                            var permissions =
-                                CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
-                                    .GetFolderPermissionsByPath(portalId, folder.FolderPath, toDate, fromDate));
-                            Repository.CreateItems(permissions, folder.Id);
-                            totalFolderPermissionsExported += permissions.Count;
-                        }
-                        Repository.CreateItems(files, folder.Id);
-                        totalFilesExported += files.Count;
-                        var folderOffset = portal.HomeDirectoryMapPath.Length +
-                                           (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+                            Repository.CreateItem(folder, null);
+                            totalFolderExported++;
+                            //Include permissions only if IncludePermissions=true
+                            if (exportDto.IncludePermissions)
+                            {
+                                var permissions =
+                                    CBO.FillCollection<ExportFolderPermission>(DataProvider.Instance()
+                                        .GetFolderPermissionsByPath(portalId, folder.FolderPath, toDate, fromDate));
+                                Repository.CreateItems(permissions, folder.Id);
+                                totalFolderPermissionsExported += permissions.Count;
+                            }
+                            Repository.CreateItems(files, folder.Id);
+                            totalFilesExported += files.Count;
+                            var folderOffset = portal.HomeDirectoryMapPath.Length +
+                                               (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
 
-                        if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
-                        {
-                            CompressionUtil.AddFilesToArchive(
-                                files.Select(
-                                    file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
-                                assetsFile, folderOffset, isUserFolder ? "TempUsers" : null);
+                            if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
+                            {
+
+                                CompressionUtil.AddFilesToArchive(zipArchive, files.Select(file => portal.HomeDirectoryMapPath + folder.FolderPath + GetActualFileName(file)),
+                                    folderOffset, isUserFolder ? "TempUsers" : null);
+
+                            }
+                            CheckPoint.ProcessedItems++;
+                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalFolders;
+                            CheckPoint.StageData = null;
+                            currentIndex++;
+                            //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                         }
-                        CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalFolders;
-                        CheckPoint.StageData = null;
-                        currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     CheckPoint.Stage++;
                     currentIndex = 0;
