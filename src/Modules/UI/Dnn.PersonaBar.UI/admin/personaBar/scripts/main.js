@@ -579,6 +579,8 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                         };
 
                                         util.loadPanel(identifier, params);
+
+                                        $('.btn_panel > .hovermenu').fadeOut('fast');
                                     });
 
                                     var $avatarMenu = $('li.useravatar');
