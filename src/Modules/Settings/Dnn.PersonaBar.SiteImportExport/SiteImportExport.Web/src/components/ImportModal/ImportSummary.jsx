@@ -151,7 +151,7 @@ class ImportSummary extends Component {
                                 <div className="seperator">
                                     <hr />
                                 </div>
-                                <GridCell>
+                                <GridCell style={{paddingBottom: "6"}}>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("OverwriteCollisions")}
