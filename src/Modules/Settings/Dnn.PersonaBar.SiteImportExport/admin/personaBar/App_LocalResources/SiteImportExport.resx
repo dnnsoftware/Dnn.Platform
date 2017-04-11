@@ -474,4 +474,7 @@
   <data name="DeletedPortal.Text" xml:space="preserve">
     <value>Deleted</value>
   </data>
+  <data name="RunNow.Text" xml:space="preserve">
+    <value>Run Now</value>
+  </data>
 </root>

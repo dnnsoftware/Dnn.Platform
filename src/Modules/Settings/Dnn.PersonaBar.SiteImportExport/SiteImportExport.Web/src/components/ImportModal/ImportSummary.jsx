@@ -12,8 +12,8 @@ class ImportSummary extends Component {
         return detail ? detail.TotalItems : "-";
     }
 
-    onChange(e) {
-        this.props.onSwitchChange(e);
+    onChange(key, e) {
+        this.props.onSwitchChange(key, e);
     }
 
     render() {
@@ -28,17 +28,17 @@ class ImportSummary extends Component {
                                 <GridCell>
                                     <Label
                                         labelType="inline"
-                                        label={Localization.get("Pages")}
-                                    />
-                                    <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
-                                </GridCell>
-                                <GridCell>
-                                    <Label
-                                        labelType="inline"
                                         label={Localization.get("Users")}
                                     />
                                     <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
                                 </GridCell>
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={Localization.get("Pages")}
+                                    />
+                                    <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                                </GridCell>                                
                                 <GridCell>
                                     <Label
                                         labelType="inline"
@@ -151,14 +151,26 @@ class ImportSummary extends Component {
                                 <div className="seperator">
                                     <hr />
                                 </div>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("OverwriteCollisions")}
-                                />
-                                <Switch
-                                    value={props.collisionResolution === 0 ? false : true}
-                                    onChange={this.onChange.bind(this)}
-                                />
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={Localization.get("OverwriteCollisions")}
+                                    />
+                                    <Switch
+                                        value={props.collisionResolution === 0 ? false : true}
+                                        onChange={this.onChange.bind(this, "CollisionResolution")}
+                                    />
+                                </GridCell>
+                                <GridCell>
+                                    <Label
+                                        labelType="inline"
+                                        label={Localization.get("RunNow")}
+                                    />
+                                    <Switch
+                                        value={props.runNow}
+                                        onChange={this.onChange.bind(this, "RunNow")}
+                                    />
+                                </GridCell>
                             </div>
                         </GridCell>
                         <div className="finish-importing">{Localization.get("FinishImporting")}</div>
@@ -173,6 +185,7 @@ ImportSummary.propTypes = {
     importSummary: PropTypes.object,
     selectedPackage: PropTypes.object,
     collisionResolution: PropTypes.number,
+    runNow: PropTypes.bool,
     onSwitchChange: PropTypes.func,
     lastExportTime: PropTypes.string
 };

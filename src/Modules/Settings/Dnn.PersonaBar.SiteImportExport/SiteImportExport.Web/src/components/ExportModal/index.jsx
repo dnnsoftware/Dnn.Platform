@@ -48,11 +48,11 @@ class ExportModal extends Component {
                 IncludeExtensions: true,
                 IncludeFiles: true,
                 ExportMode: "Differential",
-                ItemsToExport: []
+                ItemsToExport: [],
+                RunNow: true
             },
             errors: {
-                ExportName: false,
-                ExportDescription: false
+                ExportName: false
             }
         };
     }
@@ -307,6 +307,16 @@ class ExportModal extends Component {
                                 <Switch
                                     value={state.exportRequest.IncludeDeletions}
                                     onChange={this.onChange.bind(this, "IncludeDeletions")}
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("RunNow")}
+                                />
+                                <Switch
+                                    value={state.exportRequest.RunNow}
+                                    onChange={this.onChange.bind(this, "RunNow")}
                                 />
                             </InputGroup>
                         </div>
