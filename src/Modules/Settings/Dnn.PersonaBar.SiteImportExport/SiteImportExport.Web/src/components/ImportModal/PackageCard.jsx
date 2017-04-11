@@ -55,7 +55,7 @@ class PackageCard extends Component {
                             <TextOverflowWrapper text={"Differential"} maxWidth={70} />
                         </div>
                         <div className="package-field">
-                            <TextOverflowWrapper text={props.selectedPackage.ExportSize} maxWidth={70} />
+                            <TextOverflowWrapper text={((props.selectedPackage.Summary || {}).ExportFileInfo || {}).ExportSize} maxWidth={70} />
                         </div>
                     </GridCell>
                 </div>
