@@ -1351,6 +1351,7 @@
         </permission>
       </tabpermissions>
       <tabsettings />
+      <tabtype>searchtab</tabtype>
       <panes>
         <pane>
           <name>ContentPane</name>
@@ -1494,6 +1495,7 @@
           <settingvalue></settingvalue>
         </tabsetting>
       </tabsettings>
+      <tabtype>404tab</tabtype>
       <panes>
         <pane>
           <name>ContentPane</name>

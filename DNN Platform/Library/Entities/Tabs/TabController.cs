@@ -2798,6 +2798,24 @@ namespace DotNetNuke.Entities.Tabs
                     newnode.InnerXml = "logintab";
                     tabNode.AppendChild(newnode);
                 }
+                else if (tab.TabID == portal.SearchTabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "searchtab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.Custom404TabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "404tab";
+                    tabNode.AppendChild(newnode);
+                }
+                else if (tab.TabID == portal.Custom500TabId)
+                {
+                    newnode = tabXml.CreateElement("tabtype");
+                    newnode.InnerXml = "500tab";
+                    tabNode.AppendChild(newnode);
+                }
             }
             if (tabs != null)
             {

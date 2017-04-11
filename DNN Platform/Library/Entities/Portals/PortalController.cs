@@ -1644,7 +1644,7 @@ namespace DotNetNuke.Entities.Portals
                     portal.AdminTabId = tab.TabID;
                 }
                 //when processing the template we can find: hometab, usertab, logintab
-                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", ""))
+                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", "").ToLowerInvariant())
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
@@ -1666,11 +1666,11 @@ namespace DotNetNuke.Entities.Portals
                         portal.SearchTabId = tab.TabID;
                         logType = "SearchTab";
                         break;
-                    case "404Tab":
+                    case "404tab":
                         portal.Custom404TabId = tab.TabID;
                         logType = "Custom404Tab";
                         break;
-                    case "500Tab":
+                    case "500tab":
                         portal.Custom500TabId = tab.TabID;
                         logType = "Custom500Tab";
                         break;
