@@ -65,17 +65,17 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("Pages")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
-                            </GridCell>
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
                                     label={Localization.get("Users")}
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
                             </GridCell>
+                            <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Pages")}
+                                />
+                                <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
+                            </GridCell>                            
                             <GridCell>
                                 <Label
                                     labelType="inline"

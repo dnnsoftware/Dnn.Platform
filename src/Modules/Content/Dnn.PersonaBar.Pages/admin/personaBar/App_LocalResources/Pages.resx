@@ -735,4 +735,10 @@
   <data name="DisableLink_tooltip.Text" xml:space="preserve">
     <value>If the page is disabled it cannot be clicked in any navigation menu. This option is used to provide place-holders for child menu items.</value>
   </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
 </root>

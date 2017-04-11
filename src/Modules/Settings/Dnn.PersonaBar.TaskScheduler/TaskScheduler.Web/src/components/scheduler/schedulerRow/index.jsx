@@ -44,8 +44,10 @@ class SchedulerRow extends Component {
     }
 
     toggleHistoryPanel() {
+        let nextState = !this.state.historyPanelOpen;
+        window.dnn.stopEscapeFromClosingPB = nextState;
         this.setState({
-            historyPanelOpen: !this.state.historyPanelOpen
+            historyPanelOpen: nextState
         });
     }
 

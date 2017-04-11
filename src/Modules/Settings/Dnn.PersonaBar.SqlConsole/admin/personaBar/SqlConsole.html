@@ -56,7 +56,7 @@
             <div data-bind="attr: {'id': 'result' + $index()}, visible: $index() == 0">
                 <div class="actions-container" data-bind="visible: hasData">
                     <div class="search">
-                        <input placeholder="Search" data-bind="value: keywords, valueUpdate: 'afterkeydown'" aria-label="Search"/>
+                        <input data-bind="value: keywords, valueUpdate: 'afterkeydown', attr: {placeholder: $root.resx.Search}" aria-label="Search"/>
                     </div>
                     <div class="export">
                         <span data-bind="html: $parent.resx.Export, click: function(){showExportList(!showExportList());}"></span>

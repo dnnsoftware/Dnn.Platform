@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Button from "dnn-button";
 import { ListView } from "dnn-sites-common-components";
 import Localization from "localization";
+import utilities from "utils/applicationSettings";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
 import GridCell from "dnn-grid-cell";
@@ -39,12 +40,13 @@ class PortalList extends Component {
         const {props} = this;
         return (
             <GridCell className={styles.sitesPortalList}>
-                <PersonaBarPageHeader title={"Sites"}>
-                    <Button type="primary" onClick={props.onAddNewSite.bind(this)} size="large">{"Add New Site"}</Button>
+                <PersonaBarPageHeader title={Localization.get("Sites")}>
+                    <Button type="primary" onClick={props.onAddNewSite.bind(this)} size="large">{Localization.get("AddNewSite")}</Button>
                 </PersonaBarPageHeader>
                 <PersonaBarPageBody>
                     <ListView
                         onAddNewSite={props.onAddNewSite.bind(this)}
+                        culture={utilities.applicationSettings.cultureCode}
                         />
 
                     {props.portals.length < props.totalCount &&

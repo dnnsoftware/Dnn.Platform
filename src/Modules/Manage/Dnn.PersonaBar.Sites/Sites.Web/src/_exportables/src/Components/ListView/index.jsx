@@ -138,7 +138,7 @@ class ListView extends Component {
             },
             {
                 label: Localization.get("SiteDetails_Updated"),
-                value: Moment(portal.LastModifiedOnDate).fromNow()
+                value: Moment(portal.LastModifiedOnDate).locale(this.props.culture).fromNow()
             },
             {
                 label: Localization.get("SiteDetails_Pages"),
@@ -189,13 +189,15 @@ ListView.propTypes = {
     onDeletePortal: PropTypes.func,
     onPreviewPortal: PropTypes.func,
     sitesModule: PropTypes.string,
+    culture: PropTypes.string,
     siteImportExportModule: PropTypes.string
 };
 
 ListView.defaultProps = {
     siteSettingModule: "Dnn.SiteSettings",
     sitesModule: "Dnn.Sites",
-    siteImportExportModule: "Dnn.SiteImportExport"
+    siteImportExportModule: "Dnn.SiteImportExport",
+    culture: 'en-US'
 };
 
 function mapStateToProps(state) {

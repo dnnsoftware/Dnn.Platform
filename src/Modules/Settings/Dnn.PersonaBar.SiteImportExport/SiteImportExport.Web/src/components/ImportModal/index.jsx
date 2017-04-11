@@ -25,7 +25,8 @@ class ImportModal extends Component {
             importRequest: {
                 PortalId: -1,
                 PackageId: -1,
-                CollisionResolution: 1
+                CollisionResolution: 1,
+                RunNow: true
             },
             pageIndex: 0,
             pageSize: 5,
@@ -142,10 +143,15 @@ class ImportModal extends Component {
         return detail ? detail.TotalItems : "-";
     }
 
-    onSwitchChange(event) {
+    onSwitchChange(key, event) {
         const value = typeof event === "object" ? event.target.value : event;
         let { importRequest } = this.state;
-        importRequest.CollisionResolution = value ? 1 : 0;
+        if (key === "CollisionResolution") {
+            importRequest.CollisionResolution = value ? 1 : 0;
+        }
+        else if (key === "RunNow") {
+            importRequest.RunNow = value;
+        }
         this.setState({
             importRequest
         });
@@ -258,6 +264,7 @@ class ImportModal extends Component {
                     {props.wizardStep === 1 && props.packageVerified &&
                         <ImportSummary
                             collisionResolution={state.importRequest.CollisionResolution}
+                            runNow={state.importRequest.RunNow}
                             onSwitchChange={this.onSwitchChange.bind(this)} />
                     }
                 </div>

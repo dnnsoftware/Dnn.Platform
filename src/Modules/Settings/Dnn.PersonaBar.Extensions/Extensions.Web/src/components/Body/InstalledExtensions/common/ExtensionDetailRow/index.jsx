@@ -16,8 +16,10 @@ class ExtensionDetailRow extends Component {
     }
 
     toggleInUseModal(packageName, packageId) {
+        let nextState = !this.state.inUseModalOpen;
+        window.dnn.stopEscapeFromClosingPB = nextState;
         this.setState({
-            inUseModalOpen: !this.state.inUseModalOpen,
+            inUseModalOpen: nextState,
             usagePackageName: packageName,
             usagePackageId: packageId
         });

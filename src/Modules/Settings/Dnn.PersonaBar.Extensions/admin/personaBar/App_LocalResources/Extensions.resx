@@ -667,7 +667,7 @@
     <value>This flag indicates whether the module control supports modal popups.</value>
   </data>
   <data name="AddModuleControl_SupportsPopups.Label" xml:space="preserve">
-    <value>Supprots Popups?</value>
+    <value>Supports Popups?</value>
   </data>
   <data name="AddModuleControl_Title.HelpText" xml:space="preserve">
     <value>Enter a title for this control. This will be displayed in the Module Header if supported in the theme.</value>

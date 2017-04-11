@@ -304,7 +304,7 @@ class CreatePortal extends Component {
                             </GridCell>
                             <GridCell columnSize={45}>
                                 <SingleLineInputWithError
-                                    label={Localization.get("Description.Label")}
+                                    label={Localization.get("Directory")}
                                     className="home-directory"
                                     inputId="home-directory"
                                     value={state.newPortal.HomeDirectory}

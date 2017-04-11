@@ -225,4 +225,16 @@
   <data name="ThemeNotFound.Text" xml:space="preserve">
     <value>Can't find the specific theme.</value>
   </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>-- Select --</value>
+  </data>
+  <data name="ApplyTheme.Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="DeleteTheme.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="PreviewTheme.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
 </root>
