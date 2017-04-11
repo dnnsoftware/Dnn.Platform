@@ -17,22 +17,6 @@
         <dependency type="CoreVersion">09.01.00</dependency>
       </dependencies>
       <components>
-        <component type="Module">
-          <desktopModule>
-            <moduleName>DotNetNuke.SiteExportImport</moduleName>
-            <foldername>SiteExportImport</foldername>
-            <businessControllerClass>Dnn.ExportImport.Components.Controllers.BusinessController, DotNetNuke.SiteExportImport</businessControllerClass>
-            <supportedFeatures>
-              <supportedFeature type="Upgradeable" />
-            </supportedFeatures>
-            <moduleDefinitions>
-              <moduleDefinition>
-                <friendlyName>Site Export Import</friendlyName>
-                <defaultCacheTime>0</defaultCacheTime>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-        </component>
         <component type="Assembly">
           <assemblies>
             <assembly>
@@ -72,6 +56,15 @@
           </scripts>
         </component>
       </components>
+      <eventMessage>
+        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+        <processorCommand>UpgradeModule</processorCommand>
+        <attributes>
+          <businessControllerClass>Dnn.ExportImport.Components.Controllers.BusinessController, DotNetNuke.SiteExportImport</businessControllerClass>
+          <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+         <upgradeVersionsList>09.01.00</upgradeVersionsList>
+        </attributes>
+      </eventMessage>
     </package>
   </packages>
 </dotnetnuke>
