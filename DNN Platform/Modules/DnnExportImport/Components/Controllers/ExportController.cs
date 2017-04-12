@@ -47,7 +47,11 @@ namespace Dnn.ExportImport.Components.Controllers
 
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
                 JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
-
+            //Run the scheduler if required.
+            if (exportDto.RunNow)
+            {
+                EntitiesController.Instance.RunSchedule();
+            }
             AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
         }

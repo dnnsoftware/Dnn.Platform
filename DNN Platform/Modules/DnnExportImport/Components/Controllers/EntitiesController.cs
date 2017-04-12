@@ -21,14 +21,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Interfaces;
 using Dnn.ExportImport.Components.Providers;
+using Dnn.ExportImport.Components.Scheduler;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using Dnn.ExportImport.Dto.Pages;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Scheduling;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -190,6 +194,28 @@ namespace Dnn.ExportImport.Components.Controllers
         public void SetUserDeleted(int portalId, int userId, bool isDeleted)
         {
             _dataProvider.SetUserDeleted(portalId, userId, isDeleted);
+        }
+
+        public void RunSchedule()
+        {
+            var executingServer = ServerController.GetExecutingServerName();
+
+            var scheduleItem = SchedulingController.GetSchedule(GetSchedulerTypeFullName(), executingServer);
+            if (scheduleItem != null)
+            {
+                SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
+
+                if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+                {
+                    SchedulingProvider.Instance().ReStart("Change made to schedule.");
+                }
+            }
+        }
+
+        private string GetSchedulerTypeFullName()
+        {
+            var type = typeof (ExportImportScheduler);
+            return $"{type.FullName}, {type.Assembly.GetName().Name}";
         }
     }
 }
