@@ -108,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportTab>(x => x.IsTemplate == (Category == Constants.Category_Templates));
+            return Repository.GetCount<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates));
         }
 
         #region import methods
@@ -124,7 +124,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var localTabs = _tabController.GetTabsByPortal(portalId).Values;
 
-            var exportedTabs = Repository.GetItems<ExportTab>(x => x.IsTemplate == (Category == Constants.Category_Templates)).ToList(); // ordered by TabID
+            var exportedTabs = Repository.GetItems<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates)).ToList(); // ordered by TabID
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportedTabs.Count : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
@@ -1152,8 +1152,7 @@ namespace Dnn.ExportImport.Components.Services
                 Level = tab.Level,
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
-                IsSystem = tab.IsSystem,
-                IsTemplate = Category == Constants.Category_Templates
+                IsSystem = tab.IsSystem
             };
             Repository.CreateItem(exportPage, null);
             Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
