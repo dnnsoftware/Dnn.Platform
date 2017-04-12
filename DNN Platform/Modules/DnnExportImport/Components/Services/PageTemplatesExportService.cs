@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Components.Services
         private readonly string _templatesFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
 
-        public override string Category => Constants.Category_Templates_Dnn;
+        public override string Category => Constants.Category_Templates;
 
         public override string ParentCategory => null;
 

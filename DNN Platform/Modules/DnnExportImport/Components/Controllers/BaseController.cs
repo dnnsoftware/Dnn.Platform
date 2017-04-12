@@ -154,7 +154,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         protected static ImportExportSummary BuildJobSummary(int jobId)
         {
-            var summaryItems = new List<SummaryItem>();
+            var summaryItems = new SummaryList();
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             var exportDto = job.JobType == JobType.Export
@@ -170,11 +170,11 @@ namespace Dnn.ExportImport.Components.Controllers
                 IncludeContent = exportDto.IncludeContent,
                 FromDate = exportDto.FromDate?.DateTime,
                 ToDate = exportDto.ToDate,
-                ExportMode = exportDto.ExportMode
+                ExportMode = exportDto.ExportMode,
+                ExportFileInfo = job.JobType == JobType.Export
+                    ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
+                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo
             };
-            importExportSummary.ExportFileInfo = job.JobType == JobType.Export
-                ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
-                : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo;
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
             if (!checkpoints.Any()) return importExportSummary;
@@ -185,7 +185,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 TotalItems = checkpoint.TotalItems,
                 ProcessedItems = checkpoint.ProcessedItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
-                Category = checkpoint.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : checkpoint.Category,//Always return TEMPLATES as category name.
+                Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
             }));
             importExportSummary.SummaryItems = summaryItems;
@@ -194,7 +194,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
         {
-            var summaryItems = new List<SummaryItem>();
+            var summaryItems = new SummaryList();
             var implementors = Util.GetPortableImplementors();
             var exportDto = repository.GetSingleItem<ExportDto>();
 
@@ -204,10 +204,11 @@ namespace Dnn.ExportImport.Components.Controllers
                 summaryItems.Add(new SummaryItem
                 {
                     TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category == Constants.Category_Templates_Dnn ? Constants.Category_Templates : implementor.Category,//Always return TEMPLATES as category name.
+                    Category = implementor.Category,
                     Order = implementor.Priority
                 });
             }
+
             //TODO: Get export file info.
             summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
             summary.FromDate = exportDto.FromDate?.DateTime;

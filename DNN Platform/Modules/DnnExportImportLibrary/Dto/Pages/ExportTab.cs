@@ -66,5 +66,6 @@ namespace Dnn.ExportImport.Dto.Pages
 
         public string CreatedByUserName { get; set; }
         public string LastModifiedByUserName { get; set; }
+        public bool IsTemplate { get; set; }
     }
 }

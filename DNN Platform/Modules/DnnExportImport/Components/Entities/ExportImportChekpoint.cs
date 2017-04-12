@@ -36,6 +36,7 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int CheckpointId { get; set; }
         public int JobId { get; set; }
+        public string AssemblyName { get; set; }
         public string Category { get; set; }
         public int Stage { get; set; } // all stages start from 0 and increase
         public string StageData { get; set; } // discretionary data

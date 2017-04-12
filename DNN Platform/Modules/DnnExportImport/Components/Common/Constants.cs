@@ -64,7 +64,6 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_ProfileProps = "PROFILE_PROPERTIES";
         public const string Category_Content = "CONTENT";
         public const string Category_Templates = "TEMPLATES";
-        public const string Category_Templates_Dnn = "DNN_TEMPLATES";
         public const string Category_Assets = "ASSETS";
         public const string Category_Packages = "PACKAGES";
 
