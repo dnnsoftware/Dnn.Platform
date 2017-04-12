@@ -47,6 +47,11 @@ namespace Dnn.ExportImport.Components.Controllers
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
+            //Run the scheduler if required.
+            if (importDto.RunNow)
+            {
+                EntitiesController.Instance.RunSchedule();
+            }
             AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
         }

@@ -62,5 +62,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// Snapshot of the import file into.
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
+
+        public bool RunNow { get; set; }
     }
 }
