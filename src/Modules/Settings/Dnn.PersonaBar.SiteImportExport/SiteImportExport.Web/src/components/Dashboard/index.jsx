@@ -4,7 +4,7 @@ import {
     importExport as ImportExportActions
 } from "../../actions";
 import DropDown from "dnn-dropdown";
-import Pager from "dnn-pager"; 
+import Pager from "dnn-pager";
 import Button from "dnn-button";
 import Label from "dnn-label";
 import GridCell from "dnn-grid-cell";
@@ -37,6 +37,9 @@ class DashboardPanelBody extends Component {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
+                        else {
+                            clearInterval(this.jobListTimeout);
+                        }
                     }));
                 }));
             }
@@ -44,6 +47,9 @@ class DashboardPanelBody extends Component {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
+                    }
+                    else {
+                        clearInterval(this.jobListTimeout);
                     }
                 }));
             }
@@ -140,6 +146,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             });
         }
@@ -169,6 +178,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             }));
         });
@@ -184,6 +196,9 @@ class DashboardPanelBody extends Component {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
+                    }
+                    else {
+                        clearInterval(this.jobListTimeout);
                     }
                 }));
             }));
@@ -201,6 +216,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             }));
         });
@@ -217,6 +235,9 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
+                        }
+                        else {
+                            clearInterval(this.jobListTimeout);
                         }
                     }));
                 }, () => {
@@ -238,6 +259,9 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
+                        }
+                        else {
+                            clearInterval(this.jobListTimeout);
                         }
                     }));
                 }, () => {
