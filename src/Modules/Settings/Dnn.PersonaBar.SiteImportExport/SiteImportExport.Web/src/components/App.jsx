@@ -71,6 +71,14 @@ class App extends Component {
             event.preventDefault();
         }
         const { props } = this;
+        props.dispatch(VisiblePanelActions.selectPanel(panel));
+    }
+
+    selectPanelInternal(panel, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
         if (props.importWizardStep > 0) {
             util.utilities.confirm(Localization.get("CancelImportMessage"),
                 Localization.get("ConfirmCancel"),
@@ -97,7 +105,9 @@ class App extends Component {
                         text: state.referrer && state.referrerText,
                         onClick: state.backToReferrerFunc
                     }}>
-                        {props.selectedPage === 0 && <Dashboard selectPanel={this.selectPanel.bind(this)} />}
+                        {props.selectedPage === 0 &&
+                            <Dashboard selectPanel={this.selectPanel.bind(this)} />
+                        }
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
@@ -108,7 +118,7 @@ class App extends Component {
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
                         {props.selectedPage === 1 &&
-                            <ExportModal onCancel={this.selectPanel.bind(this, 0)} />}
+                            <ExportModal onCancel={this.selectPanelInternal.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
@@ -117,7 +127,7 @@ class App extends Component {
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody backToLinkProps={{
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
-                        onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
+                        onClick: state.backToReferrerFunc || this.selectPanelInternal.bind(this, 0)
                     }}>
                         {props.selectedPage === 2 &&
                             <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
