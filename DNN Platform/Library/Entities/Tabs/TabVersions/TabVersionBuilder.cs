@@ -501,8 +501,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private void UpdateModuleOrder(int tabId, TabVersionDetail detailToRestore)
         {
-            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);            
-            UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            var restoredModule = _moduleController.GetModule(detailToRestore.ModuleId, tabId, true);
+            if (restoredModule != null)
+            {
+                UpdateModuleInfoOrder(restoredModule, detailToRestore);
+            }
         }
 
         private void UpdateModuleInfoOrder(ModuleInfo module, TabVersionDetail detailToRestore)
