@@ -546,4 +546,19 @@
   <data name="UserUnLocked.Text" xml:space="preserve">
     <value>User un-locked successfully.</value>
   </data>
+  <data name="AccountData.Text" xml:space="preserve">
+    <value>Account Data</value>
+  </data>
+  <data name="False.Text" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="True.Text" xml:space="preserve">
+    <value>True</value>
+  </data>
 </root>

@@ -164,7 +164,7 @@ class UserSettings extends Component {
         if (value === "") {
             return "";
         }
-        return value ? "True" : "False";        
+        return value ? Localization.get("True") : Localization.get("False");        
     }
 
     render() {
@@ -232,7 +232,7 @@ class UserSettings extends Component {
                 </GridCell>
                 <GridCell className="outer-box right" columnSize={50}>
                     <div className="title">
-                        Account Data
+                        {Localization.get("AccountData")}
                     </div>
                     <GridSystem className="first">
                         <GridCell  title={Localization.get("CreatedDate.Help")}>
@@ -271,7 +271,7 @@ class UserSettings extends Component {
                             {Localization.get("LastLockoutDate")}
                         </GridCell>
                         <GridCell>
-                            {formatDate(state.userDetails.lastLockout, true) === "-" ? "Never" : formatDate(state.userDetails.lastLockout, true) }
+                            {formatDate(state.userDetails.lastLockout, true) === "-" ? Localization.get("Never") : formatDate(state.userDetails.lastLockout, true) }
                         </GridCell>
                     </GridSystem>
                     <GridSystem>
