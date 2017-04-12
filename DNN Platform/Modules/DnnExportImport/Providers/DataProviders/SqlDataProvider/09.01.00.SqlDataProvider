@@ -239,8 +239,8 @@ GO
 CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportJobLogsType] AS TABLE
 (
 	[JobId]         int,
-	[Name]          nvarchar(100),
-	[Value]         nvarchar(100),
+	[Name]          nvarchar(255),
+	[Value]         nvarchar(255),
 	[Level]         int,
 	[CreatedOnDate] datetime
 );

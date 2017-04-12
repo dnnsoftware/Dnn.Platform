@@ -19,9 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 
@@ -38,7 +41,7 @@ namespace Dnn.ExportImport.Components.Common
         {
             if (File.Exists(archivePath))
                 File.Delete(archivePath);
-            ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Optimal, false);
+            ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Fastest, false);
         }
 
         /// <summary>
@@ -112,33 +115,20 @@ namespace Dnn.ExportImport.Components.Common
         /// <summary>
         /// Add files to an archive. If no archive exists, new one is created.
         /// </summary>
+        /// <param name="archive">Source archive to write the files to</param>
         /// <param name="files">List containing path of files to add to archive.</param>
-        /// <param name="archivePath">Full path of archive file</param>
         /// <param name="folderOffset">Starting index(Index in file url) of the root folder in archive based on what the folder structure starts in archive.
         /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder 
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
-        public static void AddFilesToArchive(IEnumerable<string> files, string archivePath, int folderOffset,
+        public static void AddFilesToArchive(ZipArchive archive, IEnumerable<string> files, int folderOffset,
             string folder = null)
         {
             var enumerable = files as IList<string> ?? files.ToList();
             if (!enumerable.Any()) return;
-            ZipArchive archive = null;
-            using (archive = OpenCreate(archivePath))
+            foreach (var file in enumerable.Where(File.Exists))
             {
-                long currentTotalSize = 0;
-                foreach (var file in enumerable.Where(File.Exists))
-                {
-                    if (currentTotalSize >= Constants.MaxZipFilesMemory)
-                    {
-                        currentTotalSize = 0;
-                        archive.Dispose();
-                        archive = OpenCreate(archivePath);
-                    }
-                    var fileInfo = new FileInfo(file);
-                    currentTotalSize += fileInfo.Length;
-                    AddFileToArchive(archive, file, folderOffset, folder);
-                }
+                AddFileToArchive(archive, file, folderOffset, folder);
             }
         }
 
@@ -151,30 +141,38 @@ namespace Dnn.ExportImport.Components.Common
         /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder 
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
-        public static void AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
+        public static bool AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
         {
             using (var archive = OpenCreate(archivePath))
             {
                 if (File.Exists(file))
                 {
-                    AddFileToArchive(archive, file, folderOffset, folder);
+                    return AddFileToArchive(archive, file, folderOffset, folder);
                 }
             }
+            return false;
         }
 
         #region Private Methods
 
-        private static void AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
+        private static bool AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
-            ZipArchiveEntry existingEntry = null;
+            ZipArchiveEntry existingEntry;
             //Deletes if the entry already exists in archive.
             if ((existingEntry = archive.GetEntry(entryName)) != null)
             {
                 existingEntry.Delete();
             }
-            archive.CreateEntryFromFile(file,
-                string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Optimal);
+
+            var fileInfo = new FileInfo(file);
+            if (fileInfo.Length < 1610612736)
+            {
+                archive.CreateEntryFromFile(file,
+                    string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Fastest);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -182,8 +180,8 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         /// <param name="archiveFileName"></param>
         /// <returns></returns>
-        //TODO: This will need review. We might need to seperate methods for opening in read and write mode seperately since the for read mode, whole archive is loaded in memory and is persisted.
-        private static ZipArchive OpenCreate(string archiveFileName)
+            //TODO: This will need review. We might need to seperate methods for opening in read and write mode seperately since the for read mode, whole archive is loaded in memory and is persisted.
+        public static ZipArchive OpenCreate(string archiveFileName)
         {
             return File.Exists(archiveFileName)
                 ? ZipFile.Open(archiveFileName, ZipArchiveMode.Update, Encoding.UTF8)

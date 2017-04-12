@@ -730,10 +730,17 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         if (!moduleContent.IsRestored)
                                         {
-                                            controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
-                                            moduleContent.IsRestored = true;
-                                            Repository.UpdateItem(moduleContent);
-                                            restoreCount++;
+                                            try
+                                            {
+                                                controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
+                                                moduleContent.IsRestored = true;
+                                                Repository.UpdateItem(moduleContent);
+                                                restoreCount++;
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Result.AddLogEntry("Error importing module data, id=" + localModule.ModuleID, e.Message, ReportLevel.Error);
+                                            }
                                         }
                                     }
 
@@ -1072,12 +1079,12 @@ namespace Dnn.ExportImport.Components.Services
                         var module = _moduleController.GetModule(exportModule.ModuleID, exportPage.TabId, true);
                         if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
                         {
-                            var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
-                                module.DesktopModule.BusinessControllerClass);
-                            var controller = businessController as IPortable;
-                            if (controller != null)
+                            try
                             {
-                                var content = Convert.ToString(controller.ExportModule(module.ModuleID));
+                                var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
+                                    module.DesktopModule.BusinessControllerClass);
+                                var controller = businessController as IPortable;
+                                var content = controller?.ExportModule(module.ModuleID);
                                 if (!string.IsNullOrEmpty(content))
                                 {
                                     var record = new ExportModuleContent
@@ -1090,6 +1097,10 @@ namespace Dnn.ExportImport.Components.Services
                                     Repository.CreateItem(record, exportModule.Id);
                                     return 1;
                                 }
+                            }
+                            catch (Exception e)
+                            {
+                                Result.AddLogEntry("Error exporting module data, id=" + exportModule.ModuleID, e.Message, ReportLevel.Error);
                             }
                         }
                     }
