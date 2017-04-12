@@ -477,4 +477,7 @@
   <data name="RunNow.Text" xml:space="preserve">
     <value>Run Now</value>
   </data>
+  <data name="NoExportItem.ErrorMessage" xml:space="preserve">
+    <value>Failed to submit the export site request. Please select export item(s) and try again.</value>
+  </data>
 </root>

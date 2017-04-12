@@ -9,7 +9,7 @@ class ImportSummary extends Component {
     getSummaryItem(category) {
         const { props } = this;
         let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
-        return detail ? detail.TotalItems : "-";
+        return detail ? detail.TotalItemsString : "-";
     }
 
     onChange(key, e) {
@@ -151,7 +151,7 @@ class ImportSummary extends Component {
                                 <div className="seperator">
                                     <hr />
                                 </div>
-                                <GridCell>
+                                <GridCell style={{paddingBottom: "6"}}>
                                     <Label
                                         labelType="inline"
                                         label={Localization.get("OverwriteCollisions")}
