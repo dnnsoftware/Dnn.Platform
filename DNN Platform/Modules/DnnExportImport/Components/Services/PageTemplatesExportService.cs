@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Components.Services
         private readonly string _templatesFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
 
-        public override string Category => Constants.Category_Templates_Dnn;
+        public override string Category => Constants.Category_Templates;
 
         public override string ParentCategory => null;
 
@@ -48,7 +48,7 @@ namespace Dnn.ExportImport.Components.Services
                     var portal = PortalController.Instance.GetPortal(portalId);
 
                     var templates =
-                        CBO.FillCollection<PageTemplate>(
+                        CBO.FillCollection<ExportPageTemplate>(
                             DataProvider.Instance()
                                 .GetFiles(portalId, null, toDate, fromDate))
                             .Where(x => x.Extension == Constants.TemplatesExtension)
@@ -121,7 +121,7 @@ namespace Dnn.ExportImport.Components.Services
             }
             if (CheckPoint.Stage == 1)
             {
-                Func<PageTemplate, object> predicate = x => x.Folder;
+                Func<ExportPageTemplate, object> predicate = x => x.Folder;
                 var templates = Repository.GetAllItems(predicate).Select(x => x.Folder).Distinct();
                 templates.ForEach(x => FolderManager.Instance.Synchronize(importJob.PortalId, x));
                 CheckPoint.Stage++;
@@ -132,10 +132,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<PageTemplate>();
+            return Repository.GetCount<ExportPageTemplate>();
         }
 
-        private string GetActualFileName(PageTemplate objFile)
+        private string GetActualFileName(ExportPageTemplate objFile)
         {
             return (objFile.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem)
                 ? objFile.FileName + Globals.glbProtectedExtension

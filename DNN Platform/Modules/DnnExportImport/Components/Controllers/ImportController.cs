@@ -47,6 +47,11 @@ namespace Dnn.ExportImport.Components.Controllers
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
+            //Run the scheduler if required.
+            if (importDto.RunNow)
+            {
+                EntitiesController.Instance.RunSchedule();
+            }
             AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
         }
@@ -129,8 +134,8 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static bool IsValidImportFolder(string folderPath)
         {
-            return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) &&
-                   File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
+            return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) && (File.Exists(Path.Combine(folderPath, Constants.ExportDbName)) ||
+                   File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName)));
         }
 
         private Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)

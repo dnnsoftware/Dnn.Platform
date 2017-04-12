@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Services
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
-
+            var includeProfile = importDto.ExportDto.IncludeProperfileProperties;
             try
             {
                 while (totalProcessed < totalUsersToBeProcessed)
@@ -102,9 +102,11 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             ProcessUserRoles(importJob, importDto, userRoles, userId.Value);
                             totalUserRolesImported += userRoles.Count;
-
-                            ProcessUserProfiles(importJob, importDto, userProfiles, userId.Value);
-                            totalProfilesImported += userProfiles.Count;
+                            if (includeProfile)
+                            {
+                                ProcessUserProfiles(importJob, importDto, userProfiles, userId.Value);
+                                totalProfilesImported += userProfiles.Count;
+                            }
 
                             ProcessUserAuthentications(importJob, importDto, userAuthentication, userId.Value);
                             if (userAuthentication != null) totalAuthenticationImported++;
@@ -131,7 +133,10 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
                 Result.AddSummary("Imported User Roles", totalUserRolesImported.ToString());
-                Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+                if (includeProfile)
+                {
+                    Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
+                }
                 Result.AddSummary("Imported User Authentication", totalAuthenticationImported.ToString());
             }
         }

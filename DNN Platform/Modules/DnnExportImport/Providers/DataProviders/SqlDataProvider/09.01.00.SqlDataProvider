@@ -156,6 +156,7 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U')
 	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportCheckpoints](
 		[CheckpointId]       int IDENTITY(1,1) NOT NULL,
 		[JobId]              int NOT NULL,
+		[AssemblyName]		 nvarchar(200) NOT NULL,
 		[Category]           nvarchar(50) NOT NULL,
 		[Stage]              int NOT NULL,
 		[StageData]          nvarchar(max),
@@ -189,6 +190,13 @@ IF NOT EXISTS ( SELECT 1 FROM sys.foreign_keys
 		CONSTRAINT [FK_{objectQualifier}ExportImportCheckpoints_JobId] FOREIGN KEY ( [JobId] )
 		REFERENCES {databaseOwner}[{objectQualifier}ExportImportJobs] ( [JobId] )
 		ON DELETE CASCADE
+GO
+
+IF NOT EXISTS ( SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]')
+				AND name = N'IX_{objectQualifier}ExportImportCheckpoints_Composite')
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}ExportImportCheckpoints_Composite]
+		ON {databaseOwner}[{objectQualifier}ExportImportCheckpoints] ([Category] ASC,[AssemblyName] ASC,[JobId] ASC)
 GO
 
 -- JobLogs
@@ -560,6 +568,7 @@ GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert]
 	@JobId			int,
+	@AssemblyName	nvarchar(200),
 	@Category		nvarchar(50),
 	@Stage			int,
 	@StageData		nvarchar(max),
@@ -570,13 +579,13 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert
 AS
 BEGIN
 	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
-	 USING (SELECT @JobId, @Category, @Progress, @TotalItems, @ProcessedItems) AS source (JobId, Category, Progress, TotalItems, ProcessedItems)
-		ON (target.JobId = source.JobId AND target.Category = source.Category)
+	 USING (SELECT @JobId, @AssemblyName, @Category, @Progress, @TotalItems, @ProcessedItems) AS source (JobId, AssemblyName, Category, Progress, TotalItems, ProcessedItems)
+		ON (target.JobId = source.JobId AND target.Category = source.Category AND target.AssemblyName = source.AssemblyName)
 	 WHEN MATCHED THEN
 		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems, StartDate=(CASE WHEN StartDate IS NULL THEN @StartDate ELSE StartDate END),  LastUpdateDate= GetUtcDate()
 	 WHEN NOT MATCHED THEN 
-		INSERT ([JobId], [Category], [Stage], [StageData], [Progress], [TotalItems], [ProcessedItems])
-		VALUES (@JobId,  @Category,  @Stage,  @StageData, @Progress, @TotalItems, @ProcessedItems);
+		INSERT ([JobId], [AssemblyName], [Category], [Stage], [StageData], [Progress], [TotalItems], [ProcessedItems])
+		VALUES (@JobId, @AssemblyName, @Category,  @Stage,  @StageData, @Progress, @TotalItems, @ProcessedItems);
 END
 GO
 

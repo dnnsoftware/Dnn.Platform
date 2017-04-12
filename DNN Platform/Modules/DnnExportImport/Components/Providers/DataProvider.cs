@@ -144,7 +144,7 @@ namespace Dnn.ExportImport.Components.Providers
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
             _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
-                checkpoint.JobId, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
+                checkpoint.JobId, checkpoint.AssemblyName, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
                 Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, _dataProvider.GetNull(checkpoint.StartDate));
         }
 

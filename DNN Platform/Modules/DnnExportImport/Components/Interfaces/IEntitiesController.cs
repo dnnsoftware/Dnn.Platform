@@ -61,5 +61,6 @@ namespace Dnn.ExportImport.Components.Interfaces
         void SetTabDeleted(int tabId, bool isDeleted);
         void SetTabModuleDeleted(int tabModuleId, bool isDeleted);
         void SetUserDeleted(int portalId, int userId, bool isDeleted);
+        void RunSchedule();
     }
 }

@@ -73,6 +73,7 @@
       <DependentUpon>ExportImport.resx</DependentUpon>
     </Compile>
     <Compile Include="Components\Common\CompressionUtil.cs" />
+    <Compile Include="Components\Common\SummaryList.cs" />
     <Compile Include="Components\Common\Util.cs" />
     <Compile Include="Components\Common\Constants.cs" />
     <Compile Include="Components\Controllers\BaseController.cs" />

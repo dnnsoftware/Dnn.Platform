@@ -146,6 +146,11 @@ namespace Dnn.ExportImport.Components.Dto
         /// If the 'TabId=-1' is included in the list, it means all site pages.
         /// </summary>
         public PageToExport[] Pages { get; set; }
+
+        /// <summary>
+        /// Whether to run the job immediately or not.
+        /// </summary>
+        public bool RunNow { get; set; }
     }
 
     /// <summary>
