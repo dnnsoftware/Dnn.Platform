@@ -416,6 +416,12 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
             return false;
         }
 
+        function calculateHoverMenuPosition($menu) {
+            var bottom = $menu.parent().offset().top + $menu.outerHeight();
+            var availableArea = $(window).height() - bottom;
+            $menu.css('top', availableArea < 0 ? availableArea + 'px' : '');
+        }
+
         util.asyncParallel([
                 function (callback) {
                     util.loadResx(function onResxLoaded() {
@@ -655,7 +661,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                             $('#' + hoverMenuId).hide();
                                                         });
 
-                                                        
+
                                                         $hoverMenu.show();
                                                         // Fix ie personabar hover menús
                                                         showMenuHandlers.push(setTimeout(function () {
@@ -665,6 +671,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
                                                                 showMenuHandlers.push(setTimeout(function () {
                                                                     $hoverMenu.hide();
                                                                     $hoverMenu.removeAttr('style');
+                                                                    calculateHoverMenuPosition($hoverMenu);
                                                                     showMenuHandlers.push(setTimeout(function () {
                                                                         $hoverMenu.fadeIn('fast');
                                                                     }));
