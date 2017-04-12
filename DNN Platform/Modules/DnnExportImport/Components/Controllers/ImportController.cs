@@ -129,8 +129,8 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static bool IsValidImportFolder(string folderPath)
         {
-            return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) &&
-                   File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName));
+            return File.Exists(Path.Combine(folderPath, Constants.ExportManifestName)) && (File.Exists(Path.Combine(folderPath, Constants.ExportDbName)) ||
+                   File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName)));
         }
 
         private Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
