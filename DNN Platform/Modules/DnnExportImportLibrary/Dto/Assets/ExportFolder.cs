@@ -52,6 +52,8 @@ namespace Dnn.ExportImport.Dto.Assets
 
         public int? ParentId { get; set; }
 
+        public string ParentFolderPath { get; set; }
+
         public bool IsVersioned { get; set; }
 
         public int? WorkflowId { get; set; }

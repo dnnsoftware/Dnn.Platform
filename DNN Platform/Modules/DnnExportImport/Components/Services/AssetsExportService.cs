@@ -369,7 +369,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     //Find the previously created parent folder id.
                     folder.ParentId =
-                        Repository.GetItem<ExportFolder>(Convert.ToInt32(folder.ParentId))?.LocalId;
+                        localFolders.FirstOrDefault(x => x.FolderPath == folder.ParentFolderPath || (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folder.ParentFolderPath)))?.FolderId;
                 }
                 //ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))

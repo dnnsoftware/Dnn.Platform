@@ -1168,9 +1168,11 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetFolders]
 	@ToDate    datetime,
     @FromDate  datetime=NULL
 AS
-    SELECT    F.*,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}Export_UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](F.LastModifiedByUserId) LastModifiedByUserName
+    SELECT    F.*,PF.FolderPath ParentFolderPath,FM.MappingName FolderMappingName,{databaseOwner}[{objectQualifier}Export_UserName](F.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](F.LastModifiedByUserId) LastModifiedByUserName
     FROM    
-        {databaseOwner}[{objectQualifier}Folders]  F INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
+        {databaseOwner}[{objectQualifier}Folders]  F 
+		INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
+		LEFT JOIN dbo.[dnn_Folders] PF ON F.ParentID=PF.FolderID
     WHERE  F.PortalID = @PortalID
     AND 
         (CASE 
