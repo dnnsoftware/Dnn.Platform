@@ -4,7 +4,7 @@ import {
     importExport as ImportExportActions
 } from "../../actions";
 import DropDown from "dnn-dropdown";
-import Pager from "dnn-pager";
+import Pager from "dnn-pager"; 
 import Button from "dnn-button";
 import Label from "dnn-label";
 import GridCell from "dnn-grid-cell";
@@ -63,12 +63,13 @@ class DashboardPanelBody extends Component {
     }
 
     addInterval(props) {
+        clearInterval(this.jobListTimeout);
         const persistedSettings = util.utilities.persistent.load();
         this.jobListTimeout = setInterval(() => {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(), (data) => {
                     if (!data.Jobs || !data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
-                        clearInterval(this.jobListTimeout);
+                        //clearInterval(this.jobListTimeout);
                         if (this.state.currentJobId) {
                             props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
                         }
@@ -315,7 +316,6 @@ class DashboardPanelBody extends Component {
 
     renderedJobList() {
         const { props } = this;
-        let i = 0;
         if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
                 return (
@@ -335,6 +335,7 @@ class DashboardPanelBody extends Component {
                         Collapse={this.collapse.bind(this)}>
                         <JobDetails
                             jobId={job.JobId}
+                            cancelled={job.Cancelled}
                             Collapse={this.collapse.bind(this)}
                             openId={props.currentJobId}
                             cancelJob={this.cancelJob.bind(this)}
