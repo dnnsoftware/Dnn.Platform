@@ -66,6 +66,16 @@ function ($, ko) {
         });
     };
 
+    var paramsChanged = function(param1, param2) {
+        for (var a in param1) {
+            if (param1.hasOwnProperty(a) && param2[a] !== param1[a]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     ko.bindingHandlers.folderPicker = {
         init: function (element, valueAccessor) {
             var koOptions = valueAccessor();
@@ -77,6 +87,28 @@ function ($, ko) {
             var koOptions = valueAccessor();
             if (koOptions.enabled === true) {
                 createFolderPicker(element, koOptions);
+            }
+
+            var folderPicker = dnn[element.id];
+            if (folderPicker) {
+
+                var params = koOptions.options.services.parameters;
+                if (typeof params === "function") {
+                    params = params();
+                }
+
+                var originParams = folderPicker.options.services.parameters;
+                if (paramsChanged(originParams, params)) {
+                    folderPicker.options.services.parameters = params;
+
+                    if (folderPicker._treeView) {
+                        folderPicker._treeView.controller.parameters = params;
+
+                        folderPicker._treeView._$searchInput.val("");
+                        folderPicker._treeView._$clearButton.hide();
+                        folderPicker._treeView._search();
+                    }
+                }
             }
         }
     };
