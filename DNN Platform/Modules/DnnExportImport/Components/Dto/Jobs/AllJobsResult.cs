@@ -34,6 +34,8 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public int PortalId { get; set; }
         public string PortalName { get; set; }
         public int TotalJobs { get; set; }
+        public string TotalJobsString => Util.FormatNumber(TotalJobs);
+
         public DateTime? LastExportTime { get; set; }
         public DateTime? LastImportTime { get; set; }
 

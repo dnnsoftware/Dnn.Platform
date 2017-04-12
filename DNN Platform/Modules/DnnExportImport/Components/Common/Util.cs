@@ -243,6 +243,11 @@ namespace Dnn.ExportImport.Components.Common
             return dateTime?.ToString(Thread.CurrentThread.CurrentUICulture) ?? "";
         }
 
+        public static string FormatNumber(int? number)
+        {
+            return number?.ToString("n0", Thread.CurrentThread.CurrentUICulture);
+        }
+
         private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)
         {
             return (from f in xmlDoc.Descendants(rootTag)

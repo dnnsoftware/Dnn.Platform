@@ -219,7 +219,15 @@ namespace Dnn.ExportImport.Components.Engines
                 var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
                 var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
                 var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
-                var zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size
+                FileInfo zipDbFinfo;
+                if (File.Exists(zipDbName))
+                {
+                    zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size    
+                }
+                else
+                {
+                    zipDbFinfo = new FileInfo(Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName));
+                }
                 result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
                 var exportSize = zipDbFinfo.Length;
                 var exportFileInfo = new ExportFileInfo
@@ -578,10 +586,9 @@ namespace Dnn.ExportImport.Components.Engines
             //TODO: Error handling
             var exportFileArchive = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
             var folderOffset = exportFileArchive.IndexOf(Constants.ExportZipDbName, StringComparison.Ordinal);
-
-            CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset);
-            //Delete the Database file.
-            File.Delete(dbName);
+            File.Delete(CompressionUtil.AddFileToArchive(dbName, exportFileArchive, folderOffset)
+                ? dbName
+                : exportFileArchive);
         }
 
         private static void DoUnPacking(ExportImportJob importJob)

@@ -50,9 +50,19 @@ namespace Dnn.ExportImport.Components.Dto
         public int TotalItems { get; set; }
 
         /// <summary>
+        /// Formatted total items.
+        /// </summary>
+        public string TotalItemsString => Util.FormatNumber(TotalItems);
+
+        /// <summary>
         /// Items processed.
         /// </summary>
         public int ProcessedItems { get; set; }
+
+        /// <summary>
+        /// Formatted processed items.
+        /// </summary>
+        public string ProcessedItemsString => Util.FormatNumber(ProcessedItems);
 
         /// <summary>
         /// Progress in percentage.

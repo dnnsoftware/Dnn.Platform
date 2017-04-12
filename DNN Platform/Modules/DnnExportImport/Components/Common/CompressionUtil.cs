@@ -141,31 +141,38 @@ namespace Dnn.ExportImport.Components.Common
         /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder 
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
-        public static void AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
+        public static bool AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
         {
             using (var archive = OpenCreate(archivePath))
             {
                 if (File.Exists(file))
                 {
-                    AddFileToArchive(archive, file, folderOffset, folder);
+                    return AddFileToArchive(archive, file, folderOffset, folder);
                 }
             }
+            return false;
         }
 
         #region Private Methods
 
-        private static void AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
+        private static bool AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
-            ZipArchiveEntry existingEntry = null;
+            ZipArchiveEntry existingEntry;
             //Deletes if the entry already exists in archive.
             if ((existingEntry = archive.GetEntry(entryName)) != null)
             {
                 existingEntry.Delete();
             }
 
-            archive.CreateEntryFromFile(file,
-                string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Fastest);
+            var fileInfo = new FileInfo(file);
+            if (fileInfo.Length < 1610612736)
+            {
+                archive.CreateEntryFromFile(file,
+                    string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Fastest);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
