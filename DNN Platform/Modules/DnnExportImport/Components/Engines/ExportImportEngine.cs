@@ -502,8 +502,7 @@ namespace Dnn.ExportImport.Components.Engines
                 includedItems.Add(Constants.Category_Pages);
 
             // must be included always when there is at least one other object to process
-            if (includedItems.Count > 0)
-                includedItems.Add(Constants.Category_Portal);
+            includedItems.Add(Constants.Category_Portal);
 
             if (exportDto.IncludeContent)
                 includedItems.Add(Constants.Category_Content);

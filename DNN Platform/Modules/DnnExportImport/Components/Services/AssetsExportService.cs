@@ -447,7 +447,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 DotNetNuke.Data.DataProvider.Instance()
                     .UpdateFolderPermission(existingFolderPermission.FolderPermissionId, folderPermission.FolderId,
-                        existingFolderPermission.PermissionId, folderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
+                        existingFolderPermission.PermissionId, existingFolderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
                         folderPermission.AllowAccess, existingFolderPermission.UserId ?? Null.NullInteger, modifiedBy);
 
                 folderPermission.FolderPermissionId = existingFolderPermission.FolderPermissionId;
