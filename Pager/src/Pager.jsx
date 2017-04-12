@@ -38,7 +38,9 @@ class Pager extends Component {
         const {state} = this;
         if (state.pageSize >= props.totalRecords || props.totalRecords === 0) {
             state.totalPages = 1;
+            state.endIndex = 1;
         } else {
+            state.endIndex = props.numericCounters !== undefined ? props.numericCounters : 0;
             let totalPages = parseInt(props.totalRecords / state.pageSize);
             if (props.totalRecords % state.pageSize !== 0) {
                 totalPages++;
