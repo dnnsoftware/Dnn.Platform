@@ -75,7 +75,7 @@ class DashboardPanelBody extends Component {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(), (data) => {
                     if (!data.Jobs || !data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
-                        //clearInterval(this.jobListTimeout);
+                        clearInterval(this.jobListTimeout);
                         if (this.state.currentJobId) {
                             props.dispatch(ImportExportActions.getJobDetails(this.state.currentJobId));
                         }

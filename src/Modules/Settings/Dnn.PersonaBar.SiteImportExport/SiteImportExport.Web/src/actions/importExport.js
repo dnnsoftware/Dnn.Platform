@@ -184,7 +184,9 @@ const jobsActions = {
                     type: ActionTypes.RETRIEVED_IMPORT_PACKAGES,
                     importPackages: data.packages,
                     total: data.total,
-                    selectedPackage: null
+                    selectedPackage: null,
+                    importWizardStep: 0,
+                    packageVerified: false
                 });
                 if (callback) {
                     callback();

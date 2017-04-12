@@ -66,7 +66,9 @@ export default function importExport(state = {
                 ...state,
                 importPackages: action.importPackages,
                 totalPackages: action.total,
-                selectedPackage: action.selectedPackage
+                selectedPackage: action.selectedPackage,
+                importWizardStep: 0,
+                packageVerified: false
             };
         case ActionTypes.GO_TO_IMPORT_WIZARD_STEP:
             return {

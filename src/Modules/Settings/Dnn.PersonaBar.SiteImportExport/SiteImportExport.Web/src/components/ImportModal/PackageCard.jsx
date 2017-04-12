@@ -52,14 +52,16 @@ class PackageCard extends Component {
                     </GridCell>
                     <GridCell columnSize={13} className="card-column5">
                         <div className="package-field">
-                            <TextOverflowWrapper text={"Differential"} maxWidth={70} />
+                            <TextOverflowWrapper
+                                text={props.selectedPackage.Summary.ExportMode ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
+                                maxWidth={70} />
                         </div>
                         <div className="package-field">
                             <TextOverflowWrapper text={((props.selectedPackage.Summary || {}).ExportFileInfo || {}).ExportSize} maxWidth={70} />
                         </div>
                     </GridCell>
                 </div>
-                {props.children}                
+                {props.children}
             </div>
         );
     }
