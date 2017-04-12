@@ -6,11 +6,10 @@
     if (typeof dnn === "undefined" || dnn === null) { dnn = {}; }
     if (dnn.permissionGridManager) return;
 
-    dnn.permissionGridManager = function (sf, scopeId) {
+    dnn.permissionGridManager = function (serviceUrl, scopeId) {
         var inputBox = $('#' + scopeId + '_txtUser');
         var userIdsField = $('#' + scopeId + '_hiddenUserIds');
         var init = function () {
-            var serviceUrl = sf.getServiceRoot() + 'ItemListService/SearchUser';
             inputBox.tokenInput(serviceUrl, {
 				theme: "facebook",
 				resultsFormatter: function (item) {
