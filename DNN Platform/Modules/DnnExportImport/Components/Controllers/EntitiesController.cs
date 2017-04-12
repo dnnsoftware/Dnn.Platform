@@ -53,7 +53,7 @@ namespace Dnn.ExportImport.Components.Controllers
         public ExportImportJob GetJobById(int jobId)
         {
             var job = CBO.Instance.FillObject<ExportImportJob>(_dataProvider.GetJobById(jobId));
-            System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job.JobId} IsCancelled={job.IsCancelled} xxxxxxxxx");
+            //System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job?.JobId} IsCancelled={job?.IsCancelled} xxxxxxxxx");
             return job;
         }
 

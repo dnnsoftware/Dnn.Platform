@@ -1187,20 +1187,28 @@ namespace DotNetNuke.Security.Permissions
             TabPermissionCollection objCurrentTabPermissions = GetTabPermissions(tab.TabID, tab.PortalID);
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
-                dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
-                if (tab.TabPermissions != null)
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
+                if (objCurrentTabPermissions.Count > 0)
+                {
+                    dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                }
+
+                if (tab.TabPermissions != null && tab.TabPermissions.Count > 0)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
                     {
-                        dataProvider.AddTabPermission(tab.TabID,
-                                                      objTabPermission.PermissionID,
-                                                      objTabPermission.RoleID,
-                                                      objTabPermission.AllowAccess,
-                                                      objTabPermission.UserID,
-                                                      UserController.Instance.GetCurrentUserInfo().UserID);
-                        EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                        objTabPermission.TabPermissionID = dataProvider.AddTabPermission(
+                            tab.TabID,
+                            objTabPermission.PermissionID,
+                            objTabPermission.RoleID,
+                            objTabPermission.AllowAccess,
+                            objTabPermission.UserID,
+                            userId);
                     }
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                 }
             }
         }
