@@ -140,7 +140,7 @@ class ImportModal extends Component {
     getSummaryItem(category) {
         const { props } = this;
         let detail = props.importSummary.SummaryItems.find(c => c.Category === category.toUpperCase());
-        return detail ? detail.TotalItems : "-";
+        return detail ? detail.TotalItemsString : "-";
     }
 
     onSwitchChange(key, event) {
