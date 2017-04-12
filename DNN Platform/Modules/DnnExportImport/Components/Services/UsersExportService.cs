@@ -81,6 +81,7 @@ namespace Dnn.ExportImport.Components.Services
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
             CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
             if (CheckPointStageCallback(this)) return;
+            var includeProfile = exportDto.IncludeProperfileProperties;
             try
             {
                 while (pageIndex < totalPages)
@@ -98,31 +99,27 @@ namespace Dnn.ExportImport.Components.Services
                         .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate, fromDate,
                             Util.ConvertToDbUtcTime(toDate) ?? Constants.MaxDbTime, Util.ConvertToDbUtcTime(fromDate)))
                     {
-                        //Main Users
                         CBO.FillCollection(reader, exportUsersList, false);
                         reader.NextResult();
 
-                        //Main Users
                         CBO.FillCollection(reader, exportUserAuthenticationList, false);
                         reader.NextResult();
 
-                        //Main Users
                         CBO.FillCollection(reader, exportUserRoleList, false);
                         reader.NextResult();
 
-                        //Main Users
-                        CBO.FillCollection(reader, exportUserProfileList, false);
+                        if (includeProfile)
+                        {
+                            CBO.FillCollection(reader, exportUserProfileList, false);
+                        }
                         reader.NextResult();
 
-                        //Main Users
                         CBO.FillCollection(reader, exportUserPortalList, false);
                         reader.NextResult();
 
-                        //Main Users
                         CBO.FillCollection(reader, exportAspnetUserList, false);
                         reader.NextResult();
 
-                        //Main Users
                         CBO.FillCollection(reader, exportAspnetMembershipList, true);
                     }
 
@@ -138,12 +135,16 @@ namespace Dnn.ExportImport.Components.Services
                        x => { x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id; });
                     Repository.CreateItems(exportUserRoleList, null);
                     totalUserRolesExported += exportUserRoleList.Count;
-
-                    exportUserProfileList.ForEach(
-                        x => { x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id; });
-                    Repository.CreateItems(exportUserProfileList, null);
-                    totalProfilesExported += exportUserProfileList.Count;
-
+                    if (includeProfile)
+                    {
+                        exportUserProfileList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
+                            });
+                        Repository.CreateItems(exportUserProfileList, null);
+                        totalProfilesExported += exportUserProfileList.Count;
+                    }
                     exportUserPortalList.ForEach(
                        x => { x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id; });
                     Repository.CreateItems(exportUserPortalList, null);
@@ -174,7 +175,10 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Exported Users", totalUsersExported.ToString());
                 Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
                 Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
-                Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+                if (includeProfile)
+                {
+                    Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+                }
                 Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
                 Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
                 Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
