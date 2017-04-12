@@ -86,8 +86,9 @@ namespace Dnn.ExportImport.Components.Scheduler
                             {
                                 engine.Export(job, result, ScheduleHistoryItem);
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
+                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
                                 AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
@@ -98,8 +99,9 @@ namespace Dnn.ExportImport.Components.Scheduler
                             {
                                 engine.Import(job, result, ScheduleHistoryItem);
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
+                                result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
                                 AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
@@ -187,7 +189,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             new Tuple<string,Type>("JobId", typeof(int)),
             new Tuple<string,Type>("Name" , typeof(string)),
             new Tuple<string,Type>("Value", typeof(string)),
-            new Tuple<string,Type>("Level", typeof(bool)),
+            new Tuple<string,Type>("Level", typeof(int)),
             new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
     }

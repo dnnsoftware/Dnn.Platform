@@ -31,8 +31,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using System.Linq;
 using System.Xml.Linq;
-using DotNetNuke.Entities.Portals.Internal;
-using System.Xml;
 using System.Text;
 using System.IO;
 using System.Threading;
@@ -46,6 +44,11 @@ namespace Dnn.ExportImport.Components.Common
     public static class Util
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
+
+        // some string extension helpers
+        public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
+        public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
+        public static bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
         public static IEnumerable<BasePortableService> GetPortableImplementors()
         {
@@ -248,7 +251,7 @@ namespace Dnn.ExportImport.Components.Common
             return number?.ToString("n0", Thread.CurrentThread.CurrentUICulture);
         }
 
-        private static string GetTagValue(XDocument xmlDoc, string name, string rootTag)
+        private static string GetTagValue(XContainer xmlDoc, string name, string rootTag)
         {
             return (from f in xmlDoc.Descendants(rootTag)
                     select f.Element(name)?.Value).SingleOrDefault();
