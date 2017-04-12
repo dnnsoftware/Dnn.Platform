@@ -80,7 +80,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
-            if (job == null || job.PortalId != portalId)
+            if (job == null || (job.PortalId != portalId && portalId != -1))
                 return false;
 
             controller.SetJobCancelled(job);
@@ -92,7 +92,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
-            if (job == null || job.PortalId != portalId)
+            if (job == null || (job.PortalId != portalId && portalId != -1))
                 return false;
 
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));

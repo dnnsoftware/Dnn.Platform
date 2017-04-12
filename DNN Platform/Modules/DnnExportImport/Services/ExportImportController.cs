@@ -111,7 +111,7 @@ namespace Dnn.ExportImport.Services
         public HttpResponseMessage CancelProcess([FromUri] int jobId)
         {
             var controller = new BaseController();
-            var cancelStatus = controller.CancelJob(PortalSettings.PortalId, jobId);
+            var cancelStatus = controller.CancelJob(UserInfo.IsSuperUser ? -1 : PortalSettings.PortalId, jobId);
             return Request.CreateResponse(
                 cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
         }
@@ -122,7 +122,7 @@ namespace Dnn.ExportImport.Services
         public HttpResponseMessage RemoveJob([FromUri] int jobId)
         {
             var controller = new BaseController();
-            var cancelStatus = controller.RemoveJob(PortalSettings.PortalId, jobId);
+            var cancelStatus = controller.RemoveJob(UserInfo.IsSuperUser ? -1 : PortalSettings.PortalId, jobId);
             return Request.CreateResponse(
                 cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
         }
