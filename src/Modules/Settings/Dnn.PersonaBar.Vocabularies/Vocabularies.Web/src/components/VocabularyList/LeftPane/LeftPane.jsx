@@ -23,16 +23,17 @@ class LeftPane extends Component {
                     onEnter={this.onEnter.bind(this, "Description") }
                     inputType="textArea"
                     editable={util.settings.isHost}
+                    helpText={LocalizedResources.get("EditFieldHelper")}
                     />
                 <EditableWithLabel
                     label={LocalizedResources.get("Type") }
-                    value={props.type}
+                    value={LocalizedResources.get(props.type)}
                     onEnter={this.onEnter.bind(this, "Type") }
                     editable={false}
                     />
                 <EditableWithLabel
                     label={LocalizedResources.get("Scope") }
-                    value={props.scopeType}
+                    value={LocalizedResources.get(props.scopeType)}
                     onEnter={this.onEnter.bind(this, "ScopeType") }
                     editable={false}
                     />
