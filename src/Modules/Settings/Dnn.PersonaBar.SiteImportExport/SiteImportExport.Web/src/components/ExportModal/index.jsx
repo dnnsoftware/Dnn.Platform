@@ -80,12 +80,14 @@ class ExportModal extends Component {
     onExportPortal() {
         const { props, state } = this;
         if (this.Validate()) {
-            props.dispatch(ImportExportActions.exportSite(state.exportRequest, () => {
+            props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
                 utilities.utilities.notify(Localization.get("ExportRequestSubmitted"));
                 props.dispatch(ImportExportActions.getAllJobs({
                     portal: props.portalId,
                     pageIndex: 0,
                     pageSize: 10
+                }, () => {
+                    props.dispatch(ImportExportActions.jobSelected(data.jobId));
                 }));
                 props.dispatch(VisiblePanelActions.selectPanel(0));
             }, () => {
@@ -362,10 +364,11 @@ class ExportModal extends Component {
                                     label={Localization.get("ExportMode")}
                                 />
                                 <RadioButtons
+                                    disabled={!props.lastExportTime}
                                     onChange={this.onChange.bind(this, "ExportMode")}
                                     options={this.getExportModeOptions()}
                                     buttonGroup="exportMode"
-                                    value={state.exportRequest.ExportMode} />
+                                    value={props.lastExportTime ? state.exportRequest.ExportMode : "Complete"} />
                             </InputGroup>
                             <InputGroup>
                                 <Label

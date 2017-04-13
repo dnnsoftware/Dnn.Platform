@@ -64,13 +64,6 @@ class App extends Component {
             }));
             this.updateReferrerInfo(util.settings);
         }
-        /*if (props.portalId > -1 || state.portalId === -1) {
-            this.setState({
-                portalId: props.portalId
-            }, () => {
-                props.dispatch(ImportExportActions.siteSelected(props.portalId));
-            });
-        }*/
     }
 
     selectPanel(panel, event) {
@@ -79,6 +72,28 @@ class App extends Component {
         }
         const { props } = this;
         props.dispatch(VisiblePanelActions.selectPanel(panel));
+        props.dispatch(ImportExportActions.jobSelected());
+    }
+
+    selectPanelInternal(panel, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        if (props.importWizardStep > 0) {
+            util.utilities.confirm(Localization.get("CancelImportMessage"),
+                Localization.get("ConfirmCancel"),
+                Localization.get("KeepImport"),
+                () => {
+                    props.dispatch(ImportExportActions.packageVerified(false));
+                    props.dispatch(ImportExportActions.importWizardGoToSetp(0));
+                    props.dispatch(VisiblePanelActions.selectPanel(panel));
+                });
+        }
+        else {
+            props.dispatch(VisiblePanelActions.selectPanel(panel));
+        }
+        props.dispatch(ImportExportActions.jobSelected());
     }
 
     render() {
@@ -92,7 +107,9 @@ class App extends Component {
                         text: state.referrer && state.referrerText,
                         onClick: state.backToReferrerFunc
                     }}>
-                        {props.selectedPage === 0 && <Dashboard selectPanel={this.selectPanel.bind(this)} />}
+                        {props.selectedPage === 0 &&
+                            <Dashboard selectPanel={this.selectPanel.bind(this)} />
+                        }
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 1}>
@@ -102,8 +119,8 @@ class App extends Component {
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
                         onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
                     }}>
-                        {props.selectedPage === 1 && 
-                        <ExportModal onCancel={this.selectPanel.bind(this, 0)} />}
+                        {props.selectedPage === 1 &&
+                            <ExportModal onCancel={this.selectPanelInternal.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
                 <PersonaBarPage isOpen={props.selectedPage === 2}>
@@ -112,10 +129,10 @@ class App extends Component {
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody backToLinkProps={{
                         text: state.referrer && state.referrerText || Localization.get("BackToImportExport"),
-                        onClick: state.backToReferrerFunc || this.selectPanel.bind(this, 0)
+                        onClick: state.backToReferrerFunc || this.selectPanelInternal.bind(this, 0)
                     }}>
-                        {props.selectedPage === 2 && 
-                        <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
+                        {props.selectedPage === 2 &&
+                            <ImportModal onCancel={this.selectPanel.bind(this, 0)} />}
                     </PersonaBarPageBody>
                 </PersonaBarPage>
             </div>
@@ -128,7 +145,8 @@ App.PropTypes = {
     selectedPage: PropTypes.number,
     selectedPageVisibleIndex: PropTypes.number,
     portalId: PropTypes.number,
-    portalName: PropTypes.string
+    portalName: PropTypes.string,
+    importWizardStep: PropTypes.number
 };
 
 function mapStateToProps(state) {
@@ -136,7 +154,8 @@ function mapStateToProps(state) {
         selectedPage: state.visiblePanel.selectedPage,
         selectedPageVisibleIndex: state.visiblePanel.selectedPageVisibleIndex,
         portalId: state.importExport.portalId,
-        portalName: state.importExport.portalName
+        portalName: state.importExport.portalName,
+        importWizardStep: state.importExport.importWizardStep
     };
 }
 

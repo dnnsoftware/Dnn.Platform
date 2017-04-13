@@ -37,6 +37,9 @@ class DashboardPanelBody extends Component {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
+                        else {
+                            clearInterval(this.jobListTimeout);
+                        }
                     }));
                 }));
             }
@@ -44,6 +47,9 @@ class DashboardPanelBody extends Component {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
+                    }
+                    else {
+                        clearInterval(this.jobListTimeout);
                     }
                 }));
             }
@@ -63,6 +69,7 @@ class DashboardPanelBody extends Component {
     }
 
     addInterval(props) {
+        clearInterval(this.jobListTimeout);
         const persistedSettings = util.utilities.persistent.load();
         this.jobListTimeout = setInterval(() => {
             if (persistedSettings.expandPersonaBar && persistedSettings.activeIdentifier === "Dnn.SiteImportExport") {
@@ -139,6 +146,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             });
         }
@@ -168,6 +178,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             }));
         });
@@ -183,6 +196,9 @@ class DashboardPanelBody extends Component {
                 props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
+                    }
+                    else {
+                        clearInterval(this.jobListTimeout);
                     }
                 }));
             }));
@@ -200,6 +216,9 @@ class DashboardPanelBody extends Component {
                     if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                         this.addInterval(props);
                     }
+                    else {
+                        clearInterval(this.jobListTimeout);
+                    }
                 }));
             }));
         });
@@ -216,6 +235,9 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
+                        }
+                        else {
+                            clearInterval(this.jobListTimeout);
                         }
                     }));
                 }, () => {
@@ -237,6 +259,9 @@ class DashboardPanelBody extends Component {
                     props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
+                        }
+                        else {
+                            clearInterval(this.jobListTimeout);
                         }
                     }));
                 }, () => {
@@ -315,7 +340,6 @@ class DashboardPanelBody extends Component {
 
     renderedJobList() {
         const { props } = this;
-        let i = 0;
         if (props.portals.length > 0 && props.jobs && props.jobs.length > 0) {
             return props.jobs.map((job, index) => {
                 return (
@@ -335,6 +359,7 @@ class DashboardPanelBody extends Component {
                         Collapse={this.collapse.bind(this)}>
                         <JobDetails
                             jobId={job.JobId}
+                            cancelled={job.Cancelled}
                             Collapse={this.collapse.bind(this)}
                             openId={props.currentJobId}
                             cancelJob={this.cancelJob.bind(this)}

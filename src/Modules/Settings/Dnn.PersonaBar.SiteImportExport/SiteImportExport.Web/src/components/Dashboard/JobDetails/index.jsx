@@ -11,8 +11,11 @@ import {
 import Localization from "localization";
 
 class JobDetails extends Component {
-    constructor() {
+    constructor(props) {
         super();
+        this.state = {
+            cancelled: props.cancelled
+        };
     }
 
     componentWillMount() {
@@ -22,13 +25,21 @@ class JobDetails extends Component {
         }
     }
 
+    componentWillReceiveProps(props) {
+        if (props.cancelled !== this.state.cancelled) {
+            this.setState({
+                cancelled: props.cancelled
+            });
+        }
+    }
+
     /* eslint-disable react/no-danger */
     getSummaryItem(category) {
-        const { props } = this;
+        const { props, state } = this;
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
             if (detail) {
-                if (detail.ProcessedItems === detail.TotalItems || props.jobDetail.Cancelled || props.jobDetail.Status !== 1) {
+                if (detail.ProcessedItems === detail.TotalItems || state.cancelled || props.jobDetail.Status !== 1) {
                     return detail.ProcessedItemsString + " / " + detail.TotalItemsString;
                 }
                 else {
@@ -56,7 +67,7 @@ class JobDetails extends Component {
     }
 
     renderExportSummary() {
-        const { props } = this;
+        const { props, state } = this;
         return <div style={{ float: "left", width: "100%" }}>
             {props.jobDetail &&
                 <div className="export-summary">
@@ -75,7 +86,7 @@ class JobDetails extends Component {
                                     label={Localization.get("Pages")}
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Pages")}</div>
-                            </GridCell>                            
+                            </GridCell>
                             <GridCell>
                                 <Label
                                     labelType="inline"
@@ -186,12 +197,12 @@ class JobDetails extends Component {
                             </GridCell>
                         </div>
                         <GridCell className="action-buttons">
-                            {props.jobDetail.Status < 2 && !props.jobDetail.Cancelled &&
+                            {props.jobDetail.Status < 2 && !state.cancelled &&
                                 <Button type="secondary" onClick={this.cancel.bind(this, props.jobId)}>
                                     {props.jobDetail.JobType.includes("Export") ? Localization.get("CancelExport") : Localization.get("CancelImport")}
                                 </Button>
                             }
-                            {(props.jobDetail.Status > 1 || props.jobDetail.Cancelled) &&
+                            {(props.jobDetail.Status > 1 || state.cancelled) &&
                                 <Button type="secondary" onClick={this.delete.bind(this, props.jobId)}>{Localization.get("Delete")}</Button>
                             }
                         </GridCell>
@@ -220,6 +231,7 @@ JobDetails.propTypes = {
     dispatch: PropTypes.func.isRequired,
     jobDetail: PropTypes.object,
     jobId: PropTypes.number,
+    cancelled: PropTypes.bool,
     Collapse: PropTypes.func,
     cancelJob: PropTypes.func,
     deleteJob: PropTypes.func
