@@ -178,8 +178,9 @@ namespace Dnn.ExportImport.Components.Scheduler
                         table.Rows.Add(row);
                     }
 
-                    toSkip += batchSize;
                     PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
+                    toSkip += batchSize;
+                    table.Rows.Clear();
                 }
             }
             completeLog.Clear();
