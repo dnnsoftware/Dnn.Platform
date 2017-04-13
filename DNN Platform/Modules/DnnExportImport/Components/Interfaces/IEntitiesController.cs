@@ -58,7 +58,7 @@ namespace Dnn.ExportImport.Components.Interfaces
 
         PermissionInfo GetPermissionInfo(string permissionCode, string permissionKey, string permissionName);
 
-        void SetTabDeleted(int tabId, bool isDeleted);
+        void SetTabSpecificData(int tabId, bool isDeleted, bool isVisible);
         void SetTabModuleDeleted(int tabModuleId, bool isDeleted);
         void SetUserDeleted(int portalId, int userId, bool isDeleted);
         void RunSchedule();

@@ -29,8 +29,6 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -155,13 +153,8 @@ namespace Dnn.ExportImport.Components.Services
             var createdBy = Util.GetUserIdByName(_exportImportJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
             var modifiedBy = Util.GetUserIdByName(_exportImportJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t =>
-                otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase) && t.CultureCode == otherTab.CultureCode);
-            //var localTab = (
-            //    from t in localTabs
-            //    let tabId = TabController.GetTabByTabPath(portalId, otherTab.TabPath, otherTab.CultureCode)
-            //    where tabId > 0
-            //    select t
-            //    ).FirstOrDefault();
+                otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                && (t.CultureCode ?? "") == (otherTab.CultureCode ?? ""));
 
             if (localTab != null)
             {
@@ -178,12 +171,10 @@ namespace Dnn.ExportImport.Components.Services
                             Result.AddLogEntry("Imported existing TAB parent NOT found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                         }
 
-                        if (localTab.IsDeleted != otherTab.IsDeleted)
-                        {
-                            localTab.IsDeleted = otherTab.IsDeleted;
-                            // this is not saved when adding the tab; so set it explicitly
-                            EntitiesController.Instance.SetTabDeleted(localTab.TabID, localTab.IsDeleted);
-                        }
+                        // this is not saved when adding the tab; so set it explicitly
+                        localTab.IsDeleted = otherTab.IsDeleted;
+                        localTab.IsVisible = otherTab.IsVisible;
+                        EntitiesController.Instance.SetTabSpecificData(localTab.TabID, localTab.IsDeleted, localTab.IsVisible);
 
                         try
                         {
@@ -231,13 +222,11 @@ namespace Dnn.ExportImport.Components.Services
 
                 UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
 
-                if (otherTab.IsDeleted)
-                {
-                    // this is not saved upon updating the tab
-                    localTab.IsDeleted = otherTab.IsDeleted;
-                    EntitiesController.Instance.SetTabDeleted(localTab.TabID, true);
-                    //_tabController.UpdateTab(localTab); // to clear cache
-                }
+                // this is not saved upon updating the tab
+                localTab.IsDeleted = otherTab.IsDeleted;
+                localTab.IsVisible = otherTab.IsVisible;
+                EntitiesController.Instance.SetTabSpecificData(localTab.TabID, localTab.IsDeleted, localTab.IsVisible);
+                //_tabController.UpdateTab(localTab); // to clear cache
 
                 AddTabRelatedItems(localTab, otherTab, true);
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
@@ -863,7 +852,9 @@ namespace Dnn.ExportImport.Components.Services
                     if (index > 0)
                     {
                         var path = exportedTab.TabPath.Substring(0, index);
-                        var localTab = localTabs.FirstOrDefault(t => path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase));
+                        var localTab = localTabs.FirstOrDefault(t => 
+                            path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                            && (t.CultureCode ?? "") == (exportedTab.CultureCode ?? ""));
                         if (localTab != null)
                             return localTab.TabID;
                     }
