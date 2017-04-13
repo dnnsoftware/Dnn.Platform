@@ -114,7 +114,8 @@ class Grid extends Component {
             <GridHeader type={props.type} definitions={props.definitions}
                 roleColumnWidth={roleColumnWidth}
                 columnWidth={columnWidth}
-                actionsWidth={actionsWidth} />
+                actionsWidth={actionsWidth}
+                localization={props.localization}  />
             {props.permissions.map((permission) => {
                 return <GridRow
                     type={props.type}
