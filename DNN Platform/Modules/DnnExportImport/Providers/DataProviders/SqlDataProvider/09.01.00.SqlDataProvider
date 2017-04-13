@@ -1172,7 +1172,7 @@ AS
     FROM    
         {databaseOwner}[{objectQualifier}Folders]  F 
 		INNER JOIN {databaseOwner}[{objectQualifier}FolderMappings] FM ON F.[FolderMappingID]=FM.[FolderMappingID]
-		LEFT JOIN dbo.[dnn_Folders] PF ON F.ParentID=PF.FolderID
+		LEFT JOIN {databaseOwner}[{objectQualifier}Folders] PF ON F.ParentID=PF.FolderID
     WHERE  F.PortalID = @PortalID
     AND 
         (CASE 
