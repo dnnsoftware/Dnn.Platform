@@ -53,7 +53,8 @@ class ExportModal extends Component {
             },
             errors: {
                 ExportName: false
-            }
+            },
+            reloadPages: false
         };
     }
 
@@ -64,6 +65,21 @@ class ExportModal extends Component {
         this.setState({
             exportRequest
         });
+    }
+
+    componentWillReceiveProps(props) {
+        const { state } = this;
+        const { exportRequest } = state;
+        let { reloadPages } = state;
+        if (exportRequest.PortalId !== props.portalId) {
+            exportRequest.PortalId = props.portalId;
+            reloadPages = true;
+            this.setState({ exportRequest, reloadPages }, () => {
+                this.setState({
+                    reloadPages: false
+                });
+            });
+        }
     }
 
     goToStep(wizardStep) {

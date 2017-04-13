@@ -20,7 +20,7 @@ using DotNetNuke.Services.Localization;
 
 namespace Dnn.PersonaBar.SiteImportExport.Services
 {
-    [MenuPermission(Scope = ServiceScope.Admin)]
+    [MenuPermission(Scope = ServiceScope.Host)]
     public class SiteImportExportController : PersonaBarApiController
     {
         
