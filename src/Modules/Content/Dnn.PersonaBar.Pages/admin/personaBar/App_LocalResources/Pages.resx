@@ -741,4 +741,55 @@
   <data name="Title.Text" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="AddRole.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddRolePlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a role</value>
+  </data>
+  <data name="AddUser.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddUserPlaceHolder.Text" xml:space="preserve">
+    <value>Begin typing to add a user</value>
+  </data>
+  <data name="AllGroups.Text" xml:space="preserve">
+    <value>[All Roles]</value>
+  </data>
+  <data name="EditTab.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EmptyRole.Text" xml:space="preserve">
+    <value>Add a role to set permissions by role</value>
+  </data>
+  <data name="EmptyUser.Text" xml:space="preserve">
+    <value>Add a user to set permissions by user</value>
+  </data>
+  <data name="FilterByGroup.Text" xml:space="preserve">
+    <value>Filter By Group:</value>
+  </data>
+  <data name="GlobalGroups.Text" xml:space="preserve">
+    <value>[Global Roles]</value>
+  </data>
+  <data name="PermissionsByRole.Text" xml:space="preserve">
+    <value>PERMISSIONS BY ROLE</value>
+  </data>
+  <data name="PermissionsByUser.Text" xml:space="preserve">
+    <value>PERMISSIONS BY USER</value>
+  </data>
+  <data name="Role.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Status_Hidden.Text" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="Status_Visible.Text" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ViewTab.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>
