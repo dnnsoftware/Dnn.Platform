@@ -67,6 +67,7 @@ namespace Dnn.ExportImport.Components.Entities
         {
             CheckpointId = Null.SetNullInteger(dr[nameof(CheckpointId)]);
             JobId = Null.SetNullInteger(dr[nameof(JobId)]);
+            AssemblyName = Null.SetNullString(dr[nameof(AssemblyName)]);
             Category = Null.SetNullString(dr[nameof(Category)]);
             Stage = Null.SetNullInteger(dr[nameof(Stage)]);
             StageData = Null.SetNullString(dr[nameof(StageData)]);
