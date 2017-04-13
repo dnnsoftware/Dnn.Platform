@@ -417,7 +417,8 @@ namespace Dnn.EditBar.UI.Controllers
                                                                                     pagePicker_unsortedOrderButtonTooltip: '{24}',
                                                                                     site: '{25}',
                                                                                     page: '{26}',
-                                                                                    addExistingModule: '{27}'
+                                                                                    addExistingModule: '{27}',
+                                                                                    makeCopy: '{28}'
                                                                                 }};";
 
             var script = string.Format(scriptFormat,
@@ -448,7 +449,8 @@ namespace Dnn.EditBar.UI.Controllers
                 Localization.GetSafeJSString("pagePicker_unsortedOrderButtonTooltip.Text", LocalResourcesFile),
                 Localization.GetSafeJSString("Site.Text", LocalResourcesFile),
                 Localization.GetSafeJSString("Page.Text", LocalResourcesFile),
-                Localization.GetSafeJSString("AddExistingModule.Text", LocalResourcesFile)
+                Localization.GetSafeJSString("AddExistingModule.Text", LocalResourcesFile),
+                Localization.GetSafeJSString("MakeCopy.Text", LocalResourcesFile)
                 );
 
             if (ScriptManager.GetCurrent(Page) != null)

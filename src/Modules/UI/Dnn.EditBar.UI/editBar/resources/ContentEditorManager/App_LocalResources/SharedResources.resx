@@ -261,4 +261,13 @@
   <data name="pagerPicker_sortDescendingButtonTooltip.Text" xml:space="preserve">
     <value>Sort in descending order</value>
   </data>
+  <data name="MakeCopy.Text" xml:space="preserve">
+    <value>Make a copy</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Page:</value>
+  </data>
+  <data name="Site.Text" xml:space="preserve">
+    <value>Site:</value>
+  </data>
 </root>
