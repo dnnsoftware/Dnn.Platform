@@ -117,7 +117,7 @@ class ImportModal extends Component {
 
     onImport() {
         const { props, state } = this;
-        props.dispatch(ImportExportActions.importSite(state.importRequest, () => {
+        props.dispatch(ImportExportActions.importSite(state.importRequest, (data) => {
             util.utilities.notify(Localization.get("ImportRequestSubmitted"));
             props.dispatch(ImportExportActions.packageVerified(false));
             this.goToStep(0);
@@ -125,6 +125,8 @@ class ImportModal extends Component {
                 portal: state.importRequest.PortalId,
                 pageIndex: 0,
                 pageSize: 10
+            }, () => {
+                props.dispatch(ImportExportActions.jobSelected(data.jobId));
             }));
             props.dispatch(VisiblePanelActions.selectPanel(0));
         }, () => {

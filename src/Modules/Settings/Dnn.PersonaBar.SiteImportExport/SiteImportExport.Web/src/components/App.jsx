@@ -72,6 +72,7 @@ class App extends Component {
         }
         const { props } = this;
         props.dispatch(VisiblePanelActions.selectPanel(panel));
+        props.dispatch(ImportExportActions.jobSelected());
     }
 
     selectPanelInternal(panel, event) {
@@ -92,6 +93,7 @@ class App extends Component {
         else {
             props.dispatch(VisiblePanelActions.selectPanel(panel));
         }
+        props.dispatch(ImportExportActions.jobSelected());
     }
 
     render() {
