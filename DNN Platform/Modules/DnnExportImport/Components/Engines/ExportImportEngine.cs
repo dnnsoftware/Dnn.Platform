@@ -155,11 +155,12 @@ namespace Dnn.ExportImport.Components.Engines
                         if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
                             (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                         {
+                            var serviceAssembly = service.GetType().Assembly.GetName().Name;
                             service.Result = result;
                             service.Repository = ctx;
                             service.CheckCancelled = CheckCancelledCallBack;
                             service.CheckPointStageCallback = CheckpointCallback;
-                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category);
+                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
 
                             if (service.CheckPoint == null)
                             {
@@ -167,7 +168,7 @@ namespace Dnn.ExportImport.Components.Engines
                                 {
                                     JobId = exportJob.JobId,
                                     Category = service.Category,
-                                    AssemblyName = service.GetType().Assembly.GetName().Name,
+                                    AssemblyName = serviceAssembly,
                                     StartDate = DateUtils.GetDatabaseUtcTime()
                                 };
 
@@ -354,15 +355,17 @@ namespace Dnn.ExportImport.Components.Engines
                         if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
                             (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                         {
+                            var serviceAssembly = service.GetType().Assembly.GetName().Name;
+
                             service.Result = result;
                             service.Repository = ctx;
                             service.CheckCancelled = CheckCancelledCallBack;
                             service.CheckPointStageCallback = CheckpointCallback;
-                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == service.GetType().Assembly.GetName().Name)
+                            service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly)
                                                  ?? new ExportImportChekpoint
                                                  {
                                                      JobId = importJob.JobId,
-                                                     AssemblyName = service.GetType().Assembly.GetName().Name,
+                                                     AssemblyName = serviceAssembly,
                                                      Category = service.Category,
                                                      Progress = 0,
                                                      StartDate = DateUtils.GetDatabaseUtcTime()
@@ -424,14 +427,16 @@ namespace Dnn.ExportImport.Components.Engines
                     if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
                         (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
                     {
-                        service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == service.GetType().Assembly.GetName().Name);
+                        var serviceAssembly = service.GetType().Assembly.GetName().Name;
+
+                        service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
 
                         if (service.CheckPoint != null) continue;
 
                         service.CheckPoint = new ExportImportChekpoint
                         {
                             JobId = jobId,
-                            AssemblyName = service.GetType().Assembly.GetName().Name,
+                            AssemblyName = serviceAssembly,
                             Category = service.Category,
                             Progress = 0
                         };
