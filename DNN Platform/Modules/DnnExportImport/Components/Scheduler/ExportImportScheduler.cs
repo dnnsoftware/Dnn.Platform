@@ -182,6 +182,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
                 }
             }
+            completeLog.Clear();
         }
 
         private static readonly Tuple<string, Type>[] DatasetColumns =

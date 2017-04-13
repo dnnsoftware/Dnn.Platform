@@ -330,9 +330,9 @@ namespace Dnn.ExportImport.Components.Providers
             return _dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, toDate, fromDate);
         }
 
-        public void SetTabDeleted(int tabId, bool isDeleted)
+        public void SetTabSpecificData(int tabId, bool isDeleted, bool isVisible)
         {
-            _dataProvider.ExecuteNonQuery("Export_SetTabDeleted", tabId, isDeleted);
+            _dataProvider.ExecuteNonQuery("Export_SetTabSpecificData", tabId, isDeleted, isVisible);
         }
 
         public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)

@@ -1564,17 +1564,19 @@ BEGIN
 END
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabDeleted]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabDeleted]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_SetTabSpecificData]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabSpecificData]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabDeleted]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_SetTabSpecificData]
 	@TabId     int,
-	@IsDeleted bit
+	@IsDeleted bit,
+	@IsVisible bit
 AS
 BEGIN
     UPDATE {databaseOwner}{objectQualifier}Tabs
-    SET IsDeleted = @IsDeleted
+    SET IsDeleted = @IsDeleted,
+		IsVisible = @IsVisible
     WHERE TabId = @TabId
 END
 GO

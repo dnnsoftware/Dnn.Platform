@@ -181,9 +181,9 @@ namespace Dnn.ExportImport.Components.Controllers
                 _dataProvider.GetPermissionInfo(permissionCode, permissionKey, permissionName));
         }
 
-        public void SetTabDeleted(int tabId, bool isDeleted)
+        public void SetTabSpecificData(int tabId, bool isDeleted, bool isVisible)
         {
-            _dataProvider.SetTabDeleted(tabId, isDeleted);
+            _dataProvider.SetTabSpecificData(tabId, isDeleted, isVisible);
         }
 
         public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
