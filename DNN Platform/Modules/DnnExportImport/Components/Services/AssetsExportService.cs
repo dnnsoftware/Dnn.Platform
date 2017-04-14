@@ -93,7 +93,7 @@ namespace Dnn.ExportImport.Components.Services
                     //Update the total items count in the check points. This should be updated only once.
                     CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalFolders : CheckPoint.TotalItems;
                     CheckPoint.ProcessedItems = skip;
-                    CheckPoint.Progress = skip * 100.0 / CheckPoint.TotalItems;
+                    CheckPoint.Progress = CheckPoint.TotalItems > 0 ? skip * 100.0 / CheckPoint.TotalItems : 0;
                     if (CheckPointStageCallback(this)) return;
                     using (var zipArchive = CompressionUtil.OpenCreate(assetsFile))
                     {
