@@ -156,11 +156,6 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.Stage++;
                     currentIndex = 0;
                     CheckPoint.Progress = 100;
-                    //TODO: Check if we need this step or not.
-                    //var folderMappings =
-                    //    CBO.FillCollection<ExportFolderMapping>(DataProvider.Instance()
-                    //        .GetFolderMappings(portalId,toDate, fromDate)).ToList();
-                    //Repository.CreateItems(folderMappings, null);
                 }
             }
             finally
@@ -208,9 +203,6 @@ namespace Dnn.ExportImport.Components.Services
                 try
                 {
                     //Stage 2 starts
-                    var localFolders =
-                        CBO.FillCollection<ExportFolder>(DataProvider.Instance()
-                            .GetFolders(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null)).ToList();
                     var sourceFolders = Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
@@ -223,7 +215,7 @@ namespace Dnn.ExportImport.Components.Services
                         if (CheckCancelled(importJob)) break;
                         // PROCESS FOLDERS
                         //Create new or update existing folder
-                        if (ProcessFolder(importJob, importDto, sourceFolder, localFolders))
+                        if (ProcessFolder(importJob, importDto, sourceFolder))
                         {
                             totalFolderImported++;
 
@@ -310,19 +302,12 @@ namespace Dnn.ExportImport.Components.Services
             return Repository.GetCount<ExportFolder>();
         }
 
-        private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto,
-            ExportFolder folder, IEnumerable<ExportFolder> localFolders)
+        private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, ExportFolder folder)
         {
             var portalId = importJob.PortalId;
-
             if (folder == null) return false;
-            //TODO: First check if the folder is a user folder. If yes, then replace the user ids with the new one in the system.
 
-            var existingFolder =
-                localFolders.FirstOrDefault(
-                    x =>
-                        x.FolderPath == folder.FolderPath ||
-                        (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folder.FolderPath)));
+            var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? ""));
             var isUpdate = false;
             var modifiedBy = Util.GetUserIdByName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
             if (existingFolder != null)
@@ -359,7 +344,6 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     SyncUserFolder(importJob.PortalId, folder);
                 }
-                //TODO: Is there any real need to update existing folder?
             }
             else
             {
@@ -368,8 +352,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (folder.ParentId != null && folder.ParentId > 0)
                 {
                     //Find the previously created parent folder id.
-                    folder.ParentId =
-                        localFolders.FirstOrDefault(x => x.FolderPath == folder.ParentFolderPath || (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folder.ParentFolderPath)))?.FolderId;
+                    folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? ""))?.FolderId;
                 }
                 //ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
