@@ -422,8 +422,9 @@ AS
 		Count(*)
 	FROM
 		{databaseOwner}{objectQualifier}ExportImportJobs J
+	INNER JOIN {databaseOwner}{objectQualifier}Portals Portals ON Portals.PortalID=J.PortalId
 	WHERE
-		(PortalID = @PortalID OR @PortalID=-1)
+		(J.PortalID = @PortalID OR @PortalID=-1)
 	AND
 		(@JobType IS NULL OR JobType = @JobType)
 	AND
