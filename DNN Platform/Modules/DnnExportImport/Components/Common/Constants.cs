@@ -38,6 +38,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
         internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
         internal const string ExportZipTemplates = "export_templates.zip"; //Compressed templates file name
+        internal const string ExportZipPackages = "export_packages.zip"; //Compressed extension packages
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";

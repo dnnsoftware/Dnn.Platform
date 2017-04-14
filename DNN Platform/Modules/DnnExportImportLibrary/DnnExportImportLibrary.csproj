@@ -48,6 +48,7 @@
     <Compile Include="Dto\Assets\ExportFolderMapping.cs" />
     <Compile Include="Dto\Assets\ExportFolderPermission.cs" />
     <Compile Include="Dto\BasicExportImportDto.cs" />
+    <Compile Include="Dto\Pages\ExportPackage.cs" />
     <Compile Include="Dto\Pages\ExportModule.cs" />
     <Compile Include="Dto\Pages\ExportModuleContent.cs" />
     <Compile Include="Dto\Pages\ExportModulePermission.cs" />
