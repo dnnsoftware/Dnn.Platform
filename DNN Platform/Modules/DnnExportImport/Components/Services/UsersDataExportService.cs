@@ -86,26 +86,24 @@ namespace Dnn.ExportImport.Components.Services
                 while (totalProcessed < totalUsersToBeProcessed)
                 {
                     if (CheckCancelled(importJob)) return;
-                    var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
+                    var users = Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize);
                     skip = 0;
                     foreach (var user in users)
                     {
                         if (CheckCancelled(importJob)) return;
-                        var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id).ToList();
+                        var userRoles = Repository.GetRelatedItems<ExportUserRole>(user.Id);
                         var userAuthentication =
                             Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                        var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
+                        var userProfiles = Repository.GetRelatedItems<ExportUserProfile>(user.Id);
 
                         //Find the correct userId from the system which was added/updated by UserExportService.
                         var userId = UserController.GetUserByName(user.Username)?.UserID;
                         if (userId != null)
                         {
-                            ProcessUserRoles(importJob, importDto, userRoles, userId.Value);
-                            totalUserRolesImported += userRoles.Count;
+                            totalUserRolesImported += ProcessUserRoles(importJob, importDto, userRoles, userId.Value);
                             if (includeProfile)
                             {
-                                ProcessUserProfiles(importJob, importDto, userProfiles, userId.Value);
-                                totalProfilesImported += userProfiles.Count;
+                                totalProfilesImported += ProcessUserProfiles(importJob, importDto, userProfiles, userId.Value);
                             }
 
                             ProcessUserAuthentications(importJob, importDto, userAuthentication, userId.Value);
@@ -146,12 +144,13 @@ namespace Dnn.ExportImport.Components.Services
             return Repository.GetCount<ExportUser>();
         }
 
-        private void ProcessUserRoles(ExportImportJob importJob, ImportDto importDto,
+        private int ProcessUserRoles(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportUserRole> userRoles, int userId)
         {
+            var total = 0;
             foreach (var userRole in userRoles)
             {
-                if (CheckCancelled(importJob)) return;
+                if (CheckCancelled(importJob)) return total;
                 var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleName);
                 if (roleId == null) continue;
 
@@ -186,17 +185,20 @@ namespace Dnn.ExportImport.Components.Services
                         .AddUserRole(importJob.PortalId, userId, roleId.Value, userRole.Status, userRole.IsOwner,
                             userRole.EffectiveDate ?? Null.NullDate, userRole.ExpiryDate ?? Null.NullDate, createdBy);
                 }
+                total++;
             }
+            return total;
         }
 
-        private void ProcessUserProfiles(ExportImportJob importJob, ImportDto importDto,
+        private int ProcessUserProfiles(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportUserProfile> userProfiles, int userId)
         {
+            var total = 0;
             var allUserProfileProperties =
                 CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId));
             foreach (var userProfile in userProfiles)
             {
-                if (CheckCancelled(importJob)) return;
+                if (CheckCancelled(importJob)) return total;
                 var existingUserProfile =
                     allUserProfileProperties.FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
                 var isUpdate = false;
@@ -235,7 +237,9 @@ namespace Dnn.ExportImport.Components.Services
                             userProfile.PropertyValue, userProfile.Visibility, userProfile.ExtendedVisibility,
                             DateUtils.GetDatabaseLocalTime());
                 }
+                total++;
             }
+            return total;
         }
 
         private void ProcessUserAuthentications(ExportImportJob importJob, ImportDto importDto,

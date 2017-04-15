@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
@@ -189,7 +190,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (CheckCancelled(importJob)) return;
 
-            const int pageSize = Constants.DefaultPageSize;
+            const int pageSize = 500;// Constants.DefaultPageSize;
             var totalUsersImported = 0;
             var totalPortalsImported = 0;
             var totalAspnetUserImported = 0;
@@ -198,60 +199,107 @@ namespace Dnn.ExportImport.Components.Services
             var totalUsers = Repository.GetCount<ExportUser>();
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
-            var skip = GetCurrentSkip();
-            var currentIndex = skip;
             //Skip the import if all the users has been processed already.
-            if (CheckPoint.Stage >= totalPages && skip == 0)
+            if (CheckPoint.Stage >= totalPages)
                 return;
 
             var pageIndex = CheckPoint.Stage;
 
-            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize - skip;
+            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
             if (CheckPointStageCallback(this)) return;
-
             try
             {
-                while (totalUsersImported < totalUsersToBeProcessed)
+                Repository.RebuildIndex<ExportUser>(x => x.Id, true);
+                Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
+                var portalId = importJob.PortalId;
+                using (var table = new DataTable("Users"))
                 {
-                    if (CheckCancelled(importJob)) return;
-                    var users =
-                        Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize + skip, pageSize).ToList();
-                    skip = 0;
-                    foreach (var user in users)
+                    // must create the columns from scratch with each iteration
+                    table.Columns.AddRange(
+                        UsersDatasetColumns.Select(column => new DataColumn(column.Item1, column.Item2)).ToArray());
+                    while (totalUsersImported < totalUsersToBeProcessed)
                     {
                         if (CheckCancelled(importJob)) return;
+                        var users =
+                            Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
+                        DateTime timer = DateTime.Now;
+                        foreach (var user in users)
+                        {
+                            if (CheckCancelled(importJob)) return;
+                            var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
+                            var row = table.NewRow();
+                            row["PortalID"] = portalId;
+                            row["Username"] = user.Username;
+                            row["FirstName"] = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
+                            row["LastName"] = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
+                            row["AffiliateId"] = user.AffiliateId ?? Null.NullInteger;
+                            row["IsSuperUser"] = user.IsSuperUser;
+                            row["Email"] = user.Email;
+                            row["DisplayName"] = user.DisplayName;
+                            row["UpdatePassword"] = user.UpdatePassword;
+                            row["Authorised"] = userPortal?.Authorised ?? false;
+                            row["CreatedByUserID"] = user.CreatedByUserId;
+                            row["VanityUrl"] = userPortal?.VanityUrl;
+                            row["RefreshRoles"] = userPortal?.RefreshRoles ?? false;
+                            row["LastIPAddress"] = user.LastIpAddress;
+                            row["passwordResetToken"] = user.PasswordResetToken ?? Null.NullGuid;
+                            row["passwordResetExpiration"] =
+                                Convert.ToDateTime(user.PasswordResetExpiration ?? Constants.EpochTime);
+                            row["IsDeleted"] = userPortal?.IsDeleted ?? false;
+                            row["LastModifiedByUserID"] = user.LastModifiedByUserId;
+                            //Aspnet Users and Membership
+                            var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                            var aspnetMembership = Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
 
-                        var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
-                        var aspnetMembership =
-                            Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                            row["ApplicationId"] = GetApplicationId();
+                            row["AspUserId"] = aspNetUser?.UserId;
+                            row["MobileAlias"] = aspNetUser?.MobileAlias;
+                            row["IsAnonymous"] = aspNetUser?.IsAnonymous;
+                            row["Password"] = aspnetMembership?.Password;
+                            row["PasswordFormat"] = aspnetMembership?.PasswordFormat;
+                            row["PasswordSalt"] = aspnetMembership?.PasswordSalt;
+                            row["MobilePIN"] = aspnetMembership?.MobilePin;
+                            row["PasswordQuestion"] = aspnetMembership?.PasswordQuestion;
+                            row["PasswordAnswer"] = aspnetMembership?.PasswordAnswer;
+                            row["IsApproved"] = aspnetMembership?.IsApproved;
+                            row["IsLockedOut"] = aspnetMembership?.IsLockedOut;
+                            row["FailedPasswordAttemptCount"] = aspnetMembership?.FailedPasswordAttemptCount;
+                            row["FailedPasswordAnswerAttemptCount"] = aspnetMembership?.FailedPasswordAnswerAttemptCount;
+                            row["Comment"] = aspnetMembership?.Comment;
+                            table.Rows.Add(row);
+                        }
+                        DotNetNuke.Data.DataProvider.Instance()
+                            .BulkInsert("ExportImport_AddUpdateBulkUser", "@DataTable", table);
+                        table.Rows.Clear();
+                        totalUsersImported += users.Count;
+                        Debug.WriteLine("User#" + DateTime.Now.Subtract(timer).TotalMilliseconds);
+                        timer = DateTime.Now;
+                        foreach (var user in users)
+                        {
+                            var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                            var aspnetMembership =
+                                Repository.GetRelatedItems<ExportAspnetMembership>(user.Id).FirstOrDefault();
+                            ProcessUserMembership(aspNetUser != null ? new ImportAspnetUser(aspNetUser) : null, aspnetMembership != null ? new ImportAspnetMembership(aspnetMembership) : null);
+                            totalAspnetUserImported += aspNetUser != null ? 1 : 0;
+                            totalAspnetMembershipImported += aspnetMembership != null ? 1 : 0;
+                        }
+                        Debug.WriteLine("Membership#" + DateTime.Now.Subtract(timer).TotalMilliseconds);
 
-                        var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                        ProcessUser(importJob, importDto, user, userPortal, aspNetUser != null ? new ImportAspnetUser(aspNetUser) : null,
-                           aspnetMembership != null ? new ImportAspnetMembership(aspnetMembership) : null);
-                        totalAspnetUserImported += aspNetUser != null ? 1 : 0;
-                        totalAspnetMembershipImported += aspnetMembership != null ? 1 : 0;
-                        currentIndex++;
-                        CheckPoint.ProcessedItems++;
-                        totalUsersImported++;
+                        CheckPoint.ProcessedItems += users.Count;
+                        pageIndex++;
                         CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
-
+                        CheckPoint.Stage++;
                         CheckPoint.StageData = null;
-                        //After every 100 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 100 == 0 && CheckPointStageCallback(this)) return;
+                        if (CheckPointStageCallback(this)) return;
                     }
-                    currentIndex = 0;//Reset current index to 0
-                    pageIndex++;
-                    CheckPoint.Stage++;
-                    CheckPoint.StageData = null;
-                    if (CheckPointStageCallback(this)) return;
                 }
                 CheckPoint.Progress = 100;
             }
             finally
             {
-                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 CheckPointStageCallback(this);
                 Result.AddSummary("Imported Users", totalUsersImported.ToString());
                 Result.AddSummary("Imported User Portals", totalPortalsImported.ToString());
@@ -312,6 +360,17 @@ namespace Dnn.ExportImport.Components.Services
             }
             ProcessUserMembership(aspnetUser, aspnetMembership);
 
+        }
+
+        private Guid GetApplicationId()
+        {
+            using (var db =
+                new PetaPocoDataContext(DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
+                    "aspnet_"))
+            {
+                return db.ExecuteScalar<Guid>(CommandType.Text,
+                    "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
+            }
         }
 
         private void ProcessUserMembership(ImportAspnetUser aspNetUser, ImportAspnetMembership aspnetMembership)
@@ -384,5 +443,42 @@ namespace Dnn.ExportImport.Components.Services
             }
             return 0;
         }
+
+        private static readonly Tuple<string, Type>[] UsersDatasetColumns =
+        {
+            new Tuple<string, Type>("PortalID", typeof (int)),
+            new Tuple<string, Type>("Username", typeof (string)),
+            new Tuple<string, Type>("FirstName", typeof (string)),
+            new Tuple<string, Type>("LastName", typeof (string)),
+            new Tuple<string, Type>("AffiliateId", typeof (int)),
+            new Tuple<string, Type>("IsSuperUser", typeof (bool)),
+            new Tuple<string, Type>("Email", typeof (string)),
+            new Tuple<string, Type>("DisplayName", typeof (string)),
+            new Tuple<string, Type>("UpdatePassword", typeof (bool)),
+            new Tuple<string, Type>("Authorised", typeof (bool)),
+            new Tuple<string, Type>("CreatedByUserID", typeof (int)),
+            new Tuple<string, Type>("VanityUrl", typeof (string)),
+            new Tuple<string, Type>("RefreshRoles", typeof (bool)),
+            new Tuple<string, Type>("LastIPAddress", typeof (string)),
+            new Tuple<string, Type>("passwordResetToken", typeof (Guid)),
+            new Tuple<string, Type>("passwordResetExpiration", typeof (DateTime)),
+            new Tuple<string, Type>("IsDeleted", typeof (bool)),
+            new Tuple<string, Type>("LastModifiedByUserID", typeof (int)),
+            new Tuple<string, Type>("ApplicationId", typeof (Guid)),
+            new Tuple<string, Type>("AspUserId", typeof (Guid)),
+            new Tuple<string, Type>("MobileAlias", typeof (string)),
+            new Tuple<string, Type>("IsAnonymous", typeof (bool)),
+            new Tuple<string, Type>("Password", typeof (string)),
+            new Tuple<string, Type>("PasswordFormat", typeof (int)),
+            new Tuple<string, Type>("PasswordSalt", typeof (string)),
+            new Tuple<string, Type>("MobilePIN", typeof (string)),
+            new Tuple<string, Type>("PasswordQuestion", typeof (string)),
+            new Tuple<string, Type>("PasswordAnswer", typeof (string)),
+            new Tuple<string, Type>("IsApproved", typeof (bool)),
+            new Tuple<string, Type>("IsLockedOut", typeof (bool)),
+            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof (int)),
+            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof (int)),
+            new Tuple<string, Type>("Comment", typeof (string))
+        };
     }
 }

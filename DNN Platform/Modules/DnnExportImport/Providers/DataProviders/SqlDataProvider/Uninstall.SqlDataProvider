@@ -118,6 +118,14 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateBulkUser]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateBulkUser]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserType]
+GO
+
 --Profile Properties
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetPropertyDefinitionsByPortal]
