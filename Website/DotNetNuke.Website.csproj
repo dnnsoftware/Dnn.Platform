@@ -2796,14 +2796,11 @@
     <Content Include="Licenses\Client Dependency Framework%28Ms-PL%29.txt" />
     <Content Include="Licenses\CountryListBox %28Public Domain%29.txt" />
     <Content Include="Licenses\DotNetOpenID %28New BSD%29.txt" />
-    <Content Include="Licenses\doubletaptogo %28MIT%29.txt" />
     <Content Include="Licenses\FCKEditor %28LGPL%29.txt" />
-    <Content Include="Licenses\FLV-Player %28Custom%29.txt" />
     <Content Include="Licenses\GeoIP %28Custom%29.txt" />
     <Content Include="Licenses\Highlighter %28Perl%29.txt" />
     <Content Include="Licenses\hoverintent %28MIT,GPL%29.txt" />
     <Content Include="Licenses\HtmlDiff %28MIT%29.txt" />
-    <Content Include="Licenses\jQuery %28MIT%29.txt" />
     <Content Include="Licenses\jQuery Boxy Plugin %28MIT%29.txt" />
     <Content Include="Licenses\jQuery Cycle %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jQuery FileUpload %28MIT%29.txt" />
@@ -2811,11 +2808,8 @@
     <Content Include="Licenses\jQuery Slides Plugin %28Apache%29.txt" />
     <Content Include="Licenses\jQuery Templates %28MIT,GPL%29.txt" />
     <Content Include="Licenses\jQuery Tokeninput %28MIT,GPL%29.txt" />
-    <Content Include="Licenses\jQuery UI %28MIT%29.txt" />
     <Content Include="Licenses\jquery-history.license.txt" />
     <Content Include="Licenses\json2 %28Public Domain%29.txt" />
-    <Content Include="Licenses\Knockout %28MIT%29.txt" />
-    <Content Include="Licenses\Knockout Mapping %28MIT%29.txt" />
     <Content Include="Licenses\Licenses.txt" />
     <Content Include="Licenses\log4net %28Apache%29.txt" />
     <Content Include="Licenses\Lucene.Net %28Apache%29.txt" />
@@ -2825,9 +2819,7 @@
     <Content Include="Licenses\Moq %28BSD%29.txt" />
     <Content Include="Licenses\MSBuild Community Tasks Project %28BSD%29.txt" />
     <Content Include="Licenses\OceanBrowserDetection %28MIT%29.txt" />
-    <Content Include="Licenses\OpenWYSIWYG %28LGPL%29.txt" />
     <Content Include="Licenses\SearchSpider %28LGPL%29.txt" />
-    <Content Include="Licenses\Sharepoint Logging Library %28LGPL%29.txt" />
     <Content Include="Licenses\SharpZipLib %28LGPL%29.txt" />
     <Content Include="Licenses\SwfObject %28MIT%29.txt" />
     <Content Include="Licenses\VideoBox %28MIT%29.txt" />
@@ -3117,7 +3109,6 @@
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
-    <None Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf" />
     <None Include="Portals\_default\admin.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
