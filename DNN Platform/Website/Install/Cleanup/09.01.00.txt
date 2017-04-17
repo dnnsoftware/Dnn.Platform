@@ -144,3 +144,9 @@ DesktopModules\Admin\Banners\
 DesktopModules\Admin\Newsletters\
 DesktopModules\Admin\SiteLog\
 DesktopModules\Admin\Vendors\
+
+Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf
+Licenses\doubletaptogo (MIT).txt
+Licenses\OpenWYSIWYG (LGPL).txt
+Licenses\Sharepoint Logging Library (LGPL).txt
+Licenses\FLV Player (Custom).txt
