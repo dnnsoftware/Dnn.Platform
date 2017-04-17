@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="SiteExportImport" type="Library" version="09.01.00" isSystem="false">
+    <package name="SiteExportImport" type="Library" version="09.01.01" isSystem="false">
       <friendlyName>Site Export Import</friendlyName>
       <description>DotNetNuke Corporation Site Export Import Library</description>
       <iconFile>Images/Files_32x32_Standard.png</iconFile>
