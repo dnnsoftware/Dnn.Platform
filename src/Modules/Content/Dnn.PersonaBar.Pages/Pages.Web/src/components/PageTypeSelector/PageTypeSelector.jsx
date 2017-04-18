@@ -56,7 +56,7 @@ class PageTypeSelector extends Component {
                                 {Localization.get("Status") + ": "}
                             </div>
                             <div className="page-info-item-value">
-                                {page.status}
+                                {Localization.get("Status_" + page.status)}
                             </div>
                         </div>
                     </div>
