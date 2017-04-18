@@ -31,7 +31,8 @@ class ImportModal extends Component {
             pageIndex: 0,
             pageSize: 5,
             filter: "newest",
-            keyword: ""
+            keyword: "",
+            requestSubmitting: false
         };
     }
 
@@ -117,7 +118,13 @@ class ImportModal extends Component {
 
     onImport() {
         const { props, state } = this;
+        this.setState({
+            requestSubmitting: true
+        });
         props.dispatch(ImportExportActions.importSite(state.importRequest, (data) => {
+            this.setState({
+                requestSubmitting: false
+            });
             util.utilities.notify(Localization.get("ImportRequestSubmitted"));
             props.dispatch(ImportExportActions.packageVerified(false));
             this.goToStep(0);
@@ -130,6 +137,9 @@ class ImportModal extends Component {
             }));
             props.dispatch(VisiblePanelActions.selectPanel(0));
         }, () => {
+            this.setState({
+                requestSubmitting: false
+            });
             util.utilities.notifyError(Localization.get("ImportRequestSubmit.ErrorMessage"));
         }));
     }
@@ -275,7 +285,11 @@ class ImportModal extends Component {
                         </Button>
                     }
                     {props.wizardStep === 1 &&
-                        <Button type="primary" disabled={!props.importSummary} onClick={this.onImport.bind(this)}>{Localization.get("Continue")}</Button>
+                        <Button type="primary"
+                            disabled={!props.importSummary || state.requestSubmitting}
+                            onClick={this.onImport.bind(this)}>
+                            {Localization.get("Continue")}
+                        </Button>
                     }
                 </GridCell>
             </div>

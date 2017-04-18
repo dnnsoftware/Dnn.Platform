@@ -58,6 +58,70 @@ class JobDetails extends Component {
         }
     }
 
+    getUsersSummary() {
+        const { props } = this;
+        if (props.jobDetail.Summary) {
+            let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
+            let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
+            if (users) {
+                if (users.ProgressPercentage < 100) {
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={usersData && usersData.TotalItems > 0 ? Localization.get("UsersStep1") : Localization.get("Users")}
+                        />
+                        <div className="import-summary-item">
+                            <div>
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div style={{ float: "right" }}>
+                                    {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
+                                </div>
+                            </div>
+                        </div>
+                    </GridCell>;
+                }
+                else {
+                    if (usersData && usersData.TotalItems > 0) {
+                        if (usersData.ProgressPercentage < 100) {
+                            return <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("UsersStep2")}
+                                />
+                                <div className="import-summary-item">
+                                    <div>
+                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                        <div style={{ float: "right" }}>
+                                            {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
+                                        </div>
+                                    </div>
+                                </div>
+                            </GridCell>;
+                        }
+                        else {
+                            return <GridCell>
+                                <Label
+                                    labelType="inline"
+                                    label={Localization.get("Users")}
+                                />
+                                <div className="import-summary-item">{usersData.ProcessedItemsString + " / " + usersData.TotalItemsString}</div>
+                            </GridCell>;
+                        }
+                    }
+                    else {
+                        return <GridCell>
+                            <Label
+                                labelType="inline"
+                                label={Localization.get("Users")}
+                            />
+                            <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
+                        </GridCell>;
+                    }
+                }
+            }
+        }
+    }
+
     cancel(jobId) {
         this.props.cancelJob(jobId);
     }
@@ -73,13 +137,7 @@ class JobDetails extends Component {
                 <div className="export-summary">
                     <GridCell className="export-site-container">
                         <div className="left-column">
-                            <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Users")}
-                                />
-                                <div className="import-summary-item">{this.getSummaryItem("Users")}</div>
-                            </GridCell>
+                            {this.getUsersSummary()}
                             <GridCell>
                                 <Label
                                     labelType="inline"

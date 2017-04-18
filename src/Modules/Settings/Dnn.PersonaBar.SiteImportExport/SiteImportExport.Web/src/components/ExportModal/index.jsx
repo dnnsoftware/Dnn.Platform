@@ -29,7 +29,7 @@ const scrollAreaStyle = {
 const keysToValidate = ["ExportName"];
 
 class ExportModal extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             wizardStep: 0,
@@ -47,14 +47,15 @@ class ExportModal extends Component {
                 IncludeContent: true,
                 IncludeExtensions: true,
                 IncludeFiles: true,
-                ExportMode: "Differential",
+                ExportMode: props.lastExportTime ? "Differential" : "Complete",
                 ItemsToExport: [],
                 RunNow: true
             },
             errors: {
                 ExportName: false
             },
-            reloadPages: false
+            reloadPages: false,
+            requestSubmitting: false
         };
     }
 
@@ -93,10 +94,17 @@ class ExportModal extends Component {
         props.onCancel();
     }
 
-    onExportPortal() {
+    onExport() {
         const { props, state } = this;
         if (this.Validate()) {
+            this.setState({
+                requestSubmitting: true
+            });
+
             props.dispatch(ImportExportActions.exportSite(state.exportRequest, (data) => {
+                this.setState({
+                    requestSubmitting: false
+                });
                 utilities.utilities.notify(Localization.get("ExportRequestSubmitted"));
                 props.dispatch(ImportExportActions.getAllJobs({
                     portal: props.portalId,
@@ -107,6 +115,9 @@ class ExportModal extends Component {
                 }));
                 props.dispatch(VisiblePanelActions.selectPanel(0));
             }, () => {
+                this.setState({
+                    requestSubmitting: false
+                });
                 utilities.utilities.notifyError(Localization.get("ExportRequestSubmit.ErrorMessage"));
             }));
         }
@@ -397,7 +408,11 @@ class ExportModal extends Component {
                     </GridSystem>
                     <GridCell className="action-buttons">
                         <Button type="secondary" onClick={this.cancelExport.bind(this)}>{Localization.get("Cancel")}</Button>
-                        <Button type="primary" onClick={this.onExportPortal.bind(this)}>{Localization.get("BeginExport")}</Button>
+                        <Button type="primary"
+                            disabled={state.requestSubmitting}
+                            onClick={this.onExport.bind(this)}>
+                            {Localization.get("BeginExport")}
+                        </Button>
                     </GridCell>
                 </GridCell>
             </div>
