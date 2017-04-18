@@ -49,6 +49,7 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             CheckPoint.Progress += 100;
+            CheckPoint.Completed = true;
             CheckPoint.TotalItems = 0;
             CheckPoint.ProcessedItems = 0;
             CheckPointStageCallback(this);
@@ -124,6 +125,7 @@ namespace Dnn.ExportImport.Components.Services
                     CheckPoint.StageData = null;
                     if (CheckPointStageCallback(this)) return;
                 }
+                CheckPoint.Completed = true;
                 CheckPoint.Progress = 100;
             }
             finally

@@ -116,6 +116,7 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += taxonomyVocabularies.Count;
                 CheckPoint.Stage++;
+                CheckPoint.Completed = true;
                 CheckPointStageCallback(this);
             }
         }
@@ -172,6 +173,7 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += otherTaxonomyTerms.Count;
                 CheckPoint.Stage++;
+                CheckPoint.Completed = true;
                 CheckPointStageCallback(this);
             }
         }

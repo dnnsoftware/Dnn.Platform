@@ -79,6 +79,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     CheckPoint.Stage++;
                     currentIndex = 0;
+                    CheckPoint.Completed = true;
                     CheckPoint.Progress = 100;
                 }
             }
@@ -125,6 +126,7 @@ namespace Dnn.ExportImport.Components.Services
                 var templates = Repository.GetAllItems(predicate).Select(x => x.Folder).Distinct();
                 templates.ForEach(x => FolderManager.Instance.Synchronize(importJob.PortalId, x));
                 CheckPoint.Stage++;
+                CheckPoint.Completed = true;
                 CheckPoint.Progress = 100;
                 CheckPointStageCallback(this);
             }

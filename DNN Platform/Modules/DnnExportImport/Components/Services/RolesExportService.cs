@@ -98,6 +98,7 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += roleSettings.Count;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }
@@ -146,6 +147,7 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
                 CheckPoint.Progress = 100;
                 CheckPoint.ProcessedItems += otherRoleSettings.Count;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPointStageCallback(this);
             }

@@ -61,6 +61,7 @@ namespace Dnn.ExportImport.Components.Services
             Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.Progress = 100;
             CheckPoint.ProcessedItems = profileProperties.Count;
+            CheckPoint.Completed = true;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);
         }
@@ -105,6 +106,7 @@ namespace Dnn.ExportImport.Components.Services
 
             Result.AddSummary("Imported Profile Properties", profileProperties.Count.ToString());
             CheckPoint.ProcessedItems = profileProperties.Count;
+            CheckPoint.Completed = true;
             CheckPoint.Progress = 100;
             CheckPoint.Stage++;
             CheckPointStageCallback(this);

@@ -37,6 +37,9 @@ namespace Dnn.ExportImport.Repository
         public ExportImportRepository(string dbFileName)
         {
             _lightDb = new LiteDatabase(dbFileName);
+            _lightDb.Mapper.EmptyStringToNull = false;
+            _lightDb.Mapper.TrimWhitespace = false;
+            _lightDb.Mapper.SerializeNullValues = true;
         }
 
         ~ExportImportRepository()

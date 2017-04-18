@@ -164,7 +164,8 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U')
 		[TotalItems]		 int NOT NULL DEFAULT(0),
 		[ProcessedItems]	 int NOT NULL DEFAULT(0),
 		[StartDate]			 DateTime NULL,
-		[LastUpdateDate]	 DateTime NULL
+		[LastUpdateDate]	 DateTime NULL,
+		[Completed]			 bit DEFAULT(0)
 		CONSTRAINT [PK_{objectQualifier}ExportImportCheckpoints] PRIMARY KEY ([CheckpointId])
 	)
 GO
@@ -576,14 +577,15 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert
 	@Progress		int,
 	@TotalItems		int,
 	@ProcessedItems int,
-	@StartDate		DateTime = NULL
+	@StartDate		DateTime = NULL,
+	@Completed		bit = 0
 AS
 BEGIN
 	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
-	 USING (SELECT @JobId, @AssemblyName, @Category, @Progress, @TotalItems, @ProcessedItems) AS source (JobId, AssemblyName, Category, Progress, TotalItems, ProcessedItems)
+	 USING (SELECT @JobId, @AssemblyName, @Category, @Progress, @TotalItems, @ProcessedItems, @Completed) AS source (JobId, AssemblyName, Category, Progress, TotalItems, ProcessedItems, Completed)
 		ON (target.JobId = source.JobId AND target.Category = source.Category AND target.AssemblyName = source.AssemblyName)
 	 WHEN MATCHED THEN
-		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems, StartDate=(CASE WHEN StartDate IS NULL THEN @StartDate ELSE StartDate END),  LastUpdateDate= GetUtcDate()
+		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems, StartDate=(CASE WHEN StartDate IS NULL THEN @StartDate ELSE StartDate END),  LastUpdateDate= GetUtcDate(), Completed=@Completed
 	 WHEN NOT MATCHED THEN 
 		INSERT ([JobId], [AssemblyName], [Category], [Stage], [StageData], [Progress], [TotalItems], [ProcessedItems])
 		VALUES (@JobId, @AssemblyName, @Category,  @Stage,  @StageData, @Progress, @TotalItems, @ProcessedItems);

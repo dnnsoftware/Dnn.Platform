@@ -60,6 +60,11 @@ namespace Dnn.ExportImport.Components.Dto
         public int ProcessedItems { get; set; }
 
         /// <summary>
+        /// Is job finished or not yet.
+        /// </summary>
+        public bool Completed { get; set; }
+
+        /// <summary>
         /// Formatted processed items.
         /// </summary>
         public string ProcessedItemsString => Util.FormatNumber(ProcessedItems);

@@ -82,6 +82,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             CheckPoint.Progress = 100;
+            CheckPoint.Completed = true;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
             CheckPointStageCallback(this);
@@ -101,6 +102,7 @@ namespace Dnn.ExportImport.Components.Services
             ProcessImportPages();
 
             CheckPoint.Progress = 100;
+            CheckPoint.Completed = true;
             CheckPoint.Stage++;
             CheckPoint.StageData = null;
             CheckPointStageCallback(this);

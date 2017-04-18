@@ -186,7 +186,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 ProcessedItems = checkpoint.ProcessedItems,
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
-                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0
+                Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
+                Completed = checkpoint.Completed
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
