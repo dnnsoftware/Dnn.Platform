@@ -107,6 +107,17 @@ class DashboardPanelBody extends Component {
         }
     }
 
+    isLastPageOnlyJob(jobId) {
+        const { props, state } = this;
+        let total = Math.ceil(props.totalJobs / state.pageSize);
+        let current = state.pageIndex * state.pageSize / state.pageSize + 1;
+        let isLastPage = total === current ? true : false;
+        if (isLastPage && props.jobs.length === 1 && props.jobs[0].JobId === jobId) {
+            return true;
+        }
+        else return false;
+    }
+
     getNextPage(portalId) {
         const { state, props } = this;
         return {
@@ -248,25 +259,47 @@ class DashboardPanelBody extends Component {
     }
 
     deleteJob(jobId) {
-        const { props } = this;
+        const { props, state } = this;
         util.utilities.confirm(Localization.get("DeleteJobMessage"),
             Localization.get("ConfirmDelete"),
             Localization.get("No"),
             () => {
-                props.dispatch(ImportExportActions.deleteJob(jobId, () => {
-                    util.utilities.notify(Localization.get("JobDeleted"));
-                    this.collapse();
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
-                        if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
-                            this.addInterval(props);
-                        }
-                        else {
-                            clearInterval(this.jobListTimeout);
-                        }
+                if (this.isLastPageOnlyJob(jobId)) {
+                    this.setState({
+                        pageIndex: state.pageIndex > 0 ? state.pageIndex - 1 : 0
+                    }, () => {
+                        props.dispatch(ImportExportActions.deleteJob(jobId, () => {
+                            util.utilities.notify(Localization.get("JobDeleted"));
+                            this.collapse();
+                            props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                                if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                                    this.addInterval(props);
+                                }
+                                else {
+                                    clearInterval(this.jobListTimeout);
+                                }
+                            }));
+                        }, () => {
+                            util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));
+                        }));
+                    });
+                }
+                else {
+                    props.dispatch(ImportExportActions.deleteJob(jobId, () => {
+                        util.utilities.notify(Localization.get("JobDeleted"));
+                        this.collapse();
+                        props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(props.portalId), (data) => {
+                            if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
+                                this.addInterval(props);
+                            }
+                            else {
+                                clearInterval(this.jobListTimeout);
+                            }
+                        }));
+                    }, () => {
+                        util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));
                     }));
-                }, () => {
-                    util.utilities.notifyError(Localization.get("JobDelete.ErrorMessage"));
-                }));
+                }
             }
         );
     }
