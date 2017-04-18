@@ -52,6 +52,9 @@ class Pager extends Component {
             if (endIndex > totalPages)
                 state.endIndex = totalPages;
         }
+        if (state.currentPage >= state.totalPages) {
+            state.currentPage = state.totalPages - 1;
+        }
         if (props.resetIndex) {
             state.currentPage = 0;
             state.startIndex = 0;
