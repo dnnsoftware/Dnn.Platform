@@ -63,12 +63,12 @@ class JobDetails extends Component {
         if (props.jobDetail.Summary) {
             let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
             let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
-            if (users && usersData) {
-                if (!users.Completed) {
+            if (users) {
+                if (users.ProgressPercentage < 100) {
                     return <GridCell>
                         <Label
                             labelType="inline"
-                            label={usersData.TotalItems > 0 ? Localization.get("UsersStep1") : Localization.get("Users")}
+                            label={usersData && usersData.TotalItems > 0 ? Localization.get("UsersStep1") : Localization.get("Users")}
                         />
                         <div className="import-summary-item">
                             <div>
@@ -81,8 +81,8 @@ class JobDetails extends Component {
                     </GridCell>;
                 }
                 else {
-                    if (usersData.TotalItems > 0) {
-                        if (!usersData.Completed) {
+                    if (usersData && usersData.TotalItems > 0) {
+                        if (usersData.ProgressPercentage < 100) {
                             return <GridCell>
                                 <Label
                                     labelType="inline"
