@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Text.RegularExpressions;
+
 namespace DotNetNuke.Services.Social.Messaging.Scheduler
 {
     using System;
@@ -138,9 +140,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
             template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
-            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));            
-            template = template.Replace("href=\"/", "href=\"http://" + portalSettings.DefaultPortalAlias + "/");
-            template = template.Replace("src=\"/", "src=\"http://" + portalSettings.DefaultPortalAlias + "/");
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));
+            template = ResolveUrl(portalSettings, template);
 
             return template;
         }
@@ -719,5 +720,31 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
         }
+
+        private static string ResolveUrl(PortalSettings portalSettings, string template)
+        {
+            const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
+            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var link = match.Groups[2].Value;
+                var defaultAlias = portalSettings.DefaultPortalAlias;
+                var domain = Globals.AddHTTP(defaultAlias);
+                if (defaultAlias.Contains("/"))
+                {
+                    var subDomain =
+                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        link = link.Substring(subDomain.Length);
+                    }
+                }
+
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+            }
+
+            return template;
+        }
+
     }
 }
