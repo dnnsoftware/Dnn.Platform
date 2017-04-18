@@ -16,7 +16,9 @@ const defaultLocalization = {
     emptyRole: "Add a role to set permissions by role",
     emptyUser: "Add a user to set permissions by user",
     globalGroupsText: "[Global Roles]",
-    allGroupsText: "[All Roles]"
+    allGroupsText: "[All Roles]",
+    roleText: "Role",
+    userText: "User"
 };
 
 class PermissionGrid extends Component {
