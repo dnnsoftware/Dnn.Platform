@@ -29,7 +29,7 @@ const scrollAreaStyle = {
 const keysToValidate = ["ExportName"];
 
 class ExportModal extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             wizardStep: 0,
@@ -47,7 +47,7 @@ class ExportModal extends Component {
                 IncludeContent: true,
                 IncludeExtensions: true,
                 IncludeFiles: true,
-                ExportMode: "Differential",
+                ExportMode: props.lastExportTime ? "Differential" : "Complete",
                 ItemsToExport: [],
                 RunNow: true
             },
