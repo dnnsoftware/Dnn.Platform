@@ -698,6 +698,13 @@
     <Compile Include="DesktopModules\Admin\Security\User.ascx.designer.cs">
       <DependentUpon>User.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.cs">
+      <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx.designer.cs">
+      <DependentUpon>UrlProviderSettings.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DesktopModules\Admin\ViewProfile\Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -782,6 +789,7 @@
     <Content Include="DesktopModules\Admin\Security\ProfileDefinitions.ascx" />
     <Content Include="DesktopModules\Admin\Security\securityroles.ascx" />
     <Content Include="DesktopModules\Admin\Security\Users.ascx" />
+    <Content Include="DesktopModules\Admin\UrlManagement\UrlProviderSettings.ascx" />
     <Content Include="Install\body_bg.jpg" />
     <Content Include="Install\Web.config" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
