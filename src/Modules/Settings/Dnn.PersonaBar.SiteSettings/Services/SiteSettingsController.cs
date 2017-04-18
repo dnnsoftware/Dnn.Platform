@@ -1227,14 +1227,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 PortalAliasController.Instance.DeletePortalAlias(portalAlias);
 
-                var portalFolder = PortalController.GetPortalFolder(portalAlias.HTTPAlias);
-                var serverPath = GetAbsoluteServerPath();
-
-                if (!string.IsNullOrEmpty(portalFolder) && Directory.Exists(serverPath + portalFolder))
-                {
-                    PortalController.DeletePortalFolder(serverPath, portalFolder);
-                }
-
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
