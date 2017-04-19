@@ -33,7 +33,6 @@ using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Users;
-using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -267,7 +266,7 @@ namespace Dnn.ExportImport.Components.Services
                                 var userAuthentication = Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
                                 tempUserAuthenticationCount += userAuthentication != null ? 1 : 0;
 
-                                row["PortalID"] = portalId;
+                                row["PortalId"] = portalId;
                                 row["Username"] = user.Username;
                                 row["FirstName"] = string.IsNullOrEmpty(user.FirstName) ? string.Empty : user.FirstName;
                                 row["LastName"] = string.IsNullOrEmpty(user.LastName) ? string.Empty : user.LastName;
@@ -276,17 +275,17 @@ namespace Dnn.ExportImport.Components.Services
                                 row["Email"] = user.Email;
                                 row["DisplayName"] = string.IsNullOrEmpty(user.DisplayName) ? string.Empty : user.DisplayName;
                                 row["UpdatePassword"] = user.UpdatePassword;
-                                row["Authorised"] = userPortal?.Authorised ?? false;
-                                row["CreatedByUserID"] = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
-                                row["VanityUrl"] = userPortal?.VanityUrl;
-                                row["RefreshRoles"] = userPortal?.RefreshRoles ?? false;
-                                row["LastIPAddress"] = user.LastIpAddress;
+                                row["Authorised"] = dataProvider.GetNull(userPortal?.Authorised);
+                                row["CreatedByUserID"] = dataProvider.GetNull(Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName));
+                                row["VanityUrl"] = dataProvider.GetNull(userPortal?.VanityUrl);
+                                row["RefreshRoles"] = dataProvider.GetNull(userPortal?.RefreshRoles);
+                                row["LastIPAddress"] = dataProvider.GetNull(user.LastIpAddress);
                                 row["PasswordResetToken"] = dataProvider.GetNull(user.PasswordResetToken);
                                 row["PasswordResetExpiration"] = dataProvider.GetNull(user.PasswordResetExpiration);
-                                row["IsDeleted"] = userPortal?.IsDeleted ?? false;
-                                row["LastModifiedByUserID"] = Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
-                                row["AuthenticationType"] = userAuthentication?.AuthenticationType;
-                                row["AuthenticationToken"] = userAuthentication?.AuthenticationToken;
+                                row["IsDeleted"] = dataProvider.GetNull(userPortal?.IsDeleted);
+                                row["LastModifiedByUserID"] = dataProvider.GetNull(Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName));
+                                row["AuthenticationType"] = dataProvider.GetNull(userAuthentication?.AuthenticationType);
+                                row["AuthenticationToken"] = dataProvider.GetNull(userAuthentication?.AuthenticationToken);
 
                                 //Aspnet Users and Membership
                                 ExportAspnetMembership aspnetMembership = null;
@@ -300,23 +299,24 @@ namespace Dnn.ExportImport.Components.Services
                                     tempAspMembershipCount += aspnetMembership != null ? 1 : 0;
                                 }
 
-                                row["ApplicationId"] = GetApplicationId();
+                                row["ApplicationId"] = dataProvider.GetNull(GetApplicationId());
                                 row["AspUserId"] = dataProvider.GetNull(aspNetUser?.UserId);
-                                row["MobileAlias"] = aspNetUser?.MobileAlias;
-                                row["IsAnonymous"] = aspNetUser?.IsAnonymous ?? false;
+                                row["MobileAlias"] = dataProvider.GetNull(aspNetUser?.MobileAlias);
+                                row["IsAnonymous"] = dataProvider.GetNull(aspNetUser?.IsAnonymous);
                                 row["Password"] = string.IsNullOrEmpty(aspnetMembership?.Password) ? string.Empty : aspnetMembership.Password;
-                                row["PasswordFormat"] = aspnetMembership?.PasswordFormat ?? Null.NullInteger;
-                                row["PasswordSalt"] = string.IsNullOrEmpty(aspnetMembership?.PasswordSalt) ? string.Empty : aspnetMembership.PasswordSalt;
-                                row["MobilePIN"] = aspnetMembership?.MobilePin;
-                                row["PasswordQuestion"] = aspnetMembership?.PasswordQuestion;
-                                row["PasswordAnswer"] = aspnetMembership?.PasswordAnswer;
-                                row["IsApproved"] = aspnetMembership?.IsApproved ?? false;
-                                row["IsLockedOut"] = aspnetMembership?.IsLockedOut ?? false;
-                                row["FailedPasswordAttemptCount"] = aspnetMembership?.FailedPasswordAttemptCount ?? 0;
-                                row["FailedPasswordAnswerAttemptCount"] = aspnetMembership?.FailedPasswordAnswerAttemptCount ?? 0;
-                                row["Comment"] = aspnetMembership?.Comment;
+                                row["PasswordFormat"] = dataProvider.GetNull(aspnetMembership?.PasswordFormat);
+                                row["PasswordSalt"] = dataProvider.GetNull(aspnetMembership?.PasswordSalt);
+                                row["MobilePIN"] = dataProvider.GetNull(aspnetMembership?.MobilePin);
+                                row["PasswordQuestion"] = dataProvider.GetNull(aspnetMembership?.PasswordQuestion);
+                                row["PasswordAnswer"] = dataProvider.GetNull(aspnetMembership?.PasswordAnswer);
+                                row["IsApproved"] = dataProvider.GetNull(aspnetMembership?.IsApproved);
+                                row["IsLockedOut"] = dataProvider.GetNull(aspnetMembership?.IsLockedOut);
+                                row["FailedPasswordAttemptCount"] = dataProvider.GetNull(aspnetMembership?.FailedPasswordAttemptCount);
+                                row["FailedPasswordAnswerAttemptCount"] = dataProvider.GetNull(aspnetMembership?.FailedPasswordAnswerAttemptCount);
+                                row["Comment"] = dataProvider.GetNull(aspnetMembership?.Comment);
                                 table.Rows.Add(row);
                             }
+                            var Overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             //Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table);
@@ -481,7 +481,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private static readonly Tuple<string, Type>[] UsersDatasetColumns =
         {
-            new Tuple<string, Type>("PortalID", typeof (int)),
+            new Tuple<string, Type>("PortalId", typeof (int)),
             new Tuple<string, Type>("Username", typeof (string)),
             new Tuple<string, Type>("FirstName", typeof (string)),
             new Tuple<string, Type>("LastName", typeof (string)),

@@ -153,6 +153,7 @@ namespace Dnn.ExportImport.Components.Services
                                     }
                                 }
                             }
+                            var Overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             //Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUserRolesBulk", "@DataTable", tableUserRoles);
@@ -162,11 +163,11 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
                                     .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile);
+                                        tableUserProfile, Overwrite);
                                 totalProfilesImported += tempUserProfileCount;
                             }
 
-                            CheckPoint.ProcessedItems++;
+                            CheckPoint.ProcessedItems += users.Count;
                             totalProcessed += users.Count;
                             CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
                             CheckPoint.StageData = null;
@@ -348,21 +349,21 @@ namespace Dnn.ExportImport.Components.Services
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =
         {
             new Tuple<string, Type>("PortalId", typeof (int)),
-            new Tuple<string, Type>("UserId", typeof (string)),
-            new Tuple<string, Type>("RoleId", typeof (string)),
+            new Tuple<string, Type>("UserId", typeof (int)),
+            new Tuple<string, Type>("RoleId", typeof (int)),
             new Tuple<string, Type>("ExpiryDate", typeof (DateTime)),
             new Tuple<string, Type>("IsTrialUsed", typeof (bool)),
             new Tuple<string, Type>("EffectiveDate", typeof (DateTime)),
             new Tuple<string, Type>("CreatedByUserId", typeof (int)),
             new Tuple<string, Type>("LastModifiedByUserId", typeof (int)),
-            new Tuple<string, Type>("Status", typeof (bool)),
+            new Tuple<string, Type>("Status", typeof (int)),
             new Tuple<string, Type>("IsOwner", typeof (bool))
         };
 
         private static readonly Tuple<string, Type>[] UserProfileDatasetColumns =
         {
             new Tuple<string, Type>("PortalId", typeof (int)),
-            new Tuple<string, Type>("UserId", typeof (string)),
+            new Tuple<string, Type>("UserId", typeof (int)),
             new Tuple<string, Type>("PropertyDefinitionId", typeof (int)),
             new Tuple<string, Type>("PropertyValue", typeof (string)),
             new Tuple<string, Type>("PropertyText", typeof (string)),
