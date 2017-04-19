@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
@@ -29,7 +30,8 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
-using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -38,7 +40,11 @@ using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
+using Util = Dnn.ExportImport.Components.Common.Util;
+using InstallerUtil = DotNetNuke.Services.Installer.Util;
+
 // ReSharper disable SuggestBaseTypeForParameter
 
 namespace Dnn.ExportImport.Components.Services
@@ -65,6 +71,8 @@ namespace Dnn.ExportImport.Components.Services
         private ExportImportJob _exportImportJob;
         private ImportDto _importDto;
         private ExportDto _exportDto;
+
+        private IList<int> _exportedModuleDefinitions = new List<int>();
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
@@ -1161,10 +1169,43 @@ namespace Dnn.ExportImport.Components.Services
                         _totals.TotalContents +=
                             ExportPortableContent(exportPage, exportModule, toDate, fromDate);
                     }
+
+                    ExportModulePackage(exportModule);
                 }
             }
 
             return modules.Count;
+        }
+
+        private void ExportModulePackage(ExportModule exportModule)
+        {
+            if (_exportedModuleDefinitions.Contains(exportModule.ModuleDefID))
+            {
+                return;
+            }
+
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+            var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
+            var desktopModuleId = moduleDefinition.DesktopModuleID;
+            var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
+
+            var filePath = DotNetNuke.Services.Installer.Util.GetPackageBackupPath(package);
+            if (File.Exists(filePath))
+            {
+                var offset = Path.GetDirectoryName(filePath)?.Length + 1;
+                CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
+
+                Repository.CreateItem(new ExportPackage
+                {
+                    PackageName = package.Name,
+                    Version = package.Version,
+                    PackageType = package.PackageType,
+                    PackageFileName = InstallerUtil.GetPackageBackupName(package)
+                }, null);
+
+                _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
+            }
         }
 
         private int ExportModuleSettings(ExportModule exportModule, DateTime toDate, DateTime? fromDate)

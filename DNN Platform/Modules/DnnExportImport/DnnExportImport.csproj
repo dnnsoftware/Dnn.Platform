@@ -106,6 +106,7 @@
     <Compile Include="Components\Services\AssetsExportService.cs" />
     <Compile Include="Components\Services\BasePortableService.cs" />
     <Compile Include="Components\Services\PagesExportService.cs" />
+    <Compile Include="Components\Services\PackagesExportService.cs" />
     <Compile Include="Components\Services\PageTemplatesExportService.cs" />
     <Compile Include="Components\Services\PortalExportService.cs" />
     <Compile Include="Components\Services\ProfilePropertiesService.cs" />

@@ -438,7 +438,10 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual UserInfo GetAdminUser()
         {
-            return UserController.GetUserById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorId);
+            var current = PortalSettings.Current;
+            return current == null
+                ? new UserInfo()
+                : UserController.GetUserById(current.PortalId, current.AdministratorId);
         }
 
         internal virtual int GetCurrentUserId()

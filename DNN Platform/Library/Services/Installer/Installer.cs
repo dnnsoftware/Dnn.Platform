@@ -420,23 +420,7 @@ namespace DotNetNuke.Services.Installer
         {
             try
             {
-                var packageName = package.Name;
-                var version = package.Version;
-                var packageType = package.PackageType;
-
-                var fileName = $"{packageType}_{packageName}_{version}.resources";
-                if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > Null.NullInteger)
-                {
-                    fileName = Globals.CleanFileName(fileName);
-                }
-
-                var folderPath = Path.Combine(Globals.ApplicationMapPath, Util.BackupInstallPackageFolder);
-                var filePath = Path.Combine(folderPath, fileName);
-
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
+                var filePath = Util.GetPackageBackupPath(package);
 
                 if (File.Exists(filePath))
                 {

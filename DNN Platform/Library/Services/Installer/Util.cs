@@ -25,7 +25,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.XPath;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Entities.Host;
@@ -475,6 +475,34 @@ namespace DotNetNuke.Services.Installer
         public static string ReadAttribute(XPathNavigator nav, string attributeName, bool isRequired, Logger log, string logmessage, string defaultValue)
         {
             return ValidateNode(nav.GetAttribute(attributeName, ""), isRequired, log, logmessage, defaultValue);
+        }
+
+        public static string GetPackageBackupName(PackageInfo package)
+        {
+            var packageName = package.Name;
+            var version = package.Version;
+            var packageType = package.PackageType;
+
+            var fileName = $"{packageType}_{packageName}_{version}.resources";
+            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) > Null.NullInteger)
+            {
+                fileName = Globals.CleanFileName(fileName);
+            }
+
+            return fileName;
+        }
+
+        public static string GetPackageBackupPath(PackageInfo package)
+        {
+            var fileName = GetPackageBackupName(package);
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, Util.BackupInstallPackageFolder);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            return Path.Combine(folderPath, fileName);
         }
 
         #endregion
