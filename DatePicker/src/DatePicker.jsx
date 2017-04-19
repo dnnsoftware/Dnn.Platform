@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
+import TimezonePicker from "./TimezonePicker";
 import DateInput from "./DateInput";
 import "./style.less";
 
@@ -369,7 +370,19 @@ export default class DatePicker extends Component {
                         onDayClick={this.firstDateClick.bind(this) }
                         disabledDays={ this.firstDisableDates.bind(this) }
                         />
-                    {this.props.hasTimePicker && <TimePicker updateTime={this.updateFirstTime.bind(this) } time={this.formatDate(this.date, "LT") }/>}
+                    <div className="dnn-time-picker-box">
+                        {this.props.hasTimePicker && 
+                            <TimePicker 
+                                updateTime={this.updateFirstTime.bind(this)} 
+                                time={this.formatDate(this.date, "LT") }
+                                className={this.props.hasTimezonePicker ? "half" : "full"} />
+                        }
+                        {this.props.hasTimezonePicker && 
+                            <TimezonePicker 
+                                onUpdate={this.props.updateTimezone} 
+                                value={this.props.timezone} />
+                        }
+                    </div>
                 </div>
 
                 {this.props.isDateRange && <div>
@@ -409,9 +422,15 @@ DatePicker.propTypes = {
     minSecondDate: PropTypes.instanceOf(Date),
     maxSecondDate: PropTypes.instanceOf(Date),
 
+    // timezone value & update callback
+    timezone: PropTypes.string,
+    updateTimezone: PropTypes.func,
+
     // if set to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
 
+    // if set to true, it shows time zone picker 
+    hasTimezonePicker: PropTypes.bool,
 
     //if set to true it shows static text instead of input fields
     isInputReadOnly: PropTypes.bool,
@@ -447,5 +466,7 @@ DatePicker.propTypes = {
 
 DatePicker.defaultProps = {
     showClearDates: false,
-    calendarPosition: "bottom"
+    calendarPosition: "bottom",
+    hasTimezonePicker: false,
+    hasTimePicker: false
 };

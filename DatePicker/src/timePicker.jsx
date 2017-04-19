@@ -53,13 +53,6 @@ export default class TimePicker extends Component {
         setTimeout( ()=> {this.props.updateTime(time);}, 200);
     }
 
-    toggleTimeSelector() {
-        if (this.state.isTimeSelectorVisible) {
-            return this.hideTimeSelector();
-        }
-        this.showTimeSelector();
-    }
-
     showTimeSelector() {
         this.setState({ isTimeSelectorVisible: true }, () => {
             setTimeout(() => {
@@ -80,7 +73,7 @@ export default class TimePicker extends Component {
         const TimeOptions = timeArray.map((time) => {
             return <div className="time-option" key={time} onClick={this.updateTime.bind(this, time) }>{time}</div>;
         });
-        return <div className="dnn-time-picker" ref="timePicker">
+        return <div className={"dnn-time-picker time-picker " + (this.props.className || "")} ref="timePicker">
             <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
                 {this.props.time}
                 {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>
@@ -95,5 +88,6 @@ export default class TimePicker extends Component {
 
 TimePicker.propTypes = {
     updateTime: PropTypes.func.isRequired,
-    time: PropTypes.string
+    time: PropTypes.string,
+    className: PropTypes.string
 };
