@@ -163,7 +163,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
                                     .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile, Overwrite);
+                                        tableUserProfile);
                                 totalProfilesImported += tempUserProfileCount;
                             }
 
