@@ -21,6 +21,7 @@
 
 using System;
 using System.Text;
+using System.Threading;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Engines;
@@ -38,6 +39,20 @@ namespace Dnn.ExportImport.Components.Scheduler
     public class ExportImportScheduler : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
+
+        private const int EmergencyScheduleFrequency = 1;
+        private const int DefaultScheduleFrequency = 1;
+        private const string EmergencyScheduleFrequencyUnit = "m";
+        private const string DefaultScheduleFrequencyUnit = "d";
+
+        private const int EmergencyScheduleRetry = 30;
+        private const int DefaultScheduleRetry = 1;
+        private const string EmergencyScheduleRetryUnit = "s";
+        private const string DefaultScheduleRetryUnit = "h";
+
+        private const int EmergencyHistoryNumber = 1;
+        private const int DefaultHistoryNumber = 60;
+
 
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -72,6 +87,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         JobId = job.JobId,
                     };
                     var engine = new ExportImportEngine();
+                    var succeeded = true;
 
                     switch (job.JobType)
                     {
@@ -93,6 +109,21 @@ namespace Dnn.ExportImport.Components.Scheduler
                             {
                                 engine.Import(job, result, ScheduleHistoryItem);
                             }
+                            catch (ThreadAbortException ex)
+                            {
+                                ScheduleHistoryItem.TimeLapse = EmergencyScheduleFrequency;
+                                ScheduleHistoryItem.TimeLapseMeasurement = EmergencyScheduleFrequencyUnit;
+                                ScheduleHistoryItem.RetryTimeLapse = EmergencyScheduleRetry;
+                                ScheduleHistoryItem.RetryTimeLapseMeasurement = EmergencyScheduleRetryUnit;
+                                ScheduleHistoryItem.RetainHistoryNum = EmergencyHistoryNumber;
+
+                                SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+
+                                SchedulingController.PurgeScheduleHistory();
+
+                                Logger.Error("The Schduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
+                                succeeded = false;
+                            }
                             catch (Exception ex)
                             {
                                 result.AddLogEntry("EXCEPTION", ex.Message, ReportLevel.Error);
@@ -111,6 +142,21 @@ namespace Dnn.ExportImport.Components.Scheduler
                     }
 
                     ScheduleHistoryItem.Succeeded = true;
+
+                    //restore schedule item running timelapse to default.
+                    if (succeeded
+                        && ScheduleHistoryItem.TimeLapse == EmergencyScheduleFrequency
+                        && ScheduleHistoryItem.TimeLapseMeasurement == EmergencyScheduleFrequencyUnit)
+                    {
+                        ScheduleHistoryItem.TimeLapse = DefaultScheduleFrequency;
+                        ScheduleHistoryItem.TimeLapseMeasurement = DefaultScheduleFrequencyUnit;
+                        ScheduleHistoryItem.RetryTimeLapse = DefaultScheduleRetry;
+                        ScheduleHistoryItem.RetryTimeLapseMeasurement = DefaultScheduleRetryUnit;
+                        ScheduleHistoryItem.RetainHistoryNum = DefaultHistoryNumber;
+
+                        SchedulingController.UpdateSchedule(ScheduleHistoryItem);
+                    }
+
                     var sb = new StringBuilder();
                     var jobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources);
                     var jobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources);
