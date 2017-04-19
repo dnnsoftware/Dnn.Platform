@@ -21,12 +21,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
+using Dnn.ExportImport.Components.Dto.Jobs;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
 using Dnn.ExportImport.Components.Services;
@@ -36,6 +38,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Scheduling;
 using Newtonsoft.Json;
+using PlatformDataProvider = DotNetNuke.Data.DataProvider;
 
 namespace Dnn.ExportImport.Components.Engines
 {
@@ -176,7 +179,15 @@ namespace Dnn.ExportImport.Components.Engines
                                 CheckpointCallback(service);
                             }
 
-                            service.ExportData(exportJob, exportDto);
+                            try
+                            {
+                                service.ExportData(exportJob, exportDto);
+
+                            }
+                            finally
+                            {
+                                AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
+                            }
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
                     }
@@ -286,8 +297,6 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
 
-            //TODO: unzip files first
-
             using (var ctx = new ExportImportRepository(dbName))
             {
                 var exportedDto = ctx.GetSingleItem<ExportDto>();
@@ -372,7 +381,14 @@ namespace Dnn.ExportImport.Components.Engines
                                                  };
                             CheckpointCallback(service);
 
-                            service.ImportData(importJob, importDto);
+                            try
+                            {
+                                service.ImportData(importJob, importDto);
+                            }
+                            finally
+                            {
+                                AddLogsToDatabase(importJob.JobId, result.CompleteLog);
+                            }
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
                     }
@@ -509,12 +525,8 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.Pages.Length > 0)
                 includedItems.Add(Constants.Category_Pages);
 
-            // must be included always when there is at least one other object to process
-            includedItems.Add(Constants.Category_Portal);
-
             if (exportDto.IncludeContent)
                 includedItems.Add(Constants.Category_Content);
-
 
             if (exportDto.IncludeFiles)
                 includedItems.Add(Constants.Category_Assets);
@@ -540,7 +552,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
 
-            foreach (var includedItem in includedItems.ToList())
+            foreach (var includedItem in includedItems)
             {
                 BasePortableService basePortableService;
                 if (
@@ -550,6 +562,10 @@ namespace Dnn.ExportImport.Components.Engines
                     includedItems.Add(basePortableService.Category);
                 }
             }
+
+            // must be included always when there is at least one other object to process
+            if (includedItems.Any())
+                includedItems.Add(Constants.Category_Portal);
 
             return includedItems;
         }
@@ -624,6 +640,49 @@ namespace Dnn.ExportImport.Components.Engines
             Constants.Category_Templates,
             Constants.Category_ProfileProps,
             Constants.Category_Packages
+        };
+
+        public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
+        {
+            if (completeLog == null || completeLog.Count == 0) return;
+
+            using (var table = new DataTable("ExportImportJobLogs"))
+            {
+                // must create the columns from scratch with each iteration
+                table.Columns.AddRange(DatasetColumns.Select(
+                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
+
+                // batch specific amount of record each time
+                const int batchSize = 500;
+                var toSkip = 0;
+                while (toSkip < completeLog.Count)
+                {
+                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
+                    {
+                        var row = table.NewRow();
+                        row["JobId"] = jobId;
+                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
+                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
+                        row["Level"] = (int)item.ReportLevel;
+                        row["CreatedOnDate"] = item.CreatedOnDate;
+                        table.Rows.Add(row);
+                    }
+
+                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
+                    toSkip += batchSize;
+                    table.Rows.Clear();
+                }
+            }
+            completeLog.Clear();
+        }
+
+        private static readonly Tuple<string, Type>[] DatasetColumns =
+        {
+            new Tuple<string,Type>("JobId", typeof(int)),
+            new Tuple<string,Type>("Name" , typeof(string)),
+            new Tuple<string,Type>("Value", typeof(string)),
+            new Tuple<string,Type>("Level", typeof(int)),
+            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
         };
     }
 }

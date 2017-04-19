@@ -29,10 +29,12 @@ using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -146,6 +148,7 @@ namespace Dnn.ExportImport.Components.Services
                 _totals.LastProcessedId = otherTab.Id;
                 CheckPoint.StageData = JsonConvert.SerializeObject(_totals);
             }
+
             ReportImportTotals();
         }
 
@@ -167,10 +170,11 @@ namespace Dnn.ExportImport.Components.Services
                         break;
                     case CollisionResolution.Overwrite:
                         SetTabData(localTab, otherTab);
-                        var parentId = GetParentLocalTabId(otherTab, exportedTabs, localTabs);
+                        var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
                         {
-                            Result.AddLogEntry("Imported existing TAB parent NOT found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                            Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                            return;
                         }
 
                         // this is not saved when adding the tab; so set it explicitly
@@ -203,10 +207,11 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
-                var parentId = GetParentLocalTabId(otherTab, exportedTabs, localTabs);
+                var parentId = TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 if (parentId == -1 && otherTab.ParentId > 0)
                 {
-                    Result.AddLogEntry("Imported new TAB parent NOT found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                    Result.AddLogEntry("Importing new tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
+                    return;
                 }
 
                 try
@@ -373,10 +378,17 @@ namespace Dnn.ExportImport.Components.Services
                     switch (_importDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
-                            local.Url = other.Url;
-
-                            TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
-                            Result.AddLogEntry("Update Tab Url", other.Url);
+                            try
+                            {
+                                local.Url = other.Url;
+                                TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
+                                Result.AddLogEntry("Update Tab Url", other.Url);
+                                count++;
+                            }
+                            catch (Exception ex)
+                            {
+                                Result.AddLogEntry("EXCEPTION updating tab, Tab ID=" + local.TabId, ex.Message, ReportLevel.Error);
+                            }
                             break;
                         case CollisionResolution.Ignore:
                             Result.AddLogEntry("Ignored tab url", other.Url);
@@ -401,15 +413,21 @@ namespace Dnn.ExportImport.Components.Services
                         Url = other.Url,
                     };
 
-                    TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
+                    try
+                    {
+                        TabController.Instance.SaveTabUrl(local, _importDto.PortalId, true);
 
-                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    _dataProvider.UpdateTabUrlChangers(local.TabId, local.SeqNum, createdBy, modifiedBy);
+                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        _dataProvider.UpdateTabUrlChangers(local.TabId, local.SeqNum, createdBy, modifiedBy);
 
-                    Result.AddLogEntry("Added Tab Url", other.Url);
-                    Result.AddLogEntry("Tab alias skin might have different portal alias than intended.", other.HTTPAlias, ReportLevel.Warn);
-                    count++;
+                        Result.AddLogEntry("Added Tab Url", other.Url);
+                        count++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Result.AddLogEntry("EXCEPTION adding tab, Tab ID=" + local.TabId, ex.Message, ReportLevel.Error);
+                    }
                 }
             }
 
@@ -428,13 +446,18 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var other in exportedTabModules)
             {
                 var locals = localTabModules.Where(m => m.DesktopModule.FriendlyName == other.FriendlyName &&
-                    m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder).ToList();
+                                                        m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder).ToList();
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
                 if (otherModule == null) continue; // must not happen
 
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(other.FriendlyName);
-                if (moduleDefinition == null) continue; // the module is not installed, therefore ignore it
+                if (moduleDefinition == null)
+                {
+                    Result.AddLogEntry("Error adding tab module, ModuleDef=" + other.FriendlyName,
+                        "The modue definition is not present in the system", ReportLevel.Error);
+                    continue; // the module is not installed, therefore ignore it
+                }
 
                 if (locals.Count == 0)
                 {
@@ -474,131 +497,148 @@ namespace Dnn.ExportImport.Components.Services
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
                     };
 
-                    //this will create 2 records:  Module and TabModule
-                    otherModule.LocalId = _moduleController.AddModule(local);
-                    other.LocalId = local.TabModuleID;
-                    Repository.UpdateItem(otherModule);
-
-                    // this is not saved upon adding the module
-                    if (other.IsDeleted)
+                    //Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
+                    try
                     {
-                        local.IsDeleted = other.IsDeleted;
-                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
-                        //_moduleController.UpdateModule(local); // to clear cache
-                    }
-
-                    var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                    var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                    UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
-
-                    if (sharedModule == null)
-                    {
-                        createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
-                        modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
-                        UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
-
-                        _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
-                        _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
-                        _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
-
-                        if (_exportDto.IncludeContent)
-                        {
-                            _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
-                        }
-
-                        Result.AddLogEntry("Added module", local.ModuleID.ToString());
-                    }
-
-                    Result.AddLogEntry("Added tab module", local.TabModuleID.ToString());
-                    count++;
-                }
-                else
-                {
-                    foreach (var local in locals)
-                    {
-                        var localModule = localModules.FirstOrDefault(
-                            m => m.ModuleID == local.ModuleID && m.FriendlyName == local.DesktopModule.FriendlyName);
-                        if (localModule == null) continue; // must not happen
-
-                        // setting module properties
-                        localModule.AllTabs = otherModule.AllTabs;
-                        localModule.StartDate = otherModule.StartDate;
-                        localModule.EndDate = otherModule.EndDate;
-                        localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
-                        localModule.IsDeleted = otherModule.IsDeleted;
-                        localModule.IsShareable = otherModule.IsShareable;
-                        localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-
-                        local.AllTabs = otherModule.AllTabs;
-                        local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
-                        local.EndDate = otherModule.EndDate ?? DateTime.MaxValue;
-                        local.InheritViewPermissions = otherModule.InheritViewPermissions ?? true;
-                        local.IsDeleted = otherModule.IsDeleted;
-                        local.IsShareable = otherModule.IsShareable;
-                        local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-
-                        // setting tab module properties
-                        local.AllTabs = otherModule.AllTabs;
-                        local.ModuleTitle = other.ModuleTitle;
-                        local.Header = other.Header;
-                        local.Footer = other.Footer;
-                        local.ModuleOrder = other.ModuleOrder;
-                        local.PaneName = other.PaneName;
-                        local.CacheMethod = other.CacheMethod;
-                        local.CacheTime = other.CacheTime;
-                        local.Alignment = other.Alignment;
-                        local.Color = other.Color;
-                        local.Border = other.Border;
-                        local.IconFile = other.IconFile;
-                        local.Visibility = (VisibilityState)other.Visibility;
-                        local.ContainerSrc = other.ContainerSrc;
-                        local.DisplayTitle = other.DisplayTitle;
-                        local.DisplayPrint = other.DisplayPrint;
-                        local.DisplaySyndicate = other.DisplaySyndicate;
-                        local.IsDeleted = other.IsDeleted;
-                        local.IsShareable = otherModule.IsShareable;
-                        local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-                        local.IsWebSlice = other.IsWebSlice;
-                        local.WebSliceTitle = other.WebSliceTitle;
-                        local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
-                        local.WebSliceTTL = other.WebSliceTTL ?? -1;
-                        //local.UniqueId = other.UniqueId;
-                        local.VersionGuid = other.VersionGuid;
-                        local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
-                        local.LocalizedVersionGuid = other.LocalizedVersionGuid;
-                        local.CultureCode = other.CultureCode;
-
-                        // this is not saved upon updating the module
-                        EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
-
-                        // updates both module and tab module db records
-                        _moduleController.UpdateModule(local);
+                        //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                        otherModule.LocalId = _moduleController.AddModule(local);
                         other.LocalId = local.TabModuleID;
-                        otherModule.LocalId = localModule.ModuleID;
                         Repository.UpdateItem(otherModule);
+
+                        // this is not saved upon adding the module
+                        if (other.IsDeleted)
+                        {
+                            local.IsDeleted = other.IsDeleted;
+                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
+                            //_moduleController.UpdateModule(local); // to clear cache
+                        }
 
                         var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                         UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
 
-                        createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
-                        modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
-                        UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
-
-                        _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
-
-                        _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
-                        _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
-
-                        if (_exportDto.IncludeContent)
+                        if (sharedModule == null)
                         {
-                            _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
+                            createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
+                            modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
+                            UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
+
+                            _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
+                            _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+                            _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
+
+                            if (_exportDto.IncludeContent)
+                            {
+                                _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
+                            }
+
+                            Result.AddLogEntry("Added module", local.ModuleID.ToString());
                         }
 
-                        Result.AddLogEntry("Updated tab module", local.TabModuleID.ToString());
-                        Result.AddLogEntry("Updated module", local.ModuleID.ToString());
-
+                        Result.AddLogEntry("Added tab module", local.TabModuleID.ToString());
                         count++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
+                        Logger.Error(ex);
+                    }
+                }
+                else
+                {
+                    foreach (var local in locals)
+                    {
+                        try
+                        {
+                            var localModule = localModules.FirstOrDefault(
+                                m => m.ModuleID == local.ModuleID && m.FriendlyName == local.DesktopModule.FriendlyName);
+                            if (localModule == null) continue; // must not happen
+
+                            // setting module properties
+                            localModule.AllTabs = otherModule.AllTabs;
+                            localModule.StartDate = otherModule.StartDate;
+                            localModule.EndDate = otherModule.EndDate;
+                            localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
+                            localModule.IsDeleted = otherModule.IsDeleted;
+                            localModule.IsShareable = otherModule.IsShareable;
+                            localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+
+                            local.AllTabs = otherModule.AllTabs;
+                            local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
+                            local.EndDate = otherModule.EndDate ?? DateTime.MaxValue;
+                            local.InheritViewPermissions = otherModule.InheritViewPermissions ?? true;
+                            local.IsDeleted = otherModule.IsDeleted;
+                            local.IsShareable = otherModule.IsShareable;
+                            local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+
+                            // setting tab module properties
+                            local.AllTabs = otherModule.AllTabs;
+                            local.ModuleTitle = other.ModuleTitle;
+                            local.Header = other.Header;
+                            local.Footer = other.Footer;
+                            local.ModuleOrder = other.ModuleOrder;
+                            local.PaneName = other.PaneName;
+                            local.CacheMethod = other.CacheMethod;
+                            local.CacheTime = other.CacheTime;
+                            local.Alignment = other.Alignment;
+                            local.Color = other.Color;
+                            local.Border = other.Border;
+                            local.IconFile = other.IconFile;
+                            local.Visibility = (VisibilityState)other.Visibility;
+                            local.ContainerSrc = other.ContainerSrc;
+                            local.DisplayTitle = other.DisplayTitle;
+                            local.DisplayPrint = other.DisplayPrint;
+                            local.DisplaySyndicate = other.DisplaySyndicate;
+                            local.IsDeleted = other.IsDeleted;
+                            local.IsShareable = otherModule.IsShareable;
+                            local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+                            local.IsWebSlice = other.IsWebSlice;
+                            local.WebSliceTitle = other.WebSliceTitle;
+                            local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
+                            local.WebSliceTTL = other.WebSliceTTL ?? -1;
+                            //local.UniqueId = other.UniqueId;
+                            local.VersionGuid = other.VersionGuid;
+                            local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
+                            local.LocalizedVersionGuid = other.LocalizedVersionGuid;
+                            local.CultureCode = other.CultureCode;
+
+                            // this is not saved upon updating the module
+                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
+
+                            // updates both module and tab module db records
+                            _moduleController.UpdateModule(local);
+                            other.LocalId = local.TabModuleID;
+                            otherModule.LocalId = localModule.ModuleID;
+                            Repository.UpdateItem(otherModule);
+
+                            var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                            var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                            UpdateTabModuleChangers(local.TabModuleID, createdBy, modifiedBy);
+
+                            createdBy = Util.GetUserIdByName(_exportImportJob, otherModule.CreatedByUserID, otherModule.CreatedByUserName);
+                            modifiedBy = Util.GetUserIdByName(_exportImportJob, otherModule.LastModifiedByUserID, otherModule.LastModifiedByUserName);
+                            UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
+
+                            _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
+
+                            _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
+                            _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+
+                            if (_exportDto.IncludeContent)
+                            {
+                                _totals.TotalContents += ImportPortableContent(localTab.TabID, local, otherModule, isNew);
+                            }
+
+                            Result.AddLogEntry("Updated tab module", local.TabModuleID.ToString());
+                            Result.AddLogEntry("Updated module", local.ModuleID.ToString());
+
+                            count++;
+                        }
+                        catch (Exception ex)
+                        {
+                            Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
+                            Logger.Error(ex);
+                        }
                     }
                 }
             }
@@ -748,27 +788,48 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     var restoreCount = 0;
                                     var version = DotNetNukeContext.Current.Application.Version.ToString(3);
-                                    foreach (var moduleContent in exportedContent)
+
+                                    bool tabVersionsEnabled;
+                                    bool tabWorkflowEnabled;
+                                    DisableVersioning(tabId, out tabVersionsEnabled, out tabWorkflowEnabled);
+
+                                    try
                                     {
-                                        if (!moduleContent.IsRestored)
+                                        foreach (var moduleContent in exportedContent)
                                         {
-                                            try
+                                            if (!moduleContent.IsRestored)
                                             {
-                                                controller.ImportModule(localModule.ModuleID, moduleContent.XmlContent, version, _exportImportJob.CreatedByUserId);
-                                                moduleContent.IsRestored = true;
-                                                Repository.UpdateItem(moduleContent);
-                                                restoreCount++;
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                Result.AddLogEntry("Error importing module data, id=" + localModule.ModuleID, e.Message, ReportLevel.Error);
+                                                try
+                                                {
+                                                    var content = moduleContent.XmlContent;
+                                                    if (content.IndexOf('\x03') >= 0)
+                                                    {
+                                                        // exported data contains this character sometimes
+                                                        content = content.Replace('\x03', ' ');
+                                                    }
+
+                                                    controller.ImportModule(localModule.ModuleID, content, version, _exportImportJob.CreatedByUserId);
+                                                    moduleContent.IsRestored = true;
+                                                    Repository.UpdateItem(moduleContent);
+                                                    restoreCount++;
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Result.AddLogEntry("Error importing module data, Module ID=" + localModule.ModuleID, ex.Message, ReportLevel.Error);
+                                                    Logger.ErrorFormat("ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
+                                                        localModule.ModuleID, ex, Environment.NewLine, moduleContent.XmlContent);
+                                                }
                                             }
                                         }
+                                    }
+                                    finally
+                                    {
+                                        RestoreVersioning(tabId, tabVersionsEnabled, tabWorkflowEnabled);
                                     }
 
                                     if (restoreCount > 0)
                                     {
-                                        Result.AddLogEntry("Added/Updated module content", localModule.ModuleID.ToString());
+                                        Result.AddLogEntry("Added/Updated module content inside Tab ID=" + tabId, "Module ID=" + localModule.ModuleID);
                                         return restoreCount;
                                     }
                                 }
@@ -783,6 +844,26 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             return 0;
+        }
+
+        private void DisableVersioning(int tabId, out bool tabVersionsEnabled, out bool tabWorkflowEnabled)
+        {
+            var portalId = _importDto.PortalId;
+            tabWorkflowEnabled = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
+            TabVersionSettings.Instance.SetEnabledVersioningForPortal(portalId, false);
+            TabVersionSettings.Instance.SetEnabledVersioningForTab(tabId, false);
+
+            var workflowSettings = TabWorkflowSettings.Instance;
+            tabVersionsEnabled = workflowSettings.IsWorkflowEnabled(portalId, tabId);
+            workflowSettings.SetWorkflowEnabled(portalId, tabId, false);
+        }
+
+        private void RestoreVersioning(int tabId, bool tabVersionsEnabled, bool tabWorkflowEnabled)
+        {
+            var portalId = _importDto.PortalId;
+            TabVersionSettings.Instance.SetEnabledVersioningForPortal(portalId, tabVersionsEnabled);
+            TabVersionSettings.Instance.SetEnabledVersioningForTab(tabId, tabVersionsEnabled);
+            TabWorkflowSettings.Instance.SetWorkflowEnabled(portalId, tabId, tabWorkflowEnabled);
         }
 
         private int ImportTabModuleSettings(ModuleInfo localTabModule, ExportTabModule otherTabModule, bool isNew)
@@ -836,7 +917,7 @@ namespace Dnn.ExportImport.Components.Services
             return count;
         }
 
-        private static int GetParentLocalTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IList<TabInfo> localTabs)
+        private static int TryFindLocalParentTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
         {
             var otherParentId = exportedTab.ParentId;
             if (otherParentId.HasValue && otherParentId.Value > 0)
@@ -854,7 +935,7 @@ namespace Dnn.ExportImport.Components.Services
                     if (index > 0)
                     {
                         var path = exportedTab.TabPath.Substring(0, index);
-                        var localTab = localTabs.FirstOrDefault(t => 
+                        var localTab = localTabs.FirstOrDefault(t =>
                             path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
                             && (t.CultureCode ?? "") == (exportedTab.CultureCode ?? ""));
                         if (localTab != null)
@@ -1141,7 +1222,7 @@ namespace Dnn.ExportImport.Components.Services
                             }
                             catch (Exception e)
                             {
-                                Result.AddLogEntry("Error exporting module data, id=" + exportModule.ModuleID, e.Message, ReportLevel.Error);
+                                Result.AddLogEntry("Error exporting module data, Module ID=" + exportModule.ModuleID, e.Message, ReportLevel.Error);
                             }
                         }
                     }
