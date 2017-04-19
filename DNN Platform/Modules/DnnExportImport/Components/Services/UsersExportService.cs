@@ -230,7 +230,6 @@ namespace Dnn.ExportImport.Components.Services
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
-            CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
             if (CheckPointStageCallback(this)) return;
             try
             {
@@ -262,9 +261,7 @@ namespace Dnn.ExportImport.Components.Services
                                 if (CheckCancelled(importJob)) return;
                                 var row = table.NewRow();
                                 var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
-                                tempUserPortalCount += userPortal != null ? 1 : 0;
                                 var userAuthentication = Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                                tempUserAuthenticationCount += userAuthentication != null ? 1 : 0;
 
                                 row["PortalId"] = portalId;
                                 row["Username"] = user.Username;
@@ -275,51 +272,90 @@ namespace Dnn.ExportImport.Components.Services
                                 row["Email"] = user.Email;
                                 row["DisplayName"] = string.IsNullOrEmpty(user.DisplayName) ? string.Empty : user.DisplayName;
                                 row["UpdatePassword"] = user.UpdatePassword;
-                                row["Authorised"] = dataProvider.GetNull(userPortal?.Authorised);
-                                row["CreatedByUserID"] = dataProvider.GetNull(Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName));
-                                row["VanityUrl"] = dataProvider.GetNull(userPortal?.VanityUrl);
-                                row["RefreshRoles"] = dataProvider.GetNull(userPortal?.RefreshRoles);
+                                row["CreatedByUserID"] = Util.GetUserIdByName(importJob, user.CreatedByUserId, user.CreatedByUserName);
                                 row["LastIPAddress"] = dataProvider.GetNull(user.LastIpAddress);
                                 row["PasswordResetToken"] = dataProvider.GetNull(user.PasswordResetToken);
                                 row["PasswordResetExpiration"] = dataProvider.GetNull(user.PasswordResetExpiration);
-                                row["IsDeleted"] = dataProvider.GetNull(userPortal?.IsDeleted);
-                                row["LastModifiedByUserID"] = dataProvider.GetNull(Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName));
-                                row["AuthenticationType"] = dataProvider.GetNull(userAuthentication?.AuthenticationType);
-                                row["AuthenticationToken"] = dataProvider.GetNull(userAuthentication?.AuthenticationToken);
+                                row["LastModifiedByUserID"] = Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
 
+                                if (userPortal != null)
+                                {
+                                    tempUserPortalCount += 1;
+                                    row["Authorised"] = userPortal.Authorised;
+                                    row["VanityUrl"] = userPortal.VanityUrl;
+                                    row["RefreshRoles"] = userPortal.RefreshRoles;
+                                    row["IsDeleted"] = userPortal.IsDeleted;
+                                }
+                                else
+                                {
+                                    row["Authorised"] = DBNull.Value;
+                                    row["VanityUrl"] = DBNull.Value;
+                                    row["RefreshRoles"] = DBNull.Value;
+                                    row["IsDeleted"] = DBNull.Value;
+                                }
+                                if (userAuthentication != null)
+                                {
+                                    tempUserAuthenticationCount += 1;
+                                    row["AuthenticationType"] = userAuthentication?.AuthenticationType;
+                                    row["AuthenticationToken"] = userAuthentication?.AuthenticationToken;
+                                }
+                                else
+                                {
+                                    row["AuthenticationType"] = DBNull.Value;
+                                    row["AuthenticationToken"] = DBNull.Value;
+                                }
                                 //Aspnet Users and Membership
-                                ExportAspnetMembership aspnetMembership = null;
                                 var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
-                                tempAspUserCount += aspNetUser != null ? 1 : 0;
+
                                 if (aspNetUser != null)
                                 {
-                                    aspnetMembership =
-                                        Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id)
-                                            .FirstOrDefault();
-                                    tempAspMembershipCount += aspnetMembership != null ? 1 : 0;
+                                    tempAspUserCount += 1;
+                                    row["ApplicationId"] = GetApplicationId();
+                                    row["AspUserId"] = aspNetUser.UserId;
+                                    row["MobileAlias"] = aspNetUser.MobileAlias;
+                                    row["IsAnonymous"] = aspNetUser.IsAnonymous;
+                                    var aspnetMembership = Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault();
+                                    if (aspnetMembership != null)
+                                    {
+                                        tempAspMembershipCount += 1;
+                                        row["Password"] = string.IsNullOrEmpty(aspnetMembership.Password) ? string.Empty : aspnetMembership.Password;
+                                        row["PasswordFormat"] = aspnetMembership.PasswordFormat;
+                                        row["PasswordSalt"] = aspnetMembership.PasswordSalt;
+                                        row["MobilePIN"] = aspnetMembership.MobilePin;
+                                        row["PasswordQuestion"] = aspnetMembership.PasswordQuestion;
+                                        row["PasswordAnswer"] = aspnetMembership.PasswordAnswer;
+                                        row["IsApproved"] = aspnetMembership.IsApproved;
+                                        row["IsLockedOut"] = aspnetMembership.IsLockedOut;
+                                        row["FailedPasswordAttemptCount"] = aspnetMembership.FailedPasswordAttemptCount;
+                                        row["FailedPasswordAnswerAttemptCount"] = aspnetMembership.FailedPasswordAnswerAttemptCount;
+                                        row["Comment"] = aspnetMembership.Comment;
+                                    }
+                                }
+                                else
+                                {
+                                    row["ApplicationId"] = DBNull.Value;
+                                    row["AspUserId"] = DBNull.Value;
+                                    row["MobileAlias"] = DBNull.Value;
+                                    row["IsAnonymous"] = DBNull.Value;
+                                    row["Password"] = DBNull.Value;
+                                    row["PasswordFormat"] = DBNull.Value;
+                                    row["PasswordSalt"] = DBNull.Value;
+                                    row["MobilePIN"] = DBNull.Value;
+                                    row["PasswordQuestion"] = DBNull.Value;
+                                    row["PasswordAnswer"] = DBNull.Value;
+                                    row["IsApproved"] = DBNull.Value;
+                                    row["IsLockedOut"] = DBNull.Value;
+                                    row["FailedPasswordAttemptCount"] = DBNull.Value;
+                                    row["FailedPasswordAnswerAttemptCount"] = DBNull.Value;
+                                    row["Comment"] = DBNull.Value;
                                 }
 
-                                row["ApplicationId"] = dataProvider.GetNull(GetApplicationId());
-                                row["AspUserId"] = dataProvider.GetNull(aspNetUser?.UserId);
-                                row["MobileAlias"] = dataProvider.GetNull(aspNetUser?.MobileAlias);
-                                row["IsAnonymous"] = dataProvider.GetNull(aspNetUser?.IsAnonymous);
-                                row["Password"] = string.IsNullOrEmpty(aspnetMembership?.Password) ? string.Empty : aspnetMembership.Password;
-                                row["PasswordFormat"] = dataProvider.GetNull(aspnetMembership?.PasswordFormat);
-                                row["PasswordSalt"] = dataProvider.GetNull(aspnetMembership?.PasswordSalt);
-                                row["MobilePIN"] = dataProvider.GetNull(aspnetMembership?.MobilePin);
-                                row["PasswordQuestion"] = dataProvider.GetNull(aspnetMembership?.PasswordQuestion);
-                                row["PasswordAnswer"] = dataProvider.GetNull(aspnetMembership?.PasswordAnswer);
-                                row["IsApproved"] = dataProvider.GetNull(aspnetMembership?.IsApproved);
-                                row["IsLockedOut"] = dataProvider.GetNull(aspnetMembership?.IsLockedOut);
-                                row["FailedPasswordAttemptCount"] = dataProvider.GetNull(aspnetMembership?.FailedPasswordAttemptCount);
-                                row["FailedPasswordAnswerAttemptCount"] = dataProvider.GetNull(aspnetMembership?.FailedPasswordAnswerAttemptCount);
-                                row["Comment"] = dataProvider.GetNull(aspnetMembership?.Comment);
                                 table.Rows.Add(row);
                             }
-                            var Overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
+                            var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             //Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
-                                .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table);
+                                .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table, new Dictionary<string, object> { { "Overwrite", overwrite } });
                             totalUsersImported += users.Count;
                             totalAspnetUserImported += tempAspUserCount;
                             totalAspnetMembershipImported += tempAspMembershipCount;

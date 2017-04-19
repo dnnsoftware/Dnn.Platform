@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using DotNetNuke.Common.Utilities;
@@ -38,13 +39,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {
-			ExecuteNonQuery(connectionString, type, Null.NullInteger, sql, args);
+            ExecuteNonQuery(connectionString, type, Null.NullInteger, sql, args);
         }
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
-		{
+        {
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
-            { 
+            {
                 if (type == CommandType.StoredProcedure)
                 {
                     sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
@@ -73,7 +74,7 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         public static void BulkInsert(string connectionString, int timeoutSec, string procedureName, string tableParameterName, DataTable dataTable)
-		{
+        {
             if (dataTable.Rows.Count > 0)
             {
                 using (var con = new SqlConnection(connectionString))
@@ -101,11 +102,49 @@ namespace DotNetNuke.Data.PetaPoco
                 }
             }
         }
+        public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> args)
+        {
+            BulkInsert(connectionString, procedureName, tableParameterName, dataTable, Null.NullInteger, args);
+        }
 
-		public static IDataReader ExecuteReader(string connectionString, CommandType type, string sql, params object[] args)
-		{
-			return ExecuteReader(connectionString, type, Null.NullInteger, sql, args);
-		}
+        public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> args)
+        {
+            if (dataTable.Rows.Count > 0)
+            {
+                using (var con = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand(procedureName, con))
+                {
+                    if (!tableParameterName.StartsWith("@"))
+                        tableParameterName = "@" + tableParameterName;
+
+                    if (timeoutSec > 0)
+                        cmd.CommandTimeout = timeoutSec;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue(tableParameterName, dataTable);
+                    foreach (var arg in args)
+                    {
+                        cmd.Parameters.AddWithValue(arg.Key, arg.Value);
+                    }
+                    con.Open();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
+                        throw;
+                    }
+                    con.Close();
+                }
+            }
+        }
+
+        public static IDataReader ExecuteReader(string connectionString, CommandType type, string sql, params object[] args)
+        {
+            return ExecuteReader(connectionString, type, Null.NullInteger, sql, args);
+        }
 
         public static IDataReader ExecuteReader(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
@@ -116,10 +155,10 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-			if (timeoutSec > 0)
-			{
-				database.CommandTimeout = timeoutSec;
-			}
+            if (timeoutSec > 0)
+            {
+                database.CommandTimeout = timeoutSec;
+            }
 
             try
             {
@@ -138,11 +177,11 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static T ExecuteScalar<T>(string connectionString, CommandType type, string sql, params object[] args)
         {
-			return ExecuteScalar<T>(connectionString, type, Null.NullInteger, sql, args);
+            return ExecuteScalar<T>(connectionString, type, Null.NullInteger, sql, args);
         }
 
-		public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
-		{
+        public static T ExecuteScalar<T>(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
+        {
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
             {
                 if (type == CommandType.StoredProcedure)
@@ -174,8 +213,8 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         // ReSharper disable once InconsistentNaming
-		public static void ExecuteSQL(string connectionString, string sql, int timeoutSec)
-		{
+        public static void ExecuteSQL(string connectionString, string sql, int timeoutSec)
+        {
             using (var database = new Database(connectionString, "System.Data.SqlClient") { EnableAutoSelect = false })
             {
                 if (timeoutSec > 0)

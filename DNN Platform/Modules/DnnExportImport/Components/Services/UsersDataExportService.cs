@@ -79,7 +79,6 @@ namespace Dnn.ExportImport.Components.Services
 
             //Update the total items count in the check points. This should be updated only once.
             CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
-            CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
             if (CheckPointStageCallback(this)) return;
             var includeProfile = importDto.ExportDto.IncludeProperfileProperties;
             try
@@ -138,32 +137,32 @@ namespace Dnn.ExportImport.Components.Services
                                         {
                                             var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
                                                 userProfile.PropertyDefinitionId, userProfile.PropertyName);
-                                            if (profileDefinitionId == null) continue;
+                                            if (profileDefinitionId == null || profileDefinitionId == -1) continue;
                                             var userProfileRow = tableUserProfile.NewRow();
                                             userProfileRow["PortalId"] = importJob.PortalId;
                                             userProfileRow["UserId"] = userId;
-                                            userProfileRow["PropertyDefinitionId"] = profileDefinitionId;
-                                            userProfileRow["PropertyValue"] = userProfile.PropertyValue;
-                                            userProfileRow["PropertyText"] = userProfile.PropertyText;
+                                            userProfileRow["PropertyDefinitionId"] = profileDefinitionId.Value;
+                                            userProfileRow["PropertyValue"] = dataProvider.GetNull(Convert.ToString(userProfile.PropertyValue));
+                                            userProfileRow["PropertyText"] = dataProvider.GetNull(Convert.ToString(userProfile.PropertyText));
                                             userProfileRow["Visibility"] = userProfile.Visibility;
-                                            userProfileRow["ExtendedVisibility"] = userProfile.ExtendedVisibility;
+                                            userProfileRow["ExtendedVisibility"] = dataProvider.GetNull(Convert.ToString(userProfile.ExtendedVisibility));
                                             tableUserProfile.Rows.Add(userProfileRow);
                                             tempUserProfileCount++;
                                         }
                                     }
                                 }
                             }
-                            var Overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
+                            var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             //Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
-                                .BulkInsert("ExportImport_AddUpdateUserRolesBulk", "@DataTable", tableUserRoles);
+                                .BulkInsert("ExportImport_AddUpdateUserRolesBulk", "@DataTable", tableUserRoles, new Dictionary<string, object> { { "Overwrite", overwrite } });
                             totalUserRolesImported += tempUserRolesCount;
 
                             if (includeProfile)
                             {
                                 DotNetNuke.Data.DataProvider.Instance()
                                     .BulkInsert("ExportImport_AddUpdateUsersProfilesBulk", "@DataTable",
-                                        tableUserProfile);
+                                        tableUserProfile, new Dictionary<string, object> { { "Overwrite", overwrite } });
                                 totalProfilesImported += tempUserProfileCount;
                             }
 
@@ -202,148 +201,6 @@ namespace Dnn.ExportImport.Components.Services
         public override int GetImportTotal()
         {
             return Repository.GetCount<ExportUser>();
-        }
-
-        private int ProcessUserRoles(ExportImportJob importJob, ImportDto importDto,
-            IEnumerable<ExportUserRole> userRoles, int userId)
-        {
-            var total = 0;
-            foreach (var userRole in userRoles)
-            {
-                if (CheckCancelled(importJob)) return total;
-                var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleName);
-                if (roleId == null) continue;
-
-                var existingUserRole = RoleController.Instance.GetUserRole(importJob.PortalId, userId, roleId.Value);
-                var isUpdate = false;
-                if (existingUserRole != null)
-                {
-                    switch (importDto.CollisionResolution)
-                    {
-                        case CollisionResolution.Overwrite:
-                            isUpdate = true;
-                            break;
-                        case CollisionResolution.Ignore:
-                            continue;
-                        default:
-                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                    }
-                }
-
-                if (isUpdate)
-                {
-                    var modifiedBy = Util.GetUserIdByName(importJob, userRole.LastModifiedByUserId, userRole.LastModifiedByUserName);
-                    userRole.UserRoleId = existingUserRole.UserRoleID;
-                    DotNetNuke.Data.DataProvider.Instance()
-                        .UpdateUserRole(userRole.UserRoleId, userRole.Status, userRole.IsOwner,
-                            userRole.EffectiveDate ?? Null.NullDate, userRole.ExpiryDate ?? Null.NullDate, modifiedBy);
-                }
-                else
-                {
-                    var createdBy = Util.GetUserIdByName(importJob, userRole.CreatedByUserId, userRole.CreatedByUserName);
-                    userRole.UserRoleId = DotNetNuke.Data.DataProvider.Instance()
-                        .AddUserRole(importJob.PortalId, userId, roleId.Value, userRole.Status, userRole.IsOwner,
-                            userRole.EffectiveDate ?? Null.NullDate, userRole.ExpiryDate ?? Null.NullDate, createdBy);
-                }
-                total++;
-            }
-            return total;
-        }
-
-        private int ProcessUserProfiles(ExportImportJob importJob, ImportDto importDto,
-            IEnumerable<ExportUserProfile> userProfiles, int userId)
-        {
-            var total = 0;
-            var allUserProfileProperties = CBO.FillCollection<ExportUserProfile>(DataProvider.Instance().GetUserProfile(importJob.PortalId, userId));
-            foreach (var userProfile in userProfiles)
-            {
-                if (CheckCancelled(importJob)) return total;
-                var existingUserProfile =
-                    allUserProfileProperties.FirstOrDefault(x => x.PropertyName == userProfile.PropertyName);
-                var isUpdate = false;
-                if (existingUserProfile != null)
-                {
-                    switch (importDto.CollisionResolution)
-                    {
-                        case CollisionResolution.Overwrite:
-                            isUpdate = true;
-                            break;
-                        case CollisionResolution.Ignore:
-                            continue;
-                        default:
-                            throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                    }
-                }
-                if (isUpdate)
-                {
-                    userProfile.PropertyDefinitionId = existingUserProfile.PropertyDefinitionId;
-                    userProfile.ProfileId = existingUserProfile.ProfileId;
-                    DotNetNuke.Data.DataProvider.Instance()
-                        .UpdateProfileProperty(userProfile.ProfileId, userId, userProfile.PropertyDefinitionId,
-                            userProfile.PropertyValue
-                            , userProfile.Visibility, userProfile.ExtendedVisibility, DateUtils.GetDatabaseLocalTime());
-                }
-                else
-                {
-                    var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
-                        userProfile.PropertyDefinitionId,
-                        userProfile.PropertyName);
-                    if (profileDefinitionId == null) continue;
-                    userProfile.PropertyDefinitionId = profileDefinitionId.Value;
-
-                    DotNetNuke.Data.DataProvider.Instance()
-                        .UpdateProfileProperty(Null.NullInteger, userId, userProfile.PropertyDefinitionId,
-                            userProfile.PropertyValue, userProfile.Visibility, userProfile.ExtendedVisibility,
-                            DateUtils.GetDatabaseLocalTime());
-                }
-                total++;
-            }
-            return total;
-        }
-
-        private void ProcessUserAuthentications(ExportImportJob importJob, ImportDto importDto,
-            ExportUserAuthentication userAuthentication, int userId)
-        {
-            if (userAuthentication == null) return;
-
-            var existingUserAuthenticaiton = AuthenticationController.GetUserAuthentication(userId);
-            var isUpdate = false;
-            if (existingUserAuthenticaiton != null)
-            {
-                switch (importDto.CollisionResolution)
-                {
-                    case CollisionResolution.Overwrite:
-                        isUpdate = true;
-                        break;
-                    case CollisionResolution.Ignore:
-                        return;
-                    default:
-                        throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
-                }
-            }
-            if (isUpdate)
-            {
-                //TODO: Do we need this part?
-                userAuthentication.UserAuthenticationId = existingUserAuthenticaiton.UserAuthenticationID;
-                //No updates.
-            }
-            else
-            {
-                userAuthentication.UserAuthenticationId = 0;
-                var createdById = Util.GetUserIdByName(importJob, userAuthentication.CreatedByUserId, userAuthentication.CreatedByUserName);
-                userAuthentication.UserAuthenticationId = DotNetNuke.Data.DataProvider.Instance().AddUserAuthentication(userAuthentication.UserId, userAuthentication.AuthenticationType,
-                        userAuthentication.AuthenticationToken, createdById);
-            }
-        }
-
-        private int GetCurrentSkip()
-        {
-            if (!string.IsNullOrEmpty(CheckPoint.StageData))
-            {
-                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.skip) ?? 0;
-            }
-            return 0;
         }
 
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =

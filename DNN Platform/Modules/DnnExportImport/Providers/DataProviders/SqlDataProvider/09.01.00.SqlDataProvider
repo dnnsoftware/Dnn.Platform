@@ -934,6 +934,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBul
 	@Overwrite bit = 1
 AS
 BEGIN
+
 	DECLARE @MinDate Datetime = cast('1753-1-1' as datetime);
 	DECLARE @EmptyGuid UNIQUEIDENTIFIER = CAST(CAST(0 AS BINARY) AS UNIQUEIDENTIFIER);
 	BEGIN TRANSACTION [UsersInsert]
@@ -1331,6 +1332,7 @@ BEGIN
 			DROP TABLE #AspNetMembershipInsertsDataTable
 		END
 	COMMIT TRANSACTION [UsersInsert]
+
 END
 
 GO
@@ -1367,6 +1369,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRole
 	@Overwrite bit = 1
 AS
 BEGIN
+
 	BEGIN TRANSACTION [UserRolesInsert]
 		IF @Overwrite = 1
 		BEGIN
@@ -1447,6 +1450,7 @@ BEGIN
 			DROP TABLE #UserRoleInsertsDataTable;
 		END
 	COMMIT TRANSACTION [UserRolesInsert]
+
 END
 
 GO
@@ -1480,6 +1484,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersPro
 	@Overwrite bit = 1
 AS
 BEGIN
+
 	BEGIN TRANSACTION [UserProfilesInsert]
 		----Update/Insert User Profile
 		IF @Overwrite = 1
@@ -1545,6 +1550,7 @@ BEGIN
 			DROP TABLE #UserProfileInsertsDataTable;
 		END
 	COMMIT TRANSACTION [UserProfilesInsert]
+
 END
 
 GO
