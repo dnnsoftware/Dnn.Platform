@@ -60,9 +60,9 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     database.Execute(sql, args);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Logger.Error($"[1] Error executing SQL: {sql} (arguments count={args.Length})");
+                    Logger.Error("[1] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                     throw;
                 }
             }
@@ -93,9 +93,9 @@ namespace DotNetNuke.Data.PetaPoco
                     {
                         cmd.ExecuteNonQuery();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
+                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
                         throw;
                     }
                     con.Close();
@@ -164,12 +164,12 @@ namespace DotNetNuke.Data.PetaPoco
             {
                 return database.ExecuteReader(sql, args);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // very special case for installation
                 if (!sql.EndsWith("GetDatabaseVersion"))
                 {
-                    Logger.Error($"[3] Error executing SQL: {sql} (arguments count={args.Length})");
+                    Logger.Error("[3] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                 }
                 throw;
             }
@@ -198,9 +198,9 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     return database.ExecuteScalar<T>(sql, args);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Logger.Error($"[4] Error executing SQL: {sql} (arguments count={args.Length})");
+                    Logger.Error("[4] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                     throw;
                 }
             }
@@ -226,9 +226,9 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     database.Execute(sql);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Logger.Error("[5] Error executing SQL: " + sql);
+                    Logger.Error("[5] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                     throw;
                 }
             }
