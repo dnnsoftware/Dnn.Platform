@@ -437,6 +437,7 @@ li.rmItem a.permission_denied {
 
 .ItemNameEdit {
     width: 90%;
+    color: black;
 }
 
 .ItemIcon {
