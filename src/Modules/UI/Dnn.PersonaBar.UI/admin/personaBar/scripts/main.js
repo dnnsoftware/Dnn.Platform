@@ -418,7 +418,7 @@ require(['jquery', 'knockout', 'moment', '../util', '../sf', '../config', './../
 
         function calculateHoverMenuPosition($menu) {
             var bottom = $menu.parent().offset().top + $menu.outerHeight();
-            var availableArea = $(window).height() - bottom;
+            var availableArea = $(window).height() + $(window).scrollTop() - bottom;
             $menu.css('top', availableArea < 0 ? availableArea + 'px' : '');
         }
 
