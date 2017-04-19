@@ -327,7 +327,6 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? "" : folder.FolderPath;
-            folder.PortalId = portalId;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
             if (folderMapping == null) return false;
 
@@ -493,7 +492,6 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            file.PortalId = portalId;
             if (isUpdate)
             {
                 var modifiedBy = Util.GetUserIdByName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);

@@ -26,7 +26,6 @@ namespace Dnn.ExportImport.Dto.Assets
     public class ExportFile : BasicExportImportDto
     {
         public int FileId { get; set; }
-        public int PortalId { get; set; }
         public string FileName { get; set; }
         public string Extension { get; set; }
         public int Size { get; set; }

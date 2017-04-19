@@ -27,8 +27,6 @@ namespace Dnn.ExportImport.Dto.Assets
     {
         public int FolderId { get; set; }
 
-        public int PortalId { get; set; }
-
         public string FolderPath { get; set; }
         public int StorageLocation { get; set; }
         public bool IsProtected { get; set; }
