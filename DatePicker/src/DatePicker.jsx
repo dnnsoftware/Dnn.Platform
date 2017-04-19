@@ -242,7 +242,7 @@ export default class DatePicker extends Component {
         if (date) {
             return moment(date).format(format);
         }
-        return false;
+        return date;
     }
 
     showCalendar() {       
