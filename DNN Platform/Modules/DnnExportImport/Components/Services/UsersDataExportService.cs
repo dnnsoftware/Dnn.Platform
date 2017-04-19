@@ -30,10 +30,6 @@ using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Authentication;
-using Newtonsoft.Json;
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -142,10 +138,10 @@ namespace Dnn.ExportImport.Components.Services
                                             userProfileRow["PortalId"] = importJob.PortalId;
                                             userProfileRow["UserId"] = userId;
                                             userProfileRow["PropertyDefinitionId"] = profileDefinitionId.Value;
-                                            userProfileRow["PropertyValue"] = dataProvider.GetNull(Convert.ToString(userProfile.PropertyValue));
-                                            userProfileRow["PropertyText"] = dataProvider.GetNull(Convert.ToString(userProfile.PropertyText));
+                                            userProfileRow["PropertyValue"] = userProfile.PropertyValue;
+                                            userProfileRow["PropertyText"] = userProfile.PropertyText;
                                             userProfileRow["Visibility"] = userProfile.Visibility;
-                                            userProfileRow["ExtendedVisibility"] = dataProvider.GetNull(Convert.ToString(userProfile.ExtendedVisibility));
+                                            userProfileRow["ExtendedVisibility"] = userProfile.ExtendedVisibility;
                                             tableUserProfile.Rows.Add(userProfileRow);
                                             tempUserProfileCount++;
                                         }

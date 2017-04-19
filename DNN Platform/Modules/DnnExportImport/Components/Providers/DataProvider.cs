@@ -209,21 +209,6 @@ namespace Dnn.ExportImport.Components.Providers
                     _dataProvider.GetNull(fromDate), _dataProvider.GetNull(null), _dataProvider.GetNull(null), true);
         }
 
-        public IDataReader GetAspNetUser(string username)
-        {
-            return _dataProvider.ExecuteReader("Export_GetAspNetUser", username);
-        }
-
-        public IDataReader GetUserMembership(Guid userId)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserMembership", userId);
-        }
-
-        public IDataReader GetUserProfile(int portalId, int userId)
-        {
-            return _dataProvider.ExecuteReader("Export_GetUserProfile", portalId, userId);
-        }
-
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
         {
             _dataProvider.ExecuteNonQuery(

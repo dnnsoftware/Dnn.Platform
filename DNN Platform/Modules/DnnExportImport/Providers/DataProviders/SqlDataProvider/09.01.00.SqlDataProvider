@@ -760,7 +760,8 @@ BEGIN
 			UP.ProfileID,
 			UP.UserID,
 			UP.PropertyDefinitionID,
-			CASE WHEN (UP.PropertyValue Is Null) THEN UP.PropertyText ELSE UP.PropertyValue END AS 'PropertyValue',
+			UP.PropertyValue,
+			UP.PropertyText,
 			UP.Visibility,
 			UP.ExtendedVisibility,
 			UP.LastUpdatedDate,
@@ -808,55 +809,6 @@ BEGIN
 	DROP TABLE #tmpPagedUsers
 	END
 END
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
-	@PortalId	int,
-	@UserId		int
-AS
-	SELECT
-		UP.ProfileID,
-		UP.UserID,
-		UP.PropertyDefinitionID,
-		CASE WHEN (UP.PropertyValue Is Null) THEN UP.PropertyText ELSE UP.PropertyValue END AS 'PropertyValue',
-		UP.Visibility,
-		UP.ExtendedVisibility,
-		UP.LastUpdatedDate,
-		PPD.PropertyName
- 	FROM {databaseOwner}[{objectQualifier}UserProfile] UP
-	INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] PPD
-	ON UP.PropertyDefinitionID=PPD.PropertyDefinitionID
-	WHERE UserId = @UserId AND PPD.PortalId=@PortalId
-
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-	@Username		nvarchar(256)
-AS
-	SELECT *
- 	FROM {databaseOwner}[aspnet_Users]
-	WHERE  UserName=@Username
-
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-	@UserId			uniqueidentifier
-AS
-	SELECT *
- 	FROM {databaseOwner}[aspnet_Membership]
-	WHERE UserId=@UserId
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
