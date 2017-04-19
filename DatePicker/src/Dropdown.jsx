@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 
+const MAX_LABEL_LENGHT = 20;
+
 class Dropdown extends Component {
 
     constructor() {
@@ -51,16 +53,21 @@ class Dropdown extends Component {
         });
     }
 
+    getAbbreviatedLabel(label){
+        return (label && label.length > MAX_LABEL_LENGHT) ? label.substring(0, MAX_LABEL_LENGHT - 3) + "..." : label;
+    }
+
     render() {
         const {options, value, className} = this.props;
         const layoutOptions = options.map((option) => {
             return <div className="time-option" key={option.value} onClick={this.onUpdate.bind(this, option.value) }>{option.label}</div>;
         });
         const currentOption = options.find(o => o.value === value);
+        
         return (
             <div className={"dnn-time-picker " +  (className || "")} ref="timePicker">
                 <div className="time-text" onClick={this.showTimeSelector.bind(this)}>
-                    {currentOption.label}
+                    <span title={currentOption.label}>{this.getAbbreviatedLabel(currentOption.label)}</span>
                     {this.state.isTimeSelectorVisible && <div className={"time-selector " + this.state.className}>
                         <div className="time-options">
                             {layoutOptions}
