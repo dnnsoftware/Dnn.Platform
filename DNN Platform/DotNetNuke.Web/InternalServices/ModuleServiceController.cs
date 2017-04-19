@@ -100,9 +100,9 @@ namespace DotNetNuke.Web.InternalServices
 		        var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
 		        foreach (var module in deletedModules)
 		        {
-			        if (module.ModuleOrder < moduleOrder)
-			        {
-				        moduleOrder += 2;
+                    if (module.ModuleOrder < moduleOrder && module.PaneName == postData.Pane)
+                    {
+                        moduleOrder += 2;
 			        }
 		        }
 	        }
