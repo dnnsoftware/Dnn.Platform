@@ -551,7 +551,8 @@ namespace Dnn.ExportImport.Components.Engines
             //This might be added always.
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
-
+            
+            var additionalItems = new List<string>();
             foreach (var includedItem in includedItems)
             {
                 BasePortableService basePortableService;
@@ -559,9 +560,10 @@ namespace Dnn.ExportImport.Components.Engines
                     (basePortableService =
                         implementors.FirstOrDefault(x => x.ParentCategory.Equals(includedItem, IgnoreCaseComp))) != null)
                 {
-                    includedItems.Add(basePortableService.Category);
+                    additionalItems.Add(basePortableService.Category);
                 }
             }
+            additionalItems.ForEach(i => includedItems.Add(i));
 
             // must be included always when there is at least one other object to process
             if (includedItems.Any())

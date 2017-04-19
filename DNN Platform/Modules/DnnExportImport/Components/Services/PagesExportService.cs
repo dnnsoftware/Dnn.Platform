@@ -143,9 +143,6 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPointStageCallback(this)) return;
             var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < _totals.LastProcessedId);
 
-            //install the exported extension packages first.
-            ProcessImportModulePackages();
-
             foreach (var otherTab in exportedTabs)
             {
                 if (CheckCancelled(_exportImportJob)) break;
@@ -251,102 +248,6 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
             }
-        }
-
-        private void ProcessImportModulePackages()
-        {
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
-            var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
-            CompressionUtil.UnZipArchive(packageZipFile, tempFolder, true);
-            var exportPackages = Repository.GetAllItems<ExportPackage>().ToList();
-
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count() : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
-
-            if (CheckPoint.Stage == 0)
-            {
-                try
-                {
-                    foreach (var exportPackage in exportPackages)
-                    {
-                        var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
-                        if (!File.Exists(filePath))
-                        {
-                            continue;
-                        }
-
-                        var packageType = exportPackage.PackageType;
-                        var packageName = exportPackage.PackageName;
-                        var version = exportPackage.Version;
-
-                        Logger.Info($"Start Import Package: {packageName} version: {version}");
-
-                        var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageType == packageType && p.Name == packageName);
-                        if (existPackage != null && existPackage.Version >= version)
-                        {
-                            Logger.Info($"Import Package: {packageName} has higher version {existPackage.Version} installed, ignore import it");
-                            continue;
-                        }
-
-                        InstallPackage(filePath);
-
-                        Logger.Info($"Complete Import Package: {packageName}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-                finally
-                {
-                    FileSystemUtils.DeleteFolderRecursive(tempFolder);
-                }
-            }
-        }
-
-        public void InstallPackage(string filePath)
-        {
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                try
-                {
-                    var fileName = Path.GetFileName(filePath);
-                    var installer = GetInstaller(stream, fileName, Null.NullInteger);
-
-                    if (installer.IsValid)
-                    {
-                        //Reset Log
-                        installer.InstallerInfo.Log.Logs.Clear();
-
-                        //Set the IgnnoreWhiteList flag
-                        installer.InstallerInfo.IgnoreWhiteList = true;
-
-                        //Set the Repair flag
-                        installer.InstallerInfo.RepairInstall = true;
-
-                        //Install
-                        installer.Install();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-            }
-        }
-
-        private static Installer GetInstaller(Stream stream, string fileName, int portalId)
-        {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
-            installer.InstallerInfo.PortalID = Null.NullInteger;
-
-            //Read the manifest
-            if (installer.InstallerInfo.ManifestFile != null)
-            {
-                installer.ReadManifest(true);
-            }
-
-            return installer;
         }
 
         private void AddTabRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
