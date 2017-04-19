@@ -32,7 +32,6 @@ using Dnn.ExportImport.Dto.Pages;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -41,10 +40,10 @@ using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
 using Util = Dnn.ExportImport.Components.Common.Util;
+using InstallerUtil = DotNetNuke.Services.Installer.Util;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -1202,7 +1201,7 @@ namespace Dnn.ExportImport.Components.Services
                     PackageName = package.Name,
                     Version = package.Version,
                     PackageType = package.PackageType,
-                    PackageFileName = DotNetNuke.Services.Installer.Util.GetPackageBackupName(package)
+                    PackageFileName = InstallerUtil.GetPackageBackupName(package)
                 }, null);
 
                 _exportedModuleDefinitions.Add(exportModule.ModuleDefID);
