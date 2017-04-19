@@ -453,7 +453,7 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var other in exportedTabModules)
             {
-                var locals = localTabModules.Where(m => m.DesktopModule.FriendlyName == other.FriendlyName &&
+                var locals = localTabModules.Where(m => m.ModuleDefinition.FriendlyName == other.FriendlyName &&
                                                         m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder).ToList();
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
@@ -559,8 +559,13 @@ namespace Dnn.ExportImport.Components.Services
                         try
                         {
                             var localModule = localModules.FirstOrDefault(
-                                m => m.ModuleID == local.ModuleID && m.FriendlyName == local.DesktopModule.FriendlyName);
-                            if (localModule == null) continue; // must not happen
+                                m => m.ModuleID == local.ModuleID && m.FriendlyName == local.ModuleDefinition.FriendlyName);
+                            if (localModule == null)
+                            {
+                                Result.AddLogEntry("Error updating tab module, ModuleDef=" + other.FriendlyName,
+                                    "The modue definition is not present in the system", ReportLevel.Error);
+                                continue; // the module is not installed, therefore ignore it
+                            }
 
                             // setting module properties
                             localModule.AllTabs = otherModule.AllTabs;

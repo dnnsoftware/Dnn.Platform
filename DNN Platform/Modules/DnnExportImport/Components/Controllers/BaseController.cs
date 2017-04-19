@@ -240,6 +240,8 @@ namespace Dnn.ExportImport.Components.Controllers
         private static JobItem ToJobItem(ExportImportJob job)
         {
             var user = UserController.Instance.GetUserById(job.PortalId, job.CreatedByUserId);
+            var name = job.JobType == JobType.Import ? JsonConvert.DeserializeObject<ImportDto>(job.JobObject)?.ExportDto?.ExportName : job.Name;
+
             return new JobItem
             {
                 JobId = job.JobId,
@@ -249,7 +251,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,
                 JobStatus = Localization.GetString("JobStatus_" + job.JobStatus, Constants.SharedResources),
-                Name = job.Name,
+                Name = name,
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,

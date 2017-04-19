@@ -102,18 +102,6 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllUsers]', 'P') IS NO
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 GO
 
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserProfile]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserProfile]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAspNetUser]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAspNetUser]
-GO
-
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetUserMembership]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetUserMembership]
-GO
-
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_UpdateUsersChangers]
 GO
