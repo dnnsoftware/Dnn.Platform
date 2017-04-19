@@ -303,7 +303,7 @@
             .time-selector {
                 width: 215px;
                 .time-options {
-                    width: 225px;
+                    width: 228px;
                 }
             }
             .time-text {
@@ -311,12 +311,21 @@
             }
         }
         &.time-picker {
-            text-align: center;
             &.half {
+                text-align: left;
                 width: 75px;
+                .time-text {
+                    width: 75px;
+                }
             }
             &.full {
+                text-align: center;
                 width: 240px;
+                .time-text {
+                    width: 82px;
+                    margin: auto;
+                    padding: 8px 0 0 0;
+                }
             }
             .time-selector {
                 width: 134px;
@@ -324,17 +333,12 @@
                     width: 147px;
                 }
             }
-            .time-text {
-                width: 82px;
-                margin: auto;
-                padding: 8px 0 0 0;
-            }
         }
         
         
         float: left;
         border-top: 1px solid @mercury;
-        margin-left: 8px;
+        margin-left: 10px;
         pointer-events: none;
         .time-text {
             position: relative;

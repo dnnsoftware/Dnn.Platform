@@ -46,7 +46,8 @@ export default class DatePicker extends Component {
 
         this.savedDate = {
             FirstDate: firstDate !== undefined ? firstDate : null,
-            SecondDate: secondDate !== undefined ? secondDate : null
+            SecondDate: secondDate !== undefined ? secondDate : null,
+            timezone: props.timezone
         };
 
         this.state = {
@@ -54,7 +55,8 @@ export default class DatePicker extends Component {
             Date: {
                 FirstDate: firstDate !== undefined ? firstDate : null,
                 SecondDate: secondDate !== undefined ? secondDate : null
-            }
+            },
+            timezone: props.timezone
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -191,16 +193,16 @@ export default class DatePicker extends Component {
     }
 
     callUpdateDate() {
-        let {Date} = this.state;
-        this.props.updateDate(Date.FirstDate, Date.SecondDate);
+        let {Date, timezone} = this.state;
+        this.props.updateDate(Date.FirstDate, Date.SecondDate, timezone);
         this.cashPreviousDates();
     }
 
     cashPreviousDates() {
-        const {Date} = this.state;
+        const {Date, timezone} = this.state;
         const FirstDate = Date.FirstDate;
         const SecondDate = Date.SecondDate;
-        this.savedDate = { FirstDate, SecondDate };
+        this.savedDate = { FirstDate, SecondDate, timezone };
     }
 
     apply() {
@@ -212,7 +214,8 @@ export default class DatePicker extends Component {
         this.hideCalendar();
         const FirstDate = this.savedDate.FirstDate;
         const SecondDate = this.savedDate.SecondDate;
-        this.setState({ Date: { FirstDate, SecondDate } });
+        const timezone = this.savedDate.timezone;
+        this.setState({ Date: { FirstDate, SecondDate }, timezone });
     }
 
     updateFirstTime(time) {
@@ -301,6 +304,10 @@ export default class DatePicker extends Component {
                 return "show-below-input";
         }
     }
+
+    updateTimezone(timezone){
+        this.setState({timezone});
+    }
    
     render() {
         this.date = this.state.Date.FirstDate;
@@ -379,8 +386,8 @@ export default class DatePicker extends Component {
                         }
                         {this.props.hasTimezonePicker && 
                             <TimezonePicker 
-                                onUpdate={this.props.updateTimezone} 
-                                value={this.props.timezone} />
+                                onUpdate={this.updateTimezone.bind(this)} 
+                                value={this.state.timezone} />
                         }
                     </div>
                 </div>
@@ -424,7 +431,6 @@ DatePicker.propTypes = {
 
     // timezone value & update callback
     timezone: PropTypes.string,
-    updateTimezone: PropTypes.func,
 
     // if set to true, it shows time picker 
     hasTimePicker: PropTypes.bool,
