@@ -44,14 +44,14 @@ namespace DotNetNuke.Data
 {
     public sealed class SqlDataProvider : DataProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SqlDataProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         #region Private Members
 
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
-		private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)", 
-															RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-		private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptWithRegex = new Regex("WITH\\s*\\([\\s\\S]*?((PAD_INDEX|ALLOW_ROW_LOCKS|ALLOW_PAGE_LOCKS)\\s*=\\s*(ON|OFF))+[\\s\\S]*?\\)",
+                                                            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex ScriptOnPrimaryRegex = new Regex("(TEXTIMAGE_)*ON\\s*\\[\\s*PRIMARY\\s*\\]", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Data
                     sql = DataUtil.ReplaceTokens(sql);
 
                     //Clean up some SQL Azure incompatabilities
-	                var query = GetAzureCompactScript(sql);
+                    var query = GetAzureCompactScript(sql);
 
                     if (query != sql)
                     {
@@ -133,7 +133,7 @@ namespace DotNetNuke.Data
                         using (var connection = new SqlConnection(connectionString))
                         {
                             //Create a new command
-                            using (var command = new SqlCommand(query, connection) {CommandTimeout = timeoutSec})
+                            using (var command = new SqlCommand(query, connection) { CommandTimeout = timeoutSec })
                             {
                                 connection.Open();
                                 command.ExecuteNonQuery();
@@ -319,20 +319,20 @@ namespace DotNetNuke.Data
             return Exceptions;
         }
 
-		private string GetAzureCompactScript(string script)
-		{
-			if (ScriptWithRegex.IsMatch(script))
-			{
-				script = ScriptWithRegex.Replace(script, string.Empty);
-			}
+        private string GetAzureCompactScript(string script)
+        {
+            if (ScriptWithRegex.IsMatch(script))
+            {
+                script = ScriptWithRegex.Replace(script, string.Empty);
+            }
 
-			if (ScriptOnPrimaryRegex.IsMatch(script))
-			{
-				script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
-			}
+            if (ScriptOnPrimaryRegex.IsMatch(script))
+            {
+                script = ScriptOnPrimaryRegex.Replace(script, string.Empty);
+            }
 
-			return script;
-		}
+            return script;
+        }
 
         #endregion
 
@@ -358,6 +358,16 @@ namespace DotNetNuke.Data
             PetaPocoHelper.BulkInsert(ConnectionString, timeoutSec, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable);
         }
 
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, commandParameters);
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec, Dictionary<string, object> commandParameters)
+        {
+            PetaPocoHelper.BulkInsert(ConnectionString, DatabaseOwner + ObjectQualifier + procedureName, tableParameterName, dataTable, timeoutSec, commandParameters);
+        }
+
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
             return PetaPocoHelper.ExecuteReader(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
@@ -370,7 +380,7 @@ namespace DotNetNuke.Data
 
         public override T ExecuteScalar<T>(string procedureName, params object[] commandParameters)
         {
-            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters); 
+            return PetaPocoHelper.ExecuteScalar<T>(ConnectionString, CommandType.StoredProcedure, DatabaseOwner + ObjectQualifier + procedureName, commandParameters);
         }
 
         public override T ExecuteScalar<T>(int timeoutSec, string procedureName, params object[] commandParameters)
@@ -426,7 +436,7 @@ namespace DotNetNuke.Data
 
         public override string ExecuteScript(string connectionString, string script)
         {
-            return ExecuteScriptInternal(connectionString, script); 
+            return ExecuteScriptInternal(connectionString, script);
         }
 
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
