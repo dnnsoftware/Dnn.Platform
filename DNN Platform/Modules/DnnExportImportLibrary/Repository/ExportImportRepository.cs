@@ -37,6 +37,9 @@ namespace Dnn.ExportImport.Repository
         public ExportImportRepository(string dbFileName)
         {
             _lightDb = new LiteDatabase(dbFileName);
+            _lightDb.Mapper.EmptyStringToNull = false;
+            _lightDb.Mapper.TrimWhitespace = false;
+            _lightDb.Mapper.SerializeNullValues = true;
         }
 
         ~ExportImportRepository()
@@ -142,8 +145,6 @@ namespace Dnn.ExportImport.Repository
 
             if (orderKeySelector != null)
                 result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
-            else
-                result = result.OrderBy(x => x.Id);
 
             if (skip != null)
                 result = result.Skip(skip.Value);

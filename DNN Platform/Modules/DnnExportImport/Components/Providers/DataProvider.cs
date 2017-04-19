@@ -145,7 +145,7 @@ namespace Dnn.ExportImport.Components.Providers
         {
             _dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.AssemblyName, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
-                Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, _dataProvider.GetNull(checkpoint.StartDate));
+                Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, _dataProvider.GetNull(checkpoint.StartDate), checkpoint.Completed);
         }
 
         public IDataReader GetAllScopeTypes()
@@ -232,12 +232,7 @@ namespace Dnn.ExportImport.Components.Providers
 
         public IDataReader GetPortalSettings(int portalId, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetPortalPermissions(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, _dataProvider.GetNull(fromDate));
+            return _dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, toDate, _dataProvider.GetNull(fromDate));
         }
 
         public IDataReader GetPortalLanguages(int portalId, DateTime toDate, DateTime? fromDate)

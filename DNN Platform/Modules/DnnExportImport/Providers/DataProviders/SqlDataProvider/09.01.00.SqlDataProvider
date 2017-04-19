@@ -164,7 +164,8 @@ IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportCheckpoints]', N'U')
 		[TotalItems]		 int NOT NULL DEFAULT(0),
 		[ProcessedItems]	 int NOT NULL DEFAULT(0),
 		[StartDate]			 DateTime NULL,
-		[LastUpdateDate]	 DateTime NULL
+		[LastUpdateDate]	 DateTime NULL,
+		[Completed]			 bit DEFAULT(0)
 		CONSTRAINT [PK_{objectQualifier}ExportImportCheckpoints] PRIMARY KEY ([CheckpointId])
 	)
 GO
@@ -576,14 +577,15 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImportCheckpoints_Upsert
 	@Progress		int,
 	@TotalItems		int,
 	@ProcessedItems int,
-	@StartDate		DateTime = NULL
+	@StartDate		DateTime = NULL,
+	@Completed		bit = 0
 AS
 BEGIN
 	MERGE INTO {databaseOwner}[{objectQualifier}ExportImportCheckpoints] target
-	 USING (SELECT @JobId, @AssemblyName, @Category, @Progress, @TotalItems, @ProcessedItems) AS source (JobId, AssemblyName, Category, Progress, TotalItems, ProcessedItems)
+	 USING (SELECT @JobId, @AssemblyName, @Category, @Progress, @TotalItems, @ProcessedItems, @Completed) AS source (JobId, AssemblyName, Category, Progress, TotalItems, ProcessedItems, Completed)
 		ON (target.JobId = source.JobId AND target.Category = source.Category AND target.AssemblyName = source.AssemblyName)
 	 WHEN MATCHED THEN
-		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems, StartDate=(CASE WHEN StartDate IS NULL THEN @StartDate ELSE StartDate END),  LastUpdateDate= GetUtcDate()
+		UPDATE SET [Stage] = @Stage, [StageData] = @StageData, [Progress] = @Progress, [TotalItems] = @TotalItems, [ProcessedItems] = @ProcessedItems, StartDate=(CASE WHEN StartDate IS NULL THEN @StartDate ELSE StartDate END),  LastUpdateDate= GetUtcDate(), Completed=@Completed
 	 WHEN NOT MATCHED THEN 
 		INSERT ([JobId], [AssemblyName], [Category], [Stage], [StageData], [Progress], [TotalItems], [ProcessedItems])
 		VALUES (@JobId, @AssemblyName, @Category,  @Stage,  @StageData, @Progress, @TotalItems, @ProcessedItems);
@@ -802,6 +804,8 @@ BEGIN
 		SELECT *
  		FROM {databaseOwner}[aspnet_Membership]
 		WHERE UserId IN(SELECT UserId FROM #tmpAspNetUsers)
+
+	DROP TABLE #tmpPagedUsers
 	END
 END
 GO
@@ -871,6 +875,693 @@ AS
 		LastModifiedByUserID = {databaseOwner}[{objectQualifier}Export_UserIdByUsername](@ModifiedByUserName)
 	WHERE
 		UserID = @UserID
+GO
+
+-- We must drop the procedure that uses the 'ExportImportJobLogsType' custom type before dropping the custom type itself
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserType]
+GO
+
+CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportUserType] AS TABLE(
+	[PortalId]									[int] NULL,
+	[Username]									[nvarchar](100) NULL,
+	[FirstName]									[nvarchar](50) NULL,
+	[LastName]									[nvarchar](50) NULL,
+	[AffiliateId]								[int] NULL,
+	[IsSuperUser]								[bit] NULL,
+	[Email]										[nvarchar](256) NULL,
+	[DisplayName]								[nvarchar](128) NULL,
+	[UpdatePassword]							[bit] NULL,
+	[Authorised]								[bit] NULL,
+	[CreatedByUserId]							[int] NULL,
+	[VanityUrl]									[nvarchar](100) NULL,
+	[RefreshRoles]								[bit] NULL,
+	[LastIPAddress]								[nvarchar](50) NULL,
+	[PasswordResetToken]						[uniqueidentifier] NULL,
+	[PasswordResetExpiration]					[datetime] NULL,
+	[IsDeleted]									[bit] NULL,
+	[LastModifiedByUserId]						[int] NULL,
+	[ApplicationId]								[uniqueidentifier] NULL, --Used for aspnet_Users and aspnet_Membership
+	[AspUserId]									[uniqueidentifier] NULL,--Used for aspnet_Users and aspnet_Membership
+	[MobileAlias]								[nvarchar](16) NULL,--Used for aspnet_Users
+	[IsAnonymous]								[bit] NULL,--Used for aspnet_Users
+	[Password]									[nvarchar](128) NULL,--Used for aspnet_Membership
+	[PasswordFormat]							[int] NULL,--Used for aspnet_Membership
+	[PasswordSalt]								[nvarchar](128) NULL,--Used for aspnet_Membership
+	[MobilePIN]									[nvarchar](16) NULL,--Used for aspnet_Membership
+	[PasswordQuestion]							[nvarchar](256) NULL,--Used for aspnet_Membership
+	[PasswordAnswer]							[nvarchar](128) NULL,--Used for aspnet_Membership
+	[IsApproved]								[bit] NULL,--Used for aspnet_Membership
+	[IsLockedOut]								[bit] NULL,--Used for aspnet_Membership
+	[FailedPasswordAttemptCount]				[int] NULL,--Used for aspnet_Membership
+	[FailedPasswordAnswerAttemptCount]			[int] NULL,--Used for aspnet_Membership
+	[Comment]									[ntext] NULL,--Used for aspnet_Membership
+	[AuthenticationType]						[nvarchar](100),--Used for User Authentication
+	[AuthenticationToken]						[nvarchar](1000)--Used for User Authentication
+)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersBulk]
+	@DataTable {databaseOwner}[{objectQualifier}ExportImportUserType] READONLY,
+	@Overwrite bit = 1
+AS
+BEGIN
+	DECLARE @MinDate Datetime = cast('1753-1-1' as datetime);
+	DECLARE @EmptyGuid UNIQUEIDENTIFIER = CAST(CAST(0 AS BINARY) AS UNIQUEIDENTIFIER);
+	BEGIN TRANSACTION [UsersInsert]
+		BEGIN TRY
+			--Update/Insert Users
+			IF @Overwrite = 1
+			BEGIN
+				--Update Users
+				SELECT   Users.UserID
+					,dt.IsDeleted
+					,dt.PortalId
+					,dt.FirstName 				
+					,dt.LastName 					
+					,dt.IsSuperUser 				
+					,dt.Email 					
+					,dt.DisplayName 				
+					,dt.UpdatePassword 			
+					,dt.PasswordResetToken		
+					,dt.PasswordResetExpiration	
+					,dt.LastIPAddress 			
+					,dt.LastModifiedByUserId 		
+				INTO #UserUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users 
+				ON Users.Username= dt.Username
+				WHERE Users.UserID IS NOT NULL
+
+				UPDATE Users
+				SET
+					Users.FirstName 				= dt.FirstName,
+					Users.LastName 					= dt.LastName,
+					Users.IsSuperUser 				= dt.IsSuperUser,
+					Users.Email 					= dt.Email,
+					Users.DisplayName 				= dt.DisplayName,
+					Users.UpdatePassword 			= dt.UpdatePassword,
+					Users.PasswordResetToken		= dt.PasswordResetToken,
+					Users.PasswordResetExpiration	= dt.PasswordResetExpiration,
+					Users.LastIPAddress 			= dt.LastIPAddress,
+					Users.LastModifiedByUserID 		= dt.LastModifiedByUserId,
+					Users.LastModifiedOnDate 		= getdate(),
+					Users.IsDeleted = CASE WHEN dt.PortalId IS NULL THEN dt.IsDeleted ELSE Users.IsDeleted END
+				FROM {databaseOwner}{objectQualifier}Users AS Users
+				INNER JOIN #UserUpdatesDataTable AS dt
+				ON Users.UserID=dt.UserID
+		
+				DROP TABLE #UserUpdatesDataTable;
+
+				--Insert new Users
+				SELECT  Users.UserID,
+						dt.Username,
+						dt.FirstName, 	
+						dt.LastName, 	
+						dt.AffiliateId,
+						dt.IsSuperUser,	
+						dt.Email,
+						dt.DisplayName,
+						dt.UpdatePassword,
+						dt.CreatedByUserId,
+						dt.LastModifiedByUserId
+				INTO #UserInsertsDataTable 
+				FROM @DataTable dt LEFT JOIN  {databaseOwner}{objectQualifier}Users Users 
+				ON Users.Username = dt.Username
+				WHERE Users.UserID IS NULL
+
+				INSERT INTO {databaseOwner}{objectQualifier}Users (
+					Username,
+					FirstName, 
+					LastName, 
+					AffiliateId,
+					IsSuperUser,
+					Email,
+					DisplayName,
+					UpdatePassword,
+					CreatedByUserID,
+					CreatedOnDate,
+					LastModifiedByUserID,
+					LastModifiedOnDate
+					)
+				SELECT
+					dt.Username,
+					dt.FirstName, 
+					dt.LastName, 
+					dt.AffiliateId,
+					dt.IsSuperUser,
+					dt.Email,
+					dt.DisplayName,
+					dt.UpdatePassword,
+					dt.CreatedByUserId,
+					getdate(),
+					dt.LastModifiedByUserId,
+					getdate()
+				FROM
+					#UserInsertsDataTable dt
+
+				DROP TABLE #UserInsertsDataTable;
+			END
+
+			--Update/Insert User Portals
+			IF @Overwrite = 1
+			BEGIN
+				--Update User Portals
+				SELECT   
+					 UP.UserPortalId
+					,dt.IsDeleted
+					,dt.Authorised
+					,dt.RefreshRoles
+					,dt.VanityUrl
+					,dt.PortalId
+				INTO #UP_UpdatesDataTable 
+				FROM @DataTable dt 
+				INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username= dt.Username
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId= Users.UserID
+				WHERE Users.UserID IS NOT NULL 
+				AND UP.UserPortalId IS NOT NULL 
+				AND UP.PortalId=dt.PortalId
+
+				UPDATE UserPortals
+					SET
+						Authorised =	dt.Authorised,
+						RefreshRoles =  dt.RefreshRoles,
+						VanityUrl =		dt.VanityUrl,
+						IsDeleted =		dt.IsDeleted
+				FROM {databaseOwner}{objectQualifier}UserPortals AS UserPortals
+				INNER JOIN #UP_UpdatesDataTable AS dt
+				ON UserPortals.UserPortalId=dt.UserPortalId
+
+				DROP TABLE #UP_UpdatesDataTable;
+
+				--Inser User Portals
+				SELECT   
+					 Users.UserId,
+					 UP.UserPortalId
+					,dt.IsDeleted
+					,dt.Authorised
+					,dt.RefreshRoles
+					,dt.VanityUrl
+					,dt.PortalId
+				INTO #UP_InsertsDataTable 
+				FROM @DataTable dt 
+				INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username= dt.Username
+				LEFT JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId= Users.UserID AND UP.PortalId=dt.PortalId
+				WHERE Users.UserID IS NOT NULL AND UP.UserPortalId IS NULL 
+	
+				INSERT INTO {databaseOwner}{objectQualifier}UserPortals (
+					   [UserId]
+					  ,[PortalId]
+					  ,[CreatedDate]
+					  ,[Authorised]
+					  ,[IsDeleted]
+					  ,[RefreshRoles]
+					  ,[VanityUrl])
+					  SELECT
+					   dt.[UserId]
+					  ,dt.[PortalId]
+					  ,getdate()
+					  ,dt.[Authorised]
+					  ,dt.[IsDeleted]
+					  ,dt.[RefreshRoles]
+					  ,dt.[VanityUrl]
+				FROM #UP_InsertsDataTable dt
+				DROP TABLE #UP_InsertsDataTable;
+			END
+
+			----Update/Insert User Authentication
+			IF @Overwrite = 1
+			BEGIN
+				SELECT   
+					 UserAuthentication.UserAuthenticationID
+					,dt.AuthenticationType
+					,dt.AuthenticationToken
+					,dt.LastModifiedByUserId 				
+				INTO #UserAuthenticationUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username=dt.Username
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
+				INNER JOIN {databaseOwner}{objectQualifier}UserAuthentication UserAuthentication ON UserAuthentication.UserID=Users.UserID AND UserAuthentication.AuthenticationType = dt.AuthenticationType
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserAuthentication.UserAuthenticationID IS NOT NULL
+
+				UPDATE UserAuthentication
+				SET
+					UserAuthentication.AuthenticationToken 	= dt.AuthenticationToken,
+					UserAuthentication.LastModifiedByUserID = dt.LastModifiedByUserId,
+					UserAuthentication.LastModifiedOnDate			= GETDATE()
+				FROM {databaseOwner}{objectQualifier}UserAuthentication AS UserAuthentication
+				INNER JOIN #UserAuthenticationUpdatesDataTable AS dt ON UserAuthentication.UserAuthenticationID=dt.UserAuthenticationID
+		
+				DROP TABLE #UserAuthenticationUpdatesDataTable;
+
+				--Insert new UserAuthentication
+				SELECT
+					 Users.UserID   
+					,UserAuthentication.UserAuthenticationID
+					,dt.AuthenticationType
+					,dt.AuthenticationToken
+					,dt.CreatedByUserId
+					,dt.LastModifiedByUserId 				
+				INTO #UserAuthenticationInsertsDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username=dt.Username
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
+				INNER JOIN {databaseOwner}{objectQualifier}UserAuthentication UserAuthentication ON UserAuthentication.UserID=Users.UserID AND UserAuthentication.AuthenticationType = dt.AuthenticationType
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserAuthentication.UserAuthenticationID IS NULL
+
+				INSERT INTO {databaseOwner}[{objectQualifier}UserAuthentication](
+					UserID
+				   ,AuthenticationType
+				   ,AuthenticationToken
+				   ,CreatedByUserID
+				   ,CreatedOnDate
+				   ,LastModifiedByUserID
+				   ,LastModifiedOnDate
+					)
+				SELECT
+					dt.UserID,
+					dt.AuthenticationType,
+					dt.AuthenticationToken,
+					dt.CreatedByUserId,
+					GETDATE(),
+					dt.LastModifiedByUserId,
+					GETDATE()
+				FROM
+					#UserAuthenticationInsertsDataTable dt
+
+				DROP TABLE #UserAuthenticationInsertsDataTable;
+			END
+
+			--Update/Insert aspnet_Users 
+			IF @Overwrite = 1
+			BEGIN
+				--Update aspnet_Users
+				SELECT   
+					 Users.UserId
+					,dt.Username
+					,dt.[ApplicationId]
+					,dt.[MobileAlias]
+					,dt.[IsAnonymous] 				
+				INTO #AspNetUserUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}aspnet_Users Users 
+				ON Users.Username= dt.Username
+				WHERE Users.UserId IS NOT NULL AND dt.AspUserId <> @EmptyGuid
+
+				UPDATE Users
+				SET
+					Users.UserName 					= dt.Username,
+					Users.[LoweredUserName]			= LOWER(dt.Username),
+					Users.[MobileAlias] 			= dt.[MobileAlias],
+					Users.[IsAnonymous] 			= dt.[IsAnonymous],
+					Users.[LastActivityDate] 		= GETUTCDATE()
+				FROM {databaseOwner}aspnet_Users AS Users
+				INNER JOIN #AspNetUserUpdatesDataTable AS dt
+				ON Users.UserID=dt.UserID AND Users.ApplicationId=dt.[ApplicationId]
+
+				DROP TABLE #AspNetUserUpdatesDataTable
+
+				--Insert aspnet_Users
+				SELECT   	
+					dt.Username
+					,dt.[ApplicationId]
+					,dt.[MobileAlias]
+					,dt.[IsAnonymous] 				
+				
+				INTO #AspNetUserInsertsDataTable 
+				FROM @DataTable dt LEFT JOIN {databaseOwner}aspnet_Users Users 
+				ON Users.Username= dt.Username
+				WHERE Users.UserId IS NULL AND dt.AspUserId <> @EmptyGuid
+
+				INSERT INTO {databaseOwner}[aspnet_Users]
+					   ([ApplicationId]
+					   ,[UserName]
+					   ,[LoweredUserName]
+					   ,[MobileAlias]
+					   ,[IsAnonymous]
+					   ,[LastActivityDate])
+				SELECT
+						dt.[ApplicationId]
+					   ,dt.[Username]
+					   ,LOWER(dt.[Username])
+					   ,dt.[MobileAlias]
+					   ,dt.[IsAnonymous]
+					   ,GETUTCDATE()
+				FROM #AspNetUserInsertsDataTable dt
+
+				DROP TABLE #AspNetUserInsertsDataTable
+			END
+
+			--Update/Insert aspnet_Membership
+			IF @Overwrite = 1
+			BEGIN
+				--Update aspnet_Membership
+				SELECT   
+					 dt.[ApplicationId]
+					,Users.UserId
+					,dt.[Password]										
+					,dt.[PasswordFormat]								
+					,dt.[PasswordSalt]								
+					,dt.[MobilePIN]										
+					,dt.[Email]
+					,dt.[PasswordQuestion]							
+					,dt.[PasswordAnswer]							
+					,dt.[IsApproved]							
+					,dt.[IsLockedOut]								
+					,dt.[FailedPasswordAttemptCount]			
+					,dt.[FailedPasswordAnswerAttemptCount]		
+					,dt.[Comment]								
+				INTO #AspNetMembershipUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}aspnet_Users Users ON Users.Username= dt.Username
+				INNER JOIN {databaseOwner}aspnet_Membership Membership ON Membership.UserId= Users.UserID AND Membership.ApplicationId=Users.ApplicationId
+				WHERE Users.UserId IS NOT NULL AND Membership.UserId IS NOT NULL AND dt.AspUserId <> @EmptyGuid AND dt.Password IS NOT NULL
+
+				UPDATE Membership
+					SET
+						 [Password]							=dt.[Password]							
+						,[PasswordFormat]					=dt.[PasswordFormat]					
+						,[PasswordSalt] 					=dt.[PasswordSalt]						
+						,[MobilePIN]						=dt.[MobilePIN]							
+						,[Email]							=dt.[Email]
+						,[PasswordQuestion]					=dt.[PasswordQuestion]					
+						,[PasswordAnswer]					=dt.[PasswordAnswer]					
+						,[IsApproved]						=dt.[IsApproved]						
+						,[IsLockedOut]						=dt.[IsLockedOut]						
+						,[FailedPasswordAttemptCount]		=dt.[FailedPasswordAttemptCount]		
+						,[FailedPasswordAnswerAttemptCount]	=dt.[FailedPasswordAnswerAttemptCount]	
+						,[Comment]							=dt.[Comment]							
+				FROM {databaseOwner}aspnet_Membership AS Membership
+				INNER JOIN #AspNetMembershipUpdatesDataTable AS dt
+				ON Membership.UserId=dt.UserId AND Membership.[ApplicationId]=dt.[ApplicationId]
+
+				DROP TABLE #AspNetMembershipUpdatesDataTable
+
+				--Insert aspnet_Membership
+				SELECT   
+						dt.[ApplicationId]
+					,Users.UserId
+					,dt.[Password]										
+					,dt.[PasswordFormat]								
+					,dt.[PasswordSalt]								
+					,dt.[MobilePIN]										
+					,dt.[Email]
+					,dt.[PasswordQuestion]							
+					,dt.[PasswordAnswer]							
+					,dt.[IsApproved]							
+					,dt.[IsLockedOut]								
+					,dt.[FailedPasswordAttemptCount]			
+					,dt.[FailedPasswordAnswerAttemptCount]		
+					,dt.[Comment]								
+				INTO #AspNetMembershipInsertsDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}aspnet_Users Users ON Users.Username= dt.Username
+				LEFT JOIN {databaseOwner}aspnet_Membership Membership ON Membership.UserId= Users.UserID AND Membership.ApplicationId=Users.ApplicationId
+				WHERE Users.UserId IS NOT NULL AND Membership.UserId IS NULL AND dt.AspUserId <> @EmptyGuid AND dt.Password IS NOT NULL
+
+				INSERT INTO {databaseOwner}[aspnet_Membership]
+					   ([ApplicationId]
+					   ,[UserId]
+					   ,[Password]
+					   ,[PasswordFormat]
+					   ,[PasswordSalt]
+					   ,[MobilePIN]
+					   ,[Email]
+					   ,[LoweredEmail]
+					   ,[PasswordQuestion]
+					   ,[PasswordAnswer]
+					   ,[IsApproved]
+					   ,[IsLockedOut]
+					   ,[CreateDate]
+					   ,[LastLoginDate]
+					   ,[LastPasswordChangedDate]
+					   ,[LastLockoutDate]
+					   ,[FailedPasswordAttemptCount]
+					   ,[FailedPasswordAttemptWindowStart]
+					   ,[FailedPasswordAnswerAttemptCount]
+					   ,[FailedPasswordAnswerAttemptWindowStart]
+					   ,[Comment])
+				SELECT 
+						dt.[ApplicationId]
+					   ,dt.[UserId]
+					   ,dt.[Password]
+					   ,dt.[PasswordFormat]
+					   ,dt.[PasswordSalt]
+					   ,dt.[MobilePIN]
+					   ,dt.[Email]
+					   ,LOWER(dt.[Email])
+					   ,dt.[PasswordQuestion]
+					   ,dt.[PasswordAnswer]
+					   ,dt.[IsApproved]
+					   ,dt.[IsLockedOut]
+					   ,GETUTCDATE()
+					   ,@MinDate
+					   ,@MinDate
+					   ,@MinDate
+					   ,dt.[FailedPasswordAttemptCount]
+					   ,@MinDate
+					   ,dt.[FailedPasswordAnswerAttemptCount]
+					   ,@MinDate
+					   ,dt.[Comment]
+				FROM #AspNetMembershipInsertsDataTable dt
+				DROP TABLE #AspNetMembershipInsertsDataTable
+			END
+		COMMIT TRANSACTION [UsersInsert]
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION [UsersInsert];
+		THROW;
+	END CATCH  
+END
+
+GO
+
+-- We must drop the procedure that uses the 'ExportImportUserRoleType' custom type before dropping the custom type itself
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserRoleType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserRoleType]
+GO
+
+CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportUserRoleType] AS TABLE(
+	[PortalId] 							[int] NULL,
+	[UserId] 							int NULL,
+	[RoleId] 							int NULL,
+	[ExpiryDate]						datetime,
+	[IsTrialUsed]						bit,
+	[EffectiveDate]						datetime,
+	[CreatedByUserId] 					int,
+	[LastModifiedByUserId]				int,
+	[Status] 							int,
+	[IsOwner]							bit
+)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUserRolesBulk]
+	@DataTable {databaseOwner}{objectQualifier}ExportImportUserRoleType READONLY,
+	@Overwrite bit = 1
+AS
+BEGIN
+	BEGIN TRANSACTION [UserRolesInsert]
+		BEGIN TRY
+			IF @Overwrite = 1
+			BEGIN
+				--Update UserRoles
+				SELECT   
+					 UserRole.UserRoleId
+					,dt.Status
+					,dt.IsOwner 				
+					,dt.EffectiveDate 					
+					,dt.ExpiryDate 				
+					,dt.IsTrialUsed 					
+					,dt.LastModifiedByUserId 			
+				INTO #UserRoleUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
+				INNER JOIN {databaseOwner}{objectQualifier}UserRoles UserRole ON UserRole.UserID=Users.UserID AND UserRole.RoleID=dt.RoleId
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserRole.UserRoleId IS NOT NULL
+
+				UPDATE UserRoles
+				SET
+					UserRoles.Status 					= dt.Status,
+					UserRoles.IsOwner 					= dt.IsOwner,
+					UserRoles.EffectiveDate 			= dt.EffectiveDate,
+					UserRoles.ExpiryDate 				= dt.ExpiryDate,
+					UserRoles.IsTrialUsed 				= dt.IsTrialUsed,
+					UserRoles.LastModifiedByUserID 		= dt.LastModifiedByUserId,
+					UserRoles.LastModifiedOnDate		= GETDATE()
+				FROM {databaseOwner}{objectQualifier}UserRoles AS UserRoles
+				INNER JOIN #UserRoleUpdatesDataTable AS dt ON UserRoles.UserRoleId=dt.UserRoleId
+		
+				DROP TABLE #UserRoleUpdatesDataTable;
+
+				--Insert new UserRoles
+				SELECT   
+					 dt.UserId
+					,dt.RoleId
+					,dt.Status
+					,dt.IsOwner 				
+					,dt.EffectiveDate 					
+					,dt.ExpiryDate 				
+					,dt.IsTrialUsed 					
+					,dt.CreatedByUserId 				
+					,dt.LastModifiedByUserId 			
+				INTO #UserRoleInsertsDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID
+				INNER JOIN {databaseOwner}{objectQualifier}UserRoles UserRole ON UserRole.UserID=Users.UserID AND UserRole.RoleID=dt.RoleId
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserRole.UserRoleId IS NULL
+
+				INSERT INTO {databaseOwner}{objectQualifier}UserRoles(
+					UserId,
+					RoleId,
+					Status,
+					IsOwner,
+					EffectiveDate,
+					ExpiryDate,
+					IsTrialUsed,
+					CreatedByUserID,
+					CreatedOnDate,
+					LastModifiedByUserID,
+					LastModifiedOnDate
+					)
+				SELECT
+					dt.UserID,
+					dt.RoleId,
+					dt.Status,
+					dt.IsOwner,
+					dt.EffectiveDate,
+					dt.ExpiryDate,
+					dt.IsTrialUsed,
+					dt.CreatedByUserId,
+					getdate(),
+					dt.LastModifiedByUserId,
+					getdate()
+				FROM
+					#UserRoleInsertsDataTable dt
+
+				DROP TABLE #UserRoleInsertsDataTable;
+			END
+		COMMIT TRANSACTION [UserRolesInsert]
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION [UserRolesInsert];
+		THROW;
+	END CATCH  
+END
+
+GO
+
+-- We must drop the procedure that uses the 'ExportImportUserProfileType' custom type before dropping the custom type itself
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]
+GO
+
+IF EXISTS (SELECT 1 FROM sys.objects WHERE type = N'TT' AND name LIKE N'TT_{objectQualifier}ExportImportUserProfileType%')
+	DROP TYPE {databaseOwner}[{objectQualifier}ExportImportUserProfileType]
+GO
+
+CREATE TYPE {databaseOwner}[{objectQualifier}ExportImportUserProfileType] AS TABLE(
+	[PortalId] 							[int] NULL,
+	[UserId] 							int NULL,
+	[PropertyDefinitionId]				int,
+	[PropertyValue]						nvarchar(3750),
+	[PropertyText]						nvarchar(MAX),
+	[Visibility] 						int,
+	[ExtendedVisibility]				varchar(400)
+)
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddUpdateUsersProfilesBulk]
+	@DataTable {databaseOwner}{objectQualifier}ExportImportUserProfileType READONLY,
+	@Overwrite bit = 1
+AS
+BEGIN
+	BEGIN TRANSACTION [UserProfilesInsert]
+		BEGIN TRY
+			----Update/Insert User Profile
+			IF @Overwrite = 1
+			BEGIN
+				SELECT   
+					 UserProfile.ProfileID
+					,dt.PropertyValue
+					,dt.PropertyText 				
+					,dt.Visibility 					
+					,dt.ExtendedVisibility 				
+				INTO #UserProfileUpdatesDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
+				INNER JOIN {databaseOwner}{objectQualifier}UserProfile UserProfile ON UserProfile.UserID=Users.UserID AND UserProfile.PropertyDefinitionID = dt.PropertyDefinitionId
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserProfile.ProfileID IS NOT NULL
+
+				UPDATE UserProfile
+				SET
+					UserProfile.PropertyValue 			= dt.PropertyValue,
+					UserProfile.PropertyText 			= dt.PropertyText,
+					UserProfile.Visibility 				= dt.Visibility,
+					UserProfile.ExtendedVisibility 		= dt.ExtendedVisibility,
+					UserProfile.LastUpdatedDate			= GETDATE()
+				FROM {databaseOwner}{objectQualifier}UserProfile AS UserProfile
+				INNER JOIN #UserProfileUpdatesDataTable AS dt ON UserProfile.ProfileID=dt.ProfileID
+		
+				DROP TABLE #UserProfileUpdatesDataTable;
+
+				--Insert new User Profile
+				SELECT   
+					 UserProfile.UserID
+					,dt.PropertyDefinitionId
+					,dt.PropertyValue
+					,dt.PropertyText 				
+					,dt.Visibility 					
+					,dt.ExtendedVisibility 				
+				INTO #UserProfileInsertsDataTable 
+				FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
+				INNER JOIN {databaseOwner}{objectQualifier}UserProfile UserProfile ON UserProfile.UserID=Users.UserID AND UserProfile.PropertyDefinitionID = dt.PropertyDefinitionId
+				WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserProfile.ProfileID IS NULL
+
+				INSERT INTO {databaseOwner}{objectQualifier}UserProfile(
+					[UserID]
+				   ,[PropertyDefinitionID]
+				   ,[PropertyValue]
+				   ,[PropertyText]
+				   ,[Visibility]
+				   ,[LastUpdatedDate]
+				   ,[ExtendedVisibility]
+					)
+				SELECT
+					dt.UserId,
+					dt.PropertyDefinitionId,
+					dt.PropertyValue,
+					dt.PropertyText,
+					dt.Visibility,
+					GETDATE(),
+					dt.ExtendedVisibility
+				FROM
+					#UserProfileInsertsDataTable dt
+
+				DROP TABLE #UserProfileInsertsDataTable;
+			END
+		COMMIT TRANSACTION [UserProfilesInsert]
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION [UserProfilesInsert];
+		THROW;
+	END CATCH  
+END
+
 GO
 
 --Profile Properties

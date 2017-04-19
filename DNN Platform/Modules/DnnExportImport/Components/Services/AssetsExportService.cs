@@ -153,6 +153,7 @@ namespace Dnn.ExportImport.Components.Services
                             if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                         }
                     }
+                    CheckPoint.Completed = true;
                     CheckPoint.Stage++;
                     currentIndex = 0;
                     CheckPoint.Progress = 100;
@@ -277,6 +278,7 @@ namespace Dnn.ExportImport.Components.Services
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
                     currentIndex = 0;
+                    CheckPoint.Completed = true;
                     CheckPoint.Stage++;
                     CheckPoint.Progress = 100;
                 }

@@ -84,6 +84,7 @@ namespace Dnn.ExportImport.Components.Services
                 Repository.CreateItems(portalLanguages, null);
                 Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
                 CheckPoint.Progress = 100;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPoint.ProcessedItems += portalLanguages.Count;
                 CheckPointStageCallback(this);
@@ -112,6 +113,7 @@ namespace Dnn.ExportImport.Components.Services
                 ProcessPortalLanguages(importJob, importDto, portalLanguages);
                 Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
                 CheckPoint.Progress += 50;
+                CheckPoint.Completed = true;
                 CheckPoint.Stage++;
                 CheckPoint.ProcessedItems += portalLanguages.Count;
                 CheckPointStageCallback(this);
