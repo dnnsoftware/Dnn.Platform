@@ -31,9 +31,6 @@ namespace Dnn.ExportImport.Dto.Assets
 
         public string FolderPath { get; set; }
 
-        public string PortalId { get; set; }
-
-
         public int PermissionId { get; set; }
 
         public bool AllowAccess { get; set; }

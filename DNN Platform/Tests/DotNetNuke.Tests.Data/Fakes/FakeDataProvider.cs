@@ -64,6 +64,17 @@ namespace DotNetNuke.Tests.Data.Fakes
             throw new System.NotImplementedException();
         }
 
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable, int timeoutSec,
+            Dictionary<string, object> commandParameters)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override IDataReader ExecuteReader(string procedureName, params object[] commandParameters)
         {
             throw new System.NotImplementedException();
