@@ -76,6 +76,13 @@ namespace Dnn.ExportImport.Components.Entities
                     CreatedOnDate.Hour, CreatedOnDate.Minute, CreatedOnDate.Second,
                     CreatedOnDate.Millisecond, DateTimeKind.Utc);
             }
+            if (LastModifiedOnDate.Kind != DateTimeKind.Utc)
+            {
+                LastModifiedOnDate = new DateTime(
+                    LastModifiedOnDate.Year, LastModifiedOnDate.Month, LastModifiedOnDate.Day,
+                    LastModifiedOnDate.Hour, LastModifiedOnDate.Minute, LastModifiedOnDate.Second,
+                    LastModifiedOnDate.Millisecond, DateTimeKind.Utc);
+            }
         }
     }
 }

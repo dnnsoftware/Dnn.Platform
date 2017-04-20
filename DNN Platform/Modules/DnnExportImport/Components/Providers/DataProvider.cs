@@ -143,7 +143,7 @@ namespace Dnn.ExportImport.Components.Providers
             if (datim.HasValue)
             {
                 var d = datim.Value;
-                datim = new DateTime(d.Year, d.Month, d.Year, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
+                datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
             }
             return datim;
         }

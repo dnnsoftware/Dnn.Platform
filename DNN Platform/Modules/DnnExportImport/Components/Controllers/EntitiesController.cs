@@ -80,14 +80,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            var lastJobTime = _dataProvider.GetLastJobTime(portalId, jobType);
-            if (lastJobTime != null)
-            {
-                var d = lastJobTime.Value;
-                return Util.ConvertToDbLocalTime(new DateTime(
-                    d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc));
-            }
-            return null;
+            return _dataProvider.GetLastJobTime(portalId, jobType);
         }
 
         public void UpdateJobInfo(ExportImportJob job)
