@@ -16,6 +16,9 @@ http://www.codeproject.com/KB/custom-controls/countrylistbox.aspx
 GeoIP
 http://geoplite.maxmind.com/download/geoip/database/LICENSE.txt
 
+Telerik RADControls
+http://www.telerik.com
+
 FCK Editor
 http://ckeditor.com/license
 
