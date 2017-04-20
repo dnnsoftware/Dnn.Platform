@@ -22,17 +22,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.Users;
 using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Entities.Users;
 using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
@@ -51,9 +47,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var fromDate = exportDto.FromDate?.DateTime;
-            var toDate = exportDto.ToDate;
             if (CheckCancelled(exportJob)) return;
+
+            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
+            var toDate = exportDto.ToDate.ToLocalTime();
             var stage = GetCurrentStage();
             var includeProfile = exportDto.IncludeProperfileProperties;
             //All processes already complete.
@@ -238,7 +235,7 @@ namespace Dnn.ExportImport.Components.Services
                 catch (Exception ex)
                 {
                     Result.AddLogEntry(
-                        $"Exception while building indexes on the exported package. This process would be performed on import now.",
+                        "Exception while building indexes on the exported package. This process would be performed on import now.",
                         ex.Message, ReportLevel.Error);
                 }
                 finally

@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
@@ -138,7 +139,13 @@ namespace Dnn.ExportImport.Components.Providers
 
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            return _dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
+            var datim = _dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
+            if (datim.HasValue)
+            {
+                var d = datim.Value;
+                datim = new DateTime(d.Year, d.Month, d.Year, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
+            }
+            return datim;
         }
 
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
@@ -267,7 +274,7 @@ namespace Dnn.ExportImport.Components.Providers
 
         public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
         {
-            return _dataProvider.ExecuteReader("Export_GetAllPortalTabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
+            return _dataProvider.ExecuteReader("Export_Tabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
         }
 
         public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)

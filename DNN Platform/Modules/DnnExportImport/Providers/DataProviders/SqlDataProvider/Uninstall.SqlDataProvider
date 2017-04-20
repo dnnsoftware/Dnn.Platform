@@ -208,8 +208,8 @@ IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetFolders]', 'P') IS NOT
 GO
 
 -- Pages / Tabs
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Tabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_TabSettings]', 'P') IS NOT NULL

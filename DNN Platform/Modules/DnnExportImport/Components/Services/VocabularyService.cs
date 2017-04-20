@@ -43,35 +43,43 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var fromDate = exportDto.FromDate?.DateTime;
-            var toDate = exportDto.ToDate;
             if (CheckPoint.Stage > 3) return;
+
+            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
+            var toDate = exportDto.ToDate.ToLocalTime();
             List<TaxonomyVocabularyType> vocabularyTypes = null;
             List<TaxonomyTerm> taxonomyTerms = null;
             List<TaxonomyVocabulary> taxonomyVocabularies = null;
+
             if (CheckPoint.Stage == 0)
             {
                 if (CheckCancelled(exportJob)) return;
-                var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-                //Update the total items count in the check points. This should be updated only once.
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? scopeTypes.Count : CheckPoint.TotalItems;
-                if (CheckPoint.TotalItems == scopeTypes.Count)
-                {
-                    vocabularyTypes =
-                        CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-                    taxonomyTerms =
-                        CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
-                    taxonomyVocabularies =
-                        CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
-                            .GetAllVocabularies(toDate, fromDate));
-                    CheckPoint.TotalItems += vocabularyTypes.Count + taxonomyTerms.Count + taxonomyVocabularies.Count;
-                }
-                CheckPointStageCallback(this);
 
-                Repository.CreateItems(scopeTypes, null);
-                //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
+                taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
+                if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
+                {
+                    var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
+                    //Update the total items count in the check points. This should be updated only once.
+                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? scopeTypes.Count : CheckPoint.TotalItems;
+                    if (CheckPoint.TotalItems == scopeTypes.Count)
+                    {
+                        vocabularyTypes =
+                            CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                        taxonomyTerms =
+                            CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
+                        taxonomyVocabularies =
+                            CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
+                                .GetAllVocabularies(toDate, fromDate));
+                        CheckPoint.TotalItems += vocabularyTypes.Count + taxonomyTerms.Count + taxonomyVocabularies.Count;
+                    }
+                    CheckPointStageCallback(this);
+
+                    Repository.CreateItems(scopeTypes, null);
+                    //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                    CheckPoint.ProcessedItems = scopeTypes.Count;
+                }
                 CheckPoint.Progress = 25;
-                CheckPoint.ProcessedItems = scopeTypes.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -79,13 +87,19 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 1)
             {
                 if (CheckCancelled(exportJob)) return;
-                if (vocabularyTypes == null)
-                    vocabularyTypes =
-                        CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
-                Repository.CreateItems(vocabularyTypes, null);
-                //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+
+                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
+                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
+                if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
+                {
+                    if (vocabularyTypes == null)
+                        vocabularyTypes =
+                            CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                    Repository.CreateItems(vocabularyTypes, null);
+                    //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                    CheckPoint.ProcessedItems += vocabularyTypes.Count;
+                }
                 CheckPoint.Progress = 50;
-                CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 CheckPoint.Stage++;
                 if (CheckPointStageCallback(this)) return;
             }
@@ -93,9 +107,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 2)
             {
                 if (CheckCancelled(exportJob)) return;
-                if (taxonomyTerms == null)
-                    taxonomyTerms =
-                        CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
+                if (taxonomyTerms == null) taxonomyTerms = GetTaxonomyTerms(toDate, fromDate);
                 Repository.CreateItems(taxonomyTerms, null);
                 Result.AddSummary("Exported Terms", taxonomyTerms.Count.ToString());
                 CheckPoint.Progress = 75;
@@ -107,10 +119,7 @@ namespace Dnn.ExportImport.Components.Services
             if (CheckPoint.Stage == 3)
             {
                 if (CheckCancelled(exportJob)) return;
-                if (taxonomyVocabularies == null)
-                    taxonomyVocabularies =
-                        CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance()
-                            .GetAllVocabularies(toDate, fromDate));
+                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(toDate, fromDate);
                 Repository.CreateItems(taxonomyVocabularies, null);
                 Result.AddSummary("Exported Vocabularies", taxonomyVocabularies.Count.ToString());
                 CheckPoint.Progress = 100;
@@ -119,6 +128,16 @@ namespace Dnn.ExportImport.Components.Services
                 CheckPoint.Completed = true;
                 CheckPointStageCallback(this);
             }
+        }
+
+        private static List<TaxonomyTerm> GetTaxonomyTerms(DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.FillCollection<TaxonomyTerm>(DataProvider.Instance().GetAllTerms(toDate, fromDate));
+        }
+
+        private static List<TaxonomyVocabulary> GetTaxonomyVocabularies(DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.FillCollection<TaxonomyVocabulary>(DataProvider.Instance().GetAllVocabularies(toDate, fromDate));
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
