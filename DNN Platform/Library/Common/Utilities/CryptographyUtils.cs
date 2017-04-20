@@ -22,7 +22,6 @@
 
 using System.Security.Cryptography;
 // ReSharper disable InconsistentNaming
-#pragma warning disable 169
 
 #endregion
 
@@ -41,25 +40,17 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public static class CryptographyUtils
     {
-        private const string _SHA1 = "System.Security.Cryptography.SHA1";
-
         private const string _SHA1Cng = "System.Security.Cryptography.SHA1Cng";
 
         private const string _SHA1CryptoServiceProvider = "System.Security.Cryptography.SHA1CryptoServiceProvider";
-
-        private const string _SHA256 = "System.Security.Cryptography.SHA256";
 
         private const string _SHA256Cng = "System.Security.Cryptography.SHA256Cng";
 
         private const string _SHA256CryptoServiceProvider = "System.Security.Cryptography.SHA256CryptoServiceProvider";
 
-        private const string _SHA384 = "System.Security.Cryptography.SHA384";
-
         private const string _SHA384Cng = "System.Security.Cryptography.SHA384Cng";
 
         private const string _SHA384CryptoServiceProvider = "System.Security.Cryptography.SHA384CryptoServiceProvider";
-
-        private const string _SHA512 = "System.Security.Cryptography.SHA512";
 
         private const string _SHA512Cng = "System.Security.Cryptography.SHA512Cng";
 
@@ -67,26 +58,22 @@ namespace DotNetNuke.Common.Utilities
         
         public static SHA1 CreateSHA1()
         {
-            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA1CryptoServiceProvider : _SHA1Cng;
-            return SHA1.Create(algName);
+            return SHA1.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA1CryptoServiceProvider : _SHA1Cng);
         }
 
         public static SHA256 CreateSHA256()
         {
-            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA256CryptoServiceProvider : _SHA256Cng;
-            return SHA256.Create(algName);
+            return SHA256.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA256CryptoServiceProvider : _SHA256Cng);
         }
 
         public static SHA384 CreateSHA384()
         {
-            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA384CryptoServiceProvider : _SHA384Cng;
-            return SHA384.Create(algName);
+            return SHA384.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA384CryptoServiceProvider : _SHA384Cng);
         }
 
         public static SHA512 CreateSHA512()
         {
-            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA512CryptoServiceProvider : _SHA512Cng;
-            return SHA512.Create(algName);
+            return SHA512.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA512CryptoServiceProvider : _SHA512Cng);
         }
     }
 }
