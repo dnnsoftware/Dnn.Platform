@@ -3117,6 +3117,7 @@
     <None Include="jquery.min.map" />
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
+	<None Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf" />
     <None Include="Portals\_default\admin.template" />
     <None Include="Portals\_default\EventQueue\EventQueue.config" />
     <None Include="Portals\_default\Logs\LogConfig\LogConfig.xsd">
