@@ -61,7 +61,7 @@ namespace Dnn.ExportImport.Dto.Pages
         public Guid? DefaultLanguageGuid { get; set; }
         public Guid LocalizedVersionGuid { get; set; }
 
-        public string FriendlyName { get; set; }
+        public string FriendlyName { get; set; } // this is ModuleDefinition.FriendlyName
         public string CreatedByUserName { get; set; }
         public string LastModifiedByUserName { get; set; }
     }

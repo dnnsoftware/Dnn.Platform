@@ -416,6 +416,10 @@ namespace Dnn.ExportImport.Components.Engines
                 else if (importJob.JobStatus == JobStatus.InProgress)
                 {
                     importJob.JobStatus = JobStatus.Successful;
+                    if (importDto.ExportDto.IncludeContent)
+                    {
+                        PagesExportService.ResetContentsFlag(ctx);
+                    }
                 }
             }
         }

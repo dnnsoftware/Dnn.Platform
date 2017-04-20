@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -29,7 +30,9 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
+using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -447,8 +450,8 @@ namespace Dnn.ExportImport.Components.Services
             var count = 0;
             var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.Id).ToList();
             var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id).ToList();
-            var localModules = isNew ? new List<ExportModule>()
-                : EntitiesController.Instance.GetModules(otherTab.TabId, true, Constants.MinDbTime, Constants.MaxDbTime).ToList();
+            var localExportModules = isNew ? new List<ExportModule>()
+                : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
 
             foreach (var other in exportedTabModules)
@@ -467,11 +470,11 @@ namespace Dnn.ExportImport.Components.Services
                     continue; // the module is not installed, therefore ignore it
                 }
 
+                var sharedModules = Repository.FindItems<ExportModule>(m => m.ModuleID == other.ModuleID);
+                var sharedModule = sharedModules.FirstOrDefault(m => m.LocalId.HasValue);
+
                 if (locals.Count == 0)
                 {
-                    var sharedModules = Repository.FindItems<ExportModule>(m => m.ModuleID == other.ModuleID);
-                    var sharedModule = sharedModules.FirstOrDefault(m => m.LocalId.HasValue);
-
                     var local = new ModuleInfo
                     {
                         TabID = localTab.TabID,
@@ -554,75 +557,121 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    foreach (var local in locals)
+                    for (var i = 0; i < locals.Count; i++)
                     {
+                        var local = locals.ElementAt(i);
+
                         try
                         {
-                            var localModule = localModules.FirstOrDefault(
+                            var localModule = localExportModules.FirstOrDefault(
                                 m => m.ModuleID == local.ModuleID && m.FriendlyName == local.ModuleDefinition.FriendlyName);
                             if (localModule == null)
                             {
-                                Result.AddLogEntry("Error updating tab module, ModuleDef=" + other.FriendlyName,
-                                    "The modue definition is not present in the system", ReportLevel.Error);
-                                continue; // the module is not installed, therefore ignore it
+                                local = new ModuleInfo
+                                {
+                                    TabID = localTab.TabID,
+                                    ModuleID = sharedModule?.LocalId ?? -1,
+                                    ModuleDefID = moduleDefinition.ModuleDefID,
+                                    PaneName = other.PaneName,
+                                    ModuleOrder = other.ModuleOrder,
+                                    CacheTime = other.CacheTime,
+                                    Alignment = other.Alignment,
+                                    Color = other.Color,
+                                    Border = other.Border,
+                                    IconFile = other.IconFile,
+                                    Visibility = (VisibilityState)other.Visibility,
+                                    ContainerSrc = other.ContainerSrc,
+                                    DisplayTitle = other.DisplayTitle,
+                                    DisplayPrint = other.DisplayPrint,
+                                    DisplaySyndicate = other.DisplaySyndicate,
+                                    IsWebSlice = other.IsWebSlice,
+                                    WebSliceTitle = other.WebSliceTitle,
+                                    WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MinValue,
+                                    WebSliceTTL = other.WebSliceTTL ?? -1,
+                                    IsDeleted = other.IsDeleted,
+                                    CacheMethod = other.CacheMethod,
+                                    ModuleTitle = other.ModuleTitle,
+                                    Header = other.Header,
+                                    Footer = other.Footer,
+                                    CultureCode = other.CultureCode,
+                                    UniqueId = Guid.NewGuid(), //other.UniqueId,
+                                    VersionGuid = other.VersionGuid,
+                                    DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
+                                    LocalizedVersionGuid = other.LocalizedVersionGuid,
+                                };
+
+                                //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                                otherModule.LocalId = _moduleController.AddModule(local);
+                                other.LocalId = local.TabModuleID;
+                                Repository.UpdateItem(otherModule);
+
+                                // this is not saved upon adding the module
+                                if (other.IsDeleted)
+                                {
+                                    local.IsDeleted = other.IsDeleted;
+                                    EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, true);
+                                    //_moduleController.UpdateModule(local); // to clear cache
+                                }
                             }
+                            else
+                            {
+                                // setting module properties
+                                localModule.AllTabs = otherModule.AllTabs;
+                                localModule.StartDate = otherModule.StartDate;
+                                localModule.EndDate = otherModule.EndDate;
+                                localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
+                                localModule.IsDeleted = otherModule.IsDeleted;
+                                localModule.IsShareable = otherModule.IsShareable;
+                                localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
 
-                            // setting module properties
-                            localModule.AllTabs = otherModule.AllTabs;
-                            localModule.StartDate = otherModule.StartDate;
-                            localModule.EndDate = otherModule.EndDate;
-                            localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
-                            localModule.IsDeleted = otherModule.IsDeleted;
-                            localModule.IsShareable = otherModule.IsShareable;
-                            localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+                                local.AllTabs = otherModule.AllTabs;
+                                local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
+                                local.EndDate = otherModule.EndDate ?? DateTime.MaxValue;
+                                local.InheritViewPermissions = otherModule.InheritViewPermissions ?? true;
+                                local.IsDeleted = otherModule.IsDeleted;
+                                local.IsShareable = otherModule.IsShareable;
+                                local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
 
-                            local.AllTabs = otherModule.AllTabs;
-                            local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
-                            local.EndDate = otherModule.EndDate ?? DateTime.MaxValue;
-                            local.InheritViewPermissions = otherModule.InheritViewPermissions ?? true;
-                            local.IsDeleted = otherModule.IsDeleted;
-                            local.IsShareable = otherModule.IsShareable;
-                            local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+                                // setting tab module properties
+                                local.AllTabs = otherModule.AllTabs;
+                                local.ModuleTitle = other.ModuleTitle;
+                                local.Header = other.Header;
+                                local.Footer = other.Footer;
+                                local.ModuleOrder = other.ModuleOrder;
+                                local.PaneName = other.PaneName;
+                                local.CacheMethod = other.CacheMethod;
+                                local.CacheTime = other.CacheTime;
+                                local.Alignment = other.Alignment;
+                                local.Color = other.Color;
+                                local.Border = other.Border;
+                                local.IconFile = other.IconFile;
+                                local.Visibility = (VisibilityState)other.Visibility;
+                                local.ContainerSrc = other.ContainerSrc;
+                                local.DisplayTitle = other.DisplayTitle;
+                                local.DisplayPrint = other.DisplayPrint;
+                                local.DisplaySyndicate = other.DisplaySyndicate;
+                                local.IsDeleted = other.IsDeleted;
+                                local.IsShareable = otherModule.IsShareable;
+                                local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+                                local.IsWebSlice = other.IsWebSlice;
+                                local.WebSliceTitle = other.WebSliceTitle;
+                                local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
+                                local.WebSliceTTL = other.WebSliceTTL ?? -1;
+                                //local.UniqueId = other.UniqueId;
+                                local.VersionGuid = other.VersionGuid;
+                                local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
+                                local.LocalizedVersionGuid = other.LocalizedVersionGuid;
+                                local.CultureCode = other.CultureCode;
 
-                            // setting tab module properties
-                            local.AllTabs = otherModule.AllTabs;
-                            local.ModuleTitle = other.ModuleTitle;
-                            local.Header = other.Header;
-                            local.Footer = other.Footer;
-                            local.ModuleOrder = other.ModuleOrder;
-                            local.PaneName = other.PaneName;
-                            local.CacheMethod = other.CacheMethod;
-                            local.CacheTime = other.CacheTime;
-                            local.Alignment = other.Alignment;
-                            local.Color = other.Color;
-                            local.Border = other.Border;
-                            local.IconFile = other.IconFile;
-                            local.Visibility = (VisibilityState)other.Visibility;
-                            local.ContainerSrc = other.ContainerSrc;
-                            local.DisplayTitle = other.DisplayTitle;
-                            local.DisplayPrint = other.DisplayPrint;
-                            local.DisplaySyndicate = other.DisplaySyndicate;
-                            local.IsDeleted = other.IsDeleted;
-                            local.IsShareable = otherModule.IsShareable;
-                            local.IsShareableViewOnly = otherModule.IsShareableViewOnly;
-                            local.IsWebSlice = other.IsWebSlice;
-                            local.WebSliceTitle = other.WebSliceTitle;
-                            local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
-                            local.WebSliceTTL = other.WebSliceTTL ?? -1;
-                            //local.UniqueId = other.UniqueId;
-                            local.VersionGuid = other.VersionGuid;
-                            local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
-                            local.LocalizedVersionGuid = other.LocalizedVersionGuid;
-                            local.CultureCode = other.CultureCode;
+                                // this is not saved upon updating the module
+                                EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
 
-                            // this is not saved upon updating the module
-                            EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
-
-                            // updates both module and tab module db records
-                            _moduleController.UpdateModule(local);
-                            other.LocalId = local.TabModuleID;
-                            otherModule.LocalId = localModule.ModuleID;
-                            Repository.UpdateItem(otherModule);
+                                // updates both module and tab module db records
+                                _moduleController.UpdateModule(local);
+                                other.LocalId = local.TabModuleID;
+                                otherModule.LocalId = localModule.ModuleID;
+                                Repository.UpdateItem(otherModule);
+                            }
 
                             var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                             var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
@@ -1408,5 +1457,25 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalTabModuleSettings { get; set; }
         }
         #endregion
+
+        // reset restored flag so if it same db is reused the content will be restored
+        public static void ResetContentsFlag(ExportImportRepository repository)
+        {
+            var toSkip = 0;
+            const int batchSize = 100;
+            var totalCount = repository.GetCount<ExportModuleContent>();
+            while (totalCount > 0)
+            {
+                var items = repository.GetAllItems<ExportModuleContent>(skip: toSkip, max: batchSize)
+                    .Where(item => item.IsRestored).ToList();
+                if (items.Count > 0)
+                {
+                    items.ForEach(item => item.IsRestored = false);
+                    repository.UpdateItems(items);
+                }
+                toSkip += batchSize;
+                totalCount -= batchSize;
+            }
+        }
     }
 }
