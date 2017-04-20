@@ -3,6 +3,7 @@ import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import moment from "moment";
 import TimePicker from "./TimePicker";
 import TimezonePicker from "./TimezonePicker";
+import timeZones from "./timeZones";
 import DateInput from "./DateInput";
 import "./style.less";
 
@@ -36,7 +37,7 @@ const clearButtonStyleInvisible = {
     cursor: "default"
 };
 
-export default class DatePicker extends Component {
+class DatePicker extends Component {
 
     constructor(props) {
         super(props);
@@ -476,3 +477,6 @@ DatePicker.defaultProps = {
     hasTimezonePicker: false,
     hasTimePicker: false
 };
+
+export default DatePicker;
+export { timeZones };
