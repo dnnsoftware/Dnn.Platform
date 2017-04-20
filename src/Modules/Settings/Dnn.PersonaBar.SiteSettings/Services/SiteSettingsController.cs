@@ -2693,7 +2693,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                var language = LocaleController.Instance.GetLocale(pid, cultureCode);
+                var language = LocaleController.Instance.GetLocale(cultureCode);
                 if (language == null)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
