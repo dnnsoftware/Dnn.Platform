@@ -893,9 +893,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (!HasAdminPermissions(permissions))
             {
                 //add default permissions
-                var permissionController = new PermissionController();
-                var permissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", "VIEW");
-                permissionsList.AddRange(permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT"));
+                var permissionsList = PermissionController.GetPermissionsByTab();
                 foreach (var permissionInfo in permissionsList)
                 {
                     var editPermisison = (PermissionInfo)permissionInfo;
