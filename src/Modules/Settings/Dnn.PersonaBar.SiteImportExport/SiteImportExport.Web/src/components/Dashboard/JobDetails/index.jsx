@@ -64,7 +64,7 @@ class JobDetails extends Component {
             let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
             let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
             if (users) {
-                if (users.ProgressPercentage < 100) {
+                if (users.ProgressPercentage < 100 && users.TotalItems > 0) {
                     return <GridCell>
                         <Label
                             labelType="inline"

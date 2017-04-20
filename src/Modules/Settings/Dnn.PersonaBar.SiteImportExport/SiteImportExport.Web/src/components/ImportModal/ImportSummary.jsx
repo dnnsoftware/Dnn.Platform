@@ -138,7 +138,7 @@ class ImportSummary extends Component {
                                         label={Localization.get("ExportMode")}
                                     />
                                     <div className="import-summary-item">
-                                        {props.selectedPackage.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
+                                        {props.importSummary.ExportMode === 1 ? Localization.get("ExportModeDifferential") : Localization.get("ExportModeComplete")}
                                     </div>
                                 </GridCell>
                                 <GridCell>
