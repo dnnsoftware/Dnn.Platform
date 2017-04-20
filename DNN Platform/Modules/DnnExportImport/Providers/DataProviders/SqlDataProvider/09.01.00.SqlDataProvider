@@ -656,7 +656,7 @@ BEGIN
 		; WITH [tmpUsers] AS (
 		SELECT U.UserID
 			FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] UP ON U.UserID=UP.UserId
-			WHERE UP.PortalId = @PortalID
+			WHERE UP.PortalId = @PortalID AND U.IsSuperUser=0
 			AND UP.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 			AND (CASE
 			WHEN @FromDate IS NULL THEN 0
@@ -691,7 +691,7 @@ BEGIN
 		; WITH [tmpUsers] AS (
 			SELECT U.*, UP.IsDeleted IsDeletedPortal,{databaseOwner}[{objectQualifier}Export_UserName](U.CreatedByUserId) CreatedByUserName,{databaseOwner}[{objectQualifier}Export_UserName](U.LastModifiedByUserId) LastModifiedByUserName,  row_number() over (order by U.UserID) AS RowId
 				FROM {databaseOwner}[{objectQualifier}Users] U INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] UP ON U.UserID=UP.UserId
-				WHERE UP.PortalId = @PortalID
+				WHERE UP.PortalId = @PortalID AND U.IsSuperUser=0
 				AND UP.IsDeleted <= CASE @IncludeDeleted WHEN 0 THEN 0 ELSE 1 END
 				AND (CASE
 				WHEN @FromDate IS NULL THEN 0
