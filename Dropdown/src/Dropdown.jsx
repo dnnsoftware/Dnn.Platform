@@ -21,7 +21,7 @@ class Dropdown extends Component {
         this.uniqueId = Date.now() * Math.random();
         this.debouncedSearch = debounce(this.searchItems, 500);
     }
-    toggleDropdown() {
+    toggleDropdown(avoidFocusOnOpen) {
         const {props} = this;
         if (props.enabled) {
 
@@ -29,7 +29,9 @@ class Dropdown extends Component {
             if (!this.state.dropDownOpen) {
                 setTimeout(() => {
                     this.setState({});
-                    ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
+                    if(!avoidFocusOnOpen) {
+                        ReactDOM.findDOMNode(this.refs.dropdownSearch).focus();
+                    }
                 }, 250);
             } else {
                 this.setState({
@@ -71,6 +73,10 @@ class Dropdown extends Component {
             this.setState({
                 fixedHeight
             });
+        }
+
+        if(props.isDropDownOpen !== this.props.isDropDownOpen) {
+            this.setState({dropDownOpen: !props.isDropDownOpen}, () => this.toggleDropdown(true));
         }
     }
     componentDidMount() {
@@ -294,7 +300,8 @@ Dropdown.propTypes = {
     prependWith: PropTypes.string,
     labelIsMultiLine: PropTypes.bool,
     title: PropTypes.string,
-    onScrollUpdate: PropTypes.func
+    onScrollUpdate: PropTypes.func,
+    isDropDownOpen: PropTypes.bool
 };
 
 Dropdown.defaultProps = {
@@ -304,7 +311,8 @@ Dropdown.defaultProps = {
     size: "small",
     closeOnClick: true,
     enabled: true,
-    className: ""
+    className: "",
+    isDropDownOpen: false
 };
 
 export default Dropdown;
