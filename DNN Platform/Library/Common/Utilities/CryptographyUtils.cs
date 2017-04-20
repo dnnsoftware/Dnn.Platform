@@ -20,14 +20,9 @@
 #endregion
 #region Usings
 
-using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Services.Upgrade;
-using System.Collections.Generic;
+using System.Security.Cryptography;
+// ReSharper disable InconsistentNaming
+#pragma warning disable 169
 
 #endregion
 
@@ -44,24 +39,54 @@ namespace DotNetNuke.Common.Utilities
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    public class CryptographyUtils
+    public static class CryptographyUtils
     {
-        public static string SHA1 => "System.Security.Cryptography.SHA1";
+        private const string _SHA1 = "System.Security.Cryptography.SHA1";
 
-        public static string SHA1Cng => "System.Security.Cryptography.SHA1Cng";
+        private const string _SHA1Cng = "System.Security.Cryptography.SHA1Cng";
 
-        public static string SHA1CryptoServiceProvider => "System.Security.Cryptography.SHA1CryptoServiceProvider";
+        private const string _SHA1CryptoServiceProvider = "System.Security.Cryptography.SHA1CryptoServiceProvider";
 
-        public static string MD5 => "System.Security.Cryptography.MD5";
+        private const string _SHA256 = "System.Security.Cryptography.SHA256";
 
-        public static string MD5Cng => "System.Security.Cryptography.MD5Cng";
+        private const string _SHA256Cng = "System.Security.Cryptography.SHA256Cng";
 
-        public static string MD5CryptoServiceProvider => "System.Security.Cryptography.MD5CryptoServiceProvider";
+        private const string _SHA256CryptoServiceProvider = "System.Security.Cryptography.SHA256CryptoServiceProvider";
 
-        public static string SHA256 => "System.Security.Cryptography.SHA256";
+        private const string _SHA384 = "System.Security.Cryptography.SHA384";
 
-        public static string SHA256Cng => "System.Security.Cryptography.SHA256Cng";
+        private const string _SHA384Cng = "System.Security.Cryptography.SHA384Cng";
 
-        public static string SHA256CryptoServiceProvider => "System.Security.Cryptography.SHA256CryptoServiceProvider";
+        private const string _SHA384CryptoServiceProvider = "System.Security.Cryptography.SHA384CryptoServiceProvider";
+
+        private const string _SHA512 = "System.Security.Cryptography.SHA512";
+
+        private const string _SHA512Cng = "System.Security.Cryptography.SHA512Cng";
+
+        private const string _SHA512CryptoServiceProvider = "System.Security.Cryptography.SHA512CryptoServiceProvider";
+        
+        public static SHA1 CreateSHA1()
+        {
+            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA1CryptoServiceProvider : _SHA1Cng;
+            return SHA1.Create(algName);
+        }
+
+        public static SHA256 CreateSHA256()
+        {
+            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA256CryptoServiceProvider : _SHA256Cng;
+            return SHA256.Create(algName);
+        }
+
+        public static SHA384 CreateSHA384()
+        {
+            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA384CryptoServiceProvider : _SHA384Cng;
+            return SHA384.Create(algName);
+        }
+
+        public static SHA512 CreateSHA512()
+        {
+            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA512CryptoServiceProvider : _SHA512Cng;
+            return SHA512.Create(algName);
+        }
     }
 }

@@ -121,8 +121,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         private string GetHash(string data)
         {
-            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? CryptographyUtils.SHA256CryptoServiceProvider : CryptographyUtils.SHA256Cng;
-            using (var sha256 = SHA256.Create(algName))
+            using (var sha256 = CryptographyUtils.CreateSHA256())
             {
                 var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
                 return Convert.ToBase64String(hash);
