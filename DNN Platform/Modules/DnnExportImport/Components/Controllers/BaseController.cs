@@ -148,8 +148,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <returns></returns>
         public DateTime? GetLastJobTime(int portalId, JobType jobType)
         {
-            var controller = EntitiesController.Instance;
-            return controller.GetLastJobTime(portalId, jobType);
+            return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
         }
 
         protected static ImportExportSummary BuildJobSummary(int jobId)

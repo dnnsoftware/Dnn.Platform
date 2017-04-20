@@ -54,8 +54,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (CheckPoint.Stage == 0)
                 {
-                    var fromDate = (exportDto.FromDate?.DateTime).GetValueOrDefault(DateTime.MinValue);
-                    var toDate = exportDto.ToDate;
+                    var fromDate = (exportDto.FromDate?.DateTime).GetValueOrDefault(DateTime.MinValue).ToLocalTime();
+                    var toDate = exportDto.ToDate.ToLocalTime();
 
                     //export skin packages.
                     var skinPackageFiles = Directory.GetFiles(ExtensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();

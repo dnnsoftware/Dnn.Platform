@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -29,7 +30,9 @@ using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Engines;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
+using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -447,14 +450,16 @@ namespace Dnn.ExportImport.Components.Services
             var count = 0;
             var exportedModules = Repository.GetRelatedItems<ExportModule>(otherTab.Id).ToList();
             var exportedTabModules = Repository.GetRelatedItems<ExportTabModule>(otherTab.Id).ToList();
-            var localModules = isNew ? new List<ExportModule>()
-                : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MinDbTime, Constants.MaxDbTime).ToList();
+            var localExportModules = isNew ? new List<ExportModule>()
+                : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
 
             foreach (var other in exportedTabModules)
             {
-                var locals = localTabModules.Where(m => m.ModuleDefinition.FriendlyName == other.FriendlyName &&
-                                                        m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder).ToList();
+                var locals = localTabModules.Where(
+                    m => m.UniqueId == other.UniqueId ||
+                        (m.ModuleDefinition.FriendlyName == other.FriendlyName &&
+                        m.PaneName == other.PaneName && m.ModuleOrder == other.ModuleOrder)).ToList();
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
                 if (otherModule == null) continue; // must not happen
@@ -499,7 +504,8 @@ namespace Dnn.ExportImport.Components.Services
                         Header = other.Header,
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
-                        UniqueId = Guid.NewGuid(), //other.UniqueId,
+                        UniqueId = other.UniqueId,
+                        //UniqueId = Guid.NewGuid(),
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                         LocalizedVersionGuid = other.LocalizedVersionGuid,
@@ -560,9 +566,9 @@ namespace Dnn.ExportImport.Components.Services
 
                         try
                         {
-                            var localModule = localModules.FirstOrDefault(
+                            var localExpModule = localExportModules.FirstOrDefault(
                                 m => m.ModuleID == local.ModuleID && m.FriendlyName == local.ModuleDefinition.FriendlyName);
-                            if (localModule == null)
+                            if (localExpModule == null)
                             {
                                 local = new ModuleInfo
                                 {
@@ -591,7 +597,8 @@ namespace Dnn.ExportImport.Components.Services
                                     Header = other.Header,
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
-                                    UniqueId = Guid.NewGuid(), //other.UniqueId,
+                                    UniqueId = other.UniqueId,
+                                    //UniqueId = Guid.NewGuid(),
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
                                     LocalizedVersionGuid = other.LocalizedVersionGuid,
@@ -613,13 +620,13 @@ namespace Dnn.ExportImport.Components.Services
                             else
                             {
                                 // setting module properties
-                                localModule.AllTabs = otherModule.AllTabs;
-                                localModule.StartDate = otherModule.StartDate;
-                                localModule.EndDate = otherModule.EndDate;
-                                localModule.InheritViewPermissions = otherModule.InheritViewPermissions;
-                                localModule.IsDeleted = otherModule.IsDeleted;
-                                localModule.IsShareable = otherModule.IsShareable;
-                                localModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
+                                localExpModule.AllTabs = otherModule.AllTabs;
+                                localExpModule.StartDate = otherModule.StartDate;
+                                localExpModule.EndDate = otherModule.EndDate;
+                                localExpModule.InheritViewPermissions = otherModule.InheritViewPermissions;
+                                localExpModule.IsDeleted = otherModule.IsDeleted;
+                                localExpModule.IsShareable = otherModule.IsShareable;
+                                localExpModule.IsShareableViewOnly = otherModule.IsShareableViewOnly;
 
                                 local.AllTabs = otherModule.AllTabs;
                                 local.StartDate = otherModule.StartDate ?? DateTime.MinValue;
@@ -654,11 +661,13 @@ namespace Dnn.ExportImport.Components.Services
                                 local.WebSliceTitle = other.WebSliceTitle;
                                 local.WebSliceExpiryDate = other.WebSliceExpiryDate ?? DateTime.MaxValue;
                                 local.WebSliceTTL = other.WebSliceTTL ?? -1;
-                                //local.UniqueId = other.UniqueId;
                                 local.VersionGuid = other.VersionGuid;
                                 local.DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty;
                                 local.LocalizedVersionGuid = other.LocalizedVersionGuid;
                                 local.CultureCode = other.CultureCode;
+
+                                // this coould cause problem in some cases
+                                //if (local.UniqueId != other.UniqueId) local.UniqueId = other.UniqueId;
 
                                 // this is not saved upon updating the module
                                 EntitiesController.Instance.SetTabModuleDeleted(local.TabModuleID, other.IsDeleted);
@@ -666,7 +675,7 @@ namespace Dnn.ExportImport.Components.Services
                                 // updates both module and tab module db records
                                 _moduleController.UpdateModule(local);
                                 other.LocalId = local.TabModuleID;
-                                otherModule.LocalId = localModule.ModuleID;
+                                otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
                             }
 
@@ -1454,5 +1463,25 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalTabModuleSettings { get; set; }
         }
         #endregion
+
+        public static void ResetContentsFlag(ExportImportRepository repository)
+        {
+            // reset restored flag; if it same extracted db is reused, then content will be restored
+            var toSkip = 0;
+            const int batchSize = 100;
+            var totalCount = repository.GetCount<ExportModuleContent>();
+            while (totalCount > 0)
+            {
+                var items = repository.GetAllItems<ExportModuleContent>(skip: toSkip, max: batchSize)
+                    .Where(item => item.IsRestored).ToList();
+                if (items.Count > 0)
+                {
+                    items.ForEach(item => item.IsRestored = false);
+                    repository.UpdateItems(items);
+                }
+                toSkip += batchSize;
+                totalCount -= batchSize;
+            }
+        }
     }
 }

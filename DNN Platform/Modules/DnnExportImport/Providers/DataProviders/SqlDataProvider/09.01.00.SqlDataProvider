@@ -1894,11 +1894,11 @@ AS
 GO
 
 -- Pages / Tabs
-IF object_id(N'{databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]', 'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+IF object_id(N'{databaseOwner}[{objectQualifier}Export_Tabs]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllPortalTabs]
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_Tabs]
     @PortalID        int,
 	@IncludeDeleted  bit,
     @IncludeSystem   bit,

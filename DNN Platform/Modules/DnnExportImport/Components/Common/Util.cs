@@ -192,7 +192,7 @@ namespace Dnn.ExportImport.Components.Common
                 dateTime = new DateTime(
                     dateTime.Year, dateTime.Month, dateTime.Day,
                     dateTime.Hour, dateTime.Minute, dateTime.Second,
-                    DateTimeKind.Utc);
+                    dateTime.Millisecond, DateTimeKind.Utc);
                 return userInfo.LocalTime(dateTime);
             }
             return dateTime;
@@ -216,11 +216,8 @@ namespace Dnn.ExportImport.Components.Common
             if (dateTime.Value.Kind != DateTimeKind.Utc) return dateTime;
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
-            var localDateTime = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
-            return new DateTime(
-                    localDateTime.Year, localDateTime.Month, localDateTime.Day,
-                    localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
-                    DateTimeKind.Local);
+            var d = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Local);
         }
 
         /// <summary>
@@ -234,11 +231,8 @@ namespace Dnn.ExportImport.Components.Common
             if (dateTime.Value.Kind == DateTimeKind.Utc) return dateTime;
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
-            var localDateTime = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);
-            return new DateTime(
-                localDateTime.Year, localDateTime.Month, localDateTime.Day,
-                localDateTime.Hour, localDateTime.Minute, localDateTime.Second,
-                DateTimeKind.Utc);
+            var d = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);
+            return new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
         }
 
         public static string GetDateTimeString(DateTime? dateTime)
