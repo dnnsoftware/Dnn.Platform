@@ -47,6 +47,19 @@
                         </file>
                     </files>
                 </component>
+                <component type="File">
+                    <files>
+                        <basePath>Licenses</basePath>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.txt</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.txt</sourceFileName>
+                        </file>
+                        <file>
+                            <name>Admin Persona Bar Referenced Licences.zip</name>
+                            <sourceFileName>Licenses/Admin Persona Bar Referenced Licences.zip</sourceFileName>
+                        </file>
+                    </files>
+                </component>
                 <component type="Config">
                     <config>
                         <configFile>web.config</configFile>

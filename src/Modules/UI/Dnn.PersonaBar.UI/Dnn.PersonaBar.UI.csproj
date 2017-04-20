@@ -239,6 +239,7 @@
     <None Include="admin\personaBar\css\Roboto-Regular.ttf" />
     <None Include="app.config" />
     <None Include="Dnn.PersonaBar.UI.dnn" />
+    <None Include="Licenses\Admin Persona Bar Referenced Licences.zip" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>
@@ -290,6 +291,7 @@
     <Content Include="Images\icon-personabarapp-32px.png" />
     <Content Include="01.03.00.txt" />
     <Content Include="license.txt" />
+    <Content Include="Licenses\Admin Persona Bar Referenced Licences.txt" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
