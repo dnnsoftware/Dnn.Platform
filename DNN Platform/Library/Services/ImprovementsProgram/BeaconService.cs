@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using DotNetNuke.Application;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -120,7 +121,8 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         private string GetHash(string data)
         {
-            using (var sha256 = new SHA256CryptoServiceProvider())
+            var algName = CryptoConfig.AllowOnlyFipsAlgorithms ? CryptographyUtils.SHA256CryptoServiceProvider : CryptographyUtils.SHA256Cng;
+            using (var sha256 = SHA256.Create(algName))
             {
                 var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
                 return Convert.ToBase64String(hash);
