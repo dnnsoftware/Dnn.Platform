@@ -1674,21 +1674,24 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 	@ToDate  datetime,
 	@FromDate datetime=NULL
 AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
 	SELECT
 		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}RoleGroups AS rg
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS ro ON rg.RoleGroupID = ro.RoleGroupID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rg.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rg.LastModifiedByUserID = u2.UserID
 	WHERE
 		rg.PortalID = @PortalID
-	AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
-		ELSE rg.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
-			ELSE rg.LastModifiedOnDate END)<= @ToDate
+	AND (
+			( (COALESCE(rg.LastModifiedOnDate, rg.CreatedOnDate, @Now) <= @ToDate) AND ((@FromDate IS NULL OR ISNULL(rg.LastModifiedOnDate, rg.CreatedOnDate) >= @FromDate)))
+		OR
+			( (COALESCE(ro.LastModifiedOnDate, ro.CreatedOnDate, @Now) <= @ToDate) AND ((@FromDate IS NULL OR ISNULL(ro.LastModifiedOnDate, ro.CreatedOnDate) >= @FromDate)))
+		)
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
@@ -1979,7 +1982,7 @@ BEGIN
 	AND 
 		(@IncludeDeleted = 1 OR t.IsDeleted = 0)
 	AND (
-			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR
 			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
 		)
