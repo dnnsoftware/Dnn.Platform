@@ -1,4 +1,39 @@
 ﻿-- DNN-9447: Import/Export feature
+-- ExportImportSettings
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportSettings]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportSettings](
+		[SettingName] [nvarchar](50) NOT NULL,
+		[SettingValue] [nvarchar](MAX) NOT NULL,
+		[SettingIsSecure] [bit] NOT NULL DEFAULT 0,
+		[CreatedByUserID] [int] NULL,
+		[CreatedOnDate] [datetime] NULL,
+		[LastModifiedByUserID] [int] NULL,
+		[LastModifiedOnDate] [datetime] NULL,
+		CONSTRAINT [PK_{objectQualifier}ExportImportSettings] PRIMARY KEY CLUSTERED([SettingName] ASC)
+	)
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'PortalSettingExportList')
+	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+	VALUES (N'PortalSettingExportList', N'AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping', 
+	0, -1, GETDATE(), -1, GETDATE())
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJobKey')
+	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+	VALUES (N'MaxSecondsToRunJobKey', 28800, 0, -1, GETDATE(), -1, GETDATE())
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+AS
+BEGIN
+	SELECT * FROM {databaseOwner}[{objectQualifier}ExportImportSettings]
+END
+GO
+
+--Scheduler
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])

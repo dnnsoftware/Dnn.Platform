@@ -26,6 +26,7 @@ using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using System;
 using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Dto.Portal;
 using DotNetNuke.Services.Localization;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
@@ -52,22 +53,33 @@ namespace Dnn.ExportImport.Components.Services
             List<ExportPortalLanguage> portalLanguages = null;
             if (CheckPoint.Stage == 0)
             {
-                var portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance()
-                    .GetPortalSettings(exportJob.PortalId, toDate, fromDate));
+                var portalSettings = new List<ExportPortalSetting>();
+                var settingToMigrate =
+                    SettingsController.Instance.GetSetting(Constants.PortalSettingExportKey)?.SettingValue?.Split(',');
 
-                //Update the total items count in the check points. This should be updated only once.
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? portalSettings.Count : CheckPoint.TotalItems;
-                if (CheckPoint.TotalItems == portalSettings.Count)
+                if (settingToMigrate != null)
                 {
-                    portalLanguages =
-                        CBO.FillCollection<ExportPortalLanguage>(
-                            DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
-                    CheckPoint.TotalItems += portalLanguages.Count;
-                }
-                CheckPointStageCallback(this);
+                    portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(exportJob.PortalId, toDate, fromDate));
 
-                Repository.CreateItems(portalSettings, null);
+                    //Migrate only allowed portal settings.
+                    portalSettings =
+                        portalSettings.Where(x => settingToMigrate.ToList().Contains(x.SettingName)).ToList();
+
+                    //Update the total items count in the check points. This should be updated only once.
+                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? portalSettings.Count : CheckPoint.TotalItems;
+                    if (CheckPoint.TotalItems == portalSettings.Count)
+                    {
+                        portalLanguages =
+                            CBO.FillCollection<ExportPortalLanguage>(
+                                DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
+                        CheckPoint.TotalItems += portalLanguages.Count;
+                    }
+                    CheckPointStageCallback(this);
+
+                    Repository.CreateItems(portalSettings, null);
+                }
                 Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
+
                 CheckPoint.Progress = 50;
                 CheckPoint.ProcessedItems = portalSettings.Count;
                 CheckPoint.Stage++;

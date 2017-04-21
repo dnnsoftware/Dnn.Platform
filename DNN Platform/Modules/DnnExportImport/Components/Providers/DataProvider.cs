@@ -101,6 +101,11 @@ namespace Dnn.ExportImport.Components.Providers
             _dataProvider.ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
         }
 
+        public IDataReader GetExportImportSettings()
+        {
+            return _dataProvider.ExecuteReader("ExportImport_Settings");
+        }
+
         public IDataReader GetFirstActiveJob()
         {
             return _dataProvider.ExecuteReader("ExportImportJobs_FirstActive");

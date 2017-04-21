@@ -45,7 +45,8 @@ namespace Dnn.ExportImport.Components.Common
 
         internal const string JobRunDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
         internal const string LastJobStartTimeKey = "EXPORT_LastJobStartTime";
-        internal const string MaxTimeToRunJobKey = "EXPORT_MaxTimeToRunJob";
+        internal const string MaxSecondsToRunJobKey = "MaxSecondsToRunJobKey";
+        internal const string PortalSettingExportKey = "PortalSettingExportList";
         internal const string TemplatesExtension = "template";
         internal const int DefaultPageSize = 1000;
 
