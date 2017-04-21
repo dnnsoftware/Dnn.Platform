@@ -1,5 +1,8 @@
-﻿namespace Dnn.ExportImport.Components.Entities
+﻿using System;
+
+namespace Dnn.ExportImport.Components.Entities
 {
+    [Serializable]
     public class ExportImportSetting
     {
         public string SettingName { get; set; }
