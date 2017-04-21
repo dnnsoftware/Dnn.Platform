@@ -58,7 +58,9 @@ export class PagePickerDesktop extends Component {
     __setMasterRoot = () =>{
       this.RootTab = Object.keys(STATE)
       .map(key=>STATE[key])
-      .filter(tab => tab.TabId===-1&&tab.ParentTabId==0)[0]
+      .filter(tab => tab.TabId==-1&&tab.ParentTabId==0)[0]
+
+      console.log(STATE)
 
       const children = Object.keys(STATE)
       .map(key => STATE[key])
@@ -442,6 +444,8 @@ export class PagePickerDesktop extends Component {
     render_ChildrenSelectedIndicator = (tab) => {
       const TabIdName = `${tab.TabId}-${tab.Name}`
       const tabState = STATE[TabIdName]
+      console.log(tab)
+      console.log(TabIdName)
       const condition =  `ChildrenSelected` in tabState && tabState.ChildrenSelected
       const template =  ( condition ? <span>*</span> : <span></span> )
       const indicator = ( () => {

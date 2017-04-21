@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {PagePickerDesktop} from './_new-page-picker'
 import {PagePickerDataManager} from './helpers'
 import {IconSelector} from './icons'
-import {tabs, tabs2} from './mocks'
+// import {tabs, tabs2} from './mocks'
 
 import {global} from './_global'
 const styles = global.styles
@@ -20,15 +20,37 @@ export class PagePickerInteractor extends Component {
       super()
       this.cached_ChildTabs;
       this.icon = IconSelector("arrow_bullet");
-      this.PortalTabsParameters = this.props.PortalTabsParameters
+      this.PortalTabParamters = props.PortalTabParamters || null
+      this.url = `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
+      this.state={tabs:{}}
     }
+
     componentWillMount(){
-      this.flatTabs = ppdm.flatten(tabs)
-      this.setState({tabs:tabs})
+      this.setState({tabs:{}})
+      this.init()
     }
 
     init(){
-      console.log(this.PortalTabsParameters)
+      this._requestInitialTabs()
+      .then(tabdata => this.PortalTabs = tabdata)
+      .then( () => this.setState({tabs:this.PortalTabs}))
+      .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
+      .then( () => this.setState({tabs:this.PortalTabs}) )
+
+      .catch(err => this.PortalTabs = this.tabs)
+    }
+
+    _requestInitialTabs = () => {
+      return new Promise((resolve, reject) => {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload = () => {
+          const response = JSON.parse(xhttp.responseText).Results
+          resolve(response)
+        }
+        xhttp.open("GET", this.url, true);
+        xhttp.onerror = () => reject(xhttp)
+        xhttp.send();
+      })
     }
 
     _getRootTab(selection) {
@@ -59,7 +81,6 @@ export class PagePickerInteractor extends Component {
 
       }
       const exit = () => console.log('log')
-
       loop()
       return
     }
@@ -67,7 +88,6 @@ export class PagePickerInteractor extends Component {
     _removeDecendants(tabs){
 
     }
-
 
     _isAnyAllSelected(tabs){
       return tabs.filter(tab=>tab.CheckedState==2).length ? true : false
@@ -96,15 +116,18 @@ export class PagePickerInteractor extends Component {
       this._isAnyAllSelected(tabs) ? Left() : Right()
     }
 
+    getChildTabs = () => {
+      console.log('Get more children')
+    }
 
     showChildTabs = () => {
-      tabs.IsOpen=!tabs.IsOpen
-      this.setState({tabs:tabs})
+      this.state.tabs.IsOpen=!this.state.tabs.IsOpen
+      this.setState({tabs:this.state.tabs})
     }
 
     setCheckedState = () => {
-      tabs.CheckedState = tabs.CheckedState ? 0 : 2
-      this.setState({tabs:tabs})
+      this.state.tabs.CheckedState = this.state.tabs.CheckedState ? 0 : 2
+      this.setState({tabs:this.state.tabs})
     }
 
     render_icon = (direction) => {
@@ -157,9 +180,18 @@ export class PagePickerInteractor extends Component {
     render_PagePicker = () => {
       const pagepicker = ( () => {
         const condition = (this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length)
+        const picker = (
+          <PagePickerDesktop
+              icon_type="arrow_bullet"
+              flatTabs={this.flatTabs}
+              tabs={this.state.tabs.ChildTabs}
+              export={this.export}
+              getChildTabs={this.getChildTabs}
+          />)
+
         return (
           <div>
-              { condition ? <PagePickerDesktop icon_type="arrow_bullet" flatTabs={this.flatTabs} tabs={this.state.tabs.ChildTabs} export={this.export} /> : null}
+              { condition ? <picker/> : null}
           </div>
         )
 
@@ -182,7 +214,7 @@ export class PagePickerInteractor extends Component {
             <li style={merge(textLeft, ULPadding)}>
               {bullet}
               {checkbox}
-              <span style={merge(spanPadLeft)}> {this.state.tabs.Name}</span>
+              <span style={merge(spanPadLeft)}> {this.state.tabs.Name} </span>
               {pagepicker}
             </li>
           </ul>
