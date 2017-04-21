@@ -222,7 +222,7 @@ class JobDetails extends Component {
                                     labelType="inline"
                                     label={Localization.get("ModulePackages")}
                                 />
-                                <div className="import-summary-item">{this.getSummaryItem("Extensions")}</div>
+                                <div className="import-summary-item">{this.getSummaryItem("Packages")}</div>
                             </GridCell>
                             <GridCell>
                                 <Label
