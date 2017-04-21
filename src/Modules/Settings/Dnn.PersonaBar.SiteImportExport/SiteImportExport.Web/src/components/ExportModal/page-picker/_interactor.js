@@ -21,7 +21,9 @@ export class PagePickerInteractor extends Component {
       this.cached_ChildTabs;
       this.icon = IconSelector("arrow_bullet");
       this.PortalTabParamters = props.PortalTabParamters || null
-      this.url = `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
+      this.InitialTabsURL =     `http://auto.engage458.com/API/PersonaBar/Tabs/GetPortalTabs?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
+      this.DescendantTabsURL =  `http://auto.engage458.com/API/PersonaBar/Tabs/GetTabsDescendants?portalId=0&cultureCode=&isMultiLanguage=false&excludeAdminTabs=true&disabledNotSelectable=false&roles=&sortOrder=0`
+
       this.state={tabs:{}}
     }
 
@@ -32,22 +34,37 @@ export class PagePickerInteractor extends Component {
 
     init(){
       this._requestInitialTabs()
-      .then(tabdata => this.PortalTabs = tabdata)
-      .then( () => this.setState({tabs:this.PortalTabs}))
-      .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
-      .then( () => this.setState({tabs:this.PortalTabs}) )
 
-      .catch(err => this.PortalTabs = this.tabs)
     }
 
     _requestInitialTabs = () => {
+       this._xhr(this.InitialTabsURL)
+       .then(tabdata => this.PortalTabs = tabdata)
+       .then( () => this.setState({tabs:this.PortalTabs}))
+       .then( () => this.flatTabs = ppdm.flatten(this.PortalTabs) )
+       .then( () => this.setState({tabs:this.PortalTabs}) )
+       .catch(err => this.PortalTabs = this.tabs)
+    }
+
+    _requestDescendantTabs = (ParentTabId) => {
+
+        const mapToFlatTabs = (tabs) => tabs.forEach(tab => this.flatTabs[`${tab.TabId}-${tab.Name}`]=tab)
+        
+        const params = `&parentId=${ParentTabId}`
+        this._xhr(this.DescendantTabsURL, params)
+        .then(mapToFlatTabs)
+        .then(console.log(this.flatTabs))
+
+    }
+
+    _xhr(url, params='') {
       return new Promise((resolve, reject) => {
         var xhttp = new XMLHttpRequest();
         xhttp.onload = () => {
           const response = JSON.parse(xhttp.responseText).Results
           resolve(response)
         }
-        xhttp.open("GET", this.url, true);
+        xhttp.open("GET", url+params, true);
         xhttp.onerror = () => reject(xhttp)
         xhttp.send();
       })
@@ -116,8 +133,8 @@ export class PagePickerInteractor extends Component {
       this._isAnyAllSelected(tabs) ? Left() : Right()
     }
 
-    getChildTabs = () => {
-      console.log('Get more children')
+    getChildTabs = (ParentTabId) => {
+      return this._requestDescendantTabs(ParentTabId)
     }
 
     showChildTabs = () => {
@@ -180,7 +197,7 @@ export class PagePickerInteractor extends Component {
     render_PagePicker = () => {
       const pagepicker = ( () => {
         const condition = (this.state.tabs.IsOpen && this.state.tabs.ChildTabs.length)
-        const picker = (
+        const picker =  (
           <PagePickerDesktop
               icon_type="arrow_bullet"
               flatTabs={this.flatTabs}
@@ -191,7 +208,7 @@ export class PagePickerInteractor extends Component {
 
         return (
           <div>
-              { condition ? <picker/> : null}
+              { condition ? picker : null}
           </div>
         )
 

@@ -31,6 +31,7 @@ export class PagePickerDesktop extends Component {
       this.flatTabs = props.flatTabs
       this.tabs = props.tabs
       this.export = props.export
+      this.getChildTabs = props.getChildTabs
 
       this.refresh = this.props.refresh || this.forceUpdate
     }
@@ -355,11 +356,17 @@ export class PagePickerDesktop extends Component {
     }
 
     expandParentTab = (tab) => {
-        tab.IsOpen = !tab.IsOpen
-        const Tab = Object.assign({}, tab)
-        const TabIdName = `${tab.TabId}-${tab.Name}`
-        STATE[TabIdName] = Tab
-        this._update()
+        const left = () => {
+          tab.IsOpen = !tab.IsOpen
+          const Tab = Object.assign({}, tab)
+          const TabIdName = `${tab.TabId}-${tab.Name}`
+          STATE[TabIdName] = Tab
+          this._update()
+        }
+
+        const right = () => this.getChildTabs(tab.TabId)
+        
+        tab.IsOpen && tab.ChildTabs.Length ? left() : right()
     }
 
     showChildTabs = (tab) =>{
@@ -386,7 +393,6 @@ export class PagePickerDesktop extends Component {
 
       const Left = () => isParent ? this._setParentCheckedState(tab) : this._setChildCheckedState(tab)
       const Right = () =>  this._openTabs(tab)
-
       isOpen || noChildren && notTopLevel  ? Left() : Right()
     }
 
