@@ -18,9 +18,9 @@ IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettin
 	VALUES (N'PortalSettingExportList', N'AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping', 
 	0, -1, GETDATE(), -1, GETDATE())
 
-IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJobKey')
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJob')
 	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
-	VALUES (N'MaxSecondsToRunJobKey', 28800, 0, -1, GETDATE(), -1, GETDATE())
+	VALUES (N'MaxSecondsToRunJob', 28800, 0, -1, GETDATE(), -1, GETDATE())
 
 IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS NOT NULL
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]

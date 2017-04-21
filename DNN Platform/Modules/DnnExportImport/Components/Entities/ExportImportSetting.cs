@@ -5,6 +5,5 @@
         public string SettingName { get; set; }
         public string SettingValue { get; set; }
         public bool SettingIsSecure { get; set; }
-        public int CreatedByUserId { get; set; }
     }
 }

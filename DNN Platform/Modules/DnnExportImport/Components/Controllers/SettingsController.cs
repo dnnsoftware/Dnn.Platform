@@ -7,7 +7,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Common.Utilities;
 using System.Linq;
 using System.Web.Caching;
-using DotNetNuke.Services.Cache;
 
 namespace Dnn.ExportImport.Components.Controllers
 {
@@ -22,8 +21,8 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public IEnumerable<ExportImportSetting> GetAllSettings()
         {
-            return CBO.GetCachedObject<List<ExportImportSetting>>(new CacheItemArgs(CacheKey, CacheDuration, CacheItemPriority.NotRemovable),
-                                                                c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList()).AsQueryable();
+            return CBO.GetCachedObject<List<ExportImportSetting>>(new CacheItemArgs(CacheKey, CacheDuration, CacheItemPriority.Normal),
+                                                                c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList());
         }
 
         public ExportImportSetting GetSetting(string settingName)
