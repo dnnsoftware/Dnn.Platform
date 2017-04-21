@@ -7,5 +7,6 @@ namespace Dnn.ExportImport.Components.Interfaces
     {
         IEnumerable<ExportImportSetting> GetAllSettings();
         ExportImportSetting GetSetting(string settingName);
+        void AddSetting(ExportImportSetting exportImportSetting);
     }
 }

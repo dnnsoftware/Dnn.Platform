@@ -29,5 +29,11 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
         }
+
+        public void AddSetting(ExportImportSetting exportImportSetting)
+        {
+            DataProvider.Instance().AddExportImportSetting(exportImportSetting);
+            DataCache.RemoveCache(CacheKey);
+        }
     }
 }

@@ -11,6 +11,10 @@ IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS
     DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddSetting]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+GO
+
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportSettings]', N'U') IS NOT NULL
 	DROP TABLE {databaseOwner}[{objectQualifier}ExportImportSettings]
 GO

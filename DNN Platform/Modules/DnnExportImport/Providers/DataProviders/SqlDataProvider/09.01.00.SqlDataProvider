@@ -33,6 +33,30 @@ BEGIN
 END
 GO
 
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddSetting]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+    @SettingName        [nvarchar](50),
+    @SettingValue        [nvarchar](MAX),
+    @SettingIsSecure    [bit] = 0,
+    @CreatedByUserID    [int]
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = @SettingName)
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+            VALUES (@SettingName, @SettingValue, @SettingIsSecure, @CreatedByUserID, GETDATE(), @CreatedByUserID, GETDATE())
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}ExportImportSettings] SET [SettingValue]=@SettingValue,[LastModifiedByUserID]=@CreatedByUserID,[LastModifiedOnDate]=GETDATE() WHERE [SettingName] = @SettingName
+    END
+END
+GO
+
+
 --Scheduler
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT')

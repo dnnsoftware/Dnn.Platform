@@ -105,6 +105,12 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return _dataProvider.ExecuteReader("ExportImport_Settings");
         }
+        public void AddExportImportSetting(ExportImportSetting exportImportSetting)
+        {
+            _dataProvider.ExecuteNonQuery("ExportImport_AddSetting", exportImportSetting.SettingName,
+                exportImportSetting.SettingValue, exportImportSetting.SettingIsSecure,
+                exportImportSetting.CreatedByUserId);
+        }
 
         public IDataReader GetFirstActiveJob()
         {
