@@ -29,7 +29,6 @@ using DotNetNuke.Common.Utilities;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Data.PetaPoco;
-using Newtonsoft.Json;
 using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
@@ -48,179 +47,141 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (CheckCancelled(exportJob)) return;
+            var fromDate = exportDto.FromDate?.DateTime;
+            var toDate = exportDto.ToDate;
 
-            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
-            var toDate = exportDto.ToDate.ToLocalTime();
-            var stage = GetCurrentStage();
-            var includeProfile = exportDto.IncludeProperfileProperties;
-            //All processes already complete.
-            if (stage >= 2)
+            var portalId = exportJob.PortalId;
+            var pageIndex = 0;
+            const int pageSize = 500;
+            var totalUsersExported = 0;
+            var totalUserRolesExported = 0;
+            var totalPortalsExported = 0;
+            var totalProfilesExported = 0;
+            var totalAuthenticationExported = 0;
+            var totalAspnetUserExported = 0;
+            var totalAspnetMembershipExported = 0;
+            var totalUsers = DataProvider.Instance().GetUsersCount(portalId, exportDto.IncludeDeletions, toDate, fromDate);
+            if (totalUsers == 0) return;
+            var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
+
+            //Skip the export if all the users has been processed already.
+            if (CheckPoint.Stage >= totalPages)
                 return;
-            if (stage == 0)
+
+            //Check if there is any pending stage or partially processed data.
+            if (CheckPoint.Stage > 0)
             {
-                var portalId = exportJob.PortalId;
-                var pageIndex = 0;
-                const int pageSize = 500;
-                var totalUsersExported = 0;
-                var totalUserRolesExported = 0;
-                var totalPortalsExported = 0;
-                var totalProfilesExported = 0;
-                var totalAuthenticationExported = 0;
-                var totalAspnetUserExported = 0;
-                var totalAspnetMembershipExported = 0;
-
-                var totalUsers = DataProvider.Instance()
-                    .GetUsersCount(portalId, exportDto.IncludeDeletions, toDate, fromDate);
-                if (totalUsers == 0) return;
-                var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
-
-
-
-                //Check if there is any pending stage or partially processed data.
-                if (CheckPoint.Stage > 0)
+                pageIndex = CheckPoint.Stage;
+            }
+            //Update the total items count in the check points. This should be updated only once.
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
+            CheckPoint.ProcessedItems = CheckPoint.Stage * pageSize;
+            if (CheckPointStageCallback(this)) return;
+            var includeProfile = exportDto.IncludeProperfileProperties;
+            try
+            {
+                while (pageIndex < totalPages)
                 {
-                    pageIndex = CheckPoint.Stage;
-                }
-                //Update the total items count in the check points. This should be updated only once.
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalUsers : CheckPoint.TotalItems;
-                if (CheckPointStageCallback(this)) return;
-                try
-                {
-
-                    while (pageIndex < totalPages)
+                    if (CheckCancelled(exportJob)) return;
+                    var exportUsersList = new List<ExportUser>();
+                    var exportAspnetUserList = new List<ExportAspnetUser>();
+                    var exportAspnetMembershipList = new List<ExportAspnetMembership>();
+                    var exportUserRoleList = new List<ExportUserRole>();
+                    var exportUserPortalList = new List<ExportUserPortal>();
+                    var exportUserAuthenticationList = new List<ExportUserAuthentication>();
+                    var exportUserProfileList = new List<ExportUserProfile>();
+                    try
                     {
-                        if (CheckCancelled(exportJob)) return;
-                        var exportUsersList = new List<ExportUser>();
-                        var exportAspnetUserList = new List<ExportAspnetUser>();
-                        var exportAspnetMembershipList = new List<ExportAspnetMembership>();
-                        var exportUserRoleList = new List<ExportUserRole>();
-                        var exportUserPortalList = new List<ExportUserPortal>();
-                        var exportUserAuthenticationList = new List<ExportUserAuthentication>();
-                        var exportUserProfileList = new List<ExportUserProfile>();
-                        try
+                        using (var reader = DataProvider.Instance()
+                            .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate, fromDate,
+                                Util.ConvertToDbUtcTime(toDate) ?? Constants.MaxDbTime,
+                                Util.ConvertToDbUtcTime(fromDate)))
                         {
-                            using (var reader = DataProvider.Instance()
-                                .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate, fromDate,
-                                    Util.ConvertToDbUtcTime(toDate) ?? Constants.MaxDbTime,
-                                    Util.ConvertToDbUtcTime(fromDate)))
-                            {
-                                CBO.FillCollection(reader, exportUsersList, false);
-                                reader.NextResult();
+                            CBO.FillCollection(reader, exportUsersList, false);
+                            reader.NextResult();
 
-                                CBO.FillCollection(reader, exportUserAuthenticationList, false);
-                                reader.NextResult();
+                            CBO.FillCollection(reader, exportUserAuthenticationList, false);
+                            reader.NextResult();
 
-                                CBO.FillCollection(reader, exportUserRoleList, false);
-                                reader.NextResult();
+                            CBO.FillCollection(reader, exportUserRoleList, false);
+                            reader.NextResult();
 
-                                if (includeProfile)
-                                {
-                                    CBO.FillCollection(reader, exportUserProfileList, false);
-                                }
-                                reader.NextResult();
-
-                                CBO.FillCollection(reader, exportUserPortalList, false);
-                                reader.NextResult();
-
-                                CBO.FillCollection(reader, exportAspnetUserList, false);
-                                reader.NextResult();
-
-                                CBO.FillCollection(reader, exportAspnetMembershipList, true);
-                            }
-
-                            Repository.CreateItems(exportUsersList, null);
-                            totalUsersExported += exportUsersList.Count;
-
-                            exportUserAuthenticationList.ForEach(
-                                x =>
-                                {
-                                    x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
-                                });
-                            Repository.CreateItems(exportUserAuthenticationList, null);
-                            totalAuthenticationExported += exportUserAuthenticationList.Count;
-
-                            exportUserRoleList.ForEach(
-                                x =>
-                                {
-                                    x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
-                                });
-                            Repository.CreateItems(exportUserRoleList, null);
-                            totalUserRolesExported += exportUserRoleList.Count;
                             if (includeProfile)
                             {
-                                exportUserProfileList.ForEach(
-                                    x =>
-                                    {
-                                        x.ReferenceId =
-                                            exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
-                                    });
-                                Repository.CreateItems(exportUserProfileList, null);
-                                totalProfilesExported += exportUserProfileList.Count;
+                                CBO.FillCollection(reader, exportUserProfileList, false);
                             }
-                            exportUserPortalList.ForEach(
+                            reader.NextResult();
+
+                            CBO.FillCollection(reader, exportUserPortalList, false);
+                            reader.NextResult();
+
+                            CBO.FillCollection(reader, exportAspnetUserList, false);
+                            reader.NextResult();
+
+                            CBO.FillCollection(reader, exportAspnetMembershipList, true);
+                        }
+
+                        Repository.CreateItems(exportUsersList, null);
+                        totalUsersExported += exportUsersList.Count;
+
+                        exportUserAuthenticationList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
+                            });
+                        Repository.CreateItems(exportUserAuthenticationList, null);
+                        totalAuthenticationExported += exportUserAuthenticationList.Count;
+
+                        exportUserRoleList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
+                            });
+                        Repository.CreateItems(exportUserRoleList, null);
+                        totalUserRolesExported += exportUserRoleList.Count;
+                        if (includeProfile)
+                        {
+                            exportUserProfileList.ForEach(
                                 x =>
                                 {
                                     x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
                                 });
-                            Repository.CreateItems(exportUserPortalList, null);
-                            totalPortalsExported += exportUserPortalList.Count;
-
-                            exportAspnetUserList.ForEach(
-                                x =>
-                                {
-                                    x.ReferenceId =
-                                        exportUsersList.FirstOrDefault(user => user.Username == x.UserName)?.Id;
-                                });
-                            Repository.CreateItems(exportAspnetUserList, null);
-                            totalAspnetUserExported += exportAspnetUserList.Count;
-
-                            exportAspnetMembershipList.ForEach(
-                                x =>
-                                {
-                                    x.ReferenceId =
-                                        exportAspnetUserList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
-                                });
-                            Repository.CreateItems(exportAspnetMembershipList, null);
-                            totalAspnetMembershipExported += exportAspnetMembershipList.Count;
-
-                            CheckPoint.ProcessedItems += exportUsersList.Count;
+                            Repository.CreateItems(exportUserProfileList, null);
+                            totalProfilesExported += exportUserProfileList.Count;
                         }
-                        catch (Exception ex)
-                        {
-                            Result.AddLogEntry(
-                                $"Exporting Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception",
-                                ex.Message, ReportLevel.Error);
-                        }
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 95.0 / totalUsers;
-                        CheckPoint.Stage++;
-                        if (CheckPointStageCallback(this)) return;
+                        exportUserPortalList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportUsersList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
+                            });
+                        Repository.CreateItems(exportUserPortalList, null);
+                        totalPortalsExported += exportUserPortalList.Count;
 
-                        pageIndex++;
+                        exportAspnetUserList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportUsersList.FirstOrDefault(user => user.Username == x.UserName)?.Id;
+                            });
+                        Repository.CreateItems(exportAspnetUserList, null);
+                        totalAspnetUserExported += exportAspnetUserList.Count;
+
+                        exportAspnetMembershipList.ForEach(
+                            x =>
+                            {
+                                x.ReferenceId = exportAspnetUserList.FirstOrDefault(user => user.UserId == x.UserId)?.Id;
+                            });
+                        Repository.CreateItems(exportAspnetMembershipList, null);
+                        totalAspnetMembershipExported += exportAspnetMembershipList.Count;
+
+                        CheckPoint.ProcessedItems += exportUsersList.Count;
                     }
-                    CheckPoint.StageData = JsonConvert.SerializeObject(new { stage = 1 });
-                    stage = 1;
-                    CheckPoint.Progress = 95;
-                    if (CheckPointStageCallback(this)) return;
-                }
-                finally
-                {
-                    CheckPointStageCallback(this);
-                    Result.AddSummary("Exported Users", totalUsersExported.ToString());
-                    Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
-                    Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
-                    if (includeProfile)
+                    catch (Exception ex)
                     {
-                        Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
+                        Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
                     }
-                    Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
-                    Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
-                    Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
-                }
-            }
-            if (stage == 1)
-            {
-                try
-                {
+                    CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalUsers;
+                    CheckPoint.Stage++;
+                    if (CheckPointStageCallback(this)) return;
                     //Rebuild the indexes in the exported database.
                     Repository.RebuildIndex<ExportUser>(x => x.Id, true);
                     Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
@@ -230,21 +191,24 @@ namespace Dnn.ExportImport.Components.Services
                     Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
                     if (includeProfile)
                         Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
-                    Result.AddLogEntry("IndexingDone", "Export Users: Rebuild indexes completed", ReportLevel.Info);
+                    pageIndex++;
                 }
-                catch (Exception ex)
+                CheckPoint.Completed = true;
+                CheckPoint.Progress = 100;
+            }
+            finally
+            {
+                CheckPointStageCallback(this);
+                Result.AddSummary("Exported Users", totalUsersExported.ToString());
+                Result.AddSummary("Exported User Portals", totalPortalsExported.ToString());
+                Result.AddSummary("Exported User Roles", totalUserRolesExported.ToString());
+                if (includeProfile)
                 {
-                    Result.AddLogEntry(
-                        "Exception while building indexes on the exported package. This process would be performed on import now.",
-                        ex.Message, ReportLevel.Error);
+                    Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
                 }
-                finally
-                {
-                    CheckPoint.StageData = JsonConvert.SerializeObject(new { stage = 2 });
-                    CheckPoint.Progress = 100;
-                    CheckPoint.Completed = true;
-                    CheckPointStageCallback(this);
-                }
+                Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
+                Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
+                Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
             }
         }
 
@@ -427,15 +391,6 @@ namespace Dnn.ExportImport.Components.Services
                 Result.AddSummary("Imported Aspnet Users", totalAspnetUserImported.ToString());
                 Result.AddSummary("Imported Aspnet Memberships", totalAspnetMembershipImported.ToString());
             }
-        }
-        private int GetCurrentStage()
-        {
-            if (!string.IsNullOrEmpty(CheckPoint.StageData))
-            {
-                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
-                return Convert.ToInt32(stageData.stage) ?? 0;
-            }
-            return 0;
         }
 
         public override int GetImportTotal()
