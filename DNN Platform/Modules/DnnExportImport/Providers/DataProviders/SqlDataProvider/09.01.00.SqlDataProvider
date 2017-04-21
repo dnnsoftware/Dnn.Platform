@@ -1909,14 +1909,16 @@ BEGIN
 	DECLARE @Now datetime = GETDATE()
 
 	SELECT DISTINCT
-		t.TabID, IsNull(t.ParentId, -1) AS ParentId
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.IsSystem, t.IsDeleted
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
 			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
 	WHERE
 		PortalID = @PortalID
 	AND
-		(IsSystem = 0 OR @IncludeSystem = 1)
+		IsSystem = @IncludeSystem
+	AND 
+		(@IncludeDeleted = 1 OR t.IsDeleted = 0)
 	AND (
 			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR

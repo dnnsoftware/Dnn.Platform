@@ -579,27 +579,32 @@ namespace Dnn.ExportImport.Components.Engines
         private static int GetTimeoutPerSlot(int scheduleId)
         {
             var provider = SchedulingProvider.Instance();
-            var nseedsUpdate = false;
+            //var nseedsUpdate = false;
             int value;
             var settings = provider.GetScheduleItemSettings(scheduleId);
             if (!int.TryParse(settings[Constants.MaxTimeToRunJobKey] as string ?? "", out value))
             {
-                // max time to run a job is 2 hours
-                value = (int)TimeSpan.FromHours(2).TotalSeconds;
-                nseedsUpdate = true;
+                // default max time to run a job is 8 hours
+                value = (int)TimeSpan.FromHours(8).TotalSeconds;
+                //nseedsUpdate = true;
             }
 
-            // enforce minimum of 60 seconds per slot
-            if (value < 60)
+            // enforce minimum/maximum of 10 minutes/12 hours per slot
+            if (value < 600)
             {
-                value = 60;
-                nseedsUpdate = true;
+                value = 600;
+                //nseedsUpdate = true;
+            }
+            else if (value > 12*60*60)
+            {
+                value = 12 * 60 * 60;
+                //nseedsUpdate = true;
             }
 
-            if (nseedsUpdate)
-            {
-                provider.AddScheduleItemSetting(scheduleId, Constants.MaxTimeToRunJobKey, value.ToString());
-            }
+            //if (nseedsUpdate)
+            //{
+            //    provider.AddScheduleItemSetting(scheduleId, Constants.MaxTimeToRunJobKey, value.ToString());
+            //}
 
             return value;
         }

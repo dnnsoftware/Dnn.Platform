@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates));
+            return Repository.GetCount<ExportTab>(x => x.IsSystem == IncludeSystem);
         }
 
         #region import methods
