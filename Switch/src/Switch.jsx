@@ -20,7 +20,7 @@ class Switch extends Component {
     }
 
     toggleStatus() {
-        const {props, state} = this;
+        const { props, state } = this;
 
         if (props.readOnly) {
             return;
@@ -32,7 +32,7 @@ class Switch extends Component {
     }
 
     getClassName() {
-        const {props} = this;
+        const { props } = this;
 
         let className = "dnn-switch";
         if (props.value) {
@@ -42,15 +42,34 @@ class Switch extends Component {
         if (props.readOnly) {
             className += " dnn-switch-readonly";
         }
-        if (props.labelPlacement) {
+        if (!props.labelHidden) {
             className += (" place-" + props.labelPlacement);
         }
 
         return className;
     }
 
+    renderComponent() {
+        const { props, state } = this;
+        if (props.labelHidden) {
+            return <span className={this.getClassName()} onClick={this.toggleStatus.bind(this)}>
+                <span className="mark" />
+            </span>;
+        }
+        else {
+            return <div>
+                <label className={"on-off-text place-" + props.labelPlacement}>
+                    {(state.switchActive ? props.onText : props.offText)}
+                </label>
+                <span className={this.getClassName()} onClick={this.toggleStatus.bind(this)}>
+                    <span className="mark" />
+                </span>
+            </div>;
+        }
+    }
+
     render() {
-        const {props, state} = this;
+        const { props } = this;
         const tooltipMessages = props.tooltipMessage instanceof Array ? props.tooltipMessage : [props.tooltipMessage];
         return (
             <div className="dnn-switch-container">
@@ -61,10 +80,7 @@ class Switch extends Component {
                     className={props.placement}
                     tooltipPlace={props.tooltipPlace}
                     rendered={props.tooltipMessage} />
-                <span className={this.getClassName()} onClick={this.toggleStatus.bind(this)}>
-                    <span className="mark" />
-                    {!props.labelHidden && <label>{(state.switchActive ? props.onText : props.offText)}</label>}
-                </span>
+                {this.renderComponent()}
             </div>
         );
     }

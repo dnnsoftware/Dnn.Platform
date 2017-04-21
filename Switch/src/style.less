@@ -22,6 +22,16 @@
         font-weight: bold;
         float: left;
     }
+    .on-off-text {
+        margin-top: 2px;
+        color: @bulgarianRose;
+        &.place-left {
+            float: left;
+        }
+        &.place-right {
+            float: right;
+        }
+    }
     .dnn-switch {
         display: inline-block;
         position: relative;
@@ -41,21 +51,10 @@
         box-sizing: content-box !important;
         -moz-box-sizing: content-box !important;
         &.place-left {
-            margin-left: 25px;
-            > label {
-                left: -25px;
-            }
+            margin-left: 8px;
         }
         &.place-right {
-            margin-right: 25px;
-            > label {
-                right: -25px;
-            }
-        }
-        >label {
-            position: absolute;
-            margin-top: 2px;
-            color: @bulgarianRose;
+            margin-right: 8px;
         }
         &.dnn-switch-active {
             background-color: @cerulean;
