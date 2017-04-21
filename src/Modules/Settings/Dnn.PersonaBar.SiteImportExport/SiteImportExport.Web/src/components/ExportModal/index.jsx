@@ -47,7 +47,7 @@ class ExportModal extends Component {
                 IncludeContent: true,
                 IncludeExtensions: true,
                 IncludeFiles: true,
-                ExportMode: props.lastExportTime ? "Differential" : "Complete",
+                ExportMode: props.lastExportTime ? "Differential" : "Full",
                 ItemsToExport: [],
                 RunNow: true
             },
@@ -191,7 +191,7 @@ class ExportModal extends Component {
     getExportModeOptions() {
         let options = [
             { label: Localization.get("ExportModeDifferential"), value: "Differential" },
-            { label: Localization.get("ExportModeComplete"), value: "Complete" }
+            { label: Localization.get("ExportModeComplete"), value: "Full" }
         ];
         return options;
     }
@@ -395,7 +395,7 @@ class ExportModal extends Component {
                                     onChange={this.onChange.bind(this, "ExportMode")}
                                     options={this.getExportModeOptions()}
                                     buttonGroup="exportMode"
-                                    value={props.lastExportTime ? state.exportRequest.ExportMode : "Complete"} />
+                                    value={props.lastExportTime ? state.exportRequest.ExportMode : "Full"} />
                             </InputGroup>
                             <InputGroup>
                                 <Label
