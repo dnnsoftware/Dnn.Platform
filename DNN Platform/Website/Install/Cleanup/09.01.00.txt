@@ -92,8 +92,6 @@ admin\Skins\HostName.ascx.cs
 admin\Skins\JavaScriptLibraryInclude.ascx.cs
 admin\Skins\jQuery.ascx.cs
 admin\Skins\Language.ascx.cs
-admin\Skins\LeftMenu.ascx
-admin\Skins\LeftMenu.ascx.cs
 admin\Skins\LeftMenu.xml
 admin\Skins\Links.ascx.cs
 admin\Skins\LinkToFullSite.ascx.cs
