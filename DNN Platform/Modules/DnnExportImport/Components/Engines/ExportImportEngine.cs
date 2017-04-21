@@ -74,7 +74,7 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             }
 
-            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
+            _timeoutSeconds = GetTimeoutPerSlot();
             var dbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName);
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
@@ -271,7 +271,7 @@ namespace Dnn.ExportImport.Components.Engines
         public void Import(ExportImportJob importJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE IMPORT Started. JOB #{importJob.JobId}</b>");
-            _timeoutSeconds = GetTimeoutPerSlot(scheduleHistoryItem.ScheduleID);
+            _timeoutSeconds = GetTimeoutPerSlot();
             var importDto = JsonConvert.DeserializeObject<ImportDto>(importJob.JobObject);
             if (importDto == null)
             {
@@ -555,7 +555,7 @@ namespace Dnn.ExportImport.Components.Engines
             //This might be added always.
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
-            
+
             var additionalItems = new List<string>();
             foreach (var includedItem in includedItems)
             {
@@ -576,31 +576,25 @@ namespace Dnn.ExportImport.Components.Engines
             return includedItems;
         }
 
-        private static int GetTimeoutPerSlot(int scheduleId)
+        private static int GetTimeoutPerSlot()
         {
-            var provider = SchedulingProvider.Instance();
-            var nseedsUpdate = false;
-            int value;
-            var settings = provider.GetScheduleItemSettings(scheduleId);
-            if (!int.TryParse(settings[Constants.MaxTimeToRunJobKey] as string ?? "", out value))
+            var value = 0;
+            var setting = SettingsController.Instance.GetSetting(Constants.MaxSecondsToRunJobKey);
+            if (setting != null && !int.TryParse(setting.SettingValue, out value))
             {
-                // max time to run a job is 2 hours
-                value = (int)TimeSpan.FromHours(2).TotalSeconds;
-                nseedsUpdate = true;
+                // default max time to run a job is 8 hours
+                value = (int)TimeSpan.FromHours(8).TotalSeconds;
             }
 
-            // enforce minimum of 60 seconds per slot
-            if (value < 60)
+            // enforce minimum/maximum of 10 minutes/12 hours per slot
+            if (value < 600)
             {
-                value = 60;
-                nseedsUpdate = true;
+                value = 600;
             }
-
-            if (nseedsUpdate)
+            else if (value > 12 * 60 * 60)
             {
-                provider.AddScheduleItemSetting(scheduleId, Constants.MaxTimeToRunJobKey, value.ToString());
+                value = 12 * 60 * 60;
             }
-
             return value;
         }
 

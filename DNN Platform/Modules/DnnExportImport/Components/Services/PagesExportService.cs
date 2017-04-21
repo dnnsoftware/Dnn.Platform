@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportTab>(x => x.IsSystem == (Category == Constants.Category_Templates));
+            return Repository.GetCount<ExportTab>(x => x.IsSystem == IncludeSystem);
         }
 
         #region import methods
@@ -174,6 +174,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (localTab != null)
             {
+                otherTab.LocalId = localTab.TabID;
                 switch (_importDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
@@ -454,6 +455,9 @@ namespace Dnn.ExportImport.Components.Services
                 : EntitiesController.Instance.GetModules(localTab.TabID, true, Constants.MaxDbTime, null).ToList();
             var localTabModules = isNew ? new List<ModuleInfo>() : _moduleController.GetTabModules(localTab.TabID).Values.ToList();
 
+            var allExistingIds = localTabModules.Select(l => l.ModuleID).ToList();
+            var allImportedIds = new List<int>();
+
             foreach (var other in exportedTabModules)
             {
                 var locals = localTabModules.Where(
@@ -518,6 +522,7 @@ namespace Dnn.ExportImport.Components.Services
                         otherModule.LocalId = _moduleController.AddModule(local);
                         other.LocalId = local.TabModuleID;
                         Repository.UpdateItem(otherModule);
+                        allImportedIds.Add(local.ModuleID);
 
                         // this is not saved upon adding the module
                         if (other.IsDeleted)
@@ -608,6 +613,7 @@ namespace Dnn.ExportImport.Components.Services
                                 otherModule.LocalId = _moduleController.AddModule(local);
                                 other.LocalId = local.TabModuleID;
                                 Repository.UpdateItem(otherModule);
+                                allImportedIds.Add(local.ModuleID);
 
                                 // this is not saved upon adding the module
                                 if (other.IsDeleted)
@@ -677,6 +683,7 @@ namespace Dnn.ExportImport.Components.Services
                                 other.LocalId = local.TabModuleID;
                                 otherModule.LocalId = localExpModule.ModuleID;
                                 Repository.UpdateItem(otherModule);
+                                allImportedIds.Add(local.ModuleID);
                             }
 
                             var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -708,6 +715,18 @@ namespace Dnn.ExportImport.Components.Services
                             Logger.Error(ex);
                         }
                     }
+                }
+            }
+
+            if (!isNew && _exportDto.ExportMode == ExportMode.Full &&
+                _importDto.CollisionResolution == CollisionResolution.Overwrite)
+            {
+                // delete left over tab modules for full import in an existing page
+                var unimported = allExistingIds.Distinct().Except(allImportedIds);
+                foreach (var moduleId in unimported)
+                {
+                    _moduleController.DeleteTabModule(localTab.TabID, moduleId, false);
+                    Result.AddLogEntry("Removed existing tab module", "Module ID="+ moduleId);
                 }
             }
 
@@ -993,9 +1012,12 @@ namespace Dnn.ExportImport.Components.Services
                 var otherParent = exportedTabs.FirstOrDefault(t => t.TabId == otherParentId);
                 if (otherParent != null)
                 {
-                    var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
-                    if (localTab != null)
-                        return localTab.TabID;
+                    if (otherParent.LocalId.HasValue)
+                    {
+                        var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
+                        if (localTab != null)
+                            return localTab.TabID;
+                    }
                 }
                 else if (exportedTab.TabPath.HasValue())
                 {

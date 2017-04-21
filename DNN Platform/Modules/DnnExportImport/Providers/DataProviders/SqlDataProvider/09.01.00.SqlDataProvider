@@ -1,4 +1,63 @@
 ﻿-- DNN-9447: Import/Export feature
+-- ExportImportSettings
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExportImportSettings]', N'U') IS NULL
+	CREATE TABLE {databaseOwner}[{objectQualifier}ExportImportSettings](
+		[SettingName] [nvarchar](50) NOT NULL,
+		[SettingValue] [nvarchar](MAX) NOT NULL,
+		[SettingIsSecure] [bit] NOT NULL DEFAULT 0,
+		[CreatedByUserID] [int] NULL,
+		[CreatedOnDate] [datetime] NULL,
+		[LastModifiedByUserID] [int] NULL,
+		[LastModifiedOnDate] [datetime] NULL,
+		CONSTRAINT [PK_{objectQualifier}ExportImportSettings] PRIMARY KEY CLUSTERED([SettingName] ASC)
+	)
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'PortalSettingExportList')
+	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+	VALUES (N'PortalSettingExportList', N'AddCompatibleHttpHeader,ControlPanelMode,ControlPanelSecurity,ControlPanelVisibility,EnablePopUps,EnableSkinWidgets,HideFoldersEnabled,InjectModuleHyperLink,InlineEditorEnabled,MaximumVersionHistory,PageHeadText,PortalAliasMapping', 
+	0, -1, GETDATE(), -1, GETDATE())
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = N'MaxSecondsToRunJob')
+	INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+	VALUES (N'MaxSecondsToRunJob', 28800, 0, -1, GETDATE(), -1, GETDATE())
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_Settings]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_Settings]
+AS
+BEGIN
+	SELECT * FROM {databaseOwner}[{objectQualifier}ExportImportSettings]
+END
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}ExportImport_AddSetting]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}ExportImport_AddSetting]
+    @SettingName        [nvarchar](50),
+    @SettingValue        [nvarchar](MAX),
+    @SettingIsSecure    [bit] = 0,
+    @CreatedByUserID    [int]
+AS
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ExportImportSettings] WHERE [SettingName] = @SettingName)
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}ExportImportSettings] ([SettingName],[SettingValue],[SettingIsSecure],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate])
+            VALUES (@SettingName, @SettingValue, @SettingIsSecure, @CreatedByUserID, GETDATE(), @CreatedByUserID, GETDATE())
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}ExportImportSettings] SET [SettingValue]=@SettingValue,[LastModifiedByUserID]=@CreatedByUserID,[LastModifiedOnDate]=GETDATE() WHERE [SettingName] = @SettingName
+    END
+END
+GO
+
+
+--Scheduler
 
 IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}EventLogTypes] WHERE [LogTypeKey] = N'SITE_EXPORT')
 	INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass])
@@ -1615,21 +1674,24 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_RoleGroups]
 	@ToDate  datetime,
 	@FromDate datetime=NULL
 AS
+BEGIN
+	DECLARE @Now datetime = GETDATE()
+
 	SELECT
 		rg.*, u1.Username AS CreatedByUserName, u2.Username AS LastModifiedByUserName
 	FROM
 		{databaseOwner}{objectQualifier}RoleGroups AS rg
+			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Roles AS ro ON rg.RoleGroupID = ro.RoleGroupID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u1 ON rg.CreatedByUserID = u1.UserID
 			LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users AS u2 ON rg.LastModifiedByUserID = u2.UserID
 	WHERE
 		rg.PortalID = @PortalID
-	AND (CASE
-		WHEN @FromDate IS NULL THEN 0
-		WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
-		ELSE rg.LastModifiedOnDate END)>= ISNULL(@FromDate,0)
-	AND (CASE
-			WHEN rg.LastModifiedOnDate IS NULL THEN rg.CreatedOnDate
-			ELSE rg.LastModifiedOnDate END)<= @ToDate
+	AND (
+			( (COALESCE(rg.LastModifiedOnDate, rg.CreatedOnDate, @Now) <= @ToDate) AND ((@FromDate IS NULL OR ISNULL(rg.LastModifiedOnDate, rg.CreatedOnDate) >= @FromDate)))
+		OR
+			( (COALESCE(ro.LastModifiedOnDate, ro.CreatedOnDate, @Now) <= @ToDate) AND ((@FromDate IS NULL OR ISNULL(ro.LastModifiedOnDate, ro.CreatedOnDate) >= @FromDate)))
+		)
+END
 GO
 
 IF object_id(N'{databaseOwner}[{objectQualifier}Export_Roles]', 'P') IS NOT NULL
@@ -1909,16 +1971,18 @@ BEGIN
 	DECLARE @Now datetime = GETDATE()
 
 	SELECT DISTINCT
-		t.TabID, IsNull(t.ParentId, -1) AS ParentId
+		t.TabID, IsNull(t.ParentId, -1) AS ParentId, t.IsSystem, t.IsDeleted
 	FROM
 		{databaseOwner}{objectQualifier}Tabs t
 			LEFT JOIN {databaseOwner}{objectQualifier}TabModules AS tm ON t.TabID = tm.TabID
 	WHERE
 		PortalID = @PortalID
 	AND
-		(IsSystem = 0 OR @IncludeSystem = 1)
+		IsSystem = @IncludeSystem
+	AND 
+		(@IncludeDeleted = 1 OR t.IsDeleted = 0)
 	AND (
-			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate  AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
+			(COALESCE(t.LastModifiedOnDate, t.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(t.LastModifiedOnDate, t.CreatedOnDate) >= @FromDate))
 		 OR
 			(COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate))
 		)
