@@ -237,7 +237,6 @@ namespace DotNetNuke.Security.Roles
             //Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
-            UserController.UpdateUser(portalId, UserController.GetUserById(portalId, user.UserID));
         }
 
         public void ClearRoleCache(int portalId)
@@ -505,7 +504,6 @@ namespace DotNetNuke.Security.Roles
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
-            UserController.UpdateUser(portalId, UserController.GetUserById(portalId, user.UserID));
         }
 
 
