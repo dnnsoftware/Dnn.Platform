@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const path = require("path");
 const languages = {
     "en": null
-    // TODO: create locallizaton files per language 
+    // TODO: create locallizaton files per language
     // "de": require("./localizations/de.json"),
     // "es": require("./localizations/es.json"),
     // "fr": require("./localizations/fr.json"),
@@ -24,16 +24,18 @@ module.exports = {
         loaders: [
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
             { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" }
+            { test: /\.(ttf|woff)$/, loader: "url-loader?limit=8192" },
+            { test: /\.svg$/, loader: 'svg-url-loader'}
+
         ],
 
         preLoaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
+            // { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
         ]
     },
 
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"],        
+        extensions: ["", ".js", ".json", ".jsx"],
         root: [
             path.resolve('./src'),          // Look in src first
             path.resolve('./node_modules')  // Last fallback to node_modules

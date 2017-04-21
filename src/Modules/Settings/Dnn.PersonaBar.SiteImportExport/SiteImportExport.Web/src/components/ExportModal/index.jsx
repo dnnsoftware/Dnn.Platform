@@ -19,6 +19,8 @@ import Button from "dnn-button";
 import styles from "./style.less";
 import utilities from "utils";
 
+import {PagePickerInteractor} from './page-picker'
+
 const scrollAreaStyle = {
     width: "100%",
     height: 200,
@@ -369,19 +371,9 @@ class ExportModal extends Component {
                         </div>
                         <div className="export-pages">
                             <div className="sectionTitle">{Localization.get("PagesInExport")}</div>
-                            <PagePicker
-                                className="export-page-picker"
-                                serviceFramework={utilities.utilities && utilities.utilities.sf}
-                                PortalTabsParameters={PortalTabsParameters}
-                                scrollAreaStyle={scrollAreaStyle}
-                                OnSelect={this.updatePagesToExport.bind(this)}
-                                allSelected={true}
-                                IsMultiSelect={true}
-                                IsInDropDown={false}
-                                ShowCount={false}
-                                Reload={this.state.reloadPages}
-                                ShowIcon={false}
-                            />
+                            <PagePickerInteractor PortalTabsParameters={PortalTabsParameters} />
+
+
                             <div className="seperator2">
                                 <hr />
                             </div>
