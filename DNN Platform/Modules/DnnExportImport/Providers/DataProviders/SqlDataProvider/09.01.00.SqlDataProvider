@@ -107,7 +107,7 @@ BEGIN
 	  , 0
 	  , 1
 	  , N''
-	  , NULL
+	  , HOST_NAME()  -- name of the server running the installer
 	  , NULL
 	  , NULL
 	  , NULL
