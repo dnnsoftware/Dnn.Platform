@@ -47,8 +47,8 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (CheckCancelled(exportJob)) return;
-            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
-            var toDate = exportDto.ToDate.ToLocalTime();
+            var fromDateUtc = exportDto.FromDate?.DateTime;
+            var toDateUtc = exportDto.ToDate;
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;
@@ -60,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
             var totalAuthenticationExported = 0;
             var totalAspnetUserExported = 0;
             var totalAspnetMembershipExported = 0;
-            var totalUsers = DataProvider.Instance().GetUsersCount(portalId, exportDto.IncludeDeletions, toDate, fromDate);
+            var totalUsers = DataProvider.Instance().GetUsersCount(portalId, exportDto.IncludeDeletions, toDateUtc, fromDateUtc);
             if (totalUsers == 0) return;
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
@@ -93,9 +93,7 @@ namespace Dnn.ExportImport.Components.Services
                     try
                     {
                         using (var reader = DataProvider.Instance()
-                            .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDate, fromDate,
-                                Util.ConvertToDbUtcTime(toDate) ?? Constants.MaxDbTime,
-                                Util.ConvertToDbUtcTime(fromDate)))
+                            .GetAllUsers(portalId, pageIndex, pageSize, exportDto.IncludeDeletions, toDateUtc, fromDateUtc))
                         {
                             CBO.FillCollection(reader, exportUsersList, false);
                             reader.NextResult();
@@ -264,8 +262,14 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 if (CheckCancelled(importJob)) return;
                                 var row = table.NewRow();
+
                                 var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                                 var userAuthentication = Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                                //Aspnet Users and Membership
+                                var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                                var aspnetMembership = aspNetUser != null
+                                    ? Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault()
+                                    : null;
 
                                 row["PortalId"] = portalId;
                                 row["Username"] = user.Username;
@@ -308,8 +312,6 @@ namespace Dnn.ExportImport.Components.Services
                                     row["AuthenticationType"] = DBNull.Value;
                                     row["AuthenticationToken"] = DBNull.Value;
                                 }
-                                //Aspnet Users and Membership
-                                var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
 
                                 if (aspNetUser != null)
                                 {
@@ -318,7 +320,6 @@ namespace Dnn.ExportImport.Components.Services
                                     row["AspUserId"] = aspNetUser.UserId;
                                     row["MobileAlias"] = aspNetUser.MobileAlias;
                                     row["IsAnonymous"] = aspNetUser.IsAnonymous;
-                                    var aspnetMembership = Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault();
                                     if (aspnetMembership != null)
                                     {
                                         tempAspMembershipCount += 1;

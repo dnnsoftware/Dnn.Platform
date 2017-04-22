@@ -140,16 +140,13 @@ namespace Dnn.ExportImport.Repository
             where T : BasicExportImportDto
         {
             var collection = DbCollection<T>();
-            var result = predicate != null ? collection.Find(predicate) : collection.FindAll();
+
+            var result = predicate != null
+                ? collection.Find(predicate, skip ?? 0, max ?? int.MaxValue)
+                : collection.Find(Query.All(), skip ?? 0, max ?? int.MaxValue);
 
             if (orderKeySelector != null)
                 result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
-
-            if (skip != null)
-                result = result.Skip(skip.Value);
-
-            if (max != null)
-                result = result.Take(max.Value);
 
             return result.AsEnumerable();
         }

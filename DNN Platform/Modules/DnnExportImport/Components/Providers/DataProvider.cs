@@ -212,19 +212,17 @@ namespace Dnn.ExportImport.Components.Providers
                 .ExecuteReader("Export_GetPropertyDefinitionsByPortal", portalId, includeDeleted, toDate, _dataProvider.GetNull(fromDate));
         }
 
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDate,
-            DateTime? fromDate, DateTime toDateUtc, DateTime? fromDateUtc)
+        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
         {
             return _dataProvider
-                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDate,
-                    _dataProvider.GetNull(fromDate), toDateUtc, _dataProvider.GetNull(fromDateUtc), false);
+                .ExecuteReader("Export_GetAllUsers", portalId, pageIndex, pageSize, includeDeleted, toDateUtc,
+                    _dataProvider.GetNull(fromDateUtc), false);
         }
 
-        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
         {
             return _dataProvider
-                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDate,
-                    _dataProvider.GetNull(fromDate), _dataProvider.GetNull(null), _dataProvider.GetNull(null), true);
+                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDateUtc, _dataProvider.GetNull(fromDateUtc), true);
         }
 
         public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
