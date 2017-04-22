@@ -36,6 +36,9 @@ class Pager extends Component {
     }
     calculateTotalPages(props) {
         const {state} = this;
+        let {startIndex} = state;
+        let {endIndex} = state;
+        let {currentPage} = state;
         if (state.pageSize >= props.totalRecords || props.totalRecords === 0) {
             state.totalPages = 1;
             state.endIndex = 1;
@@ -45,12 +48,22 @@ class Pager extends Component {
             }
             let totalPages = parseInt(props.totalRecords / state.pageSize);
             if (props.totalRecords % state.pageSize !== 0) {
-                totalPages++;
+                totalPages++;                
             }
             state.totalPages = totalPages;
-            let {endIndex} = state;
-            if (endIndex > totalPages)
-                state.endIndex = totalPages;
+            if (props.numericCounters > 0) {                
+                if (currentPage >= totalPages - 1) {
+                    endIndex = totalPages;
+                    startIndex = (endIndex - props.numericCounters) > 0 ? (endIndex - props.numericCounters) : 0;
+                }
+                else if (currentPage <= 0) {
+                    startIndex = 0;
+                    endIndex = (startIndex + props.numericCounters) > totalPages - 1 ? totalPages : (startIndex + props.numericCounters);
+                }
+                state.startIndex = startIndex;
+                state.endIndex = endIndex;
+            }
+            
         }
         if (state.currentPage >= state.totalPages) {
             state.currentPage = state.totalPages - 1;
