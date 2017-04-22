@@ -704,7 +704,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@IncludeDeleted  bit,
 	@ToDateUtc		 datetime,
 	@FromDateUtc	 datetime=NULL,
-	@OnlyCount		 bit = false
+	@OnlyCount		 bit = 0
 AS
 BEGIN	
 	DECLARE @ToDate datetime = DATEADD(hh,DATEDIFF(hh,GETUTCDATE(),GETDATE()),@ToDateUtc)
@@ -737,6 +737,10 @@ BEGIN
 		IF @PageSize>1000
 		BEGIN
 			SET @PageSize = 1000;
+		END
+		IF ISNULL(@PageSize, 0) = 0
+		BEGIN
+			SET @PageSize = 500;
 		END
 
 		DECLARE
@@ -1008,7 +1012,7 @@ BEGIN
 		INTO #UserInsertsDataTable 
 		FROM @DataTable dt 
 		LEFT JOIN  {databaseOwner}{objectQualifier}Users Users ON Users.Username = dt.Username
-		WHERE Users.UserID IS NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+		WHERE Users.UserID IS NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 
 		INSERT INTO {databaseOwner}{objectQualifier}Users (
 			Username,
@@ -1085,7 +1089,7 @@ BEGIN
 		INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username= dt.Username
 		LEFT JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId= Users.UserID AND UP.PortalId=dt.PortalId
 		WHERE Users.UserID IS NOT NULL AND UP.UserPortalId IS NULL 
-		AND dt.IsDeleted IS NOT NULL AND dt.Authorised IS NOT NULL AND dt.RefreshRoles IS NOT NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+		AND dt.IsDeleted IS NOT NULL AND dt.Authorised IS NOT NULL AND dt.RefreshRoles IS NOT NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 	
 		INSERT INTO {databaseOwner}{objectQualifier}UserPortals (
 				[UserId]
@@ -1142,7 +1146,7 @@ BEGIN
 		FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username=dt.Username
 		INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
 		LEFT JOIN {databaseOwner}{objectQualifier}UserAuthentication UserAuthentication ON UserAuthentication.UserID=Users.UserID AND LTRIM(RTRIM(UserAuthentication.AuthenticationType)) = LTRIM(RTRIM(dt.AuthenticationType))
-		WHERE Users.UserID IS NOT NULL AND UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserAuthentication.UserAuthenticationID IS NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+		WHERE Users.UserID IS NOT NULL AND UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserAuthentication.UserAuthenticationID IS NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 		AND dt.AuthenticationToken IS NOT NULL AND dt.AuthenticationType IS NOT NULL
 
 		INSERT INTO {databaseOwner}[{objectQualifier}UserAuthentication](
@@ -1206,7 +1210,7 @@ BEGIN
 		FROM @DataTable dt 
 		LEFT JOIN {databaseOwner}aspnet_Users AspUsers ON AspUsers.Username= dt.Username
 		INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.Username=dt.Username
-		WHERE AspUsers.UserId IS NULL AND dt.AspUserId <> @EmptyGuid AND dt.[IsAnonymous] IS NOT NULL AND dt.[ApplicationId] IS NOT NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+		WHERE AspUsers.UserId IS NULL AND dt.AspUserId <> @EmptyGuid AND dt.[IsAnonymous] IS NOT NULL AND dt.[ApplicationId] IS NOT NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 
 		INSERT INTO {databaseOwner}[aspnet_Users]
 				([ApplicationId]
@@ -1294,7 +1298,7 @@ BEGIN
 		LEFT JOIN {databaseOwner}aspnet_Membership Membership ON Membership.UserId= AspUsers.UserID AND Membership.ApplicationId=AspUsers.ApplicationId
 		WHERE AspUsers.UserId IS NOT NULL AND Membership.UserId IS NULL AND dt.AspUserId <> @EmptyGuid AND dt.Password IS NOT NULL
 		AND dt.[PasswordFormat] IS NOT NULL AND dt.[PasswordSalt] IS NOT NULL AND dt.[IsApproved] IS NOT NULL AND dt.[IsLockedOut] IS NOT NULL
-		AND dt.[FailedPasswordAttemptCount] IS NOT NULL AND dt.[FailedPasswordAnswerAttemptCount] IS NOT NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+		AND dt.[FailedPasswordAttemptCount] IS NOT NULL AND dt.[FailedPasswordAnswerAttemptCount] IS NOT NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 
 		INSERT INTO {databaseOwner}[aspnet_Membership]
 				([ApplicationId]
@@ -1430,7 +1434,7 @@ BEGIN
 			FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
 			INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID
 			LEFT JOIN {databaseOwner}{objectQualifier}UserRoles UserRole ON UserRole.UserID=Users.UserID AND UserRole.RoleID=dt.RoleId
-			WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserRole.UserRoleId IS NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+			WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserRole.UserRoleId IS NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 
 			INSERT INTO {databaseOwner}{objectQualifier}UserRoles(
 				UserId,
@@ -1539,7 +1543,7 @@ BEGIN
 			FROM @DataTable dt INNER JOIN {databaseOwner}{objectQualifier}Users Users ON Users.UserID=dt.UserId
 			INNER JOIN {databaseOwner}{objectQualifier}UserPortals UP ON UP.UserId=Users.UserID AND UP.PortalId=dt.PortalId 
 			LEFT JOIN {databaseOwner}{objectQualifier}UserProfile UserProfile ON UserProfile.UserID=Users.UserID AND UserProfile.PropertyDefinitionID = dt.PropertyDefinitionId
-			WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserProfile.ProfileID IS NULL AND dt.IsSuperUser=0 AND Users.IsSuperUser=0
+			WHERE UP.UserPortalId IS NOT NULL AND UP.PortalId=dt.PortalId AND UserProfile.ProfileID IS NULL AND dt.IsSuperUser=0  AND ISNULL(Users.IsSuperUser, 0)=0
 
 			INSERT INTO {databaseOwner}{objectQualifier}UserProfile(
 				[UserID]
