@@ -190,11 +190,11 @@ class Pager extends Component {
     }
     getPageSizeDropDown() {
         let pageSizeOptions = [];
-        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 10)) });
-        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 25)) });
-        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 50)) });
-        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 100)) });
-        if (this.props.totalRecords >= 250) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 250)) });
+        if (this.props.totalRecords >= 1) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 10)) });
+        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 25)) });
+        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 50)) });
+        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 100)) });
+        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 250)) });
 
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
             pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( this.props.pageSize)) });
