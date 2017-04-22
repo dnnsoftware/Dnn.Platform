@@ -264,8 +264,14 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 if (CheckCancelled(importJob)) return;
                                 var row = table.NewRow();
+
                                 var userPortal = Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                                 var userAuthentication = Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+                                //Aspnet Users and Membership
+                                var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
+                                var aspnetMembership = aspNetUser != null
+                                    ? Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault()
+                                    : null;
 
                                 row["PortalId"] = portalId;
                                 row["Username"] = user.Username;
@@ -308,8 +314,6 @@ namespace Dnn.ExportImport.Components.Services
                                     row["AuthenticationType"] = DBNull.Value;
                                     row["AuthenticationToken"] = DBNull.Value;
                                 }
-                                //Aspnet Users and Membership
-                                var aspNetUser = Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
 
                                 if (aspNetUser != null)
                                 {
@@ -318,7 +322,6 @@ namespace Dnn.ExportImport.Components.Services
                                     row["AspUserId"] = aspNetUser.UserId;
                                     row["MobileAlias"] = aspNetUser.MobileAlias;
                                     row["IsAnonymous"] = aspNetUser.IsAnonymous;
-                                    var aspnetMembership = Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault();
                                     if (aspnetMembership != null)
                                     {
                                         tempAspMembershipCount += 1;
