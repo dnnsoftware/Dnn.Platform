@@ -47,8 +47,8 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (CheckCancelled(exportJob)) return;
-            var fromDate = exportDto.FromDate?.DateTime;
-            var toDate = exportDto.ToDate;
+            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
+            var toDate = exportDto.ToDate.ToLocalTime();
 
             var portalId = exportJob.PortalId;
             var pageIndex = 0;

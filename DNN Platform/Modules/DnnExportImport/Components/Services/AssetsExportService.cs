@@ -521,7 +521,9 @@ namespace Dnn.ExportImport.Components.Services
                         file.FolderId,
                         createdBy, file.Sha1Hash, DateUtils.GetDatabaseLocalTime(), file.Title, file.Description,
                         file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
-                        file.ContentItemId ?? Null.NullInteger);
+                        //file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
+                        Null.NullInteger);
+
 
                 if (file.Content != null)
                     DotNetNuke.Data.DataProvider.Instance().UpdateFileContent(file.FileId, file.Content);
