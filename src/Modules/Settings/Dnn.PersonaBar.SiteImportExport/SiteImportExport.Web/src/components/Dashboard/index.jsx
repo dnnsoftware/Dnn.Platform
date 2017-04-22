@@ -327,8 +327,8 @@ class DashboardPanelBody extends Component {
                             label={Localization.get("LastExport")} />
                     </div>
                     <div className="action-dates">
-                        <div>{props.lastImportTime || "-- --"}</div>
-                        <div>{props.lastExportTime || "-- --"}</div>
+                        <div>{props.lastImportTime || Localization.get("EmptyDateTime")}</div>
+                        <div>{props.lastExportTime || Localization.get("EmptyDateTime")}</div>
                     </div>
                 </div>
                 <div className="action-buttons">

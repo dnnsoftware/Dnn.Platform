@@ -146,7 +146,7 @@ class ImportSummary extends Component {
                                         labelType="inline"
                                         label={Localization.get("LastExport")}
                                     />
-                                    <div className="import-summary-item">{props.lastExportTime || "-- --"}</div>
+                                    <div className="import-summary-item">{props.lastExportTime || Localization.get("EmptyDateTime")}</div>
                                 </GridCell>
                                 <div className="seperator">
                                     <hr />
