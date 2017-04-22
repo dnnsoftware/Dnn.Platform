@@ -702,13 +702,14 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}Export_GetAllUsers]
 	@PageIndex       int,
 	@PageSize        int,
 	@IncludeDeleted  bit,
-	@ToDate			 datetime ,
-	@FromDate		 datetime=NULL,
-	@ToDateUtc		 datetime ,
+	@ToDateUtc		 datetime,
 	@FromDateUtc	 datetime=NULL,
 	@OnlyCount		 bit = false
 AS
-BEGIN
+BEGIN	
+	DECLARE @ToDate datetime = DATEADD(hh,DATEDIFF(hh,GETUTCDATE(),GETDATE()),@ToDateUtc)
+	DECLARE @FromDate datetime = DATEADD(hh,DATEDIFF(hh,GETUTCDATE(),GETDATE()),@FromDateUtc)
+
 	--GET ONLY USERS COUNT
 	IF @OnlyCount = 1
 	BEGIN
