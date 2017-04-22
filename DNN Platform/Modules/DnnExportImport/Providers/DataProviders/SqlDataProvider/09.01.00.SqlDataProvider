@@ -2163,10 +2163,11 @@ BEGIN
 		tm.TabID = @TabID
 	AND
 		(@IncludeDeleted = 1 OR m.IsDeleted = 0)
-	AND
-		COALESCE(m.LastModifiedOnDate, m.CreatedOnDate, @Now) <= @ToDate
-	AND
-		(@FromDate IS NULL OR ISNULL(m.LastModifiedOnDate, m.CreatedOnDate) >= @FromDate)
+	AND (
+			COALESCE(m.LastModifiedOnDate, m.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(m.LastModifiedOnDate, m.CreatedOnDate) >= @FromDate)
+		OR
+			COALESCE(tm.LastModifiedOnDate, tm.CreatedOnDate, @Now) <= @ToDate AND (@FromDate IS NULL OR ISNULL(tm.LastModifiedOnDate, tm.CreatedOnDate) >= @FromDate)
+		)
 END
 GO
 
