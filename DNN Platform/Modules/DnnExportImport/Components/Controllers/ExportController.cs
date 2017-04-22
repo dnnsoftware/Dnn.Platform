@@ -39,11 +39,11 @@ namespace Dnn.ExportImport.Components.Controllers
             exportDto.ProductSku = DotNetNuke.Application.DotNetNukeContext.Current.Application.SKU;
             exportDto.ProductVersion = Globals.FormatVersion(DotNetNuke.Application.DotNetNukeContext.Current.Application.Version, true);
             var dbTime = DateUtils.GetDatabaseUtcTime();
-            exportDto.ToDate = dbTime.AddMilliseconds(-dbTime.Millisecond);
+            exportDto.ToDateUtc = dbTime.AddMilliseconds(-dbTime.Millisecond);
             var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDate = GetLastJobTime(exportDto.PortalId, JobType.Export);
+                exportDto.FromDateUtc = GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
 

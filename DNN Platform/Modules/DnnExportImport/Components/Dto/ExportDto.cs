@@ -132,13 +132,20 @@ namespace Dnn.ExportImport.Components.Dto
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.
         /// </summary>
-        public DateTimeOffset? FromDate { get; set; }
+        [JsonProperty("FromDate")]
+        public DateTime? FromDateUtc { get; set; }
 
         /// <summary>
         /// Date when job was created. 
         /// NOTE: This will be set internally only by the engine and not by the UI
         /// </summary>
-        public DateTime ToDate { get; set; }
+        [JsonProperty("ToDate")]
+        public DateTime ToDateUtc { get; set; }
+
+        [JsonIgnore]
+        public DateTime? FromDate => FromDateUtc;
+        [JsonIgnore]
+        public DateTime ToDate => ToDateUtc;
 
         /// <summary>
         /// The pages to be exported. These are the ID's (plus other information)

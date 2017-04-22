@@ -1133,7 +1133,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = _exportImportJob.PortalId;
 
             var toDate = _exportImportJob.CreatedOnDate.ToLocalTime();
-            var fromDate = _exportDto.FromDate?.DateTime.ToLocalTime();
+            var fromDate = (_exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var isAllIncluded = selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,

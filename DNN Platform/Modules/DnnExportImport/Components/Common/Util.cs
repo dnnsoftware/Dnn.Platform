@@ -180,7 +180,7 @@ namespace Dnn.ExportImport.Components.Common
                 if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) &&
                     (property.GetValue(item) as DateTime?) == DateTime.MinValue)
                 {
-                    property.SetValue(item, Constants.EpochTime);
+                    property.SetValue(item, Constants.MinDbTime);
                 }
             }
         }
