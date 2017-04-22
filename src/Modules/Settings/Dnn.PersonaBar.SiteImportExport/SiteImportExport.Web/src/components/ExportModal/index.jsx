@@ -402,7 +402,7 @@ class ExportModal extends Component {
                                     labelType="inline"
                                     label={Localization.get("LastExport")}
                                 />
-                                <div className="lastExport">{props.lastExportTime || "-- --"}</div>
+                                <div className="lastExport">{props.lastExportTime || Localization.get("EmptyDateTime")}</div>
                             </InputGroup>
                         </div>
                     </GridSystem>
