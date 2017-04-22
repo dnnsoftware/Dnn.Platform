@@ -318,7 +318,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private static bool ValidateServer(ScheduleItem scheduleItem, SchedulerClient schedulerClient)
             {
-                //when the scheduler not marked as run on single server, or the scheduler already assigned to run on specific server, the ignore the check.
+                //when the scheduler not marked as run on single server, or the scheduler already assigned to run on specific server, then ignore the check.
                 if (!schedulerClient.RunsOnSingleServer || !string.IsNullOrEmpty(scheduleItem.Servers))
                 {
                     return true;

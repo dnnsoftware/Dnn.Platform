@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public class PurgeLogBuffer : SchedulerClient
     {
-        public override bool RunsOnSingleServer { get; set; } = false;
+        public override bool RunsOnSingleServer => false;
 
         public PurgeLogBuffer(ScheduleHistoryItem objScheduleHistoryItem)
         {

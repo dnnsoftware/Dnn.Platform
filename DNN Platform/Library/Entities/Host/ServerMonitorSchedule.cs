@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using System.Net;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Scheduling;
@@ -35,6 +34,8 @@ namespace DotNetNuke.Entities.Host
         #endregion
 
         #region ScheduleClient Implements
+
+        public override bool RunsOnSingleServer => false;
 
         public override void DoWork()
         {
@@ -70,6 +71,7 @@ namespace DotNetNuke.Entities.Host
                 ScheduleHistoryItem.AddLogNote("<p>No server available to detect.<p>");
             }
 
+            //TODO: do these using Tasks and await all for speed.
             foreach (var server in servers)
             {
                 TryConnect(server, (statusCode) =>
@@ -93,6 +95,9 @@ namespace DotNetNuke.Entities.Host
             {
                 var serverRequestAdpater = ServerController.GetServerWebRequestAdapter();
                 var request = Globals.GetExternalRequest(connectUrl);
+                request.Timeout = 5000;
+                request.ContinueTimeout = 5000;
+                request.ReadWriteTimeout = 15000;
                 if (request.CookieContainer == null)
                 {
                     request.CookieContainer = new CookieContainer();
@@ -101,14 +106,18 @@ namespace DotNetNuke.Entities.Host
                 //call web request adapter to process the request before send.
                 serverRequestAdpater?.ProcessRequest(request, server);
 
-                using (var response = request.GetResponse() as HttpWebResponse)
+                var response = request.GetResponse() as HttpWebResponse;
+                if (response != null)
                 {
-                    var statusCode = response.StatusCode;
+                    using (response)
+                    {
+                        var statusCode = response.StatusCode;
 
-                    //call web request adapter ro check the response.
-                    serverRequestAdpater?.CheckResponse(response, server, ref statusCode);
+                        //call web request adapter ro check the response.
+                        serverRequestAdpater?.CheckResponse(response, server, ref statusCode);
 
-                    connectCompleteCallback(statusCode);
+                        connectCompleteCallback(statusCode);
+                    }
                 }
             }
             catch (Exception)
@@ -147,7 +156,7 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        private void AddLogEvent(ServerInfo server, string eventLogType)
+        private static void AddLogEvent(ServerInfo server, string eventLogType)
         {
             var log = new LogInfo {LogTypeKey = eventLogType};
             log.AddProperty("Server", server.ServerName);

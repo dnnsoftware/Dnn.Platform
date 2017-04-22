@@ -55,9 +55,11 @@ namespace DotNetNuke.Services.Scheduling
 
 
         /// <summary>
-        /// The schedule should only run on one server.
+        /// When "true", the schedule will run on one server only in a web farm.
+        /// When "false", the schedule will run on all the servers only in a web farm.
+        /// This has no effect on a single server installation.
         /// </summary>
-	    public virtual bool RunsOnSingleServer { get; set; } = true; 
+	    public virtual bool RunsOnSingleServer => true; 
 
         public int ThreadID
         {

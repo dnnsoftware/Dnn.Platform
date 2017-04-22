@@ -42,10 +42,5 @@ namespace DotNetNuke.Common.Utilities
 			//Do not modify it using the code editor.
             InitializeComponent();
         }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-        }
     }
 }
