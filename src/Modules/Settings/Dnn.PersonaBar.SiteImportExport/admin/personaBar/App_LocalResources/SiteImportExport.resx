@@ -140,13 +140,13 @@
   </data>
   <data name="JobDate.Header" xml:space="preserve">
     <value>Date</value>
-  </data>  
+  </data>
   <data name="JobType.Header" xml:space="preserve">
     <value>Type</value>
-  </data>  
+  </data>
   <data name="JobUser.Header" xml:space="preserve">
     <value>Username</value>
-  </data>  
+  </data>
   <data name="JobPortal.Header" xml:space="preserve">
     <value>Website</value>
   </data>
@@ -155,10 +155,10 @@
   </data>
   <data name="LegendExport.Text" xml:space="preserve">
     <value>Site Export</value>
-  </data>  
+  </data>
   <data name="LegendImport.Text" xml:space="preserve">
     <value>Site Import</value>
-  </data>  
+  </data>
   <data name="LogSection.Text" xml:space="preserve">
     <value>Import / Export Log</value>
   </data>
@@ -188,9 +188,6 @@
   </data>
   <data name="ExportSummary.Text" xml:space="preserve">
     <value>Export Summary</value>
-  </data>
-  <data name="ImportSummary.Text" xml:space="preserve">
-    <value>Import Summary</value>
   </data>
   <data name="NoJobs.Text" xml:space="preserve">
     <value>No jobs found</value>
@@ -230,18 +227,6 @@
   </data>
   <data name="Content.Text" xml:space="preserve">
     <value>Content</value>
-  </data>
-  <data name="Assets.Text" xml:space="preserve">
-    <value>Assets</value>
-  </data>
-  <data name="Users.Text" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="Roles.Text" xml:space="preserve">
-    <value>Roles</value>
-  </data>
-  <data name="Vocabularies.Text" xml:space="preserve">
-    <value>Vocabularies</value>
   </data>
   <data name="ProfileProperties.Text" xml:space="preserve">
     <value>Profile Properties</value>
@@ -352,7 +337,7 @@
     <value>Users (Step 2 out of 2)</value>
   </data>
   <data name="Roles.Text" xml:space="preserve">
-    <value>Roles</value>
+    <value>Roles and Groups</value>
   </data>
   <data name="Vocabularies.Text" xml:space="preserve">
     <value>Vocabularies</value>
@@ -382,7 +367,7 @@
     <value>Timestamp</value>
   </data>
   <data name="ModulePackages.Text" xml:space="preserve">
-    <value>Module Packages</value>
+    <value>Skin Packages</value>
   </data>
   <data name="Assets.Text" xml:space="preserve">
     <value>Assets</value>
@@ -404,9 +389,6 @@
   </data>
   <data name="ExportModeDifferential.Text" xml:space="preserve">
     <value>Differential</value>
-  </data>
-  <data name="CancelImport.Text" xml:space="preserve">
-    <value>Cancel Import</value>
   </data>
   <data name="ConfirmCancel.Text" xml:space="preserve">
     <value>Yes, Cancel</value>

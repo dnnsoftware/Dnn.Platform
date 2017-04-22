@@ -409,7 +409,7 @@ class DashboardPanelBody extends Component {
         return (
             <div className="logPager">
                 {props.jobs && <Pager
-                    showStartEndButtons={false}
+                    showStartEndButtons={true}
                     showPageSizeOptions={true}
                     showPageInfo={false}
                     numericCounters={4}

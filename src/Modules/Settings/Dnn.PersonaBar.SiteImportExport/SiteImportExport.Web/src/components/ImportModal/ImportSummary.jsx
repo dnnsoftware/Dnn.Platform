@@ -114,7 +114,7 @@ class ImportSummary extends Component {
                                 <GridCell>
                                     <Label
                                         labelType="inline"
-                                        label={Localization.get("ModulePackages")}
+                                        label={Localization.get("SkinPackages")}
                                     />
                                     <div className="import-summary-item">{this.getSummaryItem("Extensions")}</div>
                                 </GridCell>
