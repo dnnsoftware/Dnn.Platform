@@ -64,7 +64,7 @@ class JobDetails extends Component {
             let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
             if (users && props.jobDetail.JobType === "Site Import") {
                 let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
-                if (!users.Completed) {
+                if (users.TotalItems > 0 && !users.Completed) {
                     return <GridCell>
                         <Label
                             labelType="inline"
@@ -80,7 +80,7 @@ class JobDetails extends Component {
                         </div>
                     </GridCell>;
                 }
-                else if (!usersData.Completed) {
+                else if (usersData.TotalItems > 0 && !usersData.Completed) {
                     return <GridCell>
                         <Label
                             labelType="inline"
@@ -108,7 +108,7 @@ class JobDetails extends Component {
 
             }
             else if (users && props.jobDetail.JobType === "Site Export") {
-                if (!users.Completed) {
+                if (users.TotalItems > 0 && !users.Completed) {
                     return <GridCell>
                         <Label
                             labelType="inline"
@@ -244,7 +244,7 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("ModulePackages")}
+                                    label={Localization.get("SkinPackages")}
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Packages")}</div>
                             </GridCell>
