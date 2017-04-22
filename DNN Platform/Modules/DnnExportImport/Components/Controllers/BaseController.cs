@@ -167,8 +167,8 @@ namespace Dnn.ExportImport.Components.Controllers
                 IncludePermissions = exportDto.IncludePermissions,
                 IncludeProfileProperties = exportDto.IncludeProperfileProperties,
                 IncludeContent = exportDto.IncludeContent,
-                FromDate = exportDto.FromDate?.DateTime,
-                ToDate = exportDto.ToDate,
+                FromDate = exportDto.FromDateUtc,
+                ToDate = exportDto.ToDateUtc,
                 ExportMode = exportDto.ExportMode,
                 ExportFileInfo = job.JobType == JobType.Export
                     ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
@@ -211,8 +211,8 @@ namespace Dnn.ExportImport.Components.Controllers
 
             //TODO: Get export file info.
             summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
-            summary.FromDate = exportDto.FromDate?.DateTime;
-            summary.ToDate = exportDto.ToDate;
+            summary.FromDate = exportDto.FromDateUtc;
+            summary.ToDate = exportDto.ToDateUtc;
             summary.SummaryItems = summaryItems;
             summary.IncludeDeletions = exportDto.IncludeDeletions;
             summary.IncludeContent = exportDto.IncludeContent;

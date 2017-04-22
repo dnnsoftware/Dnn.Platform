@@ -46,8 +46,8 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
-            var toDate = exportDto.ToDate.ToLocalTime();
+            var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+            var toDate = exportDto.ToDateUtc.ToLocalTime();
             if (CheckPoint.Stage > 1) return;
             if (CheckCancelled(exportJob)) return;
             List<ExportPortalLanguage> portalLanguages = null;

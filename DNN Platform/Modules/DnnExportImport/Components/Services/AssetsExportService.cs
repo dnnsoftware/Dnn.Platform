@@ -79,8 +79,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (CheckPoint.Stage == 0)
                 {
-                    var fromDate = exportDto.FromDate?.DateTime.ToLocalTime();
-                    var toDate = exportDto.ToDate.ToLocalTime();
+                    var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
+                    var toDate = exportDto.ToDateUtc.ToLocalTime();
                     var portal = PortalController.Instance.GetPortal(portalId);
 
                     var folders =

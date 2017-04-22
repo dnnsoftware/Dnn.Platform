@@ -48,8 +48,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (CheckPoint.Stage == 0)
                 {
-                    var fromDate = (exportDto.FromDate?.DateTime).GetValueOrDefault(DateTime.MinValue).ToLocalTime();
-                    var toDate = exportDto.ToDate.ToLocalTime();
+                    var fromDate = exportDto.FromDateUtc ?? Constants.MinDbTime;
+                    var toDate = exportDto.ToDateUtc;
 
                     //export skin packages.
                     var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
@@ -78,6 +78,7 @@ namespace Dnn.ExportImport.Components.Services
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
                     }
+
                     CheckPoint.Stage++;
                     currentIndex = 0;
                     CheckPoint.Completed = true;
