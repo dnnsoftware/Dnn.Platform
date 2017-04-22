@@ -80,6 +80,15 @@ class JobDetails extends Component {
                         </div>
                     </GridCell>;
                 }
+                else if (users.TotalItems > 0 && users.Completed && usersData.TotalItems === 0) {
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={Localization.get("UsersStep1")}
+                        />
+                        <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
+                    </GridCell>;
+                }
                 else if (usersData.TotalItems > 0 && !usersData.Completed) {
                     return <GridCell>
                         <Label

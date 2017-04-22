@@ -97,6 +97,7 @@ class ImportModal extends Component {
                 Localization.get("KeepImport"),
                 () => {
                     props.dispatch(ImportExportActions.packageVerified(false));
+                    props.dispatch(ImportExportActions.selectPackage());
                     props.dispatch(ImportExportActions.importWizardGoToSetp(0));
                 });
         }
@@ -256,7 +257,7 @@ class ImportModal extends Component {
                         {props.wizardStep === 0 &&
                             <PackagesList selectPackage={this.selectPackage.bind(this)} />
                         }
-                        {props.wizardStep === 1 &&
+                        {props.wizardStep === 1 && props.selectedPackage &&
                             <div className="package-card-wrapper">
                                 <PackageCard selectedPackage={props.selectedPackage} />
                             </div>

@@ -331,10 +331,10 @@
     <value>Users</value>
   </data>
   <data name="UsersStep1.Text" xml:space="preserve">
-    <value>Users (Step 1 out of 2)</value>
+    <value>Users (Step 1 / 2)</value>
   </data>
   <data name="UsersStep2.Text" xml:space="preserve">
-    <value>Users (Step 2 out of 2)</value>
+    <value>Users (Step 2 / 2)</value>
   </data>
   <data name="Roles.Text" xml:space="preserve">
     <value>Roles and Groups</value>
