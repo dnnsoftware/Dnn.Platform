@@ -122,6 +122,7 @@ namespace Dnn.ExportImport.Components.Services
                                         userRoleRow["LastModifiedByUserId"] = Util.GetUserIdByName(importJob, user.LastModifiedByUserId, user.LastModifiedByUserName);
                                         userRoleRow["Status"] = userRole.Status;
                                         userRoleRow["IsOwner"] = userRole.IsOwner;
+                                        userRoleRow["IsSuperUser"] = user.IsSuperUser;
                                         tableUserRoles.Rows.Add(userRoleRow);
                                         tempUserRolesCount++;
                                     }
@@ -142,6 +143,7 @@ namespace Dnn.ExportImport.Components.Services
                                             userProfileRow["PropertyText"] = userProfile.PropertyText;
                                             userProfileRow["Visibility"] = userProfile.Visibility;
                                             userProfileRow["ExtendedVisibility"] = userProfile.ExtendedVisibility;
+                                            userProfileRow["IsSuperUser"] = user.IsSuperUser;
                                             tableUserProfile.Rows.Add(userProfileRow);
                                             tempUserProfileCount++;
                                         }
@@ -210,7 +212,8 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("CreatedByUserId", typeof (int)),
             new Tuple<string, Type>("LastModifiedByUserId", typeof (int)),
             new Tuple<string, Type>("Status", typeof (int)),
-            new Tuple<string, Type>("IsOwner", typeof (bool))
+            new Tuple<string, Type>("IsOwner", typeof (bool)),
+            new Tuple<string, Type>("IsSuperUser", typeof (bool)),
         };
 
         private static readonly Tuple<string, Type>[] UserProfileDatasetColumns =
@@ -221,7 +224,8 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("PropertyValue", typeof (string)),
             new Tuple<string, Type>("PropertyText", typeof (string)),
             new Tuple<string, Type>("Visibility", typeof (int)),
-            new Tuple<string, Type>("ExtendedVisibility", typeof (string))
+            new Tuple<string, Type>("ExtendedVisibility", typeof (string)),
+            new Tuple<string, Type>("IsSuperUser", typeof (bool))
         };
     }
 }

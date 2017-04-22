@@ -2,7 +2,6 @@
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
 using System.Linq;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
@@ -10,13 +9,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Pages;
 using Dnn.ExportImport.Dto.PageTemplates;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Packages;
 using Newtonsoft.Json;
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -24,9 +20,7 @@ namespace Dnn.ExportImport.Components.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PackagesExportService));
 
-        private readonly string _packagesZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipPackages}";
-        private static readonly string ExtensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
-        private static readonly Regex ExtensionPackageFilesRegex = new Regex("^(.+?)_(.+?)_(\\d+\\.\\d+\\.\\d+).resources$", RegexOptions.Compiled);
+        private static readonly Regex ExtensionPackageFilesRegex = new Regex(@"^(.+?)_(.+?)_(\d+\.\d+\.\d+).resources$", RegexOptions.Compiled);
 
         private ExportImportJob _exportImportJob;
 
@@ -47,10 +41,10 @@ namespace Dnn.ExportImport.Components.Services
             var skip = GetCurrentSkip();
             var currentIndex = skip;
             var totalPackagesExported = 0;
-            var portalId = exportJob.PortalId;
             try
             {
-                var packagesZipFile = string.Format(_packagesZipFile, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipPackages}";
+                var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (CheckPoint.Stage == 0)
                 {
@@ -58,7 +52,8 @@ namespace Dnn.ExportImport.Components.Services
                     var toDate = exportDto.ToDate.ToLocalTime();
 
                     //export skin packages.
-                    var skinPackageFiles = Directory.GetFiles(ExtensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();
+                    var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
+                    var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
                     //Update the total items count in the check points. This should be updated only once.
@@ -126,7 +121,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private bool IsValidPackage(string filePath, DateTime fromDate, DateTime toDate)
         {
-            var fileInfo = new System.IO.FileInfo(filePath);
+            var fileInfo = new FileInfo(filePath);
             if (string.IsNullOrEmpty(fileInfo.Name) || fileInfo.LastWriteTimeUtc < fromDate || fileInfo.LastWriteTimeUtc > toDate)
             {
                 return false;
@@ -160,10 +155,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
-            CompressionUtil.UnZipArchive(packageZipFile, tempFolder, true);
+            CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
             var exportPackages = Repository.GetAllItems<ExportPackage>().ToList();
 
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count() : CheckPoint.TotalItems;
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
 
             if (CheckPoint.Stage == 0)
@@ -172,33 +167,37 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     foreach (var exportPackage in exportPackages)
                     {
-                        var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
-                        if (!File.Exists(filePath))
+                        try
                         {
-                            continue;
+                            var filePath = Path.Combine(tempFolder, exportPackage.PackageFileName);
+                            if (!File.Exists(filePath))
+                            {
+                                continue;
+                            }
+
+                            var packageType = exportPackage.PackageType;
+                            var packageName = exportPackage.PackageName;
+                            var version = exportPackage.Version;
+
+                            var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageType == packageType && p.Name == packageName);
+                            if (existPackage != null && existPackage.Version >= version)
+                            {
+                                Result.AddLogEntry($"Import Package ignores", $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
+                                continue;
+                            }
+
+                            InstallPackage(filePath);
+                            Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
+                            CheckPoint.ProcessedItems++;
+                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
+                            CheckPointStageCallback(this); // just to update the counts without exit logic
                         }
-
-                        var packageType = exportPackage.PackageType;
-                        var packageName = exportPackage.PackageName;
-                        var version = exportPackage.Version;
-
-                        Logger.Info($"Start Import Package: {packageName} version: {version}");
-
-                        var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageType == packageType && p.Name == packageName);
-                        if (existPackage != null && existPackage.Version >= version)
+                        catch (Exception ex)
                         {
-                            Logger.Info($"Import Package: {packageName} has higher version {existPackage.Version} installed, ignore import it");
-                            continue;
+                            Result.AddLogEntry("Import Package error", $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
+                            Logger.Error(ex);
                         }
-
-                        InstallPackage(filePath);
-
-                        Logger.Info($"Complete Import Package: {packageName}");
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
                 }
                 finally
                 {
@@ -213,8 +212,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 try
                 {
-                    var fileName = Path.GetFileName(filePath);
-                    var installer = GetInstaller(stream, fileName, Null.NullInteger);
+                    var installer = GetInstaller(stream);
 
                     if (installer.IsValid)
                     {
@@ -233,15 +231,18 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 catch (Exception ex)
                 {
+                    Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
                     Logger.Error(ex);
                 }
             }
         }
 
-        private static Installer GetInstaller(Stream stream, string fileName, int portalId)
+        private static Installer GetInstaller(Stream stream)
         {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
-            installer.InstallerInfo.PortalID = Null.NullInteger;
+            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
+            {
+                InstallerInfo = {PortalID = Null.NullInteger}
+            };
 
             //Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)

@@ -83,6 +83,70 @@ UPDATE {databaseOwner}{objectQualifier}Packages SET Version = @version WHERE Nam
 
 GO
 
+/***** DNN-9455: export/import (BEGIN) *****/
+IF object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModuleVersion]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersion]
+    @TabModuleID	int,
+    @VersionGuid	uniqueidentifier
+AS
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET VersionGuid = @VersionGuid,
+			LastModifiedOnDate = GETDATE()
+    WHERE  TabModuleID = @TabModuleID
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}RestoreTabModule]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}RestoreTabModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RestoreTabModule]
+	@TabId      int,
+	@ModuleId   int
+AS
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET IsDeleted = 0,
+			VersionGuid = newId(),
+			LastModifiedOnDate = GETDATE()
+	WHERE  TabId = @TabId
+		AND    ModuleId = @ModuleId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}UpdateModuleOrder]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleOrder]
+	@TabId              int,
+	@ModuleId           int,
+	@ModuleOrder        int,
+	@PaneName           nvarchar(50)
+AS
+	UPDATE {databaseOwner}{objectQualifier}TabModules
+		SET	ModuleOrder = @ModuleOrder,
+			PaneName = @PaneName,
+			VersionGuid = newId(),
+			LastModifiedOnDate = GETDATE()
+	WHERE TabId = @TabId
+	  AND ModuleId = @ModuleId
+GO
+
+IF object_id(N'{databaseOwner}[{objectQualifier}UpdateTabModuleVersionByModule]', 'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersionByModule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModuleVersionByModule]
+    @ModuleID	int
+AS
+    UPDATE {databaseOwner}{objectQualifier}TabModules
+        SET VersionGuid = NEWID(),
+			LastModifiedOnDate = GETDATE()
+    WHERE  ModuleID = @ModuleID
+GO
+/***** DNN-9455: export/import (END) *****/
+
 /***** DNN-9359: set global module control for edit extension. *****/
 IF NOT EXISTS (SELECT ModuleControlID FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ControlKey = 'EditExtension' AND ModuleDefID IS NULL)
 BEGIN

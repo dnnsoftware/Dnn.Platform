@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Dnn.ExportImport.Components.Common;
@@ -32,7 +31,6 @@ using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Dto.Pages;
 using Dnn.ExportImport.Repository;
 using DotNetNuke.Application;
-using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -1272,7 +1270,7 @@ namespace Dnn.ExportImport.Components.Services
             var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
 
-            var filePath = DotNetNuke.Services.Installer.Util.GetPackageBackupPath(package);
+            var filePath = InstallerUtil.GetPackageBackupPath(package);
             if (File.Exists(filePath))
             {
                 var offset = Path.GetDirectoryName(filePath)?.Length + 1;
