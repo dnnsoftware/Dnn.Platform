@@ -62,13 +62,57 @@ class JobDetails extends Component {
         const { props } = this;
         if (props.jobDetail.Summary) {
             let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
-            let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
-            if (users) {
-                if (users.ProgressPercentage < 100 && users.TotalItems > 0) {
+            if (users && props.jobDetail.JobType === "Site Import") {
+                let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
+                if (!users.Completed) {
                     return <GridCell>
                         <Label
                             labelType="inline"
-                            label={usersData && usersData.TotalItems > 0 ? Localization.get("UsersStep1") : Localization.get("Users")}
+                            label={Localization.get("UsersStep1")}
+                        />
+                        <div className="import-summary-item">
+                            <div>
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div style={{ float: "right" }}>
+                                    {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
+                                </div>
+                            </div>
+                        </div>
+                    </GridCell>;
+                }
+                else if (!usersData.Completed) {
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={Localization.get("UsersStep2")}
+                        />
+                        <div className="import-summary-item">
+                            <div>
+                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
+                                <div style={{ float: "right" }}>
+                                    {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
+                                </div>
+                            </div>
+                        </div>
+                    </GridCell>;
+                }
+                else {
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={Localization.get("Users")}
+                        />
+                        <div className="import-summary-item">{usersData.ProcessedItemsString + " / " + usersData.TotalItemsString}</div>
+                    </GridCell>;
+                }
+
+            }
+            else if (users && props.jobDetail.JobType === "Site Export") {
+                if (!users.Completed) {
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={Localization.get("Users")}
                         />
                         <div className="import-summary-item">
                             <div>
@@ -81,43 +125,23 @@ class JobDetails extends Component {
                     </GridCell>;
                 }
                 else {
-                    if (usersData && usersData.TotalItems > 0) {
-                        if (usersData.ProgressPercentage < 100) {
-                            return <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("UsersStep2")}
-                                />
-                                <div className="import-summary-item">
-                                    <div>
-                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: CycleIcon }} />
-                                        <div style={{ float: "right" }}>
-                                            {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
-                                        </div>
-                                    </div>
-                                </div>
-                            </GridCell>;
-                        }
-                        else {
-                            return <GridCell>
-                                <Label
-                                    labelType="inline"
-                                    label={Localization.get("Users")}
-                                />
-                                <div className="import-summary-item">{usersData.ProcessedItemsString + " / " + usersData.TotalItemsString}</div>
-                            </GridCell>;
-                        }
-                    }
-                    else {
-                        return <GridCell>
-                            <Label
-                                labelType="inline"
-                                label={Localization.get("Users")}
-                            />
-                            <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
-                        </GridCell>;
-                    }
+                    return <GridCell>
+                        <Label
+                            labelType="inline"
+                            label={Localization.get("Users")}
+                        />
+                        <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
+                    </GridCell>;
                 }
+            }
+            else {
+                return <GridCell>
+                    <Label
+                        labelType="inline"
+                        label={Localization.get("Users")}
+                    />
+                    <div className="import-summary-item">{"-"}</div>
+                </GridCell>;
             }
         }
     }
