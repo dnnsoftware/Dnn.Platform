@@ -20,8 +20,28 @@ DesktopModules\Admin\SkinManagement\
 DesktopModules\Admin\Sql\
 DesktopModules\Admin\Tabs\
 DesktopModules\Admin\Taxonomy\
-DesktopModules\Admin\UrlManagement\
 DesktopModules\Admin\XmlMerge\
+
+'url management files
+DesktopModules\Admin\UrlManagement\App_LocalResources\
+DesktopModules\Admin\UrlManagement\ClientScripts\
+DesktopModules\Admin\UrlManagement\Images\
+DesktopModules\Admin\UrlManagement\08.02.00.txt
+DesktopModules\Admin\UrlManagement\AdvancedUrlSettings.ascx
+DesktopModules\Admin\UrlManagement\App_LocalResources
+DesktopModules\Admin\UrlManagement\ClientScripts
+DesktopModules\Admin\UrlManagement\FriendlyUrls.ascx
+DesktopModules\Admin\UrlManagement\FriendlyUrlsPro.ascx
+DesktopModules\Admin\UrlManagement\Images
+DesktopModules\Admin\UrlManagement\module.css
+DesktopModules\Admin\UrlManagement\PageSettings.ascx
+DesktopModules\Admin\UrlManagement\PageSettings.css
+DesktopModules\Admin\UrlManagement\PortalAliases.ascx
+DesktopModules\Admin\UrlManagement\PortalAliasesPro.ascx
+DesktopModules\Admin\UrlManagement\Resources.zip.manifest
+DesktopModules\Admin\UrlManagement\TestUrl.ascx
+DesktopModules\Admin\UrlManagement\UrlManagement.ascx
+DesktopModules\Admin\UrlManagement\UrlSettings.ascx
 
 ' Other modules
 DesktopModules\DevicePreviewManagement\
