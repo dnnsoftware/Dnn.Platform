@@ -1,21 +1,15 @@
 ﻿using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using DotNetNuke.Common.Utilities;
-using System.Linq;
 using DotNetNuke.Common;
 using Dnn.ExportImport.Components.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using Dnn.ExportImport.Dto.Pages;
-using Dnn.ExportImport.Dto.PageTemplates;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Skins;
-using Newtonsoft.Json;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -25,7 +19,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private ExportImportJob _exportImportJob;
         private PortalSettings _portalSettings;
-        private int _importCount = 0;
+        private int _importCount;
 
         public override string Category => Constants.Category_Themes;
 
