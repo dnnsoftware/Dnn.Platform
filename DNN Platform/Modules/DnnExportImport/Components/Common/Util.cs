@@ -29,8 +29,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using System.Linq;
-using System.Xml.Linq;
 using System.Text;
 using System.IO;
 using System.Threading;
@@ -131,12 +129,12 @@ namespace Dnn.ExportImport.Components.Common
 
         public static int? GePermissionIdByName(string permissionCode, string permissionKey, string permissionName)
         {
-            if (string.IsNullOrEmpty(permissionName) ||
+            if (string.IsNullOrEmpty(permissionCode) ||
                 string.IsNullOrEmpty(permissionKey) ||
                 string.IsNullOrEmpty(permissionName))
                 return null;
 
-            var permission = EntitiesController.Instance.GetPermissionInfo(permissionName, permissionKey, permissionName);
+            var permission = EntitiesController.Instance.GetPermissionInfo(permissionCode, permissionKey, permissionName);
             return permission?.PermissionID;
         }
 
@@ -243,12 +241,6 @@ namespace Dnn.ExportImport.Components.Common
         public static string FormatNumber(int? number)
         {
             return number?.ToString("n0", Thread.CurrentThread.CurrentUICulture);
-        }
-
-        private static string GetTagValue(XContainer xmlDoc, string name, string rootTag)
-        {
-            return (from f in xmlDoc.Descendants(rootTag)
-                    select f.Element(name)?.Value).SingleOrDefault();
         }
     }
 }

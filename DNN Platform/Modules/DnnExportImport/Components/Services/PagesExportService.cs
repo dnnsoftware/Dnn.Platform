@@ -345,31 +345,39 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var roleId = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName);
-                    if (roleId.HasValue)
+                    local = new TabPermissionInfo
                     {
-                        local = new TabPermissionInfo
-                        {
-                            TabID = localTab.TabID,
-                            UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
-                            Username = other.Username,
-                            RoleID = roleId.Value,
-                            RoleName = other.RoleName,
-                            ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
-                            PermissionKey = other.PermissionKey,
-                            AllowAccess = other.AllowAccess,
-                            PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
-                        };
+                        TabID = localTab.TabID,
+                        UserID = Util.GetUserIdByName(_exportImportJob, other.UserID, other.Username),
+                        Username = other.Username,
+                        RoleID = Util.GetRoleIdByName(_importDto.PortalId, other.RoleName) ?? -1,
+                        RoleName = other.RoleName,
+                        ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
+                        PermissionKey = other.PermissionKey,
+                        AllowAccess = other.AllowAccess,
+                        PermissionID = Util.GePermissionIdByName(other.PermissionCode, other.PermissionKey, other.PermissionName) ?? -1,
+                    };
 
-                        other.LocalId = localTab.TabPermissions.Add(local);
-                        var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
-
+                    if (local.PermissionID == -1)
+                    {
+                        Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!", $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
+                    }
+                    else
+                    {
+                        localTab.TabPermissions.Add(local);
+                        //UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
+                        //var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        //var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        //UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
                 }
+            }
+
+            if (count > 0)
+            {
+                TabPermissionController.SaveTabPermissions(localTab);
             }
 
             return count;
@@ -724,7 +732,7 @@ namespace Dnn.ExportImport.Components.Services
                 foreach (var moduleId in unimported)
                 {
                     _moduleController.DeleteTabModule(localTab.TabID, moduleId, false);
-                    Result.AddLogEntry("Removed existing tab module", "Module ID="+ moduleId);
+                    Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
                 }
             }
 
