@@ -39,6 +39,7 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
         internal const string ExportZipTemplates = "export_templates.zip"; //Compressed templates file name
         internal const string ExportZipPackages = "export_packages.zip"; //Compressed extension packages
+        internal const string ExportZipThemes = "export_themes.zip"; //Compressed site used themes
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
@@ -67,6 +68,7 @@ namespace Dnn.ExportImport.Components.Common
         public const string Category_Templates = "TEMPLATES";
         public const string Category_Assets = "ASSETS";
         public const string Category_Packages = "PACKAGES";
+        public const string Category_Themes = "THEMES";
 
         // these are added internally by the engine
         internal const string Category_Portal = "PORTAL";
