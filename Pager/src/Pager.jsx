@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from "react";
+import React, { PropTypes, Component } from "react";
 import {
     ArrowLeftIcon,
     ArrowRightIcon,
@@ -35,10 +35,10 @@ class Pager extends Component {
         return numberWithSeparator.indexOf(",") > 0 ? "," : ".";
     }
     calculateTotalPages(props) {
-        const {state} = this;
-        let {startIndex} = state;
-        let {endIndex} = state;
-        let {currentPage} = state;
+        const { state } = this;
+        let { startIndex } = state;
+        let { endIndex } = state;
+        let { currentPage } = state;
         if (state.pageSize >= props.totalRecords || props.totalRecords === 0) {
             state.totalPages = 1;
             state.endIndex = 1;
@@ -48,10 +48,10 @@ class Pager extends Component {
             }
             let totalPages = parseInt(props.totalRecords / state.pageSize);
             if (props.totalRecords % state.pageSize !== 0) {
-                totalPages++;                
+                totalPages++;
             }
             state.totalPages = totalPages;
-            if (props.numericCounters > 0) {                
+            if (props.numericCounters > 0) {
                 if (currentPage >= totalPages - 1) {
                     endIndex = totalPages;
                     startIndex = (endIndex - props.numericCounters) > 0 ? (endIndex - props.numericCounters) : 0;
@@ -63,7 +63,7 @@ class Pager extends Component {
                 state.startIndex = startIndex;
                 state.endIndex = endIndex;
             }
-            
+
         }
         if (state.currentPage >= state.totalPages) {
             state.currentPage = state.totalPages - 1;
@@ -87,7 +87,7 @@ class Pager extends Component {
         });
     }
     onPageSizeSelected(option) {
-        let {state} = this;
+        let { state } = this;
         if (state.pageSize !== option.value) {
             state.pageSize = option.value;
             this.setState({
@@ -98,8 +98,8 @@ class Pager extends Component {
         }
     }
     onPageChanged(step) {
-        let {currentPage} = this.state;
-        let {state} = this;
+        let { currentPage } = this.state;
+        let { state } = this;
         switch (step) {
             case ">": {
                 currentPage++;
@@ -122,8 +122,8 @@ class Pager extends Component {
                 break;
             }
         }
-        let {startIndex} = state;
-        let {endIndex} = state;
+        let { startIndex } = state;
+        let { endIndex } = state;
         if (this.props.numericCounters > 0) {
             let boxesHalf = parseInt(this.props.numericCounters / 2);
             if (currentPage < startIndex && currentPage < state.totalPages && currentPage > 0) {
@@ -143,6 +143,9 @@ class Pager extends Component {
                 startIndex = 0;
                 endIndex = (startIndex + this.props.numericCounters) > state.totalPages - 1 ? state.totalPages : (startIndex + this.props.numericCounters);
             }
+            if (endIndex > startIndex + this.props.numericCounters) {
+                endIndex = startIndex + this.props.numericCounters;
+            }
         }
         this.setState({
             currentPage,
@@ -154,7 +157,7 @@ class Pager extends Component {
 
     getPageSummary() {
         if (this.props.showSummary) {
-            const {props, state} = this;
+            const { props, state } = this;
             if (props.totalRecords <= 0) {
                 return null;
             }
@@ -163,21 +166,21 @@ class Pager extends Component {
             if (end > props.totalRecords) {
                 end = props.totalRecords;
             }
-            return this.format(this.props.summaryText,this.formatCommaSeparate(start), this.formatCommaSeparate(end), this.formatCommaSeparate(props.totalRecords));
+            return this.format(this.props.summaryText, this.formatCommaSeparate(start), this.formatCommaSeparate(end), this.formatCommaSeparate(props.totalRecords));
         }
         return "&nbsp;";
     }
     getPagingBoxes() {
-        let {state} = this;
-        let {currentPage} = state;
-        let {startIndex} = state;
-        let {endIndex} = state;
+        let { state } = this;
+        let { currentPage } = state;
+        let { startIndex } = state;
+        let { endIndex } = state;
         let pagingBoxes = [];
         if (this.props.numericCounters > 1) {
             for (let i = startIndex; i < endIndex; i++) {
                 let step = i + 1;
                 if (i !== currentPage) {
-                    pagingBoxes = pagingBoxes.concat(<li className="pages do-not-close" onClick={this.onPageChanged.bind(this, i) }>{this.formatCommaSeparate(step)}</li>);
+                    pagingBoxes = pagingBoxes.concat(<li className="pages do-not-close" onClick={this.onPageChanged.bind(this, i)}>{this.formatCommaSeparate(step)}</li>);
                 } else {
                     pagingBoxes = pagingBoxes.concat(<li className="pages current do-not-close">{this.formatCommaSeparate(i + 1)}</li>);
                 }
@@ -190,14 +193,14 @@ class Pager extends Component {
     }
     getPageSizeDropDown() {
         let pageSizeOptions = [];
-        if (this.props.totalRecords >= 1) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 10)) });
-        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 25)) });
-        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 50)) });
-        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 100)) });
-        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( 250)) });
+        if (this.props.totalRecords >= 1) pageSizeOptions.push({ "value": 10, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(10)) });
+        if (this.props.totalRecords >= 10) pageSizeOptions.push({ "value": 25, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(25)) });
+        if (this.props.totalRecords >= 25) pageSizeOptions.push({ "value": 50, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(50)) });
+        if (this.props.totalRecords >= 50) pageSizeOptions.push({ "value": 100, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(100)) });
+        if (this.props.totalRecords >= 100) pageSizeOptions.push({ "value": 250, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(250)) });
 
         if (!pageSizeOptions.some(option => option.value === this.props.pageSize)) {
-            pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText,this.formatCommaSeparate( this.props.pageSize)) });
+            pageSizeOptions = pageSizeOptions.concat({ "value": this.props.pageSize, "label": this.format(this.props.pageSizeOptionText, this.formatCommaSeparate(this.props.pageSize)) });
             pageSizeOptions = pageSizeOptions.sort(function (a, b) {
                 let valueA = a.value;
                 let valueB = b.value;
@@ -211,30 +214,30 @@ class Pager extends Component {
 
         return (<DropDown
             options={pageSizeOptions}
-            value={this.props.pageSize }
-            onSelect={this.onPageSizeSelected.bind(this) }
+            value={this.props.pageSize}
+            onSelect={this.onPageSizeSelected.bind(this)}
             withBorder={!this.props.pageSizeDropDownWithoutBorder}
-            />
+        />
         );
     }
     /* eslint-disable react/no-danger */
     renderIcon(OnClick, Type, Disabled) {
         if (!Disabled) {
-            return <li className={"do-not-close pages prev"} onClick={OnClick.bind(this) }>
-                <span className="icon-button"  dangerouslySetInnerHTML={{ __html: Type }} />
+            return <li className={"do-not-close pages prev"} onClick={OnClick.bind(this)}>
+                <span className="icon-button" dangerouslySetInnerHTML={{ __html: Type }} />
             </li>;
         } else {
             return <li className={"do-not-close pages prev disabled"} >
-                <span className="icon-flat"  dangerouslySetInnerHTML={{ __html: Type }} />
+                <span className="icon-flat" dangerouslySetInnerHTML={{ __html: Type }} />
             </li>;
         }
     }
     render() {
-        const {state, props} = this;
+        const { state, props } = this;
         return (state.totalPages > 1 || (props.totalRecords >= 10 && state.totalPages === 1 && this.props.showPageSizeOptions)) &&
             <div className="dnn-pager do-not-close" style={props.style}>
                 <div className="dnn-pager-summary-box">
-                    {this.getPageSummary() }
+                    {this.getPageSummary()}
                 </div>
                 <div className="dnn-pager-control">
                     <div className="dnn-pager-paging-box">
@@ -246,7 +249,7 @@ class Pager extends Component {
                             {
                                 this.renderIcon(this.onPageChanged.bind(this, "<"), ArrowLeftIcon, state.currentPage < 1)
                             }
-                            {this.getPagingBoxes() }
+                            {this.getPagingBoxes()}
                             {
                                 this.renderIcon(this.onPageChanged.bind(this, ">"), ArrowRightIcon, state.totalPages <= (state.currentPage + 1))
                             }
@@ -258,13 +261,13 @@ class Pager extends Component {
                     </div>
                     {this.props.showPageInfo && !this.props.showPageSizeOptions &&
                         <div className="dnn-pager-options-info-box">
-                            {this.format(this.props.pageInfoText,this.formatCommaSeparate(state.currentPage + 1), this.formatCommaSeparate(state.totalPages)) }
+                            {this.format(this.props.pageInfoText, this.formatCommaSeparate(state.currentPage + 1), this.formatCommaSeparate(state.totalPages))}
                         </div>
                     }
                     {
                         this.props.showPageSizeOptions &&
                         <div className="dnn-pager-pageSize-box">
-                            {   this.getPageSizeDropDown() }
+                            {this.getPageSizeDropDown()}
                         </div>
                     }
                 </div>

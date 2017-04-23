@@ -1,6 +1,6 @@
 {
   "name": "dnn-pager",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "DNN Paging Component",
   "main": "index.js",
   "scripts": {
