@@ -202,7 +202,14 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 finally
                 {
-                    FileSystemUtils.DeleteFolderRecursive(tempFolder);
+                    try
+                    {
+                        FileSystemUtils.DeleteFolderRecursive(tempFolder);
+                    }
+                    catch (Exception)
+                    {
+                        //ignore
+                    }
                 }
             }
         }
