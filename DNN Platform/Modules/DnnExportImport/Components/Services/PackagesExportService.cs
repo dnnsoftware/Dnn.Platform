@@ -102,12 +102,12 @@ namespace Dnn.ExportImport.Components.Services
 
             _exportImportJob = importJob;
 
-            ProcessImportModulePackages();
+            ProcessImportModulePackages(importDto);
         }
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportPageTemplate>();
+            return Repository.GetCount<ExportPackage>();
         }
 
         private int GetCurrentSkip()
@@ -152,7 +152,7 @@ namespace Dnn.ExportImport.Components.Services
             return new ExportPackage {PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version};
         }
 
-        private void ProcessImportModulePackages()
+        private void ProcessImportModulePackages(ImportDto importDto)
         {
             var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
@@ -181,7 +181,7 @@ namespace Dnn.ExportImport.Components.Services
                             var version = exportPackage.Version;
 
                             var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageType == packageType && p.Name == packageName);
-                            if (existPackage != null && existPackage.Version >= version)
+                            if (existPackage != null && (existPackage.Version > version || (existPackage.Version == version && importDto.CollisionResolution == CollisionResolution.Ignore)))
                             {
                                 Result.AddLogEntry($"Import Package ignores", $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
                                 continue;
