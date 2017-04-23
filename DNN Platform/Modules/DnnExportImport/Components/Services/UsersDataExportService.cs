@@ -26,10 +26,12 @@ using System.Linq;
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
+using Dnn.ExportImport.Dto.Assets;
 using Dnn.ExportImport.Dto.Users;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.FileSystem;
 
 namespace Dnn.ExportImport.Components.Services
 {
@@ -135,11 +137,17 @@ namespace Dnn.ExportImport.Components.Services
                                             var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
                                                 userProfile.PropertyDefinitionId, userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1) continue;
+                                            var value = userProfile.PropertyValue;
+                                            if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = GetUserPhotoId(portalId, value, user)) == null)
+                                            {
+                                                continue;
+                                            }
+
                                             var userProfileRow = tableUserProfile.NewRow();
                                             userProfileRow["PortalId"] = importJob.PortalId;
                                             userProfileRow["UserId"] = userId;
                                             userProfileRow["PropertyDefinitionId"] = profileDefinitionId.Value;
-                                            userProfileRow["PropertyValue"] = userProfile.PropertyValue;
+                                            userProfileRow["PropertyValue"] = value;
                                             userProfileRow["PropertyText"] = userProfile.PropertyText;
                                             userProfileRow["Visibility"] = userProfile.Visibility;
                                             userProfileRow["ExtendedVisibility"] = userProfile.ExtendedVisibility;
@@ -194,6 +202,36 @@ namespace Dnn.ExportImport.Components.Services
                     Result.AddSummary("Imported User Profiles", totalProfilesImported.ToString());
                 }
             }
+        }
+
+        private string GetUserPhotoId(int portalId, string importFileId, ExportUser user)
+        {
+            int profilePictureId;
+            if (string.IsNullOrEmpty(importFileId) ||
+                !int.TryParse(importFileId, out profilePictureId)) return null;
+            var files =
+                FolderManager.Instance.GetFiles(
+                    FolderManager.Instance.GetUserFolder(
+                        UserController.GetUserByName(portalId, user.Username)))
+                    .ToList();
+            if (!files.Any()) return null;
+            var importUserFolder =
+                Repository.GetItem<ExportFolder>(x => x.UserId == user.UserId);
+            if (importUserFolder == null) return null;
+            {
+                var profilePicture =
+                    Repository.GetRelatedItems<ExportFile>(importUserFolder.Id)
+                        .FirstOrDefault(x => x.FileId == profilePictureId);
+                if (profilePicture != null &&
+                    files.Any(x => x.FileName == profilePicture.FileName))
+                {
+                    return Convert.ToString(
+                        files.First(
+                            x => x.FileName == profilePicture.FileName)
+                            .FileId);
+                }
+            }
+            return null;
         }
 
         public override int GetImportTotal()

@@ -151,6 +151,9 @@ namespace Dnn.ExportImport.Components.Services
                             currentIndex++;
                             //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                             if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                            Repository.RebuildIndex<ExportFolder>(x => x.Id, true);
+                            Repository.RebuildIndex<ExportFolder>(x => x.UserId);
+                            Repository.RebuildIndex<ExportFile>(x => x.ReferenceId);
                         }
                     }
                     CheckPoint.Completed = true;
