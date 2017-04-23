@@ -1373,6 +1373,7 @@ namespace Dnn.ExportImport.Components.Services
                 KeyWords = tab.KeyWords,
                 IsDeleted = tab.IsDeleted,
                 Url = tab.Url,
+                SkinSrc = tab.SkinSrc,
                 ContainerSrc = tab.ContainerSrc,
                 StartDate = tab.StartDate == DateTime.MinValue ? null : (DateTime?)tab.StartDate,
                 EndDate = tab.EndDate == DateTime.MinValue ? null : (DateTime?)tab.EndDate,
