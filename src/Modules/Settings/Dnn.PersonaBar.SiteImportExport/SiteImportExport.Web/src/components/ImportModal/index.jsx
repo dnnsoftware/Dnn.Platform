@@ -16,7 +16,7 @@ import Pager from "dnn-pager";
 import styles from "./style.less";
 import util from "utils";
 
-const noDataImg = require(`!raw!./img/nodata.svg`);
+const noDataImg = require("!raw!./img/nodata.svg");
 
 class ImportModal extends Component {
     constructor() {
