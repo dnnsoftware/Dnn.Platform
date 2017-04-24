@@ -483,6 +483,7 @@ export class PagePickerDesktop extends Component {
     }
 
     render_ChildrenSelectedIndicator = (tab) => {
+
       const TabIdName = `${tab.TabId}-${tab.Name}`
       const tabState = STATE[TabIdName]
       const condition =  `ChildrenSelected` in tabState && tabState.ChildrenSelected

@@ -145,11 +145,11 @@ export class PagePickerInteractor extends Component {
       tabs = filterOutMasterRootTab(tabs)
 
       const Left = () => {
-
+          console.log(tabs)
       }
 
       const Right = () => {
-
+        console.log(tabs)
       }
       this._isAnyAllSelected(tabs) ? Left() : Right()
     }
