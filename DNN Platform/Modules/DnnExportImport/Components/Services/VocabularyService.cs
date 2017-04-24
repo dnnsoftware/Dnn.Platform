@@ -77,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     Repository.CreateItems(scopeTypes, null);
                     //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                    CheckPoint.ProcessedItems = scopeTypes.Count;
+                    //CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
                 CheckPoint.Progress = 25;
                 CheckPoint.Stage++;
@@ -97,7 +97,7 @@ namespace Dnn.ExportImport.Components.Services
                             CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                     Repository.CreateItems(vocabularyTypes, null);
                     //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                    CheckPoint.ProcessedItems += vocabularyTypes.Count;
+                    //CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
                 CheckPoint.Progress = 50;
                 CheckPoint.Stage++;

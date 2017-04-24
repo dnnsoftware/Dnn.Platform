@@ -245,17 +245,17 @@ namespace Dnn.ExportImport.Components.Services
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, localTab.IsDeleted, localTab.IsVisible);
                 //_tabController.UpdateTab(localTab); // to clear cache
 
-                AddTabRelatedItems(localTab, otherTab, true);
                 Result.AddLogEntry("Added Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                 _totals.TotalTabs++;
+                AddTabRelatedItems(localTab, otherTab, true);
             }
         }
 
         private void AddTabRelatedItems(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
-            _totals.TotalSettings += ImportTabSettings(localTab, otherTab, isNew);
-            _totals.TotalPermissions += ImportTabPermissions(localTab, otherTab, isNew);
-            _totals.TotalUrls += ImportTabUrls(localTab, otherTab, isNew);
+            _totals.TotalTabSettings += ImportTabSettings(localTab, otherTab, isNew);
+            _totals.TotalTabPermissions += ImportTabPermissions(localTab, otherTab, isNew);
+            _totals.TotalTabUrls += ImportTabUrls(localTab, otherTab, isNew);
             _totals.TotalTabModules += ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
         }
 
@@ -554,7 +554,7 @@ namespace Dnn.ExportImport.Components.Services
                             UpdateModuleChangers(local.ModuleID, createdBy, modifiedBy);
 
                             _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
-                            _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+                            _totals.TotalModulePermissions += ImportModulePermissions(local, otherModule, isNew);
                             _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
 
                             if (_exportDto.IncludeContent)
@@ -708,7 +708,7 @@ namespace Dnn.ExportImport.Components.Services
                             _totals.TotalTabModuleSettings += ImportTabModuleSettings(local, other, isNew);
 
                             _totals.TotalModuleSettings += ImportModuleSettings(local, otherModule, isNew);
-                            _totals.TotalPermissions += ImportModulePermissions(local, otherModule, isNew);
+                            _totals.TotalModulePermissions += ImportModulePermissions(local, otherModule, isNew);
 
                             if (_exportDto.IncludeContent)
                             {
@@ -1151,37 +1151,38 @@ namespace Dnn.ExportImport.Components.Services
                 selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.Checked);
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
-                _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate); // ordered by TabID
+                    _exportDto.IncludeDeletions, IncludeSystem, toDate, fromDate) // ordered by TabID
+                .OrderBy(tab => tab.TabPath).ToArray();
 
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? allTabs.Count : CheckPoint.TotalItems;
+            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? allTabs.Length : CheckPoint.TotalItems;
             if (CheckPointStageCallback(this)) return;
-            var progressStep = 100.0 / allTabs.Count;
+            var progressStep = 100.0 / allTabs.Length;
 
-            //Note: We assume child tabs have bigger TabID values for restarting from checkpoints.
-            //      Anything other than this might not work properly with shedule restarts.
             CheckPoint.TotalItems = IncludeSystem || isAllIncluded
-                ? allTabs.Count
+                ? allTabs.Length
                 : allTabs.Count(otherPg => IsTabIncluded(otherPg, allTabs, selectedPages));
 
-            foreach (var otherPg in allTabs)
+            //Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
+            for (var index = 0; index < allTabs.Length; index++)
             {
                 if (CheckCancelled(_exportImportJob)) break;
 
-                if (_totals.LastProcessedId > otherPg.TabID) continue;
+                var otherPg = allTabs.ElementAt(index);
+                if (_totals.LastProcessedId > index) continue;
 
                 if (IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = _tabController.GetTab(otherPg.TabID, portalId);
                     var exportPage = SaveExportPage(tab);
 
-                    _totals.TotalSettings +=
+                    _totals.TotalTabSettings +=
                         ExportTabSettings(exportPage, toDate, fromDate);
 
-                    _totals.TotalPermissions +=
+                    _totals.TotalTabPermissions +=
                         ExportTabPermissions(exportPage, toDate, fromDate);
 
-                    _totals.TotalUrls +=
+                    _totals.TotalTabUrls +=
                         ExportTabUrls(exportPage, toDate, fromDate);
 
                     _totals.TotalModules +=
@@ -1194,7 +1195,7 @@ namespace Dnn.ExportImport.Components.Services
                         ExportTabModuleSettings(exportPage, toDate, fromDate);
 
                     _totals.TotalTabs++;
-                    _totals.LastProcessedId = tab.TabID;
+                    _totals.LastProcessedId = index;
                 }
 
                 CheckPoint.Progress += progressStep;
@@ -1260,7 +1261,7 @@ namespace Dnn.ExportImport.Components.Services
                     _totals.TotalModuleSettings +=
                         ExportModuleSettings(exportModule, toDate, fromDate);
 
-                    _totals.TotalPermissions +=
+                    _totals.TotalModulePermissions +=
                         ExportModulePermissions(exportModule, toDate, fromDate);
 
                     if (_exportDto.IncludeContent)
@@ -1456,70 +1457,6 @@ namespace Dnn.ExportImport.Components.Services
             return false;
         }
 
-        private void ReportExportTotals()
-        {
-            ReportTotals("Exported");
-        }
-
-        private void ReportImportTotals()
-        {
-            ReportTotals("Imported");
-        }
-
-        private void ReportTotals(string prefix)
-        {
-            Result.AddSummary(prefix + " Tabs", _totals.TotalTabs.ToString());
-            Result.AddLogEntry(prefix + " Tab Settings", _totals.TotalSettings.ToString());
-            Result.AddLogEntry(prefix + " Tab Permissions", _totals.TotalPermissions.ToString());
-            Result.AddLogEntry(prefix + " Tab Urls", _totals.TotalUrls.ToString());
-            Result.AddLogEntry(prefix + " Modules", _totals.TotalModules.ToString());
-            Result.AddLogEntry(prefix + " Module Settings", _totals.TotalModuleSettings.ToString());
-            Result.AddLogEntry(prefix + " Module Permissions", _totals.TotalModulePermissions.ToString());
-            Result.AddLogEntry(prefix + " Tab Modules", _totals.TotalTabModules.ToString());
-            Result.AddLogEntry(prefix + " Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
-            Result.AddLogEntry(prefix + " Module Packages", _totals.TotalPackages.ToString());
-        }
-
-        private void UpdateTotalProcessedPackages()
-        {
-            //HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
-            var packagesCheckpoint = EntitiesController.Instance.GetJobChekpoints(_exportImportJob.JobId).FirstOrDefault(
-                cp => cp.Category == Constants.Category_Packages);
-            if (packagesCheckpoint != null)
-            {
-                packagesCheckpoint.TotalItems += _totals.TotalPackages;
-                packagesCheckpoint.ProcessedItems += _totals.TotalPackages;
-                EntitiesController.Instance.UpdateJobChekpoint(packagesCheckpoint);
-            }
-        }
-
-        #endregion
-
-        #region private classes
-
-        [JsonObject]
-        public class ProgressTotals
-        {
-            // for Export: this is the TabID
-            // for Import: this is the exported DB row ID; not the TabID
-            public int LastProcessedId { get; set; }
-
-            public int TotalTabs { get; set; }
-            public int TotalSettings { get; set; }
-            public int TotalPermissions { get; set; }
-            public int TotalUrls { get; set; }
-
-            public int TotalModules { get; set; }
-            public int TotalModulePermissions { get; set; }
-            public int TotalModuleSettings { get; set; }
-            public int TotalContents { get; set; }
-            public int TotalPackages { get; set; }
-
-            public int TotalTabModules { get; set; }
-            public int TotalTabModuleSettings { get; set; }
-        }
-        #endregion
-
         public static void ResetContentsFlag(ExportImportRepository repository)
         {
             // reset restored flag; if it same extracted db is reused, then content will be restored
@@ -1539,5 +1476,70 @@ namespace Dnn.ExportImport.Components.Services
                 totalCount -= batchSize;
             }
         }
+
+        private void ReportExportTotals()
+        {
+            ReportTotals("Exported");
+        }
+
+        private void ReportImportTotals()
+        {
+            ReportTotals("Imported");
+        }
+
+        private void ReportTotals(string prefix)
+        {
+            Result.AddSummary(prefix + " Tabs", _totals.TotalTabs.ToString());
+            Result.AddLogEntry(prefix + " Tab Settings", _totals.TotalTabSettings.ToString());
+            Result.AddLogEntry(prefix + " Tab Permissions", _totals.TotalTabPermissions.ToString());
+            Result.AddLogEntry(prefix + " Tab Urls", _totals.TotalTabUrls.ToString());
+            Result.AddLogEntry(prefix + " Modules", _totals.TotalModules.ToString());
+            Result.AddLogEntry(prefix + " Module Settings", _totals.TotalModuleSettings.ToString());
+            Result.AddLogEntry(prefix + " Module Permissions", _totals.TotalModulePermissions.ToString());
+            Result.AddLogEntry(prefix + " Tab Modules", _totals.TotalTabModules.ToString());
+            Result.AddLogEntry(prefix + " Tab Module Settings", _totals.TotalTabModuleSettings.ToString());
+            Result.AddLogEntry(prefix + " Module Packages", _totals.TotalPackages.ToString());
+        }
+
+        private void UpdateTotalProcessedPackages()
+        {
+            //HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
+            var packagesCheckpoint = EntitiesController.Instance.GetJobChekpoints(_exportImportJob.JobId).FirstOrDefault(
+                cp => cp.Category == Constants.Category_Packages);
+            if (packagesCheckpoint != null)
+            {
+                //Note: if restart of job occurs, these will report wrong values
+                packagesCheckpoint.TotalItems += _totals.TotalPackages;
+                packagesCheckpoint.ProcessedItems += _totals.TotalPackages;
+                EntitiesController.Instance.UpdateJobChekpoint(packagesCheckpoint);
+            }
+        }
+
+        #endregion
+
+        #region private classes
+
+        [JsonObject]
+        private class ProgressTotals
+        {
+            // for Export: this is the TabID
+            // for Import: this is the exported DB row ID; not the TabID
+            public int LastProcessedId { get; set; }
+
+            public int TotalTabs { get; set; }
+            public int TotalTabSettings { get; set; }
+            public int TotalTabPermissions { get; set; }
+            public int TotalTabUrls { get; set; }
+
+            public int TotalModules { get; set; }
+            public int TotalModulePermissions { get; set; }
+            public int TotalModuleSettings { get; set; }
+            public int TotalContents { get; set; }
+            public int TotalPackages { get; set; }
+
+            public int TotalTabModules { get; set; }
+            public int TotalTabModuleSettings { get; set; }
+        }
+        #endregion
     }
 }
