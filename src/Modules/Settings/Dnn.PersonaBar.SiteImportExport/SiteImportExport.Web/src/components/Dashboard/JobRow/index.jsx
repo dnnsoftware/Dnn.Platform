@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
 import Collapse from "dnn-collapsible";
 import { ArrowDownIcon, CycleIcon } from "dnn-svg-icons";
 import Localization from "localization";
@@ -108,9 +107,4 @@ JobRow.propTypes = {
     openId: PropTypes.string
 };
 
-function mapStateToProps(state) {
-    return {
-    };
-}
-
-export default connect(mapStateToProps)(JobRow);
+export default JobRow;

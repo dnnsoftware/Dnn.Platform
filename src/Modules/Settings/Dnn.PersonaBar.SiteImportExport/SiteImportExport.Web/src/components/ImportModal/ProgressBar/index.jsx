@@ -94,10 +94,8 @@ ProgressBar.propTypes = {
     loaded: PropTypes.bool
 };
 
-function mapStateToProps(state) {
-    return {
-
-    };
+function mapStateToProps() {
+    return {};
 }
 
 export default connect(mapStateToProps)(ProgressBar);

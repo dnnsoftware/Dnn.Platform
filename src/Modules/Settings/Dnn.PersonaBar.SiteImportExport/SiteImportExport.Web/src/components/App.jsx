@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import PersonaBarPageHeader from "dnn-persona-bar-page-header";
 import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import GridCell from "dnn-grid-cell";
 import { connect } from "react-redux";
 import {
     visiblePanel as VisiblePanelActions,
-    pagination as PaginationActions,
     importExport as ImportExportActions
 } from "../actions";
 import PersonaBarPage from "dnn-persona-bar-page";
@@ -21,7 +19,7 @@ class App extends Component {
         this.state = {
             referrer: util.settings.referrer,
             referrerText: util.settings.referrerText,
-            backToReferrerFunc: this.backToReferrer.bind(this, util.settings.backToReferrerFunc)
+            backToReferrerFunc: null
         };
     }
 
