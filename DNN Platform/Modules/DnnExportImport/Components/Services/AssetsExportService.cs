@@ -193,7 +193,7 @@ namespace Dnn.ExportImport.Components.Services
             var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (CheckPoint.Stage == 0)
             {
-                if (File.Exists(assetsFile))
+                if (!File.Exists(assetsFile))
                 {
                     Result.AddLogEntry("AssetsFileNotFound", "Assets file not found. Skipping assets import",
                         ReportLevel.Warn);

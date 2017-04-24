@@ -108,7 +108,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (CheckPoint.Stage == 0)
             {
-                if (File.Exists(templatesFile))
+                if (!File.Exists(templatesFile))
                 {
                     Result.AddLogEntry("TemplatesFileNotFound", "Templates file not found. Skipping templates import",
                         ReportLevel.Warn);
