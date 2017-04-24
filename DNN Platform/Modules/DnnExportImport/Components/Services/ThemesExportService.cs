@@ -60,10 +60,13 @@ namespace Dnn.ExportImport.Components.Services
                         var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
 
                         var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
-                        foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                        if (Directory.Exists(physicalPath))
                         {
-                            var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
-                            CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
+                            foreach (var file in Directory.GetFiles(physicalPath, "*.*", SearchOption.AllDirectories))
+                            {
+                                var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
+                                CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset);
+                            }
                         }
 
                         totalThemesExported += 1;
