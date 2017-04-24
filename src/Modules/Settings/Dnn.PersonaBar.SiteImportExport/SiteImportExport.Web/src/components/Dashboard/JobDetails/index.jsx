@@ -39,8 +39,8 @@ class JobDetails extends Component {
         if (props.jobDetail.Summary) {
             let detail = props.jobDetail.Summary.SummaryItems.find(c => c.Category === category.toUpperCase());
             if (detail) {
-                if (detail.ProcessedItems === detail.TotalItems || state.cancelled || props.jobDetail.Status !== 1) {
-                    return detail.ProcessedItemsString + " / " + detail.TotalItemsString;
+                if (detail.Completed || state.cancelled || props.jobDetail.Status !== 1) {
+                    return detail.ProcessedItems > detail.TotalItems ? detail.TotalItemsString : detail.ProcessedItemsString + " / " + detail.TotalItemsString;
                 }
                 else {
                     return <div>
@@ -86,7 +86,9 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("UsersStep1")}
                         />
-                        <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
+                        <div className="import-summary-item">
+                            {users.ProcessedItems > users.TotalItems ? users.TotalItemsString : users.ProcessedItemsString + " / " + users.TotalItemsString}
+                        </div>
                     </GridCell>;
                 }
                 else if (usersData.TotalItems > 0 && !usersData.Completed) {
@@ -111,7 +113,9 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("Users")}
                         />
-                        <div className="import-summary-item">{usersData.ProcessedItemsString + " / " + usersData.TotalItemsString}</div>
+                        <div className="import-summary-item">
+                            {users.ProcessedItems > users.TotalItems ? users.TotalItemsString : users.ProcessedItemsString + " / " + users.TotalItemsString}
+                        </div>
                     </GridCell>;
                 }
 
@@ -139,7 +143,9 @@ class JobDetails extends Component {
                             labelType="inline"
                             label={Localization.get("Users")}
                         />
-                        <div className="import-summary-item">{users.ProcessedItemsString + " / " + users.TotalItemsString}</div>
+                        <div className="import-summary-item">
+                            {users.ProcessedItems > users.TotalItems ? users.TotalItemsString : users.ProcessedItemsString + " / " + users.TotalItemsString}
+                        </div>
                     </GridCell>;
                 }
             }
@@ -253,7 +259,7 @@ class JobDetails extends Component {
                             <GridCell>
                                 <Label
                                     labelType="inline"
-                                    label={Localization.get("SkinPackages")}
+                                    label={Localization.get("Extensions")}
                                 />
                                 <div className="import-summary-item">{this.getSummaryItem("Packages")}</div>
                             </GridCell>

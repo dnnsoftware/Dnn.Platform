@@ -366,9 +366,6 @@
   <data name="Timestamp.Text" xml:space="preserve">
     <value>Timestamp</value>
   </data>
-  <data name="SkinPackages.Text" xml:space="preserve">
-    <value>Skin Packages</value>
-  </data>
   <data name="Assets.Text" xml:space="preserve">
     <value>Assets</value>
   </data>
