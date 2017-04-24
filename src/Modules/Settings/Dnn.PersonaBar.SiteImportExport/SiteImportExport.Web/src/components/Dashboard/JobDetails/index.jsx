@@ -59,12 +59,12 @@ class JobDetails extends Component {
     }
 
     getUsersSummary() {
-        const { props } = this;
+        const { props, state } = this;
         if (props.jobDetail.Summary) {
             let users = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS");
             if (users && props.jobDetail.JobType === "Site Import") {
                 let usersData = props.jobDetail.Summary.SummaryItems.find(c => c.Category === "USERS_DATA");
-                if (users.TotalItems > 0 && !users.Completed) {
+                if (users.TotalItems > 0 && !users.Completed && !state.cancelled) {
                     return <GridCell>
                         <Label
                             labelType="inline"
@@ -91,7 +91,7 @@ class JobDetails extends Component {
                         </div>
                     </GridCell>;
                 }
-                else if (usersData.TotalItems > 0 && !usersData.Completed) {
+                else if (usersData.TotalItems > 0 && !usersData.Completed && !state.cancelled) {
                     return <GridCell>
                         <Label
                             labelType="inline"
@@ -121,7 +121,7 @@ class JobDetails extends Component {
 
             }
             else if (users && props.jobDetail.JobType === "Site Export") {
-                if (users.TotalItems > 0 && !users.Completed) {
+                if (users.TotalItems > 0 && !users.Completed && !state.cancelled) {
                     return <GridCell>
                         <Label
                             labelType="inline"
