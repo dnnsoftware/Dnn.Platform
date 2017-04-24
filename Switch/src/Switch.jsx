@@ -57,7 +57,7 @@ class Switch extends Component {
             </span>;
         }
         else {
-            return <div>
+            return <div className="switch-button">
                 <label className={"on-off-text place-" + props.labelPlacement}>
                     {(state.switchActive ? props.onText : props.offText)}
                 </label>
