@@ -227,42 +227,13 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
-                //TODO: Thumb generation at root with name exportJob.Directory.jpg
                 var exportController = new ExportController();
-                var zipDbName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipDbName);
-                var zipAssetsName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipFiles);
-                var zipTemplatesName = Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportZipTemplates);
-                FileInfo zipDbFinfo;
-                if (File.Exists(zipDbName))
-                {
-                    zipDbFinfo = new FileInfo(zipDbName); // refresh to get new size    
-                }
-                else
-                {
-                    zipDbFinfo = new FileInfo(Path.Combine(ExportFolder, exportJob.Directory, Constants.ExportDbName));
-                }
-                result.AddSummary("Exported File Size", Util.FormatSize(zipDbFinfo.Length));
-                var exportSize = zipDbFinfo.Length;
                 var exportFileInfo = new ExportFileInfo
                 {
                     ExportPath = exportJob.Directory,
-                    ExportDbSize = Util.FormatSize(zipDbFinfo.Length)
+                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory)))
                 };
-                if (File.Exists(zipAssetsName))
-                {
-                    var zipAssetsFInfo = new FileInfo(zipAssetsName); // refresh to get new size
-                    exportSize += zipAssetsFInfo.Length;
-                    exportFileInfo.ExportFilesSize = Util.FormatSize(zipAssetsFInfo.Length);
-                    result.AddSummary("Exported Assets File Size", Util.FormatSize(zipAssetsFInfo.Length));
-                }
-                if (File.Exists(zipTemplatesName))
-                {
-                    var zipTemplatesFInfo = new FileInfo(zipTemplatesName); // refresh to get new size
-                    exportSize += zipTemplatesFInfo.Length;
-                    exportFileInfo.ExportTemplatesSize = Util.FormatSize(zipTemplatesFInfo.Length);
-                    result.AddSummary("Exported Templates File Size", Util.FormatSize(zipTemplatesFInfo.Length));
-                }
-                exportFileInfo.ExportSize = Util.FormatSize(exportSize);
+
                 summary.ExportFileInfo = exportFileInfo;
                 exportController.CreatePackageManifest(exportJob, exportFileInfo, summary);
             }
@@ -624,6 +595,12 @@ namespace Dnn.ExportImport.Components.Engines
                 return;
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
+        }
+
+        private static long GetExportSize(string exportFolder)
+        {
+            var files = Directory.GetFiles(exportFolder);
+            return files.Sum(file => new FileInfo(file).Length);
         }
 
         private static string[] NotAllowedCategoriesinRequestArray => new[]
